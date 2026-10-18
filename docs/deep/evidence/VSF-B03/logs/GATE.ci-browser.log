@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run browser
+ci-run browser: PASS
+[exit 0]

@@ -1,0 +1,15 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- both_tables_share_one_composition two_independent_sources every_fixture_passes_the_shared_composite changing_an_expectation at_most_one_collection an_implemented_claim_without_a_passing_witness
+
+running 6 tests
+test changing_an_expectation_or_an_opt_out_role_fails_the_fixture ... ok
+test both_tables_share_one_composition ... ok
+test at_most_one_collection_primitive_matches_any_node_in_any_fixture ... ok
+test every_fixture_passes_the_shared_composite ... ok
+test an_implemented_claim_without_a_passing_witness_fails_the_package_load ... ok
+test two_independent_sources_yield_the_same_semantics_on_held_out_seeds ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.23s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/harness.rs (compiler/target/debug/deps/harness-6f4cc22f9b827712)
+[exit 0]

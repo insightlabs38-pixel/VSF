@@ -1,0 +1,17 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- registration_ capability_mismatches ambiguous_recognitions malformed_recognitions recognition_prefers a_conformant_composite
+
+running 8 tests
+test a_conformant_composite_needs_its_dependencies_implemented ... ok
+test capability_mismatches_and_unknown_modes_are_rejected ... ok
+test recognition_prefers_the_highest_precedence_and_honors_exclusions ... ok
+test malformed_recognitions_are_rejected ... ok
+test ambiguous_recognitions_are_rejected_unless_exclusive_or_ordered ... ok
+test registration_rejects_duplicates_unknown_ids_and_unresolved_kinds ... ok
+test registration_rejects_implemented_claims_without_a_witness ... ok
+test registration_accepts_a_complete_implemented_primitive ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.04s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/registry.rs (compiler/target/debug/deps/registry-7aa82c2d8b5b7f53)
+[exit 0]

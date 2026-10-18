@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B03-T01",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "registry/primitives/registry.v1.json",
+    "registry/primitives/policy.v1.json",
+    "compiler/crates/vsf-registry/src/import.rs",
+    "compiler/crates/vsf-registry/src/model.rs"
+  ],
+  "acceptance": "All 924 catalog ids import unchanged and exactly once; each carries a recorded justification (489 composite, 217 atomic, 107 adapter, 62 service, 49 UNRESOLVED) and every entry is candidate, so no maturity is claimed.",
+  "positive": {
+    "fixture": "the real catalog imports 924 entries once, byte-identical to the committed registry",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- all_924_catalog_entries committed_registry_equals_a_fresh_import import_makes_no_maturity_claim",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "duplicate ids and imported maturity claims are rejected",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- import_rejects_duplicates_and_maturity_claims",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "Import is linear in catalog size and runs in milliseconds.",
+  "known_limitations": [
+    "Keyword classification is conservative; 49 entries stay UNRESOLVED until a later batch decides them"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T01.all-924-import-unchanged-once-and-classified.log"
+  ],
+  "review_result": "ACCEPTED"
+}

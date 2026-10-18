@@ -1,0 +1,11 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- graph_reports the_real_registry_has_complete_acyclic
+
+running 2 tests
+test graph_reports_the_exact_missing_dependency_and_cycle_chain ... ok
+test the_real_registry_has_complete_acyclic_dependencies_in_a_stable_order ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.07s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/registry.rs (compiler/target/debug/deps/registry-7aa82c2d8b5b7f53)
+[exit 0]

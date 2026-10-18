@@ -1,0 +1,44 @@
+{
+  "task_id": "VSF-B03-T04",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "compiler/crates/vsf-registry/src/graph.rs"
+  ],
+  "acceptance": "The graph tool reports the exact missing dependency, self dependency or cycle chain, and its topological order breaks ties by id so repeated runs match.",
+  "positive": {
+    "fixture": "the real registry is closed and acyclic with a stable order",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- the_real_registry_has_complete_acyclic_dependencies_in_a_stable_order",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "missing dependencies and cycles are reported with exact ids and chain",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- graph_reports_the_exact_missing_dependency_and_cycle_chain",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "Verification is linear in edges (2052 edges over 924 entries).",
+  "known_limitations": [
+    "Dependencies are family-level anchors from policy; per-primitive refinement happens as primitives are specified"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T04.graph-closure-cycles-and-stable-order.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,16 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test dashboard
+
+running 6 tests
+test source_apps_count_witness_fixtures_apart_from_unbound_ones ... ok
+test only_witnessed_claims_are_counted_and_nothing_is_validated_or_proven_yet ... ok
+test a_higher_maturity_moves_only_its_own_tier_and_never_the_total ... ok
+test extra_unbound_fixtures_and_apps_do_not_move_any_tier ... ok
+test the_denominator_is_the_whole_catalog_and_tiers_are_cumulative ... ok
+test the_committed_dashboard_is_the_current_one_and_the_text_names_the_denominator ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+   Compiling vsf-registry v0.0.0 (/home/user/VSF/compiler/crates/vsf-registry)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.29s
+     Running tests/dashboard.rs (compiler/target/debug/deps/dashboard-3596dbc7f550e3f9)
+[exit 0]
