@@ -11,7 +11,7 @@ import { type Stat, stat } from "./stats.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const bin = join(root, "artifacts/bin/vsf-fabric");
 const wasmPath = join(root, "artifacts/wasm/vsf_wasm.wasm");
-const out = resolve(process.argv[2] ?? "boundary.json");
+const out = resolve(root, process.argv[2] ?? "boundary.json");
 const PLAN = [
   { nodes: 1000, fast: 200, slow: 100 },
   { nodes: 10000, fast: 100, slow: 60 },

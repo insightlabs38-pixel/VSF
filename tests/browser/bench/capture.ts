@@ -1,11 +1,13 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { cpus, totalmem } from "node:os";
 import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { startServer } from "@vsf/fixture-apps/server";
 import { createEnv } from "../support/env.ts";
 import { stat } from "./stats.ts";
 
-const out = resolve(process.argv[2] ?? "capture.json");
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
+const out = resolve(repoRoot, process.argv[2] ?? "capture.json");
 const PLAN: { nodes: number; iterations: number }[] = [
   { nodes: 1000, iterations: 40 },
   { nodes: 10000, iterations: 20 },
