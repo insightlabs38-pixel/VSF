@@ -1,0 +1,26 @@
+batch,milestone,name,depends_on,gate,task_count,status,source
+B00,M0,Build foundation and reproducible validation,,G0,7,TODO,batches/B00.md
+B01,M0,Validate browser and language boundaries,B00,G1,7,TODO,batches/B01.md
+B02,M0,Define and validate versioned IR contracts,B01,G2,8,TODO,batches/B02.md
+B03,M1,Build primitive registry and conformance harness,B02,G3,8,TODO,batches/B03.md
+B04,M1,Implement browser observation and incremental events,B02;B03,G4,8,TODO,batches/B04.md
+B05,M1,Build semantic recognition and evidence engine,B03;B04,G5,8,TODO,batches/B05.md
+B06,M1,Build presentation compiler and minimal accessible renderer,B05,G6,8,TODO,batches/B06.md
+B07,M2,Implement verified deterministic execution,B05;B06,G7,8,TODO,batches/B07.md
+B08,M2,"Build version registry, semantic diff and pins",B02;B03;B07,G8,8,TODO,batches/B08.md
+B09,M2,Integrate extension and secure local bridge,B06;B07;B08,G9,8,TODO,batches/B09.md
+B10,M2,"Expose API, CLI and MCP vertical slice",B07;B08;B09,G10,8,TODO,batches/B10.md
+B11,M3,Expand common application coverage,B10,G11,6,TODO,batches/B11.md
+B12,M3,Expand advanced UI and developer/research tools,B11,G12,6,TODO,batches/B12.md
+B13,M3,Implement durable storage and ZEROS3 qualification,B08;B10,G13,5,TODO,batches/B13.md
+B14,M3,Harden authentication and managed sessions,B09;B13,G14,5,TODO,batches/B14.md
+B15,M4,Build hosted and on-demand execution,B07;B14,G15,5,TODO,batches/B15.md
+B16,M4,Build desktop and premium localhost service,B09;B14,G16,4,TODO,batches/B16.md
+B17,M4,Ship user-visible version control features,B08;B13,G17,5,TODO,batches/B17.md
+B18,M4,Profile and optimize entire runtime,B11;B12;B13;B14;B15;B16;B17,G18,5,TODO,batches/B18.md
+B19,M4,Launch provider-agnostic billing and entitlements,B15;B16;B17;B18,G19,5,TODO,batches/B19.md
+B20,M5,"Specialized science, finance and legacy packs",B12,G20,4,TODO,batches/B20.md
+B21,M5,Cross-browser compatibility and transport evolution,B04;B11,G21,3,TODO,batches/B21.md
+B22,M5,Team and academic lab release,B14;B17,G22,4,TODO,batches/B22.md
+B23,M5,Private / enterprise deployment,B15;B22,G23,4,TODO,batches/B23.md
+B24,M5,Validate beta/public launch,B19;B20;B21;B22;B23,G24,5,TODO,batches/B24.md
