@@ -1,0 +1,41 @@
+{
+  "task_id": "VSF-B02-T02",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "compiler/crates/vsf-ir/src/semantics.rs",
+    "schemas/ir/fixtures/semantic/cases.json"
+  ],
+  "acceptance": "Effect classes order read-only, idempotent, conditional, non-idempotent, destructive, indeterminate; joins keep the more dangerous, unproven means indeterminate, a declared effect can never be weaker than any asserted effect, and heuristic or user evidence never yields verified.",
+  "positive": {
+    "fixture": "effect join and certainty combine laws plus 104 mutation cases report exactly the expected codes",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --lib --test semantics",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "understated effects, overclaimed certainty, unresolved conflicts and type-mismatched claims are each reported",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test semantics",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Contracts carry no credentials; documents declare required scopes and authorized contexts, and source-account permissions stay separate from VSF caller authentication.",
+  "performance_memory_storage": "Validators are linear in document size; no allocation beyond violation lists.",
+  "known_limitations": [
+    "Go reaches semantic checks through the native worker rather than reimplementing them"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T02.effect-certainty-algebra-and-104-semantic-cases.log"
+  ],
+  "review_result": "ACCEPTED"
+}

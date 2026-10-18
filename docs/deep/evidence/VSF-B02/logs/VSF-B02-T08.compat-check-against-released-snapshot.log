@@ -1,0 +1,3 @@
+$ node --conditions=source tools/idlgen/src/cli.ts compat
+baseline: 1.0.0
+[exit 0]

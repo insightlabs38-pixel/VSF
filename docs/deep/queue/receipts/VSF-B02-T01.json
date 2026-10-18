@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B02-T01",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "schemas/ir",
+    "tools/idlgen",
+    "compiler/crates/vsf-ir/src/generated.rs",
+    "frontend/packages/ir/src/generated.ts",
+    "backend/ir/generated.go"
+  ],
+  "acceptance": "All six families (environment, observation, semantic, operation, presentation, version) and common types are declared in one IDL with stable typed IDs, required and optional fields, bounds and explicit unknown values; generated bindings equal the committed files.",
+  "positive": {
+    "fixture": "10 valid fixtures decode and re-encode byte-identically",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test fixtures",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "79 invalid documents fail closed with the expected code and path",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test fixtures",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node --conditions=source tools/idlgen/src/cli.ts --check",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/idlgen run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Contracts carry no credentials; documents declare required scopes and authorized contexts, and source-account permissions stay separate from VSF caller authentication.",
+  "performance_memory_storage": "Generated Rust 4240 lines, TS 3128, Go 7017; vsf_wasm.wasm grew from 1,005,067 to 1,402,563 bytes before trimming.",
+  "known_limitations": [
+    "WASM size growth of about 397 KB is untrimmed and left to B18"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T01.idl-generation-matches-committed-bindings.log",
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T01.idlgen-generator-tests.log",
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T01.six-families-valid-and-79-invalid-decode-cases.log"
+  ],
+  "review_result": "ACCEPTED"
+}

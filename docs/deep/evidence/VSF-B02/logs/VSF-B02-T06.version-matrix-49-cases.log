@@ -1,0 +1,13 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test matrix
+
+running 3 tests
+test malformed_host_descriptions_are_rejected ... ok
+test evaluation_json_is_canonical_and_stable ... ok
+test every_matrix_case_yields_the_expected_status_and_reason ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+   Compiling vsf-ir v0.0.0 (/home/user/VSF/compiler/crates/vsf-ir)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.34s
+     Running tests/matrix.rs (compiler/target/debug/deps/matrix-7907ea8db49bcaa1)
+[exit 0]

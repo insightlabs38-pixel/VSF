@@ -1,0 +1,18 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test identity
+
+running 8 tests
+test cache_key_fields_cannot_be_shifted_across_boundaries ... ok
+test equivalent_descriptors_share_an_identity ... ok
+test invalid_descriptors_fail_closed ... ok
+test hmac_matches_rfc_4231_vectors ... ok
+test tenant_absence_differs_from_an_empty_looking_tenant ... ok
+test private_cache_state_is_never_shared_across_principals_or_variants ... ok
+test variant_id_is_pinned_and_independently_reproducible ... ok
+test every_tenant_role_locale_flag_combination_is_distinct ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Compiling vsf-ir v0.0.0 (/home/user/VSF/compiler/crates/vsf-ir)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.31s
+     Running tests/identity.rs (compiler/target/debug/deps/identity-544f7bbe3743055c)
+[exit 0]

@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B02-T08",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "docs/deep/adr/ADR-027-versioned-ir-contracts.md",
+    "docs/deep/adr/ADR-028-schema-compatibility-and-promotion.md",
+    ".github/CODEOWNERS",
+    "schemas/ir/released/1.0.0",
+    "tools/idlgen/src/compat.ts",
+    "tools/idlgen/test/compat.test.ts"
+  ],
+  "acceptance": "ADR-028 defines the schema-owner gate, released snapshots, migrations, deprecation, rollback and promotion conditions with rejected-change examples, and the compat checker enforces them against the released snapshot in CI.",
+  "positive": {
+    "fixture": "the working schemas are compatible with released 1.0.0; additive changes pass with a minor bump",
+    "command": "node --conditions=source tools/idlgen/src/cli.ts compat",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "15 breaking changes are rejected without a major bump and 6 additive changes without a version bump",
+    "command": "pnpm --filter @vsf/idlgen run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Contracts carry no credentials; documents declare required scopes and authorized contexts, and source-account permissions stay separate from VSF caller authentication.",
+  "performance_memory_storage": "Compat check compares IDL definitions only; runs in under a second.",
+  "known_limitations": [
+    "CODEOWNERS enforcement needs branch protection requiring code owner review"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T08.compat-check-against-released-snapshot.log"
+  ],
+  "review_result": "ACCEPTED"
+}

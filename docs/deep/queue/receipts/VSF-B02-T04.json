@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B02-T04",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "frontend/packages/ir",
+    "backend/ir",
+    "frontend/packages/wasm-host",
+    "compiler/crates/vsf-wasm",
+    "compiler/crates/vsf-native",
+    "tools/idlgen/test"
+  ],
+  "acceptance": "TS, Go and Rust round trips match reference digests; WASM and native expose vsf_ir_validate and ir-validate with identical output; compatible and breaking schema changes are both exercised.",
+  "positive": {
+    "fixture": "WASM results equal pinned Rust digests for all valid fixtures and the same codes and paths as native for all 79 invalid and 104 semantic cases",
+    "command": "pnpm --filter @vsf/wasm-host run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "non-canonical input is a call error, exit 2; invalid documents exit 3; truncated or wrong-ABI modules are refused",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/idlgen run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/cross-language-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Contracts carry no credentials; documents declare required scopes and authorized contexts, and source-account permissions stay separate from VSF caller authentication.",
+  "performance_memory_storage": "WASM ABI 2 to 3 (adds vsf_ir_validate).",
+  "known_limitations": [
+    "Go semantic validation uses the persistent native worker op V"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T04.wasm-and-ts-agree-with-rust-on-all-fixtures.log",
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T04.native-worker-ir-validate.log",
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T04.breaking-and-compatible-schema-changes.log"
+  ],
+  "review_result": "ACCEPTED"
+}

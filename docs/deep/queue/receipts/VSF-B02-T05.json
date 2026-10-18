@@ -1,0 +1,41 @@
+{
+  "task_id": "VSF-B02-T05",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "compiler/crates/vsf-ir/src/identity.rs",
+    "compiler/crates/vsf-ir/tests/identity.rs"
+  ],
+  "acceptance": "The same product under different tenant, role, locale or flag combinations yields distinct keyed overlay identities (108 combinations, all distinct), equivalent descriptors collapse, and private cache keys never match across principals or variants.",
+  "positive": {
+    "fixture": "variant id var_a75553c70231887ad162c9f081a38f20 reproduced independently; permuted roles and flags collapse",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test identity",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "conflicting flags, malformed locale, bidi text and empty tokens fail; private keys differ per principal and variant",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test identity",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test fixtures",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Variant ids are keyed so tenant and role cannot be recovered or correlated from public inputs; private cache entries bind variant and principal.",
+  "performance_memory_storage": "HMAC-SHA256 passes RFC 4231 cases 1-4, 6 and 7.",
+  "known_limitations": [
+    "Key management and rotation are deployment work (B14)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T05.identity-overlay-and-hmac-vectors.log"
+  ],
+  "review_result": "ACCEPTED"
+}

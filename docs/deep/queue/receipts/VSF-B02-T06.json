@@ -1,0 +1,42 @@
+{
+  "task_id": "VSF-B02-T06",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "compiler/crates/vsf-ir/src/matrix.rs",
+    "compiler/crates/vsf-ir/tests/matrix.rs",
+    "schemas/ir/fixtures/matrix/matrix.json"
+  ],
+  "acceptance": "Twelve version axes each evolve independently with explicit compatibility statuses and pin behavior; the overall result is the most severe axis and a pin never overrides a support check.",
+  "positive": {
+    "fixture": "49 matrix cases give the expected status and reason per axis and untouched axes never move",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test matrix",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "newer minors and patches, unknown majors, revoked policy, changed fingerprint and pin mismatches are refused or degraded",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test matrix",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test semantics",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Contracts carry no credentials; documents declare required scopes and authorized contexts, and source-account permissions stay separate from VSF caller authentication.",
+  "performance_memory_storage": "Evaluation is constant-time per axis plus linear in the operation map.",
+  "known_limitations": [
+    "Host support descriptions are fixtures; real hosts populate them in B14"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T06.version-matrix-49-cases.log"
+  ],
+  "review_result": "ACCEPTED"
+}

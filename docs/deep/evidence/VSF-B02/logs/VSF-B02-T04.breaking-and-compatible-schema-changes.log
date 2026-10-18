@@ -1,0 +1,69 @@
+$ pnpm --filter @vsf/idlgen run test
+
+> @vsf/idlgen@0.0.0 test /home/user/VSF/tools/idlgen
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ rejected without a major bump: removing an enum value (30.551691ms)
+✔ accepted with an explicit major bump: removing an enum value (11.98931ms)
+✔ rejected without a major bump: renaming a field (21.075531ms)
+✔ accepted with an explicit major bump: renaming a field (4.762222ms)
+✔ rejected without a major bump: changing a field type (14.830877ms)
+✔ accepted with an explicit major bump: changing a field type (6.348245ms)
+✔ rejected without a major bump: making an optional field required (13.963431ms)
+✔ accepted with an explicit major bump: making an optional field required (4.243026ms)
+✔ rejected without a major bump: adding a required field without since (13.988128ms)
+✔ accepted with an explicit major bump: adding a required field without since (5.161497ms)
+✔ rejected without a major bump: lowering a maximum length (19.125911ms)
+✔ accepted with an explicit major bump: lowering a maximum length (4.38612ms)
+✔ rejected without a major bump: changing a pattern (27.144774ms)
+✔ accepted with an explicit major bump: changing a pattern (6.751486ms)
+✔ rejected without a major bump: narrowing an integer range (15.401867ms)
+✔ accepted with an explicit major bump: narrowing an integer range (4.078607ms)
+✔ rejected without a major bump: removing a union variant (13.648131ms)
+✔ accepted with an explicit major bump: removing a union variant (4.69119ms)
+✔ rejected without a major bump: retargeting a union variant (11.869907ms)
+✔ accepted with an explicit major bump: retargeting a union variant (3.733369ms)
+✔ rejected without a major bump: renaming a union tag (16.489287ms)
+✔ accepted with an explicit major bump: renaming a union tag (5.390663ms)
+✔ rejected without a major bump: removing a type (19.981098ms)
+✔ accepted with an explicit major bump: removing a type (5.547967ms)
+✔ rejected without a major bump: changing a type kind (14.445348ms)
+✔ accepted with an explicit major bump: changing a type kind (4.426632ms)
+✔ rejected without a major bump: changing text handling (11.98725ms)
+✔ accepted with an explicit major bump: changing text handling (7.055701ms)
+✔ rejected without a major bump: tightening a list bound (17.121984ms)
+✔ accepted with an explicit major bump: tightening a list bound (5.675397ms)
+✔ narrowing a list bound is breaking (5.01738ms)
+✔ accepted with a minor bump: adding an optional field with since (7.083678ms)
+✔ accepted with a minor bump: adding a required-from-1.1 field (6.107203ms)
+✔ accepted with a minor bump: adding an enum value (8.248272ms)
+✔ rejected without a version bump: adding an enum value (7.043379ms)
+✔ accepted with a minor bump: adding a union variant (6.960715ms)
+✔ rejected without a version bump: adding a union variant (7.779912ms)
+✔ accepted with a minor bump: adding a type (7.334453ms)
+✔ rejected without a version bump: adding a type (6.681767ms)
+✔ accepted with a minor bump: widening a maximum length (5.727813ms)
+✔ rejected without a version bump: widening a maximum length (3.923441ms)
+✔ accepted with a minor bump: widening an integer range (6.58643ms)
+✔ rejected without a version bump: widening an integer range (3.8866ms)
+✔ accepted with a minor bump: making a required field optional (4.506603ms)
+✔ rejected without a version bump: making a required field optional (5.216642ms)
+✔ a field with a future since is not a valid model at the old version (3.718223ms)
+✔ a field added in a minor release must declare the version that introduced it (10.075041ms)
+✔ changing when a field appears is breaking (7.980711ms)
+✔ a version regression is rejected (5.480467ms)
+✔ documentation-only edits are neither breaking nor additive (5.616782ms)
+✔ the working schemas are compatible with the latest released snapshot (4.032644ms)
+✔ generation is deterministic and matches the committed bindings (106.128438ms)
+✔ prose edits never change a schema digest (34.393427ms)
+✔ a structural edit changes exactly the families whose closure contains it (22.198142ms)
+✔ a 1.1 schema with a since field generates version gating in every language (68.212687ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 687.223976
+[exit 0]
