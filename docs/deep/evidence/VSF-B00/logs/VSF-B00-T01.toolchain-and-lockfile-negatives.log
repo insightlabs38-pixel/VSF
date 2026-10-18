@@ -1,0 +1,63 @@
+$ pnpm --filter @vsf/checks --filter @vsf/adversarial-tests run test
+Scope: 2 of 10 workspace projects
+tools/checks test$ node --test --test-reporter=spec test/*.test.ts
+tests/adversarial test$ node --test --test-reporter=spec --test-timeout=240000 *.test.ts
+tools/checks test: ✔ imported registry is complete and entirely unimplemented (14.343285ms)
+tools/checks test: ✔ gap register imports all 41 gaps as open (0.410311ms)
+tools/checks test: ✔ promoting an entry without conformance evidence is rejected (16.863357ms)
+tools/checks test: ✔ dropped, duplicated and cross-family entries are rejected (11.280184ms)
+tools/checks test: ✔ a closed gap without evidence is rejected (10.122491ms)
+tools/checks test: ✔ passing job records checksums that verify (52.803676ms)
+tools/checks test: ✔ a failing step fails the job but later steps still run and are logged (87.955329ms)
+tools/checks test: ✔ induced failure canary turns a green job red (117.440573ms)
+tools/checks test: ✔ a missing binary is a failure, not a skip (4.43029ms)
+tools/checks test: ✔ tampered or deleted logs and forged PASS status are detected (94.875276ms)
+tools/checks test: ✔ secret-shaped output never reaches the stored log (44.574852ms)
+tools/checks test: ✔ tree digests are order-independent of creation and change with content (2.521364ms)
+tools/checks test: ✔ single-line comments pass (3.393644ms)
+tools/checks test: ✔ consecutive line comments are rejected (0.336536ms)
+tools/checks test: ✔ multi-line block comments are rejected, one-line blocks pass (0.16637ms)
+tools/checks test: ✔ shebang followed by one comment is allowed (0.127065ms)
+tools/checks test: ✔ accepts a concise technical message of nine lines (2.827651ms)
+tools/checks test: ✔ rejects ten lines and empty messages (0.375939ms)
+tools/checks test: ✔ rejects attribution, signatures and links (0.30249ms)
+tools/checks test: ✔ identity must be the repository owner (0.193602ms)
+tools/checks test: ✔ clean cargo lock passes; workspace members are ignored (2.607008ms)
+tools/checks test: ✔ floating git sources and missing checksums are flagged (0.314815ms)
+tools/checks test: ✔ pnpm lock parsing flags tarball sources and missing integrity (0.605296ms)
+tools/checks test: ✔ known-vulnerable test dependencies are flagged by the local advisories (0.500863ms)
+tools/checks test: ✔ version comparison boundaries (0.184275ms)
+tools/checks test: ✔ go replace directives to remote modules and missing sums are flagged (0.57671ms)
+tools/checks test: ✔ license policy: permissive passes, copyleft and missing fail (0.577595ms)
+tools/checks test: ✔ license overrides fill in uninstalled platform packages and do not mask real problems (7.681076ms)
+tools/checks test: ✔ repository pins are consistent with the manifest (2.61662ms)
+tools/checks test: ✔ installed toolchains match the pins (515.984479ms)
+tools/checks test: ✔ each drifting pin is reported by id (4.468407ms)
+tools/checks test: ✔ a missing toolchain is reported, never skipped (5.895992ms)
+tools/checks test: ✔ a wrong installed version is reported (499.331385ms)
+tools/checks test: ℹ tests 33
+tools/checks test: ℹ suites 0
+tools/checks test: ℹ pass 33
+tools/checks test: ℹ fail 0
+tools/checks test: ℹ cancelled 0
+tools/checks test: ℹ skipped 0
+tools/checks test: ℹ todo 0
+tools/checks test: ℹ duration_ms 1582.547886
+tools/checks test: Done
+tests/adversarial test: ✔ broken-lockfile: cargo --locked refuses a manifest the lockfile does not cover (297.716921ms)
+tests/adversarial test: ✔ broken-lockfile: pnpm --frozen-lockfile refuses package.json drift (459.577029ms)
+tests/adversarial test: ✔ broken-lockfile: floating git sources and missing checksums are flagged by dep-review (126.930597ms)
+tests/adversarial test: ✔ fixture intentional-failure: a tampered golden fixture fails the check (233.607737ms)
+tests/adversarial test: ✔ fixture intentional-failure: the CI canary job reports FAIL and verified logs (399.077695ms)
+tests/adversarial test: ✔ redaction-leak: the repository scan flags a planted secret shape (490.23682ms)
+tests/adversarial test: ✔ missing-toolchain: the toolchain check fails loudly without cargo/go on PATH (496.619471ms)
+tests/adversarial test: ℹ tests 7
+tests/adversarial test: ℹ suites 0
+tests/adversarial test: ℹ pass 7
+tests/adversarial test: ℹ fail 0
+tests/adversarial test: ℹ cancelled 0
+tests/adversarial test: ℹ skipped 0
+tests/adversarial test: ℹ todo 0
+tests/adversarial test: ℹ duration_ms 2688.016171
+tests/adversarial test: Done
+[exit 0]

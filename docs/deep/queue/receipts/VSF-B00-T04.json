@@ -1,0 +1,53 @@
+{
+  "task_id": "VSF-B00-T04",
+  "status": "DONE",
+  "branch": "vsf/b00-foundation",
+  "base_commit": "03139f7d7f693bd055dd98e0104a30a056a337e3",
+  "commit": "4c071743baa9c4282e2ca46a9913564ad82fb70c",
+  "paths": [
+    "fixtures/golden",
+    "fixtures/golden/dom",
+    "scripts/golden.ts",
+    "compiler/crates/vsf-fixtures",
+    "compiler/crates/vsf-redact",
+    "tools/redact",
+    "schemas/redaction"
+  ],
+  "acceptance": "Goldens use seeded SplitMix64, redact secret-shaped strings and are byte-identical across repeated runs, native, WASM and the TS generator.",
+  "positive": {
+    "fixture": "golden seeds + DOM outlines",
+    "command": "node scripts/golden.ts check",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "assembled secret shapes in 10 pattern kinds, 4 non-secret decoys",
+    "command": "pnpm --filter @vsf/redact run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native -p vsf-redact",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts secrets",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "No source application is contacted; fixtures are local and offline; secrets are redacted before logs, goldens and evidence are stored.",
+  "performance_memory_storage": "not measured",
+  "known_limitations": [
+    "Redaction is pattern based and cannot detect secrets without a recognizable shape"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T04.golden-byte-identical.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T04.native-golden-and-redaction.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T04.redaction-parity.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T04.secret-scan.log"
+  ],
+  "review_result": "ACCEPTED"
+}

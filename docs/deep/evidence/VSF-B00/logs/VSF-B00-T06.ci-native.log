@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run native
+ci-run native: PASS
+[exit 0]

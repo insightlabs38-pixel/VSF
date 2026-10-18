@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B00-T07",
+  "status": "DONE",
+  "branch": "vsf/b00-foundation",
+  "base_commit": "03139f7d7f693bd055dd98e0104a30a056a337e3",
+  "commit": "4c071743baa9c4282e2ca46a9913564ad82fb70c",
+  "paths": [
+    "docs/deep/queue/schemas",
+    "docs/deep/reports/TEMPLATE.md",
+    "tools/queue",
+    "docs/deep/evidence/VSF-B00/collect.sh"
+  ],
+  "acceptance": "Receipt, report and evidence validators accept valid evidence and reject missing task IDs, failing gates, reports over 24 lines, checksum mismatches and secret shapes.",
+  "positive": {
+    "fixture": "closed mini batch",
+    "command": "pnpm --filter @vsf/queue run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "25-line report, missing task id, PROCEED with open gate, tampered evidence",
+    "command": "pnpm --filter @vsf/queue run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate --no-git",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts catalog --check",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none (924 candidates imported, none implemented)"
+  },
+  "security_and_source_permissions": "No source application is contacted; fixtures are local and offline; secrets are redacted before logs, goldens and evidence are stored.",
+  "performance_memory_storage": "not measured",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T07.queue-tests.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T07.queue-validate.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T07.catalog-check.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -2,12 +2,12 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B00-T01`
+**Next eligible:** `VSF-B01-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
-| B00 | G0 | 0/7 | READY | - |
-| B01 | G1 | 0/7 | TODO | - |
+| B00 | G0 | 7/7 | DONE | PROCEED |
+| B01 | G1 | 0/7 | READY | - |
 | B02 | G2 | 0/8 | TODO | - |
 | B03 | G3 | 0/8 | TODO | - |
 | B04 | G4 | 0/8 | TODO | - |
@@ -34,17 +34,17 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B00 · Build foundation and reproducible validation
 
-- [ ] `VSF-B00-T01` Create pinned Rust/Go/Node version manifest and lockfiles _(READY)_
-- [ ] `VSF-B00-T02` Build an empty cross-language schema integration smoke test
-- [ ] `VSF-B00-T03` Set up Playwright synthetic source app and minimal WASM smoke fixture
-- [ ] `VSF-B00-T04` Add deterministic golden fixtures and secret-free test logs
-- [ ] `VSF-B00-T05` Configure lints, formatting, supply-chain scans, dependency review, reproducible artifact digest
-- [ ] `VSF-B00-T06` Implement CI matrix with mandatory artifacts and failure summaries
-- [ ] `VSF-B00-T07` Create evidence bundle template for every subsequent batch
+- [x] `VSF-B00-T01` Create pinned Rust/Go/Node version manifest and lockfiles
+- [x] `VSF-B00-T02` Build an empty cross-language schema integration smoke test
+- [x] `VSF-B00-T03` Set up Playwright synthetic source app and minimal WASM smoke fixture
+- [x] `VSF-B00-T04` Add deterministic golden fixtures and secret-free test logs
+- [x] `VSF-B00-T05` Configure lints, formatting, supply-chain scans, dependency review, reproducible artifact digest
+- [x] `VSF-B00-T06` Implement CI matrix with mandatory artifacts and failure summaries
+- [x] `VSF-B00-T07` Create evidence bundle template for every subsequent batch
 
 ### B01 · Validate browser and language boundaries
 
-- [ ] `VSF-B01-T01` Build a packaged extension that can read permitted basic DOM snapshot
+- [ ] `VSF-B01-T01` Build a packaged extension that can read permitted basic DOM snapshot _(READY)_
 - [ ] `VSF-B01-T02` Demonstrate permissions origin-by-origin and prevent page-origin misuse
 - [ ] `VSF-B01-T03` Observe MV3 service worker teardown/restart and preserve no sensitive secrets in global state
 - [ ] `VSF-B01-T04` Pass compact typed arrays between TS and Rust/WASM with repeatable hashes

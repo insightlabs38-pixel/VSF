@@ -1,0 +1,42 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native -p vsf-redact
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test incompatible_schema_exits_2_with_code ... ok
+test bad_usage_exits_64 ... ok
+test emit_then_compile_roundtrip_matches_library ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 2 tests
+test golden_outputs_contain_no_unredacted_secret_shapes ... ok
+test native_output_is_byte_identical_to_committed_golden ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 4 tests
+test tests::loads_every_pattern ... ok
+test tests::leaves_non_secrets_untouched ... ok
+test tests::redacts_nested_values_and_keys_deterministically ... ok
+test tests::redacts_every_positive_case_with_its_kind ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_fabric-6548f7bd13d72eba)
+     Running tests/cli.rs (compiler/target/debug/deps/cli-c5a98d1987c9c5e8)
+     Running tests/golden.rs (compiler/target/debug/deps/golden-f9e11ac586b8fa09)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_redact-9c440c8a38df3b3f)
+   Doc-tests vsf_redact
+[exit 0]

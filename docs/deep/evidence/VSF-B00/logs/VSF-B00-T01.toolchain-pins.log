@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts toolchain
+toolchain: ok
+[exit 0]

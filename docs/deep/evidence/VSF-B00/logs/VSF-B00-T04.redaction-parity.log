@@ -1,0 +1,18 @@
+$ pnpm --filter @vsf/redact run test
+
+> @vsf/redact@0.0.0 test /home/user/VSF/tools/redact
+> node --test --test-reporter=spec test/*.test.ts
+
+✔ loads every shared pattern (0.929713ms)
+✔ redacts every positive case with its kind and leaks nothing (2.66282ms)
+✔ leaves non-secret text untouched (0.191493ms)
+✔ TypeScript and Rust redactors agree on every case (101.873358ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 269.736877
+[exit 0]

@@ -1,0 +1,18 @@
+$ pnpm --filter @vsf/wasm-host run test
+
+> @vsf/wasm-host@0.0.0 test /home/user/VSF/frontend/packages/wasm-host
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ wasm output is byte-identical to native golden for every seed (38.59689ms)
+✔ injected incompatible ABI is rejected before any call (7.352655ms)
+✔ module without the ABI export is rejected (1.101693ms)
+✔ wasm surfaces stable error codes and recovers after errors (4.755642ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 224.149209
+[exit 0]

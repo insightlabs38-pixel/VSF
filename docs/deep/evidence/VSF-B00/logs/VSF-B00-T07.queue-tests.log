@@ -1,0 +1,36 @@
+$ pnpm --filter @vsf/queue run test
+
+> @vsf/queue@0.0.0 test /home/user/VSF/tools/queue
+> node --test --test-reporter=spec test/*.test.ts
+
+✔ a clean bundle passes and the template refuses to overwrite (60.036054ms)
+✔ checksum mismatch, PASS with nonzero exit and unknown tasks are rejected (75.778523ms)
+✔ a skipped check needs a reason and cannot hide as a pass (17.522899ms)
+✔ secret-shaped content anywhere in the bundle is rejected (23.380874ms)
+✔ a missing bundle is reported (3.841884ms)
+✔ recorded runs are checksummed, failures stay FAIL and duplicates are refused (121.447017ms)
+✔ a fully closed batch validates with receipts, report and rendered TASKS.md (155.724153ms)
+✔ illegal transitions are rejected (0.794744ms)
+✔ a later batch cannot start before the prior gate is accepted (29.081725ms)
+✔ a gate cannot be accepted with unfinished tasks or without PROCEED (0.453624ms)
+✔ DONE without a receipt, or with a tampered receipt, fails validation (93.031831ms)
+✔ receipt schema accepts valid evidence and rejects incomplete or failing receipts (84.372713ms)
+✔ TASKS.md drift is detected (46.770605ms)
+✔ the repository's real queue is internally consistent (16.660292ms)
+✔ valid report passes (10.050185ms)
+✔ reports over 24 lines are rejected; exactly 24 are accepted (3.499197ms)
+✔ a report that omits a closed task ID is rejected (5.25214ms)
+✔ a report naming a foreign or nonexistent task is rejected (4.244926ms)
+✔ PROCEED is rejected while the gate is not accepted or tasks are unfinished (5.609718ms)
+✔ a failing-gate report cannot claim an accepted gate (4.214281ms)
+✔ malformed header and missing fields are rejected (4.937588ms)
+✔ PROCEED requires an existing evidence directory (4.306646ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 734.426411
+[exit 0]

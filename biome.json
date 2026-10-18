@@ -6,7 +6,7 @@
       "!**/node_modules",
       "!**/dist",
       "!**/generated.ts",
-      "!docs/deep/plan",
+      "!docs/deep",
       "!fixtures/golden",
       "!registry",
       "!artifacts",

@@ -1,0 +1,5 @@
+$ go -C backend test -count=1 ./...
+ok  	github.com/insightlabs38-pixel/vsf/backend/canon	0.239s
+ok  	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfctl	0.002s
+ok  	github.com/insightlabs38-pixel/vsf/backend/schema	0.003s
+[exit 0]

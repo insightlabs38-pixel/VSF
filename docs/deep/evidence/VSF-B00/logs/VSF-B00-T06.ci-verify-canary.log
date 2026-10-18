@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-verify artifacts/ci/canary
+ci-verify: ok
+[exit 0]
