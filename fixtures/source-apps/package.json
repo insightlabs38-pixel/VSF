@@ -5,6 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "dependencies": {
+    "@vsf/observer": "workspace:*",
     "@vsf/schema": "workspace:*",
     "@vsf/wasm-host": "workspace:*"
   },
@@ -13,5 +14,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts",
     "start": "node --conditions=source src/main.ts"
+  },
+  "exports": {
+    "./server": "./src/server.ts"
   }
 }

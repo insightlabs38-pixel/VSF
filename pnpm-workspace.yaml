@@ -1,4 +1,5 @@
 packages:
+  - apps/*
   - frontend/packages/*
   - fixtures/source-apps
   - tests/*

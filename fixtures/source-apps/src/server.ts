@@ -12,6 +12,7 @@ const MOUNTS: [string, string][] = [
   ["/assets/client/", join(here, "../dist")],
   ["/assets/schema/", join(repo, "frontend/packages/schema/dist")],
   ["/assets/wasm-host/", join(repo, "frontend/packages/wasm-host/dist")],
+  ["/assets/observer/", join(repo, "frontend/packages/observer/dist")],
   ["/artifacts/wasm/", join(repo, "artifacts/wasm")],
   ["/", join(here, "../public")],
 ];
