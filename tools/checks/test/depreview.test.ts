@@ -160,3 +160,20 @@ test("license overrides fill in uninstalled platform packages and do not mask re
     ["b@1", "c@9"],
   );
 });
+
+test("prefix overrides cover a whole platform-package family", async () => {
+  const { applyOverrides } = await import("../src/depscan.ts");
+  const out = applyOverrides(
+    [
+      { name: "@esbuild/linux-arm64", version: "0.28.2", license: undefined },
+      { name: "@esbuild/linux-x64", version: "0.28.2", license: "MIT" },
+      { name: "@esbuild/win32-x64", version: "9.9.9", license: undefined },
+    ],
+    [{ prefix: "@esbuild/", version: "0.28.2", license: "MIT" }],
+  );
+  assert.deepEqual(
+    out.entries.map((e) => e.license),
+    ["MIT", "MIT", undefined],
+  );
+  assert.equal(out.stale.length, 0);
+});

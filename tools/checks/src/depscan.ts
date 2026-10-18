@@ -37,10 +37,13 @@ function cargoLicenses(root: string): { name: string; version: string; license: 
 }
 
 interface Override {
-  name: string;
+  name?: string;
+  prefix?: string;
   version: string;
   license: string;
 }
+
+const label = (o: Override): string => `${o.name ?? `${o.prefix}*`}@${o.version}`;
 
 type LicenseEntry = { name: string; version: string; license: string | undefined };
 
@@ -50,18 +53,20 @@ export function applyOverrides(
 ): { entries: LicenseEntry[]; stale: DepFinding[] } {
   const used = new Set<string>();
   const merged = entries.map((e) => {
-    const hit = overrides.find((o) => o.name === e.name && o.version === e.version);
+    const hit = overrides.find(
+      (o) => o.version === e.version && (o.name === e.name || (o.prefix !== undefined && e.name.startsWith(o.prefix))),
+    );
     if (hit && e.license === undefined) {
-      used.add(`${hit.name}@${hit.version}`);
+      used.add(label(hit));
       return { ...e, license: hit.license };
     }
     return e;
   });
   const stale = overrides
-    .filter((o) => !used.has(`${o.name}@${o.version}`))
+    .filter((o) => !used.has(label(o)))
     .map((o) => ({
       rule: "license.stale-override",
-      package: `${o.name}@${o.version}`,
+      package: label(o),
       detail: "override not needed or package not locked",
     }));
   return { entries: merged, stale };

@@ -155,6 +155,32 @@ jobs:
             artifacts/wasm
           if-no-files-found: error
 
+  browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Rust toolchain from manifest
+        run: rustup toolchain install "$(jq -r .rust toolchain/versions.json)" --profile minimal -c rustfmt -c clippy -t wasm32-unknown-unknown
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: node tools/checks/src/cli.ts ci-run browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-browser
+          path: |
+            artifacts/ci/browser
+            artifacts/logs
+            artifacts/extension
+          if-no-files-found: error
+
   commit-policy:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
@@ -203,7 +229,7 @@ jobs:
 
   gate:
     if: always()
-    needs: [hygiene, native, go, ts, wasm-browser, cross-language, failure-canary]
+    needs: [hygiene, native, go, ts, wasm-browser, cross-language, browser, failure-canary]
     runs-on: ubuntu-24.04
     steps:
       - name: All required jobs must have succeeded

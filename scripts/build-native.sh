@@ -9,5 +9,7 @@ export CARGO_ENCODED_RUSTFLAGS="--remap-path-prefix=${root}=/vsf"$'\x1f'"--remap
 target="${VSF_NATIVE_TARGET_DIR:-$root/compiler/target}"
 CARGO_TARGET_DIR="$target" cargo build --manifest-path "$root/compiler/Cargo.toml" --locked --release -p vsf-native
 cp "$target/release/vsf-fabric" "$out/vsf-fabric"
-(cd "$root/backend" && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags="-s -w -buildid=" -o "$out/vsfctl" ./cmd/vsfctl)
+(cd "$root/backend" && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags="-s -w -buildid=" -o "$out/vsfctl" ./cmd/vsfctl \
+    && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags="-s -w -buildid=" -o "$out/vsfbridge" ./cmd/vsfbridge \
+    && CGO_ENABLED=0 go build -trimpath -buildvcs=false -ldflags="-s -w -buildid=" -o "$out/vsfbench" ./cmd/vsfbench)
 sha256sum "$out"/*
