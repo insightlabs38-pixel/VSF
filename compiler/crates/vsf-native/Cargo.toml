@@ -15,6 +15,7 @@ vsf-canon.workspace = true
 vsf-schema.workspace = true
 vsf-fixtures.workspace = true
 vsf-fabric.workspace = true
+vsf-ir.workspace = true
 vsf-redact.workspace = true
 vsf-observation.workspace = true
 

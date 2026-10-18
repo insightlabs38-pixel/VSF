@@ -148,12 +148,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "vsf-ir"
+version = "0.0.0"
+dependencies = [
+ "regex",
+ "sha2",
+ "vsf-canon",
+]
+
+[[package]]
 name = "vsf-native"
 version = "0.0.0"
 dependencies = [
  "vsf-canon",
  "vsf-fabric",
  "vsf-fixtures",
+ "vsf-ir",
  "vsf-observation",
  "vsf-redact",
  "vsf-schema",
@@ -188,5 +198,6 @@ dependencies = [
  "vsf-canon",
  "vsf-fabric",
  "vsf-fixtures",
+ "vsf-ir",
  "vsf-observation",
 ]

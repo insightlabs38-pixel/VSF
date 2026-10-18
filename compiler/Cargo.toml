@@ -6,6 +6,7 @@ members = [
   "crates/vsf-redact",
   "crates/vsf-fixtures",
   "crates/vsf-observation",
+  "crates/vsf-ir",
   "crates/vsf-fabric",
   "crates/vsf-wasm",
   "crates/vsf-native",
@@ -26,6 +27,7 @@ vsf-schema = { path = "crates/vsf-schema" }
 vsf-redact = { path = "crates/vsf-redact" }
 vsf-fixtures = { path = "crates/vsf-fixtures" }
 vsf-observation = { path = "crates/vsf-observation" }
+vsf-ir = { path = "crates/vsf-ir" }
 vsf-fabric = { path = "crates/vsf-fabric" }
 
 [workspace.lints.rust]
