@@ -1081,3 +1081,81 @@ pub fn violation_values(list: &[Violation]) -> Vec<Value> {
         })
         .collect()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const EFFECTS: [EffectClass; 6] = [
+        EffectClass::ReadOnly,
+        EffectClass::IdempotentWrite,
+        EffectClass::ConditionalWrite,
+        EffectClass::NonIdempotentWrite,
+        EffectClass::Destructive,
+        EffectClass::Indeterminate,
+    ];
+    const CERTAINTIES: [Certainty; 4] = [
+        Certainty::Conflicted,
+        Certainty::Unknown,
+        Certainty::Inferred,
+        Certainty::Verified,
+    ];
+
+    #[test]
+    fn effect_join_is_a_commutative_associative_idempotent_maximum() {
+        for a in EFFECTS {
+            assert_eq!(join_effects(a, a), a);
+            for b in EFFECTS {
+                assert_eq!(join_effects(a, b), join_effects(b, a));
+                assert!(danger(join_effects(a, b)) >= danger(a).max(danger(b)));
+                for c in EFFECTS {
+                    assert_eq!(
+                        join_effects(join_effects(a, b), c),
+                        join_effects(a, join_effects(b, c))
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn indeterminate_absorbs_and_is_the_default_for_the_unproven() {
+        assert_eq!(CONSERVATIVE_EFFECT, EffectClass::Indeterminate);
+        for e in EFFECTS {
+            assert_eq!(
+                join_effects(e, EffectClass::Indeterminate),
+                EffectClass::Indeterminate
+            );
+            assert_eq!(join_effects(EffectClass::ReadOnly, e), e);
+        }
+        let ranks: Vec<u8> = EFFECTS.iter().map(|e| danger(*e)).collect();
+        assert_eq!(ranks, [0, 1, 2, 3, 4, 5]);
+        assert!(!is_write(EffectClass::ReadOnly) && EFFECTS[1..].iter().all(|e| is_write(*e)));
+    }
+
+    #[test]
+    fn certainty_combines_to_the_weakest_premise() {
+        for a in CERTAINTIES {
+            assert_eq!(combine_certainty(a, a), a);
+            for b in CERTAINTIES {
+                assert_eq!(combine_certainty(a, b), combine_certainty(b, a));
+                assert!(strength(combine_certainty(a, b)) <= strength(a).min(strength(b)));
+            }
+            assert_eq!(combine_certainty(a, Certainty::Verified), a);
+        }
+        assert_eq!(
+            combine_certainty(Certainty::Inferred, Certainty::Unknown),
+            Certainty::Unknown
+        );
+    }
+
+    #[test]
+    fn only_behavioral_evidence_proves_what_an_action_does() {
+        assert!(proves_behavior(EvidenceType::RuntimeBehavior));
+        assert!(!proves_behavior(EvidenceType::ObservedStructure));
+        assert!(
+            !is_strong(EvidenceType::HeuristicInference) && !is_strong(EvidenceType::UserAssertion)
+        );
+        assert!(is_strong(EvidenceType::ObservedStructure));
+    }
+}
