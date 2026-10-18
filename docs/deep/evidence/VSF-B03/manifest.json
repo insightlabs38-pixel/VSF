@@ -1,0 +1,196 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B03",
+  "gate": "G3",
+  "runs": [
+    {
+      "task_id": "VSF-B03-T01",
+      "name": "all-924-import-unchanged-once-and-classified",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- all_924_catalog_entries import_makes_no_maturity_claim import_rejects_duplicates committed_registry_equals_a_fresh_import",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T01.all-924-import-unchanged-once-and-classified.log",
+      "sha256": "5f376c095c78edfed5112284cf33fa01f6e28f6cbdd8dbcc64e45dd368eb32eb"
+    },
+    {
+      "task_id": "VSF-B03-T02",
+      "name": "ownership-dependencies-and-advancement",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- ownership_dependencies_and_advancement_are_complete higher_maturity_levels_demand",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T02.ownership-dependencies-and-advancement.log",
+      "sha256": "e8f152f2d6fc362d818cec3c956947b74a813f3d3bb81b978f0988556cf8f4ef"
+    },
+    {
+      "task_id": "VSF-B03-T03",
+      "name": "registration-and-negative-match-rules",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- registration_ capability_mismatches ambiguous_recognitions malformed_recognitions recognition_prefers a_conformant_composite",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T03.registration-and-negative-match-rules.log",
+      "sha256": "21839444cb9a1a01fa70d090bafb04111a4e11c718c11fccfcee19d55496ee4f"
+    },
+    {
+      "task_id": "VSF-B03-T04",
+      "name": "graph-closure-cycles-and-stable-order",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- graph_reports the_real_registry_has_complete_acyclic",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T04.graph-closure-cycles-and-stable-order.log",
+      "sha256": "f99d3078aa85b40945106e8193d3000ae02fe942bb47b61d65ffff9c5633d118"
+    },
+    {
+      "task_id": "VSF-B03-T05",
+      "name": "seeded-positive-negative-adversarial-fixtures",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- every_fixture_descriptor_round_trips malformed_descriptors seeded_fixtures_are_reproducible",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T05.seeded-positive-negative-adversarial-fixtures.log",
+      "sha256": "048a8c9b7f78f626caab9a84635a7603a33829c8ed4b1af74fec8e8ee2e93e4b"
+    },
+    {
+      "task_id": "VSF-B03-T06",
+      "name": "dashboard-denominator-and-tiers",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test dashboard",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T06.dashboard-denominator-and-tiers.log",
+      "sha256": "87e5906f22f3d99bc0d25c6a6334076746701c780dec502567016ef907bbb2a9"
+    },
+    {
+      "task_id": "VSF-B03-T06",
+      "name": "dashboard-matches-committed-file",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- dashboard . --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T06.dashboard-matches-committed-file.log",
+      "sha256": "80861e86a9156138a7fc62c57677a169f116938479b4761b4946f75dd16243f8"
+    },
+    {
+      "task_id": "VSF-B03-T07",
+      "name": "manifest-tamper-matrix",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test manifest",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T07.manifest-tamper-matrix.log",
+      "sha256": "fb51bac5def6396a9f46128a80339f4c9d5f0f86314ea48a75bfb82c82d5c12a"
+    },
+    {
+      "task_id": "VSF-B03-T07",
+      "name": "manifest-verifies-cli",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T07.manifest-verifies-cli.log",
+      "sha256": "a40a61cb796eb91cf6edbd3d1657b1428e8e95d3a67af84cb16279605abbf5c6"
+    },
+    {
+      "task_id": "VSF-B03-T08",
+      "name": "shared-composite-two-independent-sources",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- both_tables_share_one_composition two_independent_sources every_fixture_passes_the_shared_composite changing_an_expectation at_most_one_collection an_implemented_claim_without_a_passing_witness",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B03-T08.shared-composite-two-independent-sources.log",
+      "sha256": "9cd4829a6873f9d206156462bfe4ae1e7d8d00ff2f5202dd6dbe076cfdd30dbb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "registry-package-check",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.registry-package-check.log",
+      "sha256": "57964c6e4062f7b335c4228189d3869089f50cd39393c918f78a33f4b45137ea"
+    },
+    {
+      "task_id": "GATE",
+      "name": "full-rust-workspace",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.full-rust-workspace.log",
+      "sha256": "6db0ec5b94eed9f9e7e6a91376dda1a6fcf8c88bd5fc3a708165e647f1dcacac"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-hygiene",
+      "command": "node tools/checks/src/cli.ts ci-run hygiene",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-hygiene.log",
+      "sha256": "bba938f52666ed785a4a10f1b8e6cae61aede4159e7ac6d5a6226e234983adf3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-native",
+      "command": "node tools/checks/src/cli.ts ci-run native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-native.log",
+      "sha256": "678b09b74ce2bb06b7644bd5a799829e55219e0f4174569edc8f1c164723376e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-go",
+      "command": "node tools/checks/src/cli.ts ci-run go",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-go.log",
+      "sha256": "cdd71958b2933294c6095125b05ad0c2cf7b202963632db2d3390639fae09a34"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-ts",
+      "command": "node tools/checks/src/cli.ts ci-run ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-ts.log",
+      "sha256": "99e415a0c572f57d83404f4dc99e19993a3cf7d0d0dc984ea210fad180864b99"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-wasm-browser",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-wasm-browser.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-cross-language",
+      "command": "node tools/checks/src/cli.ts ci-run cross-language",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-cross-language.log",
+      "sha256": "a3557a3f5a8f25a6c7f9a3febf62640a81bc0d2318ef251723123556ebdab62a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-browser",
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-browser.log",
+      "sha256": "ae0f6c126047b744f0b5eefebd1d650ede1f8f3219617d1f48eec0b32a93a796"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-canary",
+      "command": "node tools/checks/src/cli.ts ci-run canary",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-canary.log",
+      "sha256": "cb9ca4bf7787998ed148c72b29ec6c19de6cd9a436032a68b8db0832f70f0c29"
+    },
+    {
+      "task_id": "GATE",
+      "name": "clean-clone-reproducible",
+      "command": "scripts/clean-clone-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.clean-clone-reproducible.log",
+      "sha256": "8fe8a8a0bf1c9678316cea0577b24560255af675fdf435b5f959f3f588fdda27"
+    }
+  ]
+}

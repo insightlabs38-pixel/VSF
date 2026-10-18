@@ -1,0 +1,53 @@
+{
+  "task_id": "VSF-B03-T07",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "compiler/crates/vsf-registry/src/manifest.rs",
+    "registry/primitives/package.manifest.v1.json",
+    "registry/primitives/trust.v1.json",
+    "docs/deep/adr/ADR-029-primitive-registry-and-package.md",
+    "ci/jobs.json"
+  ],
+  "acceptance": "The manifest is reproducible byte for byte, lists 29 files and 924 primitive digests with a root, is Ed25519 signed over a domain-separated canonical body, and any tamper, key misuse, unlisted or missing file is a hard failure.",
+  "positive": {
+    "fixture": "the committed manifest verifies and rebuilds byte for byte",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test manifest -- the_committed_manifest_verifies_and_rebuilds_byte_for_byte",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "every covered file byte flip, signature edits, untrusted or revoked keys, lying but signed manifests and substituted trust fail",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test manifest",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify .",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "A full debug-build verification (signature, 29 file digests, witnesses, 924 primitive digests) measured 0.19 s. Adds ed25519-compact (MIT, no dependencies).",
+  "known_limitations": [
+    "Only a public development key exists; release keys, rotation and an out-of-tree trust anchor belong to B14 and B20"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T07.manifest-tamper-matrix.log",
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T07.manifest-verifies-cli.log"
+  ],
+  "review_result": "ACCEPTED"
+}

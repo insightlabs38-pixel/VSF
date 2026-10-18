@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B03-T08",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "compiler/crates/vsf-registry/src/compose.rs",
+    "docs/deep/primitives/collection-extract.md",
+    "registry/primitives/status.v1.json"
+  ],
+  "acceptance": "Static HTML tables (TABLE-001) and ARIA grids (TABLE-002) share one extraction composite; both pass positive, negative and adversarial fixtures and held-out seeds from two generators, and the claim fails when a witness is altered.",
+  "positive": {
+    "fixture": "both tables reuse collection.extract and agree on held-out seeds",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- both_tables_share_one_composition two_independent_sources_yield_the_same_semantics_on_held_out_seeds every_fixture_passes_the_shared_composite",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a CSS grid lookalike is not a collection and changed expectations fail the fixture",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- changing_an_expectation_or_an_opt_out_role_fails_the_fixture at_most_one_collection_primitive_matches_any_node_in_any_fixture an_implemented_claim_without_a_passing_witness_fails_the_package_load",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "Extraction is a single pass over the fixture node list.",
+  "known_limitations": [
+    "Both families are synthetic and written by the same authors, so both stay implemented, not conformant"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T08.shared-composite-two-independent-sources.log"
+  ],
+  "review_result": "ACCEPTED"
+}

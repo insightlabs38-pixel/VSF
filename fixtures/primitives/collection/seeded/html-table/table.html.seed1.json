@@ -1,0 +1,24 @@
+{
+  "expect": [
+    {"columns":["Total"],"primitive":"TABLE-001","root":2,"rows":[["Zoë"]]}
+  ],
+  "id": "table.html.seed1",
+  "nodes": [
+    {"attrs":{},"id":1,"parent":0,"tag":"body","text":""},
+    {"attrs":{"class":"data"},"id":2,"parent":1,"tag":"table","text":""},
+    {"attrs":{},"id":3,"parent":2,"tag":"thead","text":""},
+    {"attrs":{},"id":4,"parent":3,"tag":"tr","text":""},
+    {"attrs":{"scope":"col"},"id":5,"parent":4,"tag":"th","text":""},
+    {"attrs":{},"id":6,"parent":5,"tag":"span","text":"Total"},
+    {"attrs":{},"id":7,"parent":2,"tag":"tbody","text":""},
+    {"attrs":{},"id":8,"parent":7,"tag":"tr","text":""},
+    {"attrs":{},"id":9,"parent":8,"tag":"td","text":""},
+    {"attrs":{},"id":10,"parent":9,"tag":"span","text":"Zoë"}
+  ],
+  "operations": ["collection.read"],
+  "polarity": "positive",
+  "primitive": "TABLE-001",
+  "schema": "vsf-primitive-fixture-v1",
+  "seed": 1,
+  "source": {"app":"synthetic-html-tables","origin":"seeded"}
+}

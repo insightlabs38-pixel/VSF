@@ -1,0 +1,14 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- all_924_catalog_entries import_makes_no_maturity_claim import_rejects_duplicates committed_registry_equals_a_fresh_import
+
+running 4 tests
+test all_924_catalog_entries_import_unchanged_and_exactly_once ... ok
+test import_makes_no_maturity_claim_and_every_classification_is_justified ... ok
+test import_rejects_duplicates_and_maturity_claims ... ok
+test committed_registry_equals_a_fresh_import ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.12s
+
+   Compiling vsf-registry v0.0.0 (/home/user/VSF/compiler/crates/vsf-registry)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.75s
+     Running tests/registry.rs (compiler/target/debug/deps/registry-7aa82c2d8b5b7f53)
+[exit 0]

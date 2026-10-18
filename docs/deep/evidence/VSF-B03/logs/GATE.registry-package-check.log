@@ -1,0 +1,3 @@
+$ cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- check .
+ok: 924 entries, 2 registered, 22 fixtures
+[exit 0]

@@ -2,15 +2,15 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B03-T01`
+**Next eligible:** `VSF-B04-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
 | B00 | G0 | 7/7 | DONE | PROCEED |
 | B01 | G1 | 7/7 | DONE | PROCEED |
 | B02 | G2 | 8/8 | DONE | PROCEED |
-| B03 | G3 | 0/8 | READY | - |
-| B04 | G4 | 0/8 | TODO | - |
+| B03 | G3 | 8/8 | DONE | PROCEED |
+| B04 | G4 | 0/8 | READY | - |
 | B05 | G5 | 0/8 | TODO | - |
 | B06 | G6 | 0/8 | TODO | - |
 | B07 | G7 | 0/8 | TODO | - |
@@ -65,18 +65,18 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B03 · Build primitive registry and conformance harness
 
-- [ ] `VSF-B03-T01` Import and classify all 924 catalog entries as atomic/composite/adapter/service _(READY)_
-- [ ] `VSF-B03-T02` Assign stable ownership, dependencies and required evidence/test semantics
-- [ ] `VSF-B03-T03` Define primitive registration interface and negative-match semantics
-- [ ] `VSF-B03-T04` Implement graph closure verification and cycle detection
-- [ ] `VSF-B03-T05` Create isolated positive/negative fixture generation format
-- [ ] `VSF-B03-T06` Add coverage dashboard by maturity, source app and source-operation count
-- [ ] `VSF-B03-T07` Build signed/versioned package manifest and primitive digest
-- [ ] `VSF-B03-T08` Demonstrate two reusable compositions with independently tested inputs
+- [x] `VSF-B03-T01` Import and classify all 924 catalog entries as atomic/composite/adapter/service
+- [x] `VSF-B03-T02` Assign stable ownership, dependencies and required evidence/test semantics
+- [x] `VSF-B03-T03` Define primitive registration interface and negative-match semantics
+- [x] `VSF-B03-T04` Implement graph closure verification and cycle detection
+- [x] `VSF-B03-T05` Create isolated positive/negative fixture generation format
+- [x] `VSF-B03-T06` Add coverage dashboard by maturity, source app and source-operation count
+- [x] `VSF-B03-T07` Build signed/versioned package manifest and primitive digest
+- [x] `VSF-B03-T08` Demonstrate two reusable compositions with independently tested inputs
 
 ### B04 · Implement browser observation and incremental events
 
-- [ ] `VSF-B04-T01` Implement document/frame/shadow-root enumerators including opaque boundaries
+- [ ] `VSF-B04-T01` Implement document/frame/shadow-root enumerators including opaque boundaries _(READY)_
 - [ ] `VSF-B04-T02` Capture role/name/labels and selected geometry lazily
 - [ ] `VSF-B04-T03` Implement mutation batching with sequence IDs and missing-event resync
 - [ ] `VSF-B04-T04` Track locale, viewport and feature flags where observable

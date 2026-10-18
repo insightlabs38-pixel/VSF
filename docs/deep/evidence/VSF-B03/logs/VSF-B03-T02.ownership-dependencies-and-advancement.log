@@ -1,0 +1,11 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- ownership_dependencies_and_advancement_are_complete higher_maturity_levels_demand
+
+running 2 tests
+test higher_maturity_levels_demand_independent_adversarial_and_field_evidence ... ok
+test ownership_dependencies_and_advancement_are_complete ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.04s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/registry.rs (compiler/target/debug/deps/registry-7aa82c2d8b5b7f53)
+[exit 0]

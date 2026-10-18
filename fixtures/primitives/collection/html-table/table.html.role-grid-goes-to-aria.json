@@ -1,0 +1,73 @@
+{
+ "schema": "vsf-primitive-fixture-v1",
+ "id": "table.html.role-grid-goes-to-aria",
+ "primitive": "TABLE-002",
+ "polarity": "adversarial",
+ "source": {
+  "app": "synthetic-html-tables",
+  "origin": "handwritten"
+ },
+ "operations": [
+  "collection.read"
+ ],
+ "nodes": [
+  {
+   "id": 1,
+   "parent": 0,
+   "tag": "body",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "table",
+   "attrs": {
+    "role": "grid"
+   },
+   "text": ""
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "tr",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "th",
+   "attrs": {},
+   "text": "K"
+  },
+  {
+   "id": 5,
+   "parent": 2,
+   "tag": "tr",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 6,
+   "parent": 5,
+   "tag": "td",
+   "attrs": {},
+   "text": "v"
+  }
+ ],
+ "expect": [
+  {
+   "root": 2,
+   "primitive": "TABLE-002",
+   "columns": [
+    "K"
+   ],
+   "rows": [
+    [
+     "v"
+    ]
+   ]
+  }
+ ]
+}

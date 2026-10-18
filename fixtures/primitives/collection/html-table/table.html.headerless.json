@@ -1,0 +1,88 @@
+{
+ "schema": "vsf-primitive-fixture-v1",
+ "id": "table.html.headerless",
+ "primitive": "TABLE-001",
+ "polarity": "positive",
+ "source": {
+  "app": "synthetic-html-tables",
+  "origin": "handwritten"
+ },
+ "operations": [
+  "collection.read"
+ ],
+ "nodes": [
+  {
+   "id": 1,
+   "parent": 0,
+   "tag": "body",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "table",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "tr",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "td",
+   "attrs": {},
+   "text": "a"
+  },
+  {
+   "id": 5,
+   "parent": 3,
+   "tag": "td",
+   "attrs": {},
+   "text": "b"
+  },
+  {
+   "id": 6,
+   "parent": 2,
+   "tag": "tr",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 7,
+   "parent": 6,
+   "tag": "td",
+   "attrs": {},
+   "text": "c"
+  },
+  {
+   "id": 8,
+   "parent": 6,
+   "tag": "td",
+   "attrs": {},
+   "text": "d"
+  }
+ ],
+ "expect": [
+  {
+   "root": 2,
+   "primitive": "TABLE-001",
+   "columns": [],
+   "rows": [
+    [
+     "a",
+     "b"
+    ],
+    [
+     "c",
+     "d"
+    ]
+   ]
+  }
+ ]
+}

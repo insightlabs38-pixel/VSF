@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B03-T03",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "compiler/crates/vsf-registry/src/register.rs",
+    "compiler/crates/vsf-registry/src/status.rs",
+    "registry/primitives/status.v1.json"
+  ],
+  "acceptance": "Registration rejects duplicate ids, unknown ids, unresolved kinds, claims without passing witnesses, ambiguous recognitions and capability or mode mismatches; recognition honors exclusions and precedence.",
+  "positive": {
+    "fixture": "a complete implemented primitive registers; the highest precedence wins and exclusions hold",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- registration_accepts_a_complete_implemented_primitive recognition_prefers_the_highest_precedence_and_honors_exclusions",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "duplicates, ambiguity, malformed recognitions and capability mismatches are rejected",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- registration_rejects_duplicates_unknown_ids_and_unresolved_kinds ambiguous_recognitions_are_rejected_unless_exclusive_or_ordered malformed_recognitions_are_rejected capability_mismatches_and_unknown_modes_are_rejected",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "Ambiguity check compares recognitions pairwise per produced type.",
+  "known_limitations": [
+    "Recognition signatures are structural predicates only; richer matching waits for B04 observation"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T03.registration-and-negative-match-rules.log"
+  ],
+  "review_result": "ACCEPTED"
+}

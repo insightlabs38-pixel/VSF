@@ -1,0 +1,13 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- every_fixture_descriptor_round_trips malformed_descriptors seeded_fixtures_are_reproducible
+
+running 3 tests
+test malformed_descriptors_are_rejected ... ok
+test seeded_fixtures_are_reproducible_and_match_the_committed_files ... ok
+test every_fixture_descriptor_round_trips_and_ids_are_unique ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.01s
+
+   Compiling vsf-registry v0.0.0 (/home/user/VSF/compiler/crates/vsf-registry)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.33s
+     Running tests/harness.rs (compiler/target/debug/deps/harness-6f4cc22f9b827712)
+[exit 0]

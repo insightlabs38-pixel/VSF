@@ -1,0 +1,135 @@
+{
+ "schema": "vsf-primitive-fixture-v1",
+ "id": "table.html.hidden-cells-and-rows",
+ "primitive": "TABLE-001",
+ "polarity": "positive",
+ "source": {
+  "app": "synthetic-html-tables",
+  "origin": "handwritten"
+ },
+ "operations": [
+  "collection.read"
+ ],
+ "nodes": [
+  {
+   "id": 1,
+   "parent": 0,
+   "tag": "body",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "table",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "tr",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "th",
+   "attrs": {},
+   "text": "Name"
+  },
+  {
+   "id": 5,
+   "parent": 3,
+   "tag": "th",
+   "attrs": {
+    "aria-hidden": "true"
+   },
+   "text": "Secret"
+  },
+  {
+   "id": 6,
+   "parent": 3,
+   "tag": "th",
+   "attrs": {},
+   "text": "Role"
+  },
+  {
+   "id": 7,
+   "parent": 2,
+   "tag": "tr",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 8,
+   "parent": 7,
+   "tag": "td",
+   "attrs": {},
+   "text": "Kim"
+  },
+  {
+   "id": 9,
+   "parent": 7,
+   "tag": "td",
+   "attrs": {
+    "aria-hidden": "true"
+   },
+   "text": "hunter2"
+  },
+  {
+   "id": 10,
+   "parent": 7,
+   "tag": "td",
+   "attrs": {},
+   "text": "admin"
+  },
+  {
+   "id": 11,
+   "parent": 2,
+   "tag": "tr",
+   "attrs": {
+    "hidden": ""
+   },
+   "text": ""
+  },
+  {
+   "id": 12,
+   "parent": 11,
+   "tag": "td",
+   "attrs": {},
+   "text": "ghost"
+  },
+  {
+   "id": 13,
+   "parent": 11,
+   "tag": "td",
+   "attrs": {},
+   "text": "x"
+  },
+  {
+   "id": 14,
+   "parent": 11,
+   "tag": "td",
+   "attrs": {},
+   "text": "y"
+  }
+ ],
+ "expect": [
+  {
+   "root": 2,
+   "primitive": "TABLE-001",
+   "columns": [
+    "Name",
+    "Role"
+   ],
+   "rows": [
+    [
+     "Kim",
+     "admin"
+    ]
+   ]
+  }
+ ]
+}

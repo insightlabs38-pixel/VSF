@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B03-T06",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "compiler/crates/vsf-registry/src/dashboard.rs",
+    "registry/primitives/dashboard.v1.json"
+  ],
+  "acceptance": "The dashboard keeps 924 as the denominator, reports listed, implemented, independently validated and production-proven tiers cumulatively, and counts source apps and (app, operation) pairs from witness-bound fixtures only.",
+  "positive": {
+    "fixture": "2 of 924 implemented, 0 validated, 0 proven; 3 source apps, 3 operation pairs; committed file equals fresh output",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test dashboard",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "extra unbound fixtures or apps never move a tier; a higher claim moves only its own tier",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test dashboard -- extra_unbound_fixtures_and_apps_do_not_move_any_tier a_higher_maturity_moves_only_its_own_tier_and_never_the_total",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "Build is one pass over entries and fixtures.",
+  "known_limitations": [
+    "Source-operation counts come from synthetic fixtures; they say nothing about real applications"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T06.dashboard-denominator-and-tiers.log",
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T06.dashboard-matches-committed-file.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,20 @@
+[package]
+name = "vsf-registry"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "vsf-registry"
+path = "src/main.rs"
+
+[dependencies]
+vsf-canon.workspace = true
+vsf-ir.workspace = true
+ed25519-compact.workspace = true
+regex.workspace = true
+
+[lints]
+workspace = true

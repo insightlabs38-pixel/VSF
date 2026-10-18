@@ -1,0 +1,23 @@
+{
+  "expect": [
+    {"columns":["Total"],"primitive":"TABLE-002","root":2,"rows":[["Zoë"]]}
+  ],
+  "id": "table.aria.seed1",
+  "nodes": [
+    {"attrs":{"id":"app"},"id":1,"parent":0,"tag":"div","text":""},
+    {"attrs":{"role":"grid","style":"display:grid"},"id":2,"parent":1,"tag":"div","text":""},
+    {"attrs":{"role":"row"},"id":3,"parent":2,"tag":"div","text":""},
+    {"attrs":{"role":"columnheader","style":"font-weight:bold"},"id":4,"parent":3,"tag":"div","text":""},
+    {"attrs":{},"id":5,"parent":4,"tag":"p","text":"Total"},
+    {"attrs":{"role":"row"},"id":6,"parent":2,"tag":"div","text":""},
+    {"attrs":{"role":"gridcell"},"id":7,"parent":6,"tag":"div","text":""},
+    {"attrs":{"class":"wrap"},"id":8,"parent":7,"tag":"div","text":""},
+    {"attrs":{},"id":9,"parent":8,"tag":"b","text":"Zoë"}
+  ],
+  "operations": ["collection.read"],
+  "polarity": "positive",
+  "primitive": "TABLE-002",
+  "schema": "vsf-primitive-fixture-v1",
+  "seed": 1,
+  "source": {"app":"synthetic-aria-grids","origin":"seeded"}
+}

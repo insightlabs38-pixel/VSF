@@ -101,6 +101,56 @@
       {
         "name": "golden-check",
         "cmd": ["node", "scripts/golden.ts", "check"]
+      },
+      {
+        "name": "registry-check",
+        "cmd": [
+          "cargo",
+          "run",
+          "--quiet",
+          "--manifest-path",
+          "compiler/Cargo.toml",
+          "--locked",
+          "-p",
+          "vsf-registry",
+          "--",
+          "check",
+          "."
+        ]
+      },
+      {
+        "name": "dashboard-check",
+        "cmd": [
+          "cargo",
+          "run",
+          "--quiet",
+          "--manifest-path",
+          "compiler/Cargo.toml",
+          "--locked",
+          "-p",
+          "vsf-registry",
+          "--",
+          "dashboard",
+          ".",
+          "--check"
+        ]
+      },
+      {
+        "name": "manifest-verify",
+        "cmd": [
+          "cargo",
+          "run",
+          "--quiet",
+          "--manifest-path",
+          "compiler/Cargo.toml",
+          "--locked",
+          "-p",
+          "vsf-registry",
+          "--",
+          "manifest",
+          "verify",
+          "."
+        ]
       }
     ],
     "go": [

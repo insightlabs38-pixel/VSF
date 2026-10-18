@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B03-T02",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "registry/primitives/policy.v1.json",
+    "compiler/crates/vsf-registry/src/policy.rs",
+    "registry/primitives/registry.v1.json"
+  ],
+  "acceptance": "Every entry has a nonempty owner (11 owners) and dependency list resolving to registry ids, and the policy states per-level evidence needed to advance maturity.",
+  "positive": {
+    "fixture": "every entry has an owner, resolving dependencies and advancement semantics",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- ownership_dependencies_and_advancement_are_complete",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "higher maturity levels are refused without independent, adversarial and field evidence",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test registry -- higher_maturity_levels_demand",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "Policy decode is linear; no runtime cost.",
+  "known_limitations": [
+    "Owners are role names, not individuals; reassignment needs an ADR"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T02.ownership-dependencies-and-advancement.log"
+  ],
+  "review_result": "ACCEPTED"
+}

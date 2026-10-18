@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B03-T05",
+  "status": "DONE",
+  "branch": "vsf/b03-primitive-registry",
+  "base_commit": "94322d37c4b7fbbca0af1ac04de502c8753886d3",
+  "commit": "69eac2914b584f1d49a50872dfc2035d60a25cf1",
+  "paths": [
+    "compiler/crates/vsf-registry/src/fixture.rs",
+    "fixtures/primitives"
+  ],
+  "acceptance": "Positive, negative and adversarial fixture descriptors are strict, parseable and seeded; generated fixtures match the committed files byte for byte and load into the test runner.",
+  "positive": {
+    "fixture": "22 descriptors round-trip with unique ids and seeded files are reproducible",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- every_fixture_descriptor_round_trips_and_ids_are_unique seeded_fixtures_are_reproducible_and_match_the_committed_files",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "malformed descriptors are rejected",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry --test harness -- malformed_descriptors_are_rejected",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-primitive-registry-v1",
+    "primitive": "registry vsf-primitive-registry-v1 (2 registered, 922 candidate)"
+  },
+  "security_and_source_permissions": "Registry data carries no credentials; no real source app was observed, and source-account permissions stay outside the registry.",
+  "performance_memory_storage": "Generator is a seeded integer PRNG; generation of nine fixtures takes milliseconds.",
+  "known_limitations": [
+    "Fixtures are synthetic; no real source capture exists yet"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B03/logs/VSF-B03-T05.seeded-positive-negative-adversarial-fixtures.log"
+  ],
+  "review_result": "ACCEPTED"
+}

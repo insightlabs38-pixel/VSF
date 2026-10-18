@@ -7,6 +7,7 @@ members = [
   "crates/vsf-fixtures",
   "crates/vsf-observation",
   "crates/vsf-ir",
+  "crates/vsf-registry",
   "crates/vsf-fabric",
   "crates/vsf-wasm",
   "crates/vsf-native",
@@ -21,6 +22,7 @@ publish = false
 
 [workspace.dependencies]
 sha2 = { version = "0.11", default-features = false }
+ed25519-compact = { version = "2", default-features = false, features = ["std"] }
 regex = { version = "1", default-features = false, features = ["std", "unicode", "perf"] }
 vsf-canon = { path = "crates/vsf-canon" }
 vsf-schema = { path = "crates/vsf-schema" }
@@ -28,6 +30,7 @@ vsf-redact = { path = "crates/vsf-redact" }
 vsf-fixtures = { path = "crates/vsf-fixtures" }
 vsf-observation = { path = "crates/vsf-observation" }
 vsf-ir = { path = "crates/vsf-ir" }
+vsf-registry = { path = "crates/vsf-registry" }
 vsf-fabric = { path = "crates/vsf-fabric" }
 
 [workspace.lints.rust]

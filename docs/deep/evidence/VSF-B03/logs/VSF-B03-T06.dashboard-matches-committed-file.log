@@ -1,0 +1,12 @@
+$ cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- dashboard . --check
+catalog entries (fixed denominator): 924
+  implemented: 2/924 (0.2%)
+  independently validated: 0/924 (0.0%)
+  production proven: 0/924 (0.0%)
+by maturity: candidate=922 specified=0 implemented=2 conformant=0 production_proven=0
+source apps (witness-bound fixtures only):
+  synthetic-aria-grids: 2 witness, 6 unbound, 1 operations, 1 primitives
+  synthetic-html-tables: 3 witness, 7 unbound, 1 operations, 1 primitives
+  synthetic-visual-lookalikes: 1 witness, 3 unbound, 1 operations, 1 primitives
+distinct (app, operation) pairs: 3
+[exit 0]
