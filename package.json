@@ -1,0 +1,28 @@
+{
+  "name": "vsf",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": "22.22.0",
+    "pnpm": "10.28.0"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r --workspace-concurrency=1 run typecheck",
+    "build:ts": "pnpm -r --workspace-concurrency=1 run build",
+    "test:ts": "pnpm -r --workspace-concurrency=1 run test",
+    "lint:ts": "biome check .",
+    "format:ts": "biome check --write .",
+    "ci:local": "scripts/verify-all.sh",
+    "queue": "node tools/queue/src/cli.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@playwright/test": "1.56.1",
+    "@types/node": "22.20.5",
+    "ajv": "8.20.0",
+    "typescript": "5.9.3"
+  }
+}

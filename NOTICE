@@ -1,0 +1,3 @@
+Varifold Systems Foundry
+Third-party components are listed with their licenses by `node tools/checks/src/cli.ts dep-review`
+(artifacts/supply-chain/dep-review.json). Only permissive licenses are admitted by policy.

@@ -1,0 +1,6 @@
+packages:
+  - frontend/packages/*
+  - fixtures/source-apps
+  - tests/*
+  - tools/*
+onlyBuiltDependencies: []

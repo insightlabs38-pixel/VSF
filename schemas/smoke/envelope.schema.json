@@ -1,0 +1,14 @@
+{
+  "$comment": "B00 smoke contract only; the real IR schemas arrive in B02.",
+  "schema_name": "vsf.smoke.envelope",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["schema", "schema_digest", "seq", "payload"],
+  "properties": {
+    "schema": { "type": "string", "pattern": "^vsf\\.smoke\\.envelope/[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "schema_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "seq": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "payload": { "description": "Any canonical JSON value (integers only, no floats)." }
+  },
+  "additionalProperties": false
+}
