@@ -1,0 +1,94 @@
+{
+  "schema": "vsf.operation/1.0.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "contract_version": "1.3.0",
+    "source": {
+      "app_id": "vendor-console:app.vendor.test",
+      "variant_class": "sales-rep",
+      "version_range": {
+        "min": "1.0.0",
+        "max": "2.9.9"
+      },
+      "capabilities": ["read_record", "edit_record", "verify_record"]
+    },
+    "provenance": {
+      "evidence": ["ev_run", "ev_doc"],
+      "observations": ["sha256:f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6"],
+      "compiler_version": "0.1.0+c3c3c3c3c3c3",
+      "verifier_suite": "update_stage_v2"
+    },
+    "on_ambiguity": "report_unknown_no_auto_retry",
+    "authorization": {
+      "requires_vsf_caller": true,
+      "requires_source_session": true,
+      "required_scopes": ["records.write"]
+    },
+    "operation_id": "app.records.update_stage",
+    "lifecycle": "active",
+    "inputs": {
+      "record_id": {
+        "type": "text",
+        "required": true
+      },
+      "stage": {
+        "type": "choice",
+        "required": true,
+        "choices": ["qualified", "proposal", "won"]
+      }
+    },
+    "outputs": {
+      "record": {
+        "type": "reference",
+        "required": true,
+        "description": "The updated record"
+      }
+    },
+    "effect": {
+      "class": "conditional_write",
+      "idempotency": "conditional",
+      "confirmation": "inherit_source_requirement",
+      "concurrency": "source_session_and_record"
+    },
+    "evidence_effects": [
+      {
+        "evidence": "ev_run",
+        "effect": "conditional_write"
+      }
+    ],
+    "freshness": {
+      "before_write": "source_read_required"
+    },
+    "verification": {
+      "required": true,
+      "strategy": "read_back_field",
+      "suite": "update_stage_v2"
+    },
+    "strategies": ["provider_api_authorized", "verified_browser_plan"],
+    "uncertainty": "verified",
+    "witnesses": [
+      {
+        "id": "w_fixture1",
+        "kind": "fixture_run",
+        "fixture_set": "orders-form-v1",
+        "verifier_suite": "update_stage_v2",
+        "result": "passed",
+        "observed_at": 1792368300000,
+        "applies_to": {
+          "app_id": "vendor-console:app.vendor.test",
+          "variant_class": "sales-rep",
+          "version_range": {
+            "min": "1.0.0",
+            "max": "2.9.9"
+          },
+          "capabilities": ["read_record", "edit_record", "verify_record"]
+        },
+        "authorized_context": {
+          "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+          "variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+          "source_scopes": ["records.read", "records.write"]
+        }
+      }
+    ]
+  }
+}

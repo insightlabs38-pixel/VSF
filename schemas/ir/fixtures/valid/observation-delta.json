@@ -1,0 +1,36 @@
+{
+  "schema": "vsf.observation/1.0.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "source_app_id": "vendor-console:app.vendor.test",
+    "variant_resolution": "verified",
+    "source_variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+    "origin": "https://app.vendor.test",
+    "freshness": {
+      "stale_after_ms": 30000,
+      "clock_skew_ms": 120
+    },
+    "runtime_id": "rt_ext01",
+    "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+    "redactions": {
+      "redacted_nodes": 2,
+      "patterns": "sha256:e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5"
+    },
+    "observation_epoch": 42,
+    "mode": "delta",
+    "base_epoch": 41,
+    "captured_at": 1792368130000,
+    "scope": {
+      "frames": 1,
+      "documents": 1,
+      "full_document": false
+    },
+    "payload": {
+      "format": "vsfs_pack_v1",
+      "digest": "sha256:0707070707070707070707070707070707070707070707070707070707070707",
+      "bytes": 4120,
+      "nodes": 37
+    },
+    "missing_signals": []
+  }
+}

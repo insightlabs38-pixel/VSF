@@ -1,0 +1,130 @@
+{
+  "idl": "vsf-idl/1",
+  "ir_version": "1.0.0",
+  "family": "operation",
+  "root": "OperationContract",
+  "types": {
+    "Lifecycle": {
+      "kind": "enum",
+      "values": ["proposed", "unverified", "active", "deprecated", "retired", "security_revoked"]
+    },
+    "ConfirmationPolicy": {
+      "kind": "enum",
+      "values": ["none", "inherit_source_requirement", "always_prompt", "never_automatic"]
+    },
+    "ConcurrencyScope": {
+      "kind": "enum",
+      "values": ["none", "source_session", "source_session_and_record", "global_source"]
+    },
+    "FreshnessRequirement": { "kind": "enum", "values": ["none", "source_read_required", "observation_within"] },
+    "VerificationStrategy": {
+      "kind": "enum",
+      "values": ["none", "read_back_field", "postcondition_probe", "response_echo"]
+    },
+    "StrategyKind": {
+      "kind": "enum",
+      "values": [
+        "provider_api_authorized",
+        "protocol_adapter",
+        "verified_browser_plan",
+        "preserved_original_surface",
+        "native_companion"
+      ]
+    },
+    "AmbiguityPolicy": { "kind": "enum", "values": ["report_unknown_no_auto_retry", "fail_closed", "ask_user"] },
+    "WitnessKind": {
+      "kind": "enum",
+      "values": ["fixture_run", "differential_test", "documented_schema", "protocol_trace", "user_assertion"]
+    },
+    "WitnessResult": { "kind": "enum", "values": ["passed", "failed", "inconclusive"] },
+    "ParamName": { "kind": "string", "pattern": "^[a-z][a-z0-9_]{0,47}$", "maxLen": 48 },
+    "ParamDef": {
+      "kind": "struct",
+      "fields": {
+        "type": { "type": "ValueType" },
+        "required": { "type": "bool" },
+        "choices": { "type": "list<Label>", "optional": true, "maxItems": 256 },
+        "unit": { "type": "Unit", "optional": true },
+        "description": { "type": "Label", "optional": true }
+      }
+    },
+    "EffectSpec": {
+      "kind": "struct",
+      "fields": {
+        "class": { "type": "EffectClass" },
+        "idempotency": { "type": "Idempotency" },
+        "confirmation": { "type": "ConfirmationPolicy" },
+        "concurrency": { "type": "ConcurrencyScope" }
+      }
+    },
+    "FreshnessSpec": {
+      "kind": "struct",
+      "fields": {
+        "before_write": { "type": "FreshnessRequirement" },
+        "max_age_ms": { "type": "Millis", "optional": true }
+      }
+    },
+    "VerificationSpec": {
+      "kind": "struct",
+      "fields": {
+        "required": { "type": "bool" },
+        "strategy": { "type": "VerificationStrategy" },
+        "suite": { "type": "Label" }
+      }
+    },
+    "AuthorizationBinding": {
+      "kind": "struct",
+      "doc": "Authorization is checked at execution time; this only states what must be present.",
+      "fields": {
+        "requires_vsf_caller": { "type": "bool" },
+        "requires_source_session": { "type": "bool" },
+        "required_scopes": { "type": "list<ScopeId>", "maxItems": 64 },
+        "entitlement": { "type": "Ident", "optional": true }
+      }
+    },
+    "Provenance": {
+      "kind": "struct",
+      "fields": {
+        "evidence": { "type": "list<Ident>", "maxItems": 256 },
+        "observations": { "type": "list<Digest>", "maxItems": 256 },
+        "compiler_version": { "type": "CompilerVersion" },
+        "verifier_suite": { "type": "Label" }
+      }
+    },
+    "Witness": {
+      "kind": "struct",
+      "fields": {
+        "id": { "type": "Ident" },
+        "kind": { "type": "WitnessKind" },
+        "fixture_set": { "type": "Label" },
+        "verifier_suite": { "type": "Label" },
+        "result": { "type": "WitnessResult" },
+        "observed_at": { "type": "Instant" },
+        "applies_to": { "type": "SourceBinding" },
+        "authorized_context": { "type": "AuthContext" }
+      }
+    },
+    "OperationContract": {
+      "kind": "struct",
+      "doc": "A verified, versioned operation. Nothing here grants authority; execution re-checks the caller, entitlement and source session.",
+      "fields": {
+        "operation_id": { "type": "OperationId" },
+        "contract_version": { "type": "SemVer" },
+        "lifecycle": { "type": "Lifecycle" },
+        "source": { "type": "SourceBinding" },
+        "inputs": { "type": "map<ParamDef>", "keys": "ParamName", "maxItems": 64 },
+        "outputs": { "type": "map<ParamDef>", "keys": "ParamName", "maxItems": 64 },
+        "effect": { "type": "EffectSpec" },
+        "evidence_effects": { "type": "list<EffectAssertion>", "maxItems": 64 },
+        "freshness": { "type": "FreshnessSpec" },
+        "verification": { "type": "VerificationSpec" },
+        "strategies": { "type": "list<StrategyKind>", "maxItems": 8 },
+        "provenance": { "type": "Provenance" },
+        "on_ambiguity": { "type": "AmbiguityPolicy" },
+        "authorization": { "type": "AuthorizationBinding" },
+        "uncertainty": { "type": "Certainty" },
+        "witnesses": { "type": "list<Witness>", "maxItems": 64 }
+      }
+    }
+  }
+}

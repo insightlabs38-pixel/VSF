@@ -1,0 +1,1344 @@
+{
+  "schema": "vsf-ir-semantic-cases-v1",
+  "cases": [
+    {
+      "name": "op-effect-understated",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/class",
+          "value": "idempotent_write"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/idempotency",
+          "value": "idempotent"
+        }
+      ],
+      "expect": ["contract.effect_understated"]
+    },
+    {
+      "name": "op-idempotency-mismatch",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/idempotency",
+          "value": "idempotent"
+        }
+      ],
+      "expect": ["contract.idempotency_mismatch"]
+    },
+    {
+      "name": "op-nonidempotent-no-confirmation",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/class",
+          "value": "non_idempotent_write"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/idempotency",
+          "value": "non_idempotent"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/confirmation",
+          "value": "none"
+        }
+      ],
+      "expect": ["contract.confirmation_missing"]
+    },
+    {
+      "name": "op-write-unverified",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/required",
+          "value": false
+        }
+      ],
+      "expect": ["contract.write_without_verification"]
+    },
+    {
+      "name": "op-write-strategy-none",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/strategy",
+          "value": "none"
+        }
+      ],
+      "expect": ["contract.write_without_verification"]
+    },
+    {
+      "name": "op-write-no-freshness",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/freshness/before_write",
+          "value": "none"
+        }
+      ],
+      "expect": ["contract.write_without_freshness"]
+    },
+    {
+      "name": "op-write-no-source-session",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/authorization/requires_source_session",
+          "value": false
+        }
+      ],
+      "expect": ["contract.write_without_source_session"]
+    },
+    {
+      "name": "op-caller-auth-off",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/authorization/requires_vsf_caller",
+          "value": false
+        }
+      ],
+      "expect": ["contract.caller_auth_disabled"]
+    },
+    {
+      "name": "op-freshness-window-missing",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/freshness/before_write",
+          "value": "observation_within"
+        }
+      ],
+      "expect": ["contract.freshness_inconsistent"]
+    },
+    {
+      "name": "op-freshness-window-stray",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/freshness/max_age_ms",
+          "value": 1000
+        }
+      ],
+      "expect": ["contract.freshness_inconsistent"]
+    },
+    {
+      "name": "op-freshness-window-valid",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/freshness/before_write",
+          "value": "observation_within"
+        },
+        {
+          "op": "set",
+          "path": "/body/freshness/max_age_ms",
+          "value": 5000
+        }
+      ],
+      "expect": []
+    },
+    {
+      "name": "op-choice-without-choices",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/inputs/stage/choices"
+        }
+      ],
+      "expect": ["contract.choice_without_choices"]
+    },
+    {
+      "name": "op-choices-on-text",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/inputs/record_id/choices",
+          "value": ["a"]
+        }
+      ],
+      "expect": ["contract.choices_on_non_choice"]
+    },
+    {
+      "name": "op-unit-on-text",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/inputs/record_id/unit",
+          "value": {
+            "symbol": "USD",
+            "dimension": "currency"
+          }
+        }
+      ],
+      "expect": ["contract.unit_on_non_numeric"]
+    },
+    {
+      "name": "op-active-indeterminate",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/class",
+          "value": "indeterminate"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/idempotency",
+          "value": "unknown"
+        }
+      ],
+      "expect": ["contract.active_indeterminate"]
+    },
+    {
+      "name": "op-active-no-strategy",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/strategies",
+          "value": []
+        }
+      ],
+      "expect": ["contract.no_strategy"]
+    },
+    {
+      "name": "op-active-no-evidence",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/provenance/evidence",
+          "value": []
+        },
+        {
+          "op": "set",
+          "path": "/body/evidence_effects",
+          "value": []
+        }
+      ],
+      "expect": ["contract.no_evidence"]
+    },
+    {
+      "name": "op-evidence-outside-provenance",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/provenance/evidence",
+          "value": ["ev_doc"]
+        }
+      ],
+      "expect": ["contract.evidence_not_in_provenance"]
+    },
+    {
+      "name": "op-active-uncertain",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/uncertainty",
+          "value": "inferred"
+        }
+      ],
+      "expect": ["contract.uncertain_active"]
+    },
+    {
+      "name": "op-failed-witness",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/result",
+          "value": "failed"
+        }
+      ],
+      "expect": ["contract.failed_witness", "contract.witness_not_applicable"]
+    },
+    {
+      "name": "op-witness-other-variant",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/applies_to/variant_class",
+          "value": "other"
+        }
+      ],
+      "expect": ["contract.witness_not_applicable"]
+    },
+    {
+      "name": "op-witness-other-app",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/applies_to/app_id",
+          "value": "vendor-console:app.other"
+        }
+      ],
+      "expect": ["contract.witness_not_applicable"]
+    },
+    {
+      "name": "op-witness-range-too-narrow",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/applies_to/version_range",
+          "value": {
+            "min": "1.0.0",
+            "max": "2.0.0"
+          }
+        }
+      ],
+      "expect": ["contract.witness_not_applicable"]
+    },
+    {
+      "name": "op-witness-range-open-max",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/applies_to/version_range",
+          "value": {
+            "min": "1.0.0"
+          }
+        }
+      ],
+      "expect": []
+    },
+    {
+      "name": "op-witness-range-wider",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/applies_to/version_range",
+          "value": {
+            "min": "0.1.0",
+            "max": "9.0.0"
+          }
+        }
+      ],
+      "expect": []
+    },
+    {
+      "name": "op-witness-range-absent",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/witnesses/0/applies_to/version_range"
+        }
+      ],
+      "expect": []
+    },
+    {
+      "name": "op-active-no-witness",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses",
+          "value": []
+        }
+      ],
+      "expect": ["contract.witness_not_applicable"]
+    },
+    {
+      "name": "op-proposed-destructive-valid",
+      "base": "operation-proposed-delete",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/class",
+          "value": "destructive"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/idempotency",
+          "value": "non_idempotent"
+        }
+      ],
+      "expect": []
+    },
+    {
+      "name": "op-proposed-destructive-unconfirmed",
+      "base": "operation-proposed-delete",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/class",
+          "value": "destructive"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/idempotency",
+          "value": "non_idempotent"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/confirmation",
+          "value": "none"
+        }
+      ],
+      "expect": ["contract.confirmation_missing"]
+    },
+    {
+      "name": "op-proposed-readonly-understates-evidence",
+      "base": "operation-proposed-delete",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/class",
+          "value": "read_only"
+        },
+        {
+          "op": "set",
+          "path": "/body/effect/idempotency",
+          "value": "idempotent"
+        }
+      ],
+      "expect": ["contract.effect_understated"]
+    },
+    {
+      "name": "op-proposed-unverified-delete",
+      "base": "operation-proposed-delete",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/strategy",
+          "value": "none"
+        }
+      ],
+      "expect": ["contract.write_without_verification"]
+    },
+    {
+      "name": "sem-duplicate-entity-id",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/3/id",
+          "value": "order"
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "sem-duplicate-field-id",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/1/fields/0/id",
+          "value": "total"
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "sem-action-reuses-entity-id",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/actions/2/id",
+          "value": "order"
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "sem-entity-unknown-evidence",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/0/evidence",
+          "value": ["ghost"]
+        }
+      ],
+      "expect": ["semantic.unknown_reference", "semantic.overclaimed_certainty"]
+    },
+    {
+      "name": "sem-verified-without-evidence",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/0/evidence",
+          "value": []
+        }
+      ],
+      "expect": ["semantic.unsupported_certainty"]
+    },
+    {
+      "name": "sem-verified-by-heuristic",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/0/evidence",
+          "value": ["ev_heur"]
+        }
+      ],
+      "expect": ["semantic.overclaimed_certainty"]
+    },
+    {
+      "name": "sem-verified-by-user-claim",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/0/evidence",
+          "value": ["ev_user"]
+        }
+      ],
+      "expect": ["semantic.overclaimed_certainty"]
+    },
+    {
+      "name": "sem-inferred-without-evidence",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/1/evidence",
+          "value": []
+        }
+      ],
+      "expect": ["semantic.unsupported_certainty"]
+    },
+    {
+      "name": "sem-relationship-unknown-end",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/relationships/0/to",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-action-unknown-entity",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/actions/0/entity",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-action-effect-understated",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/actions/0/effect/declared",
+          "value": "idempotent_write"
+        }
+      ],
+      "expect": ["semantic.effect_understated"]
+    },
+    {
+      "name": "sem-verified-action-indeterminate",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/actions/0/effect/declared",
+          "value": "indeterminate"
+        }
+      ],
+      "expect": ["semantic.verified_indeterminate"]
+    },
+    {
+      "name": "sem-write-without-behavior-evidence",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/actions/0/evidence",
+          "value": ["ev_dom"]
+        }
+      ],
+      "expect": ["semantic.effect_without_behavioral_evidence"]
+    },
+    {
+      "name": "sem-asserted-unknown-evidence",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/actions/0/effect/asserted/0/evidence",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-evidence-unknown-dependency",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/evidence/2/depends_on",
+          "value": ["ghost"]
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-evidence-cycle",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/evidence/0/depends_on",
+          "value": ["ev_run"]
+        }
+      ],
+      "expect": ["semantic.evidence_cycle"]
+    },
+    {
+      "name": "sem-evidence-self-cycle",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/evidence/0/depends_on",
+          "value": ["ev_dom"]
+        }
+      ],
+      "expect": ["semantic.evidence_cycle"]
+    },
+    {
+      "name": "sem-machine-unknown-entity",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/state_machines/0/entity",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-machine-unknown-initial",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/state_machines/0/initial",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-transition-unknown-state",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/state_machines/0/transitions/0/to",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-transition-unknown-action",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/state_machines/0/transitions/0/action",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-duplicate-state",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/state_machines/0/states/1/id",
+          "value": "draft"
+        }
+      ],
+      "expect": ["ir.duplicate_id", "semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-duplicate-claim-id",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/1/id",
+          "value": "c_total_type"
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "sem-claim-unknown-subject",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/subject",
+          "value": "ghost"
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-claim-unknown-support",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/supports",
+          "value": ["ghost", "ev_doc"]
+        }
+      ],
+      "expect": ["semantic.unknown_reference"]
+    },
+    {
+      "name": "sem-claim-same-evidence-both-ways",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/contradicts",
+          "value": ["ev_dom"]
+        }
+      ],
+      "expect": ["semantic.claim_overlap", "semantic.contradiction_hidden"]
+    },
+    {
+      "name": "sem-verified-claim-contradicted",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/contradicts",
+          "value": ["ev_user"]
+        }
+      ],
+      "expect": ["semantic.contradiction_hidden"]
+    },
+    {
+      "name": "sem-verified-claim-unsupported",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/supports",
+          "value": []
+        }
+      ],
+      "expect": ["semantic.unsupported_certainty"]
+    },
+    {
+      "name": "sem-verified-claim-heuristic-only",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/supports",
+          "value": ["ev_heur"]
+        }
+      ],
+      "expect": ["semantic.overclaimed_certainty"]
+    },
+    {
+      "name": "sem-inferred-claim-contradicted",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/4/contradicts",
+          "value": ["ev_user"]
+        }
+      ],
+      "expect": ["semantic.contradiction_hidden"]
+    },
+    {
+      "name": "sem-conflicted-without-contradiction",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/6/contradicts",
+          "value": []
+        }
+      ],
+      "expect": ["semantic.conflict_without_contradiction"]
+    },
+    {
+      "name": "sem-claim-bool-for-type",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/value",
+          "value": {
+            "kind": "bool",
+            "value": true
+          }
+        }
+      ],
+      "expect": ["semantic.claim_type_mismatch"]
+    },
+    {
+      "name": "sem-claim-text-for-required",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/6/value",
+          "value": {
+            "kind": "text",
+            "value": "x"
+          }
+        }
+      ],
+      "expect": ["semantic.claim_type_mismatch"]
+    },
+    {
+      "name": "sem-claim-effect-for-value",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/1/value",
+          "value": {
+            "kind": "effect",
+            "value": "read_only"
+          }
+        }
+      ],
+      "expect": ["semantic.claim_type_mismatch"]
+    },
+    {
+      "name": "sem-effect-claim-without-behavior",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/5/supports",
+          "value": ["ev_dom"]
+        }
+      ],
+      "expect": ["semantic.effect_without_behavioral_evidence"]
+    },
+    {
+      "name": "sem-effect-claim-exceeds-action",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/5/value",
+          "value": {
+            "kind": "effect",
+            "value": "destructive"
+          }
+        }
+      ],
+      "expect": ["semantic.effect_understated"]
+    },
+    {
+      "name": "sem-live-claims-disagree",
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/2/predicate",
+          "value": "has_value"
+        }
+      ],
+      "expect": ["semantic.unresolved_conflict"]
+    },
+    {
+      "name": "env-hosted-profile-credentials",
+      "base": "environment-hosted",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/credential_isolation",
+          "value": "browser_profile_bound"
+        }
+      ],
+      "expect": ["environment.portable_credentials"]
+    },
+    {
+      "name": "env-extension-managed-persistence",
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/persistence",
+          "value": "managed"
+        }
+      ],
+      "expect": ["environment.persistence_unsupported"]
+    },
+    {
+      "name": "env-private-vpc-open-egress",
+      "base": "environment-hosted",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/mode",
+          "value": "private_vpc"
+        },
+        {
+          "op": "set",
+          "path": "/body/egress",
+          "value": "unrestricted"
+        }
+      ],
+      "expect": ["environment.private_egress_unrestricted"]
+    },
+    {
+      "name": "env-private-vpc-allowlist-valid",
+      "base": "environment-hosted",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/mode",
+          "value": "private_vpc"
+        }
+      ],
+      "expect": []
+    },
+    {
+      "name": "env-zero-limit",
+      "base": "environment-hosted",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/limits/max_nodes",
+          "value": 0
+        }
+      ],
+      "expect": ["environment.zero_limit"]
+    },
+    {
+      "name": "env-duplicate-capability",
+      "base": "environment-hosted",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/observation/1/id",
+          "value": "dom.snapshot"
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "env-attestation-none-with-digest",
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/attestation/kind",
+          "value": "none"
+        }
+      ],
+      "expect": ["environment.attestation_inconsistent"]
+    },
+    {
+      "name": "env-attestation-kind-without-digest",
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/attestation/digest"
+        }
+      ],
+      "expect": ["environment.attestation_inconsistent"]
+    },
+    {
+      "name": "obs-delta-without-base",
+      "base": "observation-delta",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/base_epoch"
+        }
+      ],
+      "expect": ["observation.delta_without_base"]
+    },
+    {
+      "name": "obs-delta-base-not-earlier",
+      "base": "observation-delta",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/base_epoch",
+          "value": 42
+        }
+      ],
+      "expect": ["observation.base_not_earlier"]
+    },
+    {
+      "name": "obs-full-with-base",
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/base_epoch",
+          "value": 1
+        }
+      ],
+      "expect": ["observation.full_with_base"]
+    },
+    {
+      "name": "obs-verified-without-variant",
+      "base": "observation-delta",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/source_variant_id"
+        }
+      ],
+      "expect": ["observation.variant_missing"]
+    },
+    {
+      "name": "obs-unknown-with-variant",
+      "base": "observation-delta",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/variant_resolution",
+          "value": "unknown"
+        }
+      ],
+      "expect": ["observation.variant_unexpected"]
+    },
+    {
+      "name": "obs-payload-too-small",
+      "base": "observation-delta",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/payload/bytes",
+          "value": 100
+        }
+      ],
+      "expect": ["observation.payload_inconsistent"]
+    },
+    {
+      "name": "obs-duplicate-signal",
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/missing_signals/1/signal",
+          "value": "canvas_content"
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "pres-unknown-child",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/components/1/children",
+          "value": ["ghost"]
+        }
+      ],
+      "expect": ["presentation.unknown_child"]
+    },
+    {
+      "name": "pres-two-parents",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/components/1/children",
+          "value": ["btn_submit"]
+        }
+      ],
+      "expect": ["presentation.multiple_parents"]
+    },
+    {
+      "name": "pres-interactive-unnamed",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/components/2/accessibility/name"
+        }
+      ],
+      "expect": ["presentation.unnamed_interactive"]
+    },
+    {
+      "name": "pres-preserved-surface-unnamed",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/components/4/accessibility/name"
+        }
+      ],
+      "expect": ["presentation.unnamed_interactive"]
+    },
+    {
+      "name": "pres-action-on-text-input",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/components/1/binding/action",
+          "value": "submit_order"
+        }
+      ],
+      "expect": ["presentation.action_binding_kind"]
+    },
+    {
+      "name": "pres-child-cycle",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/components/1/children",
+          "value": ["form_order"]
+        }
+      ],
+      "expect": ["presentation.cycle"]
+    },
+    {
+      "name": "pres-orphan",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/regions/0/components",
+          "value": []
+        }
+      ],
+      "expect": ["presentation.orphan_component"]
+    },
+    {
+      "name": "pres-constraint-without-value",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/constraints/0/value"
+        }
+      ],
+      "expect": ["presentation.constraint_without_value"]
+    },
+    {
+      "name": "pres-constraint-unknown-subject",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/constraints/0/subjects",
+          "value": ["ghost"]
+        }
+      ],
+      "expect": ["presentation.unknown_child"]
+    },
+    {
+      "name": "pres-duplicate-component",
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/components/1/id",
+          "value": "form_order"
+        }
+      ],
+      "expect": ["ir.duplicate_id", "presentation.unknown_child"]
+    },
+    {
+      "name": "ver-legal-hold-expires",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/retention/legal_hold",
+          "value": true
+        }
+      ],
+      "expect": ["version.legal_hold_expiry"]
+    },
+    {
+      "name": "ver-pinned-mutable",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/retention/pinned",
+          "value": true
+        },
+        {
+          "op": "set",
+          "path": "/body/retention/immutable",
+          "value": false
+        }
+      ],
+      "expect": ["version.pinned_mutable"]
+    },
+    {
+      "name": "ver-pinned-channel-unpinned",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/channel",
+          "value": "pinned"
+        }
+      ],
+      "expect": ["version.channel_pin_mismatch"]
+    },
+    {
+      "name": "ver-stable-unpromoted",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/promotion"
+        }
+      ],
+      "expect": ["version.unpromoted"]
+    },
+    {
+      "name": "ver-preview-unpromoted-valid",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/channel",
+          "value": "preview"
+        },
+        {
+          "op": "remove",
+          "path": "/body/promotion"
+        }
+      ],
+      "expect": []
+    },
+    {
+      "name": "ver-failed-gate",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/promotion/gates/0/passed",
+          "value": false
+        }
+      ],
+      "expect": ["version.failed_gate"]
+    },
+    {
+      "name": "ver-previous-outside-lineage",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/promotion/previous",
+          "value": "sha256:8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f8f"
+        }
+      ],
+      "expect": ["version.previous_not_in_lineage"]
+    },
+    {
+      "name": "ver-backward-migration",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/migrations/0/from",
+          "value": "1.0.0"
+        },
+        {
+          "op": "set",
+          "path": "/body/migrations/0/to",
+          "value": "0.9.0"
+        }
+      ],
+      "expect": ["version.bad_migration"]
+    },
+    {
+      "name": "ver-identity-migration-moves",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/migrations/0/kind",
+          "value": "identity"
+        }
+      ],
+      "expect": ["version.bad_migration"]
+    },
+    {
+      "name": "ver-duplicate-lineage",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/lineage",
+          "value": [
+            "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d",
+            "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d"
+          ]
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "ver-duplicate-artifact",
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/artifacts/1",
+          "value": {
+            "role": "observation",
+            "digest": "sha256:f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6",
+            "bytes": 1,
+            "media_type": "application/json"
+          }
+        }
+      ],
+      "expect": ["ir.duplicate_id"]
+    }
+  ]
+}

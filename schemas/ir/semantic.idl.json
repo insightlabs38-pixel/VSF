@@ -1,0 +1,413 @@
+{
+  "idl": "vsf-idl/1",
+  "ir_version": "1.0.0",
+  "family": "semantic",
+  "root": "SemanticIR",
+  "types": {
+    "RelationKind": {
+      "kind": "enum",
+      "values": ["contains", "references", "belongs_to", "derives_from", "precedes"]
+    },
+    "ClaimPredicate": {
+      "kind": "enum",
+      "values": [
+        "exists",
+        "has_type",
+        "has_effect",
+        "has_unit",
+        "is_required",
+        "is_editable",
+        "has_label",
+        "has_value",
+        "has_default"
+      ]
+    },
+    "Tristate": {
+      "kind": "enum",
+      "values": ["yes", "no", "unknown"]
+    },
+    "EvidenceDef": {
+      "kind": "struct",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "type": {
+          "type": "EvidenceType"
+        },
+        "witness": {
+          "type": "Label",
+          "doc": "Component or procedure that produced the evidence."
+        },
+        "observed_at": {
+          "type": "Instant"
+        },
+        "observation_epoch": {
+          "type": "ObservationEpoch",
+          "optional": true
+        },
+        "authorizing_context": {
+          "type": "AuthContext",
+          "optional": true
+        },
+        "depends_on": {
+          "type": "list<Ident>",
+          "maxItems": 64
+        },
+        "detail": {
+          "type": "LongText",
+          "optional": true
+        }
+      }
+    },
+    "FieldDef": {
+      "kind": "struct",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "name": {
+          "type": "Label"
+        },
+        "value_type": {
+          "type": "ValueType"
+        },
+        "unit": {
+          "type": "Unit",
+          "optional": true
+        },
+        "nullable": {
+          "type": "Tristate"
+        },
+        "certainty": {
+          "type": "Certainty"
+        },
+        "evidence": {
+          "type": "list<Ident>",
+          "maxItems": 64
+        }
+      }
+    },
+    "Entity": {
+      "kind": "struct",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "kind": {
+          "type": "Ident"
+        },
+        "label": {
+          "type": "Label",
+          "optional": true
+        },
+        "fields": {
+          "type": "list<FieldDef>",
+          "maxItems": 512
+        },
+        "certainty": {
+          "type": "Certainty"
+        },
+        "evidence": {
+          "type": "list<Ident>",
+          "maxItems": 64
+        }
+      }
+    },
+    "Relationship": {
+      "kind": "struct",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "kind": {
+          "type": "RelationKind"
+        },
+        "from": {
+          "type": "Ident"
+        },
+        "to": {
+          "type": "Ident"
+        },
+        "certainty": {
+          "type": "Certainty"
+        },
+        "evidence": {
+          "type": "list<Ident>",
+          "maxItems": 64
+        }
+      }
+    },
+    "EffectAssertion": {
+      "kind": "struct",
+      "doc": "One piece of evidence asserting an effect class.",
+      "fields": {
+        "evidence": {
+          "type": "Ident"
+        },
+        "effect": {
+          "type": "EffectClass"
+        }
+      }
+    },
+    "EffectAssessment": {
+      "kind": "struct",
+      "doc": "Declared effect must be at least as dangerous as every asserted effect.",
+      "fields": {
+        "declared": {
+          "type": "EffectClass"
+        },
+        "asserted": {
+          "type": "list<EffectAssertion>",
+          "maxItems": 64
+        }
+      }
+    },
+    "ActionDef": {
+      "kind": "struct",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "entity": {
+          "type": "Ident",
+          "optional": true
+        },
+        "label": {
+          "type": "Label"
+        },
+        "effect": {
+          "type": "EffectAssessment"
+        },
+        "source_confirmation": {
+          "type": "Tristate"
+        },
+        "certainty": {
+          "type": "Certainty"
+        },
+        "evidence": {
+          "type": "list<Ident>",
+          "maxItems": 64
+        }
+      }
+    },
+    "StateDef": {
+      "kind": "struct",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "label": {
+          "type": "Label"
+        }
+      }
+    },
+    "Transition": {
+      "kind": "struct",
+      "fields": {
+        "from": {
+          "type": "Ident"
+        },
+        "to": {
+          "type": "Ident"
+        },
+        "action": {
+          "type": "Ident",
+          "optional": true
+        },
+        "certainty": {
+          "type": "Certainty"
+        }
+      }
+    },
+    "StateMachine": {
+      "kind": "struct",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "entity": {
+          "type": "Ident"
+        },
+        "initial": {
+          "type": "Ident",
+          "optional": true
+        },
+        "states": {
+          "type": "list<StateDef>",
+          "maxItems": 256
+        },
+        "transitions": {
+          "type": "list<Transition>",
+          "maxItems": 1024
+        }
+      }
+    },
+    "ClaimText": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "Label"
+        }
+      }
+    },
+    "ClaimInt": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "ClaimInteger"
+        }
+      }
+    },
+    "ClaimInteger": {
+      "kind": "int",
+      "min": -9007199254740991,
+      "max": 9007199254740991
+    },
+    "ClaimBool": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "bool"
+        }
+      }
+    },
+    "ClaimEffect": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "EffectClass"
+        }
+      }
+    },
+    "ClaimValueType": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "ValueType"
+        }
+      }
+    },
+    "ClaimValue": {
+      "kind": "union",
+      "tag": "kind",
+      "variants": {
+        "text": "ClaimText",
+        "int": "ClaimInt",
+        "bool": "ClaimBool",
+        "effect": "ClaimEffect",
+        "value_type": "ClaimValueType",
+        "decimal": "ClaimDecimal",
+        "date": "ClaimDate",
+        "instant": "ClaimInstant",
+        "money": "ClaimMoney"
+      }
+    },
+    "Claim": {
+      "kind": "struct",
+      "doc": "An explicit, evidence-linked statement; support and contradiction are kept apart.",
+      "fields": {
+        "id": {
+          "type": "Ident"
+        },
+        "subject": {
+          "type": "Ident"
+        },
+        "predicate": {
+          "type": "ClaimPredicate"
+        },
+        "value": {
+          "type": "ClaimValue"
+        },
+        "supports": {
+          "type": "list<Ident>",
+          "maxItems": 64
+        },
+        "contradicts": {
+          "type": "list<Ident>",
+          "maxItems": 64
+        },
+        "certainty": {
+          "type": "Certainty"
+        }
+      }
+    },
+    "SemanticIR": {
+      "kind": "struct",
+      "fields": {
+        "source_app_id": {
+          "type": "SourceAppId"
+        },
+        "source_variant_id": {
+          "type": "SourceVariantId"
+        },
+        "observations": {
+          "type": "list<ObservationEpoch>",
+          "maxItems": 256
+        },
+        "compiler_version": {
+          "type": "CompilerVersion"
+        },
+        "primitive_set": {
+          "type": "Digest"
+        },
+        "entities": {
+          "type": "list<Entity>",
+          "maxItems": 4096
+        },
+        "relationships": {
+          "type": "list<Relationship>",
+          "maxItems": 16384
+        },
+        "actions": {
+          "type": "list<ActionDef>",
+          "maxItems": 4096
+        },
+        "state_machines": {
+          "type": "list<StateMachine>",
+          "maxItems": 1024
+        },
+        "evidence": {
+          "type": "list<EvidenceDef>",
+          "maxItems": 65536
+        },
+        "claims": {
+          "type": "list<Claim>",
+          "maxItems": 65536
+        }
+      }
+    },
+    "ClaimDecimal": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "Decimal"
+        }
+      }
+    },
+    "ClaimDate": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "DateStr"
+        }
+      }
+    },
+    "ClaimInstant": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "Instant"
+        }
+      }
+    },
+    "ClaimMoney": {
+      "kind": "struct",
+      "fields": {
+        "value": {
+          "type": "Decimal2"
+        }
+      }
+    }
+  }
+}
