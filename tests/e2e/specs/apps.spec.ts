@@ -44,7 +44,7 @@ test("virtualized table renders a bounded window and scrolls deterministically",
   await page.locator("#viewport").evaluate((el) => {
     el.scrollTop = 5000 * 32;
   });
-  await expect(page.locator("#summary")).toContainText("of 10000");
+  await expect(page.locator("#summary")).toHaveText("Showing rows 4998-5014 of 10000");
   await expect(page.locator(".row").first()).toContainText(/^\d+/);
   const ids = await page.locator(".row span:first-child").allTextContents();
   expect(Number(ids[0])).toBeGreaterThan(4900);

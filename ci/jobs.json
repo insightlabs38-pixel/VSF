@@ -6,6 +6,10 @@
         "cmd": ["pnpm", "install", "--frozen-lockfile"]
       },
       {
+        "name": "build-native",
+        "cmd": ["scripts/build-native.sh"]
+      },
+      {
         "name": "toolchain-pins",
         "cmd": ["node", "tools/checks/src/cli.ts", "toolchain"]
       },
