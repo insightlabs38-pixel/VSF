@@ -185,6 +185,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "vsf-registry"
+version = "0.0.0"
+dependencies = [
+ "regex",
+ "vsf-canon",
+ "vsf-ir",
+]
+
+[[package]]
 name = "vsf-schema"
 version = "0.0.0"
 dependencies = [

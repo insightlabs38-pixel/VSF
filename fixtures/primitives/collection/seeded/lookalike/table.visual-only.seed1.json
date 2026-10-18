@@ -1,0 +1,15 @@
+{
+  "expect": [],
+  "id": "table.visual-only.seed1",
+  "nodes": [
+    {"attrs":{"style":"display:grid;grid-template-columns:repeat(3,1fr)"},"id":1,"parent":0,"tag":"div","text":""},
+    {"attrs":{"class":"hd"},"id":2,"parent":1,"tag":"div","text":"Total"},
+    {"attrs":{"class":"c"},"id":3,"parent":1,"tag":"div","text":"Zoë"}
+  ],
+  "operations": ["collection.read"],
+  "polarity": "negative",
+  "primitive": "TABLE-002",
+  "schema": "vsf-primitive-fixture-v1",
+  "seed": 1,
+  "source": {"app":"synthetic-visual-lookalikes","origin":"seeded"}
+}

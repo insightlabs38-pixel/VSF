@@ -1,0 +1,46 @@
+{
+  "schema": "vsf-primitive-status-v1",
+  "registrations": [
+    {
+      "id": "TABLE-001",
+      "maturity": "implemented",
+      "execution": ["browser"],
+      "needs_capabilities": ["dom.snapshot"],
+      "recognition": {
+        "produces": "collection",
+        "signature": ["tag:table"],
+        "excludes": ["role:grid", "role:none", "role:presentation", "role:treegrid"],
+        "precedence": 10
+      },
+      "evidence": [
+        { "kind": "spec-document", "id": "docs/deep/primitives/collection-extract.md" },
+        { "kind": "fixture", "id": "table.html.orders", "polarity": "positive" },
+        { "kind": "fixture", "id": "table.html.layout-table", "polarity": "negative" },
+        { "kind": "fixture", "id": "table.html.unicode-preserved", "polarity": "adversarial" }
+      ],
+      "implementation": "compiler/crates/vsf-registry/src/compose.rs"
+    },
+    {
+      "id": "TABLE-002",
+      "maturity": "implemented",
+      "execution": ["browser"],
+      "needs_capabilities": ["dom.snapshot", "a11y.tree"],
+      "recognition": {
+        "produces": "collection",
+        "signature": ["role:grid"],
+        "excludes": ["role:none", "role:presentation"],
+        "precedence": 10
+      },
+      "evidence": [
+        { "kind": "spec-document", "id": "docs/deep/primitives/collection-extract.md" },
+        { "kind": "fixture", "id": "grid.aria.orders", "polarity": "positive" },
+        { "kind": "fixture", "id": "grid.visual-only.css-grid", "polarity": "negative" },
+        { "kind": "fixture", "id": "grid.aria.hidden-column", "polarity": "adversarial" }
+      ],
+      "implementation": "compiler/crates/vsf-registry/src/compose.rs"
+    }
+  ],
+  "compositions": [
+    { "id": "collection.extract", "implementation": "compiler/crates/vsf-registry/src/compose.rs", "reused_by": ["TABLE-001", "TABLE-002"] }
+  ]
+}

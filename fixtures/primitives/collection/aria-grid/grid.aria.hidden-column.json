@@ -1,0 +1,101 @@
+{
+ "schema": "vsf-primitive-fixture-v1",
+ "id": "grid.aria.hidden-column",
+ "primitive": "TABLE-002",
+ "polarity": "adversarial",
+ "source": {
+  "app": "synthetic-aria-grids",
+  "origin": "handwritten"
+ },
+ "operations": [
+  "collection.read"
+ ],
+ "nodes": [
+  {
+   "id": 1,
+   "parent": 0,
+   "tag": "div",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "role": "grid"
+   },
+   "text": ""
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "div",
+   "attrs": {
+    "role": "row"
+   },
+   "text": ""
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "div",
+   "attrs": {
+    "role": "columnheader"
+   },
+   "text": "Name"
+  },
+  {
+   "id": 5,
+   "parent": 3,
+   "tag": "div",
+   "attrs": {
+    "role": "columnheader",
+    "hidden": ""
+   },
+   "text": "Hidden"
+  },
+  {
+   "id": 6,
+   "parent": 2,
+   "tag": "div",
+   "attrs": {
+    "role": "row"
+   },
+   "text": ""
+  },
+  {
+   "id": 7,
+   "parent": 6,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell"
+   },
+   "text": "Kim"
+  },
+  {
+   "id": 8,
+   "parent": 6,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell",
+    "hidden": ""
+   },
+   "text": "nope"
+  }
+ ],
+ "expect": [
+  {
+   "root": 2,
+   "primitive": "TABLE-002",
+   "columns": [
+    "Name"
+   ],
+   "rows": [
+    [
+     "Kim"
+    ]
+   ]
+  }
+ ]
+}

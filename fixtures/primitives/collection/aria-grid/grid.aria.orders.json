@@ -1,0 +1,225 @@
+{
+ "schema": "vsf-primitive-fixture-v1",
+ "id": "grid.aria.orders",
+ "primitive": "TABLE-002",
+ "polarity": "positive",
+ "source": {
+  "app": "synthetic-aria-grids",
+  "origin": "handwritten"
+ },
+ "operations": [
+  "collection.read"
+ ],
+ "nodes": [
+  {
+   "id": 1,
+   "parent": 0,
+   "tag": "div",
+   "attrs": {},
+   "text": ""
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "role": "grid"
+   },
+   "text": ""
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "div",
+   "attrs": {
+    "role": "row"
+   },
+   "text": ""
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "div",
+   "attrs": {
+    "role": "columnheader"
+   },
+   "text": ""
+  },
+  {
+   "id": 5,
+   "parent": 4,
+   "tag": "p",
+   "attrs": {},
+   "text": "Order"
+  },
+  {
+   "id": 6,
+   "parent": 3,
+   "tag": "div",
+   "attrs": {
+    "role": "columnheader"
+   },
+   "text": ""
+  },
+  {
+   "id": 7,
+   "parent": 6,
+   "tag": "p",
+   "attrs": {},
+   "text": "Customer"
+  },
+  {
+   "id": 8,
+   "parent": 3,
+   "tag": "div",
+   "attrs": {
+    "role": "columnheader"
+   },
+   "text": ""
+  },
+  {
+   "id": 9,
+   "parent": 8,
+   "tag": "p",
+   "attrs": {},
+   "text": "Total"
+  },
+  {
+   "id": 10,
+   "parent": 2,
+   "tag": "div",
+   "attrs": {
+    "role": "row"
+   },
+   "text": ""
+  },
+  {
+   "id": 11,
+   "parent": 10,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell"
+   },
+   "text": ""
+  },
+  {
+   "id": 12,
+   "parent": 11,
+   "tag": "p",
+   "attrs": {},
+   "text": "1001"
+  },
+  {
+   "id": 13,
+   "parent": 10,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell"
+   },
+   "text": ""
+  },
+  {
+   "id": 14,
+   "parent": 13,
+   "tag": "p",
+   "attrs": {},
+   "text": "Ana"
+  },
+  {
+   "id": 15,
+   "parent": 10,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell"
+   },
+   "text": ""
+  },
+  {
+   "id": 16,
+   "parent": 15,
+   "tag": "p",
+   "attrs": {},
+   "text": "12.50"
+  },
+  {
+   "id": 17,
+   "parent": 2,
+   "tag": "div",
+   "attrs": {
+    "role": "row"
+   },
+   "text": ""
+  },
+  {
+   "id": 18,
+   "parent": 17,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell"
+   },
+   "text": ""
+  },
+  {
+   "id": 19,
+   "parent": 18,
+   "tag": "p",
+   "attrs": {},
+   "text": "1002"
+  },
+  {
+   "id": 20,
+   "parent": 17,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell"
+   },
+   "text": ""
+  },
+  {
+   "id": 21,
+   "parent": 20,
+   "tag": "p",
+   "attrs": {},
+   "text": "Bo"
+  },
+  {
+   "id": 22,
+   "parent": 17,
+   "tag": "div",
+   "attrs": {
+    "role": "gridcell"
+   },
+   "text": ""
+  },
+  {
+   "id": 23,
+   "parent": 22,
+   "tag": "p",
+   "attrs": {},
+   "text": "7"
+  }
+ ],
+ "expect": [
+  {
+   "root": 2,
+   "primitive": "TABLE-002",
+   "columns": [
+    "Order",
+    "Customer",
+    "Total"
+   ],
+   "rows": [
+    [
+     "1001",
+     "Ana",
+     "12.50"
+    ],
+    [
+     "1002",
+     "Bo",
+     "7"
+    ]
+   ]
+  }
+ ]
+}

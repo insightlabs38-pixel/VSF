@@ -1,0 +1,79 @@
+{
+ "schema": "vsf-primitive-fixture-v1",
+ "id": "grid.visual-only.css-grid",
+ "primitive": "TABLE-002",
+ "polarity": "negative",
+ "source": {
+  "app": "synthetic-visual-lookalikes",
+  "origin": "handwritten"
+ },
+ "operations": [
+  "collection.read"
+ ],
+ "nodes": [
+  {
+   "id": 1,
+   "parent": 0,
+   "tag": "div",
+   "attrs": {
+    "style": "display:grid;grid-template-columns:1fr 1fr 1fr"
+   },
+   "text": ""
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "class": "cell"
+   },
+   "text": "Order"
+  },
+  {
+   "id": 3,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "class": "cell"
+   },
+   "text": "Customer"
+  },
+  {
+   "id": 4,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "class": "cell"
+   },
+   "text": "Total"
+  },
+  {
+   "id": 5,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "class": "cell"
+   },
+   "text": "1001"
+  },
+  {
+   "id": 6,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "class": "cell"
+   },
+   "text": "Ana"
+  },
+  {
+   "id": 7,
+   "parent": 1,
+   "tag": "div",
+   "attrs": {
+    "class": "cell"
+   },
+   "text": "12.50"
+  }
+ ],
+ "expect": []
+}

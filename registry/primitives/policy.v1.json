@@ -1,0 +1,74 @@
+{
+  "schema": "vsf-primitive-policy-v1",
+  "root": "OBS-001",
+  "families": [
+    { "code": "OBS", "owner": "observation", "default_kind": "atomic", "requires": [] },
+    { "code": "EVENT", "owner": "interaction", "default_kind": "atomic", "requires": ["OBS-001", "OBS-006"] },
+    { "code": "STRUCT", "owner": "semantic", "default_kind": "atomic", "requires": ["OBS-006", "OBS-008"] },
+    { "code": "LAYOUT", "owner": "semantic", "default_kind": "atomic", "requires": ["OBS-006", "OBS-012"] },
+    { "code": "DATA", "owner": "data", "default_kind": "atomic", "requires": ["STRUCT-001", "STRUCT-029"] },
+    { "code": "FORMS", "owner": "ui-capability", "default_kind": "composite", "requires": ["STRUCT-001", "STRUCT-018", "EVENT-001"] },
+    { "code": "NAV", "owner": "ui-capability", "default_kind": "composite", "requires": ["STRUCT-001", "EVENT-001"] },
+    { "code": "TABLE", "owner": "ui-capability", "default_kind": "composite", "requires": ["STRUCT-001", "STRUCT-028", "LAYOUT-005", "EVENT-001"] },
+    { "code": "DOC", "owner": "ui-capability", "default_kind": "composite", "requires": ["STRUCT-001", "OBS-016"] },
+    { "code": "FILES", "owner": "ui-capability", "default_kind": "composite", "requires": ["STRUCT-001", "EVENT-001"] },
+    { "code": "TIME", "owner": "ui-capability", "default_kind": "composite", "requires": ["FORMS-001", "DATA-006"] },
+    { "code": "CHART", "owner": "visualization", "default_kind": "composite", "requires": ["STRUCT-001", "LAYOUT-001", "DATA-006"] },
+    { "code": "GRAPH", "owner": "visualization", "default_kind": "composite", "requires": ["STRUCT-001", "LAYOUT-001", "EVENT-006"] },
+    { "code": "TERMINAL", "owner": "domain-packs", "default_kind": "composite", "requires": ["OBS-016", "EVENT-001"] },
+    { "code": "SCI", "owner": "domain-packs", "default_kind": "composite", "requires": ["DATA-006", "STRUCT-001"] },
+    { "code": "MEDIA", "owner": "visualization", "default_kind": "composite", "requires": ["STRUCT-001", "LAYOUT-001"] },
+    { "code": "GEO", "owner": "visualization", "default_kind": "composite", "requires": ["STRUCT-001", "LAYOUT-001", "DATA-006"] },
+    { "code": "BIZ", "owner": "domain-packs", "default_kind": "composite", "requires": ["DATA-001", "DATA-006"] },
+    { "code": "COMM", "owner": "ui-capability", "default_kind": "composite", "requires": ["STRUCT-001", "EVENT-001"] },
+    { "code": "STATE", "owner": "runtime", "default_kind": "UNRESOLVED", "requires": ["OBS-007", "STRUCT-001"] },
+    { "code": "AUTH", "owner": "runtime", "default_kind": "service", "requires": ["OBS-001"] },
+    { "code": "NETWORK", "owner": "adapters", "default_kind": "adapter", "requires": ["OBS-001", "STATE-006"] },
+    { "code": "CACHE", "owner": "runtime", "default_kind": "service", "requires": ["STRUCT-030", "AUTH-001"] },
+    { "code": "SAFETY", "owner": "runtime", "default_kind": "atomic", "requires": ["STRUCT-001", "STATE-006", "AUTH-001"] },
+    { "code": "LEGACY", "owner": "adapters", "default_kind": "adapter", "requires": ["OBS-001", "LAYOUT-001"] },
+    { "code": "ADAPTER", "owner": "adapters", "default_kind": "adapter", "requires": ["AUTH-001", "SAFETY-001", "STATE-006"] },
+    { "code": "GENERATE", "owner": "compiler", "default_kind": "UNRESOLVED", "requires": ["DATA-001", "SAFETY-007"] },
+    { "code": "OUTPUT", "owner": "compiler", "default_kind": "composite", "requires": ["STRUCT-001", "DATA-004", "LAYOUT-001"] },
+    { "code": "TEST", "owner": "quality", "default_kind": "atomic", "requires": ["OBS-001"] }
+  ],
+  "keyword_rules": [
+    { "id": "K-ADAPTER", "kind": "adapter", "families": ["AUTH", "NETWORK", "LEGACY", "ADAPTER", "GENERATE", "STATE", "SAFETY", "CACHE"], "pattern": "adapter|bridge|protocol|interop|connector|gateway|webhook|\\bMCP\\b|OpenAPI|GraphQL|\\bSAML\\b|\\bOAuth\\b|\\bOIDC\\b|\\bSSO\\b|\\bLDAP\\b|\\bSCIM\\b|\\bSOAP\\b|\\bgRPC\\b|WebSocket|\\bSDK\\b" },
+    { "id": "K-SERVICE", "kind": "service", "families": ["AUTH", "NETWORK", "CACHE", "STATE", "SAFETY", "ADAPTER", "GENERATE"], "pattern": "cache|queue|scheduler|lease|quota|throttle|breaker|metering|billing|audit|telemetry|retention|vault|secret|entitlement|license|replica|persistence|polling|refresh token" },
+    { "id": "K-COMPOSITE", "kind": "composite", "families": [], "pattern": "workflow|pipeline|wizard|editor|builder|planner|orchestrat|reconstruction|end-to-end|dashboard|state machine|transition graph|template" }
+  ],
+  "advancement": {
+    "atomic": {
+      "specified": ["spec-document", "fixture-descriptors"],
+      "implemented": ["implementation-artifact", "positive-fixture-pass", "negative-fixture-pass"],
+      "conformant": ["independent-fixture-source", "adversarial-fixture-pass", "review-record"],
+      "production_proven": ["field-evidence"]
+    },
+    "composite": {
+      "specified": ["spec-document", "dependency-closure", "fixture-descriptors"],
+      "implemented": ["implementation-artifact", "positive-fixture-pass", "negative-fixture-pass", "dependency-closure-verified"],
+      "conformant": ["independent-fixture-source", "semantic-equivalence-test", "dependencies-implemented", "review-record"],
+      "production_proven": ["field-evidence"]
+    },
+    "adapter": {
+      "specified": ["spec-document", "protocol-reference", "fixture-descriptors"],
+      "implemented": ["implementation-artifact", "recorded-exchange-pass", "negative-fixture-pass"],
+      "conformant": ["independent-fixture-source", "contract-test-pass", "review-record"],
+      "production_proven": ["field-evidence"]
+    },
+    "service": {
+      "specified": ["spec-document", "failure-model", "fixture-descriptors"],
+      "implemented": ["implementation-artifact", "positive-fixture-pass", "failure-injection-pass"],
+      "conformant": ["independent-fixture-source", "load-or-soak-evidence", "review-record"],
+      "production_proven": ["field-evidence"]
+    },
+    "UNRESOLVED": {
+      "specified": ["classification-decision"]
+    }
+  },
+  "modes": [
+    { "mode": "browser", "capabilities": ["dom.snapshot", "a11y.tree", "css.computed", "input.synthetic"] },
+    { "mode": "authorized_protocol", "capabilities": ["api.direct"] },
+    { "mode": "preserved_surface", "capabilities": ["surface.embed"] }
+  ]
+}
