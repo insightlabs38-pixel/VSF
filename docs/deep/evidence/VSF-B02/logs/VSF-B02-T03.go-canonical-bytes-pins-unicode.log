@@ -1,0 +1,18 @@
+$ go -C backend test -count=1 -v ./ir/...
+=== RUN   TestValidFixturesRoundTripToIdenticalBytes
+--- PASS: TestValidFixturesRoundTripToIdenticalBytes (0.00s)
+=== RUN   TestPinnedDigestsMatchTheRustAuthority
+--- PASS: TestPinnedDigestsMatchTheRustAuthority (0.00s)
+=== RUN   TestNFCAndNFDTextStayDistinct
+--- PASS: TestNFCAndNFDTextStayDistinct (0.00s)
+=== RUN   TestEveryInvalidCaseFailsClosedWithExpectedCodeAndPath
+--- PASS: TestEveryInvalidCaseFailsClosedWithExpectedCodeAndPath (0.02s)
+=== RUN   TestTypedDigestsAreDomainSeparated
+--- PASS: TestTypedDigestsAreDomainSeparated (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir	0.037s
+=== RUN   TestSinceGatesFieldsByDeclaredVersion
+--- PASS: TestSinceGatesFieldsByDeclaredVersion (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir/rt	0.003s
+[exit 0]

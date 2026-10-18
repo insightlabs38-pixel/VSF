@@ -1,0 +1,98 @@
+{
+  "idl": "vsf-idl/1",
+  "ir_version": "1.0.0",
+  "family": "presentation",
+  "root": "PresentationIR",
+  "types": {
+    "Direction": { "kind": "enum", "values": ["ltr", "rtl", "auto"] },
+    "ColorScheme": { "kind": "enum", "values": ["light", "dark", "system"] },
+    "Accent": { "kind": "enum", "values": ["none", "mint", "blue"] },
+    "Density": { "kind": "enum", "values": ["compact", "comfortable", "spacious"] },
+    "ComponentKind": {
+      "kind": "enum",
+      "values": [
+        "text",
+        "heading",
+        "button",
+        "link",
+        "text_input",
+        "choice",
+        "checkbox",
+        "table",
+        "row",
+        "cell",
+        "form",
+        "list",
+        "group",
+        "preserved_surface"
+      ]
+    },
+    "NameSource": { "kind": "enum", "values": ["field_label", "explicit", "content"] },
+    "ConstraintKind": { "kind": "enum", "values": ["min_contrast", "min_target_size", "keep_together", "ordering"] },
+    "Theme": {
+      "kind": "struct",
+      "fields": {
+        "scheme": { "type": "ColorScheme" },
+        "accent": { "type": "Accent" },
+        "density": { "type": "Density" }
+      }
+    },
+    "Binding": {
+      "kind": "struct",
+      "fields": {
+        "entity": { "type": "Ident", "optional": true },
+        "field": { "type": "Ident", "optional": true },
+        "action": { "type": "Ident", "optional": true }
+      }
+    },
+    "Accessibility": {
+      "kind": "struct",
+      "fields": {
+        "role": { "type": "Ident" },
+        "name_source": { "type": "NameSource" },
+        "name": { "type": "Label", "optional": true },
+        "shortcut": { "type": "Label", "optional": true }
+      }
+    },
+    "Component": {
+      "kind": "struct",
+      "fields": {
+        "id": { "type": "Ident" },
+        "kind": { "type": "ComponentKind" },
+        "binding": { "type": "Binding", "optional": true },
+        "children": { "type": "list<Ident>", "maxItems": 1024 },
+        "accessibility": { "type": "Accessibility" }
+      }
+    },
+    "LayoutConstraint": {
+      "kind": "struct",
+      "fields": {
+        "id": { "type": "Ident" },
+        "kind": { "type": "ConstraintKind" },
+        "subjects": { "type": "list<Ident>", "maxItems": 256 },
+        "value": { "type": "Count", "optional": true }
+      }
+    },
+    "Region": {
+      "kind": "struct",
+      "fields": {
+        "id": { "type": "Ident" },
+        "components": { "type": "list<Ident>", "maxItems": 1024 }
+      }
+    },
+    "PresentationIR": {
+      "kind": "struct",
+      "doc": "Appearance and structure only; it carries no effect or authorization fields by construction.",
+      "fields": {
+        "presentation_version": { "type": "PresentationVersion" },
+        "semantic": { "type": "Digest" },
+        "locale": { "type": "Locale" },
+        "direction": { "type": "Direction" },
+        "theme": { "type": "Theme" },
+        "constraints": { "type": "list<LayoutConstraint>", "maxItems": 1024 },
+        "components": { "type": "list<Component>", "maxItems": 16384 },
+        "regions": { "type": "list<Region>", "maxItems": 256 }
+      }
+    }
+  }
+}

@@ -31,3 +31,5 @@ Revisit when: trigger
 |---|---|---|
 | 001-024 | Initial provisional decisions | accepted for prototyping |
 | [025](ADR-025-foundation-toolchain-and-layout.md) | Foundation toolchain, layout, canonical profile and dependencies | accepted |
+| [027](ADR-027-versioned-ir-contracts.md) | Versioned IR contracts, semantics and identity | accepted |
+| [028](ADR-028-schema-compatibility-and-promotion.md) | Schema compatibility and promotion policy | accepted |

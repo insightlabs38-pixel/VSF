@@ -1,0 +1,343 @@
+{
+  "schema": "vsf.semantic/1.0.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "source_app_id": "vendor-console:app.vendor.test",
+    "source_variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+    "observations": [41, 42],
+    "compiler_version": "0.1.0+c3c3c3c3c3c3",
+    "primitive_set": "sha256:1818181818181818181818181818181818181818181818181818181818181818",
+    "evidence": [
+      {
+        "id": "ev_dom",
+        "type": "observed_structure",
+        "witness": "dom-recognizer",
+        "observed_at": 1792368200000,
+        "depends_on": [],
+        "observation_epoch": 41
+      },
+      {
+        "id": "ev_doc",
+        "type": "documented_schema",
+        "witness": "openapi-import",
+        "observed_at": 1792368200000,
+        "depends_on": [],
+        "authorizing_context": {
+          "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+          "variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+          "source_scopes": ["records.read", "records.write"]
+        }
+      },
+      {
+        "id": "ev_run",
+        "type": "runtime_behavior",
+        "witness": "fixture-replay",
+        "observed_at": 1792368200000,
+        "depends_on": ["ev_dom"],
+        "authorizing_context": {
+          "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+          "variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+          "source_scopes": ["records.read", "records.write"]
+        },
+        "detail": "Submitted a synthetic order and read it back."
+      },
+      {
+        "id": "ev_user",
+        "type": "user_assertion",
+        "witness": "user",
+        "observed_at": 1792368200000,
+        "depends_on": [],
+        "authorizing_context": {
+          "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+          "variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+          "source_scopes": ["records.read", "records.write"]
+        }
+      },
+      {
+        "id": "ev_heur",
+        "type": "heuristic_inference",
+        "witness": "label-heuristic",
+        "observed_at": 1792368200000,
+        "depends_on": ["ev_dom"]
+      }
+    ],
+    "entities": [
+      {
+        "id": "order",
+        "kind": "record",
+        "label": "Order",
+        "certainty": "verified",
+        "evidence": ["ev_dom", "ev_doc"],
+        "fields": [
+          {
+            "id": "order_id",
+            "name": "Order number",
+            "value_type": "text",
+            "nullable": "no",
+            "certainty": "verified",
+            "evidence": ["ev_dom"]
+          },
+          {
+            "id": "total",
+            "name": "Total",
+            "value_type": "decimal",
+            "unit": {
+              "symbol": "USD",
+              "dimension": "currency"
+            },
+            "nullable": "no",
+            "certainty": "verified",
+            "evidence": ["ev_dom", "ev_doc"]
+          },
+          {
+            "id": "placed_on",
+            "name": "Placed on",
+            "value_type": "date",
+            "nullable": "unknown",
+            "certainty": "inferred",
+            "evidence": ["ev_heur"]
+          }
+        ]
+      },
+      {
+        "id": "customer",
+        "kind": "record",
+        "label": "Customer",
+        "certainty": "inferred",
+        "evidence": ["ev_heur"],
+        "fields": [
+          {
+            "id": "customer_name",
+            "name": "Name",
+            "value_type": "text",
+            "nullable": "no",
+            "certainty": "verified",
+            "evidence": ["ev_dom"]
+          }
+        ]
+      },
+      {
+        "id": "cafe_nfc",
+        "kind": "record",
+        "label": "Café",
+        "certainty": "unknown",
+        "evidence": [],
+        "fields": []
+      },
+      {
+        "id": "cafe_nfd",
+        "kind": "record",
+        "label": "Café",
+        "certainty": "unknown",
+        "evidence": [],
+        "fields": []
+      },
+      {
+        "id": "emoji_rtl",
+        "kind": "record",
+        "label": "שלום 😀",
+        "certainty": "unknown",
+        "evidence": [],
+        "fields": []
+      }
+    ],
+    "relationships": [
+      {
+        "id": "rel_order_customer",
+        "kind": "belongs_to",
+        "from": "order",
+        "to": "customer",
+        "certainty": "inferred",
+        "evidence": ["ev_heur"]
+      }
+    ],
+    "actions": [
+      {
+        "id": "submit_order",
+        "entity": "order",
+        "label": "Submit order",
+        "effect": {
+          "declared": "non_idempotent_write",
+          "asserted": [
+            {
+              "evidence": "ev_run",
+              "effect": "non_idempotent_write"
+            }
+          ]
+        },
+        "source_confirmation": "no",
+        "certainty": "verified",
+        "evidence": ["ev_run"]
+      },
+      {
+        "id": "delete_order",
+        "entity": "order",
+        "label": "Delete order",
+        "effect": {
+          "declared": "destructive",
+          "asserted": [
+            {
+              "evidence": "ev_doc",
+              "effect": "destructive"
+            }
+          ]
+        },
+        "source_confirmation": "yes",
+        "certainty": "inferred",
+        "evidence": ["ev_doc", "ev_user"]
+      },
+      {
+        "id": "open_order",
+        "entity": "order",
+        "label": "Open order",
+        "effect": {
+          "declared": "read_only",
+          "asserted": [
+            {
+              "evidence": "ev_dom",
+              "effect": "read_only"
+            }
+          ]
+        },
+        "source_confirmation": "no",
+        "certainty": "verified",
+        "evidence": ["ev_dom"]
+      }
+    ],
+    "state_machines": [
+      {
+        "id": "sm_order",
+        "entity": "order",
+        "initial": "draft",
+        "states": [
+          {
+            "id": "draft",
+            "label": "Draft"
+          },
+          {
+            "id": "submitted",
+            "label": "Submitted"
+          }
+        ],
+        "transitions": [
+          {
+            "from": "draft",
+            "to": "submitted",
+            "action": "submit_order",
+            "certainty": "verified"
+          }
+        ]
+      }
+    ],
+    "claims": [
+      {
+        "id": "c_total_type",
+        "subject": "total",
+        "predicate": "has_type",
+        "value": {
+          "kind": "value_type",
+          "value": "decimal"
+        },
+        "supports": ["ev_dom", "ev_doc"],
+        "contradicts": [],
+        "certainty": "verified"
+      },
+      {
+        "id": "c_total_value",
+        "subject": "total",
+        "predicate": "has_value",
+        "value": {
+          "kind": "money",
+          "value": "1234.50"
+        },
+        "supports": ["ev_dom"],
+        "contradicts": [],
+        "certainty": "verified"
+      },
+      {
+        "id": "c_total_ratio",
+        "subject": "total",
+        "predicate": "has_default",
+        "value": {
+          "kind": "decimal",
+          "value": "0.075"
+        },
+        "supports": ["ev_doc"],
+        "contradicts": [],
+        "certainty": "verified"
+      },
+      {
+        "id": "c_placed",
+        "subject": "placed_on",
+        "predicate": "has_value",
+        "value": {
+          "kind": "date",
+          "value": "2024-02-29"
+        },
+        "supports": ["ev_dom"],
+        "contradicts": [],
+        "certainty": "verified"
+      },
+      {
+        "id": "c_stamp",
+        "subject": "placed_on",
+        "predicate": "has_default",
+        "value": {
+          "kind": "instant",
+          "value": -1
+        },
+        "supports": ["ev_heur"],
+        "contradicts": [],
+        "certainty": "inferred"
+      },
+      {
+        "id": "c_submit_effect",
+        "subject": "submit_order",
+        "predicate": "has_effect",
+        "value": {
+          "kind": "effect",
+          "value": "non_idempotent_write"
+        },
+        "supports": ["ev_run"],
+        "contradicts": [],
+        "certainty": "verified"
+      },
+      {
+        "id": "c_required",
+        "subject": "placed_on",
+        "predicate": "is_required",
+        "value": {
+          "kind": "bool",
+          "value": true
+        },
+        "supports": ["ev_heur"],
+        "contradicts": ["ev_user"],
+        "certainty": "conflicted"
+      },
+      {
+        "id": "c_label",
+        "subject": "cafe_nfc",
+        "predicate": "has_label",
+        "value": {
+          "kind": "text",
+          "value": "Café"
+        },
+        "supports": ["ev_dom"],
+        "contradicts": [],
+        "certainty": "verified"
+      },
+      {
+        "id": "c_count",
+        "subject": "order",
+        "predicate": "has_default",
+        "value": {
+          "kind": "int",
+          "value": 9007199254740991
+        },
+        "supports": ["ev_doc"],
+        "contradicts": [],
+        "certainty": "verified"
+      }
+    ]
+  }
+}

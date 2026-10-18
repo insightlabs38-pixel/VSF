@@ -1,0 +1,1119 @@
+{
+  "schema": "vsf-ir-invalid-cases-v1",
+  "cases": [
+    {
+      "name": "major-2",
+      "expect": {
+        "code": "schema.incompatible_major",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.operation/2.0.0"
+        }
+      ]
+    },
+    {
+      "name": "minor-ahead",
+      "expect": {
+        "code": "schema.too_new",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.operation/1.1.0"
+        }
+      ]
+    },
+    {
+      "name": "patch-ahead",
+      "expect": {
+        "code": "schema.too_new",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.operation/1.0.1"
+        }
+      ]
+    },
+    {
+      "name": "unknown-family",
+      "expect": {
+        "code": "schema.unknown",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.bogus/1.0.0"
+        }
+      ]
+    },
+    {
+      "name": "wrong-prefix",
+      "expect": {
+        "code": "schema.unknown",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "acme.operation/1.0.0"
+        }
+      ]
+    },
+    {
+      "name": "no-version",
+      "expect": {
+        "code": "schema.malformed",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.operation"
+        }
+      ]
+    },
+    {
+      "name": "short-version",
+      "expect": {
+        "code": "schema.malformed",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.operation/1.0"
+        }
+      ]
+    },
+    {
+      "name": "zero-padded-version",
+      "expect": {
+        "code": "schema.malformed",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.operation/01.0.0"
+        }
+      ]
+    },
+    {
+      "name": "digest-mismatch",
+      "expect": {
+        "code": "schema.digest_mismatch",
+        "path": "/schema_digest"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema_digest",
+          "value": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "family-swapped",
+      "expect": {
+        "code": "schema.digest_mismatch",
+        "path": "/schema_digest"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.semantic/1.0.0"
+        }
+      ]
+    },
+    {
+      "name": "extra-top-level",
+      "expect": {
+        "code": "ir.unknown_field",
+        "path": "/extra"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/extra",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "missing-body",
+      "expect": {
+        "code": "ir.missing_field",
+        "path": "/body"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body"
+        }
+      ]
+    },
+    {
+      "name": "body-not-object",
+      "expect": {
+        "code": "ir.not_object",
+        "path": "/body"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "name": "schema-wrong-type",
+      "expect": {
+        "code": "ir.wrong_type",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "name": "missing-required",
+      "expect": {
+        "code": "ir.missing_field",
+        "path": "/body/operation_id"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/operation_id"
+        }
+      ]
+    },
+    {
+      "name": "unknown-field",
+      "expect": {
+        "code": "ir.unknown_field",
+        "path": "/body/surprise"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/surprise",
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "nested-missing",
+      "expect": {
+        "code": "ir.missing_field",
+        "path": "/body/effect/class"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/effect/class"
+        }
+      ]
+    },
+    {
+      "name": "nested-unknown",
+      "expect": {
+        "code": "ir.unknown_field",
+        "path": "/body/effect/risk"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/risk",
+          "value": "low"
+        }
+      ]
+    },
+    {
+      "name": "bad-id-case",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/operation_id"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/operation_id",
+          "value": "App.Records"
+        }
+      ]
+    },
+    {
+      "name": "id-single-segment",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/operation_id"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/operation_id",
+          "value": "records"
+        }
+      ]
+    },
+    {
+      "name": "unknown-enum-variant",
+      "expect": {
+        "code": "ir.bad_enum",
+        "path": "/body/lifecycle"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/lifecycle",
+          "value": "launched"
+        }
+      ]
+    },
+    {
+      "name": "unknown-effect-class",
+      "expect": {
+        "code": "ir.bad_enum",
+        "path": "/body/effect/class"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/effect/class",
+          "value": "maybe"
+        }
+      ]
+    },
+    {
+      "name": "enum-wrong-type",
+      "expect": {
+        "code": "ir.wrong_type",
+        "path": "/body/lifecycle"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/lifecycle",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "bool-as-string",
+      "expect": {
+        "code": "ir.wrong_type",
+        "path": "/body/verification/required"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/required",
+          "value": "yes"
+        }
+      ]
+    },
+    {
+      "name": "bad-map-key",
+      "expect": {
+        "code": "ir.bad_key",
+        "path": "/body/inputs/Bad-Name"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/inputs/Bad-Name",
+          "value": {
+            "type": "text",
+            "required": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "too-many-strategies",
+      "expect": {
+        "code": "ir.too_many_items",
+        "path": "/body/strategies"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/strategies",
+          "value": [
+            "provider_api_authorized",
+            "provider_api_authorized",
+            "provider_api_authorized",
+            "provider_api_authorized",
+            "provider_api_authorized",
+            "provider_api_authorized",
+            "provider_api_authorized",
+            "provider_api_authorized",
+            "provider_api_authorized"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "list-not-array",
+      "expect": {
+        "code": "ir.not_array",
+        "path": "/body/strategies"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/strategies",
+          "value": "provider_api_authorized"
+        }
+      ]
+    },
+    {
+      "name": "map-not-object",
+      "expect": {
+        "code": "ir.not_object",
+        "path": "/body/inputs"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/inputs",
+          "value": []
+        }
+      ]
+    },
+    {
+      "name": "newline-in-label",
+      "expect": {
+        "code": "ir.bad_text",
+        "path": "/body/verification/suite"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/suite",
+          "value": "a\nb"
+        }
+      ]
+    },
+    {
+      "name": "bidi-override-in-label",
+      "expect": {
+        "code": "ir.bad_text",
+        "path": "/body/verification/suite"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/suite",
+          "value": "safe‮gnp.exe"
+        }
+      ]
+    },
+    {
+      "name": "control-char-in-label",
+      "expect": {
+        "code": "ir.bad_text",
+        "path": "/body/verification/suite"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/suite",
+          "value": "a\u0007b"
+        }
+      ]
+    },
+    {
+      "name": "label-too-long",
+      "expect": {
+        "code": "ir.too_long",
+        "path": "/body/verification/suite"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/verification/suite",
+          "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+      ]
+    },
+    {
+      "name": "semver-leading-zero",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/contract_version"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/contract_version",
+          "value": "01.0.0"
+        }
+      ]
+    },
+    {
+      "name": "digest-uppercase",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/provenance/observations/0"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/provenance/observations/0",
+          "value": "sha256:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+        }
+      ]
+    },
+    {
+      "name": "digest-wrong-algo",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/provenance/observations/0"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/provenance/observations/0",
+          "value": "md5:ffffffffffffffffffffffffffffffff"
+        }
+      ]
+    },
+    {
+      "name": "nfd-in-identifier",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/provenance/evidence/0"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/provenance/evidence/0",
+          "value": "café"
+        }
+      ]
+    },
+    {
+      "name": "fullwidth-in-identifier",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/provenance/evidence/0"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/provenance/evidence/0",
+          "value": "ｅｖ"
+        }
+      ]
+    },
+    {
+      "name": "witness-bad-ctx",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/witnesses/0/authorized_context/principal_ref"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/authorized_context/principal_ref",
+          "value": "prin_xyz"
+        }
+      ]
+    },
+    {
+      "name": "deep-path-enum",
+      "expect": {
+        "code": "ir.bad_enum",
+        "path": "/body/entities/0/fields/1/value_type"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/entities/0/fields/1/value_type",
+          "value": "money"
+        }
+      ]
+    },
+    {
+      "name": "int-negative-count",
+      "expect": {
+        "code": "ir.out_of_range",
+        "path": "/body/limits/max_nodes"
+      },
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/limits/max_nodes",
+          "value": -1
+        }
+      ]
+    },
+    {
+      "name": "int-above-uint32",
+      "expect": {
+        "code": "ir.out_of_range",
+        "path": "/body/limits/max_nodes"
+      },
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/limits/max_nodes",
+          "value": 4294967296
+        }
+      ]
+    },
+    {
+      "name": "instant-too-late",
+      "expect": {
+        "code": "ir.bad_instant",
+        "path": "/body/generated_at"
+      },
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/generated_at",
+          "value": 253402300800000
+        }
+      ]
+    },
+    {
+      "name": "instant-too-early",
+      "expect": {
+        "code": "ir.bad_instant",
+        "path": "/body/generated_at"
+      },
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/generated_at",
+          "value": -62135596800001
+        }
+      ]
+    },
+    {
+      "name": "instant-as-string",
+      "expect": {
+        "code": "ir.wrong_type",
+        "path": "/body/generated_at"
+      },
+      "base": "environment-extension",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/generated_at",
+          "value": "2026-10-18T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "name": "decimal-trailing-zero",
+      "expect": {
+        "code": "ir.bad_decimal",
+        "path": "/body/claims/2/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/2/value/value",
+          "value": "0.0750"
+        }
+      ]
+    },
+    {
+      "name": "decimal-exponent",
+      "expect": {
+        "code": "ir.bad_decimal",
+        "path": "/body/claims/2/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/2/value/value",
+          "value": "7.5e-2"
+        }
+      ]
+    },
+    {
+      "name": "decimal-negative-zero",
+      "expect": {
+        "code": "ir.bad_decimal",
+        "path": "/body/claims/2/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/2/value/value",
+          "value": "-0"
+        }
+      ]
+    },
+    {
+      "name": "decimal-as-number",
+      "expect": {
+        "code": "ir.wrong_type",
+        "path": "/body/claims/2/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/2/value/value",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "money-wrong-scale",
+      "expect": {
+        "code": "ir.bad_decimal",
+        "path": "/body/claims/1/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/1/value/value",
+          "value": "1234.5"
+        }
+      ]
+    },
+    {
+      "name": "money-three-digits",
+      "expect": {
+        "code": "ir.bad_decimal",
+        "path": "/body/claims/1/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/1/value/value",
+          "value": "1234.500"
+        }
+      ]
+    },
+    {
+      "name": "date-not-leap",
+      "expect": {
+        "code": "ir.bad_date",
+        "path": "/body/claims/3/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/3/value/value",
+          "value": "2023-02-29"
+        }
+      ]
+    },
+    {
+      "name": "date-century-not-leap",
+      "expect": {
+        "code": "ir.bad_date",
+        "path": "/body/claims/3/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/3/value/value",
+          "value": "1900-02-29"
+        }
+      ]
+    },
+    {
+      "name": "date-slash-format",
+      "expect": {
+        "code": "ir.bad_date",
+        "path": "/body/claims/3/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/3/value/value",
+          "value": "2024/02/29"
+        }
+      ]
+    },
+    {
+      "name": "union-unknown-tag",
+      "expect": {
+        "code": "ir.unknown_variant",
+        "path": "/body/claims/0/value/kind"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/value/kind",
+          "value": "complex"
+        }
+      ]
+    },
+    {
+      "name": "union-missing-tag",
+      "expect": {
+        "code": "ir.missing_field",
+        "path": "/body/claims/0/value/kind"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/claims/0/value/kind"
+        }
+      ]
+    },
+    {
+      "name": "union-tag-wrong-type",
+      "expect": {
+        "code": "ir.wrong_type",
+        "path": "/body/claims/0/value/kind"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/value/kind",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "name": "union-variant-extra-field",
+      "expect": {
+        "code": "ir.unknown_field",
+        "path": "/body/claims/0/value/extra"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/value/extra",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "union-variant-wrong-payload",
+      "expect": {
+        "code": "ir.wrong_type",
+        "path": "/body/claims/0/value/value"
+      },
+      "base": "semantic-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/claims/0/value",
+          "value": {
+            "kind": "bool",
+            "value": "yes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "origin-with-path",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/origin"
+      },
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://app.vendor.test/path"
+        }
+      ]
+    },
+    {
+      "name": "origin-uppercase",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/origin"
+      },
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "HTTPS://APP.VENDOR.TEST"
+        }
+      ]
+    },
+    {
+      "name": "origin-userinfo",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/origin"
+      },
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://user@app.vendor.test"
+        }
+      ]
+    },
+    {
+      "name": "pack-format-unknown",
+      "expect": {
+        "code": "ir.bad_enum",
+        "path": "/body/payload/format"
+      },
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/payload/format",
+          "value": "vsfs_pack_v2"
+        }
+      ]
+    },
+    {
+      "name": "version-axes-missing",
+      "expect": {
+        "code": "ir.missing_field",
+        "path": "/body/axes/policy"
+      },
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/axes/policy"
+        }
+      ]
+    },
+    {
+      "name": "version-bad-op-key",
+      "expect": {
+        "code": "ir.bad_key",
+        "path": "/body/axes/operations/App.Bad"
+      },
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/axes/operations/App.Bad",
+          "value": "1.0.0"
+        }
+      ]
+    },
+    {
+      "name": "version-op-bad-semver",
+      "expect": {
+        "code": "ir.bad_pattern",
+        "path": "/body/axes/operations/app.records.list"
+      },
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/axes/operations/app.records.list",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "name": "presentation-effect-smuggled",
+      "expect": {
+        "code": "ir.unknown_field",
+        "path": "/body/components/2/effect"
+      },
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/components/2/effect",
+          "value": "read_only"
+        }
+      ]
+    },
+    {
+      "name": "presentation-authorization-smuggled",
+      "expect": {
+        "code": "ir.unknown_field",
+        "path": "/body/authorization"
+      },
+      "base": "presentation-orders",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/authorization",
+          "value": {
+            "requires_vsf_caller": false
+          }
+        }
+      ]
+    },
+    {
+      "name": "empty-input",
+      "expect": {
+        "code": "canon.syntax",
+        "path": ""
+      },
+      "raw": ""
+    },
+    {
+      "name": "not-json",
+      "expect": {
+        "code": "canon.syntax",
+        "path": ""
+      },
+      "raw": "vsf"
+    },
+    {
+      "name": "duplicate-key",
+      "expect": {
+        "code": "canon.duplicate_key",
+        "path": ""
+      },
+      "raw": "{\"schema\":\"a\",\"schema\":\"b\"}"
+    },
+    {
+      "name": "float-number",
+      "expect": {
+        "code": "canon.non_integer",
+        "path": ""
+      },
+      "raw": "{\"schema\":1.5}"
+    },
+    {
+      "name": "exponent-number",
+      "expect": {
+        "code": "canon.non_integer",
+        "path": ""
+      },
+      "raw": "{\"schema\":1e2}"
+    },
+    {
+      "name": "trailing-garbage",
+      "expect": {
+        "code": "canon.trailing_data",
+        "path": ""
+      },
+      "raw": "{} x"
+    },
+    {
+      "name": "lone-surrogate",
+      "expect": {
+        "code": "canon.lone_surrogate",
+        "path": ""
+      },
+      "raw": "{\"schema\":\"\\ud800\"}"
+    },
+    {
+      "name": "depth-bomb",
+      "expect": {
+        "code": "canon.depth_exceeded",
+        "path": ""
+      },
+      "raw": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"
+    },
+    {
+      "name": "huge-integer",
+      "expect": {
+        "code": "canon.integer_out_of_range",
+        "path": ""
+      },
+      "raw": "{\"schema\":99999999999999999999}"
+    },
+    {
+      "name": "bom-prefixed",
+      "expect": {
+        "code": "canon.syntax",
+        "path": ""
+      },
+      "raw": "﻿{}"
+    },
+    {
+      "name": "array-document",
+      "expect": {
+        "code": "ir.not_object",
+        "path": ""
+      },
+      "raw": "[]"
+    },
+    {
+      "name": "null-document",
+      "expect": {
+        "code": "ir.not_object",
+        "path": ""
+      },
+      "raw": "null"
+    }
+  ]
+}

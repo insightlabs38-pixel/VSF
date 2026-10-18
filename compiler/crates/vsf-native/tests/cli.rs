@@ -91,3 +91,83 @@ fn serve_handles_frames_errors_and_unknown_ops() {
     let (code, _, _) = run(&["serve"], &0u32.to_le_bytes());
     assert_eq!(code, 65);
 }
+
+fn ir_fixture(name: &str, edit: impl Fn(&str) -> String) -> Vec<u8> {
+    let path = format!(
+        "{}/../../../schemas/ir/fixtures/valid/{name}.json",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let text = std::fs::read_to_string(path).unwrap();
+    let family = text
+        .split("\"schema\": \"vsf.")
+        .nth(1)
+        .unwrap()
+        .split('/')
+        .next()
+        .unwrap();
+    let text = edit(&text.replace("$DIGEST", vsf_ir::doc::family_digest(family).unwrap()));
+    vsf_canon::to_canonical(&vsf_canon::parse(text.as_bytes()).unwrap())
+}
+
+#[test]
+fn ir_validate_reports_valid_invalid_and_uncanonical_documents() {
+    let ok = ir_fixture("operation-update-stage", str::to_string);
+    let (code, out, _) = run(&["ir-validate", "-"], &ok);
+    assert_eq!(code, 0);
+    let text = String::from_utf8(out).unwrap();
+    assert!(
+        text.contains("\"valid\":true") && text.contains("\"family\":\"operation\""),
+        "{text}"
+    );
+    assert_eq!(
+        text.as_bytes(),
+        vsf_ir::api::validate_bytes(&ok).unwrap().as_slice()
+    );
+
+    let understated = ir_fixture("operation-update-stage", |t| {
+        t.replace(
+            "\"class\": \"conditional_write\"",
+            "\"class\": \"idempotent_write\"",
+        )
+        .replace(
+            "\"idempotency\": \"conditional\"",
+            "\"idempotency\": \"idempotent\"",
+        )
+    });
+    let (code, out, _) = run(&["ir-validate", "-"], &understated);
+    assert_eq!(code, 3);
+    assert!(
+        String::from_utf8(out)
+            .unwrap()
+            .contains("contract.effect_understated")
+    );
+
+    let (code, out, _) = run(
+        &["ir-validate", "-"],
+        br#"{"schema":"vsf.operation/2.0.0","schema_digest":"x","body":{}}"#,
+    );
+    assert_eq!(code, 3);
+    assert!(
+        String::from_utf8(out)
+            .unwrap()
+            .contains("\"code\":\"schema.incompatible_major\"")
+    );
+
+    let (code, out, err) = run(&["ir-validate", "-"], b"{\"a\":1.5}");
+    assert_eq!((code, out.len()), (2, 0));
+    assert_eq!(err.trim(), "error: canon.non_integer");
+}
+
+#[test]
+fn serve_validates_ir_documents() {
+    let ok = ir_fixture("presentation-orders", str::to_string);
+    let mut input = Vec::new();
+    input.extend_from_slice(&(ok.len() as u32 + 1).to_le_bytes());
+    input.push(b'V');
+    input.extend_from_slice(&ok);
+    let (code, out, _) = run(&["serve"], &input);
+    assert_eq!(code, 0);
+    let expected = vsf_ir::api::validate_bytes(&ok).unwrap();
+    assert_eq!(out[0], 0);
+    assert_eq!(&out[5..], expected.as_slice());
+}

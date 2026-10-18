@@ -18,6 +18,18 @@
         "cmd": ["node", "scripts/gen-schema-constants.ts", "--check"]
       },
       {
+        "name": "idl-drift",
+        "cmd": ["node", "--conditions=source", "tools/idlgen/src/cli.ts", "--check"]
+      },
+      {
+        "name": "idl-compat",
+        "cmd": ["node", "--conditions=source", "tools/idlgen/src/cli.ts", "compat"]
+      },
+      {
+        "name": "idlgen-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/idlgen", "run", "test"]
+      },
+      {
         "name": "comment-limit",
         "cmd": ["node", "tools/checks/src/cli.ts", "comments"]
       },
@@ -130,6 +142,8 @@
           "@vsf/schema",
           "--filter",
           "@vsf/observer",
+          "--filter",
+          "@vsf/ir",
           "--filter",
           "@vsf/fixture-apps",
           "--filter",

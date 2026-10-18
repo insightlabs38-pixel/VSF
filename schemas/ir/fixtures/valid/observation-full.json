@@ -1,0 +1,44 @@
+{
+  "schema": "vsf.observation/1.0.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "source_app_id": "vendor-console:app.vendor.test",
+    "variant_resolution": "verified",
+    "source_variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+    "origin": "https://app.vendor.test",
+    "freshness": {
+      "stale_after_ms": 30000,
+      "clock_skew_ms": 120
+    },
+    "runtime_id": "rt_ext01",
+    "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+    "redactions": {
+      "redacted_nodes": 2,
+      "patterns": "sha256:e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5"
+    },
+    "observation_epoch": 41,
+    "mode": "full",
+    "captured_at": 1792368100000,
+    "scope": {
+      "frames": 1,
+      "documents": 1,
+      "full_document": true
+    },
+    "payload": {
+      "format": "vsfs_pack_v1",
+      "digest": "sha256:f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6",
+      "bytes": 308280,
+      "nodes": 10002
+    },
+    "missing_signals": [
+      {
+        "signal": "canvas_content",
+        "reason": "not_supported"
+      },
+      {
+        "signal": "cross_origin_frame",
+        "reason": "not_permitted"
+      }
+    ]
+  }
+}

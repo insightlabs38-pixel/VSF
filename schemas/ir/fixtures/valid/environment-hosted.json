@@ -1,0 +1,43 @@
+{
+  "schema": "vsf.environment/1.0.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "runtime_id": "rt_hosted7",
+    "mode": "hosted_sandbox",
+    "runtime_version": "0.0.1",
+    "compiler_version": "0.1.0+c3c3c3c3c3c3",
+    "generated_at": 1792368060000,
+    "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+    "permissions": [],
+    "observation": [
+      {
+        "id": "dom.snapshot",
+        "state": "available"
+      },
+      {
+        "id": "cdp.network",
+        "state": "available"
+      }
+    ],
+    "execution": [
+      {
+        "id": "input.synthetic",
+        "state": "available"
+      },
+      {
+        "id": "api.direct",
+        "state": "available",
+        "constraints": ["allowlisted hosts only"]
+      }
+    ],
+    "persistence": "managed",
+    "credential_isolation": "vault_bound",
+    "egress": "allowlist",
+    "limits": {
+      "max_payload_bytes": 67108864,
+      "max_nodes": 2000000,
+      "max_concurrency": 8,
+      "max_wallclock_ms": 120000
+    }
+  }
+}

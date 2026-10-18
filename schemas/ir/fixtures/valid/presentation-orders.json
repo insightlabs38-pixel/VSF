@@ -1,0 +1,102 @@
+{
+  "schema": "vsf.presentation/1.0.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "presentation_version": "pv3",
+    "semantic": "sha256:2929292929292929292929292929292929292929292929292929292929292929",
+    "locale": "en-US",
+    "direction": "ltr",
+    "theme": {
+      "scheme": "system",
+      "accent": "mint",
+      "density": "comfortable"
+    },
+    "constraints": [
+      {
+        "id": "contrast",
+        "kind": "min_contrast",
+        "subjects": ["btn_submit"],
+        "value": 7
+      },
+      {
+        "id": "target",
+        "kind": "min_target_size",
+        "subjects": ["btn_submit", "btn_delete"],
+        "value": 44
+      }
+    ],
+    "components": [
+      {
+        "id": "form_order",
+        "kind": "form",
+        "children": ["txt_total", "btn_submit", "btn_delete", "orig_widget"],
+        "binding": {
+          "entity": "order"
+        },
+        "accessibility": {
+          "role": "form",
+          "name_source": "explicit",
+          "name": "Order"
+        }
+      },
+      {
+        "id": "txt_total",
+        "kind": "text_input",
+        "children": [],
+        "binding": {
+          "entity": "order",
+          "field": "total"
+        },
+        "accessibility": {
+          "role": "textbox",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "btn_submit",
+        "kind": "button",
+        "children": [],
+        "binding": {
+          "entity": "order",
+          "action": "submit_order"
+        },
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Submit order",
+          "shortcut": "Ctrl+Enter"
+        }
+      },
+      {
+        "id": "btn_delete",
+        "kind": "button",
+        "children": [],
+        "binding": {
+          "entity": "order",
+          "action": "delete_order"
+        },
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Delete order"
+        }
+      },
+      {
+        "id": "orig_widget",
+        "kind": "preserved_surface",
+        "children": [],
+        "accessibility": {
+          "role": "application",
+          "name_source": "explicit",
+          "name": "Original chart"
+        }
+      }
+    ],
+    "regions": [
+      {
+        "id": "main",
+        "components": ["form_order"]
+      }
+    ]
+  }
+}

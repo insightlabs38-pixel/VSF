@@ -1,0 +1,43 @@
+{
+  "task_id": "VSF-B02-T03",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "schemas/ir/fixtures",
+    "compiler/crates/vsf-ir/tests/fixtures.rs",
+    "frontend/packages/ir/test",
+    "backend/ir/fixtures_test.go"
+  ],
+  "acceptance": "Identical typed fixtures serialize to identical canonical bytes and digests in Rust, TypeScript and Go; NFC and NFD text stay distinct, decimals, dates and instants keep meaning, and domain-separated digests cannot collide across kinds.",
+  "positive": {
+    "fixture": "10 pinned canonical byte lengths, SHA-256 values and document digests match in all three languages",
+    "command": "pnpm --filter @vsf/ir run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "non-minimal decimals, impossible dates, out-of-range instants, bidi controls and lone surrogates are rejected",
+    "command": "go -C backend test -count=1 -v ./ir/...",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test fixtures",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Contracts carry no credentials; documents declare required scopes and authorized contexts, and source-account permissions stay separate from VSF caller authentication.",
+  "performance_memory_storage": "Pins are written only by the Rust authority (VSF_UPDATE_PINS) and verified by TS and Go.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T03.rust-canonical-bytes-pins-unicode.log",
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T03.ts-canonical-bytes-pins-unicode.log",
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T03.go-canonical-bytes-pins-unicode.log"
+  ],
+  "review_result": "ACCEPTED"
+}

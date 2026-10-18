@@ -1,0 +1,687 @@
+{
+  "schema": "vsf-ir-version-matrix-v1",
+  "base": {
+    "source_app": {
+      "fingerprint": "sha256:3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a",
+      "provider_release": "2026.10"
+    },
+    "source_variant": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+    "compiler": "0.1.0+c3c3c3c3c3c3",
+    "primitive_set": "sha256:1818181818181818181818181818181818181818181818181818181818181818",
+    "observation_schema": "1.0.0",
+    "semantic_schema": "1.0.0",
+    "operation_schema": "1.0.0",
+    "operations": {
+      "app.records.update_stage": "1.3.0",
+      "app.records.list": "1.0.2"
+    },
+    "presentation": "pv3",
+    "cache_format": 1,
+    "runtime": "0.0.1",
+    "policy": 4
+  },
+  "host": {
+    "observation_schema": {
+      "current": "1.2.0",
+      "migratable_majors": [0]
+    },
+    "semantic_schema": {
+      "current": "1.2.0",
+      "migratable_majors": [0]
+    },
+    "operation_schema": {
+      "current": "1.2.0",
+      "migratable_majors": [0]
+    },
+    "compiler": {
+      "min": "0.1.0",
+      "max": "0.3.9"
+    },
+    "primitive_sets": ["sha256:1818181818181818181818181818181818181818181818181818181818181818"],
+    "primitive_translatable": ["sha256:1919191919191919191919191919191919191919191919191919191919191919"],
+    "presentation_max": 3,
+    "cache_format": 1,
+    "runtime": "0.2.0",
+    "min_policy": 3,
+    "revoked_policies": [2],
+    "operations": {
+      "app.records.update_stage": "1.3.0",
+      "app.records.list": "1.0.5"
+    },
+    "compatible_fingerprints": ["sha256:3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b"],
+    "observed": {
+      "fingerprint": "sha256:3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a",
+      "variant": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+    }
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "set": {},
+      "pins": {},
+      "host": {},
+      "expect": {
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "observation_schema-current-minor",
+      "set": {
+        "observation_schema": "1.2.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "observation_schema": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "observation_schema-minor-ahead",
+      "set": {
+        "observation_schema": "1.3.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "observation_schema": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "observation_schema-patch-ahead",
+      "set": {
+        "observation_schema": "1.2.1"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "observation_schema": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "observation_schema-next-major",
+      "set": {
+        "observation_schema": "2.0.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "observation_schema": "unsupported_runtime:major_not_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "observation_schema-migratable-major",
+      "set": {
+        "observation_schema": "0.9.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "observation_schema": "supported_with_translation:migration_available",
+        "overall": "supported_with_translation"
+      }
+    },
+    {
+      "name": "observation_schema-unmigratable-major",
+      "set": {
+        "observation_schema": "3.0.0"
+      },
+      "pins": {},
+      "host": {
+        "observation_schema": {
+          "current": "1.2.0",
+          "migratable_majors": [0]
+        }
+      },
+      "expect": {
+        "observation_schema": "unsupported_runtime:major_not_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "semantic_schema-current-minor",
+      "set": {
+        "semantic_schema": "1.2.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "semantic_schema": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "semantic_schema-minor-ahead",
+      "set": {
+        "semantic_schema": "1.3.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "semantic_schema": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "semantic_schema-patch-ahead",
+      "set": {
+        "semantic_schema": "1.2.1"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "semantic_schema": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "semantic_schema-next-major",
+      "set": {
+        "semantic_schema": "2.0.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "semantic_schema": "unsupported_runtime:major_not_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "semantic_schema-migratable-major",
+      "set": {
+        "semantic_schema": "0.9.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "semantic_schema": "supported_with_translation:migration_available",
+        "overall": "supported_with_translation"
+      }
+    },
+    {
+      "name": "semantic_schema-unmigratable-major",
+      "set": {
+        "semantic_schema": "3.0.0"
+      },
+      "pins": {},
+      "host": {
+        "semantic_schema": {
+          "current": "1.2.0",
+          "migratable_majors": [0]
+        }
+      },
+      "expect": {
+        "semantic_schema": "unsupported_runtime:major_not_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "operation_schema-current-minor",
+      "set": {
+        "operation_schema": "1.2.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operation_schema": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "operation_schema-minor-ahead",
+      "set": {
+        "operation_schema": "1.3.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operation_schema": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "operation_schema-patch-ahead",
+      "set": {
+        "operation_schema": "1.2.1"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operation_schema": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "operation_schema-next-major",
+      "set": {
+        "operation_schema": "2.0.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operation_schema": "unsupported_runtime:major_not_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "operation_schema-migratable-major",
+      "set": {
+        "operation_schema": "0.9.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operation_schema": "supported_with_translation:migration_available",
+        "overall": "supported_with_translation"
+      }
+    },
+    {
+      "name": "operation_schema-unmigratable-major",
+      "set": {
+        "operation_schema": "3.0.0"
+      },
+      "pins": {},
+      "host": {
+        "operation_schema": {
+          "current": "1.2.0",
+          "migratable_majors": [0]
+        }
+      },
+      "expect": {
+        "operation_schema": "unsupported_runtime:major_not_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "compiler-older",
+      "set": {
+        "compiler": "0.0.9+c3c3c3c3c3c3"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "compiler": "supported_with_translation:compiler_older",
+        "overall": "supported_with_translation"
+      }
+    },
+    {
+      "name": "compiler-in-range",
+      "set": {
+        "compiler": "0.3.9+c3c3c3c3c3c3"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "compiler": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "compiler-newer",
+      "set": {
+        "compiler": "0.4.0+c3c3c3c3c3c3"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "compiler": "unsupported_runtime:compiler_newer",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "primitive-translatable",
+      "set": {
+        "primitive_set": "sha256:1919191919191919191919191919191919191919191919191919191919191919"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "primitive_set": "supported_with_translation:primitive_translation",
+        "overall": "supported_with_translation"
+      }
+    },
+    {
+      "name": "primitive-unknown",
+      "set": {
+        "primitive_set": "sha256:2020202020202020202020202020202020202020202020202020202020202020"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "primitive_set": "unsupported_runtime:primitive_set_unknown",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "presentation-older",
+      "set": {
+        "presentation": "pv1"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "presentation": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "presentation-newer-degrades",
+      "set": {
+        "presentation": "pv4"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "presentation": "degraded:newer_falls_back",
+        "overall": "degraded"
+      }
+    },
+    {
+      "name": "cache-older-rebuilds",
+      "set": {},
+      "pins": {},
+      "host": {
+        "cache_format": 2
+      },
+      "expect": {
+        "cache_format": "supported_with_translation:cache_rebuild",
+        "overall": "supported_with_translation"
+      }
+    },
+    {
+      "name": "cache-newer",
+      "set": {
+        "cache_format": 3
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "cache_format": "unsupported_runtime:cache_newer",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "runtime-same-major",
+      "set": {
+        "runtime": "0.2.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "runtime": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "runtime-newer",
+      "set": {
+        "runtime": "0.3.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "runtime": "unsupported_runtime:produced_by_newer_runtime",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "runtime-older-major",
+      "set": {},
+      "pins": {},
+      "host": {
+        "runtime": "1.0.0"
+      },
+      "expect": {
+        "runtime": "supported_with_translation:older_runtime_major",
+        "overall": "supported_with_translation"
+      }
+    },
+    {
+      "name": "policy-minimum",
+      "set": {
+        "policy": 3
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "policy": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "policy-below-minimum",
+      "set": {
+        "policy": 1
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "policy": "needs_reauth:policy_below_minimum",
+        "overall": "needs_reauth"
+      }
+    },
+    {
+      "name": "policy-revoked",
+      "set": {
+        "policy": 2
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "policy": "security_revoked:policy_revoked",
+        "overall": "security_revoked"
+      }
+    },
+    {
+      "name": "source-compatible-fingerprint",
+      "set": {},
+      "pins": {},
+      "host": {
+        "observed": {
+          "fingerprint": "sha256:3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b3b",
+          "variant": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        }
+      },
+      "expect": {
+        "source_app": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "source-fingerprint-changed",
+      "set": {},
+      "pins": {},
+      "host": {
+        "observed": {
+          "fingerprint": "sha256:3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c",
+          "variant": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+        }
+      },
+      "expect": {
+        "source_app": "source_incompatible:fingerprint_changed",
+        "overall": "source_incompatible"
+      }
+    },
+    {
+      "name": "source-variant-changed",
+      "set": {
+        "source_variant": "var_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "source_variant": "source_incompatible:variant_changed",
+        "overall": "source_incompatible"
+      }
+    },
+    {
+      "name": "source-not-observed",
+      "set": {},
+      "pins": {},
+      "host": {
+        "observed": null
+      },
+      "expect": {
+        "source_app": "supported:not_observed",
+        "overall": "supported"
+      }
+    },
+    {
+      "name": "operation-newer-minor",
+      "set": {
+        "operations": {
+          "app.records.update_stage": "1.4.0",
+          "app.records.list": "1.0.2"
+        }
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operations": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "operation-major",
+      "set": {
+        "operations": {
+          "app.records.update_stage": "2.0.0",
+          "app.records.list": "1.0.2"
+        }
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operations": "unsupported_runtime:major_not_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "operation-unknown",
+      "set": {
+        "operations": {
+          "app.records.delete": "1.0.0"
+        }
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operations": "unsupported_runtime:operation_unknown",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "operation-subset",
+      "set": {
+        "operations": {
+          "app.records.list": "1.0.5"
+        }
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "operations": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "pin-matches",
+      "set": {},
+      "pins": {
+        "compiler": "0.1.0+c3c3c3c3c3c3"
+      },
+      "host": {},
+      "expect": {
+        "compiler": "supported:ok",
+        "overall": "supported:ok"
+      }
+    },
+    {
+      "name": "pin-compiler-differs",
+      "set": {
+        "compiler": "0.2.0+c3c3c3c3c3c3"
+      },
+      "pins": {
+        "compiler": "0.1.0+c3c3c3c3c3c3"
+      },
+      "host": {},
+      "expect": {
+        "compiler": "unsupported_runtime:pin_mismatch",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "pin-variant-differs",
+      "set": {},
+      "pins": {
+        "source_variant": "var_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+      },
+      "host": {},
+      "expect": {
+        "source_variant": "source_incompatible:pin_mismatch",
+        "overall": "source_incompatible"
+      }
+    },
+    {
+      "name": "pin-does-not-override-support",
+      "set": {
+        "observation_schema": "1.3.0"
+      },
+      "pins": {
+        "observation_schema": "1.3.0"
+      },
+      "host": {},
+      "expect": {
+        "observation_schema": "unsupported_runtime:newer_than_supported",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "pin-operations",
+      "set": {
+        "operations": {
+          "app.records.update_stage": "1.3.0"
+        }
+      },
+      "pins": {
+        "operations": "app.records.list=1.0.2,app.records.update_stage=1.3.0"
+      },
+      "host": {},
+      "expect": {
+        "operations": "unsupported_runtime:pin_mismatch",
+        "overall": "unsupported_runtime"
+      }
+    },
+    {
+      "name": "overall-is-the-worst-axis",
+      "set": {
+        "presentation": "pv4",
+        "policy": 1
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "presentation": "degraded:newer_falls_back",
+        "policy": "needs_reauth:policy_below_minimum",
+        "overall": "needs_reauth"
+      }
+    },
+    {
+      "name": "revocation-outranks-everything",
+      "set": {
+        "policy": 2,
+        "observation_schema": "2.0.0"
+      },
+      "pins": {},
+      "host": {},
+      "expect": {
+        "policy": "security_revoked:policy_revoked",
+        "observation_schema": "unsupported_runtime:major_not_supported",
+        "overall": "security_revoked"
+      }
+    }
+  ]
+}

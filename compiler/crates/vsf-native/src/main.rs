@@ -1,7 +1,7 @@
 use std::io::{Read, Write};
 use std::process::ExitCode;
 
-const USAGE: &str = "usage: vsf-fabric <emit-fixture --seed N | compile [FILE] | verify [FILE] | redact | pack-gen --seed N --nodes M | pack-analyze [FILE] | pack-bench --seed N --nodes M --iterations K | serve | info>";
+const USAGE: &str = "usage: vsf-fabric <emit-fixture --seed N | compile [FILE] | verify [FILE] | redact | pack-gen --seed N --nodes M | pack-analyze [FILE] | ir-validate [FILE] | pack-bench --seed N --nodes M --iterations K | serve | info>";
 
 fn read_input(path: Option<&String>) -> std::io::Result<Vec<u8>> {
     read_input_limited(path, vsf_canon::MAX_INPUT_BYTES)
@@ -111,6 +111,7 @@ fn serve_loop() -> ExitCode {
         let result: Result<Vec<u8>, &'static str> = match frame[0] {
             b'A' => vsf_observation::analyze(&frame[1..]).map_err(|e| e.code()),
             b'C' => vsf_fabric::compile_envelope(&frame[1..]).map_err(|e| e.code()),
+            b'V' => vsf_ir::api::validate_bytes(&frame[1..]),
             _ => Err("serve.unknown_op"),
         };
         let (status, payload) = match result {
@@ -188,6 +189,29 @@ fn main() -> ExitCode {
                 Ok(bytes) => emit(&bytes),
                 Err(err) => {
                     eprintln!("error: {}", err.code());
+                    ExitCode::from(2)
+                }
+            }
+        }
+        Some("ir-validate") => {
+            let input = match read_input(args.get(1)) {
+                Ok(bytes) => bytes,
+                Err(err) => {
+                    eprintln!("io: {err}");
+                    return ExitCode::from(66);
+                }
+            };
+            match vsf_ir::api::validate_report(&input) {
+                Ok((bytes, valid)) => {
+                    let code = emit(&bytes);
+                    if code == ExitCode::SUCCESS && !valid {
+                        ExitCode::from(3)
+                    } else {
+                        code
+                    }
+                }
+                Err(code) => {
+                    eprintln!("error: {code}");
                     ExitCode::from(2)
                 }
             }

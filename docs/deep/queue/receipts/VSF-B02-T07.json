@@ -1,0 +1,41 @@
+{
+  "task_id": "VSF-B02-T07",
+  "status": "DONE",
+  "branch": "vsf/b02-versioned-ir-contracts",
+  "base_commit": "a8f278d047a481a06f20b8c1cdb0fb31213a0df3",
+  "commit": "849801fed233b9a275d9b5755a6a6415ebab6163",
+  "paths": [
+    "compiler/crates/vsf-ir/src/semantics.rs",
+    "schemas/ir/fixtures/semantic/cases.json"
+  ],
+  "acceptance": "Every executable operation carries evidence sources, a passing verification witness whose app, variant class and version range cover the source binding, an authorized context, a determinate effect and verified uncertainty.",
+  "positive": {
+    "fixture": "an active contract with an applicable passing witness is valid",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test semantics",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "failed, missing, wrong-variant, wrong-app and too-narrow-range witnesses each block activation",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test semantics",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (new)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Writes require a source session, VSF caller authentication, freshness and verification; confirmation is required from non-idempotent writes upward.",
+  "performance_memory_storage": "Witness applicability is a version-range containment check.",
+  "known_limitations": [
+    "Witness execution itself arrives with the verifier work in later batches"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B02/logs/VSF-B02-T07.witness-applicability-and-active-operation-invariants.log"
+  ],
+  "review_result": "ACCEPTED"
+}

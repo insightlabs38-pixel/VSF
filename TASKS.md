@@ -2,14 +2,14 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B02-T01`
+**Next eligible:** `VSF-B03-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
 | B00 | G0 | 7/7 | DONE | PROCEED |
 | B01 | G1 | 7/7 | DONE | PROCEED |
-| B02 | G2 | 0/8 | READY | - |
-| B03 | G3 | 0/8 | TODO | - |
+| B02 | G2 | 8/8 | DONE | PROCEED |
+| B03 | G3 | 0/8 | READY | - |
 | B04 | G4 | 0/8 | TODO | - |
 | B05 | G5 | 0/8 | TODO | - |
 | B06 | G6 | 0/8 | TODO | - |
@@ -54,18 +54,18 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B02 · Define and validate versioned IR contracts
 
-- [ ] `VSF-B02-T01` Specify EnvironmentCapabilityManifest, ObservationIR, SemanticIR, OperationContract, PresentationIR, VersionManifest _(READY)_
-- [ ] `VSF-B02-T02` Define unknown/conflict and effect taxonomy with conservative defaults
-- [ ] `VSF-B02-T03` Build deterministic canonical encoding and hash fixtures, including UTF-8/decimal/time cases
-- [ ] `VSF-B02-T04` Generate TS/Go/Rust bindings and round-trip interoperability tests
-- [ ] `VSF-B02-T05` Describe application tenant/role/locale/source-variant identity
-- [ ] `VSF-B02-T06` Draft compiler/primitive/contract/runtime/source/presentation version matrix
-- [ ] `VSF-B02-T07` Add compatibility/test witnesses to operation contract model
-- [ ] `VSF-B02-T08` Author schema compatibility and promotion policy ADR
+- [x] `VSF-B02-T01` Specify EnvironmentCapabilityManifest, ObservationIR, SemanticIR, OperationContract, PresentationIR, VersionManifest
+- [x] `VSF-B02-T02` Define unknown/conflict and effect taxonomy with conservative defaults
+- [x] `VSF-B02-T03` Build deterministic canonical encoding and hash fixtures, including UTF-8/decimal/time cases
+- [x] `VSF-B02-T04` Generate TS/Go/Rust bindings and round-trip interoperability tests
+- [x] `VSF-B02-T05` Describe application tenant/role/locale/source-variant identity
+- [x] `VSF-B02-T06` Draft compiler/primitive/contract/runtime/source/presentation version matrix
+- [x] `VSF-B02-T07` Add compatibility/test witnesses to operation contract model
+- [x] `VSF-B02-T08` Author schema compatibility and promotion policy ADR
 
 ### B03 · Build primitive registry and conformance harness
 
-- [ ] `VSF-B03-T01` Import and classify all 924 catalog entries as atomic/composite/adapter/service
+- [ ] `VSF-B03-T01` Import and classify all 924 catalog entries as atomic/composite/adapter/service _(READY)_
 - [ ] `VSF-B03-T02` Assign stable ownership, dependencies and required evidence/test semantics
 - [ ] `VSF-B03-T03` Define primitive registration interface and negative-match semantics
 - [ ] `VSF-B03-T04` Implement graph closure verification and cycle detection
