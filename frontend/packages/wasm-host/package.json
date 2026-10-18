@@ -18,5 +18,8 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts"
+  },
+  "devDependencies": {
+    "@vsf/observer": "workspace:*"
   }
 }

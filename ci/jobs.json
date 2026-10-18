@@ -106,7 +106,7 @@
       },
       {
         "name": "go-test",
-        "cmd": ["go", "-C", "backend", "test", "-count=1", "./..."]
+        "cmd": ["go", "-C", "backend", "test", "-race", "-count=1", "./..."]
       }
     ],
     "ts": [
@@ -124,7 +124,19 @@
       },
       {
         "name": "unit-tests",
-        "cmd": ["pnpm", "--filter", "@vsf/schema", "--filter", "@vsf/fixture-apps", "run", "test"]
+        "cmd": [
+          "pnpm",
+          "--filter",
+          "@vsf/schema",
+          "--filter",
+          "@vsf/observer",
+          "--filter",
+          "@vsf/fixture-apps",
+          "--filter",
+          "@vsf/extension",
+          "run",
+          "test"
+        ]
       }
     ],
     "wasm-browser": [
@@ -179,6 +191,28 @@
       {
         "name": "always-passes",
         "cmd": ["node", "-e", "console.log('canary baseline ok')"]
+      }
+    ],
+    "browser": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "build-wasm",
+        "cmd": ["scripts/build-wasm.sh"]
+      },
+      {
+        "name": "build-native",
+        "cmd": ["scripts/build-native.sh"]
+      },
+      {
+        "name": "build-ts",
+        "cmd": ["pnpm", "build:ts"]
+      },
+      {
+        "name": "browser-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/browser-tests", "run", "test"]
       }
     ]
   }

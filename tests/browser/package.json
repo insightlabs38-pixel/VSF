@@ -1,0 +1,19 @@
+{
+  "name": "@vsf/browser-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vsf/extension": "workspace:*",
+    "@vsf/fixture-apps": "workspace:*",
+    "@vsf/observer": "workspace:*",
+    "@vsf/redact": "workspace:*",
+    "@vsf/schema": "workspace:*",
+    "@vsf/wasm-host": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "playwright test"
+  }
+}

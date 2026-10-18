@@ -1,0 +1,43 @@
+{
+  "task_id": "VSF-B01-T05",
+  "status": "DONE",
+  "branch": "vsf/b01-browser-wasm-boundaries",
+  "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+  "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+  "paths": [
+    "tests/browser/bench/capture.ts",
+    "tests/browser/bench/stats.ts",
+    "docs/deep/evidence/VSF-B01/bench/capture.json"
+  ],
+  "acceptance": "Capture, serialization, transfer, decode and recognition are timed independently for 1k, 10k and 50k-node pages with p50/p95/p99/max; transport variants compared.",
+  "positive": {
+    "fixture": "1k/10k/50k seeded pages, 40/20/10 iterations after warm-up",
+    "command": "pnpm --filter @vsf/browser-tests exec node --conditions=source bench/capture.ts docs/deep/evidence/VSF-B01/bench/capture.json",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "number-array versus base64 transport at 100 KB, 1 MB, 4 MB",
+    "command": "pnpm --filter @vsf/browser-tests exec node --conditions=source bench/capture.ts docs/deep/evidence/VSF-B01/bench/capture.json",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only user-authorized origins are observed; form values and secret-shaped text never leave the page; no source application server is contacted; bridge and extension commands are origin- and sender-checked.",
+  "performance_memory_storage": "p50 end-to-end 31 ms / 128 ms / 594 ms for 1k / 10k / 50k nodes; 50k capture 319 ms, pack 177 ms, transfer 44 ms; p99 equals max for n<100",
+  "known_limitations": [
+    "Single 4 vCPU host, headless Chromium 141; absolute numbers are indicative, ratios are the finding"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T05.capture-parse-transport-benchmark.log",
+    "docs/deep/evidence/VSF-B01/bench/capture.json"
+  ],
+  "review_result": "ACCEPTED"
+}

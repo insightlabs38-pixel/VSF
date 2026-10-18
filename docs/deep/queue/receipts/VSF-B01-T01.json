@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B01-T01",
+  "status": "DONE",
+  "branch": "vsf/b01-browser-wasm-boundaries",
+  "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+  "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+  "paths": [
+    "apps/extension",
+    "fixtures/source-apps/public",
+    "tests/browser/specs/extension-observe.spec.ts",
+    "tests/browser/support"
+  ],
+  "acceptance": "Packaged MV3 extension (background 7616 B, content 9530 B, WASM 1004635 B, deterministic id) snapshots only the user-authorized fixture origin; ungranted same-host origin and browser-denied foreign host stay unobserved.",
+  "positive": {
+    "fixture": "forms page on authorized origin",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-observe.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "same-host other port (no VSF grant), different host (no browser permission)",
+    "command": "pnpm --filter @vsf/extension run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only user-authorized origins are observed; form values and secret-shaped text never leave the page; no source application server is contacted; bridge and extension commands are origin- and sender-checked.",
+  "performance_memory_storage": "capture of the forms page to verified digest: see bench/capture.json (1k nodes p50 31 ms end to end)",
+  "known_limitations": [
+    "Authorization prompt path (permissions.request with a user gesture) is not automated; product build requests host access at runtime and is verified manually in B09"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T01.extension-unit.log",
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T01.extension-observes-authorized-origin-only.log",
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T01.extension-package-digests.log"
+  ],
+  "review_result": "ACCEPTED"
+}

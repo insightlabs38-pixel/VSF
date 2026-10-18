@@ -1,0 +1,349 @@
+{
+  "schema": "vsf-bench-boundary-v1",
+  "environment": {
+    "cpus": 4,
+    "cpuModel": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+    "node": "v22.22.0",
+    "chromium": "141.0.7390.37"
+  },
+  "operation": "pack-analyze (decode + validate + sha256 + class histogram)",
+  "note": "latency is per call; childPeakRssKb is the worker's own peak RSS; p99 equals max for n<100",
+  "sizes": [
+    {
+      "nodes": 1000,
+      "packBytes": 31624,
+      "nodeInProcessWasm": {
+        "latencyMs": {
+          "n": 200,
+          "mean": 0.58,
+          "p50": 0.488,
+          "p95": 0.817,
+          "p99": 0.994,
+          "max": 6.202
+        },
+        "processRssDeltaKb": 2048
+      },
+      "nodeSpawnPerCall": {
+        "latencyMs": {
+          "n": 100,
+          "mean": 6.018,
+          "p50": 5.818,
+          "p95": 7.503,
+          "p99": 8.262,
+          "max": 12.195
+        },
+        "childPeakRssKb": 3004
+      },
+      "nodePersistentWorker": {
+        "latencyMs": {
+          "n": 200,
+          "mean": 0.534,
+          "p50": 0.493,
+          "p95": 0.742,
+          "p99": 0.879,
+          "max": 1.704
+        },
+        "childPeakRssKb": 2884
+      },
+      "go": [
+        {
+          "mode": "go-spawn-per-call",
+          "iterations": 100,
+          "pack_bytes": 31624,
+          "p50_ms": 3.088,
+          "p95_ms": 3.444,
+          "p99_ms": 3.604,
+          "max_ms": 9.066,
+          "child_peak_rss_kb": 5540
+        },
+        {
+          "mode": "go-persistent-worker",
+          "iterations": 100,
+          "pack_bytes": 31624,
+          "p50_ms": 0.509,
+          "p95_ms": 0.78,
+          "p99_ms": 0.988,
+          "max_ms": 2.306,
+          "child_peak_rss_kb": 5540,
+          "restart_after_kill_ms": 3.141,
+          "error_after_kill": "write/read failed after kill (detected)"
+        }
+      ],
+      "nativeCompute": {
+        "iterations": 200,
+        "pack_bytes": 31624,
+        "p50_us": 315,
+        "p95_us": 549,
+        "p99_us": 625,
+        "max_us": 919,
+        "peak_rss_kb": 3028
+      },
+      "browserWasm": {
+        "latencyMs": {
+          "n": 200,
+          "mean": 0.563,
+          "p50": 0.5,
+          "p95": 1,
+          "p99": 3.6,
+          "max": 7.6
+        }
+      }
+    },
+    {
+      "nodes": 10000,
+      "packBytes": 315708,
+      "nodeInProcessWasm": {
+        "latencyMs": {
+          "n": 100,
+          "mean": 5.329,
+          "p50": 4.961,
+          "p95": 7.952,
+          "p99": 10.415,
+          "max": 13.163
+        },
+        "processRssDeltaKb": 768
+      },
+      "nodeSpawnPerCall": {
+        "latencyMs": {
+          "n": 60,
+          "mean": 12.026,
+          "p50": 11.549,
+          "p95": 15.143,
+          "p99": 16.929,
+          "max": 16.929
+        },
+        "childPeakRssKb": 3900
+      },
+      "nodePersistentWorker": {
+        "latencyMs": {
+          "n": 100,
+          "mean": 4.704,
+          "p50": 4.423,
+          "p95": 6.328,
+          "p99": 7.567,
+          "max": 9.835
+        },
+        "childPeakRssKb": 3784
+      },
+      "go": [
+        {
+          "mode": "go-spawn-per-call",
+          "iterations": 60,
+          "pack_bytes": 315708,
+          "p50_ms": 7.42,
+          "p95_ms": 9.563,
+          "p99_ms": 10.144,
+          "max_ms": 10.144,
+          "child_peak_rss_kb": 4516
+        },
+        {
+          "mode": "go-persistent-worker",
+          "iterations": 60,
+          "pack_bytes": 315708,
+          "p50_ms": 4.772,
+          "p95_ms": 5.758,
+          "p99_ms": 6.476,
+          "max_ms": 6.476,
+          "child_peak_rss_kb": 4516,
+          "restart_after_kill_ms": 7.17,
+          "error_after_kill": "write/read failed after kill (detected)"
+        }
+      ],
+      "nativeCompute": {
+        "iterations": 100,
+        "pack_bytes": 315708,
+        "p50_us": 3699,
+        "p95_us": 4648,
+        "p99_us": 5582,
+        "max_us": 7042,
+        "peak_rss_kb": 4032
+      },
+      "browserWasm": {
+        "latencyMs": {
+          "n": 100,
+          "mean": 5.221,
+          "p50": 4.7,
+          "p95": 6.9,
+          "p99": 7,
+          "max": 7.2
+        }
+      }
+    },
+    {
+      "nodes": 50000,
+      "packBytes": 1597964,
+      "nodeInProcessWasm": {
+        "latencyMs": {
+          "n": 40,
+          "mean": 33.592,
+          "p50": 28.68,
+          "p95": 50.31,
+          "p99": 50.605,
+          "max": 50.605
+        },
+        "processRssDeltaKb": 3072
+      },
+      "nodeSpawnPerCall": {
+        "latencyMs": {
+          "n": 25,
+          "mean": 31.679,
+          "p50": 29.701,
+          "p95": 38.67,
+          "p99": 40.598,
+          "max": 40.598
+        },
+        "childPeakRssKb": 7768
+      },
+      "nodePersistentWorker": {
+        "latencyMs": {
+          "n": 40,
+          "mean": 21.985,
+          "p50": 21.29,
+          "p95": 24.767,
+          "p99": 28.217,
+          "max": 28.217
+        },
+        "childPeakRssKb": 7748
+      },
+      "go": [
+        {
+          "mode": "go-spawn-per-call",
+          "iterations": 25,
+          "pack_bytes": 1597964,
+          "p50_ms": 33.155,
+          "p95_ms": 43.336,
+          "p99_ms": 50.006,
+          "max_ms": 50.006,
+          "child_peak_rss_kb": 7704
+        },
+        {
+          "mode": "go-persistent-worker",
+          "iterations": 25,
+          "pack_bytes": 1597964,
+          "p50_ms": 24.31,
+          "p95_ms": 34.119,
+          "p99_ms": 35.062,
+          "max_ms": 35.062,
+          "child_peak_rss_kb": 7732,
+          "restart_after_kill_ms": 25.02,
+          "error_after_kill": "write/read failed after kill (detected)"
+        }
+      ],
+      "nativeCompute": {
+        "iterations": 40,
+        "pack_bytes": 1597964,
+        "p50_us": 17614,
+        "p95_us": 19204,
+        "p99_us": 20977,
+        "max_us": 20977,
+        "peak_rss_kb": 9020
+      },
+      "browserWasm": {
+        "latencyMs": {
+          "n": 40,
+          "mean": 31.35,
+          "p50": 29.8,
+          "p95": 41.3,
+          "p99": 41.4,
+          "max": 41.4
+        }
+      }
+    },
+    {
+      "nodes": 200000,
+      "packBytes": 6459036,
+      "nodeInProcessWasm": {
+        "latencyMs": {
+          "n": 15,
+          "mean": 120.83,
+          "p50": 117.033,
+          "p95": 153.82,
+          "p99": 153.82,
+          "max": 153.82
+        },
+        "processRssDeltaKb": 10084
+      },
+      "nodeSpawnPerCall": {
+        "latencyMs": {
+          "n": 10,
+          "mean": 103.008,
+          "p50": 101.578,
+          "p95": 119.085,
+          "p99": 119.085,
+          "max": 119.085
+        },
+        "childPeakRssKb": 22588
+      },
+      "nodePersistentWorker": {
+        "latencyMs": {
+          "n": 15,
+          "mean": 95.715,
+          "p50": 92.321,
+          "p95": 116.991,
+          "p99": 116.991,
+          "max": 116.991
+        },
+        "childPeakRssKb": 22868
+      },
+      "go": [
+        {
+          "mode": "go-spawn-per-call",
+          "iterations": 10,
+          "pack_bytes": 6459036,
+          "p50_ms": 96.545,
+          "p95_ms": 103.048,
+          "p99_ms": 103.048,
+          "max_ms": 103.048,
+          "child_peak_rss_kb": 22588
+        },
+        {
+          "mode": "go-persistent-worker",
+          "iterations": 10,
+          "pack_bytes": 6459036,
+          "p50_ms": 85.267,
+          "p95_ms": 139.527,
+          "p99_ms": 139.527,
+          "max_ms": 139.527,
+          "child_peak_rss_kb": 22780,
+          "restart_after_kill_ms": 92.948,
+          "error_after_kill": "write/read failed after kill (detected)"
+        }
+      ],
+      "nativeCompute": {
+        "iterations": 15,
+        "pack_bytes": 6459036,
+        "p50_us": 94530,
+        "p95_us": 111302,
+        "p99_us": 111302,
+        "max_us": 111302,
+        "peak_rss_kb": 27964
+      },
+      "browserWasm": {
+        "latencyMs": {
+          "n": 15,
+          "mean": 105.947,
+          "p50": 102.7,
+          "p95": 131.8,
+          "p99": 131.8,
+          "max": 131.8
+        }
+      }
+    }
+  ],
+  "failureModes": {
+    "truncatedInput": {
+      "nodeWasm": "pack.truncated",
+      "nativeCli": "error: pack.truncated",
+      "browserWasm": "pack.truncated"
+    },
+    "oversizedInput70MiB": {
+      "nodeWasm": "wasm.alloc_failed",
+      "nativeCli": "error: pack.too_large"
+    },
+    "wasmMemoryNote": "linear memory is never returned to the OS after growth; observed via process RSS delta above",
+    "persistentWorkerKilled": {
+      "observedByNode": "exit=null signal=SIGKILL",
+      "goRestartMeasured": "see go[].restart_after_kill_ms"
+    }
+  }
+}

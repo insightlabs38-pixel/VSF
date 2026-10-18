@@ -1,0 +1,74 @@
+$ cat artifacts/extension/test.build.json artifacts/extension/product.build.json
+{
+  "variant": "test",
+  "extensionId": "lgnekpogndcjggibkbaekekanfonjhie",
+  "files": [
+    {
+      "path": "background.js",
+      "bytes": 7616,
+      "sha256": "6a4362c5d35ca22aab0ab772867b6eb31a5ada1c2796178951fd48a9f3d964a7"
+    },
+    {
+      "path": "content.js",
+      "bytes": 9530,
+      "sha256": "a76887d32d854cc849ef0c36d346d678e84d9bf6e11f48de27729a1a5b1cf7ff"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 1113,
+      "sha256": "e4e2c1b2879f5f1fed94fa6461a5e31e46630d6f3a030d68e645b119e2d3b496"
+    },
+    {
+      "path": "panel.html",
+      "bytes": 366,
+      "sha256": "7740c39b79c2da78a249249cb6f5e2b5a3c85c4bcf5e636b1dcaf4d6d06b45a3"
+    },
+    {
+      "path": "panel.js",
+      "bytes": 858,
+      "sha256": "3faf39c2c46fd0b9e9427ea22e97b6009e806ba297153567deb25c27ab69b8e3"
+    },
+    {
+      "path": "vsf_wasm.wasm",
+      "bytes": 1004635,
+      "sha256": "89e5ace410116fc3833915c299c1244f9a564201b93b6a25a635e5f8fe40301a"
+    }
+  ]
+}
+{
+  "variant": "product",
+  "extensionId": "lgnekpogndcjggibkbaekekanfonjhie",
+  "files": [
+    {
+      "path": "background.js",
+      "bytes": 7616,
+      "sha256": "6a4362c5d35ca22aab0ab772867b6eb31a5ada1c2796178951fd48a9f3d964a7"
+    },
+    {
+      "path": "content.js",
+      "bytes": 9530,
+      "sha256": "a76887d32d854cc849ef0c36d346d678e84d9bf6e11f48de27729a1a5b1cf7ff"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 1059,
+      "sha256": "dbd28ca7fb20cf59cc8141421f36dd8f3ee3dccc2cc0f499dc293c3ea874cf15"
+    },
+    {
+      "path": "panel.html",
+      "bytes": 366,
+      "sha256": "7740c39b79c2da78a249249cb6f5e2b5a3c85c4bcf5e636b1dcaf4d6d06b45a3"
+    },
+    {
+      "path": "panel.js",
+      "bytes": 858,
+      "sha256": "3faf39c2c46fd0b9e9427ea22e97b6009e806ba297153567deb25c27ab69b8e3"
+    },
+    {
+      "path": "vsf_wasm.wasm",
+      "bytes": 1004635,
+      "sha256": "89e5ace410116fc3833915c299c1244f9a564201b93b6a25a635e5f8fe40301a"
+    }
+  ]
+}
+[exit 0]

@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Varifold (development build)",
+  "version": "0.0.1",
+  "description": "Reads user-authorized origins only and hands compact snapshots to the packaged Fabric WASM.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA95EyKt4L1iqCThNmZUADDv/yiPaQIKBXHqo04gtiMAL8t4ModJRY19SlGEUN65yi6iE4euinc49owVFiQ+HaydmgCK/Nhr/5Wvu3v3qxa/riPBLLdJbs3R3Uc6lDk81UUWwo/EAQbvH+Xrnm1LZawbxpz/Riu0Pbddt3w+iuxn1L6oUxiUi0yaRtQ+ZwmAQ2u1kgCM7YXYorMWRLToHqyU9zszZw2ZinS7mZv22htM+/5MlQ+n3GM8VRtvqPP6g+88K12W6LGz2isc01wlIv+f34Q7CPIzJg0VM2K1rglwFfyOX/srW3qsl85+8q5wCJS+AUMFQeCiy2vkBPpIJTGwIDAQAB",
+  "minimum_chrome_version": "120",
+  "background": { "service_worker": "background.js", "type": "module" },
+  "permissions": ["scripting", "storage"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "content_security_policy": { "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'" },
+  "action": { "default_title": "Varifold", "default_popup": "panel.html" }
+}

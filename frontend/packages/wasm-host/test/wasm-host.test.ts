@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { generatePackBytes } from "@vsf/observer";
 import { canonicalize, GOLDEN_SEEDS, generateEnvelopeBytes, parse, sha256Hex } from "@vsf/schema";
 import { EXPECTED_ABI_VERSION, loadFabric, WasmAbiError, WasmCallError } from "../src/index.ts";
 
@@ -26,9 +27,9 @@ test("wasm output is byte-identical to native golden for every seed", async () =
 test("injected incompatible ABI is rejected before any call", async () => {
   await assert.rejects(
     () => loadFabric(injected),
-    (e: unknown) => e instanceof WasmAbiError && e.actual === 1000 && e.expected === 1,
+    (e: unknown) => e instanceof WasmAbiError && e.actual === 1000 && e.expected === 2,
   );
-  await assert.rejects(() => loadFabric(wasm, 2), WasmAbiError);
+  await assert.rejects(() => loadFabric(wasm, 3), WasmAbiError);
 });
 
 test("module without the ABI export is rejected", async () => {
@@ -49,4 +50,21 @@ test("wasm surfaces stable error codes and recovers after errors", async () => {
   const bad = enc.encode('{"schema":"vsf.smoke.envelope/2.0.0","schema_digest":"x","seq":1,"payload":null}');
   assert.throws(() => fabric.compile(bad), { code: "schema.incompatible_major" });
   assert.deepEqual(canonicalize(enc.encode("[1]")), enc.encode("[1]"));
+});
+
+test("a truncated or corrupted module is rejected without partial initialization", async () => {
+  for (const cut of [0, 8, 64, Math.floor(wasm.length / 2), wasm.length - 1]) {
+    await assert.rejects(() => loadFabric(wasm.subarray(0, cut)), Error, `cut ${cut}`);
+  }
+  const corrupted = Uint8Array.from(wasm);
+  corrupted[0] = 0xff;
+  await assert.rejects(() => loadFabric(corrupted));
+});
+
+test("pack analysis through WASM rejects truncated packs and keeps working afterwards", async () => {
+  const fabric = await loadFabric(wasm);
+  const pack = generatePackBytes(5, 300);
+  assert.throws(() => fabric.analyzePack(pack.subarray(0, pack.length - 3)), { code: "pack.truncated" });
+  assert.throws(() => fabric.analyzePack(new Uint8Array()), { code: "pack.empty" });
+  assert.ok(fabric.analyzePack(pack).length > 20);
 });

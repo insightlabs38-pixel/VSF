@@ -1,4 +1,4 @@
-export const EXPECTED_ABI_VERSION = 1;
+export const EXPECTED_ABI_VERSION = 2;
 
 export class WasmAbiError extends Error {
   readonly code = "wasm.abi_mismatch";
@@ -27,6 +27,7 @@ interface Exports {
   vsf_alloc: (len: number) => number;
   vsf_free: (ptr: number, len: number) => void;
   vsf_compile: (ptr: number, len: number) => number;
+  vsf_pack_analyze: (ptr: number, len: number) => number;
   vsf_output_ptr: () => number;
   vsf_output_len: () => number;
   vsf_error_ptr: () => number;
@@ -39,6 +40,7 @@ const REQUIRED = [
   "vsf_alloc",
   "vsf_free",
   "vsf_compile",
+  "vsf_pack_analyze",
   "vsf_output_ptr",
   "vsf_output_len",
   "vsf_error_ptr",
@@ -48,6 +50,7 @@ const REQUIRED = [
 export interface Fabric {
   readonly abiVersion: number;
   compile(envelope: Uint8Array): Uint8Array;
+  analyzePack(pack: Uint8Array): Uint8Array;
 }
 
 export async function loadFabric(wasm: BufferSource, expectedAbi: number = EXPECTED_ABI_VERSION): Promise<Fabric> {
@@ -62,22 +65,24 @@ export async function loadFabric(wasm: BufferSource, expectedAbi: number = EXPEC
   const ex = raw as unknown as Exports;
   const decoder = new TextDecoder();
   const read = (ptr: number, len: number): Uint8Array => new Uint8Array(ex.memory.buffer, ptr, len).slice();
+  const call = (fn: (ptr: number, len: number) => number, input: Uint8Array): Uint8Array => {
+    const ptr = ex.vsf_alloc(input.length);
+    if (ptr === 0) throw new WasmCallError("wasm.alloc_failed");
+    try {
+      new Uint8Array(ex.memory.buffer, ptr, input.length).set(input);
+      const status = fn(ptr, input.length);
+      if (status !== 0) {
+        const code = decoder.decode(read(ex.vsf_error_ptr(), ex.vsf_error_len()));
+        throw new WasmCallError(code || `wasm.status_${status}`);
+      }
+      return read(ex.vsf_output_ptr(), ex.vsf_output_len());
+    } finally {
+      ex.vsf_free(ptr, input.length);
+    }
+  };
   return {
     abiVersion: actual,
-    compile(envelope: Uint8Array): Uint8Array {
-      const ptr = ex.vsf_alloc(envelope.length);
-      if (ptr === 0) throw new WasmCallError("wasm.alloc_failed");
-      try {
-        new Uint8Array(ex.memory.buffer, ptr, envelope.length).set(envelope);
-        const status = ex.vsf_compile(ptr, envelope.length);
-        if (status !== 0) {
-          const code = decoder.decode(read(ex.vsf_error_ptr(), ex.vsf_error_len()));
-          throw new WasmCallError(code || `wasm.status_${status}`);
-        }
-        return read(ex.vsf_output_ptr(), ex.vsf_output_len());
-      } finally {
-        ex.vsf_free(ptr, envelope.length);
-      }
-    },
+    compile: (envelope) => call(ex.vsf_compile, envelope),
+    analyzePack: (pack) => call(ex.vsf_pack_analyze, pack),
   };
 }

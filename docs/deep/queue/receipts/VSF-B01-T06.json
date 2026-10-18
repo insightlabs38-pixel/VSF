@@ -1,0 +1,44 @@
+{
+  "task_id": "VSF-B01-T06",
+  "status": "DONE",
+  "branch": "vsf/b01-browser-wasm-boundaries",
+  "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+  "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+  "paths": [
+    "tests/browser/bench/boundary.ts",
+    "backend/cmd/vsfbench",
+    "compiler/crates/vsf-native/src/main.rs",
+    "docs/deep/adr/ADR-026-browser-and-language-boundaries.md"
+  ],
+  "acceptance": "Throughput, peak memory and failure behavior measured for native in-process, Node WASM, browser WASM, Node/Go spawn-per-call and Node/Go persistent workers at 1k to 200k nodes; decision recorded in ADR-026.",
+  "positive": {
+    "fixture": "1k/10k/50k/200k seeded packs",
+    "command": "pnpm --filter @vsf/browser-tests exec node --conditions=source bench/boundary.ts docs/deep/evidence/VSF-B01/bench/boundary.json",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "truncated pack, 70 MiB oversize, SIGKILLed persistent worker",
+    "command": "pnpm --filter @vsf/browser-tests exec node --conditions=source bench/boundary.ts docs/deep/evidence/VSF-B01/bench/boundary.json",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only user-authorized origins are observed; form values and secret-shaped text never leave the page; no source application server is contacted; bridge and extension commands are origin- and sender-checked.",
+  "performance_memory_storage": "spawn adds about 2.8 ms (Go) to 5.5 ms (Node) per call; persistent worker adds about 0.2 ms; worker RSS 2.9 to 22.9 MB",
+  "known_limitations": [
+    "In-process WASM inside Go and cgo were not measured"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T06.boundary-benchmark.log",
+    "docs/deep/evidence/VSF-B01/bench/boundary.json"
+  ],
+  "review_result": "ACCEPTED"
+}

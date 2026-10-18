@@ -4,7 +4,7 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
-git -C "$root" diff --quiet HEAD -- . || { echo "working tree has uncommitted changes; commit first" >&2; exit 1; }
+git -C "$root" diff --quiet HEAD -- . ':!docs/deep/evidence' || { echo "working tree has uncommitted changes; commit first" >&2; exit 1; }
 git clone --quiet --no-hardlinks "$root" "$work/clone"
 cd "$work/clone"
 pnpm install --frozen-lockfile

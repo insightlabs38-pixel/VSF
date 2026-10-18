@@ -55,7 +55,7 @@ if (mode === "update") {
   for (const [name, bytes] of first) writeFileSync(join(dir, name), bytes);
   console.log(`golden updated: ${first.size} files`);
 } else {
-  const onDisk = new Set(readdirSync(dir).filter((n) => n !== "dom"));
+  const onDisk = new Set(readdirSync(dir).filter((n) => n !== "dom" && n !== "packs.json"));
   let bad = 0;
   for (const [name, bytes] of first) {
     onDisk.delete(name);

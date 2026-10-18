@@ -1,0 +1,3 @@
+$ pnpm --filter @vsf/browser-tests exec node --conditions=source bench/capture.ts docs/deep/evidence/VSF-B01/bench/capture.json
+wrote /home/user/VSF/docs/deep/evidence/VSF-B01/bench/capture.json
+[exit 0]
