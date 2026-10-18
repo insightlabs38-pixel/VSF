@@ -20,6 +20,7 @@
     "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts"
   },
   "devDependencies": {
+    "@vsf/ir": "workspace:*",
     "@vsf/observer": "workspace:*"
   }
 }

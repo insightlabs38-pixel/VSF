@@ -1,4 +1,4 @@
-export const EXPECTED_ABI_VERSION = 2;
+export const EXPECTED_ABI_VERSION = 3;
 
 export class WasmAbiError extends Error {
   readonly code = "wasm.abi_mismatch";
@@ -28,6 +28,7 @@ interface Exports {
   vsf_free: (ptr: number, len: number) => void;
   vsf_compile: (ptr: number, len: number) => number;
   vsf_pack_analyze: (ptr: number, len: number) => number;
+  vsf_ir_validate: (ptr: number, len: number) => number;
   vsf_output_ptr: () => number;
   vsf_output_len: () => number;
   vsf_error_ptr: () => number;
@@ -41,6 +42,7 @@ const REQUIRED = [
   "vsf_free",
   "vsf_compile",
   "vsf_pack_analyze",
+  "vsf_ir_validate",
   "vsf_output_ptr",
   "vsf_output_len",
   "vsf_error_ptr",
@@ -51,6 +53,8 @@ export interface Fabric {
   readonly abiVersion: number;
   compile(envelope: Uint8Array): Uint8Array;
   analyzePack(pack: Uint8Array): Uint8Array;
+  /** Canonical JSON report: decode result, digest and semantic violations. */
+  validateIr(document: Uint8Array): Uint8Array;
 }
 
 export async function loadFabric(wasm: BufferSource, expectedAbi: number = EXPECTED_ABI_VERSION): Promise<Fabric> {
@@ -84,5 +88,6 @@ export async function loadFabric(wasm: BufferSource, expectedAbi: number = EXPEC
     abiVersion: actual,
     compile: (envelope) => call(ex.vsf_compile, envelope),
     analyzePack: (pack) => call(ex.vsf_pack_analyze, pack),
+    validateIr: (document) => call(ex.vsf_ir_validate, document),
   };
 }

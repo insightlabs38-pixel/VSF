@@ -54,6 +54,12 @@ importers:
         specifier: workspace:*
         version: link:../../frontend/packages/wasm-host
 
+  frontend/packages/ir:
+    dependencies:
+      '@vsf/schema':
+        specifier: workspace:*
+        version: link:../schema
+
   frontend/packages/observer:
     dependencies:
       '@vsf/schema':
@@ -68,6 +74,9 @@ importers:
         specifier: workspace:*
         version: link:../schema
     devDependencies:
+      '@vsf/ir':
+        specifier: workspace:*
+        version: link:../ir
       '@vsf/observer':
         specifier: workspace:*
         version: link:../observer
@@ -118,6 +127,12 @@ importers:
       '@vsf/redact':
         specifier: workspace:*
         version: link:../redact
+
+  tools/idlgen:
+    dependencies:
+      '@vsf/schema':
+        specifier: workspace:*
+        version: link:../../frontend/packages/schema
 
   tools/queue:
     dependencies:
