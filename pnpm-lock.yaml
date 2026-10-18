@@ -66,6 +66,9 @@ importers:
 
   tools/queue:
     dependencies:
+      '@vsf/checks':
+        specifier: workspace:*
+        version: link:../checks
       '@vsf/redact':
         specifier: workspace:*
         version: link:../redact

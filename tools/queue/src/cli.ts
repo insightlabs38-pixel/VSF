@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { checkEvidence, initEvidence } from "./evidence.ts";
+import { checkEvidence, initEvidence, recordRun } from "./evidence.ts";
 import type { Decision, GateStatus, State, TaskStatus } from "./model.ts";
 import { nextTask } from "./queue.ts";
 import { renderTasks } from "./render.ts";
@@ -105,6 +105,14 @@ try {
       console.log(initEvidence(p, loadPlan(p), args[0] ?? ""));
       break;
     }
+    case "evidence-run": {
+      const sep = args.indexOf("--");
+      const [batch = "", taskId = "", name = ""] = args.slice(0, sep);
+      const entry = recordRun(p, loadPlan(p), batch, taskId, name, args.slice(sep + 1));
+      console.log(`${entry.result} ${taskId}/${name} exit=${entry.exit_code}`);
+      process.exit(entry.exit_code === 0 ? 0 : 1);
+      break;
+    }
     case "evidence-check": {
       const problems = checkEvidence(p, loadPlan(p), args[0] ?? "");
       const code = printProblems(problems);
@@ -114,7 +122,7 @@ try {
     }
     default:
       console.error(
-        "usage: queue <validate|next|render|init|task|gate|report-check|receipt-check|evidence-init|evidence-check>",
+        "usage: queue <validate|next|render|init|task|gate|report-check|receipt-check|evidence-init|evidence-run|evidence-check>",
       );
       process.exit(64);
   }

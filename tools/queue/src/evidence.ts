@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { runLogged } from "@vsf/checks/runlogged";
 import { findSecretShapes } from "@vsf/redact";
 import { Ajv } from "ajv";
 import type { Plan } from "./model.ts";
@@ -86,4 +87,38 @@ export function checkEvidence(p: Paths, plan: Plan, batch: string): Problem[] {
       out.push({ id: "evidence.secret-shape", message: `${file.replace(`${p.root}/`, "")}: ${kinds.join(",")}` });
   }
   return out;
+}
+
+/** Runs a command, stores its redacted log under the bundle and appends a checksummed run record. */
+export function recordRun(
+  p: Paths,
+  plan: Plan,
+  batch: string,
+  taskId: string,
+  name: string,
+  command: string[],
+): EvidenceRun {
+  const dir = evidenceDir(p, batch);
+  const manifestPath = join(dir, "manifest.json");
+  if (!existsSync(manifestPath)) throw new Error(`run evidence-init ${batch} first`);
+  const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as EvidenceManifest;
+  if (taskId !== "GATE" && !plan.tasks.some((t) => t.id === taskId && t.batch === batch)) {
+    throw new Error(`${taskId} is not a task of ${batch}`);
+  }
+  if (manifest.runs.some((r) => r.task_id === taskId && r.name === name))
+    throw new Error(`run ${taskId}/${name} already recorded`);
+  const logName = `${taskId}.${name}`;
+  const run = runLogged(logName, command, join(dir, "logs"), p.root);
+  const entry: EvidenceRun = {
+    task_id: taskId,
+    name,
+    command: command.join(" "),
+    exit_code: run.exitCode,
+    result: run.exitCode === 0 ? "PASS" : "FAIL",
+    log: `logs/${logName}.log`,
+    sha256: run.sha256,
+  };
+  manifest.runs.push(entry);
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  return entry;
 }

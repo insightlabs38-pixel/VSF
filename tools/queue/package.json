@@ -5,6 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "dependencies": {
+    "@vsf/checks": "workspace:*",
     "@vsf/redact": "workspace:*",
     "ajv": "8.20.0"
   },

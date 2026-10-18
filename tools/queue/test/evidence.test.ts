@@ -80,3 +80,20 @@ test("a missing bundle is reported", () => {
   const ctx = closedSandbox();
   assert.deepEqual(ids(ctx), ["evidence.missing"]);
 });
+
+test("recorded runs are checksummed, failures stay FAIL and duplicates are refused", async () => {
+  const { recordRun } = await import("../src/evidence.ts");
+  const ctx = closedSandbox();
+  initEvidence(ctx.paths, ctx.plan, "B01");
+  const ok = recordRun(ctx.paths, ctx.plan, "B01", "VSF-B01-T01", "pass", [
+    process.execPath,
+    "-e",
+    "console.log('fine')",
+  ]);
+  assert.equal(ok.result, "PASS");
+  const bad = recordRun(ctx.paths, ctx.plan, "B01", "VSF-B01-T01", "fail", [process.execPath, "-e", "process.exit(4)"]);
+  assert.deepEqual([bad.result, bad.exit_code], ["FAIL", 4]);
+  assert.deepEqual(ids(ctx), []);
+  assert.throws(() => recordRun(ctx.paths, ctx.plan, "B01", "VSF-B01-T01", "pass", ["true"]), /already recorded/);
+  assert.throws(() => recordRun(ctx.paths, ctx.plan, "B01", "VSF-B00-T01", "x", ["true"]), /not a task of B01/);
+});
