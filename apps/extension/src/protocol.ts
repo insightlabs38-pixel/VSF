@@ -26,6 +26,9 @@ export function normalizeOrigin(value: unknown): string | null {
   }
   if (url.protocol !== "http:" && url.protocol !== "https:") return null;
   if (url.username || url.password || url.origin !== value) return null;
+  // URL parsers disagree on characters such as "*"; only plain DNS labels, IPv4 and bracketed IPv6 pass.
+  if (!/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*|\[[0-9a-f:.]+\])$/.test(url.hostname))
+    return null;
   return url.origin;
 }
 
