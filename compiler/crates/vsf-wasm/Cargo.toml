@@ -1,0 +1,30 @@
+[package]
+name = "vsf-wasm"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+inject-incompatible-abi = []
+
+[dependencies]
+vsf-canon.workspace = true
+vsf-fabric.workspace = true
+
+[dev-dependencies]
+vsf-fixtures.workspace = true
+
+[lints.rust]
+unsafe_code = "deny"
+missing_docs = "allow"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"

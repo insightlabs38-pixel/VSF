@@ -1,0 +1,49 @@
+[workspace]
+resolver = "3"
+members = [
+  "crates/vsf-canon",
+  "crates/vsf-schema",
+  "crates/vsf-redact",
+  "crates/vsf-fixtures",
+  "crates/vsf-fabric",
+  "crates/vsf-wasm",
+  "crates/vsf-native",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.97"
+license = "LicenseRef-VSF-Proprietary"
+publish = false
+
+[workspace.dependencies]
+sha2 = { version = "0.11", default-features = false }
+regex = { version = "1", default-features = false, features = ["std", "unicode", "perf"] }
+vsf-canon = { path = "crates/vsf-canon" }
+vsf-schema = { path = "crates/vsf-schema" }
+vsf-redact = { path = "crates/vsf-redact" }
+vsf-fixtures = { path = "crates/vsf-fixtures" }
+vsf-fabric = { path = "crates/vsf-fabric" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "allow"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+debug = false
+incremental = false
+
+[profile.dev]
+panic = "unwind"
