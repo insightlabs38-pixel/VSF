@@ -1,0 +1,6 @@
+{
+  "keys": [
+    {"alg":"ed25519","id":"vsf-dev-1","public_key":"663563d65fe5508d57356f4217584159e839c2696dd53be9f7f00e482d8c18b3","purpose":"development","status":"active"}
+  ],
+  "schema": "vsf-package-trust-v1"
+}

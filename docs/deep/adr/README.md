@@ -33,3 +33,4 @@ Revisit when: trigger
 | [025](ADR-025-foundation-toolchain-and-layout.md) | Foundation toolchain, layout, canonical profile and dependencies | accepted |
 | [027](ADR-027-versioned-ir-contracts.md) | Versioned IR contracts, semantics and identity | accepted |
 | [028](ADR-028-schema-compatibility-and-promotion.md) | Schema compatibility and promotion policy | accepted |
+| [029](ADR-029-primitive-registry-and-package.md) | Primitive registry, conformance harness and signed package | accepted |

@@ -1,6 +1,6 @@
 use std::path::Path;
 use std::process::ExitCode;
-use vsf_registry::{fixture, harness, import, json, model, policy};
+use vsf_registry::{dashboard, fixture, harness, import, json, manifest, model, policy};
 
 fn read(path: &str) -> Result<Vec<u8>, String> {
     std::fs::read(path).map_err(|e| format!("{path}: {e}"))
@@ -40,7 +40,83 @@ fn run(args: &[String]) -> Result<String, String> {
                 pkg.fixtures.len()
             ))
         }
-        _ => Err("usage: vsf-registry <import|gen-fixtures|check>".into()),
+        Some("dashboard") => {
+            let root = Path::new(
+                args.get(1)
+                    .ok_or("usage: dashboard <repo-root> [--write|--check]")?,
+            );
+            let target = root.join(manifest::DASHBOARD);
+            let dash = dashboard::Dashboard::build(
+                &harness::load_package(root).map_err(|e| e.to_string())?,
+            );
+            let want = json::pretty(&dash.encode());
+            match args.get(2).map(String::as_str) {
+                Some("--write") => {
+                    std::fs::write(&target, &want).map_err(|e| e.to_string())?;
+                    Ok(dash.render())
+                }
+                Some("--check") => match std::fs::read_to_string(&target) {
+                    Ok(have) if have == want => Ok(dash.render()),
+                    _ => Err(format!(
+                        "{} is stale; rerun with --write",
+                        manifest::DASHBOARD
+                    )),
+                },
+                _ => Ok(dash.render()),
+            }
+        }
+        Some("manifest") => {
+            let root = Path::new(
+                args.get(2)
+                    .ok_or("usage: manifest <build|verify|trust> <repo-root>")?,
+            );
+            match args.get(1).map(String::as_str) {
+                Some("build") => {
+                    let signer = match std::env::var("VSF_PACKAGE_SIGNING_SEED") {
+                        Ok(seed) => manifest::Signer::from_seed_hex(
+                            &std::env::var("VSF_PACKAGE_SIGNING_KEY_ID")
+                                .map_err(|_| "VSF_PACKAGE_SIGNING_KEY_ID is required")?,
+                            &seed,
+                        ),
+                        Err(_) if args.iter().any(|a| a == "--dev") => {
+                            manifest::Signer::development()
+                        }
+                        Err(_) => return Err("set VSF_PACKAGE_SIGNING_SEED or pass --dev".into()),
+                    }
+                    .map_err(|e| e.to_string())?;
+                    let pkg = harness::load_package(root).map_err(|e| e.to_string())?;
+                    let m = manifest::build(&pkg, &signer).map_err(|e| e.to_string())?;
+                    std::fs::write(root.join(manifest::MANIFEST), json::pretty(&m))
+                        .map_err(|e| e.to_string())?;
+                    Ok(format!(
+                        "signed {} primitives with {}\n",
+                        pkg.registry.entries.len(),
+                        signer.key_id
+                    ))
+                }
+                Some("trust") => {
+                    let trust = manifest::Trust::development().map_err(|e| e.to_string())?;
+                    std::fs::write(root.join(manifest::TRUST), json::pretty(&trust.encode()))
+                        .map_err(|e| e.to_string())?;
+                    Ok("wrote development trust\n".into())
+                }
+                Some("verify") => {
+                    let trust = manifest::Trust::decode(
+                        &model::load(&read(&root.join(manifest::TRUST).to_string_lossy())?)
+                            .map_err(|e| e.to_string())?,
+                    )
+                    .map_err(|e| e.to_string())?;
+                    let bytes = read(&root.join(manifest::MANIFEST).to_string_lossy())?;
+                    let v = manifest::verify(root, &bytes, &trust).map_err(|e| e.to_string())?;
+                    Ok(format!(
+                        "verified v{} key={} ({}) files={} primitives={} root={}\n",
+                        v.version, v.key_id, v.purpose, v.files, v.primitives, v.primitive_root
+                    ))
+                }
+                _ => Err("usage: manifest <build|verify|trust> <repo-root>".into()),
+            }
+        }
+        _ => Err("usage: vsf-registry <import|gen-fixtures|check|dashboard|manifest>".into()),
     }
 }
 

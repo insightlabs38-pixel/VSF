@@ -102,3 +102,44 @@ impl Status {
         })
     }
 }
+
+/// Canonical form of a registration; the manifest digests this, so field order is not a hazard.
+pub fn encode_registration(r: &Registration) -> Value {
+    use crate::json::{list, object, s};
+    let evidence = r
+        .evidence
+        .iter()
+        .map(|e| {
+            let mut f = vec![("id", s(&e.id)), ("kind", s(&e.kind))];
+            if e.independent {
+                f.push(("independent", Value::Bool(true)));
+            }
+            if let Some(p) = &e.polarity {
+                f.push(("polarity", s(p)));
+            }
+            object(f)
+        })
+        .collect();
+    let mut fields = vec![
+        ("evidence", Value::Array(evidence)),
+        ("execution", list(&r.execution)),
+        ("id", s(&r.id)),
+        ("maturity", s(r.maturity.as_str())),
+        ("needs_capabilities", list(&r.needs_capabilities)),
+    ];
+    if let Some(i) = &r.implementation {
+        fields.push(("implementation", s(i)));
+    }
+    if let Some(q) = &r.recognition {
+        fields.push((
+            "recognition",
+            object(vec![
+                ("excludes", list(&q.excludes)),
+                ("precedence", Value::Int(i64::from(q.precedence))),
+                ("produces", s(&q.produces)),
+                ("signature", list(&q.signature)),
+            ]),
+        ));
+    }
+    object(fields)
+}

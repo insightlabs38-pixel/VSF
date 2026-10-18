@@ -8,6 +8,7 @@
       "!**/generated.ts",
       "!docs/deep",
       "!fixtures/golden",
+      "!fixtures/primitives",
       "!registry",
       "!artifacts",
       "!compiler/target",

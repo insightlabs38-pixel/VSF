@@ -13,6 +13,7 @@ path = "src/main.rs"
 [dependencies]
 vsf-canon.workspace = true
 vsf-ir.workspace = true
+ed25519-compact.workspace = true
 regex.workspace = true
 
 [lints]

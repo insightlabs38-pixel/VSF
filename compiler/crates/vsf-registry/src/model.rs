@@ -87,6 +87,24 @@ pub struct Entry {
     pub maturity: Maturity,
 }
 
+impl Entry {
+    pub fn encode(&self) -> Value {
+        object(vec![
+            ("family", s(&self.family)),
+            ("family_code", s(&self.family_code)),
+            ("id", s(&self.id)),
+            ("kind", s(self.kind.as_str())),
+            ("launch_priority", s(&self.launch_priority)),
+            ("layer", s(&self.layer)),
+            ("maturity", s(self.maturity.as_str())),
+            ("name", s(&self.name)),
+            ("owner", s(&self.owner)),
+            ("requires", list(&self.requires)),
+            ("rule", s(&self.rule)),
+        ])
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Registry {
     pub catalog_sha256: String,
@@ -99,25 +117,7 @@ impl Registry {
     }
 
     pub fn encode(&self) -> Value {
-        let entries = self
-            .entries
-            .iter()
-            .map(|e| {
-                object(vec![
-                    ("family", s(&e.family)),
-                    ("family_code", s(&e.family_code)),
-                    ("id", s(&e.id)),
-                    ("kind", s(e.kind.as_str())),
-                    ("launch_priority", s(&e.launch_priority)),
-                    ("layer", s(&e.layer)),
-                    ("maturity", s(e.maturity.as_str())),
-                    ("name", s(&e.name)),
-                    ("owner", s(&e.owner)),
-                    ("requires", list(&e.requires)),
-                    ("rule", s(&e.rule)),
-                ])
-            })
-            .collect();
+        let entries = self.entries.iter().map(Entry::encode).collect();
         object(vec![
             ("catalog_sha256", s(&self.catalog_sha256)),
             ("entries", Value::Array(entries)),
