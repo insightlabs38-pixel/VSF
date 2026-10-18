@@ -1,0 +1,27 @@
+[
+ {
+  "seed": 1,
+  "nodes": 0,
+  "digest": "4f17fd4dc28975445a8856431654a11ca293c7e83ce8b17844955fa975e118c9"
+ },
+ {
+  "seed": 1,
+  "nodes": 1,
+  "digest": "ac704fa97d130fff0b562093e105f894a9ee965d22bee351c7702e59a717e9da"
+ },
+ {
+  "seed": 1,
+  "nodes": 100,
+  "digest": "b17c854e1b60df54875cb06a5f12f8d2c0388aa5091e59fb035e147a2fef5390"
+ },
+ {
+  "seed": 42,
+  "nodes": 1000,
+  "digest": "a54a518c0f59a2942c3e73c8ed84c668a11aa7f0eb15ff11115c21141734e1a3"
+ },
+ {
+  "seed": 7,
+  "nodes": 10000,
+  "digest": "a447bf8dd1ed1e147e6bf12d03e11452225166f3f6bb2d4dbaa724b6f6faf035"
+ }
+]

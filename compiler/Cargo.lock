@@ -143,6 +143,7 @@ name = "vsf-fixtures"
 version = "0.0.0"
 dependencies = [
  "vsf-canon",
+ "vsf-observation",
  "vsf-schema",
 ]
 
@@ -153,8 +154,16 @@ dependencies = [
  "vsf-canon",
  "vsf-fabric",
  "vsf-fixtures",
+ "vsf-observation",
  "vsf-redact",
  "vsf-schema",
+]
+
+[[package]]
+name = "vsf-observation"
+version = "0.0.0"
+dependencies = [
+ "vsf-canon",
 ]
 
 [[package]]
@@ -179,4 +188,5 @@ dependencies = [
  "vsf-canon",
  "vsf-fabric",
  "vsf-fixtures",
+ "vsf-observation",
 ]

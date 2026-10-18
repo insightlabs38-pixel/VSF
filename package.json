@@ -23,6 +23,8 @@
     "@playwright/test": "1.56.1",
     "@types/node": "22.20.5",
     "ajv": "8.20.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "esbuild": "0.28.2",
+    "@types/chrome": "0.3.5"
   }
 }

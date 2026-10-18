@@ -15,6 +15,7 @@ inject-incompatible-abi = []
 [dependencies]
 vsf-canon.workspace = true
 vsf-fabric.workspace = true
+vsf-observation.workspace = true
 
 [dev-dependencies]
 vsf-fixtures.workspace = true

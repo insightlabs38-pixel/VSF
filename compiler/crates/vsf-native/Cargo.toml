@@ -16,6 +16,7 @@ vsf-schema.workspace = true
 vsf-fixtures.workspace = true
 vsf-fabric.workspace = true
 vsf-redact.workspace = true
+vsf-observation.workspace = true
 
 [lints]
 workspace = true
