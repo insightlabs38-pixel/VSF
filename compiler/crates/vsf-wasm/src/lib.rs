@@ -34,8 +34,8 @@ pub extern "C" fn vsf_alloc(len: u32) -> *mut u8 {
     ptr
 }
 
-/// # Safety
-/// `ptr` and `len` must come from a prior `vsf_alloc(len)` and not be freed twice.
+// ptr/len must come from one prior vsf_alloc(len) and be freed once.
+#[allow(clippy::missing_safety_doc)]
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn vsf_free(ptr: *mut u8, len: u32) {
     if !ptr.is_null() {
@@ -43,8 +43,8 @@ pub unsafe extern "C" fn vsf_free(ptr: *mut u8, len: u32) {
     }
 }
 
-/// # Safety
-/// `ptr` must point to `len` initialized bytes allocated by `vsf_alloc`.
+// ptr must point to len initialized bytes from vsf_alloc.
+#[allow(clippy::missing_safety_doc)]
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn vsf_compile(ptr: *const u8, len: u32) -> u32 {
     if ptr.is_null() {

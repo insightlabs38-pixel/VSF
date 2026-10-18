@@ -37,7 +37,13 @@ switch (cmd) {
     break;
   }
   case "comments": {
-    const files = (args.length ? args : git("ls-files", "*.rs", "*.ts", "*.go", "*.sh").split("\n").filter(Boolean))
+    const files = (
+      args.length
+        ? args
+        : git("ls-files", "--cached", "--others", "--exclude-standard", "*.rs", "*.ts", "*.go", "*.sh")
+            .split("\n")
+            .filter(Boolean)
+    )
       .filter((f) => !f.startsWith("docs/deep/plan/") && !f.includes("generated."))
       .map((f) => join(root, f));
     const v = lintCommentFiles(files);

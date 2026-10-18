@@ -120,17 +120,7 @@
       },
       {
         "name": "unit-tests",
-        "cmd": [
-          "pnpm",
-          "--filter",
-          "@vsf/schema",
-          "--filter",
-          "@vsf/wasm-host",
-          "--filter",
-          "@vsf/fixture-apps",
-          "run",
-          "test"
-        ]
+        "cmd": ["pnpm", "--filter", "@vsf/schema", "--filter", "@vsf/fixture-apps", "run", "test"]
       }
     ],
     "wasm-browser": [
