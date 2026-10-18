@@ -1,0 +1,27 @@
+$ node tools/checks/src/cli.ts digest artifacts/wasm artifacts/bin
+{
+ "rollup": "bb9d2b86f66c94ec6213cdb9e8f8c3503a8fc2632dfe6b90f433f5df5056b5aa",
+ "entries": [
+  {
+   "path": "artifacts/wasm/vsf_wasm.abi-injected.wasm",
+   "bytes": 988315,
+   "sha256": "f0f421cb562d52b52e9cb221cffe098259b805d7ac0d7269377bb056f6fa2c8d"
+  },
+  {
+   "path": "artifacts/wasm/vsf_wasm.wasm",
+   "bytes": 988314,
+   "sha256": "af9c42bc8f1e2e2182dd5c149aa83131e305d64fe28e18e0ad2231e7bcc14d2a"
+  },
+  {
+   "path": "artifacts/bin/vsf-fabric",
+   "bytes": 1570904,
+   "sha256": "631d2a6204113d1ffab4fccd22dd3f81e0c67367c89e6288d8a43cdb798f1bb1"
+  },
+  {
+   "path": "artifacts/bin/vsfctl",
+   "bytes": 1806484,
+   "sha256": "d19cbb278c455043970885980e6fba7ad87ee86d508c5e5246c6acb7514c6af7"
+  }
+ ]
+}
+[exit 0]

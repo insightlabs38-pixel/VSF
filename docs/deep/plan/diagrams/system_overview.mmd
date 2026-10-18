@@ -1,0 +1,13 @@
+flowchart LR
+A[Source applications] --> B[TS observation + adapters]
+B --> C[Rust Fabric compiler]
+C --> D[Semantic and operation contracts]
+D --> E[Presentation compiler]
+D --> F[Go execution gateway]
+E --> G[Extension / Desktop / Web UI]
+F --> H[CLI / API / MCP]
+F --> I[Browser/API/local/private execution]
+I --> A
+D --> J[SQL metadata + immutable artifact registry]
+K[Identity, capabilities, policy] --> F
+J --> F

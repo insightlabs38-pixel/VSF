@@ -1,0 +1,81 @@
+$ scripts/clean-clone-check.sh
+Scope: all 10 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +14
+++++++++++++++
+Progress: resolved 14, reused 14, downloaded 0, added 14, done
+
+devDependencies:
++ @biomejs/biome 2.5.15
++ @playwright/test 1.56.1
++ @types/node 22.20.5
++ ajv 8.20.0
++ typescript 5.9.3
+
+Done in 796ms using pnpm v10.28.0
+toolchain: ok
+ci-run cross-language: PASS
+clone rollup:  bb9d2b86f66c94ec6213cdb9e8f8c3503a8fc2632dfe6b90f433f5df5056b5aa
+origin rollup: bb9d2b86f66c94ec6213cdb9e8f8c3503a8fc2632dfe6b90f433f5df5056b5aa
+clean-clone reproducible
+   Compiling typenum v1.20.1
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling regex-syntax v0.8.11
+   Compiling aho-corasick v1.1.5
+   Compiling hybrid-array v0.4.15
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling regex-automata v0.4.18
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling vsf-canon v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-canon)
+   Compiling vsf-schema v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-schema)
+   Compiling regex v1.13.1
+   Compiling vsf-redact v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-redact)
+   Compiling vsf-fabric v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-fabric)
+   Compiling vsf-wasm v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-wasm)
+    Finished `release` profile [optimized] target(s) in 9.62s
+   Compiling typenum v1.20.1
+   Compiling cfg-if v1.0.5
+   Compiling memchr v2.8.3
+   Compiling regex-syntax v0.8.11
+   Compiling aho-corasick v1.1.5
+   Compiling hybrid-array v0.4.15
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling regex-automata v0.4.18
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling vsf-canon v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-canon)
+   Compiling vsf-schema v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-schema)
+   Compiling regex v1.13.1
+   Compiling vsf-redact v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-redact)
+   Compiling vsf-fabric v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-fabric)
+   Compiling vsf-wasm v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-wasm)
+    Finished `release` profile [optimized] target(s) in 9.47s
+   Compiling typenum v1.20.1
+   Compiling cfg-if v1.0.5
+   Compiling cpufeatures v0.3.1
+   Compiling memchr v2.8.3
+   Compiling regex-syntax v0.8.11
+   Compiling aho-corasick v1.1.5
+   Compiling hybrid-array v0.4.15
+   Compiling block-buffer v0.12.1
+   Compiling crypto-common v0.2.2
+   Compiling regex-automata v0.4.18
+   Compiling digest v0.11.3
+   Compiling sha2 v0.11.1
+   Compiling vsf-canon v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-canon)
+   Compiling vsf-schema v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-schema)
+   Compiling vsf-fixtures v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-fixtures)
+   Compiling regex v1.13.1
+   Compiling vsf-redact v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-redact)
+   Compiling vsf-fabric v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-fabric)
+   Compiling vsf-native v0.0.0 (/tmp/tmp.rYqDmcZn0z/clone/compiler/crates/vsf-native)
+    Finished `release` profile [optimized] target(s) in 19.58s
+    Finished `release` profile [optimized] target(s) in 0.02s
+    Finished `release` profile [optimized] target(s) in 0.02s
+    Finished `release` profile [optimized] target(s) in 0.02s
+[exit 0]

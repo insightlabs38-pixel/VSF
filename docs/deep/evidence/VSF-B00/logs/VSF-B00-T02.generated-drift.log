@@ -1,0 +1,2 @@
+$ node scripts/gen-schema-constants.ts --check
+[exit 0]

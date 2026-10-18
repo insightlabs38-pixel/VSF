@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "sourceMap": false,
+    "types": [],
+    "customConditions": []
+  },
+  "include": ["src"],
+  "exclude": ["src/cli.ts"]
+}

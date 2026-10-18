@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virtualized table</title>
+<link rel="stylesheet" href="/styles.css">
+<script type="importmap">
+{ "imports": { "@vsf/schema": "/assets/schema/index.js" } }
+</script>
+</head>
+<body>
+<main>
+<h1>Orders (virtualized)</h1>
+<p id="summary" aria-live="polite"></p>
+<div id="grid" role="table" aria-label="Orders" aria-rowcount="10001">
+<div role="rowgroup"><div role="row" aria-rowindex="1"><span role="columnheader">Id</span> <span role="columnheader">Customer</span> <span role="columnheader">Total</span></div></div>
+<div id="viewport" class="viewport" tabindex="0" role="rowgroup"><div id="spacer"></div></div>
+</div>
+<script type="module" src="/assets/client/table.js"></script>
+</main>
+</body>
+</html>

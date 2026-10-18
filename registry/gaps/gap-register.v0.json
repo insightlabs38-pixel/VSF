@@ -1,0 +1,378 @@
+{
+ "schema": "vsf-gap-register-v0",
+ "source": {
+  "file": "docs/deep/plan/09_Reference_Catalog/vsf_preimplementation_gap_register.md",
+  "sha256": "62f87f15625c5733d47ee9e8e05e3c31faeeef4b9da33ee7e17f326321270ec0"
+ },
+ "gaps": [
+  {
+   "id": "GAP-01",
+   "area": "Semantic inference",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Evidence-backed semantic IR with unknown state",
+   "minimum_verification": "Ambiguous operations cannot be silently promoted",
+   "status": "open"
+  },
+  {
+   "id": "GAP-02",
+   "area": "Safe exploration",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Read-only discovery planner and consent for effects",
+   "minimum_verification": "No irreversible action in automatic discovery",
+   "status": "open"
+  },
+  {
+   "id": "GAP-03",
+   "area": "Source reconciliation",
+   "priority": "P0",
+   "catalog_assessment": "New emphasis",
+   "decision": "DOM + contract + protocol evidence precedence",
+   "minimum_verification": "Conflicting observations force review or degrade",
+   "status": "open"
+  },
+  {
+   "id": "GAP-04",
+   "area": "Capability negotiation",
+   "priority": "P0",
+   "catalog_assessment": "New",
+   "decision": "Per-environment permission and feature manifest",
+   "minimum_verification": "Plans fail closed when environment lacks capability",
+   "status": "open"
+  },
+  {
+   "id": "GAP-05",
+   "area": "Browser extension policy",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Packaged interpreter plus approved data schemas",
+   "minimum_verification": "Chrome MV3 policy review and store acceptance",
+   "status": "open"
+  },
+  {
+   "id": "GAP-06",
+   "area": "Native bridge authentication",
+   "priority": "P0",
+   "catalog_assessment": "New",
+   "decision": "Authenticated paired extension and companion",
+   "minimum_verification": "Untrusted webpage cannot invoke localhost API",
+   "status": "open"
+  },
+  {
+   "id": "GAP-07",
+   "area": "Hosted URL egress policy",
+   "priority": "P0",
+   "catalog_assessment": "New",
+   "decision": "Public sandbox network allowlist / prohibited ranges",
+   "minimum_verification": "SSRF and DNS rebinding tests pass",
+   "status": "open"
+  },
+  {
+   "id": "GAP-08",
+   "area": "Session boundaries",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Separate source authentication from VSF client authorization",
+   "minimum_verification": "No cross-user cross-tenant capability exposure",
+   "status": "open"
+  },
+  {
+   "id": "GAP-09",
+   "area": "Source action policy",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Effect classes and confirmation preservation",
+   "minimum_verification": "Destructive/irreversible operations cannot auto-retry",
+   "status": "open"
+  },
+  {
+   "id": "GAP-10",
+   "area": "Operation lifecycle",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Prepared/running/unknown/verified/failed states",
+   "minimum_verification": "Ambiguous timeouts never report unverified success",
+   "status": "open"
+  },
+  {
+   "id": "GAP-11",
+   "area": "Concurrency isolation",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Session-scoped sequencing and source limits",
+   "minimum_verification": "No overlapping stateful actions corrupt source session",
+   "status": "open"
+  },
+  {
+   "id": "GAP-12",
+   "area": "Artifact execution trust",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Signed primitive libraries and provenance-checked plans",
+   "minimum_verification": "Tampered compiled plan cannot execute",
+   "status": "open"
+  },
+  {
+   "id": "GAP-13",
+   "area": "Data minimization",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Scrubbing and selective capture; secure diagnostics",
+   "minimum_verification": "Secrets never appear in logs by default",
+   "status": "open"
+  },
+  {
+   "id": "GAP-14",
+   "area": "UI fidelity escape hatch",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Embedded or side-by-side original when necessary",
+   "minimum_verification": "No loss of accessible critical workflow",
+   "status": "open"
+  },
+  {
+   "id": "GAP-15",
+   "area": "Compatibility score design",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Per operation and per app metrics with held-out corpus",
+   "minimum_verification": "No 99% claims without stratified denominator",
+   "status": "open"
+  },
+  {
+   "id": "GAP-16",
+   "area": "Primitive specification",
+   "priority": "P0",
+   "catalog_assessment": "Expanded",
+   "decision": "Typed registration, preconditions, evidence, tests",
+   "minimum_verification": "New primitive must pass contract harness",
+   "status": "open"
+  },
+  {
+   "id": "GAP-17",
+   "area": "Browser state identity",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Cookies, IDB, session, partition key, passkeys",
+   "minimum_verification": "No assumption of cross-context portability",
+   "status": "open"
+  },
+  {
+   "id": "GAP-18",
+   "area": "Version axes",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Compiler, source app, contract, tenant, locale, runtime",
+   "minimum_verification": "Pinned API contract states compatibility status",
+   "status": "open"
+  },
+  {
+   "id": "GAP-19",
+   "area": "Multi-source permission",
+   "priority": "P1",
+   "catalog_assessment": "New emphasis",
+   "decision": "Track user+source+OAuth scope+capability per operation",
+   "minimum_verification": "No permission bleed through shared compiled artifacts",
+   "status": "open"
+  },
+  {
+   "id": "GAP-20",
+   "area": "Raw vs structured API",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Universal interaction fallback vs semantic operations",
+   "minimum_verification": "Unverified business semantics not named as verified",
+   "status": "open"
+  },
+  {
+   "id": "GAP-21",
+   "area": "Tool catalog scalability",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Lazy namespaces and per-client MCP selection",
+   "minimum_verification": "Agent tools remain discoverable with 1k operations",
+   "status": "open"
+  },
+  {
+   "id": "GAP-22",
+   "area": "MCP 2026 compatibility",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Stateless core, cache hints, tasks, explicit auth",
+   "minimum_verification": "Integration against current Tier-1 SDKs",
+   "status": "open"
+  },
+  {
+   "id": "GAP-23",
+   "area": "Offline/local billing",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Separate product entitlements and provider compute",
+   "minimum_verification": "No per-use fictitious infrastructure fee",
+   "status": "open"
+  },
+  {
+   "id": "GAP-24",
+   "area": "Cost attribution",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Billing by browser-minutes, GB, egress, retries, support",
+   "minimum_verification": "P&L per customer and execution mode observable",
+   "status": "open"
+  },
+  {
+   "id": "GAP-25",
+   "area": "Perceived latency",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Fast paths, ready UI, progress for upstream work",
+   "minimum_verification": "p95 VSF overhead budget excluding source latency",
+   "status": "open"
+  },
+  {
+   "id": "GAP-26",
+   "area": "Renderer framework size",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Native primitives plus selective mature editors",
+   "minimum_verification": "No custom reimplementation of complex terminal semantics",
+   "status": "open"
+  },
+  {
+   "id": "GAP-27",
+   "area": "Internationalization",
+   "priority": "P1",
+   "catalog_assessment": "Missing explicit coverage",
+   "decision": "Locales, pluralization, RTL, units, time zones",
+   "minimum_verification": "Generate usable UI in multilingual test apps",
+   "status": "open"
+  },
+  {
+   "id": "GAP-28",
+   "area": "Assistive tech",
+   "priority": "P1",
+   "catalog_assessment": "Missing explicit coverage",
+   "decision": "Screen readers, live regions, focus and drag alternatives",
+   "minimum_verification": "Automated + manual WCAG 2.2 audits",
+   "status": "open"
+  },
+  {
+   "id": "GAP-29",
+   "area": "Real-time transports",
+   "priority": "P1",
+   "catalog_assessment": "Missing explicit coverage",
+   "decision": "WebRTC, SSE, live-collaboration, backpressure",
+   "minimum_verification": "Streaming and multi-editor fixture suite",
+   "status": "open"
+  },
+  {
+   "id": "GAP-30",
+   "area": "Binary document/printing",
+   "priority": "P1",
+   "catalog_assessment": "Missing explicit coverage",
+   "decision": "Print fidelity, PDF forms, scan/OCR adapter",
+   "minimum_verification": "Export and print results remain usable",
+   "status": "open"
+  },
+  {
+   "id": "GAP-31",
+   "area": "Extension updates",
+   "priority": "P1",
+   "catalog_assessment": "New",
+   "decision": "Install, update, rollback, permission change UX",
+   "minimum_verification": "No broken client/server version skew",
+   "status": "open"
+  },
+  {
+   "id": "GAP-32",
+   "area": "Desktop portability",
+   "priority": "P1",
+   "catalog_assessment": "New",
+   "decision": "OS-specific browser bridge and credential lifecycle",
+   "minimum_verification": "Windows/macOS/Linux supported matrix",
+   "status": "open"
+  },
+  {
+   "id": "GAP-33",
+   "area": "Conflict and staleness",
+   "priority": "P1",
+   "catalog_assessment": "Expanded",
+   "decision": "Operation freshness rules and source events",
+   "minimum_verification": "Cross-session updates never silently overwrite",
+   "status": "open"
+  },
+  {
+   "id": "GAP-34",
+   "area": "Cross-app workflow",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "Composable operations with provenance and approvals",
+   "minimum_verification": "No implied distributed transaction guarantee",
+   "status": "open"
+  },
+  {
+   "id": "GAP-35",
+   "area": "Scientific capability packs",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "Standards-aware file and editor models",
+   "minimum_verification": "Sequence/plate data round-trip tests",
+   "status": "open"
+  },
+  {
+   "id": "GAP-36",
+   "area": "Visual automation boundary",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "Preserve canvas when no trusted structural model",
+   "minimum_verification": "Unrecognized canvas operation stays explicit",
+   "status": "open"
+  },
+  {
+   "id": "GAP-37",
+   "area": "Pricing differentiation",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "Pay for persistence, deployment, teams, hosted compute",
+   "minimum_verification": "Core compiler correctness invariant by tier",
+   "status": "open"
+  },
+  {
+   "id": "GAP-38",
+   "area": "Procurement/vendor relations",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "Provider terms review, deployment allowance",
+   "minimum_verification": "Distribution checklist before public connector",
+   "status": "open"
+  },
+  {
+   "id": "GAP-39",
+   "area": "Performance portability",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "Native Rust/WASM structural IR and compact IPC",
+   "minimum_verification": "Native and WASM outputs match bit-for-bit when specified",
+   "status": "open"
+  },
+  {
+   "id": "GAP-40",
+   "area": "Storage efficiency",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "SQLite hot metadata + ZEROS3 immutable artifacts",
+   "minimum_verification": "Compare against simple FS and object storage baseline",
+   "status": "open"
+  },
+  {
+   "id": "GAP-41",
+   "area": "Enterprise governance",
+   "priority": "P2",
+   "catalog_assessment": "Expanded",
+   "decision": "SSO, audit exports, residency, policy, RBAC",
+   "minimum_verification": "Org-level kill switch and traceability tests",
+   "status": "open"
+  }
+ ]
+}

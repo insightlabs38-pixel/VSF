@@ -1,0 +1,123 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked --workspace
+
+running 8 tests
+test tests::escapes_minimally_and_roundtrips ... ok
+test tests::normalizes_negative_zero ... ok
+test tests::rejects_malformed_and_ambiguous_inputs ... ok
+test tests::orders_keys_by_utf16_code_units ... ok
+test tests::sha256_known_vector ... ok
+test tests::sorts_keys_and_strips_whitespace ... ok
+test tests::shared_vectors_match_every_binding ... ok
+test tests::bounds_depth_and_size ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test tests::compile_rejects_incompatible_schema ... ok
+test tests::compile_is_deterministic_and_redacts ... ok
+test tests::compile_output_is_itself_a_valid_envelope ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test tests::splitmix_matches_reference_vector ... ok
+test tests::generation_is_deterministic_and_seed_sensitive ... ok
+test tests::envelopes_validate ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test incompatible_schema_exits_2_with_code ... ok
+test bad_usage_exits_64 ... ok
+test emit_then_compile_roundtrip_matches_library ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 2 tests
+test golden_outputs_contain_no_unredacted_secret_shapes ... ok
+test native_output_is_byte_identical_to_committed_golden ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 4 tests
+test tests::loads_every_pattern ... ok
+test tests::leaves_non_secrets_untouched ... ok
+test tests::redacts_nested_values_and_keys_deterministically ... ok
+test tests::redacts_every_positive_case_with_its_kind ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 3 tests
+test tests::accepts_current_envelope_and_roundtrips ... ok
+test tests::rejects_incompatible_schemas_with_specific_codes ... ok
+test tests::rejects_missing_invalid_and_unknown_fields ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test tests::alloc_rejects_oversized_requests ... ok
+test tests::errors_surface_stable_codes_and_clear_output ... ok
+test tests::abi_matches_native_compile_exactly ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling vsf-wasm v0.0.0 (/home/user/VSF/compiler/crates/vsf-wasm)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_canon-d3f47e00b039e3f6)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_fabric-6af24353c40b73eb)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_fixtures-105e71d5ac66fefa)
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_fabric-6548f7bd13d72eba)
+     Running tests/cli.rs (compiler/target/debug/deps/cli-c5a98d1987c9c5e8)
+     Running tests/golden.rs (compiler/target/debug/deps/golden-f9e11ac586b8fa09)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_redact-9c440c8a38df3b3f)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_schema-e761455a5d9e0c47)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_wasm-8ca47ffb46925611)
+   Doc-tests vsf_canon
+   Doc-tests vsf_fabric
+   Doc-tests vsf_fixtures
+   Doc-tests vsf_redact
+   Doc-tests vsf_schema
+   Doc-tests vsf_wasm
+[exit 0]

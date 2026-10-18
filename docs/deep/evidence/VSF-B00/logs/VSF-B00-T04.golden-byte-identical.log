@@ -1,0 +1,3 @@
+$ node scripts/golden.ts check
+golden ok: 4 files byte-identical across two runs and on disk
+[exit 0]

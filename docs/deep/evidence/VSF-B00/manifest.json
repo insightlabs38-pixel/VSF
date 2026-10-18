@@ -1,0 +1,322 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B00",
+  "gate": "G0",
+  "runs": [
+    {
+      "task_id": "VSF-B00-T01",
+      "name": "toolchain-pins",
+      "command": "node tools/checks/src/cli.ts toolchain",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T01.toolchain-pins.log",
+      "sha256": "3b1e001a8f6c1c29e067fc2836a5c1575deecb786dd29f56dbb0557d9f25eae2"
+    },
+    {
+      "task_id": "VSF-B00-T01",
+      "name": "toolchain-and-lockfile-negatives",
+      "command": "pnpm --filter @vsf/checks --filter @vsf/adversarial-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T01.toolchain-and-lockfile-negatives.log",
+      "sha256": "337713e69e56e11b2cfe3abcc11a145649777cdd4a912cc6460783dfe12ff7ce"
+    },
+    {
+      "task_id": "VSF-B00-T01",
+      "name": "dep-review-lockfiles",
+      "command": "node tools/checks/src/cli.ts dep-review",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T01.dep-review-lockfiles.log",
+      "sha256": "0ce7a0cb58b42d064662532d4f60668c8fe7b7683910c839962979d9bb89aa11"
+    },
+    {
+      "task_id": "VSF-B00-T01",
+      "name": "clean-clone-reproducible",
+      "command": "scripts/clean-clone-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T01.clean-clone-reproducible.log",
+      "sha256": "6b9e8d137c380bf5708bdddcfbd915b8ca1f094065b1f09351c5c39da4f4a30e"
+    },
+    {
+      "task_id": "VSF-B00-T02",
+      "name": "rust-schema-canon",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T02.rust-schema-canon.log",
+      "sha256": "92410defe3c2d60e12f61ca775ac3c510768a6348cfd40421073e11a726658a8"
+    },
+    {
+      "task_id": "VSF-B00-T02",
+      "name": "ts-schema",
+      "command": "pnpm --filter @vsf/schema --filter @vsf/wasm-host run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T02.ts-schema.log",
+      "sha256": "5bda53dcaeea5b6840ad208e5faeab0f275a50ea6d923acffc4eb141eba4141f"
+    },
+    {
+      "task_id": "VSF-B00-T02",
+      "name": "go-schema",
+      "command": "go -C backend test -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T02.go-schema.log",
+      "sha256": "69fedee0b72abec1cbe070f960cc75c73c1e48ad1ef7ba2119877149889e16fc"
+    },
+    {
+      "task_id": "VSF-B00-T02",
+      "name": "rust-ts-go-chain",
+      "command": "pnpm --filter @vsf/cross-language-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T02.rust-ts-go-chain.log",
+      "sha256": "6d88ac4bdaca11e4c672888f8b85571c07c4eb46415d60799258e92eec88c392"
+    },
+    {
+      "task_id": "VSF-B00-T02",
+      "name": "generated-drift",
+      "command": "node scripts/gen-schema-constants.ts --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T02.generated-drift.log",
+      "sha256": "2ecedccf8740036047f9026be205ea5c4f3010a155c9e7efcc85f3e737cd1360"
+    },
+    {
+      "task_id": "VSF-B00-T03",
+      "name": "fixture-server",
+      "command": "pnpm --filter @vsf/fixture-apps run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T03.fixture-server.log",
+      "sha256": "9218eff3ec250e5a23a27d3f91603324cc5b130de7f9ad9c4414934f7548d108"
+    },
+    {
+      "task_id": "VSF-B00-T03",
+      "name": "browser-e2e-and-wasm-abi",
+      "command": "pnpm --filter @vsf/e2e run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T03.browser-e2e-and-wasm-abi.log",
+      "sha256": "13f4b87f25a40b69d83e4e14c13abb630df2fe099d424fc64f19f9f6f73d1c4c"
+    },
+    {
+      "task_id": "VSF-B00-T03",
+      "name": "wasm-host-abi-negative",
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T03.wasm-host-abi-negative.log",
+      "sha256": "f2e18b04476d96392ac55fd968c1bf85c7549b2daa2c2ce285f95e902d994f8f"
+    },
+    {
+      "task_id": "VSF-B00-T04",
+      "name": "golden-byte-identical",
+      "command": "node scripts/golden.ts check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T04.golden-byte-identical.log",
+      "sha256": "166f171aed9f090d035d0de1c463f5b54c868554a313293283f7ebaa12f8d372"
+    },
+    {
+      "task_id": "VSF-B00-T04",
+      "name": "native-golden-and-redaction",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native -p vsf-redact",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T04.native-golden-and-redaction.log",
+      "sha256": "ea5969d6400dc5ddb6f7e2005e36de1fad70a3a83b7a0c3592b243cb8d8d73fe"
+    },
+    {
+      "task_id": "VSF-B00-T04",
+      "name": "redaction-parity",
+      "command": "pnpm --filter @vsf/redact run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T04.redaction-parity.log",
+      "sha256": "2c2d43303eb4415dee65761eb201045f6e77a757617a31f77648ff493032a9f7"
+    },
+    {
+      "task_id": "VSF-B00-T04",
+      "name": "secret-scan",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T04.secret-scan.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "VSF-B00-T05",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T05.biome.log",
+      "sha256": "52381217a07817fc4e90d879d9f8bc84bd91d627fecbb289dfb402d255b5d739"
+    },
+    {
+      "task_id": "VSF-B00-T05",
+      "name": "clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T05.clippy.log",
+      "sha256": "27bf49ec90bdd658130205ff1fe91ca727cd518642f1eb8bbce6914cdc2f9ebf"
+    },
+    {
+      "task_id": "VSF-B00-T05",
+      "name": "rustfmt",
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T05.rustfmt.log",
+      "sha256": "c4e39a37190232bfa5639c36f34c68e12e10e629056589120a38922c90608dee"
+    },
+    {
+      "task_id": "VSF-B00-T05",
+      "name": "gofmt",
+      "command": "scripts/gofmt-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T05.gofmt.log",
+      "sha256": "c0f28271d4d47306fac872605c06b1cc41b29e7602f82db35a4770b842a85b22"
+    },
+    {
+      "task_id": "VSF-B00-T05",
+      "name": "go-vet",
+      "command": "go -C backend vet ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T05.go-vet.log",
+      "sha256": "378a357f3e99d0cbd361bb4cfc9d949b725af05e38bbcd5f2031dd9dcf765c94"
+    },
+    {
+      "task_id": "VSF-B00-T05",
+      "name": "comment-limit",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T05.comment-limit.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "VSF-B00-T05",
+      "name": "artifact-digest",
+      "command": "node tools/checks/src/cli.ts digest artifacts/wasm artifacts/bin",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T05.artifact-digest.log",
+      "sha256": "64015de741a5a97a89fd607a3660bd973d2be750897f3b7369e26186975c06d5"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-hygiene",
+      "command": "node tools/checks/src/cli.ts ci-run hygiene",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-hygiene.log",
+      "sha256": "bba938f52666ed785a4a10f1b8e6cae61aede4159e7ac6d5a6226e234983adf3"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-native",
+      "command": "node tools/checks/src/cli.ts ci-run native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-native.log",
+      "sha256": "678b09b74ce2bb06b7644bd5a799829e55219e0f4174569edc8f1c164723376e"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-go",
+      "command": "node tools/checks/src/cli.ts ci-run go",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-go.log",
+      "sha256": "cdd71958b2933294c6095125b05ad0c2cf7b202963632db2d3390639fae09a34"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-ts",
+      "command": "node tools/checks/src/cli.ts ci-run ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-ts.log",
+      "sha256": "99e415a0c572f57d83404f4dc99e19993a3cf7d0d0dc984ea210fad180864b99"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-wasm-browser",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-wasm-browser.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-cross-language",
+      "command": "node tools/checks/src/cli.ts ci-run cross-language",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-cross-language.log",
+      "sha256": "a3557a3f5a8f25a6c7f9a3febf62640a81bc0d2318ef251723123556ebdab62a"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-canary",
+      "command": "node tools/checks/src/cli.ts ci-run canary",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-canary.log",
+      "sha256": "cb9ca4bf7787998ed148c72b29ec6c19de6cd9a436032a68b8db0832f70f0c29"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "induced-failure-is-detected",
+      "command": "bash -c VSF_INDUCE_FAILURE=1 node tools/checks/src/cli.ts ci-run canary; test $? -eq 1",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.induced-failure-is-detected.log",
+      "sha256": "c90bf91c71a9a3a845f394c015f247a7b19b77eb56f7f93f5deb1af1d5b7ab80"
+    },
+    {
+      "task_id": "VSF-B00-T06",
+      "name": "ci-verify-canary",
+      "command": "node tools/checks/src/cli.ts ci-verify artifacts/ci/canary",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T06.ci-verify-canary.log",
+      "sha256": "8f7ec22525c71d497ee7ad816004c1d18475a5eb1e17ac340b9410205ed79e2a"
+    },
+    {
+      "task_id": "VSF-B00-T07",
+      "name": "queue-tests",
+      "command": "pnpm --filter @vsf/queue run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T07.queue-tests.log",
+      "sha256": "98f9f4190152c829da5a82bd0b24509464371c8e0b74269fb44276558ee37c8e"
+    },
+    {
+      "task_id": "VSF-B00-T07",
+      "name": "queue-validate",
+      "command": "node tools/queue/src/cli.ts validate --no-git",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T07.queue-validate.log",
+      "sha256": "420ad8101efaa3e769e2c68cc57e32717fdd8648a7d1dbc99d1745f5ab08af48"
+    },
+    {
+      "task_id": "VSF-B00-T07",
+      "name": "catalog-check",
+      "command": "node tools/checks/src/cli.ts catalog --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B00-T07.catalog-check.log",
+      "sha256": "80e06baa8bd956ea02a5bba658faba90ba82d203282a79d18632493994eecb62"
+    }
+  ]
+}

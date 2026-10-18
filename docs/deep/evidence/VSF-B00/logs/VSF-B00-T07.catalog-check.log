@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts catalog --check
+catalog: ok
+[exit 0]

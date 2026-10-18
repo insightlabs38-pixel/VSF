@@ -1,0 +1,23 @@
+{
+  "schema": "vsf-redaction-patterns-v1",
+  "patterns": [
+    {
+      "kind": "private_key_block",
+      "regex": "-----BEGIN [A-Z ]*PRIVATE KEY-----([^-]|-[^-]|--[^-]|---[^-]|----[^-])*-----END [A-Z ]*PRIVATE KEY-----"
+    },
+    { "kind": "private_key_header", "regex": "-----BEGIN [A-Z ]*PRIVATE KEY-----" },
+    { "kind": "aws_access_key", "regex": "(AKIA|ASIA)[0-9A-Z]{16}" },
+    { "kind": "github_token", "regex": "gh[pousr]_[A-Za-z0-9]{36,}" },
+    { "kind": "github_pat", "regex": "github_pat_[A-Za-z0-9_]{22,}" },
+    { "kind": "slack_token", "regex": "xox[abprs]-[A-Za-z0-9-]{10,}" },
+    { "kind": "api_key_sk", "regex": "sk-[A-Za-z0-9_-]{20,}" },
+    { "kind": "jwt", "regex": "eyJ[A-Za-z0-9_-]{8,}[.]eyJ[A-Za-z0-9_-]{8,}[.][A-Za-z0-9_-]{8,}" },
+    { "kind": "bearer_token", "regex": "bearer[ ]+[A-Za-z0-9._~+/=-]{16,}", "flags": "i" },
+    { "kind": "url_credentials", "regex": "[A-Za-z][A-Za-z0-9+.-]*://[^/ \\t\\r\\n:@]+:[^/ \\t\\r\\n@]+@" },
+    {
+      "kind": "keyed_secret",
+      "regex": "(password|passwd|secret|api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret)[\"']?[ ]*[:=][ ]*[\"']?[^ \\t\\r\\n\"',;&]{6,}",
+      "flags": "i"
+    }
+  ]
+}

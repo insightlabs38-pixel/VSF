@@ -1,0 +1,35 @@
+$ pnpm --filter @vsf/schema --filter @vsf/wasm-host run test
+Scope: 2 of 10 workspace projects
+frontend/packages/schema test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+frontend/packages/schema test: ✔ shared canon vectors match Rust and Go expectations (2.503755ms)
+frontend/packages/schema test: ✔ rejects invalid UTF-8 and oversized input (1.196141ms)
+frontend/packages/schema test: ✔ canonicalization is idempotent (0.6291ms)
+frontend/packages/schema test: ✔ sha256 known vector (11.098827ms)
+frontend/packages/schema test: ✔ __proto__ keys stay data and never touch prototypes (0.336693ms)
+frontend/packages/schema test: ✔ accepts current envelope and output is canonical (3.63239ms)
+frontend/packages/schema test: ✔ rejects incompatible schemas with specific codes (0.689121ms)
+frontend/packages/schema test: ✔ rejects missing, invalid and unknown fields (0.5152ms)
+frontend/packages/schema test: ℹ tests 8
+frontend/packages/schema test: ℹ suites 0
+frontend/packages/schema test: ℹ pass 8
+frontend/packages/schema test: ℹ fail 0
+frontend/packages/schema test: ℹ cancelled 0
+frontend/packages/schema test: ℹ skipped 0
+frontend/packages/schema test: ℹ todo 0
+frontend/packages/schema test: ℹ duration_ms 190.514331
+frontend/packages/schema test: Done
+frontend/packages/wasm-host test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+frontend/packages/wasm-host test: ✔ wasm output is byte-identical to native golden for every seed (41.00896ms)
+frontend/packages/wasm-host test: ✔ injected incompatible ABI is rejected before any call (7.410282ms)
+frontend/packages/wasm-host test: ✔ module without the ABI export is rejected (1.078277ms)
+frontend/packages/wasm-host test: ✔ wasm surfaces stable error codes and recovers after errors (5.577659ms)
+frontend/packages/wasm-host test: ℹ tests 4
+frontend/packages/wasm-host test: ℹ suites 0
+frontend/packages/wasm-host test: ℹ pass 4
+frontend/packages/wasm-host test: ℹ fail 0
+frontend/packages/wasm-host test: ℹ cancelled 0
+frontend/packages/wasm-host test: ℹ skipped 0
+frontend/packages/wasm-host test: ℹ todo 0
+frontend/packages/wasm-host test: ℹ duration_ms 223.899665
+frontend/packages/wasm-host test: Done
+[exit 0]

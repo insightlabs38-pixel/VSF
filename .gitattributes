@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.wasm binary
+docs/deep/plan/** -text linguist-vendored
+fixtures/golden/** -text

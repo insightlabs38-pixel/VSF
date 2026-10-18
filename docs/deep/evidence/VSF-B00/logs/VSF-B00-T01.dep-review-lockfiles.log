@@ -1,0 +1,4 @@
+$ node tools/checks/src/cli.ts dep-review
+dep-review: 35 locked packages
+dep-review: ok
+[exit 0]

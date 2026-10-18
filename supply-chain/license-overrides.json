@@ -1,0 +1,13 @@
+{
+  "schema": "vsf-license-overrides-v1",
+  "note": "Licenses of lockfile entries that are not installed on the current platform; verified with `npm view <pkg>@<ver> license`.",
+  "overrides": [
+    { "name": "@biomejs/cli-darwin-arm64", "version": "2.5.15", "license": "MIT OR Apache-2.0" },
+    { "name": "@biomejs/cli-darwin-x64", "version": "2.5.15", "license": "MIT OR Apache-2.0" },
+    { "name": "@biomejs/cli-linux-arm64", "version": "2.5.15", "license": "MIT OR Apache-2.0" },
+    { "name": "@biomejs/cli-linux-arm64-musl", "version": "2.5.15", "license": "MIT OR Apache-2.0" },
+    { "name": "@biomejs/cli-win32-arm64", "version": "2.5.15", "license": "MIT OR Apache-2.0" },
+    { "name": "@biomejs/cli-win32-x64", "version": "2.5.15", "license": "MIT OR Apache-2.0" },
+    { "name": "fsevents", "version": "2.3.2", "license": "MIT" }
+  ]
+}

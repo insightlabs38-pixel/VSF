@@ -1,0 +1,214 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      induce_failure:
+        description: "Append a deliberate failing step to every job"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VSF_INDUCE_FAILURE: ${{ inputs.induce_failure && '1' || '0' }}
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Rust toolchain from manifest
+        run: rustup toolchain install "$(jq -r .rust toolchain/versions.json)" --profile minimal -c rustfmt -c clippy
+      - run: pnpm install --frozen-lockfile
+      - run: node tools/checks/src/cli.ts ci-run hygiene
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-hygiene
+          path: artifacts/ci/hygiene
+          if-no-files-found: error
+
+  native:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Rust toolchain from manifest
+        run: rustup toolchain install "$(jq -r .rust toolchain/versions.json)" --profile minimal -c rustfmt -c clippy -t wasm32-unknown-unknown
+      - run: pnpm install --frozen-lockfile
+      - run: node tools/checks/src/cli.ts ci-run native
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-native
+          path: artifacts/ci/native
+          if-no-files-found: error
+
+  go:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - run: pnpm install --frozen-lockfile
+      - run: node tools/checks/src/cli.ts ci-run go
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-go
+          path: artifacts/ci/go
+          if-no-files-found: error
+
+  ts:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - run: node tools/checks/src/cli.ts ci-run ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-ts
+          path: artifacts/ci/ts
+          if-no-files-found: error
+
+  wasm-browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Rust toolchain from manifest
+        run: rustup toolchain install "$(jq -r .rust toolchain/versions.json)" --profile minimal -c rustfmt -c clippy -t wasm32-unknown-unknown
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: node tools/checks/src/cli.ts ci-run wasm-browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-wasm-browser
+          path: |
+            artifacts/ci/wasm-browser
+            artifacts/wasm
+          if-no-files-found: error
+
+  cross-language:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Rust toolchain from manifest
+        run: rustup toolchain install "$(jq -r .rust toolchain/versions.json)" --profile minimal -c rustfmt -c clippy -t wasm32-unknown-unknown
+      - run: pnpm install --frozen-lockfile
+      - run: node tools/checks/src/cli.ts ci-run cross-language
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-cross-language
+          path: |
+            artifacts/ci/cross-language
+            artifacts/bin
+            artifacts/wasm
+          if-no-files-found: error
+
+  commit-policy:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - name: Commit messages, identity and PR text
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          node tools/checks/src/cli.ts commit-range "$BASE_SHA..$HEAD_SHA"
+          node tools/checks/src/cli.ts pr-text
+
+  failure-canary:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - name: A deliberately failing job must be detected as FAIL with verified logs
+        run: |
+          if VSF_INDUCE_FAILURE=1 node tools/checks/src/cli.ts ci-run canary; then
+            echo "canary job unexpectedly passed" >&2
+            exit 1
+          fi
+          node tools/checks/src/cli.ts ci-verify artifacts/ci/canary
+          grep -q '"status": "FAIL"' artifacts/ci/canary/manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-failure-canary
+          path: artifacts/ci/canary
+          if-no-files-found: error
+
+  gate:
+    if: always()
+    needs: [hygiene, native, go, ts, wasm-browser, cross-language, failure-canary]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: All required jobs must have succeeded
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          echo "$RESULTS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
+          echo "$RESULTS" | jq -e 'all(.[]; .result == "success")' >/dev/null

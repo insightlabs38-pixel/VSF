@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "client",
+    "types": [],
+    "customConditions": []
+  },
+  "include": ["client"]
+}

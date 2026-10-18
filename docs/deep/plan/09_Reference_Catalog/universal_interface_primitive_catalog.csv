@@ -1,0 +1,925 @@
+id,family,family_code,layer,launch_priority,name
+OBS-001,Browser and document observation,OBS,Foundation,Critical,Frame discovery
+OBS-002,Browser and document observation,OBS,Foundation,Critical,Nested iframe enumeration
+OBS-003,Browser and document observation,OBS,Foundation,Critical,Cross-origin frame boundary detection
+OBS-004,Browser and document observation,OBS,Foundation,Critical,Open shadow root traversal
+OBS-005,Browser and document observation,OBS,Foundation,Critical,Closed shadow root boundary detection
+OBS-006,Browser and document observation,OBS,Foundation,Critical,DOM subtree snapshot
+OBS-007,Browser and document observation,OBS,Foundation,Critical,Mutation stream subscription
+OBS-008,Browser and document observation,OBS,Foundation,Critical,Accessibility-tree snapshot
+OBS-009,Browser and document observation,OBS,Foundation,Critical,Accessible-name computation
+OBS-010,Browser and document observation,OBS,Foundation,Critical,ARIA role extraction
+OBS-011,Browser and document observation,OBS,Foundation,Critical,Computed-style snapshot
+OBS-012,Browser and document observation,OBS,Foundation,Critical,Layout rectangle capture
+OBS-013,Browser and document observation,OBS,Foundation,Critical,Paint order capture
+OBS-014,Browser and document observation,OBS,Foundation,Critical,Scroll container discovery
+OBS-015,Browser and document observation,OBS,Foundation,Critical,Focus ownership tracking
+OBS-016,Browser and document observation,OBS,Foundation,Critical,Visible text extraction
+OBS-017,Browser and document observation,OBS,Foundation,Critical,Document metadata reading
+OBS-018,Browser and document observation,OBS,Foundation,Critical,HTML template inspection
+OBS-019,Browser and document observation,OBS,Foundation,Critical,Custom-element registration detection
+OBS-020,Browser and document observation,OBS,Foundation,Critical,DOM slot projection mapping
+OBS-021,Browser and document observation,OBS,Foundation,Critical,Route and URL observation
+OBS-022,Browser and document observation,OBS,Foundation,Critical,History transition observation
+OBS-023,Browser and document observation,OBS,Foundation,Critical,Navigation timing observation
+OBS-024,Browser and document observation,OBS,Foundation,Critical,Resource loading observation
+OBS-025,Browser and document observation,OBS,Foundation,Critical,Console error capture
+OBS-026,Browser and document observation,OBS,Foundation,Critical,Document lifecycle tracking
+OBS-027,Browser and document observation,OBS,Foundation,Critical,Viewport and DPR inspection
+OBS-028,Browser and document observation,OBS,Foundation,Critical,Media-query state observation
+OBS-029,Browser and document observation,OBS,Foundation,Critical,Content security policy observation
+OBS-030,Browser and document observation,OBS,Foundation,Critical,Sandbox attribute inspection
+STRUCT-001,Semantic structure and relationships,STRUCT,Core,Critical,Stable element identity
+STRUCT-002,Semantic structure and relationships,STRUCT,Core,Critical,Accessible-label association
+STRUCT-003,Semantic structure and relationships,STRUCT,Core,Critical,Heading outline reconstruction
+STRUCT-004,Semantic structure and relationships,STRUCT,Core,Critical,Landmark identification
+STRUCT-005,Semantic structure and relationships,STRUCT,Core,Critical,Section hierarchy recognition
+STRUCT-006,Semantic structure and relationships,STRUCT,Core,Critical,Parent-child relationship inference
+STRUCT-007,Semantic structure and relationships,STRUCT,Core,Critical,Sibling group recognition
+STRUCT-008,Semantic structure and relationships,STRUCT,Core,Critical,Repeated component detection
+STRUCT-009,Semantic structure and relationships,STRUCT,Core,Critical,List and list-item recognition
+STRUCT-010,Semantic structure and relationships,STRUCT,Core,Critical,Definition-list recognition
+STRUCT-011,Semantic structure and relationships,STRUCT,Core,Critical,Breadcrumb recognition
+STRUCT-012,Semantic structure and relationships,STRUCT,Core,Critical,Toolbar recognition
+STRUCT-013,Semantic structure and relationships,STRUCT,Core,Critical,Status and notification recognition
+STRUCT-014,Semantic structure and relationships,STRUCT,Core,Critical,Container role normalization
+STRUCT-015,Semantic structure and relationships,STRUCT,Core,Critical,Tooltip-owner association
+STRUCT-016,Semantic structure and relationships,STRUCT,Core,Critical,Dialog-owner association
+STRUCT-017,Semantic structure and relationships,STRUCT,Core,Critical,Trigger-target association
+STRUCT-018,Semantic structure and relationships,STRUCT,Core,Critical,Form-field grouping
+STRUCT-019,Semantic structure and relationships,STRUCT,Core,Critical,Fieldset and legend binding
+STRUCT-020,Semantic structure and relationships,STRUCT,Core,Critical,Required-field identification
+STRUCT-021,Semantic structure and relationships,STRUCT,Core,Critical,Error-message association
+STRUCT-022,Semantic structure and relationships,STRUCT,Core,Critical,Description association
+STRUCT-023,Semantic structure and relationships,STRUCT,Core,Critical,Active-descendant resolution
+STRUCT-024,Semantic structure and relationships,STRUCT,Core,Critical,Selected-item relation
+STRUCT-025,Semantic structure and relationships,STRUCT,Core,Critical,Expanded-content relation
+STRUCT-026,Semantic structure and relationships,STRUCT,Core,Critical,Tree-parent relation
+STRUCT-027,Semantic structure and relationships,STRUCT,Core,Critical,Tab-panel relation
+STRUCT-028,Semantic structure and relationships,STRUCT,Core,Critical,Table-header association
+STRUCT-029,Semantic structure and relationships,STRUCT,Core,Critical,Semantic confidence provenance
+STRUCT-030,Semantic structure and relationships,STRUCT,Core,Critical,Structural fingerprinting
+LAYOUT-001,Geometry and visual interpretation,LAYOUT,Core,Core,Box-model measurement
+LAYOUT-002,Geometry and visual interpretation,LAYOUT,Core,Core,Flow layout detection
+LAYOUT-003,Geometry and visual interpretation,LAYOUT,Core,Core,Flex layout detection
+LAYOUT-004,Geometry and visual interpretation,LAYOUT,Core,Core,Grid layout detection
+LAYOUT-005,Geometry and visual interpretation,LAYOUT,Core,Core,Table layout detection
+LAYOUT-006,Geometry and visual interpretation,LAYOUT,Core,Core,Absolute-positioned region detection
+LAYOUT-007,Geometry and visual interpretation,LAYOUT,Core,Core,Sticky header detection
+LAYOUT-008,Geometry and visual interpretation,LAYOUT,Core,Core,Sticky footer detection
+LAYOUT-009,Geometry and visual interpretation,LAYOUT,Core,Core,Overlay stacking detection
+LAYOUT-010,Geometry and visual interpretation,LAYOUT,Core,Core,Viewport clipping detection
+LAYOUT-011,Geometry and visual interpretation,LAYOUT,Core,Core,Element occlusion detection
+LAYOUT-012,Geometry and visual interpretation,LAYOUT,Core,Core,Scrollable axis detection
+LAYOUT-013,Geometry and visual interpretation,LAYOUT,Core,Core,Nested scroll containment
+LAYOUT-014,Geometry and visual interpretation,LAYOUT,Core,Core,Resize behavior observation
+LAYOUT-015,Geometry and visual interpretation,LAYOUT,Core,Core,Breakpoint classification
+LAYOUT-016,Geometry and visual interpretation,LAYOUT,Core,Core,Responsive reflow detection
+LAYOUT-017,Geometry and visual interpretation,LAYOUT,Core,Core,RTL layout interpretation
+LAYOUT-018,Geometry and visual interpretation,LAYOUT,Core,Core,Writing-mode interpretation
+LAYOUT-019,Geometry and visual interpretation,LAYOUT,Core,Core,Typography role classification
+LAYOUT-020,Geometry and visual interpretation,LAYOUT,Core,Core,Visual density measurement
+LAYOUT-021,Geometry and visual interpretation,LAYOUT,Core,Core,Alignment group inference
+LAYOUT-022,Geometry and visual interpretation,LAYOUT,Core,Core,Whitespace grouping
+LAYOUT-023,Geometry and visual interpretation,LAYOUT,Core,Core,Container boundary inference
+LAYOUT-024,Geometry and visual interpretation,LAYOUT,Core,Core,Icon-text association
+LAYOUT-025,Geometry and visual interpretation,LAYOUT,Core,Core,Color semantic mapping
+LAYOUT-026,Geometry and visual interpretation,LAYOUT,Core,Core,Contrast estimation
+LAYOUT-027,Geometry and visual interpretation,LAYOUT,Core,Core,Touch-target estimation
+LAYOUT-028,Geometry and visual interpretation,LAYOUT,Core,Core,Visual affordance recognition
+LAYOUT-029,Geometry and visual interpretation,LAYOUT,Core,Core,SVG element geometry
+LAYOUT-030,Geometry and visual interpretation,LAYOUT,Core,Core,High-DPI coordinate translation
+EVENT-001,Interaction and event mechanics,EVENT,Foundation,Critical,Pointer click
+EVENT-002,Interaction and event mechanics,EVENT,Foundation,Critical,Double click
+EVENT-003,Interaction and event mechanics,EVENT,Foundation,Critical,Context menu activation
+EVENT-004,Interaction and event mechanics,EVENT,Foundation,Critical,Pointer hover
+EVENT-005,Interaction and event mechanics,EVENT,Foundation,Critical,Pointer press-and-hold
+EVENT-006,Interaction and event mechanics,EVENT,Foundation,Critical,Pointer drag
+EVENT-007,Interaction and event mechanics,EVENT,Foundation,Critical,Drag and drop
+EVENT-008,Interaction and event mechanics,EVENT,Foundation,Critical,Drag autoscroll
+EVENT-009,Interaction and event mechanics,EVENT,Foundation,Critical,Pointer capture handling
+EVENT-010,Interaction and event mechanics,EVENT,Foundation,Critical,Touch tap
+EVENT-011,Interaction and event mechanics,EVENT,Foundation,Critical,Touch long press
+EVENT-012,Interaction and event mechanics,EVENT,Foundation,Critical,Pinch gesture
+EVENT-013,Interaction and event mechanics,EVENT,Foundation,Critical,Wheel scroll
+EVENT-014,Interaction and event mechanics,EVENT,Foundation,Critical,Keyboard text entry
+EVENT-015,Interaction and event mechanics,EVENT,Foundation,Critical,Keyboard shortcut
+EVENT-016,Interaction and event mechanics,EVENT,Foundation,Critical,Modifier chord
+EVENT-017,Interaction and event mechanics,EVENT,Foundation,Critical,Keyboard navigation
+EVENT-018,Interaction and event mechanics,EVENT,Foundation,Critical,Focus and blur
+EVENT-019,Interaction and event mechanics,EVENT,Foundation,Critical,IME composition
+EVENT-020,Interaction and event mechanics,EVENT,Foundation,Critical,Clipboard copy
+EVENT-021,Interaction and event mechanics,EVENT,Foundation,Critical,Clipboard paste
+EVENT-022,Interaction and event mechanics,EVENT,Foundation,Critical,Selection range manipulation
+EVENT-023,Interaction and event mechanics,EVENT,Foundation,Critical,Native input event dispatch
+EVENT-024,Interaction and event mechanics,EVENT,Foundation,Critical,Change event observation
+EVENT-025,Interaction and event mechanics,EVENT,Foundation,Critical,Submit event observation
+EVENT-026,Interaction and event mechanics,EVENT,Foundation,Critical,Prevent-default detection
+EVENT-027,Interaction and event mechanics,EVENT,Foundation,Critical,Debounced input stabilization
+EVENT-028,Interaction and event mechanics,EVENT,Foundation,Critical,Animation completion wait
+EVENT-029,Interaction and event mechanics,EVENT,Foundation,Critical,Transition completion wait
+EVENT-030,Interaction and event mechanics,EVENT,Foundation,Critical,Hit-target revalidation
+EVENT-031,Interaction and event mechanics,EVENT,Foundation,Critical,Interaction cancellation
+FORMS-001,Forms and standard widgets,FORMS,Capability,Critical,Single-line text input
+FORMS-002,Forms and standard widgets,FORMS,Capability,Critical,Multiline text area
+FORMS-003,Forms and standard widgets,FORMS,Capability,Critical,Password input
+FORMS-004,Forms and standard widgets,FORMS,Capability,Critical,Email input
+FORMS-005,Forms and standard widgets,FORMS,Capability,Critical,Telephone input
+FORMS-006,Forms and standard widgets,FORMS,Capability,Critical,URL input
+FORMS-007,Forms and standard widgets,FORMS,Capability,Critical,Integer input
+FORMS-008,Forms and standard widgets,FORMS,Capability,Critical,Decimal input
+FORMS-009,Forms and standard widgets,FORMS,Capability,Critical,Currency input
+FORMS-010,Forms and standard widgets,FORMS,Capability,Critical,Percentage input
+FORMS-011,Forms and standard widgets,FORMS,Capability,Critical,Date input
+FORMS-012,Forms and standard widgets,FORMS,Capability,Critical,Time input
+FORMS-013,Forms and standard widgets,FORMS,Capability,Critical,Date-time input
+FORMS-014,Forms and standard widgets,FORMS,Capability,Critical,Month and year input
+FORMS-015,Forms and standard widgets,FORMS,Capability,Critical,Range slider
+FORMS-016,Forms and standard widgets,FORMS,Capability,Critical,Checkbox
+FORMS-017,Forms and standard widgets,FORMS,Capability,Critical,Radio group
+FORMS-018,Forms and standard widgets,FORMS,Capability,Critical,Native select
+FORMS-019,Forms and standard widgets,FORMS,Capability,Critical,Custom select
+FORMS-020,Forms and standard widgets,FORMS,Capability,Critical,Autocomplete combobox
+FORMS-021,Forms and standard widgets,FORMS,Capability,Critical,Multi-select
+FORMS-022,Forms and standard widgets,FORMS,Capability,Critical,Tag input
+FORMS-023,Forms and standard widgets,FORMS,Capability,Critical,Search input
+FORMS-024,Forms and standard widgets,FORMS,Capability,Critical,Toggle switch
+FORMS-025,Forms and standard widgets,FORMS,Capability,Critical,Stepper control
+FORMS-026,Forms and standard widgets,FORMS,Capability,Critical,Rating selector
+FORMS-027,Forms and standard widgets,FORMS,Capability,Critical,Color picker
+FORMS-028,Forms and standard widgets,FORMS,Capability,Critical,File input
+FORMS-029,Forms and standard widgets,FORMS,Capability,Critical,Hidden field dependency
+FORMS-030,Forms and standard widgets,FORMS,Capability,Critical,Conditional form branch
+FORMS-031,Forms and standard widgets,FORMS,Capability,Critical,Repeating form section
+FORMS-032,Forms and standard widgets,FORMS,Capability,Critical,Inline validation
+FORMS-033,Forms and standard widgets,FORMS,Capability,Critical,Server-side validation rendering
+FORMS-034,Forms and standard widgets,FORMS,Capability,Critical,Input mask
+FORMS-035,Forms and standard widgets,FORMS,Capability,Critical,Formatted number field
+FORMS-036,Forms and standard widgets,FORMS,Capability,Critical,Form dirty state
+FORMS-037,Forms and standard widgets,FORMS,Capability,Critical,Form reset
+FORMS-038,Forms and standard widgets,FORMS,Capability,Critical,Form submit
+FORMS-039,Forms and standard widgets,FORMS,Capability,Critical,Wizard form steps
+FORMS-040,Forms and standard widgets,FORMS,Capability,Critical,Dependent dropdown
+NAV-001,"Navigation, menus and selection",NAV,Capability,Critical,Top navigation bar
+NAV-002,"Navigation, menus and selection",NAV,Capability,Critical,Sidebar navigation
+NAV-003,"Navigation, menus and selection",NAV,Capability,Critical,Expandable menu
+NAV-004,"Navigation, menus and selection",NAV,Capability,Critical,Mega menu
+NAV-005,"Navigation, menus and selection",NAV,Capability,Critical,Nested submenu
+NAV-006,"Navigation, menus and selection",NAV,Capability,Critical,Contextual menu
+NAV-007,"Navigation, menus and selection",NAV,Capability,Critical,Command palette
+NAV-008,"Navigation, menus and selection",NAV,Capability,Critical,Tab strip
+NAV-009,"Navigation, menus and selection",NAV,Capability,Critical,Nested tabs
+NAV-010,"Navigation, menus and selection",NAV,Capability,Critical,Accordion
+NAV-011,"Navigation, menus and selection",NAV,Capability,Critical,Disclosure panel
+NAV-012,"Navigation, menus and selection",NAV,Capability,Critical,Breadcrumb route
+NAV-013,"Navigation, menus and selection",NAV,Capability,Critical,Pagination
+NAV-014,"Navigation, menus and selection",NAV,Capability,Critical,Infinite scrolling
+NAV-015,"Navigation, menus and selection",NAV,Capability,Critical,Anchor navigation
+NAV-016,"Navigation, menus and selection",NAV,Capability,Critical,In-page table of contents
+NAV-017,"Navigation, menus and selection",NAV,Capability,Critical,Search-result navigation
+NAV-018,"Navigation, menus and selection",NAV,Capability,Critical,Deep link resolution
+NAV-019,"Navigation, menus and selection",NAV,Capability,Critical,Route parameter binding
+NAV-020,"Navigation, menus and selection",NAV,Capability,Critical,Query-string parameter binding
+NAV-021,"Navigation, menus and selection",NAV,Capability,Critical,Back and forward behavior
+NAV-022,"Navigation, menus and selection",NAV,Capability,Critical,Multi-window navigation
+NAV-023,"Navigation, menus and selection",NAV,Capability,Critical,New-tab action
+NAV-024,"Navigation, menus and selection",NAV,Capability,Critical,Popup window handling
+NAV-025,"Navigation, menus and selection",NAV,Capability,Critical,Modal navigation
+NAV-026,"Navigation, menus and selection",NAV,Capability,Critical,Drawer navigation
+NAV-027,"Navigation, menus and selection",NAV,Capability,Critical,Split-view navigation
+NAV-028,"Navigation, menus and selection",NAV,Capability,Critical,Selection persistence
+NAV-029,"Navigation, menus and selection",NAV,Capability,Critical,Recent-items menu
+NAV-030,"Navigation, menus and selection",NAV,Capability,Critical,Favorites navigation
+TABLE-001,"Tables, grids and collections",TABLE,Capability,Critical,Static HTML table
+TABLE-002,"Tables, grids and collections",TABLE,Capability,Critical,ARIA data grid
+TABLE-003,"Tables, grids and collections",TABLE,Capability,Critical,Virtualized row grid
+TABLE-004,"Tables, grids and collections",TABLE,Capability,Critical,Virtualized column grid
+TABLE-005,"Tables, grids and collections",TABLE,Capability,Critical,Tree grid
+TABLE-006,"Tables, grids and collections",TABLE,Capability,Critical,Pivot table
+TABLE-007,"Tables, grids and collections",TABLE,Capability,Critical,Cross-tab report
+TABLE-008,"Tables, grids and collections",TABLE,Capability,Critical,Frozen row headers
+TABLE-009,"Tables, grids and collections",TABLE,Capability,Critical,Frozen columns
+TABLE-010,"Tables, grids and collections",TABLE,Capability,Critical,Grouped column headers
+TABLE-011,"Tables, grids and collections",TABLE,Capability,Critical,Nested row expansion
+TABLE-012,"Tables, grids and collections",TABLE,Capability,Critical,Row selection
+TABLE-013,"Tables, grids and collections",TABLE,Capability,Critical,Cell selection
+TABLE-014,"Tables, grids and collections",TABLE,Capability,Critical,Range selection
+TABLE-015,"Tables, grids and collections",TABLE,Capability,Critical,Editable cell
+TABLE-016,"Tables, grids and collections",TABLE,Capability,Critical,Bulk cell edit
+TABLE-017,"Tables, grids and collections",TABLE,Capability,Critical,Row actions
+TABLE-018,"Tables, grids and collections",TABLE,Capability,Critical,Bulk row actions
+TABLE-019,"Tables, grids and collections",TABLE,Capability,Critical,Column resize
+TABLE-020,"Tables, grids and collections",TABLE,Capability,Critical,Column reorder
+TABLE-021,"Tables, grids and collections",TABLE,Capability,Critical,Column visibility
+TABLE-022,"Tables, grids and collections",TABLE,Capability,Critical,Sort single field
+TABLE-023,"Tables, grids and collections",TABLE,Capability,Critical,Sort multiple fields
+TABLE-024,"Tables, grids and collections",TABLE,Capability,Critical,Header filters
+TABLE-025,"Tables, grids and collections",TABLE,Capability,Critical,Faceted filters
+TABLE-026,"Tables, grids and collections",TABLE,Capability,Critical,Server-side pagination
+TABLE-027,"Tables, grids and collections",TABLE,Capability,Critical,Client-side pagination
+TABLE-028,"Tables, grids and collections",TABLE,Capability,Critical,Infinite row loading
+TABLE-029,"Tables, grids and collections",TABLE,Capability,Critical,Lazy detail expansion
+TABLE-030,"Tables, grids and collections",TABLE,Capability,Critical,Export selected rows
+TABLE-031,"Tables, grids and collections",TABLE,Capability,Critical,Aggregate footer
+TABLE-032,"Tables, grids and collections",TABLE,Capability,Critical,Cell validation
+TABLE-033,"Tables, grids and collections",TABLE,Capability,Critical,Copy grid range
+TABLE-034,"Tables, grids and collections",TABLE,Capability,Critical,Paste grid range
+TABLE-035,"Tables, grids and collections",TABLE,Capability,Critical,Spreadsheet formulas
+TABLE-036,"Tables, grids and collections",TABLE,Capability,Critical,Cell merge and split
+TABLE-037,"Tables, grids and collections",TABLE,Capability,Critical,Hierarchical grid grouping
+TABLE-038,"Tables, grids and collections",TABLE,Capability,Critical,Grid keyboard navigation
+TABLE-039,"Tables, grids and collections",TABLE,Capability,Critical,Grid loading skeleton
+DATA-001,Data model and entity semantics,DATA,Core,Critical,Entity identification
+DATA-002,Data model and entity semantics,DATA,Core,Critical,Primary-key recognition
+DATA-003,Data model and entity semantics,DATA,Core,Critical,Composite-key recognition
+DATA-004,Data model and entity semantics,DATA,Core,Critical,Record detail view
+DATA-005,Data model and entity semantics,DATA,Core,Critical,Record list view
+DATA-006,Data model and entity semantics,DATA,Core,Critical,Field type inference
+DATA-007,Data model and entity semantics,DATA,Core,Critical,Enum value discovery
+DATA-008,Data model and entity semantics,DATA,Core,Critical,Nullable field detection
+DATA-009,Data model and entity semantics,DATA,Core,Critical,Read-only field detection
+DATA-010,Data model and entity semantics,DATA,Core,Critical,Required field detection
+DATA-011,Data model and entity semantics,DATA,Core,Critical,Default value observation
+DATA-012,Data model and entity semantics,DATA,Core,Critical,Derived field observation
+DATA-013,Data model and entity semantics,DATA,Core,Critical,Nested object extraction
+DATA-014,Data model and entity semantics,DATA,Core,Critical,Collection membership
+DATA-015,Data model and entity semantics,DATA,Core,Critical,Foreign-key-like relationship
+DATA-016,Data model and entity semantics,DATA,Core,Critical,Parent-child entity relation
+DATA-017,Data model and entity semantics,DATA,Core,Critical,Many-to-many relation
+DATA-018,Data model and entity semantics,DATA,Core,Critical,Reference lookup
+DATA-019,Data model and entity semantics,DATA,Core,Critical,Autocomplete record reference
+DATA-020,Data model and entity semantics,DATA,Core,Critical,Record creation
+DATA-021,Data model and entity semantics,DATA,Core,Critical,Record update
+DATA-022,Data model and entity semantics,DATA,Core,Critical,Record deletion
+DATA-023,Data model and entity semantics,DATA,Core,Critical,Record duplication
+DATA-024,Data model and entity semantics,DATA,Core,Critical,Bulk record mutation
+DATA-025,Data model and entity semantics,DATA,Core,Critical,Search query representation
+DATA-026,Data model and entity semantics,DATA,Core,Critical,Filter expression representation
+DATA-027,Data model and entity semantics,DATA,Core,Critical,Sort order representation
+DATA-028,Data model and entity semantics,DATA,Core,Critical,Pagination cursor representation
+DATA-029,Data model and entity semantics,DATA,Core,Critical,Aggregate representation
+DATA-030,Data model and entity semantics,DATA,Core,Critical,Validation constraint capture
+DATA-031,Data model and entity semantics,DATA,Core,Critical,Operation precondition
+DATA-032,Data model and entity semantics,DATA,Core,Critical,Operation postcondition
+DATA-033,Data model and entity semantics,DATA,Core,Critical,Source provenance mapping
+DATA-034,Data model and entity semantics,DATA,Core,Critical,Stable operation identifier
+DOC-001,Documents and rich content,DOC,Capability,Core,Markdown viewer
+DOC-002,Documents and rich content,DOC,Capability,Core,Markdown editor
+DOC-003,Documents and rich content,DOC,Capability,Core,WYSIWYG editor
+DOC-004,Documents and rich content,DOC,Capability,Core,Contenteditable surface
+DOC-005,Documents and rich content,DOC,Capability,Core,Rich text formatting
+DOC-006,Documents and rich content,DOC,Capability,Core,Paragraph style
+DOC-007,Documents and rich content,DOC,Capability,Core,Heading style
+DOC-008,Documents and rich content,DOC,Capability,Core,Bulleted list editing
+DOC-009,Documents and rich content,DOC,Capability,Core,Numbered list editing
+DOC-010,Documents and rich content,DOC,Capability,Core,Nested list editing
+DOC-011,Documents and rich content,DOC,Capability,Core,Table insertion
+DOC-012,Documents and rich content,DOC,Capability,Core,Image insertion
+DOC-013,Documents and rich content,DOC,Capability,Core,Embedded object handling
+DOC-014,Documents and rich content,DOC,Capability,Core,Hyperlink insertion
+DOC-015,Documents and rich content,DOC,Capability,Core,Footnote and citation
+DOC-016,Documents and rich content,DOC,Capability,Core,Math expression editing
+DOC-017,Documents and rich content,DOC,Capability,Core,Equation rendering
+DOC-018,Documents and rich content,DOC,Capability,Core,Comment annotation
+DOC-019,Documents and rich content,DOC,Capability,Core,Track changes
+DOC-020,Documents and rich content,DOC,Capability,Core,Suggestion mode
+DOC-021,Documents and rich content,DOC,Capability,Core,Document outline
+DOC-022,Documents and rich content,DOC,Capability,Core,Document navigation
+DOC-023,Documents and rich content,DOC,Capability,Core,Template placeholders
+DOC-024,Documents and rich content,DOC,Capability,Core,Page break representation
+DOC-025,Documents and rich content,DOC,Capability,Core,Print layout
+DOC-026,Documents and rich content,DOC,Capability,Core,Document revision history
+DOC-027,Documents and rich content,DOC,Capability,Core,Undo and redo stack
+DOC-028,Documents and rich content,DOC,Capability,Core,Autosave acknowledgment
+DOC-029,Documents and rich content,DOC,Capability,Core,Collaborative cursor overlay
+DOC-030,Documents and rich content,DOC,Capability,Core,Attachment inside document
+DOC-031,Documents and rich content,DOC,Capability,Core,Custom inline widgets
+FILES-001,"Files, directories and transfer",FILES,Capability,Core,Single-file upload
+FILES-002,"Files, directories and transfer",FILES,Capability,Core,Multiple-file upload
+FILES-003,"Files, directories and transfer",FILES,Capability,Core,Drag-drop upload
+FILES-004,"Files, directories and transfer",FILES,Capability,Core,Chunked upload
+FILES-005,"Files, directories and transfer",FILES,Capability,Core,Resumable upload
+FILES-006,"Files, directories and transfer",FILES,Capability,Core,Upload progress
+FILES-007,"Files, directories and transfer",FILES,Capability,Core,Upload checksum verification
+FILES-008,"Files, directories and transfer",FILES,Capability,Core,Folder picker
+FILES-009,"Files, directories and transfer",FILES,Capability,Core,Directory tree browser
+FILES-010,"Files, directories and transfer",FILES,Capability,Core,File rename
+FILES-011,"Files, directories and transfer",FILES,Capability,Core,File move
+FILES-012,"Files, directories and transfer",FILES,Capability,Core,File copy
+FILES-013,"Files, directories and transfer",FILES,Capability,Core,File delete
+FILES-014,"Files, directories and transfer",FILES,Capability,Core,File preview
+FILES-015,"Files, directories and transfer",FILES,Capability,Core,File download
+FILES-016,"Files, directories and transfer",FILES,Capability,Core,Bulk download
+FILES-017,"Files, directories and transfer",FILES,Capability,Core,Archive extraction
+FILES-018,"Files, directories and transfer",FILES,Capability,Core,Archive creation
+FILES-019,"Files, directories and transfer",FILES,Capability,Core,Versioned file history
+FILES-020,"Files, directories and transfer",FILES,Capability,Core,File metadata inspection
+FILES-021,"Files, directories and transfer",FILES,Capability,Core,Mime type detection
+FILES-022,"Files, directories and transfer",FILES,Capability,Core,Import wizard
+FILES-023,"Files, directories and transfer",FILES,Capability,Core,Export wizard
+FILES-024,"Files, directories and transfer",FILES,Capability,Core,CSV parsing
+FILES-025,"Files, directories and transfer",FILES,Capability,Core,TSV parsing
+FILES-026,"Files, directories and transfer",FILES,Capability,Core,JSON import
+FILES-027,"Files, directories and transfer",FILES,Capability,Core,XML import
+FILES-028,"Files, directories and transfer",FILES,Capability,Core,Spreadsheet import
+FILES-029,"Files, directories and transfer",FILES,Capability,Core,PDF preview
+FILES-030,"Files, directories and transfer",FILES,Capability,Core,Attachment relationship
+FILES-031,"Files, directories and transfer",FILES,Capability,Core,Object storage browser
+CHART-001,Charts and numerical visualization,CHART,Capability,Core,Line chart
+CHART-002,Charts and numerical visualization,CHART,Capability,Core,Bar chart
+CHART-003,Charts and numerical visualization,CHART,Capability,Core,Stacked bar chart
+CHART-004,Charts and numerical visualization,CHART,Capability,Core,Area chart
+CHART-005,Charts and numerical visualization,CHART,Capability,Core,Scatter plot
+CHART-006,Charts and numerical visualization,CHART,Capability,Core,Bubble chart
+CHART-007,Charts and numerical visualization,CHART,Capability,Core,Pie and donut chart
+CHART-008,Charts and numerical visualization,CHART,Capability,Core,Histogram
+CHART-009,Charts and numerical visualization,CHART,Capability,Core,Box plot
+CHART-010,Charts and numerical visualization,CHART,Capability,Core,Violin plot
+CHART-011,Charts and numerical visualization,CHART,Capability,Core,Heatmap
+CHART-012,Charts and numerical visualization,CHART,Capability,Core,Treemap
+CHART-013,Charts and numerical visualization,CHART,Capability,Core,Sunburst chart
+CHART-014,Charts and numerical visualization,CHART,Capability,Core,Waterfall chart
+CHART-015,Charts and numerical visualization,CHART,Capability,Core,Funnel chart
+CHART-016,Charts and numerical visualization,CHART,Capability,Core,Gauge chart
+CHART-017,Charts and numerical visualization,CHART,Capability,Core,Sankey diagram
+CHART-018,Charts and numerical visualization,CHART,Capability,Core,Radar chart
+CHART-019,Charts and numerical visualization,CHART,Capability,Core,Candlestick chart
+CHART-020,Charts and numerical visualization,CHART,Capability,Core,Depth chart
+CHART-021,Charts and numerical visualization,CHART,Capability,Core,Error bars
+CHART-022,Charts and numerical visualization,CHART,Capability,Core,Confidence interval
+CHART-023,Charts and numerical visualization,CHART,Capability,Core,Plot legend filtering
+CHART-024,Charts and numerical visualization,CHART,Capability,Core,Axis scaling
+CHART-025,Charts and numerical visualization,CHART,Capability,Core,Logarithmic axis
+CHART-026,Charts and numerical visualization,CHART,Capability,Core,Chart zoom and pan
+CHART-027,Charts and numerical visualization,CHART,Capability,Core,Brushing selection
+CHART-028,Charts and numerical visualization,CHART,Capability,Core,Crosshair inspection
+CHART-029,Charts and numerical visualization,CHART,Capability,Core,Linked chart filtering
+CHART-030,Charts and numerical visualization,CHART,Capability,Core,Time-series range selection
+CHART-031,Charts and numerical visualization,CHART,Capability,Core,Live data chart updates
+CHART-032,Charts and numerical visualization,CHART,Capability,Core,Tabular chart fallback
+CHART-033,Charts and numerical visualization,CHART,Capability,Core,Data series extraction
+GRAPH-001,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Directed graph rendering
+GRAPH-002,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Undirected graph rendering
+GRAPH-003,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Graph node selection
+GRAPH-004,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Graph edge selection
+GRAPH-005,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Graph neighborhood expansion
+GRAPH-006,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Hierarchical graph layout
+GRAPH-007,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Force-directed graph layout
+GRAPH-008,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Tree visualization
+GRAPH-009,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Dependency DAG view
+GRAPH-010,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Knowledge graph view
+GRAPH-011,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Entity relationship diagram
+GRAPH-012,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Flowchart editor
+GRAPH-013,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,State-machine diagram
+GRAPH-014,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Sequence diagram
+GRAPH-015,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Swimlane diagram
+GRAPH-016,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,BPMN-like workflow view
+GRAPH-017,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Node drag and reposition
+GRAPH-018,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Edge creation
+GRAPH-019,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Connector routing
+GRAPH-020,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Port attachment
+GRAPH-021,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Graph zoom and pan
+GRAPH-022,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Minimap navigation
+GRAPH-023,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Canvas snapping grid
+GRAPH-024,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Alignment guides
+GRAPH-025,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Multi-object selection
+GRAPH-026,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Object grouping
+GRAPH-027,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Z-order editing
+GRAPH-028,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Diagram import and export
+GRAPH-029,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Unknown canvas region preservation
+GRAPH-030,"Graphs, canvases and diagram editors",GRAPH,Capability,Extended,Canvas event coordinate mapping
+TERMINAL-001,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal screen buffer
+TERMINAL-002,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal PTY transport
+TERMINAL-003,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,ANSI escape rendering
+TERMINAL-004,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal resize
+TERMINAL-005,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal scrollback
+TERMINAL-006,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal copy and paste
+TERMINAL-007,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal alternate screen
+TERMINAL-008,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal mouse reporting
+TERMINAL-009,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal keyboard sequences
+TERMINAL-010,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal multi-session tabs
+TERMINAL-011,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Terminal reconnect
+TERMINAL-012,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Shell completion passthrough
+TERMINAL-013,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Code editor text model
+TERMINAL-014,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Syntax highlighting
+TERMINAL-015,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Language-server diagnostics
+TERMINAL-016,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Code folding
+TERMINAL-017,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Editor minimap
+TERMINAL-018,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Multi-cursor editing
+TERMINAL-019,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Diff editor
+TERMINAL-020,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Merge conflict editor
+TERMINAL-021,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Code search
+TERMINAL-022,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Repository tree view
+TERMINAL-023,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Integrated debugger view
+TERMINAL-024,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Notebook cell model
+TERMINAL-025,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Notebook code execution
+TERMINAL-026,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Notebook output display
+TERMINAL-027,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Notebook kernel state
+TERMINAL-028,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Notebook rich output
+TERMINAL-029,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Notebook cell ordering
+TERMINAL-030,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Notebook execution history
+TERMINAL-031,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,REPL interface
+TERMINAL-032,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Progressive log streaming
+TERMINAL-033,"Terminals, code and computational notebooks",TERMINAL,Capability,Core,Command failure rendering
+SCI-001,Scientific and laboratory capabilities,SCI,Capability,Extended,Sequence viewer
+SCI-002,Scientific and laboratory capabilities,SCI,Capability,Extended,Sequence range selection
+SCI-003,Scientific and laboratory capabilities,SCI,Capability,Extended,Nucleotide annotations
+SCI-004,Scientific and laboratory capabilities,SCI,Capability,Extended,Amino-acid annotations
+SCI-005,Scientific and laboratory capabilities,SCI,Capability,Extended,Reverse complement operation
+SCI-006,Scientific and laboratory capabilities,SCI,Capability,Extended,Sequence alignment viewer
+SCI-007,Scientific and laboratory capabilities,SCI,Capability,Extended,Sequence translation view
+SCI-008,Scientific and laboratory capabilities,SCI,Capability,Extended,Chromatogram viewer
+SCI-009,Scientific and laboratory capabilities,SCI,Capability,Extended,Circular plasmid map
+SCI-010,Scientific and laboratory capabilities,SCI,Capability,Extended,Restriction-site visualization
+SCI-011,Scientific and laboratory capabilities,SCI,Capability,Extended,Molecular lineage graph
+SCI-012,Scientific and laboratory capabilities,SCI,Capability,Extended,Plate well grid
+SCI-013,Scientific and laboratory capabilities,SCI,Capability,Extended,Well multi-selection
+SCI-014,Scientific and laboratory capabilities,SCI,Capability,Extended,Plate heatmap
+SCI-015,Scientific and laboratory capabilities,SCI,Capability,Extended,Microplate coordinate mapping
+SCI-016,Scientific and laboratory capabilities,SCI,Capability,Extended,Sample chain of custody
+SCI-017,Scientific and laboratory capabilities,SCI,Capability,Extended,Specimen registry record
+SCI-018,Scientific and laboratory capabilities,SCI,Capability,Extended,Notebook experiment template
+SCI-019,Scientific and laboratory capabilities,SCI,Capability,Extended,Laboratory protocol steps
+SCI-020,Scientific and laboratory capabilities,SCI,Capability,Extended,Protocol parameter editor
+SCI-021,Scientific and laboratory capabilities,SCI,Capability,Extended,Reagent inventory location
+SCI-022,Scientific and laboratory capabilities,SCI,Capability,Extended,Storage box grid
+SCI-023,Scientific and laboratory capabilities,SCI,Capability,Extended,Barcode-scanner input
+SCI-024,Scientific and laboratory capabilities,SCI,Capability,Extended,Units and dimensions
+SCI-025,Scientific and laboratory capabilities,SCI,Capability,Extended,Measurement uncertainty
+SCI-026,Scientific and laboratory capabilities,SCI,Capability,Extended,Significant-figure display
+SCI-027,Scientific and laboratory capabilities,SCI,Capability,Extended,Scientific unit conversion
+SCI-028,Scientific and laboratory capabilities,SCI,Capability,Extended,Scientific data table
+SCI-029,Scientific and laboratory capabilities,SCI,Capability,Extended,Instrument run status
+SCI-030,Scientific and laboratory capabilities,SCI,Capability,Extended,Experiment run metadata
+SCI-031,Scientific and laboratory capabilities,SCI,Capability,Extended,Time-course experiment plot
+SCI-032,Scientific and laboratory capabilities,SCI,Capability,Extended,Assay result viewer
+SCI-033,Scientific and laboratory capabilities,SCI,Capability,Extended,Molecule structure viewer
+SCI-034,Scientific and laboratory capabilities,SCI,Capability,Extended,Chemical reaction scheme
+SCI-035,Scientific and laboratory capabilities,SCI,Capability,Extended,Spectral peak visualization
+SCI-036,Scientific and laboratory capabilities,SCI,Capability,Extended,Image-based assay viewer
+MEDIA-001,"Media, graphics and 3D",MEDIA,Capability,Extended,Image gallery
+MEDIA-002,"Media, graphics and 3D",MEDIA,Capability,Extended,Image crop and zoom
+MEDIA-003,"Media, graphics and 3D",MEDIA,Capability,Extended,Image annotation
+MEDIA-004,"Media, graphics and 3D",MEDIA,Capability,Extended,Vector SVG viewer
+MEDIA-005,"Media, graphics and 3D",MEDIA,Capability,Extended,SVG interactive hit regions
+MEDIA-006,"Media, graphics and 3D",MEDIA,Capability,Extended,Canvas 2D surface passthrough
+MEDIA-007,"Media, graphics and 3D",MEDIA,Capability,Extended,WebGL surface passthrough
+MEDIA-008,"Media, graphics and 3D",MEDIA,Capability,Extended,WebGPU surface passthrough
+MEDIA-009,"Media, graphics and 3D",MEDIA,Capability,Extended,Video playback
+MEDIA-010,"Media, graphics and 3D",MEDIA,Capability,Extended,Video scrubbing
+MEDIA-011,"Media, graphics and 3D",MEDIA,Capability,Extended,Audio playback
+MEDIA-012,"Media, graphics and 3D",MEDIA,Capability,Extended,Audio waveform
+MEDIA-013,"Media, graphics and 3D",MEDIA,Capability,Extended,Media subtitles
+MEDIA-014,"Media, graphics and 3D",MEDIA,Capability,Extended,Media speed control
+MEDIA-015,"Media, graphics and 3D",MEDIA,Capability,Extended,Media frame stepping
+MEDIA-016,"Media, graphics and 3D",MEDIA,Capability,Extended,Screen recording controls
+MEDIA-017,"Media, graphics and 3D",MEDIA,Capability,Extended,Camera permission surface
+MEDIA-018,"Media, graphics and 3D",MEDIA,Capability,Extended,Microphone permission surface
+MEDIA-019,"Media, graphics and 3D",MEDIA,Capability,Extended,3D viewport orbit
+MEDIA-020,"Media, graphics and 3D",MEDIA,Capability,Extended,3D pan and zoom
+MEDIA-021,"Media, graphics and 3D",MEDIA,Capability,Extended,3D object selection
+MEDIA-022,"Media, graphics and 3D",MEDIA,Capability,Extended,3D scene graph view
+MEDIA-023,"Media, graphics and 3D",MEDIA,Capability,Extended,3D layer visibility
+MEDIA-024,"Media, graphics and 3D",MEDIA,Capability,Extended,Spatial annotation
+MEDIA-025,"Media, graphics and 3D",MEDIA,Capability,Extended,CAD property inspector
+MEDIA-026,"Media, graphics and 3D",MEDIA,Capability,Extended,Canvas accessibility fallback
+MEDIA-027,"Media, graphics and 3D",MEDIA,Capability,Extended,Color-space awareness
+MEDIA-028,"Media, graphics and 3D",MEDIA,Capability,Extended,Unknown media widget preservation
+GEO-001,"Maps, geospatial and spatial data",GEO,Capability,Extended,Interactive map viewport
+GEO-002,"Maps, geospatial and spatial data",GEO,Capability,Extended,Map tile loading
+GEO-003,"Maps, geospatial and spatial data",GEO,Capability,Extended,Map pan and zoom
+GEO-004,"Maps, geospatial and spatial data",GEO,Capability,Extended,Map marker selection
+GEO-005,"Maps, geospatial and spatial data",GEO,Capability,Extended,Marker clustering
+GEO-006,"Maps, geospatial and spatial data",GEO,Capability,Extended,Polyline rendering
+GEO-007,"Maps, geospatial and spatial data",GEO,Capability,Extended,Polygon rendering
+GEO-008,"Maps, geospatial and spatial data",GEO,Capability,Extended,Polygon editing
+GEO-009,"Maps, geospatial and spatial data",GEO,Capability,Extended,Geofence drawing
+GEO-010,"Maps, geospatial and spatial data",GEO,Capability,Extended,Layer toggle
+GEO-011,"Maps, geospatial and spatial data",GEO,Capability,Extended,Map feature tooltip
+GEO-012,"Maps, geospatial and spatial data",GEO,Capability,Extended,Geocoding result selector
+GEO-013,"Maps, geospatial and spatial data",GEO,Capability,Extended,Address autocomplete
+GEO-014,"Maps, geospatial and spatial data",GEO,Capability,Extended,Coordinate entry
+GEO-015,"Maps, geospatial and spatial data",GEO,Capability,Extended,Projection and CRS handling
+GEO-016,"Maps, geospatial and spatial data",GEO,Capability,Extended,GeoJSON import
+GEO-017,"Maps, geospatial and spatial data",GEO,Capability,Extended,GeoJSON export
+GEO-018,"Maps, geospatial and spatial data",GEO,Capability,Extended,Route waypoint editing
+GEO-019,"Maps, geospatial and spatial data",GEO,Capability,Extended,Geospatial table linkage
+GEO-020,"Maps, geospatial and spatial data",GEO,Capability,Extended,Spatial bounding-box filter
+GEO-021,"Maps, geospatial and spatial data",GEO,Capability,Extended,Map measurement tool
+GEO-022,"Maps, geospatial and spatial data",GEO,Capability,Extended,Time-enabled geospatial layers
+GEO-023,"Maps, geospatial and spatial data",GEO,Capability,Extended,Raster overlay rendering
+GEO-024,"Maps, geospatial and spatial data",GEO,Capability,Extended,Map legend interpretation
+BIZ-001,"Business, finance and operational constructs",BIZ,Capability,Extended,Opportunity pipeline board
+BIZ-002,"Business, finance and operational constructs",BIZ,Capability,Extended,Kanban card movement
+BIZ-003,"Business, finance and operational constructs",BIZ,Capability,Extended,Sales funnel stage transition
+BIZ-004,"Business, finance and operational constructs",BIZ,Capability,Extended,Customer account hierarchy
+BIZ-005,"Business, finance and operational constructs",BIZ,Capability,Extended,Organization contact record
+BIZ-006,"Business, finance and operational constructs",BIZ,Capability,Extended,Invoice line items
+BIZ-007,"Business, finance and operational constructs",BIZ,Capability,Extended,Purchase order editor
+BIZ-008,"Business, finance and operational constructs",BIZ,Capability,Extended,Expense claim form
+BIZ-009,"Business, finance and operational constructs",BIZ,Capability,Extended,Approval matrix
+BIZ-010,"Business, finance and operational constructs",BIZ,Capability,Extended,Procurement requisition
+BIZ-011,"Business, finance and operational constructs",BIZ,Capability,Extended,Budget allocation grid
+BIZ-012,"Business, finance and operational constructs",BIZ,Capability,Extended,General ledger table
+BIZ-013,"Business, finance and operational constructs",BIZ,Capability,Extended,Journal entry editor
+BIZ-014,"Business, finance and operational constructs",BIZ,Capability,Extended,Account reconciliation view
+BIZ-015,"Business, finance and operational constructs",BIZ,Capability,Extended,Transaction detail ledger
+BIZ-016,"Business, finance and operational constructs",BIZ,Capability,Extended,Bank statement matching
+BIZ-017,"Business, finance and operational constructs",BIZ,Capability,Extended,Multi-currency amount
+BIZ-018,"Business, finance and operational constructs",BIZ,Capability,Extended,Currency rate display
+BIZ-019,"Business, finance and operational constructs",BIZ,Capability,Extended,Tax breakdown
+BIZ-020,"Business, finance and operational constructs",BIZ,Capability,Extended,Payment status
+BIZ-021,"Business, finance and operational constructs",BIZ,Capability,Extended,Subscription schedule
+BIZ-022,"Business, finance and operational constructs",BIZ,Capability,Extended,Inventory stock movement
+BIZ-023,"Business, finance and operational constructs",BIZ,Capability,Extended,Lot and serial tracking
+BIZ-024,"Business, finance and operational constructs",BIZ,Capability,Extended,Work order dashboard
+BIZ-025,"Business, finance and operational constructs",BIZ,Capability,Extended,Service ticket queue
+BIZ-026,"Business, finance and operational constructs",BIZ,Capability,Extended,SLA timer
+BIZ-027,"Business, finance and operational constructs",BIZ,Capability,Extended,Role assignment matrix
+BIZ-028,"Business, finance and operational constructs",BIZ,Capability,Extended,Policy exception request
+BIZ-029,"Business, finance and operational constructs",BIZ,Capability,Extended,Audit trail view
+BIZ-030,"Business, finance and operational constructs",BIZ,Capability,Extended,Dashboard KPI card
+TIME-001,"Date, calendar and scheduling",TIME,Capability,Core,Calendar month view
+TIME-002,"Date, calendar and scheduling",TIME,Capability,Core,Calendar week view
+TIME-003,"Date, calendar and scheduling",TIME,Capability,Core,Calendar day view
+TIME-004,"Date, calendar and scheduling",TIME,Capability,Core,Agenda list
+TIME-005,"Date, calendar and scheduling",TIME,Capability,Core,Event editor
+TIME-006,"Date, calendar and scheduling",TIME,Capability,Core,Recurring event rule
+TIME-007,"Date, calendar and scheduling",TIME,Capability,Core,Recurrence exception
+TIME-008,"Date, calendar and scheduling",TIME,Capability,Core,Time-zone conversion
+TIME-009,"Date, calendar and scheduling",TIME,Capability,Core,DST boundary handling
+TIME-010,"Date, calendar and scheduling",TIME,Capability,Core,Availability grid
+TIME-011,"Date, calendar and scheduling",TIME,Capability,Core,Free-busy blocks
+TIME-012,"Date, calendar and scheduling",TIME,Capability,Core,Drag-to-reschedule
+TIME-013,"Date, calendar and scheduling",TIME,Capability,Core,Resource calendar
+TIME-014,"Date, calendar and scheduling",TIME,Capability,Core,Booking capacity
+TIME-015,"Date, calendar and scheduling",TIME,Capability,Core,Task due date
+TIME-016,"Date, calendar and scheduling",TIME,Capability,Core,Deadline countdown
+TIME-017,"Date, calendar and scheduling",TIME,Capability,Core,Timeline visualization
+TIME-018,"Date, calendar and scheduling",TIME,Capability,Core,Gantt chart
+TIME-019,"Date, calendar and scheduling",TIME,Capability,Core,Milestone tracking
+TIME-020,"Date, calendar and scheduling",TIME,Capability,Core,Critical path relationship
+TIME-021,"Date, calendar and scheduling",TIME,Capability,Core,Time range picker
+TIME-022,"Date, calendar and scheduling",TIME,Capability,Core,Date interval filter
+TIME-023,"Date, calendar and scheduling",TIME,Capability,Core,Shift scheduling
+TIME-024,"Date, calendar and scheduling",TIME,Capability,Core,Timesheet grid
+TIME-025,"Date, calendar and scheduling",TIME,Capability,Core,Duration input
+TIME-026,"Date, calendar and scheduling",TIME,Capability,Core,Business-day calendar
+TIME-027,"Date, calendar and scheduling",TIME,Capability,Core,Reminder control
+TIME-028,"Date, calendar and scheduling",TIME,Capability,Core,Schedule conflict warning
+COMM-001,Communication and multiuser collaboration,COMM,Capability,Core,Comment thread
+COMM-002,Communication and multiuser collaboration,COMM,Capability,Core,Reply nesting
+COMM-003,Communication and multiuser collaboration,COMM,Capability,Core,Mention selector
+COMM-004,Communication and multiuser collaboration,COMM,Capability,Core,Reaction picker
+COMM-005,Communication and multiuser collaboration,COMM,Capability,Core,Chat conversation
+COMM-006,Communication and multiuser collaboration,COMM,Capability,Core,Chat message streaming
+COMM-007,Communication and multiuser collaboration,COMM,Capability,Core,AI assistant conversation surface
+COMM-008,Communication and multiuser collaboration,COMM,Capability,Core,AI assistant tool result display
+COMM-009,Communication and multiuser collaboration,COMM,Capability,Core,Message attachments
+COMM-010,Communication and multiuser collaboration,COMM,Capability,Core,Notification feed
+COMM-011,Communication and multiuser collaboration,COMM,Capability,Core,Unread status
+COMM-012,Communication and multiuser collaboration,COMM,Capability,Core,Inbox triage
+COMM-013,Communication and multiuser collaboration,COMM,Capability,Core,Task assignment
+COMM-014,Communication and multiuser collaboration,COMM,Capability,Core,Presence indicator
+COMM-015,Communication and multiuser collaboration,COMM,Capability,Core,Live cursor
+COMM-016,Communication and multiuser collaboration,COMM,Capability,Core,Collaborative edit event
+COMM-017,Communication and multiuser collaboration,COMM,Capability,Core,Optimistic UI update
+COMM-018,Communication and multiuser collaboration,COMM,Capability,Core,Conflict indicator
+COMM-019,Communication and multiuser collaboration,COMM,Capability,Core,Lock ownership display
+COMM-020,Communication and multiuser collaboration,COMM,Capability,Core,Shared workspace navigation
+COMM-021,Communication and multiuser collaboration,COMM,Capability,Core,User directory picker
+COMM-022,Communication and multiuser collaboration,COMM,Capability,Core,Team selection
+COMM-023,Communication and multiuser collaboration,COMM,Capability,Core,Activity feed
+COMM-024,Communication and multiuser collaboration,COMM,Capability,Core,Change attribution
+COMM-025,Communication and multiuser collaboration,COMM,Capability,Core,Notification preferences
+COMM-026,Communication and multiuser collaboration,COMM,Capability,Core,Conversation history pagination
+COMM-027,Communication and multiuser collaboration,COMM,Capability,Core,Approval comment thread
+COMM-028,Communication and multiuser collaboration,COMM,Capability,Core,Web notification handoff
+NETWORK-001,Network and protocol integrations,NETWORK,Adapter,Core,HTTP GET transport
+NETWORK-002,Network and protocol integrations,NETWORK,Adapter,Core,HTTP POST transport
+NETWORK-003,Network and protocol integrations,NETWORK,Adapter,Core,HTTP PATCH transport
+NETWORK-004,Network and protocol integrations,NETWORK,Adapter,Core,HTTP DELETE transport
+NETWORK-005,Network and protocol integrations,NETWORK,Adapter,Core,HTTP status mapping
+NETWORK-006,Network and protocol integrations,NETWORK,Adapter,Core,Request header mediation
+NETWORK-007,Network and protocol integrations,NETWORK,Adapter,Core,Cookie-context binding
+NETWORK-008,Network and protocol integrations,NETWORK,Adapter,Core,CSRF token propagation
+NETWORK-009,Network and protocol integrations,NETWORK,Adapter,Core,CORS boundary handling
+NETWORK-010,Network and protocol integrations,NETWORK,Adapter,Core,OpenAPI discovery
+NETWORK-011,Network and protocol integrations,NETWORK,Adapter,Core,OpenAPI schema normalization
+NETWORK-012,Network and protocol integrations,NETWORK,Adapter,Core,JSON Schema validator
+NETWORK-013,Network and protocol integrations,NETWORK,Adapter,Core,GraphQL schema introspection
+NETWORK-014,Network and protocol integrations,NETWORK,Adapter,Core,GraphQL query execution
+NETWORK-015,Network and protocol integrations,NETWORK,Adapter,Core,GraphQL mutation execution
+NETWORK-016,Network and protocol integrations,NETWORK,Adapter,Core,WebSocket message stream
+NETWORK-017,Network and protocol integrations,NETWORK,Adapter,Core,Server-sent event stream
+NETWORK-018,Network and protocol integrations,NETWORK,Adapter,Core,Long polling
+NETWORK-019,Network and protocol integrations,NETWORK,Adapter,Core,Streaming download
+NETWORK-020,Network and protocol integrations,NETWORK,Adapter,Core,Streaming upload
+NETWORK-021,Network and protocol integrations,NETWORK,Adapter,Core,gRPC-web adapter
+NETWORK-022,Network and protocol integrations,NETWORK,Adapter,Core,WebDAV adapter
+NETWORK-023,Network and protocol integrations,NETWORK,Adapter,Core,REST pagination adapter
+NETWORK-024,Network and protocol integrations,NETWORK,Adapter,Core,Cursor pagination adapter
+NETWORK-025,Network and protocol integrations,NETWORK,Adapter,Core,ETag conditional request
+NETWORK-026,Network and protocol integrations,NETWORK,Adapter,Core,Rate-limit handling
+NETWORK-027,Network and protocol integrations,NETWORK,Adapter,Core,Retry-After handling
+NETWORK-028,Network and protocol integrations,NETWORK,Adapter,Core,Idempotency-key support
+NETWORK-029,Network and protocol integrations,NETWORK,Adapter,Core,Webhook signature verification
+NETWORK-030,Network and protocol integrations,NETWORK,Adapter,Core,Webhook event binding
+NETWORK-031,Network and protocol integrations,NETWORK,Adapter,Core,Binary protocol passthrough
+NETWORK-032,Network and protocol integrations,NETWORK,Adapter,Core,Content negotiation
+NETWORK-033,Network and protocol integrations,NETWORK,Adapter,Core,Error payload normalization
+NETWORK-034,Network and protocol integrations,NETWORK,Adapter,Core,Protocol capability negotiation
+AUTH-001,"Identity, permissions and secrets",AUTH,Runtime,Critical,Existing tab session binding
+AUTH-002,"Identity, permissions and secrets",AUTH,Runtime,Critical,Ephemeral incognito binding
+AUTH-003,"Identity, permissions and secrets",AUTH,Runtime,Critical,Managed browser profile
+AUTH-004,"Identity, permissions and secrets",AUTH,Runtime,Critical,Remote isolated browser profile
+AUTH-005,"Identity, permissions and secrets",AUTH,Runtime,Critical,OAuth authorization code with PKCE
+AUTH-006,"Identity, permissions and secrets",AUTH,Runtime,Critical,OIDC sign-in mediation
+AUTH-007,"Identity, permissions and secrets",AUTH,Runtime,Critical,OAuth scoped token storage
+AUTH-008,"Identity, permissions and secrets",AUTH,Runtime,Critical,OAuth refresh token lifecycle
+AUTH-009,"Identity, permissions and secrets",AUTH,Runtime,Critical,OIDC provider discovery
+AUTH-010,"Identity, permissions and secrets",AUTH,Runtime,Critical,Enterprise SAML login passthrough
+AUTH-011,"Identity, permissions and secrets",AUTH,Runtime,Critical,Session cookie isolation
+AUTH-012,"Identity, permissions and secrets",AUTH,Runtime,Critical,SSO redirect traversal
+AUTH-013,"Identity, permissions and secrets",AUTH,Runtime,Critical,MFA interactive handoff
+AUTH-014,"Identity, permissions and secrets",AUTH,Runtime,Critical,Passkey interactive handoff
+AUTH-015,"Identity, permissions and secrets",AUTH,Runtime,Critical,Credential vault reference
+AUTH-016,"Identity, permissions and secrets",AUTH,Runtime,Critical,Credential origin binding
+AUTH-017,"Identity, permissions and secrets",AUTH,Runtime,Critical,Just-in-time secret injection
+AUTH-018,"Identity, permissions and secrets",AUTH,Runtime,Critical,Secret redaction
+AUTH-019,"Identity, permissions and secrets",AUTH,Runtime,Critical,Session expiration detection
+AUTH-020,"Identity, permissions and secrets",AUTH,Runtime,Critical,Session reauthentication
+AUTH-021,"Identity, permissions and secrets",AUTH,Runtime,Critical,Account switching
+AUTH-022,"Identity, permissions and secrets",AUTH,Runtime,Critical,Tenant switching
+AUTH-023,"Identity, permissions and secrets",AUTH,Runtime,Critical,Permission visibility check
+AUTH-024,"Identity, permissions and secrets",AUTH,Runtime,Critical,Per-operation authorization binding
+AUTH-025,"Identity, permissions and secrets",AUTH,Runtime,Critical,Delegated token scope enforcement
+AUTH-026,"Identity, permissions and secrets",AUTH,Runtime,Critical,Session revocation
+AUTH-027,"Identity, permissions and secrets",AUTH,Runtime,Critical,Session provenance tracking
+AUTH-028,"Identity, permissions and secrets",AUTH,Runtime,Critical,Cross-tenant cache isolation
+AUTH-029,"Identity, permissions and secrets",AUTH,Runtime,Critical,Local keychain integration
+AUTH-030,"Identity, permissions and secrets",AUTH,Runtime,Critical,Customer-managed secret backend
+STATE-001,"Asynchrony, state and workflows",STATE,Core,Critical,Application finite-state machine
+STATE-002,"Asynchrony, state and workflows",STATE,Core,Critical,Workflow transition graph
+STATE-003,"Asynchrony, state and workflows",STATE,Core,Critical,Modal state machine
+STATE-004,"Asynchrony, state and workflows",STATE,Core,Critical,Wizard state machine
+STATE-005,"Asynchrony, state and workflows",STATE,Core,Critical,Progress state tracking
+STATE-006,"Asynchrony, state and workflows",STATE,Core,Critical,Pending request tracking
+STATE-007,"Asynchrony, state and workflows",STATE,Core,Critical,Optimistic mutation rollback
+STATE-008,"Asynchrony, state and workflows",STATE,Core,Critical,Eventual consistency polling
+STATE-009,"Asynchrony, state and workflows",STATE,Core,Critical,Async loading indicator
+STATE-010,"Asynchrony, state and workflows",STATE,Core,Critical,Idle detection
+STATE-011,"Asynchrony, state and workflows",STATE,Core,Critical,Operation completion signal
+STATE-012,"Asynchrony, state and workflows",STATE,Core,Critical,Toast-based success detection
+STATE-013,"Asynchrony, state and workflows",STATE,Core,Critical,Error-state classification
+STATE-014,"Asynchrony, state and workflows",STATE,Core,Critical,Retryable failure classification
+STATE-015,"Asynchrony, state and workflows",STATE,Core,Critical,Navigation-before-result handling
+STATE-016,"Asynchrony, state and workflows",STATE,Core,Critical,Background job handle
+STATE-017,"Asynchrony, state and workflows",STATE,Core,Critical,Batch job progress
+STATE-018,"Asynchrony, state and workflows",STATE,Core,Critical,Cancelable operation
+STATE-019,"Asynchrony, state and workflows",STATE,Core,Critical,Undo-capable operation
+STATE-020,"Asynchrony, state and workflows",STATE,Core,Critical,Compensating action
+STATE-021,"Asynchrony, state and workflows",STATE,Core,Critical,Conditional workflow branch
+STATE-022,"Asynchrony, state and workflows",STATE,Core,Critical,Parallel workflow branch
+STATE-023,"Asynchrony, state and workflows",STATE,Core,Critical,Sequential workflow composition
+STATE-024,"Asynchrony, state and workflows",STATE,Core,Critical,Workflow precondition
+STATE-025,"Asynchrony, state and workflows",STATE,Core,Critical,Workflow postcondition
+STATE-026,"Asynchrony, state and workflows",STATE,Core,Critical,Human confirmation step
+STATE-027,"Asynchrony, state and workflows",STATE,Core,Critical,Human reauthentication step
+STATE-028,"Asynchrony, state and workflows",STATE,Core,Critical,Workflow checkpoint
+STATE-029,"Asynchrony, state and workflows",STATE,Core,Critical,Workflow resume
+STATE-030,"Asynchrony, state and workflows",STATE,Core,Critical,Workflow abort
+STATE-031,"Asynchrony, state and workflows",STATE,Core,Critical,Long-running operation handle
+STATE-032,"Asynchrony, state and workflows",STATE,Core,Critical,Action timeout classification
+STATE-033,"Asynchrony, state and workflows",STATE,Core,Critical,Operation deduplication
+STATE-034,"Asynchrony, state and workflows",STATE,Core,Critical,Unknown effect containment
+CACHE-001,"Caching, versioning and consistency",CACHE,Runtime,Core,Compiled application artifact
+CACHE-002,"Caching, versioning and consistency",CACHE,Runtime,Core,DOM signature cache
+CACHE-003,"Caching, versioning and consistency",CACHE,Runtime,Core,Primitive mapping cache
+CACHE-004,"Caching, versioning and consistency",CACHE,Runtime,Core,Semantic schema cache
+CACHE-005,"Caching, versioning and consistency",CACHE,Runtime,Core,Compiled selector cache
+CACHE-006,"Caching, versioning and consistency",CACHE,Runtime,Core,Verified action cache
+CACHE-007,"Caching, versioning and consistency",CACHE,Runtime,Core,Operation trace cache
+CACHE-008,"Caching, versioning and consistency",CACHE,Runtime,Core,User-scoped data cache
+CACHE-009,"Caching, versioning and consistency",CACHE,Runtime,Core,Role-scoped schema variant
+CACHE-010,"Caching, versioning and consistency",CACHE,Runtime,Core,Tenant-scoped schema variant
+CACHE-011,"Caching, versioning and consistency",CACHE,Runtime,Core,Read-through cache
+CACHE-012,"Caching, versioning and consistency",CACHE,Runtime,Core,Write-through cache
+CACHE-013,"Caching, versioning and consistency",CACHE,Runtime,Core,TTL cache policy
+CACHE-014,"Caching, versioning and consistency",CACHE,Runtime,Core,ETag version invalidation
+CACHE-015,"Caching, versioning and consistency",CACHE,Runtime,Core,Mutation dependency invalidation
+CACHE-016,"Caching, versioning and consistency",CACHE,Runtime,Core,Read-after-write verification
+CACHE-017,"Caching, versioning and consistency",CACHE,Runtime,Core,Cache provenance label
+CACHE-018,"Caching, versioning and consistency",CACHE,Runtime,Core,Stale data signaling
+CACHE-019,"Caching, versioning and consistency",CACHE,Runtime,Core,Cross-session cache portability
+CACHE-020,"Caching, versioning and consistency",CACHE,Runtime,Core,Cache schema migration
+CACHE-021,"Caching, versioning and consistency",CACHE,Runtime,Core,Contract semantic versioning
+CACHE-022,"Caching, versioning and consistency",CACHE,Runtime,Core,Pinned interface version
+CACHE-023,"Caching, versioning and consistency",CACHE,Runtime,Core,Additive API revision
+CACHE-024,"Caching, versioning and consistency",CACHE,Runtime,Core,Breaking API revision
+CACHE-025,"Caching, versioning and consistency",CACHE,Runtime,Core,Source-app change detection
+CACHE-026,"Caching, versioning and consistency",CACHE,Runtime,Core,Structural diff computation
+CACHE-027,"Caching, versioning and consistency",CACHE,Runtime,Core,Incremental recompilation
+CACHE-028,"Caching, versioning and consistency",CACHE,Runtime,Core,Compatibility mapping migration
+CACHE-029,"Caching, versioning and consistency",CACHE,Runtime,Core,Schema diff report
+CACHE-030,"Caching, versioning and consistency",CACHE,Runtime,Core,Cached state encryption
+CACHE-031,"Caching, versioning and consistency",CACHE,Runtime,Core,Cache eviction policy
+CACHE-032,"Caching, versioning and consistency",CACHE,Runtime,Core,Offline snapshot mode
+CACHE-033,"Caching, versioning and consistency",CACHE,Runtime,Core,Revalidation on resume
+CACHE-034,"Caching, versioning and consistency",CACHE,Runtime,Core,Historical artifact rollback
+OUTPUT-001,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Semantic component rendering
+OUTPUT-002,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Responsive page template
+OUTPUT-003,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Information hierarchy optimization
+OUTPUT-004,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Navigation consolidation
+OUTPUT-005,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Workspace layout
+OUTPUT-006,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Contextual action grouping
+OUTPUT-007,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Search-first navigation
+OUTPUT-008,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Progressive disclosure
+OUTPUT-009,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Density preference
+OUTPUT-010,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Accessible color theme
+OUTPUT-011,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Dark and light theme
+OUTPUT-012,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Brand theme tokens
+OUTPUT-013,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Keyboard-first command interface
+OUTPUT-014,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Quick action panel
+OUTPUT-015,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Command search
+OUTPUT-016,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Saved view layout
+OUTPUT-017,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Pinned entity view
+OUTPUT-018,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Split-pane workspace
+OUTPUT-019,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Side-by-side comparison
+OUTPUT-020,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Universal filter bar
+OUTPUT-021,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Context-aware breadcrumb
+OUTPUT-022,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Inline edit affordance
+OUTPUT-023,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Error recovery screen
+OUTPUT-024,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Pending state indicator
+OUTPUT-025,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Skeleton loading view
+OUTPUT-026,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Mobile adaptive view
+OUTPUT-027,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Touch-first controls
+OUTPUT-028,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Print-friendly view
+OUTPUT-029,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Locale-aware formatting
+OUTPUT-030,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,High-contrast mode
+OUTPUT-031,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,Reduced motion mode
+OUTPUT-032,Generated UI and ergonomic transformations,OUTPUT,Compiler,Critical,RTL interface rendering
+GENERATE-001,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Generic interaction RPC
+GENERATE-002,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Typed entity endpoint
+GENERATE-003,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Typed action endpoint
+GENERATE-004,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CRUD endpoint synthesis
+GENERATE-005,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Read-only operation classification
+GENERATE-006,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Mutation operation classification
+GENERATE-007,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,OpenAPI document emission
+GENERATE-008,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,JSON Schema emission
+GENERATE-009,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Endpoint path stability
+GENERATE-010,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Endpoint parameter binding
+GENERATE-011,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Typed response normalization
+GENERATE-012,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Error code mapping
+GENERATE-013,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Pagination contract generation
+GENERATE-014,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Async job contract generation
+GENERATE-015,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Webhook contract generation
+GENERATE-016,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CLI command tree synthesis
+GENERATE-017,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CLI flags synthesis
+GENERATE-018,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CLI interactive prompts
+GENERATE-019,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CLI table formatter
+GENERATE-020,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CLI JSON output
+GENERATE-021,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CLI streaming output
+GENERATE-022,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,CLI shell completion
+GENERATE-023,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,MCP tools listing
+GENERATE-024,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,MCP tool argument schema
+GENERATE-025,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,MCP tool execution
+GENERATE-026,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,MCP resources listing
+GENERATE-027,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,MCP prompt template emission
+GENERATE-028,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,MCP tool risk annotation
+GENERATE-029,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,MCP account context binding
+GENERATE-030,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,API authentication propagation
+GENERATE-031,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Versioned interface router
+GENERATE-032,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Generated SDK stub
+GENERATE-033,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Executable API examples
+GENERATE-034,"CLI, API, MCP and SDK generation",GENERATE,Compiler,Critical,Contract compatibility tests
+SAFETY-001,Execution control and safe equivalence,SAFETY,Runtime,Critical,Original-context execution
+SAFETY-002,Execution control and safe equivalence,SAFETY,Runtime,Critical,Operation dependency tracking
+SAFETY-003,Execution control and safe equivalence,SAFETY,Runtime,Critical,Action preflight evaluation
+SAFETY-004,Execution control and safe equivalence,SAFETY,Runtime,Critical,Locator resolution verification
+SAFETY-005,Execution control and safe equivalence,SAFETY,Runtime,Critical,Target uniqueness assertion
+SAFETY-006,Execution control and safe equivalence,SAFETY,Runtime,Critical,Actionability checking
+SAFETY-007,Execution control and safe equivalence,SAFETY,Runtime,Critical,Side-effect classification
+SAFETY-008,Execution control and safe equivalence,SAFETY,Runtime,Critical,Explicit destructive confirmation
+SAFETY-009,Execution control and safe equivalence,SAFETY,Runtime,Critical,Approval-required action gate
+SAFETY-010,Execution control and safe equivalence,SAFETY,Runtime,Critical,Original validation passthrough
+SAFETY-011,Execution control and safe equivalence,SAFETY,Runtime,Critical,Transaction acknowledgment
+SAFETY-012,Execution control and safe equivalence,SAFETY,Runtime,Critical,Read-after-write result verification
+SAFETY-013,Execution control and safe equivalence,SAFETY,Runtime,Critical,Unexpected-result quarantine
+SAFETY-014,Execution control and safe equivalence,SAFETY,Runtime,Critical,Safe retry policy
+SAFETY-015,Execution control and safe equivalence,SAFETY,Runtime,Critical,At-most-once attempt guard
+SAFETY-016,Execution control and safe equivalence,SAFETY,Runtime,Critical,Idempotent replay guard
+SAFETY-017,Execution control and safe equivalence,SAFETY,Runtime,Critical,Execution audit record
+SAFETY-018,Execution control and safe equivalence,SAFETY,Runtime,Critical,Origin allowlist
+SAFETY-019,Execution control and safe equivalence,SAFETY,Runtime,Critical,Cross-origin transition validation
+SAFETY-020,Execution control and safe equivalence,SAFETY,Runtime,Critical,Credential leakage prevention
+SAFETY-021,Execution control and safe equivalence,SAFETY,Runtime,Critical,Sensitive output redaction
+SAFETY-022,Execution control and safe equivalence,SAFETY,Runtime,Critical,Operation timeout budget
+SAFETY-023,Execution control and safe equivalence,SAFETY,Runtime,Critical,Per-user concurrency limit
+SAFETY-024,Execution control and safe equivalence,SAFETY,Runtime,Critical,Per-origin rate throttle
+SAFETY-025,Execution control and safe equivalence,SAFETY,Runtime,Critical,Circuit breaker
+SAFETY-026,Execution control and safe equivalence,SAFETY,Runtime,Critical,Fallback to original control
+SAFETY-027,Execution control and safe equivalence,SAFETY,Runtime,Critical,Unrecognized operation preservation
+SAFETY-028,Execution control and safe equivalence,SAFETY,Runtime,Critical,Uncertain-operation refusal
+SAFETY-029,Execution control and safe equivalence,SAFETY,Runtime,Critical,Rollback only when supported
+SAFETY-030,Execution control and safe equivalence,SAFETY,Runtime,Critical,Partial failure reporting
+SAFETY-031,Execution control and safe equivalence,SAFETY,Runtime,Critical,User cancellation handling
+SAFETY-032,Execution control and safe equivalence,SAFETY,Runtime,Critical,Execution trace replay
+TEST-001,"Validation, testing and observability",TEST,Foundation,Critical,Primitive unit test
+TEST-002,"Validation, testing and observability",TEST,Foundation,Critical,Primitive property-based test
+TEST-003,"Validation, testing and observability",TEST,Foundation,Critical,Model-based workflow test
+TEST-004,"Validation, testing and observability",TEST,Foundation,Critical,Differential behavior test
+TEST-005,"Validation, testing and observability",TEST,Foundation,Critical,Golden DOM fixture
+TEST-006,"Validation, testing and observability",TEST,Foundation,Critical,Golden accessibility fixture
+TEST-007,"Validation, testing and observability",TEST,Foundation,Critical,Visual regression fixture
+TEST-008,"Validation, testing and observability",TEST,Foundation,Critical,Cross-browser test
+TEST-009,"Validation, testing and observability",TEST,Foundation,Critical,Cross-origin iframe test
+TEST-010,"Validation, testing and observability",TEST,Foundation,Critical,Shadow DOM test
+TEST-011,"Validation, testing and observability",TEST,Foundation,Critical,Keyboard-only test
+TEST-012,"Validation, testing and observability",TEST,Foundation,Critical,Screen-reader semantics test
+TEST-013,"Validation, testing and observability",TEST,Foundation,Critical,Right-to-left test
+TEST-014,"Validation, testing and observability",TEST,Foundation,Critical,Localization test
+TEST-015,"Validation, testing and observability",TEST,Foundation,Critical,Touch input test
+TEST-016,"Validation, testing and observability",TEST,Foundation,Critical,Slow-network test
+TEST-017,"Validation, testing and observability",TEST,Foundation,Critical,Offline recovery test
+TEST-018,"Validation, testing and observability",TEST,Foundation,Critical,Partial-render test
+TEST-019,"Validation, testing and observability",TEST,Foundation,Critical,Concurrent-mutation test
+TEST-020,"Validation, testing and observability",TEST,Foundation,Critical,Session-expiry test
+TEST-021,"Validation, testing and observability",TEST,Foundation,Critical,Role-permission matrix test
+TEST-022,"Validation, testing and observability",TEST,Foundation,Critical,Contract schema regression
+TEST-023,"Validation, testing and observability",TEST,Foundation,Critical,API compatibility test
+TEST-024,"Validation, testing and observability",TEST,Foundation,Critical,CLI output golden test
+TEST-025,"Validation, testing and observability",TEST,Foundation,Critical,MCP tool schema test
+TEST-026,"Validation, testing and observability",TEST,Foundation,Critical,Unknown-widget fallback test
+TEST-027,"Validation, testing and observability",TEST,Foundation,Critical,Application upgrade simulation
+TEST-028,"Validation, testing and observability",TEST,Foundation,Critical,Fuzzed widget composition
+TEST-029,"Validation, testing and observability",TEST,Foundation,Critical,Performance budget test
+TEST-030,"Validation, testing and observability",TEST,Foundation,Critical,Memory leak detection
+TEST-031,"Validation, testing and observability",TEST,Foundation,Critical,Behavioral coverage report
+TEST-032,"Validation, testing and observability",TEST,Foundation,Critical,Discovery confidence report
+TEST-033,"Validation, testing and observability",TEST,Foundation,Critical,Unmapped component report
+TEST-034,"Validation, testing and observability",TEST,Foundation,Critical,Selector drift detection
+TEST-035,"Validation, testing and observability",TEST,Foundation,Critical,Cross-app primitive gain metric
+TEST-036,"Validation, testing and observability",TEST,Foundation,Critical,Reproducible failure bundle
+LEGACY-001,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Server-rendered postback form
+LEGACY-002,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,ASP.NET-style state field
+LEGACY-003,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Legacy nested table layout
+LEGACY-004,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Custom jQuery widget recognition
+LEGACY-005,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Iframe-hosted application
+LEGACY-006,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Cross-origin iframe preserve
+LEGACY-007,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Browser popup workflow
+LEGACY-008,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,PDF-embedded form
+LEGACY-009,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Java applet incompatibility notice
+LEGACY-010,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Remote desktop streaming surface
+LEGACY-011,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,VNC-like remote viewport
+LEGACY-012,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Citrix-like virtual app passthrough
+LEGACY-013,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Canvas-only control preserve
+LEGACY-014,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Closed-shadow widget preserve
+LEGACY-015,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,WebGL-only control preserve
+LEGACY-016,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Custom keyboard command discovery
+LEGACY-017,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Synthetic mouse compatibility
+LEGACY-018,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Unlabeled control fallback
+LEGACY-019,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Image-backed control preserve
+LEGACY-020,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Screen-size-dependent hotspot
+LEGACY-021,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Browser download interception
+LEGACY-022,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Native file dialog delegation
+LEGACY-023,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Print dialog delegation
+LEGACY-024,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,OS permission dialog handoff
+LEGACY-025,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Unsupported component quarantine
+LEGACY-026,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Plugin-required feature warning
+LEGACY-027,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Third-party cookie dependency detection
+LEGACY-028,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,CSP-constrained embedding fallback
+LEGACY-029,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Browser extension bridge mode
+LEGACY-030,"Legacy, embedded and difficult UI interop",LEGACY,Adapter,Extended,Original-app sidecar mode
+ADAPTER-001,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,OpenAPI vendor-neutral adapter
+ADAPTER-002,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,GraphQL vendor-neutral adapter
+ADAPTER-003,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,OAuth provider-family adapter
+ADAPTER-004,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,SAML identity-provider adapter
+ADAPTER-005,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,SCIM directory adapter
+ADAPTER-006,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,SSH terminal adapter
+ADAPTER-007,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,WebSocket terminal adapter
+ADAPTER-008,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,Jupyter kernel adapter
+ADAPTER-009,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,Jupyter notebook file adapter
+ADAPTER-010,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,Git repository adapter
+ADAPTER-011,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,Git forge workflow adapter
+ADAPTER-012,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,S3-compatible object adapter
+ADAPTER-013,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,SQL query console adapter
+ADAPTER-014,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,SQL metadata browser adapter
+ADAPTER-015,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,PostgreSQL protocol adapter
+ADAPTER-016,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,MySQL protocol adapter
+ADAPTER-017,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,LDAP directory adapter
+ADAPTER-018,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,CalDAV calendar adapter
+ADAPTER-019,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,CardDAV contacts adapter
+ADAPTER-020,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,WebDAV document adapter
+ADAPTER-021,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,OpenTelemetry metrics adapter
+ADAPTER-022,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,Prometheus query adapter
+ADAPTER-023,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,JSON Lines streaming adapter
+ADAPTER-024,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,CSV dialect autodetection
+ADAPTER-025,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,FHIR resource adapter
+ADAPTER-026,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,DICOM viewer adapter
+ADAPTER-027,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,SBML biology model adapter
+ADAPTER-028,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,FASTA sequence adapter
+ADAPTER-029,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,FASTQ sequence adapter
+ADAPTER-030,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,PDB molecular model adapter
+ADAPTER-031,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,GeoJSON geospatial adapter
+ADAPTER-032,Reusable protocol and application-family adapters,ADAPTER,Adapter,Extended,ICS calendar import adapter

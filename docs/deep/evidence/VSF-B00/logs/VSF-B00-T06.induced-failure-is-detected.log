@@ -1,0 +1,3 @@
+$ bash -c VSF_INDUCE_FAILURE=1 node tools/checks/src/cli.ts ci-run canary; test $? -eq 1
+ci-run canary: FAIL
+[exit 0]

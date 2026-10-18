@@ -1,0 +1,10 @@
+{
+  "schema": "vsf-toolchain-v1",
+  "rust": "1.97.0",
+  "rust_targets": ["wasm32-unknown-unknown"],
+  "go": "1.24.7",
+  "node": "22.22.0",
+  "pnpm": "10.28.0",
+  "playwright": "1.56.1",
+  "playwright_chromium_revision": "1194"
+}

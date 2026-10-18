@@ -1,0 +1,21 @@
+[package]
+name = "vsf-native"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "vsf-fabric"
+path = "src/main.rs"
+
+[dependencies]
+vsf-canon.workspace = true
+vsf-schema.workspace = true
+vsf-fixtures.workspace = true
+vsf-fabric.workspace = true
+vsf-redact.workspace = true
+
+[lints]
+workspace = true

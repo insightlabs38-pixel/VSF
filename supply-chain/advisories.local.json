@@ -1,0 +1,34 @@
+{
+  "schema": "vsf-local-advisories-v1",
+  "note": "Offline baseline. CI additionally runs live scanners; this list guarantees the scanner path is exercised without network.",
+  "advisories": [
+    {
+      "id": "RUSTSEC-2021-0003",
+      "ecosystem": "cargo",
+      "name": "smallvec",
+      "below": "1.6.1",
+      "reason": "buffer overflow in insert_many"
+    },
+    {
+      "id": "CVE-2021-23337",
+      "ecosystem": "npm",
+      "name": "lodash",
+      "below": "4.17.21",
+      "reason": "command injection via template"
+    },
+    {
+      "id": "CVE-2021-44906",
+      "ecosystem": "npm",
+      "name": "minimist",
+      "below": "1.2.6",
+      "reason": "prototype pollution"
+    },
+    {
+      "id": "CVE-2021-38561",
+      "ecosystem": "go",
+      "name": "golang.org/x/text",
+      "below": "0.3.7",
+      "reason": "out-of-bounds read in language parsing"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+main
+  h1 "Orders (virtualized)"
+  p "Showing rows 1-14 of 10000"
+  div [role="table" aria-label="Orders" aria-rowcount="10001"]
+    div [role="rowgroup"]
+      div [role="row" aria-rowindex="1"]
+        span [role="columnheader"] "Id"
+        span [role="columnheader"] "Customer"
+        span [role="columnheader"] "Total"
+    div [role="rowgroup"]
+      div
+        div [role="row" aria-rowindex="2"]
+          span [role="cell"] "1"
+          span [role="cell"] "Globex"
+          span [role="cell"] "28519"
+        div [role="row" aria-rowindex="3"]
+          span [role="cell"] "2"
+          span [role="cell"] "Wayne"
+          span [role="cell"] "60226"
+        div [role="row" aria-rowindex="4"]
+          span [role="cell"] "3"
+          span [role="cell"] "Stark"
+          span [role="cell"] "11561"
+        div [role="row" aria-rowindex="5"]
+          span [role="cell"] "4"
+          span [role="cell"] "Initech"
+          span [role="cell"] "36304"
+        div [role="row" aria-rowindex="6"]
+          span [role="cell"] "5"
+          span [role="cell"] "Initech"
+          span [role="cell"] "76344"
+        div [role="row" aria-rowindex="7"]
+          span [role="cell"] "6"
+          span [role="cell"] "Acme"
+          span [role="cell"] "83833"
+        div [role="row" aria-rowindex="8"]
+          span [role="cell"] "7"
+          span [role="cell"] "Wonka"
+          span [role="cell"] "55804"
+        div [role="row" aria-rowindex="9"]
+          span [role="cell"] "8"
+          span [role="cell"] "Wayne"
+          span [role="cell"] "54817"
+        div [role="row" aria-rowindex="10"]
+          span [role="cell"] "9"
+          span [role="cell"] "Hooli"
+          span [role="cell"] "55106"
+        div [role="row" aria-rowindex="11"]
+          span [role="cell"] "10"
+          span [role="cell"] "Initech"
+          span [role="cell"] "11814"
+        div [role="row" aria-rowindex="12"]
+          span [role="cell"] "11"
+          span [role="cell"] "Stark"
+          span [role="cell"] "44545"
+        div [role="row" aria-rowindex="13"]
+          span [role="cell"] "12"
+          span [role="cell"] "Umbrella"
+          span [role="cell"] "22807"
+        div [role="row" aria-rowindex="14"]
+          span [role="cell"] "13"
+          span [role="cell"] "Wonka"
+          span [role="cell"] "67921"
+        div [role="row" aria-rowindex="15"]
+          span [role="cell"] "14"
+          span [role="cell"] "Wayne"
+          span [role="cell"] "19194"
+  script [type="module"]

@@ -1,0 +1,55 @@
+{
+  "task_id": "VSF-B00-T01",
+  "status": "DONE",
+  "branch": "vsf/b00-foundation",
+  "base_commit": "03139f7d7f693bd055dd98e0104a30a056a337e3",
+  "commit": "4c071743baa9c4282e2ca46a9913564ad82fb70c",
+  "paths": [
+    "toolchain/versions.json",
+    "rust-toolchain.toml",
+    ".node-version",
+    "backend/go.mod",
+    "package.json",
+    "pnpm-lock.yaml",
+    "compiler/Cargo.lock",
+    "tools/checks/src/toolchain.ts",
+    "tools/checks/src/depreview.ts"
+  ],
+  "acceptance": "Clean clone identifies pinned Rust 1.97.0, Go 1.24.7 and Node 22.22.0; lockfiles resolve with no git or floating sources.",
+  "positive": {
+    "fixture": "repo-pins",
+    "command": "node tools/checks/src/cli.ts toolchain",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "pin-drift, missing-toolchain, broken-lockfile",
+    "command": "pnpm --filter @vsf/checks --filter @vsf/adversarial-tests run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts dep-review",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/clean-clone-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "No source application is contacted; fixtures are local and offline; secrets are redacted before logs, goldens and evidence are stored.",
+  "performance_memory_storage": "clean-clone build+verify 66 s; vsf_wasm.wasm 988314 B; vsf-fabric 1570904 B; vsfctl 1806484 B; rollup bb9d2b86 identical in clone and origin",
+  "known_limitations": [
+    "Cargo.lock/pnpm-lock verified for registry sources and checksums; go.sum is empty because the Go module has no dependencies"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T01.toolchain-pins.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T01.toolchain-and-lockfile-negatives.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T01.dep-review-lockfiles.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T01.clean-clone-reproducible.log"
+  ],
+  "review_result": "ACCEPTED"
+}

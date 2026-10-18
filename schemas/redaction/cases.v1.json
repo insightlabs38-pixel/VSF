@@ -1,0 +1,30 @@
+{
+  "schema": "vsf-redaction-cases-v1",
+  "note": "Secret-shaped inputs are assembled from parts at test time so no literal credential-like string is committed.",
+  "positive": [
+    { "id": "aws", "kind": "aws_access_key", "parts": ["AK", "IA", "ABCDEFGH", "IJKLMNOP"] },
+    { "id": "github-token", "kind": "github_token", "parts": ["gh", "p_", "abcdefghijklmnopqrstuvwxyz", "0123456789"] },
+    { "id": "github-pat", "kind": "github_pat", "parts": ["github", "_pat_", "11ABCDEFG0abcdefghijkl_mnopqrstuvwx"] },
+    { "id": "slack", "kind": "slack_token", "parts": ["xo", "xb-", "1234567890-abcdefghij"] },
+    { "id": "sk", "kind": "api_key_sk", "parts": ["s", "k-", "abcdefghij0123456789_ABCD"] },
+    { "id": "jwt", "kind": "jwt", "parts": ["ey", "Jhbgcioijiuzi1ni", ".ey", "Jzdwiioixmjm0nta", ".abcdefgh12345678"] },
+    { "id": "bearer", "kind": "bearer_token", "parts": ["Bear", "er ", "abcdef0123456789abcdef"] },
+    {
+      "id": "url-credentials",
+      "kind": "url_credentials",
+      "parts": ["https://", "user", ":", "hunter2pass", "@example.test/path"]
+    },
+    { "id": "keyed-secret", "kind": "keyed_secret", "parts": ["pass", "word = ", "correcthorsebatterystaple"] },
+    {
+      "id": "private-key",
+      "kind": "private_key_block",
+      "parts": ["-----BEGIN ", "RSA PRIVATE KEY-----\nMIIB\nabc\n-----END ", "RSA PRIVATE KEY-----"]
+    }
+  ],
+  "negative": [
+    { "id": "sha256-digest", "text": "digest 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08" },
+    { "id": "short-prefix", "text": "skill-set sk-1 AKIA short ghp_short" },
+    { "id": "prose-token", "text": "the token budget and secret sauce are fine" },
+    { "id": "plain-url", "text": "https://example.test/path?q=1" }
+  ]
+}

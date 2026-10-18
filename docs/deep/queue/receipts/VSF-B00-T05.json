@@ -1,0 +1,67 @@
+{
+  "task_id": "VSF-B00-T05",
+  "status": "DONE",
+  "branch": "vsf/b00-foundation",
+  "base_commit": "03139f7d7f693bd055dd98e0104a30a056a337e3",
+  "commit": "4c071743baa9c4282e2ca46a9913564ad82fb70c",
+  "paths": [
+    "biome.json",
+    "tools/checks/src/depreview.ts",
+    "tools/checks/src/depscan.ts",
+    "tools/checks/src/comments.ts",
+    "supply-chain",
+    "scripts/clean-clone-check.sh"
+  ],
+  "acceptance": "Formatting, lint, comment-limit and dependency review run; an intentionally vulnerable lodash/smallvec/go-text version, git source and missing checksum are flagged; artifact digest is reproducible.",
+  "positive": {
+    "fixture": "repo lint and dep-review",
+    "command": "pnpm exec biome check .",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "planted vulnerable and floating dependencies",
+    "command": "pnpm --filter @vsf/checks run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts comments",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "No source application is contacted; fixtures are local and offline; secrets are redacted before logs, goldens and evidence are stored.",
+  "performance_memory_storage": "artifact rollup bb9d2b86f66c94ec6213cdb9e8f8c3503a8fc2632dfe6b90f433f5df5056b5aa",
+  "known_limitations": [
+    "Advisory matching uses a small local baseline; live cargo-audit, pnpm audit and govulncheck are not wired yet"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T05.biome.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T05.clippy.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T05.rustfmt.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T05.gofmt.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T05.go-vet.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T05.comment-limit.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T05.artifact-digest.log"
+  ],
+  "review_result": "ACCEPTED"
+}

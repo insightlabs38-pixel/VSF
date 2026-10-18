@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec node "$(git rev-parse --show-toplevel)/tools/checks/src/cli.ts" commit-msg "$1"

@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B00-T03",
+  "status": "DONE",
+  "branch": "vsf/b00-foundation",
+  "base_commit": "03139f7d7f693bd055dd98e0104a30a056a337e3",
+  "commit": "4c071743baa9c4282e2ca46a9913564ad82fb70c",
+  "paths": [
+    "fixtures/source-apps",
+    "compiler/crates/vsf-wasm",
+    "frontend/packages/wasm-host",
+    "tests/e2e",
+    "scripts/build-wasm.sh"
+  ],
+  "acceptance": "Four synthetic apps and the WASM smoke build from a clean checkout, run offline without credentials, and the injected ABI 1000 module is rejected before any call.",
+  "positive": {
+    "fixture": "synthetic apps + wasm-smoke seed 42",
+    "command": "pnpm --filter @vsf/e2e run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "abi-injected module, module without ABI export, external request guard",
+    "command": "pnpm --filter @vsf/wasm-host run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/fixture-apps run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "No source application is contacted; fixtures are local and offline; secrets are redacted before logs, goldens and evidence are stored.",
+  "performance_memory_storage": "e2e 6 tests in about 2.8 s; browser WASM output sha256 equals native golden",
+  "known_limitations": [
+    "Chromium only; cross-browser parity is B21"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T03.fixture-server.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T03.browser-e2e-and-wasm-abi.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T03.wasm-host-abi-negative.log"
+  ],
+  "review_result": "ACCEPTED"
+}

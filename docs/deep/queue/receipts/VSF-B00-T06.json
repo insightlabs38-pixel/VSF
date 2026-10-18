@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B00-T06",
+  "status": "DONE",
+  "branch": "vsf/b00-foundation",
+  "base_commit": "03139f7d7f693bd055dd98e0104a30a056a337e3",
+  "commit": "4c071743baa9c4282e2ca46a9913564ad82fb70c",
+  "paths": [
+    ".github/workflows/ci.yml",
+    "ci/jobs.json",
+    "tools/checks/src/ci.ts",
+    "tools/checks/src/runlogged.ts"
+  ],
+  "acceptance": "Job matrix covers native compiler, wasm/browser, Go and TS plus hygiene and cross-language; an induced failure yields FAIL with retained, checksummed logs; GitHub run on this commit is green with the canary job passing.",
+  "positive": {
+    "fixture": "seven local jobs",
+    "command": "node tools/checks/src/cli.ts ci-run <job>",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "VSF_INDUCE_FAILURE canary, tampered log, forged PASS manifest",
+    "command": "node tools/checks/src/cli.ts ci-run canary",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-verify artifacts/ci/canary",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "No source application is contacted; fixtures are local and offline; secrets are redacted before logs, goldens and evidence are stored.",
+  "performance_memory_storage": "local verify-all about 48 s warm",
+  "known_limitations": [
+    "Actions pinned by major tag; SHA pinning deferred to B24 (ADR-025)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-hygiene.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-native.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-go.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-ts.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-wasm-browser.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-cross-language.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-canary.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.induced-failure-is-detected.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T06.ci-verify-canary.log"
+  ],
+  "review_result": "ACCEPTED"
+}

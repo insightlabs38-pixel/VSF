@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sequence editor fallback</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main>
+<h1>Sequence editor</h1>
+<label for="seq">DNA sequence (A, C, G, T)</label>
+<textarea id="seq" rows="4" cols="60" spellcheck="false" aria-describedby="stats">ACGTACGTAC</textarea>
+<p id="stats" aria-live="polite"></p>
+<script type="module" src="/assets/client/sequence.js"></script>
+</main>
+</body>
+</html>

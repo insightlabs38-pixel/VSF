@@ -1,0 +1,64 @@
+{
+  "task_id": "VSF-B00-T02",
+  "status": "DONE",
+  "branch": "vsf/b00-foundation",
+  "base_commit": "03139f7d7f693bd055dd98e0104a30a056a337e3",
+  "commit": "4c071743baa9c4282e2ca46a9913564ad82fb70c",
+  "paths": [
+    "schemas/smoke/envelope.schema.json",
+    "schemas/smoke/canon-vectors.json",
+    "compiler/crates/vsf-canon",
+    "compiler/crates/vsf-schema",
+    "backend/canon",
+    "backend/schema",
+    "frontend/packages/schema",
+    "scripts/gen-schema-constants.ts",
+    "tests/cross-language"
+  ],
+  "acceptance": "A Rust-to-TS-to-Go canonical fixture keeps identical schema id and bytes for seeds 1, 42, 20261018; major/minor/unknown/digest-mismatch schemas are rejected with the same code by all bindings.",
+  "positive": {
+    "fixture": "golden seeds 1,42,20261018 chain",
+    "command": "pnpm --filter @vsf/cross-language-tests run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "schema-major-2, too-new, unknown, tampered digest, truncated and trailing bytes",
+    "command": "pnpm --filter @vsf/cross-language-tests run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/schema --filter @vsf/wasm-host run test",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "node scripts/gen-schema-constants.ts --check",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf.smoke.envelope/1.0.0 introduced",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "No source application is contacted; fixtures are local and offline; secrets are redacted before logs, goldens and evidence are stored.",
+  "performance_memory_storage": "not measured",
+  "known_limitations": [
+    "Canonical profile is integer-only with no Unicode normalization; decimal and normalization semantics are deferred to B02 (ADR-025)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T02.rust-schema-canon.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T02.ts-schema.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T02.go-schema.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T02.rust-ts-go-chain.log",
+    "docs/deep/evidence/VSF-B00/logs/VSF-B00-T02.generated-drift.log"
+  ],
+  "review_result": "ACCEPTED"
+}

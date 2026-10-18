@@ -1,0 +1,6 @@
+main
+  h1 "Sequence editor"
+  label [for="seq"] "DNA sequence (A, C, G, T)"
+  textarea "ACGTACGTAC"
+  p "Length 10, GC 50%"
+  script [type="module"]

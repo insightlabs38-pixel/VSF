@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WASM smoke</title>
+<link rel="stylesheet" href="/styles.css">
+<script type="importmap">
+{ "imports": { "@vsf/schema": "/assets/schema/index.js", "@vsf/wasm-host": "/assets/wasm-host/index.js" } }
+</script>
+</head>
+<body>
+<main>
+<h1>WASM smoke</h1>
+<p>Status: <output id="status">pending</output></p>
+<p>Output SHA-256: <output id="digest"></output></p>
+<script type="module" src="/assets/client/wasm-smoke.js"></script>
+</main>
+</body>
+</html>

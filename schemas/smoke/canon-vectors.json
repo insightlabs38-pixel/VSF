@@ -1,0 +1,135 @@
+{
+  "schema": "vsf-canon-vectors-v1",
+  "cases": [
+    {
+      "id": "sort-and-trim",
+      "input": " {\"b\" : 1 ,\n\"a\":[true,null, \"x\"] } ",
+      "canonical": "{\"a\":[true,null,\"x\"],\"b\":1}"
+    },
+    {
+      "id": "utf16-key-order",
+      "input": "{\"￿\":1,\"𐀀\":2}",
+      "canonical": "{\"𐀀\":2,\"￿\":1}"
+    },
+    {
+      "id": "escapes",
+      "input": "\"\\u0001\\u007f\\/é\\n\\t\\\\\\\"\"",
+      "canonical": "\"\\u0001/é\\n\\t\\\\\\\"\""
+    },
+    {
+      "id": "surrogate-pair",
+      "input": "\"\\ud83d\\ude00\"",
+      "canonical": "\"😀\""
+    },
+    {
+      "id": "negative-zero",
+      "input": "[-0,0,-9007199254740991,9007199254740991]",
+      "canonical": "[0,0,-9007199254740991,9007199254740991]"
+    },
+    {
+      "id": "nested-empty",
+      "input": "{\"z\":{},\"y\":[],\"x\":[[]]}",
+      "canonical": "{\"x\":[[]],\"y\":[],\"z\":{}}"
+    },
+    {
+      "id": "lowercase-hex-control",
+      "input": "\"\\u001F\\u001f\"",
+      "canonical": "\"\\u001f\\u001f\""
+    },
+    {
+      "id": "duplicate-key",
+      "input": "{\"a\":1,\"a\":2}",
+      "error": "canon.duplicate_key"
+    },
+    {
+      "id": "duplicate-key-escaped",
+      "input": "{\"a\":1,\"\\u0061\":2}",
+      "error": "canon.duplicate_key"
+    },
+    {
+      "id": "float",
+      "input": "1.5",
+      "error": "canon.non_integer"
+    },
+    {
+      "id": "exponent",
+      "input": "1e3",
+      "error": "canon.non_integer"
+    },
+    {
+      "id": "int-out-of-range",
+      "input": "9007199254740992",
+      "error": "canon.integer_out_of_range"
+    },
+    {
+      "id": "neg-int-out-of-range",
+      "input": "-9007199254740992",
+      "error": "canon.integer_out_of_range"
+    },
+    {
+      "id": "leading-zero",
+      "input": "01",
+      "error": "canon.syntax"
+    },
+    {
+      "id": "trailing-comma",
+      "input": "[1,]",
+      "error": "canon.syntax"
+    },
+    {
+      "id": "trailing-data",
+      "input": "{} x",
+      "error": "canon.trailing_data"
+    },
+    {
+      "id": "lone-high-surrogate",
+      "input": "\"\\ud800\"",
+      "error": "canon.lone_surrogate"
+    },
+    {
+      "id": "lone-low-surrogate",
+      "input": "\"\\udc00\"",
+      "error": "canon.lone_surrogate"
+    },
+    {
+      "id": "bad-escape",
+      "input": "\"\\x\"",
+      "error": "canon.invalid_escape"
+    },
+    {
+      "id": "raw-control-char",
+      "input": "\"a\u0001\"",
+      "error": "canon.syntax"
+    },
+    {
+      "id": "bom",
+      "input": "﻿1",
+      "error": "canon.syntax"
+    },
+    {
+      "id": "empty",
+      "input": "",
+      "error": "canon.syntax"
+    },
+    {
+      "id": "single-quotes",
+      "input": "{'a':1}",
+      "error": "canon.syntax"
+    },
+    {
+      "id": "nan",
+      "input": "NaN",
+      "error": "canon.syntax"
+    },
+    {
+      "id": "depth-65",
+      "input": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+      "error": "canon.depth_exceeded"
+    },
+    {
+      "id": "depth-64",
+      "input": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+      "canonical": "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"
+    }
+  ]
+}
