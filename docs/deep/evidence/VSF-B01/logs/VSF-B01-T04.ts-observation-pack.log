@@ -1,0 +1,36 @@
+$ pnpm --filter @vsf/observer --filter @vsf/wasm-host run test
+Scope: 2 of 13 workspace projects
+frontend/packages/observer test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+frontend/packages/observer test: ✔ roundtrip is exact and canonical (3.706663ms)
+frontend/packages/observer test: ✔ empty snapshot is valid and empty input is not (0.997005ms)
+frontend/packages/observer test: ✔ rejects every malformed shape with the same codes as Rust (1.025781ms)
+frontend/packages/observer test: ✔ rejects invalid UTF-8 and non-canonical string tables (0.581109ms)
+frontend/packages/observer test: ✔ never throws anything but PackError on truncations and bit flips (26.452976ms)
+frontend/packages/observer test: ✔ analysis summary has the canonical key order (12.435041ms)
+frontend/packages/observer test: ✔ generator is deterministic and scales (105.276677ms)
+frontend/packages/observer test: ℹ tests 7
+frontend/packages/observer test: ℹ suites 0
+frontend/packages/observer test: ℹ pass 7
+frontend/packages/observer test: ℹ fail 0
+frontend/packages/observer test: ℹ cancelled 0
+frontend/packages/observer test: ℹ skipped 0
+frontend/packages/observer test: ℹ todo 0
+frontend/packages/observer test: ℹ duration_ms 351.658154
+frontend/packages/observer test: Done
+frontend/packages/wasm-host test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+frontend/packages/wasm-host test: ✔ wasm output is byte-identical to native golden for every seed (40.530565ms)
+frontend/packages/wasm-host test: ✔ injected incompatible ABI is rejected before any call (11.813463ms)
+frontend/packages/wasm-host test: ✔ module without the ABI export is rejected (1.414689ms)
+frontend/packages/wasm-host test: ✔ wasm surfaces stable error codes and recovers after errors (4.338188ms)
+frontend/packages/wasm-host test: ✔ a truncated or corrupted module is rejected without partial initialization (3.555837ms)
+frontend/packages/wasm-host test: ✔ pack analysis through WASM rejects truncated packs and keeps working afterwards (8.562529ms)
+frontend/packages/wasm-host test: ℹ tests 6
+frontend/packages/wasm-host test: ℹ suites 0
+frontend/packages/wasm-host test: ℹ pass 6
+frontend/packages/wasm-host test: ℹ fail 0
+frontend/packages/wasm-host test: ℹ cancelled 0
+frontend/packages/wasm-host test: ℹ skipped 0
+frontend/packages/wasm-host test: ℹ todo 0
+frontend/packages/wasm-host test: ℹ duration_ms 275.015789
+frontend/packages/wasm-host test: Done
+[exit 0]

@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B01-T07",
+  "status": "DONE",
+  "branch": "vsf/b01-browser-wasm-boundaries",
+  "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+  "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+  "paths": [
+    "backend/bridge",
+    "backend/cmd/vsfbridge",
+    "tests/browser/specs/bridge.spec.ts",
+    "tests/browser/specs/native-messaging.spec.ts",
+    "tests/browser/support/native-host.mjs"
+  ],
+  "acceptance": "Unauthenticated, wrong-token, foreign-origin, null-origin, rebinding-style Host, form-post and missing-CSRF-header requests are denied by default; oversize, malformed and slow-header requests fail closed; 5 MiB chunked upload round-trips; real Chromium confirms CORS preflight for the paired extension and denial for a hostile origin holding the token.",
+  "positive": {
+    "fixture": "paired extension origin, 5 MiB chunked upload",
+    "command": "go -C backend test -race -count=1 -v ./bridge",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "Host/Origin/CSRF/malformed/chunk adversarial matrix, hostile origin in Chromium",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/bridge.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/native-messaging.spec.ts",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only user-authorized origins are observed; form values and secret-shaped text never leave the page; no source application server is contacted; bridge and extension commands are origin- and sender-checked.",
+  "performance_memory_storage": "native messaging: browser to host 32 MB ok; host to browser 999,900 B ok, 1,048,576 B fails",
+  "known_limitations": [
+    "Pairing and token distribution are B09; Windows named pipe equivalent not built"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T07.go-bridge-race-tests.log",
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T07.browser-bridge-cors-and-csrf.log",
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T07.native-messaging-limits.log"
+  ],
+  "review_result": "ACCEPTED"
+}

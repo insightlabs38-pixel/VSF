@@ -1,0 +1,28 @@
+$ go -C backend test -race -count=1 -v ./bridge
+=== RUN   TestAuthorizedExtensionCallSucceeds
+--- PASS: TestAuthorizedExtensionCallSucceeds (0.01s)
+=== RUN   TestUnauthenticatedAndWrongCredentialsAreDenied
+--- PASS: TestUnauthenticatedAndWrongCredentialsAreDenied (0.01s)
+=== RUN   TestDNSRebindingHostMismatchIsDenied
+--- PASS: TestDNSRebindingHostMismatchIsDenied (0.01s)
+=== RUN   TestForeignAndNullOriginsAreDeniedWithoutCORSGrants
+--- PASS: TestForeignAndNullOriginsAreDeniedWithoutCORSGrants (0.01s)
+=== RUN   TestCSRFFormPostsAndSimpleRequestsAreRefused
+--- PASS: TestCSRFFormPostsAndSimpleRequestsAreRefused (0.00s)
+=== RUN   TestMalformedRequestsFailClosedWithStableCodes
+--- PASS: TestMalformedRequestsFailClosedWithStableCodes (0.04s)
+=== RUN   TestOversizedHeadersAndSlowHeadersAreCut
+--- PASS: TestOversizedHeadersAndSlowHeadersAreCut (2.00s)
+=== RUN   TestBindIsLoopbackOnlyAndConfigIsValidated
+--- PASS: TestBindIsLoopbackOnlyAndConfigIsValidated (0.00s)
+=== RUN   TestLargePayloadChunkingRoundTrips
+--- PASS: TestLargePayloadChunkingRoundTrips (1.11s)
+=== RUN   TestChunkingAdversarialCases
+--- PASS: TestChunkingAdversarialCases (0.24s)
+=== RUN   TestUploadLimitsAndExpiry
+--- PASS: TestUploadLimitsAndExpiry (0.00s)
+=== RUN   TestConcurrentUploadsAreRaceFree
+--- PASS: TestConcurrentUploadsAreRaceFree (1.25s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/bridge	5.718s
+[exit 0]

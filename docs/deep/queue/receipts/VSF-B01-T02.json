@@ -1,0 +1,43 @@
+{
+  "task_id": "VSF-B01-T02",
+  "status": "DONE",
+  "branch": "vsf/b01-browser-wasm-boundaries",
+  "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+  "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+  "paths": [
+    "apps/extension/src/protocol.ts",
+    "apps/extension/src/background.ts",
+    "tests/browser/specs/extension-permissions.spec.ts",
+    "fixtures/source-apps/client/hostile.ts"
+  ],
+  "acceptance": "Grant and revoke gate observation per (scheme, host, port), confirmed by browser-side execution contexts; page scripts, content-script contexts and foreign callers cannot issue commands; malformed grants are rejected.",
+  "positive": {
+    "fixture": "grant A, capture A, revoke A, grant B",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-permissions.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "hostile page, compromised content-script sender, 11 malformed commands, wildcard host",
+    "command": "pnpm --filter @vsf/extension run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/extension run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only user-authorized origins are observed; form values and secret-shaped text never leave the page; no source application server is contacted; bridge and extension commands are origin- and sender-checked.",
+  "performance_memory_storage": "not measured",
+  "known_limitations": [
+    "Finding: browser host permissions ignore the port, so VSF's own grant list is the per-origin boundary (documented in mv3-design-review.md)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T02.grant-revoke-and-page-origin-misuse.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B01-T03",
+  "status": "DONE",
+  "branch": "vsf/b01-browser-wasm-boundaries",
+  "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+  "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+  "paths": [
+    "apps/extension/src/background.ts",
+    "tests/browser/specs/extension-lifecycle.spec.ts",
+    "tests/browser/specs/extension-idle.spec.ts",
+    "tests/browser/support/lifecycle.ts",
+    "tests/browser/support/rawchrome.ts"
+  ],
+  "acceptance": "Forced stop and natural idle termination (30.1 s observed) restart the worker with grants and counters intact; an interrupted capture is reported as interrupted, never lost or retried; planted secrets appear nowhere in the pack, worker globals, storage, hooked logs or replies, and the packaged scripts contain no logging calls.",
+  "positive": {
+    "fixture": "stopWorker then status and capture",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-lifecycle.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "capture of a 50k-node page interrupted by termination; secrets page with password field and token text",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-idle.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-permissions.spec.ts",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only user-authorized origins are observed; form values and secret-shaped text never leave the page; no source application server is contacted; bridge and extension commands are origin- and sender-checked.",
+  "performance_memory_storage": "natural idle termination after 30.1 s with a browser-level DevTools socket only",
+  "known_limitations": [
+    "Attaching Playwright to the worker keeps it alive, so restart tests use ServiceWorker.stopWorker; natural termination is shown separately"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T03.worker-restart-interrupt-and-secret-free-state.log",
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T03.natural-idle-termination-30s.log"
+  ],
+  "review_result": "ACCEPTED"
+}

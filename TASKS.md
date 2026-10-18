@@ -2,13 +2,13 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B01-T01`
+**Next eligible:** `VSF-B02-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
 | B00 | G0 | 7/7 | DONE | PROCEED |
-| B01 | G1 | 0/7 | READY | - |
-| B02 | G2 | 0/8 | TODO | - |
+| B01 | G1 | 7/7 | DONE | PROCEED |
+| B02 | G2 | 0/8 | READY | - |
 | B03 | G3 | 0/8 | TODO | - |
 | B04 | G4 | 0/8 | TODO | - |
 | B05 | G5 | 0/8 | TODO | - |
@@ -44,17 +44,17 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B01 · Validate browser and language boundaries
 
-- [ ] `VSF-B01-T01` Build a packaged extension that can read permitted basic DOM snapshot _(READY)_
-- [ ] `VSF-B01-T02` Demonstrate permissions origin-by-origin and prevent page-origin misuse
-- [ ] `VSF-B01-T03` Observe MV3 service worker teardown/restart and preserve no sensitive secrets in global state
-- [ ] `VSF-B01-T04` Pass compact typed arrays between TS and Rust/WASM with repeatable hashes
-- [ ] `VSF-B01-T05` Benchmark capture versus parse versus transport, including 1k/10k/50k nodes
-- [ ] `VSF-B01-T06` Compare Node/browser/Go boundary options for native compiler execution
-- [ ] `VSF-B01-T07` Prototype isolated service bind with origin/CSRF/rebinding check
+- [x] `VSF-B01-T01` Build a packaged extension that can read permitted basic DOM snapshot
+- [x] `VSF-B01-T02` Demonstrate permissions origin-by-origin and prevent page-origin misuse
+- [x] `VSF-B01-T03` Observe MV3 service worker teardown/restart and preserve no sensitive secrets in global state
+- [x] `VSF-B01-T04` Pass compact typed arrays between TS and Rust/WASM with repeatable hashes
+- [x] `VSF-B01-T05` Benchmark capture versus parse versus transport, including 1k/10k/50k nodes
+- [x] `VSF-B01-T06` Compare Node/browser/Go boundary options for native compiler execution
+- [x] `VSF-B01-T07` Prototype isolated service bind with origin/CSRF/rebinding check
 
 ### B02 · Define and validate versioned IR contracts
 
-- [ ] `VSF-B02-T01` Specify EnvironmentCapabilityManifest, ObservationIR, SemanticIR, OperationContract, PresentationIR, VersionManifest
+- [ ] `VSF-B02-T01` Specify EnvironmentCapabilityManifest, ObservationIR, SemanticIR, OperationContract, PresentationIR, VersionManifest _(READY)_
 - [ ] `VSF-B02-T02` Define unknown/conflict and effect taxonomy with conservative defaults
 - [ ] `VSF-B02-T03` Build deterministic canonical encoding and hash fixtures, including UTF-8/decimal/time cases
 - [ ] `VSF-B02-T04` Generate TS/Go/Rust bindings and round-trip interoperability tests

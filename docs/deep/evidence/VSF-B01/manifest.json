@@ -2,5 +2,213 @@
   "schema": "vsf-evidence-v1",
   "batch": "B01",
   "gate": "G1",
-  "runs": []
+  "runs": [
+    {
+      "task_id": "VSF-B01-T01",
+      "name": "extension-unit",
+      "command": "pnpm --filter @vsf/extension run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T01.extension-unit.log",
+      "sha256": "1e2cfc873310c7dbb41347279b7ae117f83141c0ff6050034a82f62a65a7cfc7"
+    },
+    {
+      "task_id": "VSF-B01-T01",
+      "name": "extension-observes-authorized-origin-only",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-observe.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T01.extension-observes-authorized-origin-only.log",
+      "sha256": "90534b18ea80fa411ff2b6fbb6a5cdd9a676e77d89e05c75e1f025fe2805099b"
+    },
+    {
+      "task_id": "VSF-B01-T01",
+      "name": "extension-package-digests",
+      "command": "cat artifacts/extension/test.build.json artifacts/extension/product.build.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T01.extension-package-digests.log",
+      "sha256": "51a244b855d1e49d49d22b8e169ad26220d7979df0f596bcd959a0d8944c50de"
+    },
+    {
+      "task_id": "VSF-B01-T02",
+      "name": "grant-revoke-and-page-origin-misuse",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-permissions.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T02.grant-revoke-and-page-origin-misuse.log",
+      "sha256": "68f212c00310b814b8d7edd1cd715754fc4cce7ad9a15833b87dc82399ffe421"
+    },
+    {
+      "task_id": "VSF-B01-T03",
+      "name": "worker-restart-interrupt-and-secret-free-state",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-lifecycle.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T03.worker-restart-interrupt-and-secret-free-state.log",
+      "sha256": "cf1b75d972bf1f98672bab5f340c3e7bad40e8c497f23f8d7792ca89988d4d0d"
+    },
+    {
+      "task_id": "VSF-B01-T03",
+      "name": "natural-idle-termination-30s",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-idle.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T03.natural-idle-termination-30s.log",
+      "sha256": "4a32a954a0a31977ed3c697948b72e89044b0e9d708729219e224695fd496ef1"
+    },
+    {
+      "task_id": "VSF-B01-T04",
+      "name": "rust-observation-pack",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-observation -p vsf-fixtures -p vsf-wasm -p vsf-native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T04.rust-observation-pack.log",
+      "sha256": "04b93190562ef51930041264f7f6226ee55e94342febc111f769a3ed29628d3b"
+    },
+    {
+      "task_id": "VSF-B01-T04",
+      "name": "ts-observation-pack",
+      "command": "pnpm --filter @vsf/observer --filter @vsf/wasm-host run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T04.ts-observation-pack.log",
+      "sha256": "92c8397c1c7827065267f366d34227ba92367824f03bd647e0d26cfa37d5e0dc"
+    },
+    {
+      "task_id": "VSF-B01-T04",
+      "name": "rust-ts-wasm-pack-parity",
+      "command": "pnpm --filter @vsf/cross-language-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T04.rust-ts-wasm-pack-parity.log",
+      "sha256": "779d669d4333f504084629abfb7db10ca3cdcc4a06f3568c62ce8b07ddef6725"
+    },
+    {
+      "task_id": "VSF-B01-T05",
+      "name": "capture-parse-transport-benchmark",
+      "command": "pnpm --filter @vsf/browser-tests exec node --conditions=source bench/capture.ts docs/deep/evidence/VSF-B01/bench/capture.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T05.capture-parse-transport-benchmark.log",
+      "sha256": "555d4774c7342ccae6334df952863f63b61a7257aa8b1f0306d7f7d723a0189f"
+    },
+    {
+      "task_id": "VSF-B01-T06",
+      "name": "boundary-benchmark",
+      "command": "pnpm --filter @vsf/browser-tests exec node --conditions=source bench/boundary.ts docs/deep/evidence/VSF-B01/bench/boundary.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T06.boundary-benchmark.log",
+      "sha256": "1cb9ef0694fe4b153ba8377d9d97e6058713f2ca8ce80aca8a110e1c68da2978"
+    },
+    {
+      "task_id": "VSF-B01-T07",
+      "name": "go-bridge-race-tests",
+      "command": "go -C backend test -race -count=1 -v ./bridge",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T07.go-bridge-race-tests.log",
+      "sha256": "237ed1e24c8ee171b5f58fa049beb9eb7d9e87dd576e26c35b80341e1ced1fbb"
+    },
+    {
+      "task_id": "VSF-B01-T07",
+      "name": "browser-bridge-cors-and-csrf",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/bridge.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T07.browser-bridge-cors-and-csrf.log",
+      "sha256": "6bb22aedca727773d7463336fdc6ae4e06db9686e3ae578bbd8578d9e4b4ad29"
+    },
+    {
+      "task_id": "VSF-B01-T07",
+      "name": "native-messaging-limits",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/native-messaging.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B01-T07.native-messaging-limits.log",
+      "sha256": "cf0c5cc628edc56c95512748b0cfa82332f583060d1916daa8be1331fdf11d81"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-hygiene",
+      "command": "node tools/checks/src/cli.ts ci-run hygiene",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-hygiene.log",
+      "sha256": "bba938f52666ed785a4a10f1b8e6cae61aede4159e7ac6d5a6226e234983adf3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-native",
+      "command": "node tools/checks/src/cli.ts ci-run native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-native.log",
+      "sha256": "678b09b74ce2bb06b7644bd5a799829e55219e0f4174569edc8f1c164723376e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-go",
+      "command": "node tools/checks/src/cli.ts ci-run go",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-go.log",
+      "sha256": "cdd71958b2933294c6095125b05ad0c2cf7b202963632db2d3390639fae09a34"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-ts",
+      "command": "node tools/checks/src/cli.ts ci-run ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-ts.log",
+      "sha256": "99e415a0c572f57d83404f4dc99e19993a3cf7d0d0dc984ea210fad180864b99"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-wasm-browser",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-wasm-browser.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-cross-language",
+      "command": "node tools/checks/src/cli.ts ci-run cross-language",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-cross-language.log",
+      "sha256": "a3557a3f5a8f25a6c7f9a3febf62640a81bc0d2318ef251723123556ebdab62a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-browser",
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-browser.log",
+      "sha256": "ae0f6c126047b744f0b5eefebd1d650ede1f8f3219617d1f48eec0b32a93a796"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-canary",
+      "command": "node tools/checks/src/cli.ts ci-run canary",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-canary.log",
+      "sha256": "cb9ca4bf7787998ed148c72b29ec6c19de6cd9a436032a68b8db0832f70f0c29"
+    },
+    {
+      "task_id": "GATE",
+      "name": "clean-clone-reproducible",
+      "command": "scripts/clean-clone-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.clean-clone-reproducible.log",
+      "sha256": "175effcba4a506119299c09d4ede260c345fdfdd0ccb0b578f67e5b3cb8b3d24"
+    }
+  ]
 }

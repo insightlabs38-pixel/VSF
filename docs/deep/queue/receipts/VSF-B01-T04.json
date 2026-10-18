@@ -1,0 +1,48 @@
+{
+  "task_id": "VSF-B01-T04",
+  "status": "DONE",
+  "branch": "vsf/b01-browser-wasm-boundaries",
+  "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+  "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+  "paths": [
+    "compiler/crates/vsf-observation",
+    "compiler/crates/vsf-fixtures",
+    "compiler/crates/vsf-wasm",
+    "frontend/packages/observer",
+    "frontend/packages/wasm-host",
+    "tests/cross-language/pack.test.ts",
+    "fixtures/golden/packs.json"
+  ],
+  "acceptance": "Native Rust, browser-grade WASM and TypeScript produce identical pack bytes, SHA-256 digests and summaries for seeds 1 and 42 at 0, 1, 2, 100, 1000 and 10000 nodes; empty, truncated, trailing-byte and bad-magic inputs fail with identical codes; pinned digests match.",
+  "positive": {
+    "fixture": "seeds 1,42 x sizes 0..10000",
+    "command": "pnpm --filter @vsf/cross-language-tests run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "empty, truncated, trailing, bad magic, every bit flip never panics",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-observation -p vsf-fixtures -p vsf-wasm -p vsf-native",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/observer --filter @vsf/wasm-host run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "VSFS pack v1 and wasm ABI 2 introduced",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only user-authorized origins are observed; form values and secret-shaped text never leave the page; no source application server is contacted; bridge and extension commands are origin- and sender-checked.",
+  "performance_memory_storage": "WASM analyze 0.5 ms at 1k nodes, 4.96 ms at 10k (native 0.32 / 3.70)",
+  "known_limitations": [
+    "Pack format and WASM ABI 2 are v1 prototypes; compatibility rules arrive in B02"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T04.rust-observation-pack.log",
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T04.ts-observation-pack.log",
+    "docs/deep/evidence/VSF-B01/logs/VSF-B01-T04.rust-ts-wasm-pack-parity.log"
+  ],
+  "review_result": "ACCEPTED"
+}

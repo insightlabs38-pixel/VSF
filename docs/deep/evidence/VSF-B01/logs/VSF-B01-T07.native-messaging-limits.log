@@ -1,0 +1,8 @@
+$ pnpm --filter @vsf/browser-tests exec playwright test specs/native-messaging.spec.ts
+
+Running 1 test using 1 worker
+
+  ✓  1 specs/native-messaging.spec.ts:57:1 › native messaging size limits are measured in both directions (4.8s)
+
+  1 passed (5.9s)
+[exit 0]

@@ -1,0 +1,282 @@
+{
+  "schema": "vsf-bench-capture-v1",
+  "environment": {
+    "cpus": 4,
+    "cpuModel": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+    "memGiB": 16,
+    "node": "v22.22.0",
+    "chromium": "141.0.7390.37"
+  },
+  "note": "phases: captureMs=DOM walk, packMs=encode+base64, transferMs=executeScript round trip minus the two, decodeMs=base64->bytes in worker, recognizeMs=Rust WASM analyze; p99 equals max when n<100",
+  "sizes": [
+    {
+      "requestedNodes": 1000,
+      "domElements": 1008,
+      "snapshotNodes": 1002,
+      "packBytes": 31064,
+      "base64Bytes": 41419,
+      "phases": {
+        "captureMs": {
+          "n": 40,
+          "mean": 10.49,
+          "p50": 10.8,
+          "p95": 16.2,
+          "p99": 24,
+          "max": 24
+        },
+        "packMs": {
+          "n": 40,
+          "mean": 5.39,
+          "p50": 5,
+          "p95": 8.3,
+          "p99": 9.2,
+          "max": 9.2
+        },
+        "transferMs": {
+          "n": 40,
+          "mean": 3.13,
+          "p50": 3.1,
+          "p95": 4.3,
+          "p99": 5.3,
+          "max": 5.3
+        },
+        "decodeMs": {
+          "n": 40,
+          "mean": 0.22,
+          "p50": 0.2,
+          "p95": 0.4,
+          "p99": 0.5,
+          "max": 0.5
+        },
+        "recognizeMs": {
+          "n": 40,
+          "mean": 0.738,
+          "p50": 0.7,
+          "p95": 1.1,
+          "p99": 1.3,
+          "max": 1.3
+        },
+        "endToEndMs": {
+          "n": 40,
+          "mean": 30.875,
+          "p50": 31,
+          "p95": 40,
+          "p99": 48,
+          "max": 48
+        },
+        "overheadMs": {
+          "n": 40,
+          "mean": 10.907,
+          "p50": 10.6,
+          "p95": 14.2,
+          "p99": 15.1,
+          "max": 15.1
+        }
+      }
+    },
+    {
+      "requestedNodes": 10000,
+      "domElements": 10008,
+      "snapshotNodes": 10002,
+      "packBytes": 308280,
+      "base64Bytes": 411040,
+      "phases": {
+        "captureMs": {
+          "n": 20,
+          "mean": 67.955,
+          "p50": 66.4,
+          "p95": 83.3,
+          "p99": 84.5,
+          "max": 84.5
+        },
+        "packMs": {
+          "n": 20,
+          "mean": 39.01,
+          "p50": 34.8,
+          "p95": 58.5,
+          "p99": 78.8,
+          "max": 78.8
+        },
+        "transferMs": {
+          "n": 20,
+          "mean": 7.31,
+          "p50": 7.2,
+          "p95": 8.5,
+          "p99": 10.8,
+          "max": 10.8
+        },
+        "decodeMs": {
+          "n": 20,
+          "mean": 2.28,
+          "p50": 2,
+          "p95": 3.4,
+          "p99": 3.4,
+          "max": 3.4
+        },
+        "recognizeMs": {
+          "n": 20,
+          "mean": 5.495,
+          "p50": 4.9,
+          "p95": 7.4,
+          "p99": 8.1,
+          "max": 8.1
+        },
+        "endToEndMs": {
+          "n": 20,
+          "mean": 133.25,
+          "p50": 128,
+          "p95": 164,
+          "p99": 171,
+          "max": 171
+        },
+        "overheadMs": {
+          "n": 20,
+          "mean": 11.2,
+          "p50": 10.8,
+          "p95": 14.7,
+          "p99": 15.8,
+          "max": 15.8
+        }
+      }
+    },
+    {
+      "requestedNodes": 50000,
+      "domElements": 50008,
+      "snapshotNodes": 50002,
+      "packBytes": 1558288,
+      "base64Bytes": 2077718,
+      "phases": {
+        "captureMs": {
+          "n": 10,
+          "mean": 323.15,
+          "p50": 319.3,
+          "p95": 369.2,
+          "p99": 369.2,
+          "max": 369.2
+        },
+        "packMs": {
+          "n": 10,
+          "mean": 184.69,
+          "p50": 176.5,
+          "p95": 229.1,
+          "p99": 229.1,
+          "max": 229.1
+        },
+        "transferMs": {
+          "n": 10,
+          "mean": 56.13,
+          "p50": 43.5,
+          "p95": 98.8,
+          "p99": 98.8,
+          "max": 98.8
+        },
+        "decodeMs": {
+          "n": 10,
+          "mean": 10.95,
+          "p50": 9.6,
+          "p95": 17.4,
+          "p99": 17.4,
+          "max": 17.4
+        },
+        "recognizeMs": {
+          "n": 10,
+          "mean": 22.77,
+          "p50": 22.2,
+          "p95": 24.9,
+          "p99": 24.9,
+          "max": 24.9
+        },
+        "endToEndMs": {
+          "n": 10,
+          "mean": 608,
+          "p50": 594,
+          "p95": 696,
+          "p99": 696,
+          "max": 696
+        },
+        "overheadMs": {
+          "n": 10,
+          "mean": 10.31,
+          "p50": 9.3,
+          "p95": 18.4,
+          "p99": 18.4,
+          "max": 18.4
+        }
+      }
+    }
+  ],
+  "transportVariants": [
+    {
+      "payloadBytes": 100000,
+      "variant": "base64",
+      "roundTripMs": {
+        "n": 10,
+        "mean": 8.18,
+        "p50": 8.1,
+        "p95": 9.6,
+        "p99": 9.6,
+        "max": 9.6
+      }
+    },
+    {
+      "payloadBytes": 100000,
+      "variant": "number-array",
+      "roundTripMs": {
+        "n": 10,
+        "mean": 80.32,
+        "p50": 75.5,
+        "p95": 105.4,
+        "p99": 105.4,
+        "max": 105.4
+      }
+    },
+    {
+      "payloadBytes": 1000000,
+      "variant": "base64",
+      "roundTripMs": {
+        "n": 10,
+        "mean": 77.35,
+        "p50": 72.3,
+        "p95": 98.5,
+        "p99": 98.5,
+        "max": 98.5
+      }
+    },
+    {
+      "payloadBytes": 1000000,
+      "variant": "number-array",
+      "roundTripMs": {
+        "n": 10,
+        "mean": 774.44,
+        "p50": 721.3,
+        "p95": 1012.1,
+        "p99": 1012.1,
+        "max": 1012.1
+      }
+    },
+    {
+      "payloadBytes": 4000000,
+      "variant": "base64",
+      "roundTripMs": {
+        "n": 10,
+        "mean": 273.05,
+        "p50": 273.3,
+        "p95": 294.7,
+        "p99": 294.7,
+        "max": 294.7
+      }
+    },
+    {
+      "payloadBytes": 4000000,
+      "variant": "number-array",
+      "roundTripMs": {
+        "n": 10,
+        "mean": 3359.87,
+        "p50": 3205.4,
+        "p95": 3987.8,
+        "p99": 3987.8,
+        "max": 3987.8
+      }
+    }
+  ]
+}

@@ -70,49 +70,70 @@
       "receipt": "docs/deep/queue/receipts/VSF-B00-T07.json"
     },
     "VSF-B01-T01": {
-      "status": "READY",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "branch": "vsf/b01-browser-wasm-boundaries",
+      "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+      "receipt": "docs/deep/queue/receipts/VSF-B01-T01.json"
     },
     "VSF-B01-T02": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "branch": "vsf/b01-browser-wasm-boundaries",
+      "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+      "receipt": "docs/deep/queue/receipts/VSF-B01-T02.json"
     },
     "VSF-B01-T03": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "branch": "vsf/b01-browser-wasm-boundaries",
+      "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+      "receipt": "docs/deep/queue/receipts/VSF-B01-T03.json"
     },
     "VSF-B01-T04": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "branch": "vsf/b01-browser-wasm-boundaries",
+      "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+      "receipt": "docs/deep/queue/receipts/VSF-B01-T04.json"
     },
     "VSF-B01-T05": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "branch": "vsf/b01-browser-wasm-boundaries",
+      "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+      "receipt": "docs/deep/queue/receipts/VSF-B01-T05.json"
     },
     "VSF-B01-T06": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "branch": "vsf/b01-browser-wasm-boundaries",
+      "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+      "receipt": "docs/deep/queue/receipts/VSF-B01-T06.json"
     },
     "VSF-B01-T07": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "878e22d05715406a72c732608f4099d90fd1d0ee",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "branch": "vsf/b01-browser-wasm-boundaries",
+      "base_commit": "bdcb8b7cb97266f96141669bcd202641e573671b",
+      "receipt": "docs/deep/queue/receipts/VSF-B01-T07.json"
     },
     "VSF-B02-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -950,9 +971,11 @@
       "merge_commit": "bdcb8b7cb97266f96141669bcd202641e573671b"
     },
     "G1": {
-      "status": "PENDING",
-      "decision": null,
-      "evidence": null
+      "status": "ACCEPTED",
+      "decision": "PROCEED",
+      "evidence": "docs/deep/evidence/VSF-B01",
+      "report": "docs/deep/reports/VSF-B01.md",
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/2"
     },
     "G2": {
       "status": "PENDING",
@@ -1071,7 +1094,7 @@
     }
   },
   "cursor": {
-    "batch": "B01",
-    "task": "VSF-B01-T01"
+    "batch": "B02",
+    "task": "VSF-B02-T01"
   }
 }

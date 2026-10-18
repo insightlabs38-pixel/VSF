@@ -1,0 +1,9 @@
+$ pnpm --filter @vsf/browser-tests exec playwright test specs/bridge.spec.ts
+
+Running 2 tests using 1 worker
+
+  ✓  1 specs/bridge.spec.ts:55:1 › the paired extension origin passes CORS preflight and reaches the bridge (758ms)
+  ✓  2 specs/bridge.spec.ts:77:1 › a hostile web origin holding the token still cannot read or write through the bridge (738ms)
+
+  2 passed (2.7s)
+[exit 0]
