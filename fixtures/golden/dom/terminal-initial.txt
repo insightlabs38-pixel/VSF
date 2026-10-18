@@ -1,0 +1,5 @@
+main
+  h1 "Terminal"
+  div [role="application" aria-label="Terminal placeholder"] "VSF terminal placeholder (no shell attached)
+$"
+  script [type="module"]

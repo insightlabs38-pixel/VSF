@@ -1,0 +1,23 @@
+{
+ "schema": "vsf-golden-manifest-v1",
+ "entries": [
+  {
+   "seed": 1,
+   "input_sha256": "e5a6069b14cc7141c19c77d3b46586e0b2f46d0d0cb0a5c63f0ab675934bfe3c",
+   "compiled_file": "compiled-seed-1.json",
+   "compiled_sha256": "9f93b1de0495766c84a441b9478d87ceedb8f5e1a44c25c1f991642d4bd88954"
+  },
+  {
+   "seed": 42,
+   "input_sha256": "08896ee83cb7696ba639acec6e0ad2c4cc549587dff0579853742abcf81a4eb6",
+   "compiled_file": "compiled-seed-42.json",
+   "compiled_sha256": "6a275eeb82b899da106b12a14d8dd81628a02216b059dc82960e6e37fad242da"
+  },
+  {
+   "seed": 20261018,
+   "input_sha256": "045950a83c92cb9a23f5cf881880ed5e863bba66412e0782737562d51e3a074e",
+   "compiled_file": "compiled-seed-20261018.json",
+   "compiled_sha256": "5c0d83bb1a64df8f36c2170d327eee56ed842474e431b7180a8756d20fd2a9e1"
+  }
+ ]
+}

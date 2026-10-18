@@ -1,0 +1,11 @@
+main
+  h1 "Place an order"
+  form
+    label [for="name"] "Name"
+    input [name="name"]
+    label [for="email"] "Email"
+    input [type="email" name="email"]
+    label [for="quantity"] "Quantity"
+    input [name="quantity"]
+    p
+      button [type="submit"] "Submit order"
