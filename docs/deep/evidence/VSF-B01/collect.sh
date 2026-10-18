@@ -3,7 +3,7 @@
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel)"
 r() { node tools/queue/src/cli.ts evidence-run B01 "$@"; }
-scripts/build-wasm.sh >/dev/null && scripts/build-native.sh >/dev/null && pnpm build:ts >/dev/null && pnpm --filter @vsf/extension run build >/dev/null
+scripts/build-wasm.sh >/dev/null && scripts/build-native.sh >/dev/null && pnpm build:ts >/dev/null && pnpm --filter @vsf/extension run package >/dev/null
 
 r VSF-B01-T01 extension-unit -- pnpm --filter @vsf/extension run test
 r VSF-B01-T01 extension-observes-authorized-origin-only -- pnpm --filter @vsf/browser-tests exec playwright test specs/extension-observe.spec.ts
