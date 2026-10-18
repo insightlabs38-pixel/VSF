@@ -1,4 +1,12 @@
+export * from "./advertise.ts";
+export * from "./capture.ts";
 export * from "./dom.ts";
+export * from "./environment.ts";
+export * from "./epoch.ts";
 export { generatePackBytes } from "./fixtures.ts";
+export * from "./model.ts";
 export * from "./pack.ts";
 export { redactText } from "./redact.ts";
+export * from "./scope.ts";
+export * from "./sensitive.ts";
+export * from "./session.ts";

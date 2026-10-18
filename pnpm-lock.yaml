@@ -122,6 +122,12 @@ importers:
         specifier: workspace:*
         version: link:../../tools/redact
 
+  tests/observation:
+    dependencies:
+      '@vsf/observer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/observer
+
   tools/checks:
     dependencies:
       '@vsf/redact':
