@@ -1,0 +1,191 @@
+{
+  "jobs": {
+    "hygiene": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "toolchain-pins",
+        "cmd": ["node", "tools/checks/src/cli.ts", "toolchain"]
+      },
+      {
+        "name": "generated-drift",
+        "cmd": ["node", "scripts/gen-schema-constants.ts", "--check"]
+      },
+      {
+        "name": "comment-limit",
+        "cmd": ["node", "tools/checks/src/cli.ts", "comments"]
+      },
+      {
+        "name": "biome",
+        "cmd": ["pnpm", "exec", "biome", "check", "."]
+      },
+      {
+        "name": "dep-review",
+        "cmd": ["node", "tools/checks/src/cli.ts", "dep-review"]
+      },
+      {
+        "name": "secret-scan",
+        "cmd": ["node", "tools/checks/src/cli.ts", "secrets"]
+      },
+      {
+        "name": "catalog-check",
+        "cmd": ["node", "tools/checks/src/cli.ts", "catalog", "--check"]
+      },
+      {
+        "name": "checks-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/checks", "--filter", "@vsf/redact", "run", "test"]
+      },
+      {
+        "name": "queue-validate",
+        "cmd": ["node", "tools/queue/src/cli.ts", "validate"]
+      },
+      {
+        "name": "queue-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/queue", "run", "test"]
+      },
+      {
+        "name": "adversarial-b00",
+        "cmd": ["pnpm", "--filter", "@vsf/adversarial-tests", "run", "test"]
+      }
+    ],
+    "native": [
+      {
+        "name": "toolchain-pins",
+        "cmd": ["node", "tools/checks/src/cli.ts", "toolchain"]
+      },
+      {
+        "name": "cargo-fmt",
+        "cmd": ["cargo", "fmt", "--manifest-path", "compiler/Cargo.toml", "--all", "--", "--check"]
+      },
+      {
+        "name": "cargo-clippy",
+        "cmd": [
+          "cargo",
+          "clippy",
+          "--manifest-path",
+          "compiler/Cargo.toml",
+          "--locked",
+          "--workspace",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ]
+      },
+      {
+        "name": "cargo-test",
+        "cmd": ["cargo", "test", "--manifest-path", "compiler/Cargo.toml", "--locked", "--workspace"]
+      },
+      {
+        "name": "build-native",
+        "cmd": ["scripts/build-native.sh"]
+      },
+      {
+        "name": "golden-check",
+        "cmd": ["node", "scripts/golden.ts", "check"]
+      }
+    ],
+    "go": [
+      {
+        "name": "gofmt",
+        "cmd": ["scripts/gofmt-check.sh"]
+      },
+      {
+        "name": "go-vet",
+        "cmd": ["go", "-C", "backend", "vet", "./..."]
+      },
+      {
+        "name": "go-mod-verify",
+        "cmd": ["go", "-C", "backend", "mod", "verify"]
+      },
+      {
+        "name": "go-test",
+        "cmd": ["go", "-C", "backend", "test", "-count=1", "./..."]
+      }
+    ],
+    "ts": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "typecheck",
+        "cmd": ["pnpm", "typecheck"]
+      },
+      {
+        "name": "build",
+        "cmd": ["pnpm", "build:ts"]
+      },
+      {
+        "name": "unit-tests",
+        "cmd": [
+          "pnpm",
+          "--filter",
+          "@vsf/schema",
+          "--filter",
+          "@vsf/wasm-host",
+          "--filter",
+          "@vsf/fixture-apps",
+          "run",
+          "test"
+        ]
+      }
+    ],
+    "wasm-browser": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "build-wasm",
+        "cmd": ["scripts/build-wasm.sh"]
+      },
+      {
+        "name": "build-native",
+        "cmd": ["scripts/build-native.sh"]
+      },
+      {
+        "name": "build-ts",
+        "cmd": ["pnpm", "build:ts"]
+      },
+      {
+        "name": "wasm-host-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/wasm-host", "run", "test"]
+      },
+      {
+        "name": "browser-e2e",
+        "cmd": ["pnpm", "--filter", "@vsf/e2e", "run", "test"]
+      }
+    ],
+    "cross-language": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "build-wasm",
+        "cmd": ["scripts/build-wasm.sh"]
+      },
+      {
+        "name": "build-native",
+        "cmd": ["scripts/build-native.sh"]
+      },
+      {
+        "name": "chain-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/cross-language-tests", "run", "test"]
+      },
+      {
+        "name": "artifact-digest",
+        "cmd": ["node", "tools/checks/src/cli.ts", "digest"]
+      }
+    ],
+    "canary": [
+      {
+        "name": "always-passes",
+        "cmd": ["node", "-e", "console.log('canary baseline ok')"]
+      }
+    ]
+  }
+}

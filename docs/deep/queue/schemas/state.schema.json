@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vsf-queue-state-v1",
+  "type": "object",
+  "required": ["schema", "initialized", "source_plan", "status", "cursor", "task_states", "gate_states"],
+  "propertyNames": {
+    "enum": [
+      "schema",
+      "initialized",
+      "source_plan",
+      "status",
+      "cursor",
+      "task_count",
+      "batch_count",
+      "task_states",
+      "gate_states"
+    ]
+  },
+  "properties": {
+    "schema": { "const": "vsf-queue-v1" },
+    "initialized": { "type": "string" },
+    "source_plan": { "type": "string" },
+    "status": { "enum": ["ACTIVE", "COMPLETE"] },
+    "cursor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["batch", "task"],
+      "properties": { "batch": { "type": ["string", "null"] }, "task": { "type": ["string", "null"] } }
+    },
+    "task_states": {
+      "type": "object",
+      "patternProperties": { "^VSF-B[0-9]{2}-T[0-9]{2}$": { "$ref": "#/definitions/task" } },
+      "additionalProperties": false
+    },
+    "gate_states": {
+      "type": "object",
+      "patternProperties": { "^G[0-9]{1,2}$": { "$ref": "#/definitions/gate" } },
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "claimed_by", "commit", "evidence"],
+      "properties": {
+        "status": { "enum": ["TODO", "READY", "ACTIVE", "REVIEW", "CORRECTIONS", "BLOCKED", "DONE"] },
+        "claimed_by": { "type": ["string", "null"] },
+        "branch": { "type": ["string", "null"] },
+        "base_commit": { "type": ["string", "null"] },
+        "commit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+        "evidence": { "type": ["string", "null"] },
+        "receipt": { "type": ["string", "null"] }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "decision", "evidence"],
+      "properties": {
+        "status": { "enum": ["PENDING", "ACCEPTED", "BLOCKED", "REVISE", "REVERT"] },
+        "decision": { "enum": [null, "PROCEED", "HOLD", "REVISE", "REVERT"] },
+        "evidence": { "type": ["string", "null"] },
+        "report": { "type": ["string", "null"] },
+        "pr": { "type": ["string", "null"] },
+        "merge_commit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" }
+      }
+    }
+  }
+}

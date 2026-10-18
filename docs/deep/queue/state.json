@@ -1,0 +1,1053 @@
+{
+  "schema": "vsf-queue-v1",
+  "initialized": "2026-10-18",
+  "source_plan": "07_Development_Sequence/00_Master_Sequence.md",
+  "status": "ACTIVE",
+  "task_count": 152,
+  "batch_count": 25,
+  "task_states": {
+    "VSF-B00-T01": {
+      "status": "READY",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B00-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B00-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B00-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B00-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B00-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B00-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B01-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B01-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B01-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B01-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B01-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B01-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B01-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B02-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B03-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B04-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B05-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B06-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B07-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B09-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T07": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B10-T08": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B11-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B11-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B11-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B11-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B11-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B11-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B12-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B12-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B12-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B12-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B12-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B12-T06": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B13-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B13-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B13-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B13-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B13-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B14-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B14-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B14-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B14-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B14-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B15-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B15-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B15-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B15-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B15-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B16-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B16-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B16-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B16-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B17-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B17-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B17-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B17-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B17-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B18-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B18-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B18-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B18-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B18-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B19-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B19-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B19-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B19-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B19-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B20-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B20-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B20-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B20-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B21-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B21-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B21-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B22-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B22-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B22-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B22-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B23-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B23-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B23-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B23-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B24-T01": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B24-T02": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B24-T03": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B24-T04": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B24-T05": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    }
+  },
+  "gate_states": {
+    "G0": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G1": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G2": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G3": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G4": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G5": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G6": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G7": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G8": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G9": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G10": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G11": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G12": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G13": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G14": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G15": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G16": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G17": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G18": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G19": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G20": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G21": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G22": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G23": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    },
+    "G24": {
+      "status": "PENDING",
+      "decision": null,
+      "evidence": null
+    }
+  },
+  "cursor": {
+    "batch": "B00",
+    "task": "VSF-B00-T01"
+  }
+}

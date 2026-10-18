@@ -1,0 +1,15 @@
+{
+  "name": "@vsf/queue",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vsf/redact": "workspace:*",
+    "ajv": "8.20.0"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --test-reporter=spec test/*.test.ts"
+  }
+}
