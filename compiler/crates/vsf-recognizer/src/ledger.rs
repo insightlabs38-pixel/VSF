@@ -1,5 +1,6 @@
 //! Evidence ledger: every semantic claim carries the immutable observation, the nodes and the kind of evidence behind it.
 
+use crate::candidates::{Group, Resolution};
 use crate::engine::{Output, Recognition, Unit, UnitKey};
 use crate::obs::{Node, Observation};
 use crate::semantics::{Binding, Field, Strength};
@@ -82,6 +83,8 @@ pub struct Ledger {
     /// Every observation (or contract) any claim cites; entries are never rewritten.
     pub sources: BTreeMap<String, SourceMeta>,
     pub claims: BTreeMap<String, Claim>,
+    /// Explicit human decisions on conflicted claims, by claim id. A conflict is never closed any other way.
+    pub resolutions: BTreeMap<String, crate::reconcile::Decision>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -396,6 +399,27 @@ fn binding_claims(l: &mut Ledger, obs: &Observation, f: &Field, key: UnitKey) {
     }
 }
 
+fn candidate_claim(l: &mut Ledger, obs: &Observation, g: &Group, key: UnitKey) {
+    let certainty = match g.resolution {
+        Resolution::Conflicted => Certainty::Conflicted,
+        _ => Certainty::Unknown,
+    };
+    let described: Vec<String> = g
+        .candidates
+        .iter()
+        .map(|c| c.hypothesis.describe())
+        .collect();
+    l.push(
+        g.node,
+        &format!("candidates:{}", g.topic),
+        &described.join("|"),
+        certainty,
+        None,
+        vec![evidence(obs, EvidenceType::ObservedStructure, &[g.node])],
+        Some(key),
+    );
+}
+
 pub fn claims_for_unit(l: &mut Ledger, obs: &Observation, u: &Unit) {
     let key = u.key;
     match &u.output {
@@ -411,6 +435,10 @@ pub fn claims_for_unit(l: &mut Ledger, obs: &Observation, u: &Unit) {
                 Some(key),
             );
             binding_claims(l, obs, f, key);
+            if !f.action_roles.is_empty() {
+                let g = crate::candidates::kind_group(f);
+                candidate_claim(l, obs, &g, key);
+            }
             if let Some(sc) = &f.scope {
                 l.push(
                     f.node,
@@ -448,6 +476,9 @@ pub fn claims_for_unit(l: &mut Ledger, obs: &Observation, u: &Unit) {
                 vec![own.clone()],
                 Some(key),
             );
+            if let Some(g) = crate::candidates::verb_group(a) {
+                candidate_claim(l, obs, &g, key);
+            }
             if a.verbs.is_empty() {
                 l.push(
                     a.node,

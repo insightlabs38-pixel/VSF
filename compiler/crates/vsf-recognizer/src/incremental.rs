@@ -1,5 +1,4 @@
-//! Dependency-driven recomputation: only units that read a changed node are recomputed, and the result
-//! equals a from-scratch run.
+//! Only units that read a changed node are recomputed; the result equals a from-scratch run.
 
 use crate::engine::{
     Recognition, RunStats, Unit, UnitKey, compute_unit, discovery_queries, recognize,

@@ -1,5 +1,4 @@
-//! Structural relationships, field/label binding and operation hypotheses over one observation.
-//! Every node the logic looks at is logged so a unit's dependencies are exact, not guessed.
+//! Relationships, label binding and operation hypotheses; every node read is logged for exact dependencies.
 
 use crate::index::tokens;
 use crate::obs::{F_DISABLED, F_INTERACTIVE, F_OPAQUE, Node, Observation, RelKind};
@@ -126,7 +125,7 @@ pub enum Binding {
     Unbound,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum FieldKind {
     Text,
     Choice,
@@ -152,6 +151,8 @@ pub struct Field {
     pub binding: Binding,
     /// Nearest named region, group or section: what tells two identical labels apart.
     pub scope: Option<String>,
+    /// Roles the same element also satisfies as an action; non-empty means the kind is contested.
+    pub action_roles: Vec<String>,
     pub usable: bool,
     pub why_unusable: Option<&'static str>,
 }
@@ -417,8 +418,7 @@ fn preceding_label(r: &Reader, i: usize, budget: usize) -> Option<(usize, String
     None
 }
 
-/// Labels found next to a control and whether the choice is safe: a label followed by several controls, or two
-/// competing label-like siblings in a row, names nothing alone.
+/// Labels next to a control, and whether picking one is unsafe (shared by several controls or competing).
 fn proximity(r: &Reader, i: usize) -> Option<(Vec<LabelCandidate>, bool)> {
     let p = r.parent(i)?;
     let sibs = r.children(p);
@@ -600,16 +600,17 @@ pub fn recognize_field(r: &Reader, i: usize, rules: Rules) -> Option<Field> {
         kind,
         binding: bind_label(r, i, rules),
         scope: region_name(r, i),
+        action_roles: if is_action(n) {
+            action_roles(n)
+        } else {
+            Vec::new()
+        },
         usable,
         why_unusable: why,
     })
 }
 
-pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
-    let n = r.node(i);
-    if !is_action(n) {
-        return None;
-    }
+fn action_roles(n: &Node) -> Vec<String> {
     let mut roles = Vec::new();
     if let Some(explicit) = &n.role {
         roles.push(explicit.clone());
@@ -624,6 +625,15 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
     {
         roles.push(nat.to_string());
     }
+    roles
+}
+
+pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
+    let n = r.node(i);
+    if !is_action(n) {
+        return None;
+    }
+    let roles = action_roles(n);
     let name = n
         .name
         .as_deref()
