@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B05-T06",
+  "status": "DONE",
+  "branch": "vsf/b05-semantic-layer",
+  "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+  "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/contract.rs",
+    "compiler/crates/vsf-recognizer/tests/contract.rs"
+  ],
+  "acceptance": "UNKNOWN and CONFLICTED withhold UI and tool availability with a reason; no write tool is emitted without a behavioural witness, and a witness never overrides a conflict, ambiguity or unusability.",
+  "positive": {
+    "fixture": "held-out and regression apps with and without witnesses",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "credential, hidden and conflicted controls with every node witnessed stay withheld",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1, vsf-recognition-v1, vsf-evidence-ledger-v1, vsf-availability-v1 new; IR 1.0.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No write tool exists from recognition alone; credential fields stay unusable.",
+  "performance_memory_storage": "No measurable cost.",
+  "known_limitations": [
+    "Witnesses are an input; producing them belongs to a later batch"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T06.availability-withholds-unknown-conflicted.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T06.contract-document-held-out.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B05-T01",
+  "status": "DONE",
+  "branch": "vsf/b05-semantic-layer",
+  "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+  "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/index.rs",
+    "compiler/crates/vsf-recognizer/src/obs.rs",
+    "compiler/crates/vsf-recognizer/tests/index.rs",
+    "frontend/packages/observer/src/model.ts",
+    "fixtures/recognition/"
+  ],
+  "acceptance": "The indexed recognizer returns exactly the matches of a reference full scan over 200 seeded random cases and the six fixture snapshots, and reports candidates examined and index memory.",
+  "positive": {
+    "fixture": "seeded random observations (up to 20000 nodes) and six snapshots",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test index -- --nocapture",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "empty observation, unknown features, negation tails, selective vs unselective queries",
+    "command": "same command",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1, vsf-recognition-v1, vsf-evidence-ledger-v1, vsf-availability-v1 new; IR 1.0.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Reads structure and declared labels only; credential regions carry no text in the input.",
+  "performance_memory_storage": "20000 nodes: narrow query examines 1698 candidates vs 20000 for a scan; index 212165 B (10 B/node), 5755 sparse and 36 dense postings.",
+  "known_limitations": [
+    "Feature set is fixed; new features need an index version bump"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T01.index-equals-scan-and-report.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T01.index-bench-cli-table-orders.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T01.index-bench-cli-plain-form.log"
+  ],
+  "review_result": "ACCEPTED"
+}

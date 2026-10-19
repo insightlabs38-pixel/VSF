@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B05-T01`
+**Next eligible:** `VSF-B06-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -11,8 +11,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B02 | G2 | 8/8 | DONE | PROCEED |
 | B03 | G3 | 8/8 | DONE | PROCEED |
 | B04 | G4 | 8/8 | DONE | PROCEED |
-| B05 | G5 | 0/8 | READY | - |
-| B06 | G6 | 0/8 | TODO | - |
+| B05 | G5 | 8/8 | DONE | PROCEED |
+| B06 | G6 | 0/8 | READY | - |
 | B07 | G7 | 0/8 | TODO | - |
 | B08 | G8 | 0/8 | TODO | - |
 | B09 | G9 | 0/8 | TODO | - |
@@ -87,18 +87,18 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B05 · Build semantic recognition and evidence engine
 
-- [ ] `VSF-B05-T01` Create feature bitset/inverted index; test against naive full-scan baseline _(READY)_
-- [ ] `VSF-B05-T02` Implement structural relationships, field/label binding and operation hypothesis pipeline
-- [ ] `VSF-B05-T03` Add evidence ledger with claim-level provenance
-- [ ] `VSF-B05-T04` Build dependency graph and incremental invalidation closure
-- [ ] `VSF-B05-T05` Implement lexical/structural/role candidate matching without using model calls
-- [ ] `VSF-B05-T06` Produce UNKNOWN and CONFLICTED when semantics cannot be demonstrated
-- [ ] `VSF-B05-T07` Support protocol evidence reconciliation with UI evidence in fixture
-- [ ] `VSF-B05-T08` Demonstrate primitive fix helping two independent held-out apps
+- [x] `VSF-B05-T01` Create feature bitset/inverted index; test against naive full-scan baseline
+- [x] `VSF-B05-T02` Implement structural relationships, field/label binding and operation hypothesis pipeline
+- [x] `VSF-B05-T03` Add evidence ledger with claim-level provenance
+- [x] `VSF-B05-T04` Build dependency graph and incremental invalidation closure
+- [x] `VSF-B05-T05` Implement lexical/structural/role candidate matching without using model calls
+- [x] `VSF-B05-T06` Produce UNKNOWN and CONFLICTED when semantics cannot be demonstrated
+- [x] `VSF-B05-T07` Support protocol evidence reconciliation with UI evidence in fixture
+- [x] `VSF-B05-T08` Demonstrate primitive fix helping two independent held-out apps
 
 ### B06 · Build presentation compiler and minimal accessible renderer
 
-- [ ] `VSF-B06-T01` Define PresentationIR constraints and reusable field/grid/nav/form components
+- [ ] `VSF-B06-T01` Define PresentationIR constraints and reusable field/grid/nav/form components _(READY)_
 - [ ] `VSF-B06-T02` Implement light/dark/system tokens and blue/mint accents; status colors distinct
 - [ ] `VSF-B06-T03` Add keyboard/focus restoration/ARIA announcements and basic RTL handling
 - [ ] `VSF-B06-T04` Build keyed incremental rendering and local state subscriptions

@@ -1,0 +1,49 @@
+{
+  "task_id": "VSF-B05-T02",
+  "status": "DONE",
+  "branch": "vsf/b05-semantic-layer",
+  "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+  "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/semantics.rs",
+    "compiler/crates/vsf-recognizer/src/engine.rs",
+    "compiler/crates/vsf-recognizer/tests/semantics.rs",
+    "fixtures/recognition/apps/"
+  ],
+  "acceptance": "Label relations, nesting, delegated labels and duplicated nearby text bind or stay ambiguous as authored; hidden, disabled and credential controls are found but never usable.",
+  "positive": {
+    "fixture": "plain-form, table-orders, aria-grid, heldout-shadow-ds",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test semantics",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "adversarial: competing labels, one label over several controls, dangling targets, neighbour borrowing",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test semantics",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1, vsf-recognition-v1, vsf-evidence-ledger-v1, vsf-availability-v1 new; IR 1.0.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Credential fields are recognized only to be marked unusable; no value is read.",
+  "performance_memory_storage": "Unit computation is linear in the nodes it reads; no measurable cost on the 36-node fixtures.",
+  "known_limitations": [
+    "Binding uses declared names and visible text only; no computed accessibility tree"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T02.binding-nesting-delegation-duplicates.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T02.baseline-recognition-held-out.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T02.delegated-recognition-held-out.log"
+  ],
+  "review_result": "ACCEPTED"
+}

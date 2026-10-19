@@ -1,0 +1,14 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract
+
+running 5 tests
+test a_witness_unlocks_only_a_clean_write ... ok
+test contract_document_is_stable ... ok
+test unknown_and_conflicted_reach_the_ui_state_and_never_the_emitted_set ... ok
+test credential_and_hidden_controls_stay_unusable_even_with_a_witness ... ok
+test no_write_tool_is_emitted_without_a_behavioural_witness ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running tests/contract.rs (compiler/target/debug/deps/contract-3ed01099cc25c926)
+[exit 0]

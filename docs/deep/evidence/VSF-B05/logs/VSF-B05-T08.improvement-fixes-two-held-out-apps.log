@@ -1,0 +1,13 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test generalization
+
+running 4 tests
+test adversarial_page_has_no_false_confident_binding ... ok
+test one_delegation_rule_fixes_two_unrelated_held_out_apps ... ok
+test the_regression_corpus_is_unchanged_by_the_improvement ... ok
+test recognition_code_names_no_framework_or_vendor ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running tests/generalization.rs (compiler/target/debug/deps/generalization-26fea896b80973d4)
+[exit 0]

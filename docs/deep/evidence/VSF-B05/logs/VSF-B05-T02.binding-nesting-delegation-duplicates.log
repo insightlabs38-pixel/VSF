@@ -1,0 +1,23 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test semantics
+
+running 14 tests
+test action_names_map_to_verbs_by_lexicon_and_collisions_stay_separate ... ok
+test a_heading_above_a_label_does_not_compete_with_it ... ok
+test competing_nearby_text_is_ambiguous_and_never_silently_bound ... ok
+test delegation_never_borrows_the_label_of_a_neighbouring_control ... ok
+test a_css_grid_of_plain_divs_is_not_a_collection ... ok
+test collections_expose_columns_rows_and_the_actions_in_each_row ... ok
+test explicit_relations_beat_nearby_text_even_when_the_wrong_label_sits_closest ... ok
+test nesting_hides_the_label_from_the_baseline_and_delegation_recovers_it ... ok
+test one_label_over_several_controls_names_none_of_them ... ok
+test duplicated_labels_are_told_apart_by_the_region_they_sit_in ... ok
+test hidden_disabled_and_credential_controls_are_found_but_never_usable ... ok
+test labelledby_with_several_targets_joins_them_and_a_dangling_target_is_ignored ... ok
+test overlapping_roles_keep_every_reading_instead_of_picking_one ... ok
+test the_fixture_apps_bind_their_fields_as_authored ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running tests/semantics.rs (compiler/target/debug/deps/semantics-044b31569aae6a9b)
+[exit 0]

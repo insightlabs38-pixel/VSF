@@ -2,5 +2,285 @@
   "schema": "vsf-evidence-v1",
   "batch": "B05",
   "gate": "G5",
-  "runs": []
+  "runs": [
+    {
+      "task_id": "VSF-B05-T01",
+      "name": "index-equals-scan-and-report",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test index -- --nocapture",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T01.index-equals-scan-and-report.log",
+      "sha256": "08d4c1b272f8c143c1f2d3a17a9f49e04773bbab2e9e55847dae1132ea8e6bb1"
+    },
+    {
+      "task_id": "VSF-B05-T01",
+      "name": "index-bench-cli-table-orders",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- bench-index fixtures/recognition/snapshots/table-orders.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T01.index-bench-cli-table-orders.log",
+      "sha256": "dc4d2be667b24fd6517d7946085e007f8b630891e6591f34f8c6388afc8d017f"
+    },
+    {
+      "task_id": "VSF-B05-T01",
+      "name": "index-bench-cli-plain-form",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- bench-index fixtures/recognition/snapshots/plain-form.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T01.index-bench-cli-plain-form.log",
+      "sha256": "a23009737822261dbca03eec057828e62b0655024c43a2d610f38ef420aad6e5"
+    },
+    {
+      "task_id": "VSF-B05-T02",
+      "name": "binding-nesting-delegation-duplicates",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test semantics",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T02.binding-nesting-delegation-duplicates.log",
+      "sha256": "5213b587c8e23f8e34f74784791f307555d3b4aa829a5092f5d0c39126d13da7"
+    },
+    {
+      "task_id": "VSF-B05-T02",
+      "name": "baseline-recognition-held-out",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- recognize fixtures/recognition/snapshots/heldout-shadow-ds.json --rules 1",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T02.baseline-recognition-held-out.log",
+      "sha256": "3f588c04ce1eb77308655ae8758163e9ca5a4cb8319b5699f4016e43ce6a64c4"
+    },
+    {
+      "task_id": "VSF-B05-T02",
+      "name": "delegated-recognition-held-out",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- recognize fixtures/recognition/snapshots/heldout-shadow-ds.json --rules 2",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T02.delegated-recognition-held-out.log",
+      "sha256": "5f18486a69b668199da1a71ba833b5a113f2478b91916a22360e4ed8ddc73c91"
+    },
+    {
+      "task_id": "VSF-B05-T03",
+      "name": "ledger-provenance-and-staleness",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T03.ledger-provenance-and-staleness.log",
+      "sha256": "2e4093f4922bd716cc3abcf1095293278c9182cdb2a19ce62a6393fa116ce541"
+    },
+    {
+      "task_id": "VSF-B05-T03",
+      "name": "ledger-document-plain-form",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- ledger fixtures/recognition/snapshots/plain-form.json --captured-at 1790000100000",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T03.ledger-document-plain-form.log",
+      "sha256": "44c32fe9da1bb0260a45e045b315afd07bd8324c4944410a18435677b49c7afc"
+    },
+    {
+      "task_id": "VSF-B05-T04",
+      "name": "incremental-equals-fresh",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test incremental -- --nocapture",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T04.incremental-equals-fresh.log",
+      "sha256": "9c92e1e02dacf7c3f15e816772976782544e2d1d9ab1daffea43d438d6cd40f3"
+    },
+    {
+      "task_id": "VSF-B05-T05",
+      "name": "candidates-determinism-no-model",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test candidates",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T05.candidates-determinism-no-model.log",
+      "sha256": "da14a09cf6dbf6835fde6f49633baa027e34a86e0e1fd27dac9bc412c7dabf90"
+    },
+    {
+      "task_id": "VSF-B05-T06",
+      "name": "availability-withholds-unknown-conflicted",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T06.availability-withholds-unknown-conflicted.log",
+      "sha256": "177621c4e7184887bf4dcd912244b4ee8ff5d2aa96e5d629fd686fc09415bcbd"
+    },
+    {
+      "task_id": "VSF-B05-T06",
+      "name": "contract-document-held-out",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- contract fixtures/recognition/snapshots/heldout-shadow-ds.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T06.contract-document-held-out.log",
+      "sha256": "2b6b59b18e7c80548b5eec811cc243c1ec7386136c0daf50da0838b07aa9f2da"
+    },
+    {
+      "task_id": "VSF-B05-T07",
+      "name": "reconciliation-conflicts-and-decisions",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test reconcile",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T07.reconciliation-conflicts-and-decisions.log",
+      "sha256": "9350b3fbefc9dc3051706f56b5c4fc2e6d6a96db63cb39a9c90116dbed25351e"
+    },
+    {
+      "task_id": "VSF-B05-T07",
+      "name": "protocol-fixtures-are-valid-evidence",
+      "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/recognition-protocol.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T07.protocol-fixtures-are-valid-evidence.log",
+      "sha256": "3b8c5b31467fa24f6f6eed524b5df042ceba1d5a7e73f0f5436f51961d08752d"
+    },
+    {
+      "task_id": "VSF-B05-T07",
+      "name": "ledger-with-conflicting-protocol",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- ledger fixtures/recognition/snapshots/plain-form.json --protocol fixtures/recognition/protocol/profile-conflict.json --captured-at 1790000100000",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T07.ledger-with-conflicting-protocol.log",
+      "sha256": "db817c2ea3a0d822bb1aa507662a5815dd2ad81a6e2498777af2c5afe5593194"
+    },
+    {
+      "task_id": "VSF-B05-T08",
+      "name": "improvement-fixes-two-held-out-apps",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test generalization",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T08.improvement-fixes-two-held-out-apps.log",
+      "sha256": "113211fc65ca997c447e186a988d3ffed0c07064e8296d3f79ad5b6b6c6e44fe"
+    },
+    {
+      "task_id": "VSF-B05-T08",
+      "name": "snapshots-match-fixture-apps-in-chromium",
+      "command": "pnpm --filter @vsf/observation-tests run check:fixtures",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B05-T08.snapshots-match-fixture-apps-in-chromium.log",
+      "sha256": "954fa7f6343b497c3bc4001a1ecad3af0546dabdc38abce1996daaea25a23a64"
+    },
+    {
+      "task_id": "GATE",
+      "name": "recognizer-all-tests",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.recognizer-all-tests.log",
+      "sha256": "930dcf130cc4d3da51327a010bb98f04374544302e74d0011bc3d8e89a39516f"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-fmt",
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-fmt.log",
+      "sha256": "c4e39a37190232bfa5639c36f34c68e12e10e629056589120a38922c90608dee"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-clippy.log",
+      "sha256": "169f1d25e7da25fd5117abb456b6c120eb35d46107b572ccca7fafa5a4bc7344"
+    },
+    {
+      "task_id": "GATE",
+      "name": "full-rust-workspace",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.full-rust-workspace.log",
+      "sha256": "c3048cfc00de46023682ea33e958c04d4ae5c7865faf5257eae091e724df6a41"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-hygiene",
+      "command": "node tools/checks/src/cli.ts ci-run hygiene",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-hygiene.log",
+      "sha256": "bba938f52666ed785a4a10f1b8e6cae61aede4159e7ac6d5a6226e234983adf3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-native",
+      "command": "node tools/checks/src/cli.ts ci-run native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-native.log",
+      "sha256": "678b09b74ce2bb06b7644bd5a799829e55219e0f4174569edc8f1c164723376e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-go",
+      "command": "node tools/checks/src/cli.ts ci-run go",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-go.log",
+      "sha256": "cdd71958b2933294c6095125b05ad0c2cf7b202963632db2d3390639fae09a34"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-ts",
+      "command": "node tools/checks/src/cli.ts ci-run ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-ts.log",
+      "sha256": "99e415a0c572f57d83404f4dc99e19993a3cf7d0d0dc984ea210fad180864b99"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-wasm-browser",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-wasm-browser.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-cross-language",
+      "command": "node tools/checks/src/cli.ts ci-run cross-language",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-cross-language.log",
+      "sha256": "a3557a3f5a8f25a6c7f9a3febf62640a81bc0d2318ef251723123556ebdab62a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-browser",
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-browser.log",
+      "sha256": "ae0f6c126047b744f0b5eefebd1d650ede1f8f3219617d1f48eec0b32a93a796"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-observation",
+      "command": "node tools/checks/src/cli.ts ci-run observation",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-observation.log",
+      "sha256": "67f27c33ddf5ca759fcbae22a734ad8a1b6169bda750a3ba431737f4f6dc42a5"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-canary",
+      "command": "node tools/checks/src/cli.ts ci-run canary",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-canary.log",
+      "sha256": "cb9ca4bf7787998ed148c72b29ec6c19de6cd9a436032a68b8db0832f70f0c29"
+    },
+    {
+      "task_id": "GATE",
+      "name": "clean-clone-reproducible",
+      "command": "scripts/clean-clone-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.clean-clone-reproducible.log",
+      "sha256": "d991f479e55c7fd88962c9cdd1be34c18bbe01aa441c22717580eda5ff2729f7"
+    }
+  ]
 }

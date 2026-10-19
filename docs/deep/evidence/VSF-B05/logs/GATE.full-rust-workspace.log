@@ -1,0 +1,416 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked --workspace
+
+running 8 tests
+test tests::escapes_minimally_and_roundtrips ... ok
+test tests::orders_keys_by_utf16_code_units ... ok
+test tests::normalizes_negative_zero ... ok
+test tests::rejects_malformed_and_ambiguous_inputs ... ok
+test tests::sha256_known_vector ... ok
+test tests::sorts_keys_and_strips_whitespace ... ok
+test tests::shared_vectors_match_every_binding ... ok
+test tests::bounds_depth_and_size ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test tests::compile_rejects_incompatible_schema ... ok
+test tests::compile_output_is_itself_a_valid_envelope ... ok
+test tests::compile_is_deterministic_and_redacts ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 4 tests
+test tests::generation_is_deterministic_and_seed_sensitive ... ok
+test tests::envelopes_validate ... ok
+test tests::splitmix_matches_reference_vector ... ok
+test tests::packs_are_deterministic_valid_and_scale ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 9 tests
+test rt::tests::dates_follow_the_gregorian_calendar ... ok
+test rt::tests::since_gates_fields_by_declared_version ... ok
+test rt::tests::versions_parse_strictly ... ok
+test rt::tests::text_rules_reject_controls_and_bidi_overrides_but_keep_normalization_untouched ... ok
+test semantics::tests::certainty_combines_to_the_weakest_premise ... ok
+test semantics::tests::indeterminate_absorbs_and_is_the_default_for_the_unproven ... ok
+test semantics::tests::effect_join_is_a_commutative_associative_idempotent_maximum ... ok
+test rt::tests::decimals_are_exact_and_canonical ... ok
+test semantics::tests::only_behavioral_evidence_proves_what_an_action_does ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test nfc_and_nfd_text_are_preserved_and_stay_distinct ... ok
+test typed_digests_are_domain_separated ... ok
+test every_valid_fixture_decodes_and_reencodes_to_identical_bytes ... ok
+test pinned_digests_match_this_implementation ... ok
+test every_invalid_case_fails_closed_with_the_expected_code_and_path ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+
+running 8 tests
+test cache_key_fields_cannot_be_shifted_across_boundaries ... ok
+test equivalent_descriptors_share_an_identity ... ok
+test hmac_matches_rfc_4231_vectors ... ok
+test private_cache_state_is_never_shared_across_principals_or_variants ... ok
+test tenant_absence_differs_from_an_empty_looking_tenant ... ok
+test variant_id_is_pinned_and_independently_reproducible ... ok
+test invalid_descriptors_fail_closed ... ok
+test every_tenant_role_locale_flag_combination_is_distinct ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test malformed_host_descriptions_are_rejected ... ok
+test evaluation_json_is_canonical_and_stable ... ok
+test every_matrix_case_yields_the_expected_status_and_reason ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+test every_valid_fixture_passes_semantic_validation ... ok
+test every_semantic_case_reports_exactly_the_expected_codes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 7 tests
+test bad_usage_exits_64 ... ok
+test incompatible_schema_exits_2_with_code ... ok
+test serve_handles_frames_errors_and_unknown_ops ... ok
+test pack_generate_analyze_matches_library_and_rejects_truncation ... ok
+test emit_then_compile_roundtrip_matches_library ... ok
+test serve_validates_ir_documents ... ok
+test ir_validate_reports_valid_invalid_and_uncanonical_documents ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 2 tests
+test golden_outputs_contain_no_unredacted_secret_shapes ... ok
+test native_output_is_byte_identical_to_committed_golden ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test tests::rejects_invalid_utf8_padding_and_non_canonical_strings ... ok
+test tests::rejects_every_malformed_shape ... ok
+test tests::empty_snapshot_is_valid_but_empty_input_is_not ... ok
+test tests::rejects_structural_corruption ... ok
+test tests::roundtrip_is_exact_and_canonical ... ok
+test tests::summary_counts_classes_and_depth ... ok
+test tests::never_panics_on_arbitrary_truncations_and_bit_flips ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test a_control_that_is_also_a_button_yields_two_candidates_and_a_conflict ... ok
+test adversarial_page_has_separate_candidates_and_no_silent_pick ... ok
+test the_crate_has_no_model_or_network_dependency ... ok
+test wording_that_names_two_verbs_keeps_each_as_its_own_candidate ... ok
+test recognition_is_deterministic_across_runs_and_threads ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+
+running 5 tests
+test a_witness_unlocks_only_a_clean_write ... ok
+test contract_document_is_stable ... ok
+test unknown_and_conflicted_reach_the_ui_state_and_never_the_emitted_set ... ok
+test credential_and_hidden_controls_stay_unusable_even_with_a_witness ... ok
+test no_write_tool_is_emitted_without_a_behavioural_witness ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 4 tests
+test adversarial_page_has_no_false_confident_binding ... ok
+test recognition_code_names_no_framework_or_vendor ... ok
+test one_delegation_rule_fixes_two_unrelated_held_out_apps ... ok
+test the_regression_corpus_is_unchanged_by_the_improvement ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test a_change_under_a_collection_recomputes_the_collection_and_not_the_page ... ok
+test an_unrelated_change_recomputes_nothing_and_keeps_every_claim ... ok
+test changing_a_label_recomputes_only_the_control_it_names ... ok
+test the_diff_reports_exactly_what_changed ... ok
+test adding_and_removing_controls_creates_and_drops_units ... ok
+test random_edit_sequences_always_agree_with_a_fresh_run ... ok
+test on_a_large_page_a_small_change_recomputes_a_small_fraction ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.98s
+
+
+running 5 tests
+test boundaries_empty_observation_unknown_features_and_negation_tails ... ok
+test real_snapshots_load_and_are_searchable ... ok
+test feature_extraction_and_direct_checks_agree_for_every_node ... ok
+test a_selective_query_examines_a_small_fraction_of_the_nodes_and_the_index_stays_small ... ok
+test the_index_returns_exactly_what_a_full_scan_returns_over_seeded_cases ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.10s
+
+
+running 8 tests
+test lexical_verb_claims_say_so_and_carry_heuristic_evidence ... ok
+test a_label_claim_names_the_label_node_the_control_and_their_digests ... ok
+test stale_evidence_is_detected_for_exactly_the_claims_that_relied_on_the_changed_node ... ok
+test tampered_claims_fail_validation ... ok
+test recognition_never_claims_more_than_inferred ... ok
+test what_cannot_be_demonstrated_is_an_unknown_claim_not_a_missing_one ... ok
+test the_ledger_is_deterministic_and_content_addressed ... ok
+test every_claim_on_every_fixture_traces_to_a_recorded_observation_with_evidence ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 9 tests
+test credential_fields_are_never_matched_to_protocol_names ... ok
+test a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it ... ok
+test malformed_protocol_documents_are_rejected ... ok
+test duplicated_ui_labels_bind_to_protocol_names_only_through_their_region ... ok
+test disagreement_is_a_conflict_citing_both_sides_and_no_source_wins ... ok
+test agreeing_evidence_is_recorded_as_inferred_with_both_sources ... ok
+test only_real_open_conflicts_can_be_decided ... ok
+test stale_protocol_evidence_is_not_compared ... ok
+test unsupported_evidence_can_only_raise_questions ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 14 tests
+test action_names_map_to_verbs_by_lexicon_and_collisions_stay_separate ... ok
+test a_heading_above_a_label_does_not_compete_with_it ... ok
+test competing_nearby_text_is_ambiguous_and_never_silently_bound ... ok
+test delegation_never_borrows_the_label_of_a_neighbouring_control ... ok
+test a_css_grid_of_plain_divs_is_not_a_collection ... ok
+test duplicated_labels_are_told_apart_by_the_region_they_sit_in ... ok
+test labelledby_with_several_targets_joins_them_and_a_dangling_target_is_ignored ... ok
+test explicit_relations_beat_nearby_text_even_when_the_wrong_label_sits_closest ... ok
+test hidden_disabled_and_credential_controls_are_found_but_never_usable ... ok
+test collections_expose_columns_rows_and_the_actions_in_each_row ... ok
+test nesting_hides_the_label_from_the_baseline_and_delegation_recovers_it ... ok
+test one_label_over_several_controls_names_none_of_them ... ok
+test overlapping_roles_keep_every_reading_instead_of_picking_one ... ok
+test the_fixture_apps_bind_their_fields_as_authored ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 4 tests
+test tests::loads_every_pattern ... ok
+test tests::redacts_nested_values_and_keys_deterministically ... ok
+test tests::leaves_non_secrets_untouched ... ok
+test tests::redacts_every_positive_case_with_its_kind ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+test source_apps_count_witness_fixtures_apart_from_unbound_ones ... ok
+test extra_unbound_fixtures_and_apps_do_not_move_any_tier ... ok
+test only_witnessed_claims_are_counted_and_nothing_is_validated_or_proven_yet ... ok
+test a_higher_maturity_moves_only_its_own_tier_and_never_the_total ... ok
+test the_denominator_is_the_whole_catalog_and_tiers_are_cumulative ... ok
+test the_committed_dashboard_is_the_current_one_and_the_text_names_the_denominator ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+
+running 10 tests
+test at_most_one_collection_primitive_matches_any_node_in_any_fixture ... ok
+test both_tables_share_one_composition ... ok
+test a_style_based_recognizer_is_caught_by_the_lookalike_fixture ... ok
+test every_fixture_descriptor_round_trips_and_ids_are_unique ... ok
+test malformed_descriptors_are_rejected ... ok
+test seeded_fixtures_are_reproducible_and_match_the_committed_files ... ok
+test changing_an_expectation_or_an_opt_out_role_fails_the_fixture ... ok
+test every_fixture_passes_the_shared_composite ... ok
+test an_implemented_claim_without_a_passing_witness_fails_the_package_load ... ok
+test two_independent_sources_yield_the_same_semantics_on_held_out_seeds ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+
+running 8 tests
+test a_substituted_trust_anchor_is_not_accepted_from_the_package_itself ... ok
+test missing_and_unlisted_files_fail ... ok
+test signature_tampering_and_key_misuse_fail_before_content_is_trusted ... ok
+test changing_a_dependency_changes_every_dependent_digest_and_the_root ... ok
+test the_development_key_is_labelled_and_deterministic ... ok
+test a_validly_signed_but_lying_manifest_is_caught_by_recomputation ... ok
+test the_committed_manifest_verifies_and_rebuilds_byte_for_byte ... ok
+test a_flipped_byte_in_any_covered_file_is_a_hard_failure ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.36s
+
+
+running 16 tests
+test ambiguous_recognitions_are_rejected_unless_exclusive_or_ordered ... ok
+test capability_mismatches_and_unknown_modes_are_rejected ... ok
+test a_conformant_composite_needs_its_dependencies_implemented ... ok
+test graph_reports_the_exact_missing_dependency_and_cycle_chain ... ok
+test all_924_catalog_entries_import_unchanged_and_exactly_once ... ok
+test higher_maturity_levels_demand_independent_adversarial_and_field_evidence ... ok
+test malformed_recognitions_are_rejected ... ok
+test import_rejects_duplicates_and_maturity_claims ... ok
+test import_makes_no_maturity_claim_and_every_classification_is_justified ... ok
+test recognition_prefers_the_highest_precedence_and_honors_exclusions ... ok
+test ownership_dependencies_and_advancement_are_complete ... ok
+test registration_accepts_a_complete_implemented_primitive ... ok
+test registration_rejects_implemented_claims_without_a_witness ... ok
+test registration_rejects_duplicates_unknown_ids_and_unresolved_kinds ... ok
+test the_real_registry_has_complete_acyclic_dependencies_in_a_stable_order ... ok
+test committed_registry_equals_a_fresh_import ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+
+running 3 tests
+test tests::rejects_missing_invalid_and_unknown_fields ... ok
+test tests::accepts_current_envelope_and_roundtrips ... ok
+test tests::rejects_incompatible_schemas_with_specific_codes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test tests::alloc_rejects_oversized_requests ... ok
+test tests::errors_surface_stable_codes_and_clear_output ... ok
+test tests::ir_validate_matches_native_and_reports_stable_codes ... ok
+test tests::pack_analyze_matches_native_and_rejects_truncation ... ok
+test tests::abi_matches_native_compile_exactly ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.07s
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_canon-d3f47e00b039e3f6)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_fabric-c5c3aab2b602d7d0)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_fixtures-62301646a6769f74)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_ir-ef56ba34a4b705ab)
+     Running tests/fixtures.rs (compiler/target/debug/deps/fixtures-0591456db67fa71a)
+     Running tests/identity.rs (compiler/target/debug/deps/identity-544f7bbe3743055c)
+     Running tests/matrix.rs (compiler/target/debug/deps/matrix-7907ea8db49bcaa1)
+     Running tests/semantics.rs (compiler/target/debug/deps/semantics-dbef5626e523b76e)
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_fabric-30e2b5175cabcc34)
+     Running tests/cli.rs (compiler/target/debug/deps/cli-135c3d9f69bd6154)
+     Running tests/golden.rs (compiler/target/debug/deps/golden-7cc078e12788a92c)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_observation-93f62997afa22ab2)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_recognizer-b0fa43e78294f1a5)
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_recognizer-3ca413ca2a7c23e3)
+     Running tests/candidates.rs (compiler/target/debug/deps/candidates-1612bd5123ff8024)
+     Running tests/contract.rs (compiler/target/debug/deps/contract-3ed01099cc25c926)
+     Running tests/generalization.rs (compiler/target/debug/deps/generalization-26fea896b80973d4)
+     Running tests/incremental.rs (compiler/target/debug/deps/incremental-cdead65cdb8e97e6)
+     Running tests/index.rs (compiler/target/debug/deps/index-eb64385d7c0c8e85)
+     Running tests/ledger.rs (compiler/target/debug/deps/ledger-609ef6f944e0f4f2)
+     Running tests/reconcile.rs (compiler/target/debug/deps/reconcile-5f0a415c6dad6782)
+     Running tests/semantics.rs (compiler/target/debug/deps/semantics-044b31569aae6a9b)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_redact-9c440c8a38df3b3f)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_registry-b4ac762324666a50)
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_registry-70251edc43e09588)
+     Running tests/dashboard.rs (compiler/target/debug/deps/dashboard-3596dbc7f550e3f9)
+     Running tests/harness.rs (compiler/target/debug/deps/harness-6f4cc22f9b827712)
+     Running tests/manifest.rs (compiler/target/debug/deps/manifest-b4af8ba84162e202)
+     Running tests/registry.rs (compiler/target/debug/deps/registry-7aa82c2d8b5b7f53)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_schema-e761455a5d9e0c47)
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_wasm-a707511329542de0)
+   Doc-tests vsf_canon
+   Doc-tests vsf_fabric
+   Doc-tests vsf_fixtures
+   Doc-tests vsf_ir
+   Doc-tests vsf_observation
+   Doc-tests vsf_recognizer
+   Doc-tests vsf_redact
+   Doc-tests vsf_registry
+   Doc-tests vsf_schema
+   Doc-tests vsf_wasm
+[exit 0]

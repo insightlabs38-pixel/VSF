@@ -1,0 +1,14 @@
+$ cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- recognize fixtures/recognition/snapshots/heldout-shadow-ds.json --rules 1
+{
+  "observation": "sha256:1b16b3ceccf3b2f785baec66b8fd993c6573b039c84bbde12bad1d7d426d0299",
+  "rules": "1",
+  "schema": "vsf-recognition-v1",
+  "units": [
+    {"binding":{"state":"unbound"},"kind":"text","node":12,"scope":null,"type":"field","usable":true},
+    {"binding":{"state":"unbound"},"kind":"choice","node":17,"scope":null,"type":"field","usable":true},
+    {"binding":{"state":"unbound"},"kind":"toggle","node":24,"scope":"Notifications","type":"field","usable":true},
+    {"name":"Save","node":26,"roles":["button"],"type":"action","usable":true,"verbs":["commit"]},
+    {"name":"Reset","node":27,"roles":["button"],"type":"action","usable":true,"verbs":["destroy"]}
+  ]
+}
+[exit 0]

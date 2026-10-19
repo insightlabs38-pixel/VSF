@@ -1,0 +1,15 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test index -- --nocapture
+
+running 5 tests
+test boundaries_empty_observation_unknown_features_and_negation_tails ... ok
+test real_snapshots_load_and_are_searchable ... ok
+test feature_extraction_and_direct_checks_agree_for_every_node ... ok
+index-report nodes=20000 selective_candidates=14584 narrow_candidates=1698 scan_per_query=20000 features=5791 sparse=5755 dense=36 index_bytes=212165 bytes_per_node=10
+test a_selective_query_examines_a_small_fraction_of_the_nodes_and_the_index_stays_small ... ok
+test the_index_returns_exactly_what_a_full_scan_returns_over_seeded_cases ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.26s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/index.rs (compiler/target/debug/deps/index-eb64385d7c0c8e85)
+[exit 0]

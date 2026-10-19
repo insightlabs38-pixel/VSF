@@ -1,0 +1,13 @@
+$ cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- bench-index fixtures/recognition/snapshots/table-orders.json
+{
+  "index_bytes": 642,
+  "nodes": 36,
+  "queries": [
+    {"candidates_examined":0,"equal_to_scan":true,"kind":"field","results":0,"scan_examined":36},
+    {"candidates_examined":14,"equal_to_scan":true,"kind":"action","results":7,"scan_examined":36},
+    {"candidates_examined":2,"equal_to_scan":true,"kind":"collection","results":1,"scan_examined":36}
+  ],
+  "schema": "vsf-index-bench-v1",
+  "version": 1
+}
+[exit 0]

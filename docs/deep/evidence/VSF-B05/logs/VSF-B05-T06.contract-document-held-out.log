@@ -1,0 +1,15 @@
+$ cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer -- contract fixtures/recognition/snapshots/heldout-shadow-ds.json
+{
+  "offers": [
+    {"access":"read","availability":"available","emitted":true,"node":12,"reason":null,"tool":"read_display_name_12","ui":"enabled"},
+    {"access":"write","availability":"unknown","emitted":false,"node":12,"reason":"effect_unverified","tool":"write_display_name_12","ui":"needs_review"},
+    {"access":"read","availability":"available","emitted":true,"node":17,"reason":null,"tool":"read_time_zone_17","ui":"enabled"},
+    {"access":"write","availability":"unknown","emitted":false,"node":17,"reason":"effect_unverified","tool":"write_time_zone_17","ui":"needs_review"},
+    {"access":"read","availability":"available","emitted":true,"node":24,"reason":null,"tool":"read_email_me_24","ui":"enabled"},
+    {"access":"write","availability":"unknown","emitted":false,"node":24,"reason":"effect_unverified","tool":"write_email_me_24","ui":"needs_review"},
+    {"access":"write","availability":"unknown","emitted":false,"node":26,"reason":"effect_unverified","tool":"write_save_26","ui":"needs_review"},
+    {"access":"write","availability":"unknown","emitted":false,"node":27,"reason":"effect_unverified","tool":"write_reset_27","ui":"needs_review"}
+  ],
+  "schema": "vsf-availability-v1"
+}
+[exit 0]

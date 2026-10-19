@@ -1,0 +1,126 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test a_control_that_is_also_a_button_yields_two_candidates_and_a_conflict ... ok
+test adversarial_page_has_separate_candidates_and_no_silent_pick ... ok
+test the_crate_has_no_model_or_network_dependency ... ok
+test wording_that_names_two_verbs_keeps_each_as_its_own_candidate ... ok
+test recognition_is_deterministic_across_runs_and_threads ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+
+running 5 tests
+test a_witness_unlocks_only_a_clean_write ... ok
+test unknown_and_conflicted_reach_the_ui_state_and_never_the_emitted_set ... ok
+test credential_and_hidden_controls_stay_unusable_even_with_a_witness ... ok
+test contract_document_is_stable ... ok
+test no_write_tool_is_emitted_without_a_behavioural_witness ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 4 tests
+test adversarial_page_has_no_false_confident_binding ... ok
+test one_delegation_rule_fixes_two_unrelated_held_out_apps ... ok
+test the_regression_corpus_is_unchanged_by_the_improvement ... ok
+test recognition_code_names_no_framework_or_vendor ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test a_change_under_a_collection_recomputes_the_collection_and_not_the_page ... ok
+test changing_a_label_recomputes_only_the_control_it_names ... ok
+test an_unrelated_change_recomputes_nothing_and_keeps_every_claim ... ok
+test the_diff_reports_exactly_what_changed ... ok
+test adding_and_removing_controls_creates_and_drops_units ... ok
+test random_edit_sequences_always_agree_with_a_fresh_run ... ok
+test on_a_large_page_a_small_change_recomputes_a_small_fraction ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.97s
+
+
+running 5 tests
+test boundaries_empty_observation_unknown_features_and_negation_tails ... ok
+test real_snapshots_load_and_are_searchable ... ok
+test feature_extraction_and_direct_checks_agree_for_every_node ... ok
+test a_selective_query_examines_a_small_fraction_of_the_nodes_and_the_index_stays_small ... ok
+test the_index_returns_exactly_what_a_full_scan_returns_over_seeded_cases ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.26s
+
+
+running 8 tests
+test a_label_claim_names_the_label_node_the_control_and_their_digests ... ok
+test lexical_verb_claims_say_so_and_carry_heuristic_evidence ... ok
+test stale_evidence_is_detected_for_exactly_the_claims_that_relied_on_the_changed_node ... ok
+test recognition_never_claims_more_than_inferred ... ok
+test every_claim_on_every_fixture_traces_to_a_recorded_observation_with_evidence ... ok
+test tampered_claims_fail_validation ... ok
+test what_cannot_be_demonstrated_is_an_unknown_claim_not_a_missing_one ... ok
+test the_ledger_is_deterministic_and_content_addressed ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 9 tests
+test credential_fields_are_never_matched_to_protocol_names ... ok
+test a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it ... ok
+test malformed_protocol_documents_are_rejected ... ok
+test agreeing_evidence_is_recorded_as_inferred_with_both_sources ... ok
+test disagreement_is_a_conflict_citing_both_sides_and_no_source_wins ... ok
+test duplicated_ui_labels_bind_to_protocol_names_only_through_their_region ... ok
+test stale_protocol_evidence_is_not_compared ... ok
+test unsupported_evidence_can_only_raise_questions ... ok
+test only_real_open_conflicts_can_be_decided ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 14 tests
+test action_names_map_to_verbs_by_lexicon_and_collisions_stay_separate ... ok
+test a_heading_above_a_label_does_not_compete_with_it ... ok
+test competing_nearby_text_is_ambiguous_and_never_silently_bound ... ok
+test delegation_never_borrows_the_label_of_a_neighbouring_control ... ok
+test explicit_relations_beat_nearby_text_even_when_the_wrong_label_sits_closest ... ok
+test a_css_grid_of_plain_divs_is_not_a_collection ... ok
+test duplicated_labels_are_told_apart_by_the_region_they_sit_in ... ok
+test labelledby_with_several_targets_joins_them_and_a_dangling_target_is_ignored ... ok
+test hidden_disabled_and_credential_controls_are_found_but_never_usable ... ok
+test one_label_over_several_controls_names_none_of_them ... ok
+test nesting_hides_the_label_from_the_baseline_and_delegation_recovers_it ... ok
+test collections_expose_columns_rows_and_the_actions_in_each_row ... ok
+test the_fixture_apps_bind_their_fields_as_authored ... ok
+test overlapping_roles_keep_every_reading_instead_of_picking_one ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_recognizer-b0fa43e78294f1a5)
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_recognizer-3ca413ca2a7c23e3)
+     Running tests/candidates.rs (compiler/target/debug/deps/candidates-1612bd5123ff8024)
+     Running tests/contract.rs (compiler/target/debug/deps/contract-3ed01099cc25c926)
+     Running tests/generalization.rs (compiler/target/debug/deps/generalization-26fea896b80973d4)
+     Running tests/incremental.rs (compiler/target/debug/deps/incremental-cdead65cdb8e97e6)
+     Running tests/index.rs (compiler/target/debug/deps/index-eb64385d7c0c8e85)
+     Running tests/ledger.rs (compiler/target/debug/deps/ledger-609ef6f944e0f4f2)
+     Running tests/reconcile.rs (compiler/target/debug/deps/reconcile-5f0a415c6dad6782)
+     Running tests/semantics.rs (compiler/target/debug/deps/semantics-044b31569aae6a9b)
+   Doc-tests vsf_recognizer
+[exit 0]

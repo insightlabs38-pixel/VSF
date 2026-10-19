@@ -1,0 +1,6 @@
+$ pnpm --filter @vsf/observation-tests run check:fixtures
+
+> @vsf/observation-tests@0.0.0 check:fixtures /home/user/VSF/tests/observation
+> node --conditions=source gen-recognition-fixtures.ts --check
+
+[exit 0]
