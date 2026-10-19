@@ -162,15 +162,35 @@ test("grid: filtering hides rows without rebuilding them", async ({ page }) => {
     await ev<number>(page, "(a) => [...a.renderer.root.querySelectorAll('tbody tr')].filter((r) => !r.hidden).length"),
   ).toBe(10);
   expect(await unmarked(page)).toBe(0);
+  await trace(page);
   const d = await delta(
     page,
     "(a) => { const i = a.renderer.root.querySelector('input[type=text]'); i.value = ''; i.dispatchEvent(new Event('input')); }",
   );
   expect(d.created).toBe(0);
-  expect(d.writes).toBe(290);
+  expect(d.removed).toBe(0);
+  expect(d.moved).toBe(0);
+  // 290 rows are un-hidden, plus exactly one live-region announcement of the new count.
+  expect(d.writes).toBe(291);
+  const rec = await records(page);
+  expect(rec.filter((r) => r.type === "attributes" && r.target.startsWith("TR[o")).length).toBe(290);
+  expect(rec.filter((r) => !(r.type === "attributes" && r.target.startsWith("TR[o"))).length).toBe(1);
+  expect(await unmarked(page)).toBe(0);
   expect(
     await ev<number>(page, "(a) => [...a.renderer.root.querySelectorAll('tbody tr')].filter((r) => r.hidden).length"),
   ).toBe(0);
+  expect(await ev<string>(page, "(a) => a.renderer.announcer.log.at(-1).message")).toBe("300 of 300 rows shown");
+});
+
+test("grid: a filter that matches nothing hides every row and says so", async ({ page }) => {
+  await open(page, site, "/g", gridBoot(300));
+  await mark(page);
+  await page.getByRole("textbox", { name: "Filter rows" }).fill("no-such-row");
+  expect(
+    await ev<number>(page, "(a) => [...a.renderer.root.querySelectorAll('tbody tr')].filter((r) => !r.hidden).length"),
+  ).toBe(0);
+  expect(await ev<string>(page, "(a) => a.renderer.announcer.log.at(-1).message")).toBe("0 of 300 rows shown");
+  expect(await unmarked(page)).toBe(0);
 });
 
 test("layout changes keep shared components and rebuild only what differs", async ({ page }) => {
