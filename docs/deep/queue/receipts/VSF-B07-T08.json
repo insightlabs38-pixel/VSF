@@ -1,0 +1,49 @@
+{
+  "task_id": "VSF-B07-T08",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/runtime.go",
+    "backend/execution/unknown_test.go",
+    "backend/execution/internal/fixtureapp/app.go"
+  ],
+  "acceptance": "Injected disconnect after source commit ends in UNKNOWN_COMMIT until authoritative reconciliation, never duplicate submission.",
+  "positive": {
+    "fixture": "disconnect after commit ends UNKNOWN_COMMIT, resubmission returns the same operation, reconciliation verifies",
+    "command": "go -C backend test -race -count=1 -run TestDisconnect|TestReconciliation|TestTimeoutWhile|TestARestartAfter|TestLosingTheJournal|TestConcurrentDouble|TestReusing|TestAPIExecutor|TestAnUnreachable|TestStaleVersion ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "no duplicate commit, no resend, denied caller never reaches the source, in both strategies",
+    "command": "go -C backend test -tags integration -race -count=1 -run TestAmbiguousWriteNeverRetries|TestADeniedCaller ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "A new request for an unresolved record is refused.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Reconciliation needs monotonic version tokens"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T08.unknown-commit-injection.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T08.ambiguous-write-and-denied-caller-live.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-integration-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}

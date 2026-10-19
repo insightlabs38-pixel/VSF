@@ -1,0 +1,13 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test authorize
+
+running 4 tests
+test undecodable_and_non_canonical_input_never_authorize ... ok
+test only_operation_contracts_can_be_authorized ... ok
+test a_fresh_witness_for_this_context_authorizes_and_names_the_document ... ok
+test every_other_context_is_refused_with_its_reason ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running tests/authorize.rs (compiler/target/debug/deps/authorize-13e77af9ad08e447)
+[exit 0]

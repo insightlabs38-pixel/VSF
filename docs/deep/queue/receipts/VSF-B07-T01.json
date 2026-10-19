@@ -1,0 +1,44 @@
+{
+  "task_id": "VSF-B07-T01",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/types.go",
+    "backend/execution/journal.go",
+    "backend/execution/runtime.go",
+    "backend/execution/lifecycle_test.go"
+  ],
+  "acceptance": "Operation lifecycle transitions are explicit, persisted where needed and reject illegal state transitions or false success.",
+  "positive": {
+    "fixture": "prepared, admitted, running, verified walk; journal reopened from disk",
+    "command": "go -C backend test -race -count=1 -run TestHappyPath|TestEveryIllegal|TestAcknowledgement|TestReadBack|TestSourceRejection|TestJournal|TestTampered|TestRestartSettles|TestBrokenJournal ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "illegal transitions, acknowledgement without read-back, tampered, reordered or truncated journals, journal write failure",
+    "command": "go -C backend test -race -count=1 -run TestHappyPath|TestEveryIllegal|TestAcknowledgement|TestReadBack|TestSourceRejection|TestJournal|TestTampered|TestRestartSettles|TestBrokenJournal ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "A journal that cannot be written stops execution; replay refuses a broken chain.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Deleting the last journal lines is not detectable without an external anchor"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T01.lifecycle-journal-and-false-success.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}

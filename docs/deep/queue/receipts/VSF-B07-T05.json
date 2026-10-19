@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B07-T05",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/runtime.go",
+    "backend/execution/retry_test.go"
+  ],
+  "acceptance": "Non-idempotent uncertain writes cannot silently retry; safe idempotent retries include retry bounds and dedup tokens where available.",
+  "positive": {
+    "fixture": "throttled attempts retry with backoff, bounds and one dedup token",
+    "command": "go -C backend test -race -count=1 -run TestThrottled|TestNoDedup|TestRetriesAreBounded|TestUncertain|TestTransportErrors|TestUnsent|TestDefinitive|TestThrottlingSlows ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "uncertain writes never retry for any effect class, with or without dedup; unsent non-idempotent writes need a token",
+    "command": "go -C backend test -race -count=1 -run TestThrottled|TestNoDedup|TestRetriesAreBounded|TestUncertain|TestTransportErrors|TestUnsent|TestDefinitive|TestThrottlingSlows ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 -run TestSourceThrottlingIsRetried ./execution/",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Only outcomes the source proved changed nothing are retried.",
+  "performance_memory_storage": "Backoff is bounded at 3 attempts by default.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T05.safe-retry-policy.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T05.api-throttle-retry-with-source-hint.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}

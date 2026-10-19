@@ -1,0 +1,71 @@
+{
+  "task_id": "VSF-B07-T09",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "12f4a1bc6e30ffbf93a7bcc195aca15a9e9782cd",
+  "paths": [
+    "compiler/crates/vsf-ir/src/api.rs",
+    "compiler/crates/vsf-native/src/main.rs",
+    "backend/ir/doc.go",
+    "backend/execution/worker.go",
+    "frontend/packages/ir/src/doc.ts",
+    "frontend/packages/wasm-host/src/validated.ts"
+  ],
+  "acceptance": "Go and TypeScript decoders return Unvalidated values; only the Rust validation report (native worker or WASM) mints Validated, and execution accepts nothing else.",
+  "positive": {
+    "fixture": "a contract decoded in Go is authorized by Rust and runs through both strategies",
+    "command": "go -C backend test -tags integration -race -count=1 -run TestRust|TestOnlyTheWorker|TestBothStrategies ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "effect understated, uncovered witness, write without verification, synthetic or revoked witness, other environment, forged authority in Go and TypeScript",
+    "command": "go -C backend test -tags integration -race -count=1 -run TestRust|TestOnlyTheWorker|TestBothStrategies ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test authorize",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -race -count=1 -run TestCodeOutside|TestDecodingOnly ./execution/",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ir run test",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged; native worker operation X added",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Only a Rust report mints authority; Go and TypeScript cannot forge it.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "The TypeScript brand cannot stop code outside the module"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T09.rust-refuses-what-go-decodes.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T09.rust-authorize-report.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T09.worker-serves-authorize.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T09.go-authority-cannot-be-forged.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T09.ts-validated-gate.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T09.ts-unvalidated-decoder.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.cargo-test-workspace.log"
+  ],
+  "review_result": "ACCEPTED"
+}

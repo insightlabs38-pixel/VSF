@@ -1,0 +1,31 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 8 tests
+test incompatible_schema_exits_2_with_code ... ok
+test bad_usage_exits_64 ... ok
+test emit_then_compile_roundtrip_matches_library ... ok
+test serve_authorizes_only_what_the_library_authorizes ... ok
+test pack_generate_analyze_matches_library_and_rejects_truncation ... ok
+test serve_handles_frames_errors_and_unknown_ops ... ok
+test serve_validates_ir_documents ... ok
+test ir_validate_reports_valid_invalid_and_uncanonical_documents ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 2 tests
+test golden_outputs_contain_no_unredacted_secret_shapes ... ok
+test native_output_is_byte_identical_to_committed_golden ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_fabric-30e2b5175cabcc34)
+     Running tests/cli.rs (compiler/target/debug/deps/cli-135c3d9f69bd6154)
+     Running tests/golden.rs (compiler/target/debug/deps/golden-7cc078e12788a92c)
+[exit 0]

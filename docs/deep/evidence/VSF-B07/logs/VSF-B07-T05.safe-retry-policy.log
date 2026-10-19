@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -run TestThrottled|TestNoDedup|TestRetriesAreBounded|TestUncertain|TestTransportErrors|TestUnsent|TestDefinitive|TestThrottlingSlows ./execution/
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	1.194s
+[exit 0]

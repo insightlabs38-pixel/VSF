@@ -1,0 +1,43 @@
+{
+  "task_id": "VSF-B07-T07",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/locks.go",
+    "backend/execution/limiter.go",
+    "backend/execution/locks_test.go"
+  ],
+  "acceptance": "Session-local serialization and source-aware throttling protect conflicting writes and respect resource budgets.",
+  "positive": {
+    "fixture": "scope-dependent serialization and a per-source budget",
+    "command": "go -C backend test -race -count=1 -run TestLocks|TestAWaiter|TestReleasing|TestConcurrencyScopes|TestRecordScope|TestResourceBudget|TestLimiter ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "waiter that gives up, double release, refusal slows the source, hint honoured, cancellation while waiting",
+    "command": "go -C backend test -race -count=1 -run TestLocks|TestAWaiter|TestReleasing|TestConcurrencyScopes|TestRecordScope|TestResourceBudget|TestLimiter ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Serialization follows the contract's concurrency scope.",
+  "performance_memory_storage": "Pacing interval doubles on refusal and halves after sustained success.",
+  "known_limitations": [
+    "Locks and budgets are per process"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T07.locks-and-rate-limit-adaptation.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}
