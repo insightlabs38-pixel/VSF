@@ -8,6 +8,7 @@
       "!**/generated.ts",
       "!docs/deep",
       "!fixtures/golden",
+      "!fixtures/recognition/snapshots",
       "!fixtures/primitives",
       "!registry",
       "!artifacts",
@@ -21,6 +22,8 @@
   },
   "formatter": { "indentStyle": "space", "indentWidth": 2, "lineWidth": 120 },
   "linter": { "enabled": true, "rules": { "preset": "recommended", "style": { "noNonNullAssertion": "error" } } },
-  "overrides": [{ "includes": ["fixtures/source-apps/public/**"], "linter": { "enabled": false } }],
+  "overrides": [
+    { "includes": ["fixtures/source-apps/public/**", "fixtures/recognition/apps/**"], "linter": { "enabled": false } }
+  ],
   "json": { "formatter": { "enabled": true } }
 }

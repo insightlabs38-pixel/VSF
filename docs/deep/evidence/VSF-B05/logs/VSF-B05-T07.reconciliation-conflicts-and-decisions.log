@@ -1,0 +1,18 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test reconcile
+
+running 9 tests
+test credential_fields_are_never_matched_to_protocol_names ... ok
+test a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it ... ok
+test malformed_protocol_documents_are_rejected ... ok
+test agreeing_evidence_is_recorded_as_inferred_with_both_sources ... ok
+test disagreement_is_a_conflict_citing_both_sides_and_no_source_wins ... ok
+test stale_protocol_evidence_is_not_compared ... ok
+test only_real_open_conflicts_can_be_decided ... ok
+test duplicated_ui_labels_bind_to_protocol_names_only_through_their_region ... ok
+test unsupported_evidence_can_only_raise_questions ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/reconcile.rs (compiler/target/debug/deps/reconcile-5f0a415c6dad6782)
+[exit 0]

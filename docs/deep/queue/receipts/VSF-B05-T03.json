@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B05-T03",
+  "status": "DONE",
+  "branch": "vsf/b05-semantic-layer",
+  "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+  "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/ledger.rs",
+    "compiler/crates/vsf-recognizer/tests/ledger.rs"
+  ],
+  "acceptance": "Every claim cites a recorded source and the digests of the nodes it relies on, carries a certainty class and confidence, validates structurally, and goes stale when a cited node changes.",
+  "positive": {
+    "fixture": "all six snapshots",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "tampered ids, unrecorded sources, heuristic-only certainty, changed or removed evidence nodes",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1, vsf-recognition-v1, vsf-evidence-ledger-v1, vsf-availability-v1 new; IR 1.0.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Claims carry node ids and digests, never page text beyond the bound label.",
+  "performance_memory_storage": "Claim ids are 128-bit content hashes; ledger build is linear in claims.",
+  "known_limitations": [
+    "Verified certainty is not producible by recognition"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T03.ledger-provenance-and-staleness.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T03.ledger-document-plain-form.log"
+  ],
+  "review_result": "ACCEPTED"
+}

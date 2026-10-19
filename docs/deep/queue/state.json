@@ -349,55 +349,79 @@
       "receipt": "docs/deep/queue/receipts/VSF-B04-T08.json"
     },
     "VSF-B05-T01": {
-      "status": "READY",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T01.json"
     },
     "VSF-B05-T02": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T02.json"
     },
     "VSF-B05-T03": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T03.json"
     },
     "VSF-B05-T04": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T04.json"
     },
     "VSF-B05-T05": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T05.json"
     },
     "VSF-B05-T06": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T06.json"
     },
     "VSF-B05-T07": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T07.json"
     },
     "VSF-B05-T08": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "branch": "vsf/b05-semantic-layer",
+      "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+      "receipt": "docs/deep/queue/receipts/VSF-B05-T08.json"
     },
     "VSF-B06-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1071,12 +1095,15 @@
       "decision": "PROCEED",
       "evidence": "docs/deep/evidence/VSF-B04",
       "report": "docs/deep/reports/VSF-B04.md",
-      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/5"
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/5",
+      "merge_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41"
     },
     "G5": {
-      "status": "PENDING",
-      "decision": null,
-      "evidence": null
+      "status": "ACCEPTED",
+      "decision": "PROCEED",
+      "evidence": "docs/deep/evidence/VSF-B05",
+      "report": "docs/deep/reports/VSF-B05.md",
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/6"
     },
     "G6": {
       "status": "PENDING",
@@ -1175,7 +1202,7 @@
     }
   },
   "cursor": {
-    "batch": "B05",
-    "task": "VSF-B05-T01"
+    "batch": "B06",
+    "task": "VSF-B06-T01"
   }
 }

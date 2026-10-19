@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B05-T05",
+  "status": "DONE",
+  "branch": "vsf/b05-semantic-layer",
+  "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+  "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/candidates.rs",
+    "compiler/crates/vsf-recognizer/tests/candidates.rs",
+    "compiler/crates/vsf-recognizer/src/semantics.rs"
+  ],
+  "acceptance": "Recognition is deterministic across runs and threads with no model or network dependency; role and wording collisions produce separate candidates, never a silent binding.",
+  "positive": {
+    "fixture": "input role=button, 'Edit or delete', adversarial page",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test candidates",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "plain button and single-verb or unnamed actions produce no group; crate manifest and sources contain no network or model references",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test candidates",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1, vsf-recognition-v1, vsf-evidence-ledger-v1, vsf-availability-v1 new; IR 1.0.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No outbound surface: the crate depends only on vsf-canon.",
+  "performance_memory_storage": "No measurable cost; groups are derived from unit output.",
+  "known_limitations": [
+    "Verb lexicon is English only; other wording yields unknown"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T05.candidates-determinism-no-model.log"
+  ],
+  "review_result": "ACCEPTED"
+}

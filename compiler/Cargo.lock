@@ -183,6 +183,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "vsf-recognizer"
+version = "0.0.0"
+dependencies = [
+ "vsf-canon",
+]
+
+[[package]]
 name = "vsf-redact"
 version = "0.0.0"
 dependencies = [

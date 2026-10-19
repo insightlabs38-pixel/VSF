@@ -1,0 +1,49 @@
+{
+  "task_id": "VSF-B05-T07",
+  "status": "DONE",
+  "branch": "vsf/b05-semantic-layer",
+  "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+  "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/reconcile.rs",
+    "compiler/crates/vsf-recognizer/tests/reconcile.rs",
+    "fixtures/recognition/protocol/",
+    "tests/observation/test/recognition-protocol.test.ts"
+  ],
+  "acceptance": "Disagreeing UI and protocol evidence becomes a conflicted claim citing both sides; it stays open until an identified decision with a reason is recorded, and unsupported or stale evidence cannot create a conflict.",
+  "positive": {
+    "fixture": "profile-agree, profile-conflict, checkout-scoped",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test reconcile",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unsupported, stale, credential-named, malformed and already-resolved cases; fixtures validated by the protocol schema",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test reconcile",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1, vsf-recognition-v1, vsf-evidence-ledger-v1, vsf-availability-v1 new; IR 1.0.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Credential fields are never matched; protocol documents carry shapes only.",
+  "performance_memory_storage": "Matching is linear in protocol fields times UI fields.",
+  "known_limitations": [
+    "Required-flag and enum comparison are not yet implemented"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T07.reconciliation-conflicts-and-decisions.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T07.protocol-fixtures-are-valid-evidence.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T07.ledger-with-conflicting-protocol.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,17 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test incremental -- --nocapture
+
+running 7 tests
+incremental-report units=8 recomputed=1 reused=7
+test a_change_under_a_collection_recomputes_the_collection_and_not_the_page ... ok
+test an_unrelated_change_recomputes_nothing_and_keeps_every_claim ... ok
+test adding_and_removing_controls_creates_and_drops_units ... ok
+test changing_a_label_recomputes_only_the_control_it_names ... ok
+test the_diff_reports_exactly_what_changed ... ok
+test random_edit_sequences_always_agree_with_a_fresh_run ... ok
+test on_a_large_page_a_small_change_recomputes_a_small_fraction ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.15s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running tests/incremental.rs (compiler/target/debug/deps/incremental-cdead65cdb8e97e6)
+[exit 0]

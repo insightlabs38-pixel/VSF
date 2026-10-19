@@ -1,0 +1,14 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test candidates
+
+running 5 tests
+test a_control_that_is_also_a_button_yields_two_candidates_and_a_conflict ... ok
+test adversarial_page_has_separate_candidates_and_no_silent_pick ... ok
+test the_crate_has_no_model_or_network_dependency ... ok
+test wording_that_names_two_verbs_keeps_each_as_its_own_candidate ... ok
+test recognition_is_deterministic_across_runs_and_threads ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running tests/candidates.rs (compiler/target/debug/deps/candidates-1612bd5123ff8024)
+[exit 0]

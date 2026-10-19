@@ -1,0 +1,48 @@
+{
+  "task_id": "VSF-B05-T08",
+  "status": "DONE",
+  "branch": "vsf/b05-semantic-layer",
+  "base_commit": "3ff2bf4706d534ac8d1002eeb26e8b91147dfd41",
+  "commit": "6e226bb16e1564b2115a200b21e1aaa923f2e300",
+  "paths": [
+    "compiler/crates/vsf-recognizer/tests/generalization.rs",
+    "fixtures/recognition/",
+    "tests/observation/gen-recognition-fixtures.ts",
+    "ci/jobs.json"
+  ],
+  "acceptance": "One delegation rule leaves 0 of 3 and 0 of 6 usable fields unbound in two unrelated held-out apps while the four regression apps produce identical output, with no vendor or framework names in the code.",
+  "positive": {
+    "fixture": "heldout-shadow-ds, heldout-datagrid-edit",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test generalization",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "regression corpus byte-equal between rules v1 and v2; adversarial page keeps ambiguous and hidden controls unbound",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test generalization",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1, vsf-recognition-v1, vsf-evidence-ledger-v1, vsf-availability-v1 new; IR 1.0.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No change to source permissions.",
+  "performance_memory_storage": "Not measured beyond test runtime.",
+  "known_limitations": [
+    "Two held-out apps are synthetic fixtures, not live vendor products"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T08.improvement-fixes-two-held-out-apps.log",
+    "docs/deep/evidence/VSF-B05/logs/VSF-B05-T08.snapshots-match-fixture-apps-in-chromium.log"
+  ],
+  "review_result": "ACCEPTED"
+}

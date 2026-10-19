@@ -1,0 +1,414 @@
+{
+ "schema": "vsf-observation-snapshot-v1",
+ "nodes": [
+  {
+   "id": 1,
+   "parent": -1,
+   "tag": "#document",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 0,
+   "rels": [],
+   "scope": {
+    "kind": "document",
+    "origin": "http://fixture.invalid",
+    "mode": null,
+    "opaque": null
+   }
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "html",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "body",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "main",
+   "role": "main",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 5,
+   "parent": 4,
+   "tag": "h1",
+   "role": "heading",
+   "name": "Checkout",
+   "text": "Checkout",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 7,
+   "parent": 4,
+   "tag": "section",
+   "role": null,
+   "name": "Billing",
+   "text": null,
+   "flags": 1,
+   "rels": [
+    [
+     "labelledby",
+     6
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 6,
+   "parent": 7,
+   "tag": "h2",
+   "role": "heading",
+   "name": "Billing",
+   "text": "Billing",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 8,
+   "parent": 7,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Name",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 9,
+   "parent": 7,
+   "tag": "input",
+   "role": "textbox",
+   "name": "Name",
+   "text": null,
+   "flags": 7,
+   "rels": [
+    [
+     "label",
+     8
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 10,
+   "parent": 7,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Email",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 11,
+   "parent": 7,
+   "tag": "input",
+   "role": "textbox",
+   "name": "Email",
+   "text": null,
+   "flags": 7,
+   "rels": [
+    [
+     "label",
+     10
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 13,
+   "parent": 4,
+   "tag": "section",
+   "role": null,
+   "name": "Shipping",
+   "text": null,
+   "flags": 1,
+   "rels": [
+    [
+     "labelledby",
+     12
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 12,
+   "parent": 13,
+   "tag": "h2",
+   "role": "heading",
+   "name": "Shipping",
+   "text": "Shipping",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 14,
+   "parent": 13,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Name",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 15,
+   "parent": 13,
+   "tag": "input",
+   "role": "textbox",
+   "name": "Name",
+   "text": null,
+   "flags": 7,
+   "rels": [
+    [
+     "label",
+     14
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 16,
+   "parent": 13,
+   "tag": "span",
+   "role": null,
+   "name": null,
+   "text": "Phone",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 17,
+   "parent": 13,
+   "tag": "input",
+   "role": "textbox",
+   "name": null,
+   "text": null,
+   "flags": 7,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 18,
+   "parent": 13,
+   "tag": "input",
+   "role": "textbox",
+   "name": null,
+   "text": null,
+   "flags": 7,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 19,
+   "parent": 4,
+   "tag": "input",
+   "role": "textbox",
+   "name": null,
+   "text": null,
+   "flags": 262,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 20,
+   "parent": 4,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 0,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 21,
+   "parent": 20,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Coupon",
+   "flags": 0,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 22,
+   "parent": 20,
+   "tag": "input",
+   "role": "textbox",
+   "name": "Coupon",
+   "text": null,
+   "flags": 6,
+   "rels": [
+    [
+     "label",
+     21
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 23,
+   "parent": 4,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Orphan label",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 24,
+   "parent": 4,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 25,
+   "parent": 24,
+   "tag": "a",
+   "role": "button",
+   "name": "Download invoice",
+   "text": "Download invoice",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 26,
+   "parent": 24,
+   "tag": "div",
+   "role": "button",
+   "name": "Apply discount",
+   "text": "Apply discount",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 27,
+   "parent": 24,
+   "tag": "button",
+   "role": "link",
+   "name": "Terms",
+   "text": "Terms",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 28,
+   "parent": 24,
+   "tag": "button",
+   "role": "button",
+   "name": "Place order",
+   "text": "Place order",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 29,
+   "parent": 24,
+   "tag": "button",
+   "role": "button",
+   "name": "Pay later",
+   "text": "Pay later",
+   "flags": 19,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 30,
+   "parent": 4,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 31,
+   "parent": 30,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": "Item",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 32,
+   "parent": 30,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": "Price",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 33,
+   "parent": 30,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": "Widget",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 34,
+   "parent": 30,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": "4.00",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  }
+ ]
+}

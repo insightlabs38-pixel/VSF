@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><title>Design system form</title></head><body>
+<ds-app>
+  <ds-card>
+    <template shadowrootmode="open">
+      <h1>Account settings</h1>
+      <div class="form-item"><div class="form-item-label"><label>Display name</label></div><div class="form-item-control"><input name="display"></div></div>
+      <div class="form-item"><div class="form-item-label"><label>Time zone</label></div><div class="form-item-control"><select><option>UTC</option><option>CET</option></select></div></div>
+      <div role="group" aria-labelledby="notify-title">
+        <h2 id="notify-title">Notifications</h2>
+        <div class="form-item"><div class="form-item-control"><input type="checkbox"> Email me</div></div>
+      </div>
+      <div class="actions"><button type="button">Save</button><button type="button">Reset</button></div>
+    </template>
+  </ds-card>
+</ds-app>
+</body></html>
