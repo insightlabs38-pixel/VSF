@@ -52,6 +52,11 @@ fn changing_a_label_recomputes_only_the_control_it_names() {
     let up = s.update(e.build());
     assert_eq!(up.recomputed, vec![(UnitKind::Field, control)]);
     assert_eq!(up.reused, total - 1);
+    println!(
+        "incremental-report units={total} recomputed={} reused={}",
+        up.recomputed.len(),
+        up.reused
+    );
     assert!(up.created.is_empty() && up.dropped.is_empty());
     assert_equivalent(&s, Rules::V2);
     let changed = s.ledger.find(control, "label");

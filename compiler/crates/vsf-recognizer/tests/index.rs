@@ -198,6 +198,18 @@ fn a_selective_query_examines_a_small_fraction_of_the_nodes_and_the_index_stays_
     let s = idx.stats();
     assert!(s.sparse > 0 && s.dense > 0, "{s:?}");
     assert!(s.bytes() < obs.len() * 400, "{s:?}");
+    println!(
+        "index-report nodes={} selective_candidates={} narrow_candidates={} scan_per_query={} features={} sparse={} dense={} index_bytes={} bytes_per_node={}",
+        obs.len(),
+        st.candidates,
+        narrow.1.candidates,
+        obs.len(),
+        s.features,
+        s.sparse,
+        s.dense,
+        s.bytes(),
+        s.bytes() / obs.len()
+    );
 }
 
 #[test]
