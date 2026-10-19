@@ -1,0 +1,13 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test report
+
+running 3 tests
+test a_report_states_everything_a_consumer_needs_without_prose ... ok
+test the_command_line_tool_writes_the_same_report ... ok
+test the_committed_diff_reports_are_what_the_emitter_writes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.38s
+     Running tests/report.rs (compiler/target/debug/deps/report-0a77ea5acf24e15e)
+[exit 0]

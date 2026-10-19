@@ -1,0 +1,19 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test impact
+
+running 9 tests
+test a_removed_subject_still_reaches_its_old_dependents ... ok
+test a_field_change_selects_its_tests_and_those_of_what_is_bound_to_it ... ok
+test a_cosmetic_provenance_change_runs_only_the_always_tests ... ok
+test an_action_change_reaches_its_buttons_and_state_machines ... ok
+test operation_changes_select_tests_for_that_operation ... ok
+test presentation_global_changes_reach_every_component ... ok
+test an_unrelated_change_leaves_unrelated_tests_out ... ok
+test selection_is_deterministic_and_sorted ... ok
+test uncertain_impact_falls_back_to_every_test ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.31s
+     Running tests/impact.rs (compiler/target/debug/deps/impact-deddc9fd1a4038ea)
+[exit 0]

@@ -1,0 +1,4 @@
+$ go -C backend test -tags integration -race -count=1 -run Revoked|Revocation ./versions/ ./execution/
+ok  	github.com/insightlabs38-pixel/vsf/backend/versions	1.071s
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	1.421s
+[exit 0]

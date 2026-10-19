@@ -1,0 +1,15 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test scenarios
+
+running 5 tests
+test a_source_data_rollback_changes_no_artifact_and_is_not_confused_with_an_interface_one ... ok
+test a_source_that_lost_a_required_field_is_a_breaking_diff_and_a_blocked_pin ... ok
+test an_old_pinned_contract_ignores_a_new_source_feature_and_stays_compatible ... ok
+test an_interface_rollback_restores_only_the_presentation_and_never_implies_a_data_rollback ... ok
+test a_simultaneous_newer_version_cannot_displace_the_pinned_one ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.36s
+     Running tests/scenarios.rs (compiler/target/debug/deps/scenarios-07d926ffcd1700cc)
+[exit 0]

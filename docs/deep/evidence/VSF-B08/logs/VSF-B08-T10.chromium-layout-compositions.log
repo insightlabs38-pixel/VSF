@@ -1,0 +1,26 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/layout.spec.ts
+
+Running 19 tests using 1 worker
+
+  ✓   1 specs/layout.spec.ts:53:5 › enterprise-grid fits desktop without overflow, errors or lost operations (194ms)
+  ✓   2 specs/layout.spec.ts:53:5 › enterprise-grid fits tablet without overflow, errors or lost operations (116ms)
+  ✓   3 specs/layout.spec.ts:53:5 › enterprise-grid fits phone without overflow, errors or lost operations (116ms)
+  ✓   4 specs/layout.spec.ts:53:5 › grouped-form fits desktop without overflow, errors or lost operations (100ms)
+  ✓   5 specs/layout.spec.ts:53:5 › grouped-form fits tablet without overflow, errors or lost operations (90ms)
+  ✓   6 specs/layout.spec.ts:53:5 › grouped-form fits phone without overflow, errors or lost operations (110ms)
+  ✓   7 specs/layout.spec.ts:53:5 › workbench-split fits desktop without overflow, errors or lost operations (99ms)
+  ✓   8 specs/layout.spec.ts:53:5 › workbench-split fits tablet without overflow, errors or lost operations (100ms)
+  ✓   9 specs/layout.spec.ts:53:5 › workbench-split fits phone without overflow, errors or lost operations (101ms)
+  ✓  10 specs/layout.spec.ts:53:5 › master-detail fits desktop without overflow, errors or lost operations (105ms)
+  ✓  11 specs/layout.spec.ts:53:5 › master-detail fits tablet without overflow, errors or lost operations (99ms)
+  ✓  12 specs/layout.spec.ts:53:5 › master-detail fits phone without overflow, errors or lost operations (104ms)
+  ✓  13 specs/layout.spec.ts:88:1 › the enterprise grid docks navigation and a rail beside the grid, and stacks them when narrow (126ms)
+  ✓  14 specs/layout.spec.ts:110:1 › a collapsed region is reachable again by its own button (185ms)
+  ✓  15 specs/layout.spec.ts:130:1 › a split becomes tabs below its breakpoint and the tabs work from the keyboard (288ms)
+  ✓  16 specs/layout.spec.ts:159:1 › a preserved original surface sits in a panel without breaking the layout (86ms)
+  ✓  17 specs/layout.spec.ts:173:1 › customization is reversible and cannot hide an operation or reorder components (139ms)
+  ✓  18 specs/layout.spec.ts:218:1 › a presentation that grants no customization ignores saved layout preferences (107ms)
+  ✓  19 specs/layout.spec.ts:230:1 › a rejected layout is never drawn (99ms)
+
+  19 passed (3.6s)
+[exit 0]
