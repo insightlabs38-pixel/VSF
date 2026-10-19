@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B07-T10`
+**Next eligible:** close G7 (B07)
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -13,7 +13,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B04 | G4 | 8/8 | DONE | PROCEED |
 | B05 | G5 | 8/8 | DONE | PROCEED |
 | B06 | G6 | 18/18 | DONE | PROCEED |
-| B07 | G7 | 9/14 | IN_PROGRESS | - |
+| B07 | G7 | 14/14 | GATE_PENDING | - |
 | B08 | G8 | 0/10 | TODO | - |
 | B09 | G9 | 0/9 | TODO | - |
 | B10 | G10 | 0/8 | TODO | - |
@@ -128,11 +128,11 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [x] `VSF-B07-T07` Add session-scoped locks and basic rate-limit adaptation
 - [x] `VSF-B07-T08` Inject crash/timeout after remote commit and record UNKNOWN_COMMIT
 - [x] `VSF-B07-T09` Execution consumes only Validated<T> minted by Rust validation (F8 finding)
-- [ ] `VSF-B07-T10` Browser fixtures resolve the complete module graph and report load failures (wasm-browser finding)
-- [ ] `VSF-B07-T11` Unresolved-write exclusion is atomic with admission to Running (concurrency finding)
-- [ ] `VSF-B07-T12` Reconciliation revalidates authorization and closes only on evidence (reconciliation finding)
-- [ ] `VSF-B07-T13` Execution-boundary review corrections (adjacent findings)
-- [ ] `VSF-B07-T14` ADR-033 corrections, regenerated evidence and CI agreement
+- [x] `VSF-B07-T10` Browser fixtures resolve the complete module graph and report load failures (wasm-browser finding)
+- [x] `VSF-B07-T11` Unresolved-write exclusion is atomic with admission to Running (concurrency finding)
+- [x] `VSF-B07-T12` Reconciliation revalidates authorization and closes only on evidence (reconciliation finding)
+- [x] `VSF-B07-T13` Execution-boundary review corrections (adjacent findings)
+- [x] `VSF-B07-T14` ADR-033 corrections, regenerated evidence and CI agreement
 
 ### B08 · Build version registry, semantic diff and pins
 

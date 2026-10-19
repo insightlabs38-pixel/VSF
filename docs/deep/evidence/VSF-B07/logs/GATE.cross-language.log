@@ -3,13 +3,13 @@ $ pnpm --filter @vsf/cross-language-tests run test
 > @vsf/cross-language-tests@0.0.0 test /home/user/VSF/tests/cross-language
 > node --conditions=source --test --test-reporter=spec *.test.ts
 
-✔ Rust -> TypeScript -> Go carries identical schema id and bytes (556.074088ms)
-✔ native compile and WASM compile agree byte for byte (110.562748ms)
-✔ incompatible schema is rejected by every binding with the same code (444.376201ms)
-✔ tampered digest and corrupted bytes are rejected by every binding (444.242101ms)
-✔ TypeScript, Rust native and WASM agree on pack bytes, digests and summaries (481.926477ms)
-✔ committed digests pin the pack format across all three implementations (65.94488ms)
-✔ malformed, empty and truncated inputs fail identically everywhere (41.066001ms)
+✔ Rust -> TypeScript -> Go carries identical schema id and bytes (465.108384ms)
+✔ native compile and WASM compile agree byte for byte (74.031564ms)
+✔ incompatible schema is rejected by every binding with the same code (432.323765ms)
+✔ tampered digest and corrupted bytes are rejected by every binding (345.717524ms)
+✔ TypeScript, Rust native and WASM agree on pack bytes, digests and summaries (296.282779ms)
+✔ committed digests pin the pack format across all three implementations (48.723818ms)
+✔ malformed, empty and truncated inputs fail identically everywhere (22.821008ms)
 ℹ tests 7
 ℹ suites 0
 ℹ pass 7
@@ -17,5 +17,5 @@ $ pnpm --filter @vsf/cross-language-tests run test
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1839.462017
+ℹ duration_ms 1552.968321
 [exit 0]

@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B07-T12",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+  "paths": [
+    "backend/execution/reconcile.go",
+    "backend/execution/evidence.go",
+    "backend/execution/api_executor.go",
+    "backend/execution/internal/fixtureapp/app.go",
+    "backend/execution/reconcile_test.go",
+    "backend/execution/unknown_test.go"
+  ],
+  "acceptance": "Reconciliation re-authorizes through the Rust boundary, refuses other sources, principals and revoked or expired sessions, records every attempt, and moves out of Unknown only on a receipt that proves commit or non-commit.",
+  "positive": {
+    "fixture": "fenced-receipt disconnect before commit reconciles to Failed and a receipt after commit to Verified; the exclusion is released",
+    "command": "go -C backend test -race -count=1 -run TestDisconnect|TestOnlyReconciliation|TestAFence ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "identical values from another actor, stale reads, unchanged or non-monotonic versions, a receipt for another request, an executor overclaiming, revoked or expired sessions, changed environment",
+    "command": "go -C backend test -race -count=1 -run TestAnotherActor|TestAStaleRead|TestAnExecutorCannot|TestNonMonotonic|TestReconciliationRevalidates|TestAReceipt ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged; journal metadata optional keys added",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Reconciliation uses the same Rust authorization boundary as execution and never reads the source first.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Unproven outcomes stay Unknown; receipts are the only closing evidence"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T12.reconciliation-evidence-levels.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,3 @@
+$ go -C backend test -tags integration -race -count=1 -run TestTheBrowserOnlyPresses ./execution/
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	1.643s
+[exit 0]

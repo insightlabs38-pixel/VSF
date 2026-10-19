@@ -1,0 +1,21 @@
+$ pnpm --filter @vsf/fixture-apps run test
+
+> @vsf/fixture-apps@0.0.0 test /home/user/VSF/fixtures/source-apps
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ serves the form and accepts a valid submission (35.196104ms)
+✔ rejects invalid input with 422 and escapes reflected values (3.911216ms)
+✔ enforces body size limit, methods and path containment (15.518749ms)
+✔ sets security headers (3.374114ms)
+✔ validateForm and escapeHtml boundaries (1.500111ms)
+✔ inline import maps are allowed only by content hash (5.88676ms)
+✔ every page's module graph resolves through its import map (113.819822ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 386.003325
+[exit 0]

@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B07-T10",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "65cfea7a430918b30e2ef2e9e1acbb9c719478f0",
+  "paths": [
+    "fixtures/source-apps/src/server.ts",
+    "fixtures/source-apps/public/wasm-smoke/index.html",
+    "fixtures/source-apps/public/wasm-bench/index.html",
+    "fixtures/source-apps/test/server.test.ts",
+    "tests/e2e/specs/apps.spec.ts"
+  ],
+  "acceptance": "The WASM smoke and bench pages resolve every bare specifier reachable through package exports, and a failed import, request or asset status fails the test with its cause instead of a timeout.",
+  "positive": {
+    "fixture": "WASM smoke page reaches status ok in Chromium with @vsf/ir served",
+    "command": "pnpm --filter @vsf/e2e run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "an import map omitting a transitively imported package fails the graph test; the e2e run reports the page error (reproduced: Failed to resolve module specifier @vsf/ir)",
+    "command": "pnpm --filter @vsf/fixture-apps run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged; journal metadata optional keys added",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Fixture server only; the page error is read, not suppressed.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Static import scanning does not see dynamic import() calls"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T10.fixture-server-module-graph.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T10.browser-e2e-reports-load-failures.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.wasm-browser-job.log"
+  ],
+  "review_result": "ACCEPTED"
+}

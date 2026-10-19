@@ -3,21 +3,21 @@ $ pnpm --filter @vsf/wasm-host run test
 > @vsf/wasm-host@0.0.0 test /home/user/VSF/frontend/packages/wasm-host
 > node --conditions=source --test --test-reporter=spec test/*.test.ts
 
-✔ a document the Rust validator accepts becomes Validated with the digest Rust computed (118.145417ms)
-✔ documents TypeScript decodes happily but Rust refuses never become Validated (24.971838ms)
-✔ a document that does not even decode is refused with the decoder's code (9.68646ms)
-✔ nothing but validate() can create a Validated value (20.065882ms)
-✔ a validator that disagrees with TypeScript about the document is not trusted (36.130124ms)
-✔ wasm output is byte-identical to native golden for every seed (66.637134ms)
-✔ injected incompatible ABI is rejected before any call (15.984321ms)
-✔ module without the ABI export is rejected (1.181401ms)
-✔ wasm surfaces stable error codes and recovers after errors (7.057783ms)
-✔ a truncated or corrupted module is rejected without partial initialization (13.14674ms)
-✔ pack analysis through WASM rejects truncated packs and keeps working afterwards (27.672721ms)
-✔ IR validation through WASM agrees with the pinned Rust digests for every valid fixture (48.396856ms)
-✔ IR decode failures surface the same code and path as native for every invalid case (54.907069ms)
-✔ semantic violations through WASM match the expected codes for every mutation case (83.877207ms)
-✔ non-canonical input is a call error, not a report (7.043733ms)
+✔ a document the Rust validator accepts becomes Validated with the digest Rust computed (115.583434ms)
+✔ documents TypeScript decodes happily but Rust refuses never become Validated (29.286475ms)
+✔ a document that does not even decode is refused with the decoder's code (7.628982ms)
+✔ nothing but validate() can create a Validated value (16.03427ms)
+✔ a validator that disagrees with TypeScript about the document is not trusted (24.17771ms)
+✔ wasm output is byte-identical to native golden for every seed (42.525885ms)
+✔ injected incompatible ABI is rejected before any call (10.052843ms)
+✔ module without the ABI export is rejected (0.748231ms)
+✔ wasm surfaces stable error codes and recovers after errors (4.468724ms)
+✔ a truncated or corrupted module is rejected without partial initialization (3.153099ms)
+✔ pack analysis through WASM rejects truncated packs and keeps working afterwards (13.168626ms)
+✔ IR validation through WASM agrees with the pinned Rust digests for every valid fixture (42.475017ms)
+✔ IR decode failures surface the same code and path as native for every invalid case (61.611518ms)
+✔ semantic violations through WASM match the expected codes for every mutation case (81.663596ms)
+✔ non-canonical input is a call error, not a report (5.246915ms)
 ℹ tests 15
 ℹ suites 0
 ℹ pass 15
@@ -25,5 +25,5 @@ $ pnpm --filter @vsf/wasm-host run test
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 626.406488
+ℹ duration_ms 536.359382
 [exit 0]

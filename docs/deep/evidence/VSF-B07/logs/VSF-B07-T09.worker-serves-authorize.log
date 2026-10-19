@@ -8,14 +8,14 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 running 8 tests
 test incompatible_schema_exits_2_with_code ... ok
 test bad_usage_exits_64 ... ok
-test emit_then_compile_roundtrip_matches_library ... ok
-test serve_authorizes_only_what_the_library_authorizes ... ok
 test pack_generate_analyze_matches_library_and_rejects_truncation ... ok
+test serve_authorizes_only_what_the_library_authorizes ... ok
 test serve_handles_frames_errors_and_unknown_ops ... ok
+test emit_then_compile_roundtrip_matches_library ... ok
 test serve_validates_ir_documents ... ok
 test ir_validate_reports_valid_invalid_and_uncanonical_documents ... ok
 
-test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
 
 
 running 2 tests
@@ -24,7 +24,13 @@ test native_output_is_byte_identical_to_committed_golden ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+   Compiling vsf-schema v0.0.0 (/home/user/VSF/compiler/crates/vsf-schema)
+   Compiling vsf-observation v0.0.0 (/home/user/VSF/compiler/crates/vsf-observation)
+   Compiling vsf-redact v0.0.0 (/home/user/VSF/compiler/crates/vsf-redact)
+   Compiling vsf-fabric v0.0.0 (/home/user/VSF/compiler/crates/vsf-fabric)
+   Compiling vsf-fixtures v0.0.0 (/home/user/VSF/compiler/crates/vsf-fixtures)
+   Compiling vsf-native v0.0.0 (/home/user/VSF/compiler/crates/vsf-native)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.25s
      Running unittests src/main.rs (compiler/target/debug/deps/vsf_fabric-30e2b5175cabcc34)
      Running tests/cli.rs (compiler/target/debug/deps/cli-135c3d9f69bd6154)
      Running tests/golden.rs (compiler/target/debug/deps/golden-7cc078e12788a92c)

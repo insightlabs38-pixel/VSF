@@ -1210,34 +1210,49 @@
       "evidence": null
     },
     "VSF-B07-T10": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "65cfea7a430918b30e2ef2e9e1acbb9c719478f0",
+      "evidence": "docs/deep/evidence/VSF-B07",
+      "branch": "vsf/b07-verified-execution",
+      "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+      "receipt": "docs/deep/queue/receipts/VSF-B07-T10.json"
     },
     "VSF-B07-T11": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+      "evidence": "docs/deep/evidence/VSF-B07",
+      "branch": "vsf/b07-verified-execution",
+      "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+      "receipt": "docs/deep/queue/receipts/VSF-B07-T11.json"
     },
     "VSF-B07-T12": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+      "evidence": "docs/deep/evidence/VSF-B07",
+      "branch": "vsf/b07-verified-execution",
+      "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+      "receipt": "docs/deep/queue/receipts/VSF-B07-T12.json"
     },
     "VSF-B07-T13": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+      "evidence": "docs/deep/evidence/VSF-B07",
+      "branch": "vsf/b07-verified-execution",
+      "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+      "receipt": "docs/deep/queue/receipts/VSF-B07-T13.json"
     },
     "VSF-B07-T14": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+      "evidence": "docs/deep/evidence/VSF-B07",
+      "branch": "vsf/b07-verified-execution",
+      "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+      "receipt": "docs/deep/queue/receipts/VSF-B07-T14.json"
     },
     "VSF-B08-T10": {
       "status": "TODO",

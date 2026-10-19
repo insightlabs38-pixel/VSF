@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B07-T11",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+  "paths": [
+    "backend/execution/footprint.go",
+    "backend/execution/locks.go",
+    "backend/execution/journal.go",
+    "backend/execution/runtime.go",
+    "backend/execution/exclusion_test.go",
+    "backend/execution/journal_test.go"
+  ],
+  "acceptance": "No write overlapping an unresolved write reaches the source: the check shares a critical section with the Unknown transition, is repeated after the lock is held, and survives cancellation, journal failure and restart.",
+  "positive": {
+    "fixture": "two different request ids queue behind one write that ends ambiguously; the second is refused and the source sees one write",
+    "command": "go -C backend test -race -count=1 -run TestADifferentRequest|TestManyDistinct ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "scope overlap matrix, cross-scope, cancellation while waiting, journal failure at the Unknown transition, restart, scope-key collisions; mutation check: removing the guard fails the tests",
+    "command": "go -C backend test -race -count=1 -run TestUnresolvedWritesBlock|TestCancellingDuring|TestAJournalFailure|TestExclusionSurvives|TestScopeKeys ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 -count=20 -run TestADifferentRequest|TestManyDistinct|TestCancellingDuring|TestACancelledWaiter ./execution/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged; journal metadata optional keys added",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "A write without a freshness condition cannot declare no concurrency scope.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Single process only; distributed workers need a shared lease or fencing service",
+    "A source without receipts leaves the footprint blocked; no operator override yet"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T11.exclusion-matrix.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T11.exclusion-matrix-repeated-under-race.log"
+  ],
+  "review_result": "ACCEPTED"
+}
