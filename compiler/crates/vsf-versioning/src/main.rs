@@ -1,6 +1,6 @@
 use std::process::ExitCode;
 use vsf_canon::{Value, parse};
-use vsf_ir::doc::decode_document;
+use vsf_ir::doc::decode_value;
 use vsf_registry::json::pretty;
 use vsf_versioning::diff::diff;
 use vsf_versioning::impact::{DepGraph, TestSpec, select};
@@ -48,9 +48,12 @@ fn run(args: &[String]) -> Result<String, String> {
     if cmd != "diff" {
         return Err(USAGE.into());
     }
-    let load = |p: &str| decode_document(&read(p)?).map_err(|e| format!("{p}: {}", e.code));
-    let (a, b) = (load(from)?, load(to)?);
-    let d = diff(&a, &b).map_err(|e| e.to_string())?;
+    let load = |p: &str| {
+        let v = vsf_canon::parse(&read(p)?).map_err(|e| format!("{p}: {}", e.code()))?;
+        decode_value(&v).map_err(|e| format!("{p}: {}", e.code))
+    };
+    let ((a, va), (b, vb)) = (load(from)?, load(to)?);
+    let d = diff(&a, va, &b, vb).map_err(|e| e.to_string())?;
     let mut tests = None;
     let mut context = vec![a.clone(), b.clone()];
     let mut it = rest.iter();
@@ -58,7 +61,7 @@ fn run(args: &[String]) -> Result<String, String> {
         let value = it.next().ok_or(USAGE)?;
         match flag.as_str() {
             "--catalog" => tests = Some(catalog(value)?),
-            "--context" => context.push(load(value)?),
+            "--context" => context.push(load(value)?.0),
             _ => return Err(USAGE.into()),
         }
     }

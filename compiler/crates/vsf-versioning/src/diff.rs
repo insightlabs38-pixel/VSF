@@ -4,7 +4,7 @@ use crate::{Res, refuse};
 use std::collections::{BTreeMap, BTreeSet};
 use vsf_canon::{Value, sha256_hex, to_canonical};
 use vsf_ir::Body;
-use vsf_ir::doc::document_digest;
+use vsf_ir::doc::document_digest_at;
 
 /// Ordered by how much review a change needs; the diff takes the maximum.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -359,7 +359,13 @@ impl Walk<'_> {
 }
 
 /// Both documents must be of the same family and one of the families this diff has rules for.
-pub fn diff(from: &Body, to: &Body) -> Res<Diff> {
+/// Each side's version is the one the document was written under, so its digest is its stable identity.
+pub fn diff(
+    from: &Body,
+    from_version: (u32, u32, u32),
+    to: &Body,
+    to_version: (u32, u32, u32),
+) -> Res<Diff> {
     let family = from.family();
     if family != to.family() {
         return Err(refuse(
@@ -377,8 +383,9 @@ pub fn diff(from: &Body, to: &Body) -> Res<Diff> {
     changes.sort_by(|a, b| a.path.cmp(&b.path).then(a.op.cmp(&b.op)));
     Ok(Diff {
         family,
-        from: document_digest(from),
-        to: document_digest(to),
+        from: document_digest_at(from, from_version)
+            .ok_or_else(|| refuse("diff.unknown_version", ""))?,
+        to: document_digest_at(to, to_version).ok_or_else(|| refuse("diff.unknown_version", ""))?,
         class: changes.iter().map(|c| c.class).max(),
         changes,
     })

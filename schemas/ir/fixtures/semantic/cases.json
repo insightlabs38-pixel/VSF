@@ -1716,7 +1716,7 @@
           "value": "main"
         }
       ],
-      "expect": ["presentation.region_main_count"]
+      "expect": ["presentation.region_dock_role", "presentation.region_main_count"]
     },
     {
       "name": "r12-size-inverted",

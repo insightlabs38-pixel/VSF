@@ -10,6 +10,8 @@ use vsf_versioning::diff::diff;
 use vsf_versioning::impact::{DepGraph, TestSpec, select};
 use vsf_versioning::report::to_value;
 
+const V: (u32, u32, u32) = (1, 0, 0);
+
 fn dir() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../fixtures/versions/diff")
 }
@@ -54,11 +56,11 @@ fn reports() -> Vec<(&'static str, String)> {
             always: false,
         },
     ];
-    let d1 = diff(&sem, &sem2).unwrap();
+    let d1 = diff(&sem, V, &sem2, V).unwrap();
     let g = DepGraph::from_bodies(&[&sem, &sem2, &pres]);
-    let d2 = diff(&pres, &pres2).unwrap();
+    let d2 = diff(&pres, V, &pres2, V).unwrap();
     let g2 = DepGraph::from_bodies(&[&pres, &pres2]);
-    let none = diff(&sem, &sem).unwrap();
+    let none = diff(&sem, V, &sem, V).unwrap();
     vec![
         (
             "semantic-breaking-with-selection",
@@ -143,8 +145,11 @@ fn the_command_line_tool_writes_the_same_report() {
         "{}",
         String::from_utf8_lossy(&out.stderr)
     );
-    let want = pretty(&to_value(&diff(&from, &to).unwrap(), None));
-    assert_eq!(String::from_utf8(out.stdout).unwrap().trim_end(), want);
+    let want = pretty(&to_value(&diff(&from, V, &to, V).unwrap(), None));
+    assert_eq!(
+        String::from_utf8(out.stdout).unwrap().trim_end(),
+        want.trim_end()
+    );
     let unresolved = std::process::Command::new(env!("CARGO_BIN_EXE_vsf-versioning"))
         .arg("diff")
         .arg(

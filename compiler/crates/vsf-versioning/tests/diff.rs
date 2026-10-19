@@ -34,7 +34,7 @@ fn run(cases: Vec<Case>) {
     for c in cases {
         let from = edited(c.fixture, V, &[]);
         let to = edited(c.fixture, V, &c.edits);
-        let d = diff(&from, &to).unwrap();
+        let d = diff(&from, V, &to, V).unwrap();
         assert_eq!(d.class, Some(c.class), "{}: {:?}", c.name, d.changes);
         let hit = d.changes.iter().find(|x| x.path == c.path);
         assert!(
@@ -45,7 +45,7 @@ fn run(cases: Vec<Case>) {
             c.op,
             d.changes
         );
-        let back = diff(&to, &from).unwrap();
+        let back = diff(&to, V, &from, V).unwrap();
         assert_eq!(
             back.changes.len(),
             d.changes.len(),
@@ -419,7 +419,7 @@ fn a_button_that_triggers_another_action_is_a_permission_change() {
             s("delete_order"),
         )],
     );
-    let d = diff(&from, &to).unwrap();
+    let d = diff(&from, V, &to, V).unwrap();
     let hit = d
         .changes
         .iter()
@@ -443,14 +443,14 @@ fn the_diff_takes_the_most_severe_class_and_lists_changes_in_path_order() {
             Edit::Remove("/body/entities/0/fields/1"),
         ],
     );
-    let d = diff(&edited("semantic-orders", V, &[]), &to).unwrap();
+    let d = diff(&edited("semantic-orders", V, &[]), V, &to, V).unwrap();
     assert_eq!(d.class, Some(Class::Permission));
     let paths: Vec<&str> = d.changes.iter().map(|c| c.path.as_str()).collect();
     let mut sorted = paths.clone();
     sorted.sort();
     assert_eq!(paths, sorted);
     assert_eq!(
-        diff(&edited("semantic-orders", V, &[]), &to).unwrap(),
+        diff(&edited("semantic-orders", V, &[]), V, &to, V).unwrap(),
         d,
         "deterministic"
     );
@@ -465,7 +465,7 @@ fn the_diff_takes_the_most_severe_class_and_lists_changes_in_path_order() {
 #[test]
 fn identical_and_merely_reordered_documents_have_no_changes() {
     let a = edited("semantic-orders", V, &[]);
-    assert_eq!(diff(&a, &a).unwrap().class, None);
+    assert_eq!(diff(&a, V, &a, V).unwrap().class, None);
     let Value::Array(mut entities) = edited_value("semantic-orders", "/entities") else {
         panic!()
     };
@@ -475,7 +475,7 @@ fn identical_and_merely_reordered_documents_have_no_changes() {
         V,
         &[Edit::Set("/body/entities", Value::Array(entities))],
     );
-    let d = diff(&a, &reordered).unwrap();
+    let d = diff(&a, V, &reordered, V).unwrap();
     assert!(d.changes.is_empty(), "{:?}", d.changes);
 }
 
@@ -506,7 +506,7 @@ fn unclassifiable_shapes_are_unknown_never_cosmetic() {
         V,
         &[Edit::Set("/body/entities", Value::Array(items))],
     );
-    let d = diff(&from, &to).unwrap();
+    let d = diff(&from, V, &to, V).unwrap();
     assert_eq!(d.class, Some(Class::Unknown), "{:?}", d.changes);
 }
 
@@ -514,10 +514,13 @@ fn unclassifiable_shapes_are_unknown_never_cosmetic() {
 fn families_must_match_and_be_supported() {
     let sem = edited("semantic-orders", V, &[]);
     let op = edited("operation-update-stage", V, &[]);
-    assert_eq!(diff(&sem, &op).unwrap_err().code, "diff.family_mismatch");
+    assert_eq!(
+        diff(&sem, V, &op, V).unwrap_err().code,
+        "diff.family_mismatch"
+    );
     let obs = edited("observation-full", V, &[]);
     assert_eq!(
-        diff(&obs, &obs).unwrap_err().code,
+        diff(&obs, V, &obs, V).unwrap_err().code,
         "diff.unsupported_family"
     );
 }

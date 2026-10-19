@@ -4,11 +4,11 @@
   ],
   "class": "cosmetic",
   "family": "presentation",
-  "from": "sha256:8c3edbd8ef29117f23f57ba072e5f23a0fda5080617026b22cdc476f2ba72191",
+  "from": "sha256:895fcbd919f42066d6a243c44ebe9626b32906c4f9c15b121004f15195f1eeba",
   "review_required": false,
   "schema": "vsf-diff-report-v1",
   "selection": {"changed":["presentation:global"],"impacted":["component:btn_delete","component:btn_submit","component:form_order","component:orig_widget","component:txt_total","constraint:contrast","constraint:target","presentation:global","region:main"],"mode":"targeted","reason":null,"tests":["form","smoke","theme"]},
   "summary": {"additive":0,"breaking":0,"cosmetic":1,"permission":0,"unknown":0},
-  "to": "sha256:da1f43b060fcd2e4477e747d7b4be65f94b48dbcd565f03b4275e4e9aba22faa"
+  "to": "sha256:68b9f2eb63fd9c27fc2013989070d3147fb1aa1a152f0e731443e42d2b6a014c"
 }
 

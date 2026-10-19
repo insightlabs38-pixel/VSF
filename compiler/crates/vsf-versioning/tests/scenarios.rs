@@ -12,6 +12,8 @@ use vsf_versioning::impact::{DepGraph, Mode, TestSpec, select};
 use vsf_versioning::lineage::{Graph, Relation, manifest_id};
 use vsf_versioning::pin::{RevocationSet, State, contract_pin, resolve};
 
+const V: (u32, u32, u32) = (1, 0, 0);
+
 fn host(edit: impl Fn(&mut Vec<(String, Value)>)) -> Support {
     let sample = common::sample::build();
     let Value::Object(mut e) = parse(&sample.support).unwrap() else {
@@ -110,7 +112,7 @@ fn a_source_that_lost_a_required_field_is_a_breaking_diff_and_a_blocked_pin() {
         (1, 0, 0),
         &[Edit::Remove("/body/entities/0/fields/1")],
     );
-    let d = diff(&before, &after).unwrap();
+    let d = diff(&before, V, &after, V).unwrap();
     assert_eq!(d.class, Some(Class::Breaking));
     let pres = edited("presentation-orders", (1, 0, 0), &[]);
     let graph = DepGraph::from_bodies(&[&before, &after, &pres]);

@@ -44,7 +44,7 @@ fn graph() -> DepGraph {
 fn semantic(edits: &[Edit]) -> Selection {
     let from = edited("semantic-orders", V, &[]);
     let to = edited("semantic-orders", V, edits);
-    select(&diff(&from, &to).unwrap(), &graph(), &catalog(), None)
+    select(&diff(&from, V, &to, V).unwrap(), &graph(), &catalog(), None)
 }
 
 #[test]
@@ -126,7 +126,7 @@ fn uncertain_impact_falls_back_to_every_test() {
         spec("smoke", &[], true),
         spec("order_total", &["field:order.total"], false),
     ];
-    let sel = select(&diff(&from, &to).unwrap(), &graph(), &no_cover, None);
+    let sel = select(&diff(&from, V, &to, V).unwrap(), &graph(), &no_cover, None);
     assert_eq!(sel.mode, Mode::Full("uncovered_subject"));
     assert_eq!(sel.tests.len(), 2);
 }
@@ -140,7 +140,7 @@ fn a_removed_subject_still_reaches_its_old_dependents() {
         &[Edit::Remove("/body/entities/0/fields/1")],
     );
     let g = DepGraph::from_bodies(&[&from, &to, &edited("presentation-orders", V, &[])]);
-    let sel = select(&diff(&from, &to).unwrap(), &g, &catalog(), None);
+    let sel = select(&diff(&from, V, &to, V).unwrap(), &g, &catalog(), None);
     assert_eq!(sel.mode, Mode::Targeted);
     assert!(
         sel.tests.contains(&"order_form".to_string()),
@@ -157,7 +157,7 @@ fn presentation_global_changes_reach_every_component() {
         V,
         &[Edit::Set("/body/theme/density", s("compact"))],
     );
-    let sel = select(&diff(&from, &to).unwrap(), &graph(), &catalog(), None);
+    let sel = select(&diff(&from, V, &to, V).unwrap(), &graph(), &catalog(), None);
     assert_eq!(sel.changed, vec!["presentation:global"]);
     for want in ["theme", "order_form", "surface", "smoke"] {
         assert!(
@@ -184,14 +184,14 @@ fn operation_changes_select_tests_for_that_operation() {
     ];
     let g = DepGraph::from_bodies(&[&from]);
     let sel = select(
-        &diff(&from, &to).unwrap(),
+        &diff(&from, V, &to, V).unwrap(),
         &g,
         &cat,
         Some("app.records.update_stage"),
     );
     assert_eq!(sel.mode, Mode::Targeted);
     assert_eq!(sel.tests, vec!["op", "smoke"]);
-    let blind = select(&diff(&from, &to).unwrap(), &g, &cat, None);
+    let blind = select(&diff(&from, V, &to, V).unwrap(), &g, &cat, None);
     assert!(matches!(blind.mode, Mode::Full(_)));
 }
 
