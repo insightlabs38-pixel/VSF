@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** close G6 (B06)
+**Next eligible:** `VSF-B07-T09`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -12,8 +12,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B03 | G3 | 8/8 | DONE | PROCEED |
 | B04 | G4 | 8/8 | DONE | PROCEED |
 | B05 | G5 | 8/8 | DONE | PROCEED |
-| B06 | G6 | 18/18 | GATE_PENDING | - |
-| B07 | G7 | 0/9 | TODO | - |
+| B06 | G6 | 18/18 | DONE | PROCEED |
+| B07 | G7 | 0/9 | READY | - |
 | B08 | G8 | 0/9 | TODO | - |
 | B09 | G9 | 0/8 | TODO | - |
 | B10 | G10 | 0/8 | TODO | - |
@@ -119,7 +119,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B07 · Implement verified deterministic execution
 
-- [ ] `VSF-B07-T01` Implement prepared/admitted/running/verified/failed/unknown states
+- [ ] `VSF-B07-T01` Implement prepared/admitted/running/verified/failed/unknown states _(READY)_
 - [ ] `VSF-B07-T02` Bind VSF caller, source session, environment and exact contract
 - [ ] `VSF-B07-T03` Add preconditions, source-read freshness check, confirmation propagation
 - [ ] `VSF-B07-T04` Implement browser executor and mock documented API executor
@@ -127,7 +127,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B07-T06` Provide long-task handle, cancellation and progress events
 - [ ] `VSF-B07-T07` Add session-scoped locks and basic rate-limit adaptation
 - [ ] `VSF-B07-T08` Inject crash/timeout after remote commit and record UNKNOWN_COMMIT
-- [ ] `VSF-B07-T09` Execution consumes only Validated<T> minted by Rust validation (F8 finding)
+- [ ] `VSF-B07-T09` Execution consumes only Validated<T> minted by Rust validation (F8 finding) _(READY)_
 
 ### B08 · Build version registry, semantic diff and pins
 

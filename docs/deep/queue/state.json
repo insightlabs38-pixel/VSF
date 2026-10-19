@@ -493,7 +493,7 @@
       "receipt": "docs/deep/queue/receipts/VSF-B06-T08.json"
     },
     "VSF-B07-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1171,7 +1171,7 @@
       "receipt": "docs/deep/queue/receipts/VSF-B06-T18.json"
     },
     "VSF-B07-T09": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1233,9 +1233,11 @@
       "merge_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599"
     },
     "G6": {
-      "status": "PENDING",
-      "decision": null,
-      "evidence": null
+      "status": "ACCEPTED",
+      "decision": "PROCEED",
+      "evidence": "docs/deep/evidence/VSF-B06",
+      "report": "docs/deep/reports/VSF-B06.md",
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/7"
     },
     "G7": {
       "status": "PENDING",
@@ -1329,7 +1331,7 @@
     }
   },
   "cursor": {
-    "batch": "B06",
-    "task": "GATE"
+    "batch": "B07",
+    "task": "VSF-B07-T09"
   }
 }
