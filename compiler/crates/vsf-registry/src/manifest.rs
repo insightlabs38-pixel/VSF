@@ -71,6 +71,11 @@ impl Signer {
     pub fn public_hex(&self) -> String {
         hex(&self.pair.pk[..])
     }
+
+    /// Signs arbitrary bytes; callers supply their own domain prefix.
+    pub fn sign_bytes(&self, message: &[u8]) -> String {
+        hex(&self.pair.sk.sign(message, None)[..])
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -331,6 +336,26 @@ pub struct Freshness {
     pub last: Option<Accepted>,
 }
 
+/// The state a verifier keeps between runs, written only after a manifest has verified.
+pub fn watermark(v: &Verified) -> Value {
+    object(vec![
+        ("digest", s(&v.digest)),
+        ("schema", s("vsf-package-watermark-v1")),
+        ("sequence", Value::Int(v.sequence)),
+    ])
+}
+
+pub fn read_watermark(v: &Value) -> Res<Accepted> {
+    let mut o = Obj::new(v, "")?;
+    if o.str("schema")? != "vsf-package-watermark-v1" {
+        return Err(err("manifest.bad_schema", "watermark"));
+    }
+    let digest = o.str("digest")?;
+    let sequence = o.int("sequence")?;
+    o.finish()?;
+    Ok(Accepted { sequence, digest })
+}
+
 pub fn build(pkg: &Package, signer: &Signer, issue: Issue) -> Res<Value> {
     let files = file_set(pkg)?
         .into_iter()
@@ -403,6 +428,22 @@ fn field_strs(v: &Value, path: &str, keys: [&str; 2]) -> Res<Vec<(String, String
     Ok(out)
 }
 
+/// Checks `sig` over `message` against the active trusted key `key_id`; returns the key's purpose.
+pub fn verify_bytes(trust: &Trust, key_id: &str, message: &[u8], sig: &str) -> Res<String> {
+    let key = trust
+        .keys
+        .iter()
+        .find(|k| k.id == key_id && k.active)
+        .ok_or_else(|| err("manifest.untrusted_key", key_id))?;
+    let pk = PublicKey::from_slice(&unhex(&key.public_key)?)
+        .map_err(|_| err("manifest.bad_key", key_id))?;
+    let sig =
+        Signature::from_slice(&unhex(sig)?).map_err(|_| err("manifest.bad_signature", "length"))?;
+    pk.verify(message, &sig)
+        .map_err(|_| err("manifest.bad_signature", "does not verify"))?;
+    Ok(key.purpose.clone())
+}
+
 fn check_signature(manifest: &Value, trust: &Trust) -> Res<(String, String)> {
     let sig = manifest
         .get("signature")
@@ -414,18 +455,8 @@ fn check_signature(manifest: &Value, trust: &Trust) -> Res<(String, String)> {
     let key_id = o.str("key_id")?;
     let value = o.str("value")?;
     o.finish()?;
-    let key = trust
-        .keys
-        .iter()
-        .find(|k| k.id == key_id && k.active)
-        .ok_or_else(|| err("manifest.untrusted_key", key_id.clone()))?;
-    let pk = PublicKey::from_slice(&unhex(&key.public_key)?)
-        .map_err(|_| err("manifest.bad_key", key_id.clone()))?;
-    let sig = Signature::from_slice(&unhex(&value)?)
-        .map_err(|_| err("manifest.bad_signature", "length"))?;
-    pk.verify(signing_bytes(manifest)?, &sig)
-        .map_err(|_| err("manifest.bad_signature", "does not verify"))?;
-    Ok((key_id, key.purpose.clone()))
+    let purpose = verify_bytes(trust, &key_id, &signing_bytes(manifest)?, &value)?;
+    Ok((key_id, purpose))
 }
 
 /// Any mismatch is a hard error: signature first, then files, then claims and primitive digests.
@@ -462,7 +493,10 @@ pub fn verify(
     }
     if let Some(last) = &fresh.last {
         if sequence < last.sequence {
-            return Err(err("manifest.rollback", format!("{sequence} < {}", last.sequence)));
+            return Err(err(
+                "manifest.rollback",
+                format!("{sequence} < {}", last.sequence),
+            ));
         }
         if sequence == last.sequence && digest != last.digest {
             return Err(err("manifest.sequence_conflict", sequence.to_string()));

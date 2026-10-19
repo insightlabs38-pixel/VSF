@@ -1647,6 +1647,40 @@
         }
       ],
       "expect": ["ir.origin_not_canonical"]
+    },
+    {
+      "name": "v12-sequence-without-not-after",
+      "base": "version-manifest-promotion-1-2",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/promotion/not_after"
+        }
+      ],
+      "expect": ["version.freshness_incomplete"]
+    },
+    {
+      "name": "v12-freshness-without-attestation",
+      "base": "version-manifest-promotion-1-2",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/promotion/attestation"
+        }
+      ],
+      "expect": ["version.freshness_incomplete", "version.unattested_promotion"]
+    },
+    {
+      "name": "v12-window-ends-before-promotion",
+      "base": "version-manifest-promotion-1-2",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/promotion/not_after",
+          "value": 1792368400000
+        }
+      ],
+      "expect": ["version.freshness_window"]
     }
   ]
 }

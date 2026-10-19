@@ -1381,6 +1381,24 @@ pub fn validate_version(m: &VersionManifest) -> Vec<Violation> {
                 if p.gates.is_empty() || p.gates.iter().any(|g| !g.passed) {
                     out.push(v("version.failed_gate", "/body/promotion/gates", ""));
                 }
+                if p.sequence.is_some() != p.not_after.is_some()
+                    || (p.sequence.is_some() && p.attestation.is_none())
+                {
+                    out.push(v(
+                        "version.freshness_incomplete",
+                        "/body/promotion/sequence",
+                        "sequence and not_after come together and only on a signed promotion",
+                    ));
+                }
+                if let Some(end) = &p.not_after
+                    && end.0 <= p.promoted_at.0
+                {
+                    out.push(v(
+                        "version.freshness_window",
+                        "/body/promotion/not_after",
+                        "",
+                    ));
+                }
                 if let Some(prev) = &p.previous
                     && !lineage.contains(prev.as_str())
                 {

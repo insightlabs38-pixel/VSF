@@ -216,6 +216,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "vsf-versioning"
+version = "0.0.0"
+dependencies = [
+ "vsf-canon",
+ "vsf-ir",
+ "vsf-registry",
+]
+
+[[package]]
 name = "vsf-wasm"
 version = "0.0.0"
 dependencies = [

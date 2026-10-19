@@ -8,6 +8,7 @@ members = [
   "crates/vsf-observation",
   "crates/vsf-ir",
   "crates/vsf-registry",
+  "crates/vsf-versioning",
   "crates/vsf-recognizer",
   "crates/vsf-fabric",
   "crates/vsf-wasm",
@@ -32,6 +33,7 @@ vsf-fixtures = { path = "crates/vsf-fixtures" }
 vsf-observation = { path = "crates/vsf-observation" }
 vsf-ir = { path = "crates/vsf-ir" }
 vsf-registry = { path = "crates/vsf-registry" }
+vsf-versioning = { path = "crates/vsf-versioning" }
 vsf-recognizer = { path = "crates/vsf-recognizer" }
 vsf-fabric = { path = "crates/vsf-fabric" }
 

@@ -1,0 +1,15 @@
+[package]
+name = "vsf-versioning"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+vsf-canon.workspace = true
+vsf-ir.workspace = true
+vsf-registry.workspace = true
+
+[lints]
+workspace = true
