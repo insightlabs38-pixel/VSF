@@ -1,0 +1,270 @@
+{
+  "idl": "vsf-idl/1",
+  "ir_version": "1.1.0",
+  "family": "version",
+  "root": "VersionManifest",
+  "types": {
+    "Channel": {
+      "kind": "enum",
+      "values": ["stable", "preview", "pinned", "archived"]
+    },
+    "ArtifactRole": {
+      "kind": "enum",
+      "values": ["observation", "semantic", "operation_contract", "presentation", "primitive_pack"]
+    },
+    "MigrationKind": {
+      "kind": "enum",
+      "values": ["identity", "lossless", "lossy", "manual"]
+    },
+    "Tier": {
+      "kind": "enum",
+      "values": ["free", "pro", "team", "enterprise"]
+    },
+    "SourceRevision": {
+      "kind": "struct",
+      "fields": {
+        "fingerprint": {
+          "type": "Digest"
+        },
+        "provider_release": {
+          "type": "Label",
+          "optional": true
+        }
+      }
+    },
+    "VersionAxes": {
+      "kind": "struct",
+      "doc": "Each axis evolves independently; compatibility is evaluated per axis.",
+      "fields": {
+        "source_app": {
+          "type": "SourceRevision"
+        },
+        "source_variant": {
+          "type": "SourceVariantId"
+        },
+        "compiler": {
+          "type": "CompilerVersion"
+        },
+        "primitive_set": {
+          "type": "Digest"
+        },
+        "observation_schema": {
+          "type": "SemVer"
+        },
+        "semantic_schema": {
+          "type": "SemVer"
+        },
+        "operation_schema": {
+          "type": "SemVer"
+        },
+        "operations": {
+          "type": "map<SemVer>",
+          "keys": "OperationId",
+          "maxItems": 4096
+        },
+        "presentation": {
+          "type": "PresentationVersion"
+        },
+        "cache_format": {
+          "type": "Revision"
+        },
+        "runtime": {
+          "type": "SemVer"
+        },
+        "policy": {
+          "type": "Revision"
+        }
+      }
+    },
+    "ArtifactRef": {
+      "kind": "struct",
+      "fields": {
+        "role": {
+          "type": "ArtifactRole"
+        },
+        "digest": {
+          "type": "Digest"
+        },
+        "bytes": {
+          "type": "Count"
+        },
+        "media_type": {
+          "type": "Label"
+        },
+        "visibility": {
+          "type": "Visibility",
+          "optional": true,
+          "since": "1.1.0"
+        },
+        "principal_ref": {
+          "type": "PrincipalRef",
+          "optional": true,
+          "since": "1.1.0",
+          "doc": "Owner of a private artifact."
+        }
+      }
+    },
+    "MigrationEdge": {
+      "kind": "struct",
+      "fields": {
+        "from": {
+          "type": "SemVer"
+        },
+        "to": {
+          "type": "SemVer"
+        },
+        "kind": {
+          "type": "MigrationKind"
+        },
+        "fixture": {
+          "type": "Digest",
+          "optional": true
+        }
+      }
+    },
+    "Retention": {
+      "kind": "struct",
+      "fields": {
+        "tier": {
+          "type": "Tier"
+        },
+        "immutable": {
+          "type": "bool"
+        },
+        "pinned": {
+          "type": "bool"
+        },
+        "legal_hold": {
+          "type": "bool"
+        },
+        "expires_at": {
+          "type": "Instant",
+          "optional": true
+        }
+      }
+    },
+    "GateResult": {
+      "kind": "struct",
+      "fields": {
+        "gate": {
+          "type": "Ident"
+        },
+        "passed": {
+          "type": "bool"
+        }
+      }
+    },
+    "SignatureAlg": {
+      "kind": "enum",
+      "values": ["ed25519"]
+    },
+    "PromotionSignature": {
+      "kind": "struct",
+      "doc": "Names the algorithm, the key and the exact digest that was signed; the registry verifies it.",
+      "fields": {
+        "alg": { "type": "SignatureAlg" },
+        "key_id": { "type": "Ident" },
+        "signed_digest": { "type": "Digest" }
+      }
+    },
+    "PromotionRecord": {
+      "kind": "struct",
+      "fields": {
+        "promoted_at": {
+          "type": "Instant"
+        },
+        "gates": {
+          "type": "list<GateResult>",
+          "maxItems": 64
+        },
+        "signer": {
+          "type": "Label"
+        },
+        "signature": {
+          "type": "Label"
+        },
+        "previous": {
+          "type": "Digest",
+          "optional": true
+        },
+        "attestation": {
+          "type": "PromotionSignature",
+          "optional": true,
+          "since": "1.1.0"
+        }
+      }
+    },
+    "RollbackSpec": {
+      "kind": "struct",
+      "doc": "This manifest was produced by a rollback of the stated kind.",
+      "fields": {
+        "kind": { "type": "RollbackKind" },
+        "target": { "type": "Digest" },
+        "roles": { "type": "list<ArtifactRole>", "maxItems": 8 }
+      }
+    },
+    "Revocation": {
+      "kind": "struct",
+      "doc": "Withdraws trust in one operation, witness, authority, artifact or grant; a revoked artifact is never revived by a pin.",
+      "fields": {
+        "kind": { "type": "RevocationKind" },
+        "at": { "type": "Instant" },
+        "reason": { "type": "Label" },
+        "operation": { "type": "OperationId", "optional": true },
+        "digest": { "type": "Digest", "optional": true },
+        "authority": { "type": "Ident", "optional": true },
+        "principal": { "type": "PrincipalRef", "optional": true }
+      }
+    },
+    "VersionManifest": {
+      "kind": "struct",
+      "fields": {
+        "created_at": {
+          "type": "Instant"
+        },
+        "channel": {
+          "type": "Channel"
+        },
+        "axes": {
+          "type": "VersionAxes"
+        },
+        "artifacts": {
+          "type": "list<ArtifactRef>",
+          "maxItems": 65536
+        },
+        "lineage": {
+          "type": "list<Digest>",
+          "maxItems": 64
+        },
+        "migrations": {
+          "type": "list<MigrationEdge>",
+          "maxItems": 256
+        },
+        "retention": {
+          "type": "Retention"
+        },
+        "promotion": {
+          "type": "PromotionRecord",
+          "optional": true
+        },
+        "origin": {
+          "type": "Origin",
+          "optional": true,
+          "since": "1.1.0",
+          "doc": "Source origin the artifacts were compiled against."
+        },
+        "rollback": {
+          "type": "RollbackSpec",
+          "optional": true,
+          "since": "1.1.0"
+        },
+        "revocations": {
+          "type": "list<Revocation>",
+          "maxItems": 256,
+          "optional": true,
+          "since": "1.1.0"
+        }
+      }
+    }
+  }
+}

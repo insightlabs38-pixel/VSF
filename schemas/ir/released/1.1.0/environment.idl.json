@@ -1,0 +1,74 @@
+{
+  "idl": "vsf-idl/1",
+  "ir_version": "1.1.0",
+  "family": "environment",
+  "root": "EnvironmentCapabilityManifest",
+  "types": {
+    "ExecutionMode": {
+      "kind": "enum",
+      "values": ["extension", "desktop", "localhost", "hosted_sandbox", "headless_worker", "private_vpc"]
+    },
+    "CapabilityState": { "kind": "enum", "values": ["available", "degraded", "unavailable", "unknown"] },
+    "PersistenceLevel": { "kind": "enum", "values": ["none", "session", "local", "managed"] },
+    "CredentialIsolation": {
+      "kind": "enum",
+      "values": ["browser_profile_bound", "vault_bound", "none_available", "unknown"]
+    },
+    "EgressPolicy": { "kind": "enum", "values": ["none", "allowlist", "unrestricted", "unknown"] },
+    "AttestationKind": { "kind": "enum", "values": ["none", "signed_build", "platform"] },
+    "CapabilityEntry": {
+      "kind": "struct",
+      "fields": {
+        "id": { "type": "CapabilityId" },
+        "state": { "type": "CapabilityState" },
+        "constraints": { "type": "list<Label>", "optional": true, "maxItems": 16 },
+        "reason": { "type": "Label", "optional": true }
+      }
+    },
+    "PermissionGrant": {
+      "kind": "struct",
+      "fields": {
+        "origin": { "type": "Origin" },
+        "scopes": { "type": "list<ScopeId>", "maxItems": 64 }
+      }
+    },
+    "Limits": {
+      "kind": "struct",
+      "fields": {
+        "max_payload_bytes": { "type": "Count" },
+        "max_nodes": { "type": "Count" },
+        "max_concurrency": { "type": "Count" },
+        "max_wallclock_ms": { "type": "Millis" }
+      }
+    },
+    "Attestation": {
+      "kind": "struct",
+      "fields": {
+        "kind": { "type": "AttestationKind" },
+        "digest": { "type": "Digest", "optional": true }
+      }
+    },
+    "EnvironmentCapabilityManifest": {
+      "kind": "struct",
+      "doc": "What this specific runtime can observe, execute and persist under the current user's permissions.",
+      "fields": {
+        "runtime_id": { "type": "RuntimeId" },
+        "mode": { "type": "ExecutionMode" },
+        "runtime_version": { "type": "SemVer" },
+        "compiler_version": { "type": "CompilerVersion" },
+        "generated_at": { "type": "Instant" },
+        "principal_ref": { "type": "PrincipalRef" },
+        "permissions": { "type": "list<PermissionGrant>", "maxItems": 256 },
+        "observation": { "type": "list<CapabilityEntry>", "maxItems": 256 },
+        "execution": { "type": "list<CapabilityEntry>", "maxItems": 256 },
+        "persistence": { "type": "PersistenceLevel" },
+        "credential_isolation": { "type": "CredentialIsolation" },
+        "egress": { "type": "EgressPolicy" },
+        "limits": { "type": "Limits" },
+        "attestation": { "type": "Attestation", "optional": true },
+        "app_id": { "type": "SourceAppId", "optional": true, "since": "1.1.0" },
+        "variant_id": { "type": "SourceVariantId", "optional": true, "since": "1.1.0" }
+      }
+    }
+  }
+}
