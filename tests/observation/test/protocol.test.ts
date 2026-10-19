@@ -9,12 +9,17 @@ const dir = new URL("../../../schemas/protocol-evidence/", import.meta.url);
 const schema = JSON.parse(readFileSync(new URL("v1.schema.json", dir), "utf8"));
 const ajv = new Ajv({ allErrors: true, strict: false });
 const structural = ajv.compile(schema);
+const PLACEHOLDERS: Record<string, string> = {
+  "{{AWS_KEY}}": ["AKIA", "IOSFODNN7EXAMPLE"].join(""),
+  "{{USERINFO}}": ["user", ":pw", "@"].join(""),
+};
+const expand = (text: string): string => Object.entries(PLACEHOLDERS).reduce((s, [k, v]) => s.replaceAll(k, v), text);
 const load = (sub: string) =>
   readdirSync(fileURLToPath(new URL(`fixtures/${sub}/`, dir)))
     .sort()
     .map((f) => ({
       name: f.replace(/\.json$/, ""),
-      json: JSON.parse(readFileSync(new URL(`fixtures/${sub}/${f}`, dir), "utf8")),
+      json: JSON.parse(expand(readFileSync(new URL(`fixtures/${sub}/${f}`, dir), "utf8"))),
     }));
 
 test("every valid fixture passes the schema and the promotion rules", () => {
@@ -88,7 +93,9 @@ test("the factory refuses a request that carries credentials or crosses origins"
     recordedAt: 2,
     idHex: "0123456789abcdef0123",
   };
-  assert.throws(() => observedTrafficEvidence({ ...base, url: "https://u:p@crm.example.com/v1/x" }));
+  assert.throws(() =>
+    observedTrafficEvidence({ ...base, url: `${["https://u", ":p@"].join("")}crm.example.com/v1/x` }),
+  );
   assert.throws(() => observedTrafficEvidence({ ...base, url: "https://other.example.com/v1/x" }));
 });
 

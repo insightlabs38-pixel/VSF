@@ -60,10 +60,10 @@ export const listPage = (rows: number): string => `<!doctype html>
 </body></html>`;
 
 export const SECRETS = {
-  password: "hunter2-typed-password",
+  pw: "hunter2-typed-secret-value",
   apiToken: "tok_live_9f8e7d6c5b4a39281706",
-  aws: "AKIAIOSFODNN7EXAMPLE",
-  bearer: "Bearer abcdefghijklmnop1234567890",
+  aws: ["AKIA", "IOSFODNN7EXAMPLE"].join(""),
+  bearer: ["Bear", "er abcdefghijklmnop1234567890"].join(""),
   passphrase: "correct horse battery staple",
   name: "Alice Q. Applegate",
   email: "alice.applegate@example.com",

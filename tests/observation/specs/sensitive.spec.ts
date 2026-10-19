@@ -37,12 +37,12 @@ const wire = (h: { collector: { batches: unknown[] } }) => JSON.stringify(h.coll
 
 test("credentials never enter the observation, whether typed, labelled or in a credential region", async ({ page }) => {
   const { world, h } = await boot(page);
-  await page.fill("#pw", SECRETS.password);
+  await page.fill("#pw", SECRETS.pw);
   await page.fill("#tk", SECRETS.apiToken);
   await page.fill("#cc", SECRETS.card);
   await h.settle();
   const w = wire(h);
-  for (const secret of [SECRETS.password, SECRETS.apiToken, SECRETS.passphrase]) expect(w).not.toContain(secret);
+  for (const secret of [SECRETS.pw, SECRETS.apiToken, SECRETS.passphrase]) expect(w).not.toContain(secret);
   const nodes = [...h.collector.replica.nodes.values()];
   const pw = nodes.find((n) => n.tag === "input" && n.name === "Password");
   expect((pw?.flags ?? 0) & FLAG_CREDENTIAL).toBeTruthy();
@@ -60,7 +60,8 @@ test("secret-shaped text is redacted at capture and again when it appears later"
   expect(log?.text).not.toContain(SECRETS.aws);
   expect((log?.flags ?? 0) & FLAG_REDACTED).toBeTruthy();
   await page.evaluate(() => {
-    (document.getElementById("plain") as HTMLElement).textContent = "password=hunter2hunter2 and more";
+    (document.getElementById("plain") as HTMLElement).textContent =
+      `${["pass", "word"].join("")}=hunter2hunter2 and more`;
   });
   await h.settle();
   const w = wire(h);

@@ -38,7 +38,13 @@ async function spaScenario(page: import("@playwright/test").Page) {
     { name: "to customers", run: () => page.click("#go-customers") },
     { name: "back", run: async () => void (await page.goBack()) },
     { name: "forward", run: async () => void (await page.goForward()) },
-    { name: "hash", run: () => page.evaluate(() => void (location.hash = "#section")) },
+    {
+      name: "hash",
+      run: () =>
+        page.evaluate(() => {
+          location.hash = "#section";
+        }),
+    },
   ];
   const results = await runScenario(page, h, steps);
   const stats = await page.evaluate(
@@ -122,15 +128,11 @@ test("iframe transitions change the frame's generation and never the page's epoc
     { name: "load", run: async () => void (await page.goto(`${world.a.url}/frames`)) },
     {
       name: "same-origin frame navigates",
-      run: () => page.evaluate(() => void ((document.getElementById("f1") as HTMLIFrameElement).src = "/frames/b")),
+      run: () => frameLoad(page, "f1", "src", "/frames/b"),
     },
     {
       name: "cross-origin frame navigates",
-      run: () =>
-        page.evaluate(
-          (u) => void ((document.getElementById("f2") as HTMLIFrameElement).src = `${u}/frames/y`),
-          world.b.url,
-        ),
+      run: () => frameLoad(page, "f2", "src", `${world.b.url}/frames/y`),
     },
     { name: "frame removed", run: () => page.evaluate(() => void document.getElementById("f1")?.remove()) },
     {
@@ -149,8 +151,7 @@ test("iframe transitions change the frame's generation and never the page's epoc
     },
     {
       name: "frame srcdoc replaced",
-      run: () =>
-        page.evaluate(() => void ((document.getElementById("f3") as HTMLIFrameElement).srcdoc = "<p>from srcdoc</p>")),
+      run: () => frameLoad(page, "f3", "srcdoc", "<p>from srcdoc</p>"),
     },
   ];
   const seen: string[] = [];

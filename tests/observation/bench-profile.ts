@@ -28,7 +28,7 @@ const { profile } = (await cdp.send("Profiler.stop")) as {
   profile: { nodes: ProfileNode[]; samples: number[]; timeDeltas: number[] };
 };
 const self = new Map<number, number>();
-profile.samples.forEach((id, i) => self.set(id, (self.get(id) ?? 0) + (profile.timeDeltas[i] ?? 0)));
+for (const [i, id] of profile.samples.entries()) self.set(id, (self.get(id) ?? 0) + (profile.timeDeltas[i] ?? 0));
 const byName = new Map<string, number>();
 for (const n of profile.nodes) {
   const key = `${n.callFrame.functionName || "(anon)"} ${n.callFrame.url.split("/").pop()}:${n.callFrame.lineNumber}`;
