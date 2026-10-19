@@ -113,8 +113,15 @@ fn the_crate_has_no_model_or_network_dependency() {
         .lines()
         .filter(|l| l.contains('='))
         .collect();
-    assert_eq!(deps.len(), 1, "{deps:?}");
-    assert!(deps[0].starts_with("vsf-canon"));
+    let names: Vec<&str> = deps
+        .iter()
+        .map(|d| {
+            d.split(|c: char| c == '.' || c.is_whitespace())
+                .next()
+                .unwrap_or("")
+        })
+        .collect();
+    assert_eq!(names, ["vsf-canon", "vsf-redact"], "{deps:?}");
     for entry in std::fs::read_dir(root.join("src")).unwrap() {
         let p = entry.unwrap().path();
         let text = std::fs::read_to_string(&p).unwrap();

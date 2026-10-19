@@ -224,3 +224,136 @@ impl Edit {
         Observation::from_nodes(nodes)
     }
 }
+
+pub const OWNER: &str = "prin_0123456789abcdef0123456789abcdef";
+pub const REVIEWER: &str = "prin_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+pub const NOW: i64 = 1_790_000_100_000;
+
+pub fn trust() -> vsf_recognizer::trust::TrustContext {
+    vsf_recognizer::trust::TrustContext {
+        app_id: "acme:crm-eu1".into(),
+        variant_id: "var_0123456789abcdef0123456789abcdef".into(),
+        origin: "https://crm.example.com".into(),
+        principal: OWNER.into(),
+        runtime_id: "rt_ext1".into(),
+        mode: "extension".into(),
+        capability_digest: format!("sha256:{}", "c".repeat(64)),
+        source_revision: format!("sha256:{}", "d".repeat(64)),
+    }
+}
+
+pub fn policy() -> vsf_recognizer::protocol::ProtocolPolicy {
+    use vsf_recognizer::protocol::{Grant, ProtocolPolicy, Revocations};
+    ProtocolPolicy {
+        trust: trust(),
+        now: NOW,
+        max_age_ms: 30 * 24 * 3600 * 1000,
+        required_scope: "observe.protocol".into(),
+        reviewers: [REVIEWER.to_string()].into_iter().collect(),
+        grants: vec![Grant {
+            principal: OWNER.into(),
+            scope: "observe.protocol".into(),
+            granted_at: 1_789_999_999_000,
+            revoked_at: None,
+        }],
+        known_witnesses: ["profile-w1".to_string(), "checkout-w1".to_string()]
+            .into_iter()
+            .collect(),
+        revoked: Revocations::default(),
+    }
+}
+
+pub struct Wit {
+    pub id: String,
+    pub status: &'static str,
+    pub issuer: &'static str,
+    pub kind: &'static str,
+    pub node: u32,
+    pub digest: String,
+    pub class: &'static str,
+    pub verified_at: i64,
+    pub expires_at: i64,
+    pub revoked_at: Option<i64>,
+    pub ctx: vsf_recognizer::trust::TrustContext,
+}
+
+impl Wit {
+    pub fn of(obs: &Observation, node: u32, kind: &'static str, class: &'static str) -> Wit {
+        let i = obs.index_of(node).unwrap();
+        Wit {
+            id: format!(
+                "wit_{:0>16x}",
+                u64::from(node) * 7 + if kind == "action" { 1 } else { 2 }
+            ),
+            status: "verified",
+            issuer: "fixture-verifier",
+            kind,
+            node,
+            digest: vsf_recognizer::ledger::node_digest(obs, i),
+            class,
+            verified_at: NOW - 60_000,
+            expires_at: NOW + 3_600_000,
+            revoked_at: None,
+            ctx: trust(),
+        }
+    }
+
+    pub fn json(&self) -> String {
+        let c = &self.ctx;
+        let revoked = self
+            .revoked_at
+            .map_or(String::new(), |t| format!(r#","revoked_at":{t}"#));
+        format!(
+            r#"{{"schema":"vsf-behavioral-witness-v1","id":"{}","status":"{}","issuer":"{}","context":{{"app_id":"{}","variant_id":"{}","origin":"{}","principal":"{}","runtime_id":"{}","mode":"{}","capability_digest":"{}","source_revision":"{}"}},"operation":{{"kind":"{}","node":{},"node_digest":"{}"}},"effect":{{"class":"{}","evidence_digest":"sha256:{}"}},"verified_at":{},"expires_at":{}{revoked}}}"#,
+            self.id,
+            self.status,
+            self.issuer,
+            c.app_id,
+            c.variant_id,
+            c.origin,
+            c.principal,
+            c.runtime_id,
+            c.mode,
+            c.capability_digest,
+            c.source_revision,
+            self.kind,
+            self.node,
+            self.digest,
+            self.class,
+            "e".repeat(64),
+            self.verified_at,
+            self.expires_at
+        )
+    }
+
+    pub fn value(&self) -> vsf_canon::Value {
+        vsf_canon::parse(self.json().as_bytes()).unwrap()
+    }
+}
+
+pub fn wpolicy(
+    emission: vsf_recognizer::witness::Emission,
+) -> vsf_recognizer::witness::WitnessPolicy {
+    vsf_recognizer::witness::WitnessPolicy {
+        trust: trust(),
+        now: NOW,
+        max_age_ms: 24 * 3600 * 1000,
+        trusted_issuers: ["fixture-verifier".to_string(), "synthetic-test".to_string()]
+            .into_iter()
+            .collect(),
+        revoked: vsf_recognizer::protocol::Revocations::default(),
+        emission,
+    }
+}
+
+pub fn bare_contract(
+    rec: &vsf_recognizer::engine::Recognition,
+    ledger: &vsf_recognizer::ledger::Ledger,
+) -> vsf_recognizer::contract::Contract {
+    vsf_recognizer::contract::derive(
+        rec,
+        ledger,
+        &vsf_recognizer::witness::AcceptedWitnesses::none(),
+        &std::collections::BTreeMap::new(),
+    )
+}

@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { findSecretShapes } from "@vsf/redact";
@@ -7,8 +7,11 @@ import { validateRegistry, writeRegistry } from "./catalog.ts";
 import { loadJobs, runJob, verifyManifest } from "./ci.ts";
 import { lintCommentFiles } from "./comments.ts";
 import { checkIdentity, checkMessage } from "./commitmsg.ts";
+import type { Locked } from "./depreview.ts";
 import { scan } from "./depscan.ts";
 import { digestTree, rollup } from "./digest.ts";
+import { checkWorkflow, parseWorkflow } from "./gate.ts";
+import { type Ignore, scanVulnerabilities } from "./osv.ts";
 import { checkInstalled, checkPins } from "./toolchain.ts";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
@@ -89,6 +92,48 @@ switch (cmd) {
     process.exit(report("dep-review", findings));
     break;
   }
+  case "vuln-scan": {
+    const { locked } = scan({
+      root,
+      advisoriesPath: join(root, "supply-chain/advisories.local.json"),
+      licenses: false,
+    });
+    const ignorePath = join(root, "supply-chain/vuln-ignores.json");
+    const ignores = existsSync(ignorePath)
+      ? (JSON.parse(readFileSync(ignorePath, "utf8")) as { ignores: Ignore[] }).ignores
+      : [];
+    const outcome = await scanVulnerabilities(locked as Locked[], { ignores });
+    const out = join(root, "artifacts/supply-chain");
+    mkdirSync(out, { recursive: true });
+    writeFileSync(
+      join(out, "vuln-scan.json"),
+      `${JSON.stringify({ at: new Date().toISOString(), source: "osv.dev", ...outcome }, null, 1)}\n`,
+    );
+    if (outcome.status === "unavailable") {
+      console.error(`vuln-scan: INCONCLUSIVE, not clean: ${outcome.reason} (${outcome.queried} packages unchecked)`);
+      process.exit(3);
+    }
+    console.log(`vuln-scan: ${outcome.queried} packages checked against osv.dev, request ${outcome.digest}`);
+    process.exit(
+      report(
+        "vuln-scan",
+        outcome.findings.map((f) => ({ id: f.package, message: f.ids.join(", ") })),
+      ),
+    );
+    break;
+  }
+  case "workflow-check": {
+    const wf = parseWorkflow(readFileSync(join(root, ".github/workflows/ci.yml"), "utf8"));
+    const jobs = (JSON.parse(readFileSync(join(root, "ci/jobs.json"), "utf8")) as { jobs: Record<string, unknown[]> })
+      .jobs;
+    process.exit(
+      report(
+        "workflow-check",
+        checkWorkflow(wf, jobs).map((m) => ({ id: "workflow", message: m })),
+      ),
+    );
+    break;
+  }
   case "ci-run": {
     const job = args[0] ?? "";
     const out = join(root, "artifacts/ci", job);
@@ -157,7 +202,7 @@ switch (cmd) {
   }
   default:
     console.error(
-      "usage: checks <toolchain|comments|commit-msg|commit-range|pr-text|catalog|secrets|dep-review|ci-run|ci-verify|digest>",
+      "usage: checks <toolchain|comments|commit-msg|commit-range|pr-text|catalog|secrets|dep-review|vuln-scan|workflow-check|ci-run|ci-verify|digest>",
     );
     process.exit(64);
 }

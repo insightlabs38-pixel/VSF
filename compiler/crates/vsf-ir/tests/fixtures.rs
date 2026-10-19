@@ -3,7 +3,10 @@
 mod common;
 use common::{fixtures, pointer_set, valid_bytes, valid_names};
 use vsf_canon::{Value, parse, sha256_hex, to_canonical};
-use vsf_ir::doc::{decode_document, document_digest, encode_document, typed_digest};
+use vsf_ir::doc::{
+    decode_document, decode_value, document_digest_at, encode_document, encode_document_at,
+    typed_digest,
+};
 
 #[test]
 fn every_valid_fixture_decodes_and_reencodes_to_identical_bytes() {
@@ -11,12 +14,14 @@ fn every_valid_fixture_decodes_and_reencodes_to_identical_bytes() {
     assert!(names.len() >= 10);
     for name in names {
         let bytes = valid_bytes(&name);
-        let body = decode_document(&bytes).unwrap_or_else(|e| panic!("{name}: {e}"));
-        assert_eq!(encode_document(&body), bytes, "{name}");
+        let (body, ver) =
+            decode_value(&parse(&bytes).unwrap()).unwrap_or_else(|e| panic!("{name}: {e}"));
+        assert_eq!(encode_document_at(&body, ver).unwrap(), bytes, "{name}");
+        assert_eq!(decode_document(&bytes).unwrap(), body, "{name}");
+        let upgraded = decode_document(&encode_document(&body)).unwrap();
         assert_eq!(
-            decode_document(&encode_document(&body)).unwrap(),
-            body,
-            "{name}"
+            upgraded, body,
+            "{name}: re-encoding at the current version loses nothing"
         );
     }
 }
@@ -30,12 +35,15 @@ fn compute_pins() -> Value {
         .into_iter()
         .map(|name| {
             let bytes = valid_bytes(&name);
-            let body = decode_document(&bytes).unwrap();
+            let (body, ver) = decode_value(&parse(&bytes).unwrap()).unwrap();
             vsf_ir::rt::object(vec![
                 ("name", vsf_ir::rt::text(&name)),
                 ("canonical_bytes", vsf_ir::rt::int(bytes.len() as i64)),
                 ("canonical_sha256", vsf_ir::rt::text(&sha256_hex(&bytes))),
-                ("document_digest", vsf_ir::rt::text(&document_digest(&body))),
+                (
+                    "document_digest",
+                    vsf_ir::rt::text(&document_digest_at(&body, ver).unwrap()),
+                ),
             ])
         })
         .collect();

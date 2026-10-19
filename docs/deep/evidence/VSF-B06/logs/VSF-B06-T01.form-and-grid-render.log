@@ -1,0 +1,9 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/smoke.spec.ts
+
+Running 2 tests using 1 worker
+
+  ✓  1 specs/smoke.spec.ts:13:1 › form renders with labelled fields and operations (208ms)
+  ✓  2 specs/smoke.spec.ts:24:1 › grid renders (186ms)
+
+  2 passed (1.7s)
+[exit 0]

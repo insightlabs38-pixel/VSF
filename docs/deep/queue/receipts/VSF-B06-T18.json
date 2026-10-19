@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B06-T18",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "809d9e2c2e76bb20c3d3a5908dabf8ebf8145157",
+  "paths": [
+    "docs/deep/adr/ADR-032-foundation-stabilization.md",
+    "docs/deep/evidence/VSF-B06/",
+    "schemas/ir/released/1.1.0/"
+  ],
+  "acceptance": "One ADR records decisions, schema migrations, compatibility results and the note that G5 stays historically accurate; evidence manifest is complete.",
+  "positive": {
+    "fixture": "ADR-032 records decisions, migrations and the G5 note",
+    "command": "test -s docs/deep/adr/ADR-032-foundation-stabilization.md",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "manifest verification and evidence checksums",
+    "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify . --development",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node --conditions=source tools/idlgen/src/cli.ts --check",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 snapshot frozen",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No change to source permissions.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T18.adr-032-present.log",
+    "docs/deep/evidence/VSF-B06/logs/GATE.registry-manifest.log",
+    "docs/deep/evidence/VSF-B06/logs/GATE.idl-drift.log"
+  ],
+  "review_result": "ACCEPTED"
+}

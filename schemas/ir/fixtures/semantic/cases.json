@@ -1339,6 +1339,314 @@
         }
       ],
       "expect": ["ir.duplicate_id"]
+    },
+    {
+      "name": "w11-context-incomplete",
+      "base": "operation-witnessed-1-1",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/witnesses/0/issuer"
+        }
+      ],
+      "expect": ["contract.witness_context_incomplete"]
+    },
+    {
+      "name": "w11-expiry-before-observation",
+      "base": "operation-witnessed-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/expires_at",
+          "value": 1792368000000
+        }
+      ],
+      "expect": ["contract.witness_expiry_order"]
+    },
+    {
+      "name": "w11-revoked-before-observed",
+      "base": "operation-witnessed-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/revoked_at",
+          "value": 1792368200000
+        }
+      ],
+      "expect": ["contract.witness_revoked_before_observed", "contract.witness_not_applicable"]
+    },
+    {
+      "name": "w11-observed-effect-understated",
+      "base": "operation-witnessed-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/observed_effect",
+          "value": "destructive"
+        }
+      ],
+      "expect": ["contract.witness_effect_understated"]
+    },
+    {
+      "name": "w11-synthetic-on-active",
+      "base": "operation-witnessed-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/synthetic",
+          "value": true
+        }
+      ],
+      "expect": ["contract.synthetic_witness_on_active", "contract.witness_not_applicable"]
+    },
+    {
+      "name": "w11-revoked-witness-does-not-count",
+      "base": "operation-witnessed-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/revoked_at",
+          "value": 1792368400000
+        }
+      ],
+      "expect": ["contract.witness_not_applicable"]
+    },
+    {
+      "name": "v11-revoked-artifact-still-shipped",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/revocations/0/digest",
+          "value": "sha256:f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6"
+        }
+      ],
+      "expect": ["version.revoked_artifact_present"]
+    },
+    {
+      "name": "v11-private-marked-global",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/artifacts/0/visibility",
+          "value": "global_structure"
+        },
+        {
+          "op": "remove",
+          "path": "/body/artifacts/0/principal_ref"
+        }
+      ],
+      "expect": ["version.private_artifact_marked_global"]
+    },
+    {
+      "name": "v11-private-without-owner",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/artifacts/0/principal_ref"
+        }
+      ],
+      "expect": ["version.private_without_owner"]
+    },
+    {
+      "name": "v11-owner-on-shared",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/artifacts/3/principal_ref",
+          "value": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+        }
+      ],
+      "expect": ["version.principal_on_shared"]
+    },
+    {
+      "name": "v11-owner-without-visibility",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/artifacts/0/visibility"
+        }
+      ],
+      "expect": ["version.owner_without_visibility"]
+    },
+    {
+      "name": "v11-revocation-wrong-field",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/revocations/1/operation"
+        },
+        {
+          "op": "set",
+          "path": "/body/revocations/1/digest",
+          "value": "sha256:9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a"
+        }
+      ],
+      "expect": ["version.revocation_malformed"]
+    },
+    {
+      "name": "v11-rollback-to-revoked",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/rollback/target",
+          "value": "sha256:9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a"
+        }
+      ],
+      "expect": ["version.rollback_to_revoked", "version.rollback_target_not_in_lineage"]
+    },
+    {
+      "name": "v11-interface-rollback-touches-operations",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/rollback/roles",
+          "value": ["presentation", "operation_contract"]
+        }
+      ],
+      "expect": ["version.rollback_scope"]
+    },
+    {
+      "name": "v11-artifact-rollback-target-unknown",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/rollback/kind",
+          "value": "artifact_version"
+        },
+        {
+          "op": "set",
+          "path": "/body/rollback/target",
+          "value": "sha256:abababababababababababababababababababababababababababababababab"
+        }
+      ],
+      "expect": ["version.rollback_target_not_in_lineage"]
+    },
+    {
+      "name": "v11-source-data-rollback-changes-artifacts",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/rollback/kind",
+          "value": "source_data"
+        }
+      ],
+      "expect": ["version.rollback_scope"]
+    },
+    {
+      "name": "e11-variant-without-app",
+      "base": "environment-bound-1-1",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/app_id"
+        }
+      ],
+      "expect": ["environment.variant_without_app"]
+    },
+    {
+      "name": "op-user-assertion-is-not-a-witness",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/kind",
+          "value": "user_assertion"
+        }
+      ],
+      "expect": ["contract.witness_kind_insufficient"]
+    },
+    {
+      "name": "op-documentation-alone-does-not-prove-a-write",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/kind",
+          "value": "documented_schema"
+        }
+      ],
+      "expect": ["contract.witness_kind_insufficient"]
+    },
+    {
+      "name": "op-write-without-scopes",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/authorization/required_scopes",
+          "value": []
+        }
+      ],
+      "expect": ["contract.write_without_scopes"]
+    },
+    {
+      "name": "v11-promotion-without-attestation",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/promotion/attestation"
+        }
+      ],
+      "expect": ["version.unattested_promotion"]
+    },
+    {
+      "name": "v11-origin-with-default-port",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://crm.example.com:443"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
+    },
+    {
+      "name": "v11-origin-with-empty-label",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://crm..example.com"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
+    },
+    {
+      "name": "e11-permission-origin-with-default-port",
+      "base": "environment-bound-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/permissions/0/origin",
+          "value": "http://127.0.0.1:80"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
+    },
+    {
+      "name": "obs-origin-with-leading-hyphen-label",
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://-bad.example.com"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
     }
   ]
 }

@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { test } from "node:test";
 import { generate } from "../src/cli.ts";
-import { familyDigests } from "../src/digest.ts";
+import { acceptedVersions, familyDigests } from "../src/digest.ts";
 import { loadModel } from "../src/idl.ts";
 
 const root = resolve(import.meta.dirname, "../../..");
@@ -58,4 +58,42 @@ test("a 1.1 schema with a since field generates version gating in every language
   assert.match(out["frontend/packages/ir/src/generated.ts"] as string, /\.since\("note", \[1, 1, 0\], false/);
   assert.match(out["backend/ir/generated.go"] as string, /\.Since\("note", rt\.Version\{1, 1, 0\}, false/);
   assert.notDeepEqual(digestOf(dir), digestOf(join(schemas, "released/1.0.0")));
+});
+
+test("every released snapshot and the working schema stay readable, each under its own digest", () => {
+  const model = loadModel(schemas);
+  const accepted = acceptedVersions(schemas, model, loadModel);
+  const released = digestOf(join(schemas, "released/1.0.0"));
+  const old = accepted.filter((a) => a.version.join(".") === "1.0.0");
+  assert.equal(old.length, Object.keys(released).filter((f) => released[f]).length);
+  for (const a of old) assert.equal(a.digest, released[a.family], a.family);
+  const now = accepted.filter((a) => a.version.join(".") === model.irVersion.join("."));
+  assert.ok(now.length > 0);
+  assert.ok(now.every((a) => digestOf(schemas)[a.family] === a.digest));
+  if (model.irVersion.join(".") !== "1.0.0") {
+    for (const a of now) assert.notEqual(a.digest, released[a.family], `${a.family} must differ once the schema moves`);
+  }
+});
+
+test("prose never changes a digest, but a field that is itself named doc does", () => {
+  const base = digestOf(variant(() => {}));
+  const reword = digestOf(
+    variant((docs) => {
+      const t = docs.get("operation.idl.json").types.OperationContract;
+      t.doc = "Reworded prose.";
+    }),
+  );
+  assert.deepEqual(reword, base);
+  const field = digestOf(
+    variant((docs) => {
+      docs.get("operation.idl.json").types.OperationContract.fields.doc = { type: "Label", optional: true };
+    }),
+  );
+  assert.notEqual(field.operation, base.operation);
+  const retyped = digestOf(
+    variant((docs) => {
+      docs.get("operation.idl.json").types.OperationContract.fields.doc = { type: "LongText", optional: true };
+    }),
+  );
+  assert.notEqual(retyped.operation, field.operation);
 });

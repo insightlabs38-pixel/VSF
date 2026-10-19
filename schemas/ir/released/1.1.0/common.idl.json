@@ -1,0 +1,272 @@
+{
+  "idl": "vsf-idl/1",
+  "ir_version": "1.1.0",
+  "family": "common",
+  "types": {
+    "Digest": {
+      "kind": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "maxLen": 71,
+      "doc": "Domain-separated SHA-256 of canonical bytes."
+    },
+    "SemVer": {
+      "kind": "string",
+      "pattern": "^(0|[1-9][0-9]*)[.](0|[1-9][0-9]*)[.](0|[1-9][0-9]*)$",
+      "maxLen": 32
+    },
+    "CompilerVersion": {
+      "kind": "string",
+      "pattern": "^(0|[1-9][0-9]*)[.](0|[1-9][0-9]*)[.](0|[1-9][0-9]*)[+][0-9a-f]{12}$",
+      "maxLen": 48,
+      "doc": "SemVer plus build digest prefix."
+    },
+    "SourceAppId": {
+      "kind": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,62}:[a-z0-9][a-z0-9.-]{0,127}$",
+      "maxLen": 192,
+      "doc": "provider:installation identity, never a raw URL or credential."
+    },
+    "SourceVariantId": {
+      "kind": "string",
+      "pattern": "^var_[0-9a-f]{32}$",
+      "maxLen": 36,
+      "doc": "Keyed fingerprint of tenant, role, locale and feature flags."
+    },
+    "PrincipalRef": {
+      "kind": "string",
+      "pattern": "^prin_[0-9a-f]{32}$",
+      "maxLen": 37,
+      "doc": "Opaque user-scoped reference; no PII."
+    },
+    "RuntimeId": {
+      "kind": "string",
+      "pattern": "^rt_[a-z0-9]{1,48}$",
+      "maxLen": 51
+    },
+    "AuthSessionRef": {
+      "kind": "string",
+      "pattern": "^sess_[0-9a-f]{32}$",
+      "maxLen": 37
+    },
+    "EffectId": {
+      "kind": "string",
+      "pattern": "^eff_[a-z0-9_]{1,48}$",
+      "maxLen": 52
+    },
+    "OperationId": {
+      "kind": "string",
+      "pattern": "^[a-z][a-z0-9_]*([.][a-z][a-z0-9_]*){1,6}$",
+      "maxLen": 128
+    },
+    "PresentationVersion": {
+      "kind": "string",
+      "pattern": "^pv[1-9][0-9]{0,8}$",
+      "maxLen": 11
+    },
+    "Ident": {
+      "kind": "string",
+      "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+      "maxLen": 64,
+      "doc": "Local identifier inside one document."
+    },
+    "ScopeId": {
+      "kind": "string",
+      "pattern": "^[a-z][a-z0-9_.:-]{0,95}$",
+      "maxLen": 96
+    },
+    "CapabilityId": {
+      "kind": "string",
+      "pattern": "^[a-z][a-z0-9_.-]{0,95}$",
+      "maxLen": 96
+    },
+    "Origin": {
+      "kind": "string",
+      "pattern": "^https?://[a-z0-9.-]{1,253}(:[0-9]{1,5})?$",
+      "maxLen": 270
+    },
+    "Locale": {
+      "kind": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$",
+      "maxLen": 35
+    },
+    "ObservationEpoch": {
+      "kind": "int",
+      "min": 0,
+      "max": 9007199254740991
+    },
+    "Count": {
+      "kind": "int",
+      "min": 0,
+      "max": 4294967295
+    },
+    "Millis": {
+      "kind": "int",
+      "min": 0,
+      "max": 9007199254740991
+    },
+    "Revision": {
+      "kind": "int",
+      "min": 1,
+      "max": 4294967295
+    },
+    "Instant": {
+      "kind": "instant",
+      "doc": "Integer milliseconds since the Unix epoch, UTC, years 1-9999."
+    },
+    "Label": {
+      "kind": "string",
+      "text": "label",
+      "maxLen": 200,
+      "doc": "Single-line display text; kept byte for byte, never normalized."
+    },
+    "LongText": {
+      "kind": "string",
+      "text": "multiline",
+      "maxLen": 4000
+    },
+    "Certainty": {
+      "kind": "enum",
+      "values": ["verified", "inferred", "unknown", "conflicted"],
+      "doc": "Evidence-backed state of a claim; unknown and conflicted never execute."
+    },
+    "EvidenceType": {
+      "kind": "enum",
+      "values": [
+        "observed_structure",
+        "runtime_behavior",
+        "documented_schema",
+        "protocol_trace",
+        "source_accessibility",
+        "user_assertion",
+        "heuristic_inference"
+      ]
+    },
+    "EffectClass": {
+      "kind": "enum",
+      "values": [
+        "read_only",
+        "idempotent_write",
+        "conditional_write",
+        "non_idempotent_write",
+        "destructive",
+        "indeterminate"
+      ],
+      "doc": "Ordered by danger; indeterminate is the most conservative and is the default for anything unproven."
+    },
+    "Idempotency": {
+      "kind": "enum",
+      "values": ["idempotent", "conditional", "non_idempotent", "unknown"]
+    },
+    "CompatStatus": {
+      "kind": "enum",
+      "values": [
+        "supported",
+        "supported_with_translation",
+        "degraded",
+        "needs_reauth",
+        "source_incompatible",
+        "security_revoked",
+        "unsupported_runtime",
+        "unknown"
+      ],
+      "doc": "unknown: a previously evaluated context can no longer be confirmed; it never executes."
+    },
+    "Visibility": {
+      "kind": "enum",
+      "values": ["private_principal", "private_variant", "global_structure"],
+      "doc": "Who may reuse an artifact; absent means private_principal, the most restrictive."
+    },
+    "RollbackKind": {
+      "kind": "enum",
+      "values": ["source_data", "interface", "artifact_version"],
+      "doc": "What a rollback restores; none of them rolls back the source application's data."
+    },
+    "RevocationKind": {
+      "kind": "enum",
+      "values": ["operation", "witness", "trust_authority", "artifact", "principal_grant"]
+    },
+    "ValueType": {
+      "kind": "enum",
+      "values": ["text", "integer", "decimal", "boolean", "instant", "date", "choice", "reference", "binary", "unknown"]
+    },
+    "Unit": {
+      "kind": "struct",
+      "fields": {
+        "symbol": {
+          "type": "Label"
+        },
+        "dimension": {
+          "type": "Label",
+          "optional": true
+        }
+      }
+    },
+    "AuthContext": {
+      "kind": "struct",
+      "doc": "Principal and source scope under which a fact was witnessed.",
+      "fields": {
+        "principal_ref": {
+          "type": "PrincipalRef"
+        },
+        "variant_id": {
+          "type": "SourceVariantId"
+        },
+        "source_scopes": {
+          "type": "list<ScopeId>",
+          "maxItems": 64
+        }
+      }
+    },
+    "VariantClass": {
+      "kind": "string",
+      "pattern": "^[a-z][a-z0-9_-]{0,63}$",
+      "maxLen": 64,
+      "doc": "Hash of tenant-role profile class, not a tenant identifier."
+    },
+    "VersionRange": {
+      "kind": "struct",
+      "fields": {
+        "min": {
+          "type": "SemVer",
+          "optional": true
+        },
+        "max": {
+          "type": "SemVer",
+          "optional": true
+        }
+      }
+    },
+    "SourceBinding": {
+      "kind": "struct",
+      "fields": {
+        "app_id": {
+          "type": "SourceAppId"
+        },
+        "variant_class": {
+          "type": "VariantClass"
+        },
+        "version_range": {
+          "type": "VersionRange",
+          "optional": true
+        },
+        "capabilities": {
+          "type": "list<CapabilityId>",
+          "maxItems": 64
+        }
+      }
+    },
+    "Decimal": {
+      "kind": "decimal",
+      "doc": "Exact decimal string: no exponent, no leading or trailing zeros except the integer 0."
+    },
+    "Decimal2": {
+      "kind": "decimal",
+      "scale": 2,
+      "doc": "Exact decimal with exactly two fraction digits."
+    },
+    "DateStr": {
+      "kind": "date",
+      "doc": "Proleptic Gregorian calendar date YYYY-MM-DD."
+    }
+  }
+}

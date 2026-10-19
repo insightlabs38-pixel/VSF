@@ -4,6 +4,19 @@ export function batchTasks(plan: Plan, batch: string): PlanTask[] {
   return plan.tasks.filter((t) => t.batch === batch).sort((a, b) => a.sequence - b.sequence);
 }
 
+export const isCorrection = (t: PlanTask): boolean => t.lane === "correction";
+
+export function correctionTasks(plan: Plan, batch: string): PlanTask[] {
+  return batchTasks(plan, batch).filter(isCorrection);
+}
+
+/** Tasks that must be DONE before `task` may start: its own lane's earlier tasks. */
+export function laneBefore(plan: Plan, task: PlanTask): PlanTask[] {
+  return batchTasks(plan, task.batch).filter(
+    (o) => o.sequence < task.sequence && isCorrection(o) === isCorrection(task),
+  );
+}
+
 export function gateOf(plan: Plan, batch: string): string {
   const b = plan.batches.find((x) => x.id === batch);
   if (!b) throw new Error(`unknown batch ${batch}`);
@@ -37,14 +50,16 @@ export function batchComplete(plan: Plan, state: State, batch: string): boolean 
 export function nextTask(plan: Plan, state: State): { batch: string; task: string } | null {
   for (const batch of plan.batches) {
     if (batchAccepted(plan, state, batch.id)) continue;
-    const tasks = batchTasks(plan, batch.id);
+    const all = batchTasks(plan, batch.id);
     const priority: TaskStatus[] = ["BLOCKED", "CORRECTIONS", "REVIEW", "ACTIVE"];
-    for (const status of priority) {
-      const hit = tasks.find((t) => state.task_states[t.id]?.status === status);
-      if (hit) return { batch: batch.id, task: hit.id };
+    for (const tasks of [all.filter(isCorrection), all.filter((t) => !isCorrection(t))]) {
+      for (const status of priority) {
+        const hit = tasks.find((t) => state.task_states[t.id]?.status === status);
+        if (hit) return { batch: batch.id, task: hit.id };
+      }
+      const open = tasks.find((t) => state.task_states[t.id]?.status !== "DONE" && isEligible(plan, state, t));
+      if (open) return { batch: batch.id, task: open.id };
     }
-    const open = tasks.find((t) => state.task_states[t.id]?.status !== "DONE" && isEligible(plan, state, t));
-    if (open) return { batch: batch.id, task: open.id };
     if (!batchComplete(plan, state, batch.id)) return null;
     return { batch: batch.id, task: "GATE" };
   }

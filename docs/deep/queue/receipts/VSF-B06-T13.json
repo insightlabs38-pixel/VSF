@@ -1,0 +1,49 @@
+{
+  "task_id": "VSF-B06-T13",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "6f67afb8f0c89d83e5efad6f31cc4eea87adcf2e",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/protocol.rs",
+    "compiler/crates/vsf-recognizer/src/reconcile.rs"
+  ],
+  "acceptance": "Only supported, promoted, fresh evidence bound to the right app, origin, principal and authorization is authoritative; everything else is advisory or rejected; the whole document is schema-validated.",
+  "positive": {
+    "fixture": "promoted, fresh and bound evidence is authoritative",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test protocol",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unsigned, stale, rebound or malformed evidence is advisory or rejected",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test reconcile",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Unbound protocol evidence can only raise unknown.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T13.protocol-evidence-validation.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T13.reconciliation-conflicts.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T11.ledger-identity-and-provenance.log"
+  ],
+  "review_result": "ACCEPTED"
+}

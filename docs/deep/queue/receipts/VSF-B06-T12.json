@@ -1,0 +1,64 @@
+{
+  "task_id": "VSF-B06-T12",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "487256ce3511c838f6dd8a0b3787b728efb8144f",
+  "paths": [
+    "schemas/ir/",
+    "compiler/crates/vsf-ir/",
+    "backend/ir/",
+    "frontend/packages/ir/",
+    "tools/idlgen/"
+  ],
+  "acceptance": "Representations express origin, principal, tenant, role and environment change, state invalidation, revocation, contract incompatibility, three rollback kinds and private versus global isolation; bindings regenerated; 1.0.0 documents still decode.",
+  "positive": {
+    "fixture": "1.1.0 trust, revocation and rollback fixtures decode in Rust, Go and TypeScript",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "1.0.0 documents still decode; wrong digest, too-new and incompatible-major documents are refused",
+    "command": "pnpm --filter @vsf/idlgen run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node --conditions=source tools/idlgen/src/cli.ts compat",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -count=1 ./ir/...",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ir run test",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 additive over 1.0.0; released snapshots 1.0.0 and 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Context and revocation checks fail closed.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [
+    "Revocation distribution is a later batch"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T12.ir-semantics-identity-isolation.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T12.idl-generator-and-snapshots.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T12.idl-compat.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T12.go-ir-fixtures.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T12.ts-ir-fixtures.log"
+  ],
+  "review_result": "ACCEPTED"
+}

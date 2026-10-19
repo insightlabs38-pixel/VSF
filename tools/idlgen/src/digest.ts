@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { existsSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import { toCanonical, type Value } from "@vsf/schema";
 import { closure, type Model } from "./idl.ts";
 
@@ -12,17 +14,45 @@ export function toValue(j: unknown): Value {
   return new Map(Object.entries(j as Record<string, unknown>).map(([k, v]) => [k, toValue(v)] as [string, Value]));
 }
 
-/** Prose never contributes to wire identity: fixing a typo in `doc` must not change a schema digest. */
+/** Prose never contributes to wire identity, but a field or type that is itself named `doc` always does. */
 export function withoutDocs(j: unknown): unknown {
   if (Array.isArray(j)) return j.map(withoutDocs);
   if (j && typeof j === "object") {
     return Object.fromEntries(
       Object.entries(j as Record<string, unknown>)
-        .filter(([k]) => k !== "doc")
+        .filter(([k, v]) => !(k === "doc" && typeof v === "string"))
         .map(([k, v]) => [k, withoutDocs(v)]),
     );
   }
   return j;
+}
+
+export interface Accepted {
+  version: [number, number, number];
+  family: string;
+  digest: string;
+}
+
+/** Every (version, family) a reader may decode: each released snapshot plus the working schema. */
+export function acceptedVersions(schemaDir: string, working: Model, load: (dir: string) => Model): Accepted[] {
+  const out: Accepted[] = [];
+  const root = join(schemaDir, "released");
+  const dirs = existsSync(root) ? readdirSync(root).filter((d) => /^\d+\.\d+\.\d+$/.test(d)) : [];
+  const models = [...dirs.map((d) => load(join(root, d))), working];
+  for (const m of models) {
+    for (const f of familyDigests(m)) {
+      if (!f.root) continue;
+      if (!out.some((a) => a.family === f.family && a.version.join(".") === m.irVersion.join(".")))
+        out.push({ version: m.irVersion, family: f.family, digest: f.digest });
+    }
+  }
+  return out.sort(
+    (a, b) =>
+      a.family.localeCompare(b.family) ||
+      a.version[0] - b.version[0] ||
+      a.version[1] - b.version[1] ||
+      a.version[2] - b.version[2],
+  );
 }
 
 export interface FamilyDigest {

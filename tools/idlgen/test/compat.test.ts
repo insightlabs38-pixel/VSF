@@ -219,7 +219,13 @@ test("documentation-only edits are neither breaking nor additive", () => {
 
 test("the working schemas are compatible with the latest released snapshot", () => {
   const v = checkAgainstReleased(schemas);
-  assert.equal(latestReleased(schemas)?.version.join("."), "1.0.0");
+  assert.equal(latestReleased(schemas)?.version.join("."), "1.1.0");
   assert.deepEqual(v.errors, []);
-  assert.equal(v.baseline, "1.0.0");
+  assert.equal(v.baseline, "1.1.0");
+});
+
+test("every released snapshot is additively compatible with the one before it", () => {
+  const v = compare(loadModel(released), loadModel(join(schemas, "released/1.1.0")));
+  assert.deepEqual(v.errors, []);
+  assert.ok(v.findings.length > 0);
 });

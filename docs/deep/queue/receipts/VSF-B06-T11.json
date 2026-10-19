@@ -1,0 +1,48 @@
+{
+  "task_id": "VSF-B06-T11",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "6f67afb8f0c89d83e5efad6f31cc4eea87adcf2e",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/ledger.rs",
+    "compiler/crates/vsf-recognizer/tests/ledger.rs"
+  ],
+  "acceptance": "Claim identity binds evidence source ids, producer and version; independent sources never collide; source metadata cannot be overwritten; tampering and cross-source reuse are detected.",
+  "positive": {
+    "fixture": "claim ids bind source, producer and unit",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "tampered ledger, cross-source reuse and overwritten metadata are detected",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test incremental",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Local and shared exports differ by sensitivity.",
+  "performance_memory_storage": "Incremental output equals fresh output.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T11.ledger-identity-and-provenance.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T11.incremental-equals-fresh.log"
+  ],
+  "review_result": "ACCEPTED"
+}

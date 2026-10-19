@@ -1,0 +1,23 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/visual.spec.ts
+
+Running 16 tests using 1 worker
+
+  ✓   1 specs/visual.spec.ts:138:5 › visual contract: normal / light (185ms)
+  ✓   2 specs/visual.spec.ts:138:5 › visual contract: normal / dark (129ms)
+  ✓   3 specs/visual.spec.ts:138:5 › visual contract: error / light (143ms)
+  ✓   4 specs/visual.spec.ts:138:5 › visual contract: error / dark (123ms)
+  ✓   5 specs/visual.spec.ts:138:5 › visual contract: empty / light (102ms)
+  ✓   6 specs/visual.spec.ts:138:5 › visual contract: empty / dark (122ms)
+  ✓   7 specs/visual.spec.ts:138:5 › visual contract: empty-after-filter / light (153ms)
+  ✓   8 specs/visual.spec.ts:138:5 › visual contract: empty-after-filter / dark (144ms)
+  ✓   9 specs/visual.spec.ts:138:5 › visual contract: unknown / light (120ms)
+  ✓  10 specs/visual.spec.ts:138:5 › visual contract: unknown / dark (125ms)
+  ✓  11 specs/visual.spec.ts:138:5 › visual contract: conflicted / light (129ms)
+  ✓  12 specs/visual.spec.ts:138:5 › visual contract: conflicted / dark (121ms)
+  ✓  13 specs/visual.spec.ts:138:5 › visual contract: disabled / light (113ms)
+  ✓  14 specs/visual.spec.ts:138:5 › visual contract: disabled / dark (116ms)
+  ✓  15 specs/visual.spec.ts:159:1 › each state is distinguishable without colour: unavailable states carry text, shape and a reason (116ms)
+  ✓  16 specs/visual.spec.ts:178:1 › normal, error, empty and unknown states have the expected accessible structure (152ms)
+
+  16 passed (3.7s)
+[exit 0]

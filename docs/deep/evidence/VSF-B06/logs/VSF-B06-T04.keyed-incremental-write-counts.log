@@ -1,0 +1,20 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/incremental.spec.ts
+
+Running 13 tests using 1 worker
+
+  ✓   1 specs/incremental.spec.ts:52:1 › an update to another field leaves focus, caret and selection of the focused input untouched (290ms)
+  ✓   2 specs/incremental.spec.ts:69:1 › setting the focused input to its current value writes nothing (221ms)
+  ✓   3 specs/incremental.spec.ts:79:1 › an outside change to the focused input keeps the caret where the user is typing (195ms)
+  ✓   4 specs/incremental.spec.ts:91:1 › typing is the single source of truth: store, input and a second subscriber agree (169ms)
+  ✓   5 specs/incremental.spec.ts:99:1 › grid: changing one cell writes one text node and nothing else (228ms)
+  ✓   6 specs/incremental.spec.ts:110:1 › grid: inserting a row creates that row only and moves nothing (252ms)
+  ✓   7 specs/incremental.spec.ts:129:1 › grid: removing a row removes that row only (198ms)
+  ✓   8 specs/incremental.spec.ts:139:1 › grid: swapping two rows moves two nodes, and a full reversal reuses every row (251ms)
+  ✓   9 specs/incremental.spec.ts:157:1 › grid: filtering hides rows without rebuilding them (398ms)
+  ✓  10 specs/incremental.spec.ts:185:1 › grid: a filter that matches nothing hides every row and says so (373ms)
+  ✓  11 specs/incremental.spec.ts:196:1 › layout changes keep shared components and rebuild only what differs (139ms)
+  ✓  12 specs/incremental.spec.ts:221:1 › availability changes repaint only the buttons of that operation (140ms)
+  ✓  13 specs/incremental.spec.ts:245:1 › subscriptions are released: layout churn and teardown leave nothing behind (468ms)
+
+  13 passed (4.8s)
+[exit 0]

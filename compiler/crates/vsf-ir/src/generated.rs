@@ -4,15 +4,30 @@ use crate::rt::{self, Ctx, DecodeError, Res, StrRule, TextMode};
 use std::collections::BTreeMap;
 use vsf_canon::Value;
 
-pub const IR_VERSION: (u32, u32, u32) = (1, 0, 0);
-pub const IR_VERSION_TEXT: &str = "1.0.0";
+pub const IR_VERSION: (u32, u32, u32) = (1, 1, 0);
+pub const IR_VERSION_TEXT: &str = "1.1.0";
 pub const FAMILIES: &[(&str, &str, &str)] = &[
-    ("environment", "EnvironmentCapabilityManifest", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"),
-    ("observation", "ObservationIR", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"),
-    ("semantic", "SemanticIR", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"),
-    ("operation", "OperationContract", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"),
-    ("presentation", "PresentationIR", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"),
-    ("version", "VersionManifest", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"),
+    ("environment", "EnvironmentCapabilityManifest", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"),
+    ("observation", "ObservationIR", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"),
+    ("semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"),
+    ("operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"),
+    ("presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"),
+    ("version", "VersionManifest", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"),
+];
+/// Every (version, family, digest) a reader decodes: all released snapshots and the current schema.
+pub const ACCEPTED: &[((u32, u32, u32), &str, &str)] = &[
+    ((1, 0, 0), "environment", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"),
+    ((1, 1, 0), "environment", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"),
+    ((1, 0, 0), "observation", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"),
+    ((1, 1, 0), "observation", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"),
+    ((1, 0, 0), "operation", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"),
+    ((1, 1, 0), "operation", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"),
+    ((1, 0, 0), "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"),
+    ((1, 1, 0), "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"),
+    ((1, 0, 0), "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"),
+    ((1, 1, 0), "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"),
+    ((1, 0, 0), "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"),
+    ((1, 1, 0), "version", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"),
 ];
 
 static DIGEST_RULE: StrRule = StrRule { pattern: Some("^sha256:[0-9a-f]{64}$"), max_len: 71, text: TextMode::None };
@@ -581,6 +596,7 @@ impl Idempotency {
     }
 }
 
+/// unknown: a previously evaluated context can no longer be confirmed; it never executes.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum CompatStatus {
     Supported,
@@ -590,9 +606,10 @@ pub enum CompatStatus {
     SourceIncompatible,
     SecurityRevoked,
     UnsupportedRuntime,
+    Unknown,
 }
 impl CompatStatus {
-    pub const ALL: &'static [Self] = &[Self::Supported, Self::SupportedWithTranslation, Self::Degraded, Self::NeedsReauth, Self::SourceIncompatible, Self::SecurityRevoked, Self::UnsupportedRuntime];
+    pub const ALL: &'static [Self] = &[Self::Supported, Self::SupportedWithTranslation, Self::Degraded, Self::NeedsReauth, Self::SourceIncompatible, Self::SecurityRevoked, Self::UnsupportedRuntime, Self::Unknown];
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Supported => "supported",
@@ -602,6 +619,7 @@ impl CompatStatus {
             Self::SourceIncompatible => "source_incompatible",
             Self::SecurityRevoked => "security_revoked",
             Self::UnsupportedRuntime => "unsupported_runtime",
+            Self::Unknown => "unknown",
         }
     }
     pub fn parse(s: &str) -> Option<Self> {
@@ -613,6 +631,108 @@ impl CompatStatus {
             "source_incompatible" => Some(Self::SourceIncompatible),
             "security_revoked" => Some(Self::SecurityRevoked),
             "unsupported_runtime" => Some(Self::UnsupportedRuntime),
+            "unknown" => Some(Self::Unknown),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+/// Who may reuse an artifact; absent means private_principal, the most restrictive.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Visibility {
+    PrivatePrincipal,
+    PrivateVariant,
+    GlobalStructure,
+}
+impl Visibility {
+    pub const ALL: &'static [Self] = &[Self::PrivatePrincipal, Self::PrivateVariant, Self::GlobalStructure];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::PrivatePrincipal => "private_principal",
+            Self::PrivateVariant => "private_variant",
+            Self::GlobalStructure => "global_structure",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "private_principal" => Some(Self::PrivatePrincipal),
+            "private_variant" => Some(Self::PrivateVariant),
+            "global_structure" => Some(Self::GlobalStructure),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+/// What a rollback restores; none of them rolls back the source application's data.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum RollbackKind {
+    SourceData,
+    Interface,
+    ArtifactVersion,
+}
+impl RollbackKind {
+    pub const ALL: &'static [Self] = &[Self::SourceData, Self::Interface, Self::ArtifactVersion];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::SourceData => "source_data",
+            Self::Interface => "interface",
+            Self::ArtifactVersion => "artifact_version",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "source_data" => Some(Self::SourceData),
+            "interface" => Some(Self::Interface),
+            "artifact_version" => Some(Self::ArtifactVersion),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum RevocationKind {
+    Operation,
+    Witness,
+    TrustAuthority,
+    Artifact,
+    PrincipalGrant,
+}
+impl RevocationKind {
+    pub const ALL: &'static [Self] = &[Self::Operation, Self::Witness, Self::TrustAuthority, Self::Artifact, Self::PrincipalGrant];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Operation => "operation",
+            Self::Witness => "witness",
+            Self::TrustAuthority => "trust_authority",
+            Self::Artifact => "artifact",
+            Self::PrincipalGrant => "principal_grant",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "operation" => Some(Self::Operation),
+            "witness" => Some(Self::Witness),
+            "trust_authority" => Some(Self::TrustAuthority),
+            "artifact" => Some(Self::Artifact),
+            "principal_grant" => Some(Self::PrincipalGrant),
             _ => None,
         }
     }
@@ -1238,6 +1358,8 @@ pub struct EnvironmentCapabilityManifest {
     pub egress: EgressPolicy,
     pub limits: Limits,
     pub attestation: Option<Attestation>,
+    pub app_id: Option<SourceAppId>,
+    pub variant_id: Option<SourceVariantId>,
 }
 impl EnvironmentCapabilityManifest {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -1262,8 +1384,16 @@ impl EnvironmentCapabilityManifest {
             Some(v) => Some(Attestation::decode(v, &rt::child(&path, "attestation"), ctx)?),
             None => None,
         };
+        let app_id = match o.since("app_id", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(SourceAppId::decode(v, &rt::child(&path, "app_id"), ctx)?),
+            None => None,
+        };
+        let variant_id = match o.since("variant_id", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(SourceVariantId::decode(v, &rt::child(&path, "variant_id"), ctx)?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { runtime_id, mode, runtime_version, compiler_version, generated_at, principal_ref, permissions, observation, execution, persistence, credential_isolation, egress, limits, attestation })
+        Ok(Self { runtime_id, mode, runtime_version, compiler_version, generated_at, principal_ref, permissions, observation, execution, persistence, credential_isolation, egress, limits, attestation, app_id, variant_id })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -1282,6 +1412,12 @@ impl EnvironmentCapabilityManifest {
         f.push(("limits".to_string(), self.limits.encode()));
         if let Some(x) = &self.attestation {
             f.push(("attestation".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.app_id {
+            f.push(("app_id".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.variant_id {
+            f.push(("variant_id".to_string(), x.encode()));
         }
         f
     }
@@ -3109,6 +3245,14 @@ pub struct Witness {
     pub observed_at: Instant,
     pub applies_to: SourceBinding,
     pub authorized_context: AuthContext,
+    pub runtime_id: Option<RuntimeId>,
+    pub observed_effect: Option<EffectClass>,
+    pub source_state: Option<Digest>,
+    pub capability_digest: Option<Digest>,
+    pub expires_at: Option<Instant>,
+    pub revoked_at: Option<Instant>,
+    pub issuer: Option<Ident>,
+    pub synthetic: Option<bool>,
 }
 impl Witness {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -3124,8 +3268,40 @@ impl Witness {
         let observed_at = Instant::decode(o.req("observed_at")?, &rt::child(&path, "observed_at"), ctx)?;
         let applies_to = SourceBinding::decode(o.req("applies_to")?, &rt::child(&path, "applies_to"), ctx)?;
         let authorized_context = AuthContext::decode(o.req("authorized_context")?, &rt::child(&path, "authorized_context"), ctx)?;
+        let runtime_id = match o.since("runtime_id", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(RuntimeId::decode(v, &rt::child(&path, "runtime_id"), ctx)?),
+            None => None,
+        };
+        let observed_effect = match o.since("observed_effect", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(EffectClass::decode(v, &rt::child(&path, "observed_effect"), ctx)?),
+            None => None,
+        };
+        let source_state = match o.since("source_state", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(Digest::decode(v, &rt::child(&path, "source_state"), ctx)?),
+            None => None,
+        };
+        let capability_digest = match o.since("capability_digest", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(Digest::decode(v, &rt::child(&path, "capability_digest"), ctx)?),
+            None => None,
+        };
+        let expires_at = match o.since("expires_at", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(Instant::decode(v, &rt::child(&path, "expires_at"), ctx)?),
+            None => None,
+        };
+        let revoked_at = match o.since("revoked_at", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(Instant::decode(v, &rt::child(&path, "revoked_at"), ctx)?),
+            None => None,
+        };
+        let issuer = match o.since("issuer", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(Ident::decode(v, &rt::child(&path, "issuer"), ctx)?),
+            None => None,
+        };
+        let synthetic = match o.since("synthetic", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(rt::boolean(v, &rt::child(&path, "synthetic"))?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { id, kind, fixture_set, verifier_suite, result, observed_at, applies_to, authorized_context })
+        Ok(Self { id, kind, fixture_set, verifier_suite, result, observed_at, applies_to, authorized_context, runtime_id, observed_effect, source_state, capability_digest, expires_at, revoked_at, issuer, synthetic })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -3137,6 +3313,30 @@ impl Witness {
         f.push(("observed_at".to_string(), self.observed_at.encode()));
         f.push(("applies_to".to_string(), self.applies_to.encode()));
         f.push(("authorized_context".to_string(), self.authorized_context.encode()));
+        if let Some(x) = &self.runtime_id {
+            f.push(("runtime_id".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.observed_effect {
+            f.push(("observed_effect".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.source_state {
+            f.push(("source_state".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.capability_digest {
+            f.push(("capability_digest".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.expires_at {
+            f.push(("expires_at".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.revoked_at {
+            f.push(("revoked_at".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.issuer {
+            f.push(("issuer".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.synthetic {
+            f.push(("synthetic".to_string(), Value::Bool(x.to_owned())));
+        }
         f
     }
     pub fn encode(&self) -> Value {
@@ -3972,6 +4172,8 @@ pub struct ArtifactRef {
     pub digest: Digest,
     pub bytes: Count,
     pub media_type: Label,
+    pub visibility: Option<Visibility>,
+    pub principal_ref: Option<PrincipalRef>,
 }
 impl ArtifactRef {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -3983,8 +4185,16 @@ impl ArtifactRef {
         let digest = Digest::decode(o.req("digest")?, &rt::child(&path, "digest"), ctx)?;
         let bytes = Count::decode(o.req("bytes")?, &rt::child(&path, "bytes"), ctx)?;
         let media_type = Label::decode(o.req("media_type")?, &rt::child(&path, "media_type"), ctx)?;
+        let visibility = match o.since("visibility", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(Visibility::decode(v, &rt::child(&path, "visibility"), ctx)?),
+            None => None,
+        };
+        let principal_ref = match o.since("principal_ref", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(PrincipalRef::decode(v, &rt::child(&path, "principal_ref"), ctx)?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { role, digest, bytes, media_type })
+        Ok(Self { role, digest, bytes, media_type, visibility, principal_ref })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -3992,6 +4202,12 @@ impl ArtifactRef {
         f.push(("digest".to_string(), self.digest.encode()));
         f.push(("bytes".to_string(), self.bytes.encode()));
         f.push(("media_type".to_string(), self.media_type.encode()));
+        if let Some(x) = &self.visibility {
+            f.push(("visibility".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.principal_ref {
+            f.push(("principal_ref".to_string(), x.encode()));
+        }
         f
     }
     pub fn encode(&self) -> Value {
@@ -4105,6 +4321,62 @@ impl GateResult {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum SignatureAlg {
+    Ed25519,
+}
+impl SignatureAlg {
+    pub const ALL: &'static [Self] = &[Self::Ed25519];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Ed25519 => "ed25519",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "ed25519" => Some(Self::Ed25519),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+/// Names the algorithm, the key and the exact digest that was signed; the registry verifies it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PromotionSignature {
+    pub alg: SignatureAlg,
+    pub key_id: Ident,
+    pub signed_digest: Digest,
+}
+impl PromotionSignature {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let alg = SignatureAlg::decode(o.req("alg")?, &rt::child(&path, "alg"), ctx)?;
+        let key_id = Ident::decode(o.req("key_id")?, &rt::child(&path, "key_id"), ctx)?;
+        let signed_digest = Digest::decode(o.req("signed_digest")?, &rt::child(&path, "signed_digest"), ctx)?;
+        o.finish()?;
+        Ok(Self { alg, key_id, signed_digest })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("alg".to_string(), self.alg.encode()));
+        f.push(("key_id".to_string(), self.key_id.encode()));
+        f.push(("signed_digest".to_string(), self.signed_digest.encode()));
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PromotionRecord {
     pub promoted_at: Instant,
@@ -4112,6 +4384,7 @@ pub struct PromotionRecord {
     pub signer: Label,
     pub signature: Label,
     pub previous: Option<Digest>,
+    pub attestation: Option<PromotionSignature>,
 }
 impl PromotionRecord {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -4127,8 +4400,12 @@ impl PromotionRecord {
             Some(v) => Some(Digest::decode(v, &rt::child(&path, "previous"), ctx)?),
             None => None,
         };
+        let attestation = match o.since("attestation", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(PromotionSignature::decode(v, &rt::child(&path, "attestation"), ctx)?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { promoted_at, gates, signer, signature, previous })
+        Ok(Self { promoted_at, gates, signer, signature, previous, attestation })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -4138,6 +4415,103 @@ impl PromotionRecord {
         f.push(("signature".to_string(), self.signature.encode()));
         if let Some(x) = &self.previous {
             f.push(("previous".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.attestation {
+            f.push(("attestation".to_string(), x.encode()));
+        }
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
+/// This manifest was produced by a rollback of the stated kind.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RollbackSpec {
+    pub kind: RollbackKind,
+    pub target: Digest,
+    pub roles: Vec<ArtifactRole>,
+}
+impl RollbackSpec {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let kind = RollbackKind::decode(o.req("kind")?, &rt::child(&path, "kind"), ctx)?;
+        let target = Digest::decode(o.req("target")?, &rt::child(&path, "target"), ctx)?;
+        let roles = rt::list(o.req("roles")?, &rt::child(&path, "roles"), 0, 8, |e, p| ArtifactRole::decode(e, p, ctx))?;
+        o.finish()?;
+        Ok(Self { kind, target, roles })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("kind".to_string(), self.kind.encode()));
+        f.push(("target".to_string(), self.target.encode()));
+        f.push(("roles".to_string(), Value::Array(self.roles.iter().map(|e| e.encode()).collect())));
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
+/// Withdraws trust in one operation, witness, authority, artifact or grant; a revoked artifact is never revived by a pin.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Revocation {
+    pub kind: RevocationKind,
+    pub at: Instant,
+    pub reason: Label,
+    pub operation: Option<OperationId>,
+    pub digest: Option<Digest>,
+    pub authority: Option<Ident>,
+    pub principal: Option<PrincipalRef>,
+}
+impl Revocation {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let kind = RevocationKind::decode(o.req("kind")?, &rt::child(&path, "kind"), ctx)?;
+        let at = Instant::decode(o.req("at")?, &rt::child(&path, "at"), ctx)?;
+        let reason = Label::decode(o.req("reason")?, &rt::child(&path, "reason"), ctx)?;
+        let operation = match o.opt("operation") {
+            Some(v) => Some(OperationId::decode(v, &rt::child(&path, "operation"), ctx)?),
+            None => None,
+        };
+        let digest = match o.opt("digest") {
+            Some(v) => Some(Digest::decode(v, &rt::child(&path, "digest"), ctx)?),
+            None => None,
+        };
+        let authority = match o.opt("authority") {
+            Some(v) => Some(Ident::decode(v, &rt::child(&path, "authority"), ctx)?),
+            None => None,
+        };
+        let principal = match o.opt("principal") {
+            Some(v) => Some(PrincipalRef::decode(v, &rt::child(&path, "principal"), ctx)?),
+            None => None,
+        };
+        o.finish()?;
+        Ok(Self { kind, at, reason, operation, digest, authority, principal })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("kind".to_string(), self.kind.encode()));
+        f.push(("at".to_string(), self.at.encode()));
+        f.push(("reason".to_string(), self.reason.encode()));
+        if let Some(x) = &self.operation {
+            f.push(("operation".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.digest {
+            f.push(("digest".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.authority {
+            f.push(("authority".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.principal {
+            f.push(("principal".to_string(), x.encode()));
         }
         f
     }
@@ -4156,6 +4530,9 @@ pub struct VersionManifest {
     pub migrations: Vec<MigrationEdge>,
     pub retention: Retention,
     pub promotion: Option<PromotionRecord>,
+    pub origin: Option<Origin>,
+    pub rollback: Option<RollbackSpec>,
+    pub revocations: Option<Vec<Revocation>>,
 }
 impl VersionManifest {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -4174,8 +4551,20 @@ impl VersionManifest {
             Some(v) => Some(PromotionRecord::decode(v, &rt::child(&path, "promotion"), ctx)?),
             None => None,
         };
+        let origin = match o.since("origin", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(Origin::decode(v, &rt::child(&path, "origin"), ctx)?),
+            None => None,
+        };
+        let rollback = match o.since("rollback", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(RollbackSpec::decode(v, &rt::child(&path, "rollback"), ctx)?),
+            None => None,
+        };
+        let revocations = match o.since("revocations", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(rt::list(v, &rt::child(&path, "revocations"), 0, 256, |e, p| Revocation::decode(e, p, ctx))?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { created_at, channel, axes, artifacts, lineage, migrations, retention, promotion })
+        Ok(Self { created_at, channel, axes, artifacts, lineage, migrations, retention, promotion, origin, rollback, revocations })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -4188,6 +4577,15 @@ impl VersionManifest {
         f.push(("retention".to_string(), self.retention.encode()));
         if let Some(x) = &self.promotion {
             f.push(("promotion".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.origin {
+            f.push(("origin".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.rollback {
+            f.push(("rollback".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.revocations {
+            f.push(("revocations".to_string(), Value::Array(x.iter().map(|e| e.encode()).collect())));
         }
         f
     }

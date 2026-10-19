@@ -1,0 +1,24 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger
+
+running 15 tests
+test identity::a_recorded_source_cannot_be_overwritten ... ok
+test identity::confidence_unit_producer_and_sensitivity_are_part_of_identity ... ok
+test identity::equal_node_ids_digests_text_and_kinds_from_different_sources_keep_separate_claims ... ok
+test a_label_claim_names_the_label_node_the_control_and_their_digests ... ok
+test identity::a_local_export_round_trips_and_any_tampering_is_refused ... ok
+test identity::the_shared_export_carries_no_page_text_digests_or_private_claims ... ok
+test identity::rewriting_what_a_claim_cites_is_detected ... ok
+test identity::identical_pages_seen_by_different_principals_or_rules_are_different_evidence ... ok
+test lexical_verb_claims_say_so_and_carry_heuristic_evidence ... ok
+test stale_evidence_is_detected_for_exactly_the_claims_that_relied_on_the_changed_node ... ok
+test tampered_claims_fail_validation ... ok
+test every_claim_on_every_fixture_traces_to_a_recorded_observation_with_evidence ... ok
+test recognition_never_claims_more_than_inferred ... ok
+test the_ledger_is_deterministic_and_content_addressed ... ok
+test what_cannot_be_demonstrated_is_an_unknown_claim_not_a_missing_one ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/ledger.rs (compiler/target/debug/deps/ledger-02b785fa0ad95417)
+[exit 0]

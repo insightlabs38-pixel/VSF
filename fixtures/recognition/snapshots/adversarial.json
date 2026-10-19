@@ -133,7 +133,7 @@
    "role": "textbox",
    "name": "Email",
    "text": null,
-   "flags": 7,
+   "flags": 135,
    "rels": [
     [
      "label",

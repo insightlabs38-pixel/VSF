@@ -33,6 +33,7 @@ export function loadJobs(path: string): JobFile {
 export function runJob(root: string, jobs: JobFile, job: string, outDir: string, induce: boolean): JobManifest {
   const steps = jobs.jobs[job];
   if (!steps) throw new Error(`unknown job ${job}`);
+  if (steps.length === 0) throw new Error(`job ${job} has no steps, which would pass vacuously`);
   const all = induce ? [...steps, CANARY] : steps;
   const logDir = join(outDir, "logs");
   const runs: LoggedRun[] = all.map((s) => runLogged(s.name, s.cmd, logDir, root));

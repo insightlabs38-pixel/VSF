@@ -35,3 +35,5 @@ Revisit when: trigger
 | [028](ADR-028-schema-compatibility-and-promotion.md) | Schema compatibility and promotion policy | accepted |
 | [029](ADR-029-primitive-registry-and-package.md) | Primitive registry, conformance harness and signed package | accepted |
 | [030](ADR-030-browser-observation-and-epochs.md) | Browser observation, epochs and incremental events | accepted |
+| [031](ADR-031-semantic-recognition-and-evidence-ledger.md) | Deterministic semantic recognition, evidence ledger and availability | accepted |
+| [032](ADR-032-foundation-stabilization.md) | Foundation stabilization before the presentation renderer closes | accepted |

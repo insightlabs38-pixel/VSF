@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B06-T04",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "ce0eda00b1364943f43a5e8f1e164cbf35ffa08d",
+  "paths": [
+    "frontend/packages/renderer/src/grid.ts",
+    "frontend/packages/renderer/src/writes.ts",
+    "tests/ui/specs/incremental.spec.ts"
+  ],
+  "acceptance": "Keyed updates preserve caret/selection and do not remount unrelated components; measure DOM write counts.",
+  "positive": {
+    "fixture": "single-cell, insert, remove, swap and filter produce the exact DOM write counts",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/incremental.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "filter that matches nothing, outside change to the focused input, subscription release after churn",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/incremental.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/perf.spec.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No change to source permissions.",
+  "performance_memory_storage": "Filter of 300 rows writes 290 row attributes and one announcement; counts recorded in the spec.",
+  "known_limitations": [
+    "Write counts are asserted on fixtures of 300 and 1000 rows"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T04.keyed-incremental-write-counts.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T08.grid-1000-rows-responsiveness-memory.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,53 @@
+{
+  "task_id": "VSF-B06-T17",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "d2d22a8d685d0fc10b5fa286debf664b58751ad4",
+  "paths": [
+    "compiler/crates/vsf-redact/",
+    "compiler/crates/vsf-registry/",
+    "frontend/packages/renderer/src/",
+    "tests/ui/specs/hardening.spec.ts"
+  ],
+  "acceptance": "Each reviewer finding that could cause invalid authorization, leakage, false verification or costly rework is fixed now or recorded with the reason it is safe to defer.",
+  "positive": {
+    "fixture": "fail-closed redaction, canonical origins, attested promotions, semantic-bound renderer",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/hardening.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "development keys never pass as release; script-made clicks and foreign presentations are refused",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-redact -p vsf-registry",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/cross-language-tests run test",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Fail-closed defaults at each reviewed interface.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [
+    "Deferred findings recorded in ADR-032: VSF-B07-T09, VSF-B08-T09"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T17.renderer-hardening.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T17.redact-and-registry.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T17.cross-language-interop.log"
+  ],
+  "review_result": "ACCEPTED"
+}

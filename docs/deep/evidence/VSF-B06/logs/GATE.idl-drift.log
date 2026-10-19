@@ -1,0 +1,2 @@
+$ node --conditions=source tools/idlgen/src/cli.ts --check
+[exit 0]

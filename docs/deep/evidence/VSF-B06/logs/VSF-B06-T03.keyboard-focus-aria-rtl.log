@@ -1,0 +1,23 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/a11y.spec.ts
+
+Running 16 tests using 1 worker
+
+  ✓   1 specs/a11y.spec.ts:18:1 › form: Tab order follows reading order, Shift+Tab reverses it, and every stop has a name (267ms)
+  ✓   2 specs/a11y.spec.ts:34:1 › form: the accessibility tree has landmarks, a labelled form and named controls (171ms)
+  ✓   3 specs/a11y.spec.ts:66:1 › no interactive element lacks an accessible name, in the form and in the grid (191ms)
+  ✓   4 specs/a11y.spec.ts:83:1 › Enter in a field never runs an operation; Enter and Space on a button run it exactly once (195ms)
+  ✓   5 specs/a11y.spec.ts:97:1 › focus is visible, 3px, and has at least 3:1 contrast with the page (127ms)
+  ✓   6 specs/a11y.spec.ts:112:1 › an unavailable operation stays focusable, explains itself and does nothing (176ms)
+  ✓   7 specs/a11y.spec.ts:129:1 › results are announced: success politely, failure and refusal as alerts, repeats again (281ms)
+  ✓   8 specs/a11y.spec.ts:155:1 › grid: one tab stop, arrow keys, Home/End, Ctrl+Home/End and paging move a roving focus (260ms)
+  ✓   9 specs/a11y.spec.ts:186:1 › grid: leaving with Tab and returning with Shift+Tab lands on the last cell (191ms)
+  ✓  10 specs/a11y.spec.ts:201:1 › grid: row actions are keyboard operable and carry the row in their name (163ms)
+  ✓  11 specs/a11y.spec.ts:211:1 › focus restoration: closing the palette, deleting the focused row and relaying out never strand focus (233ms)
+  ✓  12 specs/a11y.spec.ts:229:1 › focus and caret survive a theme change that rebuilds nothing (189ms)
+  ✓  13 specs/a11y.spec.ts:241:1 › RTL: direction follows the locale, columns mirror and arrow keys follow reading direction (213ms)
+  ✓  14 specs/a11y.spec.ts:268:1 › RTL: form labels and inputs align to the inline start (right) edge (109ms)
+  ✓  15 specs/a11y.spec.ts:280:1 › LTR stays LTR for an explicit direction even with an RTL locale (110ms)
+  ✓  16 specs/a11y.spec.ts:285:1 › target size: every interactive control is at least 44 css px at the default density (124ms)
+
+  16 passed (4.7s)
+[exit 0]

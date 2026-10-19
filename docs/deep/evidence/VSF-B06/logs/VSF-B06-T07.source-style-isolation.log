@@ -1,0 +1,31 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/sourcestyle.spec.ts
+
+Running 24 tests using 1 worker
+
+  ✓   1 specs/sourcestyle.spec.ts:40:1 › a per-source style restyles the source page and leaves its DOM and state alone (245ms)
+  ✓   2 specs/sourcestyle.spec.ts:52:1 › switching it off restores the exact previous cascade, the page's own sheets and the page state (217ms)
+  ✓   3 specs/sourcestyle.spec.ts:74:1 › source CSS collisions cannot reach the renderer's controls or hide its host (230ms)
+  ✓   4 specs/sourcestyle.spec.ts:99:1 › styles for another origin are kept but not applied (114ms)
+  ✓   5 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: a remote image (105ms)
+  ✓   6 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: a data URL that is not an image (122ms)
+  ✓   7 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: an escaped function name (110ms)
+  ✓   8 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: an escaped identifier (122ms)
+  ✓   9 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: image-set (113ms)
+  ✓  10 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: webkit image-set (122ms)
+  ✓  11 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: cross-fade (120ms)
+  ✓  12 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: src() (102ms)
+  ✓  13 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: attr() that can name a URL (122ms)
+  ✓  14 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: an unknown function (97ms)
+  ✓  15 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: @import (112ms)
+  ✓  16 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: @font-face (98ms)
+  ✓  17 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: @namespace (107ms)
+  ✓  18 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: a legacy script hook (120ms)
+  ✓  19 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: an unterminated comment (134ms)
+  ✓  20 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: an unterminated string (103ms)
+  ✓  21 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: unbalanced braces (105ms)
+  ✓  22 specs/sourcestyle.spec.ts:129:3 › refused, and nothing attached: a control character (108ms)
+  ✓  23 specs/sourcestyle.spec.ts:143:1 › ordinary modern CSS is accepted: colours, math, gradients, transforms, media and layers (102ms)
+  ✓  24 specs/sourcestyle.spec.ts:151:1 › the page's own adopted sheets keep their order and survive every change (126ms)
+
+  24 passed (5.0s)
+[exit 0]

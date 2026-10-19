@@ -67,6 +67,17 @@ pub enum Strength {
 }
 
 impl Strength {
+    pub fn parse(x: &str) -> Option<Strength> {
+        [
+            Strength::Explicit,
+            Strength::Structural,
+            Strength::Delegated,
+            Strength::Lexical,
+        ]
+        .into_iter()
+        .find(|s| s.as_str() == x)
+    }
+
     pub fn as_str(self) -> &'static str {
         match self {
             Strength::Explicit => "explicit",

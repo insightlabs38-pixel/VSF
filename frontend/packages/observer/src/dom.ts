@@ -1,5 +1,6 @@
 import { Builder, FLAG_EDITABLE, FLAG_INTERACTIVE, FLAG_REDACTED, FLAG_VISIBLE, NONE, type Snapshot } from "./pack.ts";
-import { redactText } from "./redact.ts";
+import { redactThenClip } from "./redact.ts";
+import { intrinsicScope, looksAccountSpecific, markerScope, stricter } from "./sensitive.ts";
 
 export interface SnapshotOptions {
   maxNodes: number;
@@ -99,7 +100,7 @@ function isVisible(el: Element): boolean {
   return check ? check.call(el) : (el as HTMLElement).offsetParent !== null;
 }
 
-/** Form control values are never read: only structure, labels and own text leave the page. */
+/** Form control values are never read, and text from credential or account scopes never enters the pack. */
 export function snapshotDocument(doc: Document, options: SnapshotOptions = DEFAULT_OPTIONS): DomSnapshot {
   const b = new Builder();
   const root = doc.documentElement;
@@ -115,10 +116,15 @@ export function snapshotDocument(doc: Document, options: SnapshotOptions = DEFAU
       break;
     }
     const role = implicitRole(el);
-    const rawName = accessibleName(el);
-    const rawText = ownText(el);
-    const name = rawName === null ? null : redactText(clip(rawName, options.maxTextChars));
-    const text = rawText === null ? null : redactText(clip(rawText, options.maxTextChars));
+    const accessible = accessibleName(el);
+    const scope = stricter(markerScope(el), intrinsicScope(el, role, accessible));
+    const sensitive = scope !== "public";
+    const rawName = sensitive ? null : accessible;
+    const rawText = sensitive ? null : ownText(el);
+    let name = rawName === null ? null : redactThenClip(rawName, options.maxTextChars);
+    let text = rawText === null ? null : redactThenClip(rawText, options.maxTextChars);
+    if (name !== null && looksAccountSpecific(name)) name = null;
+    if (text !== null && looksAccountSpecific(text)) text = null;
     const type = (el.getAttribute("type") ?? "").toLowerCase();
     const interactive =
       INTERACTIVE_TAGS.has(el.tagName) || (role !== null && INTERACTIVE_ROLES.has(role)) || el.hasAttribute("tabindex");
@@ -132,7 +138,8 @@ export function snapshotDocument(doc: Document, options: SnapshotOptions = DEFAU
     if (editable) flags |= FLAG_EDITABLE;
     if (
       (name !== null && name !== clip(rawName ?? "", options.maxTextChars)) ||
-      (text !== null && text !== clip(rawText ?? "", options.maxTextChars))
+      (text !== null && text !== clip(rawText ?? "", options.maxTextChars)) ||
+      sensitive
     ) {
       flags |= FLAG_REDACTED;
     }

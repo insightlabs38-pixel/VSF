@@ -98,14 +98,17 @@ fn ir_fixture(name: &str, edit: impl Fn(&str) -> String) -> Vec<u8> {
         env!("CARGO_MANIFEST_DIR")
     );
     let text = std::fs::read_to_string(path).unwrap();
-    let family = text
-        .split("\"schema\": \"vsf.")
-        .nth(1)
-        .unwrap()
-        .split('/')
-        .next()
-        .unwrap();
-    let text = edit(&text.replace("$DIGEST", vsf_ir::doc::family_digest(family).unwrap()));
+    let (family, version) = {
+        let rest = text.split("\"schema\": \"vsf.").nth(1).unwrap();
+        let (family, rest) = rest.split_once('/').unwrap();
+        let ver = rest.split('"').next().unwrap();
+        let mut it = ver.split('.').map(|x| x.parse::<u32>().unwrap());
+        (
+            family.to_string(),
+            (it.next().unwrap(), it.next().unwrap(), it.next().unwrap()),
+        )
+    };
+    let text = edit(&text.replace("$DIGEST", vsf_ir::doc::digest_at(&family, version).unwrap()));
     vsf_canon::to_canonical(&vsf_canon::parse(text.as_bytes()).unwrap())
 }
 

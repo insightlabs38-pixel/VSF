@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B06-T03",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "ce0eda00b1364943f43a5e8f1e164cbf35ffa08d",
+  "paths": [
+    "frontend/packages/renderer/src/",
+    "tests/ui/specs/a11y.spec.ts"
+  ],
+  "acceptance": "Keyboard traversal, focus recovery, alert announcements and RTL smoke cases pass real interaction fixtures.",
+  "positive": {
+    "fixture": "form and grid keyboard traversal, announcements and RTL smoke cases",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/a11y.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unavailable operations do nothing; focus never stranded after deletion, palette close or relayout",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/a11y.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/incremental.spec.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Enter in a field never runs an operation; untrusted clicks are ignored.",
+  "performance_memory_storage": "Keyboard latency measured in T08.",
+  "known_limitations": [
+    "Screen reader output is checked through the accessibility tree, not a live reader"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T03.keyboard-focus-aria-rtl.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T04.keyed-incremental-write-counts.log"
+  ],
+  "review_result": "ACCEPTED"
+}

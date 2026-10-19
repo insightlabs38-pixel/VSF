@@ -1,0 +1,3 @@
+$ node tools/queue/src/cli.ts validate
+queue: ok
+[exit 0]

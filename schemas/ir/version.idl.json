@@ -1,6 +1,6 @@
 {
   "idl": "vsf-idl/1",
-  "ir_version": "1.0.0",
+  "ir_version": "1.1.0",
   "family": "version",
   "root": "VersionManifest",
   "types": {
@@ -90,6 +90,17 @@
         },
         "media_type": {
           "type": "Label"
+        },
+        "visibility": {
+          "type": "Visibility",
+          "optional": true,
+          "since": "1.1.0"
+        },
+        "principal_ref": {
+          "type": "PrincipalRef",
+          "optional": true,
+          "since": "1.1.0",
+          "doc": "Owner of a private artifact."
         }
       }
     },
@@ -143,6 +154,19 @@
         }
       }
     },
+    "SignatureAlg": {
+      "kind": "enum",
+      "values": ["ed25519"]
+    },
+    "PromotionSignature": {
+      "kind": "struct",
+      "doc": "Names the algorithm, the key and the exact digest that was signed; the registry verifies it.",
+      "fields": {
+        "alg": { "type": "SignatureAlg" },
+        "key_id": { "type": "Ident" },
+        "signed_digest": { "type": "Digest" }
+      }
+    },
     "PromotionRecord": {
       "kind": "struct",
       "fields": {
@@ -162,7 +186,34 @@
         "previous": {
           "type": "Digest",
           "optional": true
+        },
+        "attestation": {
+          "type": "PromotionSignature",
+          "optional": true,
+          "since": "1.1.0"
         }
+      }
+    },
+    "RollbackSpec": {
+      "kind": "struct",
+      "doc": "This manifest was produced by a rollback of the stated kind.",
+      "fields": {
+        "kind": { "type": "RollbackKind" },
+        "target": { "type": "Digest" },
+        "roles": { "type": "list<ArtifactRole>", "maxItems": 8 }
+      }
+    },
+    "Revocation": {
+      "kind": "struct",
+      "doc": "Withdraws trust in one operation, witness, authority, artifact or grant; a revoked artifact is never revived by a pin.",
+      "fields": {
+        "kind": { "type": "RevocationKind" },
+        "at": { "type": "Instant" },
+        "reason": { "type": "Label" },
+        "operation": { "type": "OperationId", "optional": true },
+        "digest": { "type": "Digest", "optional": true },
+        "authority": { "type": "Ident", "optional": true },
+        "principal": { "type": "PrincipalRef", "optional": true }
       }
     },
     "VersionManifest": {
@@ -195,6 +246,23 @@
         "promotion": {
           "type": "PromotionRecord",
           "optional": true
+        },
+        "origin": {
+          "type": "Origin",
+          "optional": true,
+          "since": "1.1.0",
+          "doc": "Source origin the artifacts were compiled against."
+        },
+        "rollback": {
+          "type": "RollbackSpec",
+          "optional": true,
+          "since": "1.1.0"
+        },
+        "revocations": {
+          "type": "list<Revocation>",
+          "maxItems": 256,
+          "optional": true,
+          "since": "1.1.0"
         }
       }
     }

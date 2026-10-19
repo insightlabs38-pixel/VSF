@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B06-T06",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "24285fe761b0abdb31b56e06991bd4d519310c92",
+  "paths": [
+    "frontend/packages/renderer/src/",
+    "tests/ui/specs/preserve.spec.ts"
+  ],
+  "acceptance": "Unsupported specialized widget remains accessible through permitted source context, with limitations and no unsafe cross-origin embedding.",
+  "positive": {
+    "fixture": "an unsupported editor is kept in place and reachable through its permitted source context",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/preserve.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "cross-origin and unpermitted widgets are not embedded and the limitation is shown",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/preserve.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test:unit",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No unsafe cross-origin embedding; preserved surfaces carry no new authority.",
+  "performance_memory_storage": "Not measured beyond test runtime.",
+  "known_limitations": [
+    "Side-by-side placement is exercised for same-document widgets only"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T06.unsupported-widgets-preserved.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T01.presentation-compile-and-constraints.log"
+  ],
+  "review_result": "ACCEPTED"
+}

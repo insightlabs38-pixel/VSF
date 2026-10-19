@@ -42,6 +42,14 @@
         "cmd": ["node", "tools/checks/src/cli.ts", "dep-review"]
       },
       {
+        "name": "vuln-scan",
+        "cmd": ["node", "tools/checks/src/cli.ts", "vuln-scan"]
+      },
+      {
+        "name": "workflow-check",
+        "cmd": ["node", "tools/checks/src/cli.ts", "workflow-check"]
+      },
+      {
         "name": "secret-scan",
         "cmd": ["node", "tools/checks/src/cli.ts", "secrets"]
       },
@@ -149,7 +157,8 @@
           "--",
           "manifest",
           "verify",
-          "."
+          ".",
+          "--development"
         ]
       }
     ],
@@ -303,6 +312,28 @@
       {
         "name": "browser-tests",
         "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "test:browser"]
+      }
+    ],
+    "ui": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "build-ts",
+        "cmd": ["pnpm", "build:ts"]
+      },
+      {
+        "name": "typecheck",
+        "cmd": ["pnpm", "--filter", "@vsf/ui-tests", "run", "typecheck"]
+      },
+      {
+        "name": "unit-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/ui-tests", "run", "test:unit"]
+      },
+      {
+        "name": "browser-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/ui-tests", "run", "test:browser"]
       }
     ]
   }

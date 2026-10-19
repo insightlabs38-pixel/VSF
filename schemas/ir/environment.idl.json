@@ -1,6 +1,6 @@
 {
   "idl": "vsf-idl/1",
-  "ir_version": "1.0.0",
+  "ir_version": "1.1.0",
   "family": "environment",
   "root": "EnvironmentCapabilityManifest",
   "types": {
@@ -65,7 +65,9 @@
         "credential_isolation": { "type": "CredentialIsolation" },
         "egress": { "type": "EgressPolicy" },
         "limits": { "type": "Limits" },
-        "attestation": { "type": "Attestation", "optional": true }
+        "attestation": { "type": "Attestation", "optional": true },
+        "app_id": { "type": "SourceAppId", "optional": true, "since": "1.1.0" },
+        "variant_id": { "type": "SourceVariantId", "optional": true, "since": "1.1.0" }
       }
     }
   }

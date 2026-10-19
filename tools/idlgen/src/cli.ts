@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { checkAgainstReleased, compare } from "./compat.ts";
-import { familyDigests } from "./digest.ts";
+import { acceptedVersions, familyDigests } from "./digest.ts";
 import { emitGo } from "./emit-go.ts";
 import { emitRust } from "./emit-rust.ts";
 import { emitTs } from "./emit-ts.ts";
@@ -14,11 +14,12 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 export function generate(schemaDir: string): Record<string, string> {
   const model = loadModel(schemaDir);
   const digests = familyDigests(model);
-  const gofmt = spawnSync("gofmt", [], { input: emitGo(model, digests), encoding: "utf8" });
+  const accepted = acceptedVersions(schemaDir, model, loadModel);
+  const gofmt = spawnSync("gofmt", [], { input: emitGo(model, digests, accepted), encoding: "utf8" });
   if (gofmt.status !== 0) throw new Error(`gofmt failed: ${gofmt.stderr}`);
   return {
-    "compiler/crates/vsf-ir/src/generated.rs": emitRust(model, digests),
-    "frontend/packages/ir/src/generated.ts": emitTs(model, digests),
+    "compiler/crates/vsf-ir/src/generated.rs": emitRust(model, digests, accepted),
+    "frontend/packages/ir/src/generated.ts": emitTs(model, digests, accepted),
     "backend/ir/generated.go": gofmt.stdout,
   };
 }

@@ -53,5 +53,11 @@
       }
     ],
     "response": []
+  },
+  "promotion": {
+    "decision_id": "review.2026-10.fixture",
+    "reviewed_by": "prin_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "documentation_reference": "https://docs.example.com/api/profile",
+    "witnesses": ["profile-w1"]
   }
 }

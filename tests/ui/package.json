@@ -1,0 +1,20 @@
+{
+  "name": "@vsf/ui-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vsf/design-system": "workspace:*",
+    "@vsf/ir": "workspace:*",
+    "@vsf/renderer": "workspace:*",
+    "@vsf/schema": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:unit": "node --conditions=source --test --test-reporter=spec test/*.test.ts",
+    "test:browser": "playwright test",
+    "test": "pnpm run test:unit && pnpm run test:browser",
+    "bench": "node --conditions=source bench-ui.ts"
+  }
+}

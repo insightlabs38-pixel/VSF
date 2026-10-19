@@ -4,14 +4,14 @@ mod common;
 use common::*;
 use std::collections::BTreeSet;
 use std::path::PathBuf;
-use vsf_recognizer::contract::{Access, Availability, derive};
+use vsf_recognizer::contract::{Access, Availability};
 use vsf_recognizer::engine::recognize;
 use vsf_recognizer::ledger::{Certainty, Ledger, build_ledger};
 use vsf_recognizer::obs::Observation;
+use vsf_recognizer::protocol::assess;
 use vsf_recognizer::reconcile::{Decision, Protocol, Side, open_conflicts, reconcile, resolve};
 use vsf_recognizer::semantics::Rules;
 
-const NOW: i64 = 1_790_000_100_000;
 const MONTH: i64 = 30 * 24 * 3600 * 1000;
 const PERSON: &str = "prin_0123456789abcdef0123456789abcdef";
 
@@ -25,7 +25,8 @@ fn run(app: &str, doc: &str) -> (Observation, vsf_recognizer::engine::Recognitio
     let obs = snapshot(app);
     let rec = recognize(&obs, Rules::V2);
     let mut l = build_ledger(&obs, &rec, NOW);
-    reconcile(&mut l, &obs, &rec, &proto(doc), MONTH);
+    let p = proto(doc);
+    reconcile(&mut l, &obs, &rec, &p, assess(&p, &policy()), None, MONTH);
     (obs, rec, l)
 }
 
@@ -73,9 +74,9 @@ fn a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it() {
     let (obs, rec, mut l) = run("plain-form", "profile-conflict");
     let digest = field_by_label(&rec, "Weekly digest");
     let read_state = |l: &Ledger| {
-        derive(&rec, l, &BTreeSet::new())
+        bare_contract(&rec, l)
             .for_node(digest)
-            .find(|o| o.access == Access::Read)
+            .find(|o| o.access == Access::Local)
             .unwrap()
             .availability
     };
@@ -105,6 +106,12 @@ fn a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it() {
     )
     .unwrap();
     assert_eq!(read_state(&l), Availability::Available);
+    let write = bare_contract(&rec, &l)
+        .for_node(digest)
+        .find(|o| o.access == Access::Invoke)
+        .unwrap()
+        .availability;
+    assert_eq!(write, Availability::Unknown("effect_unverified"));
     assert_eq!(resolve(&mut l, d(PERSON, "again")), Err("already_resolved"));
     assert_eq!(open_conflicts(&l).len(), 1);
     let kept = l.claims.get(&id).unwrap();
@@ -203,7 +210,7 @@ fn credential_fields_are_never_matched_to_protocol_names() {
     let mut l = build_ledger(&obs, &rec, NOW);
     let mut p = proto("profile-agree");
     p.request[0].name = ["pass", "word"].concat();
-    reconcile(&mut l, &obs, &rec, &p, MONTH);
+    reconcile(&mut l, &obs, &rec, &p, assess(&p, &policy()), None, MONTH);
     assert!(
         l.by_subject(pw)
             .all(|c| !c.predicate.starts_with("protocol:"))

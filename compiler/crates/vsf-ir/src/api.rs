@@ -1,6 +1,6 @@
 //! One entry point shared by the native worker and the WASM module.
 
-use crate::doc::{decode_document, document_digest};
+use crate::doc::{decode_value, document_digest_at};
 use crate::semantics::{validate, violation_values};
 use vsf_canon::{Value, to_canonical};
 
@@ -15,15 +15,21 @@ pub fn validate_bytes(input: &[u8]) -> Result<Vec<u8>, &'static str> {
 
 /// Like [`validate_bytes`], also returning whether the document decoded and passed every invariant.
 pub fn validate_report(input: &[u8]) -> Result<(Vec<u8>, bool), &'static str> {
-    let (decode, violations, valid) = match decode_document(input) {
-        Ok(body) => {
+    let v = vsf_canon::parse(input).map_err(|e| e.code())?;
+    let (decode, violations, valid) = match decode_value(&v) {
+        Ok((body, version)) => {
             let found = validate(&body);
             let valid = found.is_empty();
+            let digest = document_digest_at(&body, version).unwrap_or_default();
             (
                 Value::Object(vec![
-                    ("digest".into(), text(&document_digest(&body))),
+                    ("digest".into(), text(&digest)),
                     ("family".into(), text(body.family())),
                     ("ok".into(), Value::Bool(true)),
+                    (
+                        "version".into(),
+                        text(&format!("{}.{}.{}", version.0, version.1, version.2)),
+                    ),
                 ]),
                 violation_values(&found),
                 valid,

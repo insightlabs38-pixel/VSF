@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { FLAG_ACCOUNT, FLAG_CREDENTIAL, FLAG_REDACTED, sharedEvidence } from "@vsf/observer";
+import { FLAG_ACCOUNT, FLAG_CREDENTIAL, FLAG_REDACTED, type SharePolicy, sharedEvidence } from "@vsf/observer";
 import { SECRETS, secretsPage } from "../support/pages.ts";
 import { attach, startWorld } from "../support/world.ts";
 
@@ -82,14 +82,27 @@ test("account text stays local, is flagged, and is withheld from shared evidence
   }
   const plain = find("Plain public sentence");
   expect((plain?.flags ?? 0) & (FLAG_ACCOUNT | FLAG_CREDENTIAL)).toBe(0);
-  const shared = sharedEvidence(h.collector.replica);
+  const ctx = { origin: world.a.url, principal: "prin_0123456789abcdef0123456789abcdef", now: 1_790_000_000_000 };
+  const shared = sharedEvidence(h.collector.replica, ctx);
   const out = JSON.stringify(shared);
   for (const secret of Object.values(SECRETS)) expect(out).not.toContain(secret);
-  expect(out).toContain("Plain public sentence");
-  expect(shared.withheld).toBeGreaterThanOrEqual(10);
-  expect(
-    shared.nodes.every((n) => (n.flags & (FLAG_ACCOUNT | FLAG_CREDENTIAL) ? n.text === null && n.name === null : true)),
-  ).toBe(true);
+  expect(out).not.toContain("Plain public sentence");
+  expect(shared.policy.applied).toBe(false);
+  expect(shared.nodes.every((n) => n.name === null && n.text === null)).toBe(true);
+  const policy: SharePolicy = {
+    schema: "vsf-share-policy-v1",
+    id: "spol_0123456789abcdef",
+    origin: ctx.origin,
+    principal_ref: ctx.principal,
+    text_roles: ["heading", "button"],
+    max_chars: 60,
+    issued_at: ctx.now - 1,
+    expires_at: ctx.now + 60_000,
+  };
+  const allowed = JSON.stringify(sharedEvidence(h.collector.replica, ctx, policy));
+  for (const secret of Object.values(SECRETS)) expect(allowed).not.toContain(secret);
+  expect(allowed).toContain("Account settings");
+  expect(allowed).not.toContain("Plain public sentence");
   await world.stop();
 });
 

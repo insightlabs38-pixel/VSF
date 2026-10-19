@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B06-T01`
+**Next eligible:** `VSF-B07-T09`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -12,9 +12,9 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B03 | G3 | 8/8 | DONE | PROCEED |
 | B04 | G4 | 8/8 | DONE | PROCEED |
 | B05 | G5 | 8/8 | DONE | PROCEED |
-| B06 | G6 | 0/8 | READY | - |
-| B07 | G7 | 0/8 | TODO | - |
-| B08 | G8 | 0/8 | TODO | - |
+| B06 | G6 | 18/18 | DONE | PROCEED |
+| B07 | G7 | 0/9 | READY | - |
+| B08 | G8 | 0/9 | TODO | - |
 | B09 | G9 | 0/8 | TODO | - |
 | B10 | G10 | 0/8 | TODO | - |
 | B11 | G11 | 0/6 | TODO | - |
@@ -98,18 +98,28 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B06 · Build presentation compiler and minimal accessible renderer
 
-- [ ] `VSF-B06-T01` Define PresentationIR constraints and reusable field/grid/nav/form components _(READY)_
-- [ ] `VSF-B06-T02` Implement light/dark/system tokens and blue/mint accents; status colors distinct
-- [ ] `VSF-B06-T03` Add keyboard/focus restoration/ARIA announcements and basic RTL handling
-- [ ] `VSF-B06-T04` Build keyed incremental rendering and local state subscriptions
-- [ ] `VSF-B06-T05` Add basic compact/spacious density, navigation and command palette
-- [ ] `VSF-B06-T06` Preserve source widgets in place/side-by-side when unsupported and permitted
-- [ ] `VSF-B06-T07` Apply per-source styles without destructive DOM changes
-- [ ] `VSF-B06-T08` Benchmark pure UI operation responsiveness and memory
+- [x] `VSF-B06-T01` Define PresentationIR constraints and reusable field/grid/nav/form components
+- [x] `VSF-B06-T02` Implement light/dark/system tokens and blue/mint accents; status colors distinct
+- [x] `VSF-B06-T03` Add keyboard/focus restoration/ARIA announcements and basic RTL handling
+- [x] `VSF-B06-T04` Build keyed incremental rendering and local state subscriptions
+- [x] `VSF-B06-T05` Add basic compact/spacious density, navigation and command palette
+- [x] `VSF-B06-T06` Preserve source widgets in place/side-by-side when unsupported and permitted
+- [x] `VSF-B06-T07` Apply per-source styles without destructive DOM changes
+- [x] `VSF-B06-T08` Benchmark pure UI operation responsiveness and memory
+- [x] `VSF-B06-T09` Queue correction lane and G6 closure rule (queue tooling)
+- [x] `VSF-B06-T10` F1 Credential classification and sensitive-data boundaries (observer)
+- [x] `VSF-B06-T11` F3 Evidence-ledger identity and provenance (recognizer)
+- [x] `VSF-B06-T12` F7 Trust context, revocation and version-invalidation foundations (IR 1.1.0 additive)
+- [x] `VSF-B06-T13` F2 Protocol evidence authority and complete validation (recognizer)
+- [x] `VSF-B06-T14` F4 Typed behavioural witness contract (recognizer)
+- [x] `VSF-B06-T15` F5 Separate intent, declared effect, demonstrated effect and authorization (recognizer)
+- [x] `VSF-B06-T16` F6 CI gate integrity and reproducible vulnerability checking
+- [x] `VSF-B06-T17` F8 Foundational review findings (B00-B06 interfaces)
+- [x] `VSF-B06-T18` Foundation-stabilization ADR, migrations and closing evidence
 
 ### B07 · Implement verified deterministic execution
 
-- [ ] `VSF-B07-T01` Implement prepared/admitted/running/verified/failed/unknown states
+- [ ] `VSF-B07-T01` Implement prepared/admitted/running/verified/failed/unknown states _(READY)_
 - [ ] `VSF-B07-T02` Bind VSF caller, source session, environment and exact contract
 - [ ] `VSF-B07-T03` Add preconditions, source-read freshness check, confirmation propagation
 - [ ] `VSF-B07-T04` Implement browser executor and mock documented API executor
@@ -117,6 +127,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B07-T06` Provide long-task handle, cancellation and progress events
 - [ ] `VSF-B07-T07` Add session-scoped locks and basic rate-limit adaptation
 - [ ] `VSF-B07-T08` Inject crash/timeout after remote commit and record UNKNOWN_COMMIT
+- [ ] `VSF-B07-T09` Execution consumes only Validated<T> minted by Rust validation (F8 finding) _(READY)_
 
 ### B08 · Build version registry, semantic diff and pins
 
@@ -128,6 +139,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B08-T06` Create security revocation that overrides old pin
 - [ ] `VSF-B08-T07` Test old contract plus new source feature, missing required field and rollback
 - [ ] `VSF-B08-T08` Add draft diff result format for future Studio/CLI UI
+- [ ] `VSF-B08-T09` Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding)
 
 ### B09 · Integrate extension and secure local bridge
 

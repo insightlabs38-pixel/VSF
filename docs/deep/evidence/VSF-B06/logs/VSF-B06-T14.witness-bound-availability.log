@@ -1,0 +1,25 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract
+
+running 16 tests
+test a_human_decision_is_not_a_witness ... ok
+test a_view_button_that_mutates_is_a_write_and_a_delete_that_only_reads_is_a_read ... ok
+test a_witness_authorizes_only_its_own_operation_and_kind ... ok
+test a_declared_effect_never_authorizes_and_a_contradiction_with_a_witness_is_a_conflict ... ok
+test a_witness_dies_when_the_node_it_covered_changes_or_vanishes ... ok
+test harmless_looking_labels_are_not_read_only_until_a_witness_says_so ... ok
+test a_witness_from_another_source_user_environment_or_version_is_refused ... ok
+test indeterminate_and_contradicting_witnesses_do_not_authorize ... ok
+test malformed_and_bare_id_witnesses_are_refused ... ok
+test revocation_of_a_witness_operation_principal_or_authority_ends_it ... ok
+test contract_document_is_stable_and_versioned ... ok
+test synthetic_witnesses_exist_only_for_tests_and_never_reach_a_caller ... ok
+test stale_expired_future_failed_synthetic_and_untrusted_witnesses_are_refused ... ok
+test unknown_and_conflicted_reach_the_ui_state_and_never_the_emitted_set ... ok
+test credential_and_hidden_controls_stay_unusable_even_with_a_witness_for_every_node ... ok
+test nothing_source_backed_is_emitted_without_a_witness_on_any_fixture ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/contract.rs (compiler/target/debug/deps/contract-4b212e2935e7fc20)
+[exit 0]

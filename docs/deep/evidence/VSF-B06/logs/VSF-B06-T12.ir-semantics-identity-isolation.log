@@ -1,0 +1,82 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir
+
+running 9 tests
+test rt::tests::dates_follow_the_gregorian_calendar ... ok
+test rt::tests::decimals_are_exact_and_canonical ... ok
+test rt::tests::since_gates_fields_by_declared_version ... ok
+test rt::tests::text_rules_reject_controls_and_bidi_overrides_but_keep_normalization_untouched ... ok
+test rt::tests::versions_parse_strictly ... ok
+test semantics::tests::certainty_combines_to_the_weakest_premise ... ok
+test semantics::tests::effect_join_is_a_commutative_associative_idempotent_maximum ... ok
+test semantics::tests::indeterminate_absorbs_and_is_the_default_for_the_unproven ... ok
+test semantics::tests::only_behavioral_evidence_proves_what_an_action_does ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test nfc_and_nfd_text_are_preserved_and_stay_distinct ... ok
+test typed_digests_are_domain_separated ... ok
+test pinned_digests_match_this_implementation ... ok
+test every_valid_fixture_decodes_and_reencodes_to_identical_bytes ... ok
+test every_invalid_case_fails_closed_with_the_expected_code_and_path ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+
+running 11 tests
+test deployment_keys_must_be_long_enough_to_resist_guessing ... ok
+test a_private_key_needs_a_real_principal_and_every_part_must_be_well_formed ... ok
+test a_nul_byte_or_a_neighbouring_value_cannot_forge_another_key ... ok
+test equivalent_descriptors_share_an_identity ... ok
+test invalid_descriptors_fail_closed ... ok
+test locale_tags_follow_the_ir_pattern_exactly ... ok
+test tenant_absence_differs_from_an_empty_looking_tenant ... ok
+test hmac_matches_rfc_4231_vectors ... ok
+test variant_id_is_pinned_and_independently_reproducible ... ok
+test private_cache_state_is_never_shared_across_principals_or_variants ... ok
+test every_tenant_role_locale_flag_combination_is_distinct ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test an_older_document_is_still_read_and_its_new_fields_are_simply_absent ... ok
+test a_fresh_witness_for_this_exact_context_authorizes_execution ... ok
+test a_revocation_outranks_compatibility_and_a_pin_cannot_revive_it ... ok
+test shared_structure_ignores_the_principal_but_never_the_origin ... ok
+test the_owner_at_the_origin_is_compatible_and_anything_else_is_not ... ok
+test what_is_not_observed_or_not_declared_is_unknown_never_supported ... ok
+test every_change_of_context_time_or_witness_state_withholds_execution ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 3 tests
+test malformed_host_descriptions_are_rejected ... ok
+test evaluation_json_is_canonical_and_stable ... ok
+test every_matrix_case_yields_the_expected_status_and_reason ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 2 tests
+test every_valid_fixture_passes_semantic_validation ... ok
+test every_semantic_case_reports_exactly_the_expected_codes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_ir-ef56ba34a4b705ab)
+     Running tests/fixtures.rs (compiler/target/debug/deps/fixtures-0591456db67fa71a)
+     Running tests/identity.rs (compiler/target/debug/deps/identity-544f7bbe3743055c)
+     Running tests/isolation.rs (compiler/target/debug/deps/isolation-21c12a4078de1aaa)
+     Running tests/matrix.rs (compiler/target/debug/deps/matrix-7907ea8db49bcaa1)
+     Running tests/semantics.rs (compiler/target/debug/deps/semantics-dbef5626e523b76e)
+   Doc-tests vsf_ir
+[exit 0]

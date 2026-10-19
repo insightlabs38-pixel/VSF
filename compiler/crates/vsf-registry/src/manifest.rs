@@ -341,6 +341,17 @@ pub struct Verified {
     pub primitive_root: String,
 }
 
+impl Verified {
+    /// Refuses a package signed for another purpose, so a development key can never pass as a release key.
+    pub fn require_purpose(self, purpose: &str) -> Result<Verified, Error> {
+        if self.purpose == purpose {
+            Ok(self)
+        } else {
+            Err(err("manifest.wrong_purpose", self.purpose))
+        }
+    }
+}
+
 fn field_strs(v: &Value, path: &str, keys: [&str; 2]) -> Res<Vec<(String, String)>> {
     let mut out = Vec::new();
     for (i, x) in array(v, path)?.iter().enumerate() {

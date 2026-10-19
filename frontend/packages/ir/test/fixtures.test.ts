@@ -1,7 +1,15 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { parse, sha256Hex } from "@vsf/schema";
-import { decodeDocument, documentDigest, encodeDocument, IrError, typedDigest } from "../src/index.ts";
+import {
+  decodeDocument,
+  decodeDocumentValueVersioned,
+  documentDigestAt,
+  encodeDocument,
+  encodeDocumentAt,
+  IrError,
+  typedDigest,
+} from "../src/index.ts";
 import { loadCases, readFixture, validBytes, validNames } from "../src/testing.ts";
 
 const names = validNames();
@@ -10,8 +18,9 @@ test("every valid fixture decodes and re-encodes to identical bytes", () => {
   assert.ok(names.length >= 10);
   for (const name of names) {
     const bytes = validBytes(name);
-    const body = decodeDocument(bytes);
-    assert.deepEqual(encodeDocument(body), bytes, name);
+    const { body, version } = decodeDocumentValueVersioned(parse(bytes));
+    assert.deepEqual(encodeDocumentAt(body, version), bytes, name);
+    assert.deepEqual(decodeDocument(encodeDocument(body)), body, `${name}: re-encoding at the current version`);
   }
 });
 
@@ -27,7 +36,8 @@ test("pinned digests written by the Rust authority match this implementation", a
     const bytes = validBytes(name);
     assert.equal(bytes.length, e.get("canonical_bytes"), name);
     assert.equal(await sha256Hex(bytes), e.get("canonical_sha256"), name);
-    assert.equal(await documentDigest(decodeDocument(bytes)), e.get("document_digest"), name);
+    const { body, version } = decodeDocumentValueVersioned(parse(bytes));
+    assert.equal(await documentDigestAt(body, version), e.get("document_digest"), name);
   }
 });
 

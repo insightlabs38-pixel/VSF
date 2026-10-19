@@ -61,10 +61,11 @@ pub fn severity(s: CompatStatus) -> u8 {
         CompatStatus::Supported => 0,
         CompatStatus::SupportedWithTranslation => 1,
         CompatStatus::Degraded => 2,
-        CompatStatus::NeedsReauth => 3,
-        CompatStatus::SourceIncompatible => 4,
-        CompatStatus::UnsupportedRuntime => 5,
-        CompatStatus::SecurityRevoked => 6,
+        CompatStatus::Unknown => 3,
+        CompatStatus::NeedsReauth => 4,
+        CompatStatus::SourceIncompatible => 5,
+        CompatStatus::UnsupportedRuntime => 6,
+        CompatStatus::SecurityRevoked => 7,
     }
 }
 
@@ -173,7 +174,7 @@ pub fn evaluate(a: &VersionAxes, s: &Support, pins: &Pins) -> Vec<AxisResult> {
             }
             let (status, reason) = match axis {
                 "source_app" => match &s.observed {
-                    None => (CompatStatus::Supported, "not_observed"),
+                    None => (CompatStatus::Unknown, "not_observed"),
                     Some((fp, _))
                         if fp == a.source_app.fingerprint.as_str()
                             || s.compatible_fingerprints.iter().any(|c| c == fp) =>
@@ -186,7 +187,8 @@ pub fn evaluate(a: &VersionAxes, s: &Support, pins: &Pins) -> Vec<AxisResult> {
                     Some((_, v)) if v != a.source_variant.as_str() => {
                         (CompatStatus::SourceIncompatible, "variant_changed")
                     }
-                    _ => (CompatStatus::Supported, "ok"),
+                    None => (CompatStatus::Unknown, "not_observed"),
+                    Some(_) => (CompatStatus::Supported, "ok"),
                 },
                 "compiler" => match compiler_core(&a.compiler) {
                     Some(c) if c < s.compiler_min => {
@@ -263,6 +265,80 @@ pub fn evaluate(a: &VersionAxes, s: &Support, pins: &Pins) -> Vec<AxisResult> {
             }
         })
         .collect()
+}
+
+/// Who and where the artifacts are being used now; `None` means not observed, which is never compatible.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct ObservedContext {
+    pub origin: Option<String>,
+    pub principal: Option<String>,
+}
+
+fn worse(
+    a: (CompatStatus, &'static str),
+    b: (CompatStatus, &'static str),
+) -> (CompatStatus, &'static str) {
+    if severity(b.0) > severity(a.0) { b } else { a }
+}
+
+/// Origin, owner and revocation checks that the twelve axes cannot express; each unconfirmed input is `unknown`.
+pub fn evaluate_context(m: &VersionManifest, o: &ObservedContext) -> Vec<AxisResult> {
+    let origin = match (&m.origin, &o.origin) {
+        (None, _) => (CompatStatus::Unknown, "origin_undeclared"),
+        (_, None) => (CompatStatus::Unknown, "not_observed"),
+        (Some(a), Some(b)) if a.as_str() == b => (CompatStatus::Supported, "ok"),
+        _ => (CompatStatus::SourceIncompatible, "origin_changed"),
+    };
+    let mut principal = (CompatStatus::Supported, "shared_structure");
+    for a in &m.artifacts {
+        let r = match a.visibility.unwrap_or(Visibility::PrivatePrincipal) {
+            Visibility::GlobalStructure | Visibility::PrivateVariant => {
+                (CompatStatus::Supported, "ok")
+            }
+            Visibility::PrivatePrincipal => match (&a.principal_ref, &o.principal) {
+                (None, _) => (CompatStatus::Unknown, "principal_unbound"),
+                (_, None) => (CompatStatus::Unknown, "not_observed"),
+                (Some(x), Some(y)) if x.as_str() == y => (CompatStatus::Supported, "ok"),
+                _ => (CompatStatus::NeedsReauth, "principal_changed"),
+            },
+        };
+        principal = worse(principal, r);
+    }
+    let mut revocation = (CompatStatus::Supported, "ok");
+    for r in m.revocations.iter().flatten() {
+        let hit = match r.kind {
+            RevocationKind::Artifact => r
+                .digest
+                .as_ref()
+                .is_some_and(|d| m.artifacts.iter().any(|a| a.digest.as_str() == d.as_str()))
+                .then_some("artifact_revoked"),
+            RevocationKind::Operation => r
+                .operation
+                .as_ref()
+                .is_some_and(|op| m.axes.operations.keys().any(|k| k.as_str() == op.as_str()))
+                .then_some("operation_revoked"),
+            RevocationKind::PrincipalGrant => (r.principal.as_ref().map(|p| p.as_str())
+                == o.principal.as_deref()
+                && o.principal.is_some())
+            .then_some("grant_revoked"),
+            RevocationKind::Witness | RevocationKind::TrustAuthority => None,
+        };
+        if let Some(reason) = hit {
+            revocation = worse(revocation, (CompatStatus::SecurityRevoked, reason));
+        }
+    }
+    [
+        ("origin", origin),
+        ("principal", principal),
+        ("revocation", revocation),
+    ]
+    .into_iter()
+    .map(|(axis, (status, reason))| AxisResult {
+        axis,
+        status,
+        reason,
+    })
+    .collect()
 }
 
 // ---- host description from canonical JSON (fixtures, WASM and native callers) ----------------------

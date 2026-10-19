@@ -85,3 +85,64 @@ test("the repository's real queue is internally consistent", () => {
   assert.deepEqual(validateQueue(p, loadPlan(p), loadState(p), { git: false }), []);
   assert.equal(loadPlan(p).tasks.length >= 152, true);
 });
+
+const lanePlan = (): typeof miniPlan => ({
+  batches: miniPlan.batches,
+  tasks: [
+    { id: "VSF-B00-T01", batch: "B00", sequence: 1, title: "First", acceptance: "a", dependencies: [] },
+    { id: "VSF-B00-T02", batch: "B00", sequence: 2, title: "Second", acceptance: "b", dependencies: ["VSF-B00-T01"] },
+    {
+      id: "VSF-B00-T03",
+      batch: "B00",
+      sequence: 3,
+      title: "Fix",
+      acceptance: "c",
+      dependencies: [],
+      origin: "adaptive",
+      adr: "ADR-032",
+      lane: "correction",
+      scope: "s",
+      contract: "k",
+      positive: "p",
+      adversarial: "n",
+      evidence_required: "e",
+    },
+    { id: "VSF-B01-T01", batch: "B01", sequence: 1, title: "Third", acceptance: "c", dependencies: [] },
+  ],
+});
+
+test("a correction task runs ahead of the sequential lane without completing earlier tasks", () => {
+  const plan = lanePlan();
+  const state = freshState(plan);
+  assert.deepEqual(nextTask(plan, state), { batch: "B00", task: "VSF-B00-T03" });
+  setTask(plan, state, "VSF-B00-T03", "ACTIVE");
+  assert.equal(state.task_states["VSF-B00-T01"]?.status, "READY");
+  assert.throws(() => setTask(plan, state, "VSF-B00-T02", "ACTIVE"), /not allowed|not DONE/);
+  setTask(plan, state, "VSF-B00-T03", "REVIEW");
+  setTask(plan, state, "VSF-B00-T03", "DONE", { commit: SHA, receipt: "r" });
+  assert.deepEqual(nextTask(plan, state), { batch: "B00", task: "VSF-B00-T01" });
+});
+
+test("a gate needs every correction task, and the validator names the open one", () => {
+  const plan = lanePlan();
+  const state = freshState(plan);
+  for (const id of ["VSF-B00-T01", "VSF-B00-T02"]) {
+    state.task_states[id] = { status: "DONE", claimed_by: null, commit: SHA, evidence: null, receipt: "r" };
+  }
+  assert.throws(
+    () => setGate(plan, state, "G0", "ACCEPTED", "PROCEED", { report: "r", evidence: "e" }),
+    /correction tasks unfinished: VSF-B00-T03/,
+  );
+  state.gate_states.G0 = { status: "ACCEPTED", decision: "PROCEED", evidence: "e", report: "r" };
+  const { paths } = closedSandbox();
+  assert.ok(ids(validateQueue(paths, plan, state, { git: false })).includes("gate.accepted-corrections-open"));
+});
+
+test("a correction task must state scope, contract, tests and evidence", () => {
+  const plan = lanePlan();
+  const t = plan.tasks[2] as { adversarial?: string };
+  delete t.adversarial;
+  const { paths } = closedSandbox();
+  const found = validateQueue(paths, plan, freshState(plan), { git: false });
+  assert.ok(found.some((p) => p.id === "plan.correction-task" && p.message.includes("adversarial")));
+});

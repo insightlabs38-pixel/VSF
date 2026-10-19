@@ -27,7 +27,7 @@
         {
           "op": "set",
           "path": "/schema",
-          "value": "vsf.operation/1.1.0"
+          "value": "vsf.operation/1.2.0"
         }
       ]
     },
@@ -42,7 +42,7 @@
         {
           "op": "set",
           "path": "/schema",
-          "value": "vsf.operation/1.0.1"
+          "value": "vsf.operation/1.1.1"
         }
       ]
     },
@@ -1098,6 +1098,66 @@
         "path": ""
       },
       "raw": "﻿{}"
+    },
+    {
+      "name": "released-version-never-shipped",
+      "expect": {
+        "code": "schema.unknown_version",
+        "path": "/schema"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema",
+          "value": "vsf.operation/1.0.1"
+        }
+      ]
+    },
+    {
+      "name": "old-envelope-with-current-digest",
+      "expect": {
+        "code": "schema.digest_mismatch",
+        "path": "/schema_digest"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/schema_digest",
+          "value": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "name": "witness-field-in-a-1-0-0-document",
+      "expect": {
+        "code": "ir.field_from_future",
+        "path": "/body/witnesses/0/synthetic"
+      },
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/synthetic",
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "manifest-field-in-a-1-0-0-document",
+      "expect": {
+        "code": "ir.field_from_future",
+        "path": "/body/revocations"
+      },
+      "base": "version-manifest",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/revocations",
+          "value": []
+        }
+      ]
     },
     {
       "name": "array-document",

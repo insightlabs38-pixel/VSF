@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B06-T07",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "24285fe761b0abdb31b56e06991bd4d519310c92",
+  "paths": [
+    "frontend/packages/renderer/src/sourcestyle.ts",
+    "tests/ui/specs/sourcestyle.spec.ts"
+  ],
+  "acceptance": "Transformation can be switched off without corrupting source DOM or app state; CSS collisions are isolated.",
+  "positive": {
+    "fixture": "styles apply through adopted sheets and switch off leaving the source DOM unchanged",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/sourcestyle.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "24 cases: script hooks, imports, expressions, !important collisions, removed sheets",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/sourcestyle.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/hardening.spec.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Style sheets are validated by a tokenizer and never execute; the guard protects the host element only.",
+  "performance_memory_storage": "Not measured beyond test runtime.",
+  "known_limitations": [
+    "A source rule that hides html or body is outside what a content script can prevent"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T07.source-style-isolation.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T17.renderer-hardening.log"
+  ],
+  "review_result": "ACCEPTED"
+}

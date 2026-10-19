@@ -1,6 +1,6 @@
 {
   "idl": "vsf-idl/1",
-  "ir_version": "1.0.0",
+  "ir_version": "1.1.0",
   "family": "common",
   "types": {
     "Digest": {
@@ -166,8 +166,24 @@
         "needs_reauth",
         "source_incompatible",
         "security_revoked",
-        "unsupported_runtime"
-      ]
+        "unsupported_runtime",
+        "unknown"
+      ],
+      "doc": "unknown: a previously evaluated context can no longer be confirmed; it never executes."
+    },
+    "Visibility": {
+      "kind": "enum",
+      "values": ["private_principal", "private_variant", "global_structure"],
+      "doc": "Who may reuse an artifact; absent means private_principal, the most restrictive."
+    },
+    "RollbackKind": {
+      "kind": "enum",
+      "values": ["source_data", "interface", "artifact_version"],
+      "doc": "What a rollback restores; none of them rolls back the source application's data."
+    },
+    "RevocationKind": {
+      "kind": "enum",
+      "values": ["operation", "witness", "trust_authority", "artifact", "principal_grant"]
     },
     "ValueType": {
       "kind": "enum",

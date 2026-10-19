@@ -50,3 +50,24 @@ test("unusable storage still yields increasing epochs from memory", () => {
 test("epochs stay inside the IR ObservationEpoch range", () => {
   assert.ok(persistentEpochs(fakeWindow())() <= Number.MAX_SAFE_INTEGER);
 });
+
+test("a page that writes a huge or malformed epoch cannot push the counter out of range or stall it", () => {
+  for (const hostile of ["9007199254740990", "9007199254740993", "99999999999999999999", "-5", "1e21", "abc", "NaN"]) {
+    const win = fakeWindow();
+    win.sessionStorage.setItem("vsf.epoch", hostile);
+    const next = persistentEpochs(win, () => 1_790_000_000_000);
+    const a = next();
+    const b = next();
+    assert.ok(Number.isSafeInteger(a) && a < 1_800_000_000_000, `${hostile}: ${a}`);
+    assert.ok(b === a + 1, `${hostile}: strictly increasing`);
+  }
+});
+
+test("a stored value a little ahead of the clock is honoured, one far ahead is ignored", () => {
+  const win = fakeWindow();
+  win.sessionStorage.setItem("vsf.epoch", String(1_790_000_000_000 + 3_600_000));
+  assert.equal(persistentEpochs(win, () => 1_790_000_000_000)(), 1_790_000_000_000 + 3_600_001);
+  const far = fakeWindow();
+  far.sessionStorage.setItem("vsf.epoch", String(1_790_000_000_000 + 400 * 24 * 3600 * 1000));
+  assert.equal(persistentEpochs(far, () => 1_790_000_000_000)(), 1_790_000_000_000);
+});
