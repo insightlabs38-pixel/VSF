@@ -2,98 +2,39 @@
 
 use crate::engine::Recognition;
 use crate::index::tokens;
-use crate::ledger::{Certainty, Claim, EvidenceRef, EvidenceType, Ledger, node_digest};
+use crate::ledger::{
+    Certainty, Claim, EvidenceRef, EvidenceType, Ledger, NewClaim, SourceKind, SourceMeta,
+    evidence, observation_source,
+};
 use crate::obs::Observation;
+use crate::protocol::contradictions;
+pub use crate::protocol::{Protocol, ProtocolField, Standing};
 use crate::semantics::{Binding, Field, FieldKind, Strength};
-use vsf_canon::{Value, sha256_hex};
+use crate::trust::{TrustContext, principal_ok};
+use vsf_canon::sha256_hex;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct ProtocolField {
-    pub name: String,
-    pub ty: String,
-    pub required: bool,
+const PRODUCER: &str = "reconcile.v2";
+
+fn protocol_evidence(p: &Protocol) -> EvidenceRef {
+    let kind = match p.kind.as_str() {
+        "observed_traffic" => EvidenceType::ProtocolTrace,
+        "user_supplied_spec" => EvidenceType::UserAssertion,
+        _ => EvidenceType::DocumentedSchema,
+    };
+    EvidenceRef::new(kind, &p.digest)
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Protocol {
-    pub id: String,
-    pub kind: String,
-    pub support: String,
-    pub recorded_at: i64,
-    pub operation: String,
-    pub request: Vec<ProtocolField>,
-}
-
-fn text<'a>(v: &'a Value, key: &str) -> Result<&'a str, String> {
-    v.get(key)
-        .and_then(Value::as_str)
-        .ok_or_else(|| format!("protocol.missing:{key}"))
-}
-
-impl Protocol {
-    pub fn from_json(bytes: &[u8]) -> Result<Protocol, String> {
-        let v = vsf_canon::parse(bytes).map_err(|e| format!("protocol.parse:{}", e.code()))?;
-        if text(&v, "schema")? != "vsf-protocol-evidence-v1" {
-            return Err("protocol.bad_schema".into());
-        }
-        let id = text(&v, "id")?.to_string();
-        let kind = text(&v, "kind")?.to_string();
-        let support = text(&v, "support")?.to_string();
-        let recorded_at = v
-            .get("provenance")
-            .and_then(|p| p.get("recorded_at"))
-            .and_then(Value::as_int)
-            .ok_or("protocol.missing:recorded_at")?;
-        let ep = v.get("endpoint").ok_or("protocol.missing:endpoint")?;
-        let operation = format!(
-            "{} {}",
-            ep.get("method").and_then(Value::as_str).unwrap_or(""),
-            text(ep, "path_template")?
-        )
-        .trim()
-        .to_string();
-        let Some(Value::Array(items)) = v.get("shape").and_then(|s| s.get("request")) else {
-            return Err("protocol.missing:shape.request".into());
-        };
-        let mut request = Vec::new();
-        for it in items {
-            request.push(ProtocolField {
-                name: text(it, "name")?.to_string(),
-                ty: text(it, "type")?.to_string(),
-                required: matches!(it.get("required"), Some(Value::Bool(true))),
-            });
-        }
-        Ok(Protocol {
-            id,
-            kind,
-            support,
-            recorded_at,
-            operation,
-            request,
-        })
-    }
-
-    fn evidence_kind(&self) -> EvidenceType {
-        match self.kind.as_str() {
-            "observed_traffic" => EvidenceType::ProtocolTrace,
-            "user_supplied_spec" => EvidenceType::UserAssertion,
-            _ => EvidenceType::DocumentedSchema,
-        }
-    }
-
-    fn evidence(&self) -> EvidenceRef {
-        EvidenceRef {
-            kind: self.evidence_kind(),
-            source: self.id.clone(),
-            nodes: Vec::new(),
-            node_digests: Vec::new(),
-        }
-    }
-
-    /// An unsupported source can raise a question but never a conflict.
-    fn authoritative(&self) -> bool {
-        self.support != "unsupported"
-    }
+fn record_protocol(ledger: &mut Ledger, p: &Protocol) {
+    let _ = ledger.record(
+        &p.digest,
+        SourceMeta {
+            kind: SourceKind::Protocol,
+            label: p.id.clone(),
+            captured_at: p.recorded_at,
+            nodes: 0,
+            context: None,
+        },
+    );
 }
 
 fn name_tokens(name: &str) -> Vec<String> {
@@ -122,16 +63,6 @@ fn compatible(kind: FieldKind, ty: &str) -> Option<bool> {
     }
 }
 
-fn ui_evidence(obs: &Observation, id: u32) -> EvidenceRef {
-    let digests = obs.index_of(id).map(|i| node_digest(obs, i));
-    EvidenceRef {
-        kind: EvidenceType::ObservedStructure,
-        source: obs.digest.clone(),
-        nodes: vec![id],
-        node_digests: digests.into_iter().collect(),
-    }
-}
-
 fn label_of(f: &Field) -> Option<&str> {
     match &f.binding {
         Binding::Bound(c) => Some(&c.text),
@@ -139,35 +70,77 @@ fn label_of(f: &Field) -> Option<&str> {
     }
 }
 
-/// Adds claims comparing one protocol document with the recognized UI; returns the ids it added.
+/// Compares one protocol document with the UI; only an authoritative standing can conflict.
 pub fn reconcile(
     ledger: &mut Ledger,
     obs: &Observation,
     rec: &Recognition,
     p: &Protocol,
+    standing: Standing,
+    ctx: Option<&TrustContext>,
     max_age_ms: i64,
 ) -> Vec<String> {
-    ledger.record(&p.id, p.recorded_at, 0);
+    record_protocol(ledger, p);
     let root = obs.nodes.first().map_or(0, |n| n.id);
-    let captured = ledger.sources.get(&obs.digest).map_or(0, |m| m.captured_at);
+    let source = observation_source(obs, ctx);
+    let captured = ledger.sources.get(&source).map_or(0, |m| m.captured_at);
     let mut added = Vec::new();
-    let weak = if p.authoritative() {
+    let mut push = |ledger: &mut Ledger,
+                    subject: u32,
+                    predicate: &str,
+                    object: String,
+                    certainty: Certainty,
+                    confidence: Option<Strength>,
+                    ev: Vec<EvidenceRef>| {
+        added.push(ledger.push(NewClaim {
+            subject,
+            predicate: predicate.to_string(),
+            object,
+            certainty,
+            confidence,
+            evidence: ev,
+            unit: None,
+            producer: PRODUCER.to_string(),
+        }));
+    };
+    let standing = match (ctx, obs.origin()) {
+        (Some(c), Some(o)) if c.origin != o => Standing::Rejected("observation_origin_mismatch"),
+        _ => standing,
+    };
+    if let Standing::Rejected(why) = standing {
+        push(
+            ledger,
+            root,
+            "protocol:rejected",
+            format!("{why}@{}", p.id),
+            Certainty::Unknown,
+            None,
+            vec![protocol_evidence(p)],
+        );
+        return added;
+    }
+    if p.recorded_at.saturating_add(max_age_ms) < captured {
+        push(
+            ledger,
+            root,
+            "protocol:stale",
+            format!("{}@{}", p.operation, p.id),
+            Certainty::Unknown,
+            None,
+            vec![protocol_evidence(p)],
+        );
+        return added;
+    }
+    let authoritative = standing == Standing::Authoritative;
+    let weak = if authoritative {
         Certainty::Conflicted
     } else {
         Certainty::Unknown
     };
-    if p.recorded_at.saturating_add(max_age_ms) < captured {
-        added.push(ledger.push(
-            root,
-            "protocol:stale",
-            &format!("{}@{}", p.operation, p.id),
-            Certainty::Unknown,
-            None,
-            vec![p.evidence()],
-            None,
-        ));
-        return added;
-    }
+    let note = standing
+        .reason()
+        .map_or(String::new(), |r| format!("|advisory:{r}"));
+    let ui = |id: u32| evidence(obs, &source, EvidenceType::ObservedStructure, &[id]);
     let fields: Vec<&Field> = rec
         .fields()
         .filter(|f| f.why_unusable != Some("credential_field"))
@@ -187,7 +160,7 @@ pub fn reconcile(
                 tokens(sc).chain(tokens(l)).collect::<Vec<_>>() == want
             })
             .collect();
-        let object = |tail: &str| format!("{}:{}{}@{}", pf.name, pf.ty, tail, p.id);
+        let object = |tail: &str| format!("{}:{}{}{}@{}", pf.name, pf.ty, tail, note, p.id);
         let hit = if by_scope.len() == 1 {
             Some(by_scope[0])
         } else if by_label.len() == 1 && by_scope.is_empty() {
@@ -196,59 +169,93 @@ pub fn reconcile(
             None
         };
         if let Some(f) = hit {
-            let evidence = vec![ui_evidence(obs, f.node), p.evidence()];
+            let ev = vec![ui(f.node), protocol_evidence(p)];
             match compatible(f.kind, &pf.ty) {
-                Some(true) => added.push(ledger.push(
+                Some(true) if authoritative => push(
+                    ledger,
                     f.node,
                     "protocol:field",
-                    &object(""),
+                    object(""),
                     Certainty::Inferred,
                     Some(Strength::Structural),
-                    evidence,
-                    None,
-                )),
-                Some(false) => added.push(ledger.push(
+                    ev,
+                ),
+                Some(true) => push(
+                    ledger,
                     f.node,
-                    "protocol:type",
-                    &object(&format!("|ui={}", f.kind.as_str())),
-                    weak,
-                    None,
-                    evidence,
-                    None,
-                )),
-                None => added.push(ledger.push(
-                    f.node,
-                    "protocol:type",
-                    &object("|uncomparable"),
+                    "protocol:field",
+                    object(""),
                     Certainty::Unknown,
                     None,
-                    evidence,
+                    ev,
+                ),
+                Some(false) => push(
+                    ledger,
+                    f.node,
+                    "protocol:type",
+                    object(&format!("|ui={}", f.kind.as_str())),
+                    weak,
                     None,
-                )),
+                    ev,
+                ),
+                None => push(
+                    ledger,
+                    f.node,
+                    "protocol:type",
+                    object("|uncomparable"),
+                    Certainty::Unknown,
+                    None,
+                    ev,
+                ),
             }
         } else if by_label.len() + by_scope.len() > 1 || by_label.len() > 1 {
-            added.push(ledger.push(
+            push(
+                ledger,
                 root,
                 "protocol:field",
-                &object("|ambiguous"),
+                object("|ambiguous"),
                 Certainty::Unknown,
                 None,
-                vec![p.evidence()],
-                None,
-            ));
+                vec![protocol_evidence(p)],
+            );
         } else if pf.required {
-            added.push(ledger.push(
+            push(
+                ledger,
                 root,
                 "protocol:required_missing",
-                &object(""),
+                object(""),
                 weak,
                 None,
-                vec![ui_evidence(obs, root), p.evidence()],
-                None,
-            ));
+                vec![ui(root), protocol_evidence(p)],
+            );
         }
     }
     added
+}
+
+/// Authoritative documents that describe one operation differently each keep their claims; the clash is a conflict.
+pub fn reconcile_contradictions(
+    ledger: &mut Ledger,
+    obs: &Observation,
+    docs: &[(&Protocol, Standing)],
+) -> Vec<String> {
+    let root = obs.nodes.first().map_or(0, |n| n.id);
+    let mut out = Vec::new();
+    for (a, b, op) in contradictions(docs) {
+        record_protocol(ledger, a);
+        record_protocol(ledger, b);
+        out.push(ledger.push(NewClaim {
+            subject: root,
+            predicate: "protocol:contradiction".into(),
+            object: format!("{op}|{}|{}", a.id, b.id),
+            certainty: Certainty::Conflicted,
+            confidence: None,
+            evidence: vec![protocol_evidence(a), protocol_evidence(b)],
+            unit: None,
+            producer: PRODUCER.to_string(),
+        }));
+    }
+    out
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -264,6 +271,12 @@ impl Side {
             Side::Protocol => "protocol",
         }
     }
+
+    pub fn parse(x: &str) -> Option<Side> {
+        [Side::Ui, Side::Protocol]
+            .into_iter()
+            .find(|s| s.as_str() == x)
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -274,15 +287,7 @@ pub struct Decision {
     pub reason: String,
 }
 
-fn principal_ok(p: &str) -> bool {
-    p.strip_prefix("prin_").is_some_and(|h| {
-        h.len() == 32
-            && h.bytes()
-                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
-    })
-}
-
-/// Records a decision; refuses anything that is not an identified person giving a reason about a real, open conflict.
+/// Records a person's reasoned decision on an open conflict; it is never a behavioural witness.
 pub fn resolve(ledger: &mut Ledger, d: Decision) -> Result<String, &'static str> {
     let Some(c) = ledger.claims.get(&d.claim) else {
         return Err("unknown_claim");
@@ -301,25 +306,40 @@ pub fn resolve(ledger: &mut Ledger, d: Decision) -> Result<String, &'static str>
     }
     let subject = c.subject;
     let decision_id = format!(
-        "dec_{}",
-        &sha256_hex(format!("{}|{}|{}", d.claim, d.side.as_str(), d.decided_by).as_bytes())[..32]
+        "sha256:{}",
+        sha256_hex(
+            format!(
+                "{}|{}|{}|{}",
+                d.claim,
+                d.side.as_str(),
+                d.decided_by,
+                d.reason
+            )
+            .as_bytes()
+        )
     );
-    ledger.record(&decision_id, 0, 0);
-    let ev = EvidenceRef {
-        kind: EvidenceType::UserAssertion,
-        source: decision_id,
-        nodes: Vec::new(),
-        node_digests: Vec::new(),
-    };
-    let id = ledger.push(
+    ledger
+        .record(
+            &decision_id,
+            SourceMeta {
+                kind: SourceKind::Decision,
+                label: format!("dec_{}", &decision_id[7..39]),
+                captured_at: 0,
+                nodes: 0,
+                context: None,
+            },
+        )
+        .map_err(|_| "source_conflict")?;
+    let id = ledger.push(NewClaim {
         subject,
-        "protocol:resolution",
-        &format!("{}:{}", d.side.as_str(), d.claim),
-        Certainty::Inferred,
-        None,
-        vec![ev],
-        None,
-    );
+        predicate: "protocol:resolution".into(),
+        object: format!("{}:{}", d.side.as_str(), d.claim),
+        certainty: Certainty::Inferred,
+        confidence: None,
+        evidence: vec![EvidenceRef::new(EvidenceType::UserAssertion, &decision_id)],
+        unit: None,
+        producer: PRODUCER.to_string(),
+    });
     ledger.resolutions.insert(d.claim.clone(), d);
     Ok(id)
 }

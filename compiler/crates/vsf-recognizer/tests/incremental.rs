@@ -22,6 +22,14 @@ fn claim_ids(l: &Ledger) -> BTreeSet<String> {
     l.claims.keys().cloned().collect()
 }
 
+/// What the claims say, independent of which observation they cite.
+fn contents(l: &Ledger) -> BTreeSet<(u32, String, String)> {
+    l.claims
+        .values()
+        .map(|c| (c.subject, c.predicate.clone(), c.object.clone()))
+        .collect()
+}
+
 /// The incremental state must equal a run from nothing: same units, same reads, same claims.
 fn assert_equivalent(s: &Session, rules: Rules) {
     let fresh = recognize(&s.obs, rules);
@@ -67,7 +75,7 @@ fn changing_a_label_recomputes_only_the_control_it_names() {
 fn an_unrelated_change_recomputes_nothing_and_keeps_every_claim() {
     let obs = snapshot("plain-form");
     let mut s = Session::new(obs.clone(), Rules::V2, 1);
-    let before = claim_ids(&s.ledger);
+    let before = contents(&s.ledger);
     let h1 = find(&obs, |n| n.tag == "h1");
     let mut e = Edit::of(&obs);
     e.node(h1).text = Some("Customer record".into());
@@ -77,7 +85,7 @@ fn an_unrelated_change_recomputes_nothing_and_keeps_every_claim() {
         up.recomputed.is_empty() && up.created.is_empty() && up.dropped.is_empty(),
         "{up:?}"
     );
-    assert_eq!(claim_ids(&s.ledger), before);
+    assert_eq!(contents(&s.ledger), before);
     assert_equivalent(&s, Rules::V2);
 }
 

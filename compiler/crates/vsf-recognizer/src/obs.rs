@@ -221,6 +221,11 @@ impl Observation {
         })
     }
 
+    /// Origin of the root document, when the capture recorded one.
+    pub fn origin(&self) -> Option<&str> {
+        self.nodes.first()?.scope.as_ref()?.origin.as_deref()
+    }
+
     pub fn index_of(&self, id: u32) -> Option<usize> {
         self.by_id.get(&id).copied()
     }

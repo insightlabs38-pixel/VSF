@@ -224,3 +224,41 @@ impl Edit {
         Observation::from_nodes(nodes)
     }
 }
+
+pub const OWNER: &str = "prin_0123456789abcdef0123456789abcdef";
+pub const REVIEWER: &str = "prin_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+pub const NOW: i64 = 1_790_000_100_000;
+
+pub fn trust() -> vsf_recognizer::trust::TrustContext {
+    vsf_recognizer::trust::TrustContext {
+        app_id: "acme:crm-eu1".into(),
+        variant_id: "var_0123456789abcdef0123456789abcdef".into(),
+        origin: "https://crm.example.com".into(),
+        principal: OWNER.into(),
+        runtime_id: "rt_ext1".into(),
+        mode: "extension".into(),
+        capability_digest: format!("sha256:{}", "c".repeat(64)),
+        source_revision: format!("sha256:{}", "d".repeat(64)),
+    }
+}
+
+pub fn policy() -> vsf_recognizer::protocol::ProtocolPolicy {
+    use vsf_recognizer::protocol::{Grant, ProtocolPolicy, Revocations};
+    ProtocolPolicy {
+        trust: trust(),
+        now: NOW,
+        max_age_ms: 30 * 24 * 3600 * 1000,
+        required_scope: "observe.protocol".into(),
+        reviewers: [REVIEWER.to_string()].into_iter().collect(),
+        grants: vec![Grant {
+            principal: OWNER.into(),
+            scope: "observe.protocol".into(),
+            granted_at: 1_789_999_999_000,
+            revoked_at: None,
+        }],
+        known_witnesses: ["profile-w1".to_string(), "checkout-w1".to_string()]
+            .into_iter()
+            .collect(),
+        revoked: Revocations::default(),
+    }
+}

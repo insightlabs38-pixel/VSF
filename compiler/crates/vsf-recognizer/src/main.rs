@@ -3,9 +3,10 @@ use std::process::ExitCode;
 use vsf_recognizer::contract::derive;
 use vsf_recognizer::engine::{discovery_queries, recognize};
 use vsf_recognizer::index::{FeatureIndex, scan};
-use vsf_recognizer::ledger::build_ledger;
+use vsf_recognizer::ledger::{Export, build_ledger, build_ledger_in};
 use vsf_recognizer::obs::Observation;
-use vsf_recognizer::reconcile::{Protocol, reconcile};
+use vsf_recognizer::protocol::{ProtocolPolicy, Standing, assess};
+use vsf_recognizer::reconcile::{Protocol, reconcile, reconcile_contradictions};
 use vsf_recognizer::report::recognition_value;
 use vsf_recognizer::semantics::Rules;
 use vsf_recognizer::val::{count, list, n, obj, pretty, s};
@@ -43,13 +44,38 @@ fn run(args: &[String]) -> Result<String, String> {
     match cmd {
         "recognize" => Ok(pretty(&recognition_value(&rec))),
         "ledger" => {
-            let mut ledger = build_ledger(&obs, &rec, captured_at);
+            let policy = match flag(args, "--policy") {
+                None => None,
+                Some(f) => {
+                    let raw = std::fs::read(f).map_err(|e| format!("read {f}: {e}"))?;
+                    let v =
+                        vsf_canon::parse(&raw).map_err(|e| format!("policy.parse:{}", e.code()))?;
+                    Some(ProtocolPolicy::from_value(&v)?)
+                }
+            };
+            let ctx = policy.as_ref().map(|p| &p.trust);
+            let mut ledger = build_ledger_in(&obs, &rec, captured_at, ctx);
+            let mut docs = Vec::new();
             for f in flags(args, "--protocol") {
                 let raw = std::fs::read(f).map_err(|e| format!("read {f}: {e}"))?;
                 let p = Protocol::from_json(&raw)?;
-                reconcile(&mut ledger, &obs, &rec, &p, 30 * 24 * 3600 * 1000);
+                let standing = policy
+                    .as_ref()
+                    .map_or(Standing::Advisory("no_policy"), |pol| assess(&p, pol));
+                let max_age = policy
+                    .as_ref()
+                    .map_or(30 * 24 * 3600 * 1000, |pol| pol.max_age_ms);
+                reconcile(&mut ledger, &obs, &rec, &p, standing, ctx, max_age);
+                docs.push((p, standing));
             }
-            Ok(pretty(&ledger.to_value()))
+            let refs: Vec<_> = docs.iter().map(|(p, s)| (p, *s)).collect();
+            reconcile_contradictions(&mut ledger, &obs, &refs);
+            let export = if args.iter().any(|a| a == "--shared") {
+                Export::Shared
+            } else {
+                Export::Local
+            };
+            Ok(pretty(&ledger.export(export)))
         }
         "contract" => {
             let ledger = build_ledger(&obs, &rec, captured_at);

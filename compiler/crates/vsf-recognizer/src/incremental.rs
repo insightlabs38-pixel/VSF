@@ -3,9 +3,10 @@
 use crate::engine::{
     Recognition, RunStats, Unit, UnitKey, compute_unit, discovery_queries, recognize,
 };
-use crate::ledger::{Ledger, build_ledger, claims_for_unit};
+use crate::ledger::{Ctx, Ledger, NewClaim, build_ledger_in, claims_for_unit, producer_for};
 use crate::obs::Observation;
 use crate::semantics::Rules;
+use crate::trust::TrustContext;
 use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -91,6 +92,8 @@ pub struct Session {
     pub obs: Observation,
     pub rec: Recognition,
     pub ledger: Ledger,
+    source: String,
+    context: Option<TrustContext>,
     readers: BTreeMap<u32, BTreeSet<UnitKey>>,
 }
 
@@ -106,8 +109,18 @@ fn reader_index(rec: &Recognition) -> BTreeMap<u32, BTreeSet<UnitKey>> {
 
 impl Session {
     pub fn new(obs: Observation, rules: Rules, captured_at: i64) -> Session {
+        Session::in_context(obs, rules, captured_at, None)
+    }
+
+    pub fn in_context(
+        obs: Observation,
+        rules: Rules,
+        captured_at: i64,
+        context: Option<TrustContext>,
+    ) -> Session {
         let rec = recognize(&obs, rules);
-        let ledger = build_ledger(&obs, &rec, captured_at);
+        let ledger = build_ledger_in(&obs, &rec, captured_at, context.as_ref());
+        let source = crate::ledger::observation_source(&obs, context.as_ref());
         let readers = reader_index(&rec);
         Session {
             rules,
@@ -115,6 +128,8 @@ impl Session {
             obs,
             rec,
             ledger,
+            source,
+            context,
             readers,
         }
     }
@@ -134,8 +149,49 @@ impl Session {
         for &id in &u.reads {
             self.readers.entry(id).or_default().insert(u.key);
         }
-        claims_for_unit(&mut self.ledger, new, &u);
+        let producer = producer_for(self.rules);
+        let cx = Ctx {
+            obs: new,
+            source: &self.source,
+            producer: &producer,
+        };
+        claims_for_unit(&mut self.ledger, &cx, &u);
         self.rec.units.insert(u.key, u);
+    }
+
+    /// Unit claims whose nodes did not change are re-cited against the new observation, as a fresh run would.
+    fn resource(&mut self, old: &str) {
+        let moved: Vec<String> = self
+            .ledger
+            .claims
+            .values()
+            .filter(|c| c.unit.is_some() && c.evidence.iter().any(|e| e.source == old))
+            .map(|c| c.id.clone())
+            .collect();
+        for id in moved {
+            if let Some(c) = self.ledger.claims.remove(&id) {
+                let evidence = c
+                    .evidence
+                    .into_iter()
+                    .map(|mut e| {
+                        if e.source == old {
+                            e.source = self.source.clone();
+                        }
+                        e
+                    })
+                    .collect();
+                self.ledger.push(NewClaim {
+                    subject: c.subject,
+                    predicate: c.predicate,
+                    object: c.object,
+                    certainty: c.certainty,
+                    confidence: c.confidence,
+                    evidence,
+                    unit: c.unit,
+                    producer: c.producer,
+                });
+            }
+        }
     }
 
     /// Moves to `new`, recomputing only what the change can reach.
@@ -149,7 +205,12 @@ impl Session {
             }
         }
         let mut up = Update::default();
-        self.ledger.record(&new.digest, self.captured_at, new.len());
+        let old_source = std::mem::replace(
+            &mut self.source,
+            self.ledger
+                .record_observation(&new, self.captured_at, self.context.as_ref())
+                .unwrap_or_default(),
+        );
         let before = self.rec.units.len();
         for key in &affected {
             self.unlink(*key);
@@ -187,6 +248,9 @@ impl Session {
             }
         }
         up.reused = before.saturating_sub(affected.len());
+        if old_source != self.source {
+            self.resource(&old_source);
+        }
         self.rec.digest = new.digest.clone();
         self.rec.stats = RunStats {
             nodes: new.len(),
