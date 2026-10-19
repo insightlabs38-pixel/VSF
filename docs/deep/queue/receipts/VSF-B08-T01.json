@@ -1,0 +1,42 @@
+{
+  "task_id": "VSF-B08-T01",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "ae6d4b3bed02308196c9d8a7836511984ad6170f",
+  "paths": [
+    "compiler/crates/vsf-versioning/src/lineage.rs",
+    "compiler/crates/vsf-versioning/tests/lineage.rs"
+  ],
+  "acceptance": "Manifests have immutable IDs and verifiable lineage; divergent branches and merges are deterministically representable.",
+  "positive": {
+    "fixture": "chain, branch, merge, criss-cross merge, any insertion order gives the same graph and order",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test lineage",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "forged id, missing parent, duplicate, self parent, cycle, tampered document, too many parents",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test lineage",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test fixtures",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Ids are content digests; nothing is trusted by name.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Pruned history must be named explicitly"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T01.lineage-graph.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T01.version-fixtures-drift.log"
+  ],
+  "review_result": "ACCEPTED"
+}

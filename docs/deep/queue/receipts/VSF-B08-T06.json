@@ -1,0 +1,43 @@
+{
+  "task_id": "VSF-B08-T06",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "3a8b49bb7eb6f95fed1c25c6baf8401c3f4dd52c",
+  "paths": [
+    "backend/versions/revoke.go",
+    "backend/execution/runtime.go",
+    "compiler/crates/vsf-versioning/src/pin.rs"
+  ],
+  "acceptance": "Revoked vulnerable version cannot execute even if pinned; incident fixture proves revocation across runtime variants.",
+  "positive": {
+    "fixture": "an unrevoked contract still runs",
+    "command": "go -C backend test -race -count=1 -run NotRevoked ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "manifest, artifact and operation@version revocations block every runtime variant, promotion, head execution and a queued write",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test pin; go -C backend test -tags integration -race -count=1 -run Revoked|Revocation ./versions/ ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./versions/ ./execution/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Revocation outranks pins and is rechecked just before the effect.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Revocations only grow; no un-revoke path"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T06.revocation-store-and-execution.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T04.pin-and-compatibility-state.log"
+  ],
+  "review_result": "ACCEPTED"
+}

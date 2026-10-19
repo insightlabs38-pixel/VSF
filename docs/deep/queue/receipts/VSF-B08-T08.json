@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B08-T08",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "98d923928f3e76b348ce27d22c176a9ba8091fca",
+  "paths": [
+    "compiler/crates/vsf-versioning/src/report.rs",
+    "compiler/crates/vsf-versioning/src/main.rs",
+    "schemas/versioning/diff-report.v1.schema.json",
+    "fixtures/versions/diff",
+    "tests/cross-language/diffreport.test.ts"
+  ],
+  "acceptance": "Diff output is machine-readable and consumable by future UI/CLI without reconstructing history from prose.",
+  "positive": {
+    "fixture": "committed reports match the emitter and validate against the published schema in TypeScript",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test report; pnpm --filter @vsf/cross-language-tests run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a report with an unknown class, extra field, bad digest or missing summary is refused by the schema",
+    "command": "pnpm --filter @vsf/cross-language-tests run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "new schema vsf-diff-report-v1",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Reports carry digests and paths, not source data.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Studio rendering is later work"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T08.diff-report-emitter.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T08.diff-report-schema-consumer.log"
+  ],
+  "review_result": "ACCEPTED"
+}

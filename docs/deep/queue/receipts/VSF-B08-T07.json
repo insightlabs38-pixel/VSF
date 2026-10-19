@@ -1,0 +1,38 @@
+{
+  "task_id": "VSF-B08-T07",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "98d923928f3e76b348ce27d22c176a9ba8091fca",
+  "paths": [
+    "compiler/crates/vsf-versioning/tests/scenarios.rs"
+  ],
+  "acceptance": "Old client/new source, removed field, rollback and simultaneous newer version all obey compatibility states.",
+  "positive": {
+    "fixture": "an old pin ignores a new source feature and stays compatible; an interface rollback restores only the presentation",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test scenarios",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a lost required field is a breaking diff and a blocked pin; a newer version cannot displace the pin; a data rollback touches no artifact",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test scenarios",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Data rollback is never implied by an interface rollback.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T07.drift-rollback-and-newer-version.log"
+  ],
+  "review_result": "ACCEPTED"
+}

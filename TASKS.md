@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B08-T09`
+**Next eligible:** close G8 (B08)
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -14,7 +14,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B05 | G5 | 8/8 | DONE | PROCEED |
 | B06 | G6 | 18/18 | DONE | PROCEED |
 | B07 | G7 | 14/14 | DONE | PROCEED |
-| B08 | G8 | 0/10 | READY | - |
+| B08 | G8 | 10/10 | GATE_PENDING | - |
 | B09 | G9 | 0/9 | TODO | - |
 | B10 | G10 | 0/8 | TODO | - |
 | B11 | G11 | 0/6 | TODO | - |
@@ -136,16 +136,16 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B08 · Build version registry, semantic diff and pins
 
-- [ ] `VSF-B08-T01` Implement content-digest immutable manifest and version lineage DAG _(READY)_
-- [ ] `VSF-B08-T02` Create deterministic IR diff and classify cosmetic/additive/breaking/permission/unknown changes
-- [ ] `VSF-B08-T03` Compute impacted dependency closure and targeted test selection
-- [ ] `VSF-B08-T04` Support contract-version pin and compatibility state on source drift
-- [ ] `VSF-B08-T05` Implement local version storage, promotion transaction and artifact hash verification
-- [ ] `VSF-B08-T06` Create security revocation that overrides old pin
-- [ ] `VSF-B08-T07` Test old contract plus new source feature, missing required field and rollback
-- [ ] `VSF-B08-T08` Add draft diff result format for future Studio/CLI UI
-- [ ] `VSF-B08-T09` Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding) _(READY)_
-- [ ] `VSF-B08-T10` UI architecture contract and PresentationIR layout extension (UI checkpoint)
+- [x] `VSF-B08-T01` Implement content-digest immutable manifest and version lineage DAG
+- [x] `VSF-B08-T02` Create deterministic IR diff and classify cosmetic/additive/breaking/permission/unknown changes
+- [x] `VSF-B08-T03` Compute impacted dependency closure and targeted test selection
+- [x] `VSF-B08-T04` Support contract-version pin and compatibility state on source drift
+- [x] `VSF-B08-T05` Implement local version storage, promotion transaction and artifact hash verification
+- [x] `VSF-B08-T06` Create security revocation that overrides old pin
+- [x] `VSF-B08-T07` Test old contract plus new source feature, missing required field and rollback
+- [x] `VSF-B08-T08` Add draft diff result format for future Studio/CLI UI
+- [x] `VSF-B08-T09` Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding)
+- [x] `VSF-B08-T10` UI architecture contract and PresentationIR layout extension (UI checkpoint)
 
 ### B09 · Integrate extension and secure local bridge
 

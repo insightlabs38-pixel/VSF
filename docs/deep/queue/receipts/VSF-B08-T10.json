@@ -1,0 +1,59 @@
+{
+  "task_id": "VSF-B08-T10",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "e364b7c57f632a0eb2c633f189275603394b677d",
+  "paths": [
+    "schemas/ir/presentation.idl.json",
+    "schemas/ir/released/1.2.0",
+    "compiler/crates/vsf-ir/src/semantics.rs",
+    "frontend/packages/renderer/src/layout.ts",
+    "frontend/packages/renderer/src/regions.ts",
+    "frontend/packages/renderer/src/renderer.ts",
+    "tests/ui/specs/layout.spec.ts",
+    "fixtures/ui/compositions",
+    "docs/deep/ui/00_UI_Architecture_Contract.md",
+    "docs/deep/adr/ADR-035-ui-architecture-and-layout.md"
+  ],
+  "acceptance": "A written, testable UI architecture contract defines the VSF management shell and the generated-application surface, one design system, and backward-compatible PresentationIR layout abstractions; at least four representative compositions are specified and the accepted renderer fixtures are unchanged.",
+  "positive": {
+    "fixture": "four compositions render in real Chromium at desktop, tablet and phone widths without overflow or lost operations; the existing 106+ UI tests are unchanged",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/layout.spec.ts; pnpm --filter @vsf/ui-tests run test:browser",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unknown parent, cycle, two mains, bad sizes, dock without role, breakpoints out of order, split without parts, a hideable region holding a destructive operation, preferences without a grant",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test layout; pnpm --filter @vsf/ui-tests run test:unit",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/idlgen run test",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.2.0 additive: Region layout fields, Customization",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Customization cannot hide a risky operation, reorder components or exceed authored bounds; invalid layouts are never drawn.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "No pixel verification until B09 screenshots",
+    "No drag-resize UI yet",
+    "Management shell is specified, built in B09"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T10.idl-compat-and-snapshots.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T10.rust-layout-rules.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T10.ts-layout-unit.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T10.chromium-layout-compositions.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T10.renderer-regression-suite.log"
+  ],
+  "review_result": "ACCEPTED"
+}
