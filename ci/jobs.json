@@ -314,6 +314,24 @@
         "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "test:browser"]
       }
     ],
+    "execution": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "build-native",
+        "cmd": ["scripts/build-native.sh"]
+      },
+      {
+        "name": "go-vet",
+        "cmd": ["go", "-C", "backend", "vet", "-tags", "integration", "./execution/..."]
+      },
+      {
+        "name": "execution-integration",
+        "cmd": ["go", "-C", "backend", "test", "-tags", "integration", "-race", "-count=1", "./execution/..."]
+      }
+    ],
     "ui": [
       {
         "name": "pnpm-install",
