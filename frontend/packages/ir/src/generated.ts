@@ -3,30 +3,36 @@ import type { Value } from "@vsf/schema";
 import * as rt from "./rt.ts";
 import type { Ctx } from "./rt.ts";
 
-export const IR_VERSION: rt.Version = [1, 1, 0];
-export const IR_VERSION_TEXT = "1.1.0";
+export const IR_VERSION: rt.Version = [1, 2, 0];
+export const IR_VERSION_TEXT = "1.2.0";
 export const FAMILIES: readonly (readonly [string, string, string])[] = [
-  ["environment", "EnvironmentCapabilityManifest", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"],
-  ["observation", "ObservationIR", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"],
-  ["semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"],
-  ["operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"],
-  ["presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"],
-  ["version", "VersionManifest", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"],
+  ["environment", "EnvironmentCapabilityManifest", "sha256:fd6829d3d395ecc73356b0d7d4cebafd305a94ed3d976d9ac73098c298ae552d"],
+  ["observation", "ObservationIR", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"],
+  ["semantic", "SemanticIR", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"],
+  ["operation", "OperationContract", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"],
+  ["presentation", "PresentationIR", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"],
+  ["version", "VersionManifest", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"],
 ];
 /** Every [version, family, digest] a reader decodes: all released snapshots and the current schema. */
 export const ACCEPTED: readonly (readonly [rt.Version, string, string])[] = [
   [[1, 0, 0], "environment", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"],
   [[1, 1, 0], "environment", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"],
+  [[1, 2, 0], "environment", "sha256:fd6829d3d395ecc73356b0d7d4cebafd305a94ed3d976d9ac73098c298ae552d"],
   [[1, 0, 0], "observation", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"],
   [[1, 1, 0], "observation", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"],
+  [[1, 2, 0], "observation", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"],
   [[1, 0, 0], "operation", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"],
   [[1, 1, 0], "operation", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"],
+  [[1, 2, 0], "operation", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"],
   [[1, 0, 0], "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"],
   [[1, 1, 0], "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"],
+  [[1, 2, 0], "presentation", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"],
   [[1, 0, 0], "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"],
   [[1, 1, 0], "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"],
+  [[1, 2, 0], "semantic", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"],
   [[1, 0, 0], "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"],
   [[1, 1, 0], "version", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"],
+  [[1, 2, 0], "version", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"],
 ];
 
 /** Domain-separated SHA-256 of canonical bytes. */
@@ -3152,6 +3158,8 @@ export interface PromotionRecord {
   signature: Label;
   previous?: Digest;
   attestation?: PromotionSignature;
+  sequence?: Count;
+  not_after?: Instant;
 }
 export function decodePromotionRecordFields(o: rt.Obj, ctx: Ctx): PromotionRecord {
   const path = o.path;
@@ -3163,6 +3171,10 @@ export function decodePromotionRecordFields(o: rt.Obj, ctx: Ctx): PromotionRecor
   const previous_ = previous_raw === undefined ? undefined : decodeDigest(previous_raw, rt.child(path, "previous"), ctx);
   const attestation_raw = o.since("attestation", [1, 1, 0], false, ctx);
   const attestation_ = attestation_raw === undefined ? undefined : decodePromotionSignature(attestation_raw, rt.child(path, "attestation"), ctx);
+  const sequence_raw = o.since("sequence", [1, 2, 0], false, ctx);
+  const sequence_ = sequence_raw === undefined ? undefined : decodeCount(sequence_raw, rt.child(path, "sequence"), ctx);
+  const not_after_raw = o.since("not_after", [1, 2, 0], false, ctx);
+  const not_after_ = not_after_raw === undefined ? undefined : decodeInstant(not_after_raw, rt.child(path, "not_after"), ctx);
   o.finish();
   const out = {} as PromotionRecord;
   out.promoted_at = promoted_at_;
@@ -3171,6 +3183,8 @@ export function decodePromotionRecordFields(o: rt.Obj, ctx: Ctx): PromotionRecor
   out.signature = signature_;
   if (previous_ !== undefined) out.previous = previous_;
   if (attestation_ !== undefined) out.attestation = attestation_;
+  if (sequence_ !== undefined) out.sequence = sequence_;
+  if (not_after_ !== undefined) out.not_after = not_after_;
   return out;
 }
 export function decodePromotionRecord(v: Value, path: string, ctx: Ctx): PromotionRecord {
@@ -3184,6 +3198,8 @@ export function encodePromotionRecordFields(x: PromotionRecord): Map<string, Val
   e.set("signature", encodeLabel(x.signature));
   if (x.previous !== undefined) e.set("previous", encodeDigest(x.previous));
   if (x.attestation !== undefined) e.set("attestation", encodePromotionSignature(x.attestation));
+  if (x.sequence !== undefined) e.set("sequence", encodeCount(x.sequence));
+  if (x.not_after !== undefined) e.set("not_after", encodeInstant(x.not_after));
   return e;
 }
 export function encodePromotionRecord(x: PromotionRecord): Value {

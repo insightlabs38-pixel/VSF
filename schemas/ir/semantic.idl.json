@@ -1,6 +1,6 @@
 {
   "idl": "vsf-idl/1",
-  "ir_version": "1.1.0",
+  "ir_version": "1.2.0",
   "family": "semantic",
   "root": "SemanticIR",
   "types": {

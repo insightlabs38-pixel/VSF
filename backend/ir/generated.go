@@ -10,18 +10,18 @@ import (
 
 var _ = regexp.MustCompile
 
-const IRVersionText = "1.1.0"
+const IRVersionText = "1.2.0"
 
-var IRVersion = rt.Version{1, 1, 0}
+var IRVersion = rt.Version{1, 2, 0}
 
 // Families lists each document family, its root type and the digest of its type closure.
 var Families = [][3]string{
-	{"environment", "EnvironmentCapabilityManifest", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"},
-	{"observation", "ObservationIR", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"},
-	{"semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"},
-	{"operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"},
-	{"presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"},
-	{"version", "VersionManifest", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"},
+	{"environment", "EnvironmentCapabilityManifest", "sha256:fd6829d3d395ecc73356b0d7d4cebafd305a94ed3d976d9ac73098c298ae552d"},
+	{"observation", "ObservationIR", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"},
+	{"semantic", "SemanticIR", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"},
+	{"operation", "OperationContract", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"},
+	{"presentation", "PresentationIR", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"},
+	{"version", "VersionManifest", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"},
 }
 
 // Accepted lists every version and family digest a reader decodes: all released snapshots and the current schema.
@@ -32,16 +32,22 @@ var Accepted = []struct {
 }{
 	{rt.Version{1, 0, 0}, "environment", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"},
 	{rt.Version{1, 1, 0}, "environment", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"},
+	{rt.Version{1, 2, 0}, "environment", "sha256:fd6829d3d395ecc73356b0d7d4cebafd305a94ed3d976d9ac73098c298ae552d"},
 	{rt.Version{1, 0, 0}, "observation", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"},
 	{rt.Version{1, 1, 0}, "observation", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"},
+	{rt.Version{1, 2, 0}, "observation", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"},
 	{rt.Version{1, 0, 0}, "operation", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"},
 	{rt.Version{1, 1, 0}, "operation", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"},
+	{rt.Version{1, 2, 0}, "operation", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"},
 	{rt.Version{1, 0, 0}, "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"},
 	{rt.Version{1, 1, 0}, "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"},
+	{rt.Version{1, 2, 0}, "presentation", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"},
 	{rt.Version{1, 0, 0}, "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"},
 	{rt.Version{1, 1, 0}, "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"},
+	{rt.Version{1, 2, 0}, "semantic", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"},
 	{rt.Version{1, 0, 0}, "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"},
 	{rt.Version{1, 1, 0}, "version", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"},
+	{rt.Version{1, 2, 0}, "version", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"},
 }
 
 var ruleDigest = rt.StrRule{Pattern: regexp.MustCompile("^sha256:[0-9a-f]{64}$"), MaxLen: 71, Text: rt.TextNone}
@@ -7105,6 +7111,8 @@ type PromotionRecord struct {
 	Signature   Label
 	Previous    *Digest
 	Attestation *PromotionSignature
+	Sequence    *Count
+	NotAfter    *Instant
 }
 
 func DecodePromotionRecord(v any, path string, ctx rt.Ctx) (PromotionRecord, error) {
@@ -7186,10 +7194,38 @@ func decodePromotionRecordFields(o *rt.Obj, path string, ctx rt.Ctx) (PromotionR
 			f_attestation = &x
 		}
 	}
+	var f_sequence *Count
+	{
+		raw, found, err := o.Since("sequence", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeCount(raw, rt.Child(path, "sequence"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_sequence = &x
+		}
+	}
+	var f_not_after *Instant
+	{
+		raw, found, err := o.Since("not_after", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeInstant(raw, rt.Child(path, "not_after"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_not_after = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = PromotionRecord{PromotedAt: f_promoted_at, Gates: f_gates, Signer: f_signer, Signature: f_signature, Previous: f_previous, Attestation: f_attestation}
+	out = PromotionRecord{PromotedAt: f_promoted_at, Gates: f_gates, Signer: f_signer, Signature: f_signature, Previous: f_previous, Attestation: f_attestation, Sequence: f_sequence, NotAfter: f_not_after}
 	return out, nil
 }
 
@@ -7210,6 +7246,12 @@ func (x PromotionRecord) encodeFields() *canon.Object {
 	}
 	if x.Attestation != nil {
 		e.Set("attestation", (*x.Attestation).Encode())
+	}
+	if x.Sequence != nil {
+		e.Set("sequence", (*x.Sequence).Encode())
+	}
+	if x.NotAfter != nil {
+		e.Set("not_after", (*x.NotAfter).Encode())
 	}
 	return e
 }

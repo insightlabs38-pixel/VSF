@@ -27,7 +27,7 @@
         {
           "op": "set",
           "path": "/schema",
-          "value": "vsf.operation/1.2.0"
+          "value": "vsf.operation/1.3.0"
         }
       ]
     },
@@ -42,7 +42,7 @@
         {
           "op": "set",
           "path": "/schema",
-          "value": "vsf.operation/1.1.1"
+          "value": "vsf.operation/1.2.1"
         }
       ]
     },
