@@ -7,6 +7,10 @@ export type Command =
   | { type: "transform"; tabId: number }
   | { type: "restore"; tabId: number }
   | { type: "connect"; url: string }
+  | { type: "pair_begin"; url: string }
+  | { type: "pair_finish"; code: string }
+  | { type: "unpair" }
+  | { type: "ping" }
   | { type: "disconnect" };
 
 export type DenyReason =
@@ -18,6 +22,10 @@ export type DenyReason =
   | "inject_failed"
   | "render_failed"
   | "permission_not_held"
+  | "unpaired"
+  | "pairing_failed"
+  | "service_refused"
+  | "service_unreachable"
   | "pack_invalid";
 
 export type Reply = { ok: true; [key: string]: unknown } | { ok: false; error: DenyReason | string; detail?: string };
@@ -124,6 +132,18 @@ export function parseCommand(raw: unknown): Command | null {
       const url = normalizeService(m.url);
       return url === null ? null : { type: "connect", url };
     }
+    case "pair_begin": {
+      const url = normalizeService(m.url);
+      return url === null ? null : { type: "pair_begin", url };
+    }
+    case "pair_finish":
+      return typeof m.code === "string" && /^[0-9A-Za-z -]{10,16}$/.test(m.code)
+        ? { type: "pair_finish", code: m.code }
+        : null;
+    case "unpair":
+      return { type: "unpair" };
+    case "ping":
+      return { type: "ping" };
     case "disconnect":
       return { type: "disconnect" };
     case "capture":

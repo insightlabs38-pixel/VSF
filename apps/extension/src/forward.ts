@@ -17,13 +17,19 @@ export async function forward(
   body: ForwardBody,
   doFetch: typeof fetch = fetch,
   timeoutMs = 8000,
+  bearer?: string,
 ): Promise<Outcome> {
   const abort = new AbortController();
   const timer = setTimeout(() => abort.abort(), timeoutMs);
   try {
     const res = await doFetch(`${base}/v1/operate`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "X-VSF-Bridge": "1", "X-VSF-Request": body.requestId },
+      headers: {
+        "Content-Type": "application/json",
+        "X-VSF-Bridge": "1",
+        "X-VSF-Request": body.requestId,
+        ...(bearer === undefined ? {} : { Authorization: `Bearer ${bearer}` }),
+      },
       body: JSON.stringify(body),
       signal: abort.signal,
       credentials: "omit",

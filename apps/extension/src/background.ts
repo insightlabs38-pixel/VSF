@@ -2,6 +2,7 @@ import { type Fabric, loadFabric } from "@vsf/wasm-host";
 import { Chain, type Expected } from "./envelope.ts";
 import { forward } from "./forward.ts";
 import { Ledger, type Op } from "./ledger.ts";
+import { PairingClient, type State } from "./pairing.ts";
 import { type Deps, PipelineError, runStages } from "./pipeline.ts";
 import {
   isCommandSender,
@@ -96,6 +97,20 @@ const ledger = new Ledger({
   },
 });
 const sessions = new Map<number, TabSession>();
+const pairing = new PairingClient({
+  fetch: (input, init) => fetch(input, init),
+  peer: self.location.origin,
+  now: () => Date.now(),
+  store: {
+    async get() {
+      const { pairing: p } = await chrome.storage.session.get("pairing");
+      return (p as State | undefined) ?? {};
+    },
+    async set(state) {
+      await chrome.storage.session.set({ pairing: state });
+    },
+  },
+});
 const ready = reconcile().then(() => ledger.reconcile());
 
 async function capture(tabId: number): Promise<Reply> {
@@ -267,6 +282,8 @@ function openSession(tabId: number, origin: string, epoch: string): { key: strin
 }
 
 async function service(): Promise<string | null> {
+  const paired = await pairing.credentials();
+  if (paired !== undefined) return paired.url;
   const { service: s } = await chrome.storage.local.get("service");
   return typeof s === "string" ? s : null;
 }
@@ -373,6 +390,7 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
         ops: await ledger.all(),
         sessions: [...sessions.keys()],
         service: await service(),
+        paired: (await pairing.credentials())?.pairingId ?? null,
       };
     case "grant": {
       if (!(await holdsBrowserPermission(cmd.origin))) return deny("permission_not_held", cmd.origin);
@@ -409,6 +427,19 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
     case "disconnect":
       await chrome.storage.local.remove("service");
       return { ok: true };
+    case "pair_begin": {
+      const r = await pairing.begin(cmd.url);
+      return r.ok ? { ok: true, pairId: r.pairId, expires: r.expires } : deny("pairing_failed", r.error);
+    }
+    case "pair_finish": {
+      const r = await pairing.finish(cmd.code);
+      return r.ok ? { ok: true, pairingId: r.pairingId } : deny("pairing_failed", r.error);
+    }
+    case "unpair":
+      await pairing.unpair();
+      return { ok: true };
+    case "ping":
+      return ping();
   }
 }
 
@@ -440,14 +471,18 @@ async function operate(
       ...(op.reason ? { reason: op.reason } : {}),
     };
   }
-  const outcome = await forward(base, {
+  const body = {
     requestId: msg.requestId,
     action: msg.action,
     entity: msg.entity,
     ...(msg.rowKey === undefined ? {} : { rowKey: msg.rowKey }),
     values: msg.values,
     origin,
-  });
+  };
+  let outcome = await forward(base, body, fetch, 8000, (await pairing.credentials())?.access);
+  // An expired credential is refused before anything runs, so renewing and sending again cannot act twice.
+  if (outcome.kind === "answered" && outcome.message === "bridge.token_expired" && (await pairing.renew()))
+    outcome = await forward(base, body, fetch, 8000, (await pairing.credentials())?.access);
   if (outcome.kind === "lost") {
     await ledger.lose(msg.requestId, outcome.reason);
     return { ok: true, state: "unknown", reason: outcome.reason };
@@ -455,6 +490,39 @@ async function operate(
   const result = { ok: outcome.ok, ...(outcome.message === undefined ? {} : { message: outcome.message }) };
   await ledger.finish(msg.requestId, result);
   return { ok: true, state: "done", result };
+}
+
+/** Checks the companion with the current credential, renewing it once if it has simply expired. */
+async function ping(): Promise<Reply> {
+  const base = await service();
+  if (base === null) return deny("unpaired");
+  // Browsers send Origin on a POST but not always on a GET, and the credential is bound to that Origin.
+  const call = async (): Promise<Response> => {
+    const access = (await pairing.credentials())?.access;
+    return fetch(`${base}/v1/pair/whoami`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-VSF-Bridge": "1",
+        ...(access === undefined ? {} : { Authorization: `Bearer ${access}` }),
+      },
+      body: "{}",
+      credentials: "omit",
+      cache: "no-store",
+    });
+  };
+  try {
+    let res = await call();
+    let error = res.ok ? "" : String(((await res.json().catch(() => ({}))) as { error?: string }).error ?? res.status);
+    if (error === "bridge.token_expired" && (await pairing.renew())) {
+      res = await call();
+      error = res.ok ? "" : String(((await res.json().catch(() => ({}))) as { error?: string }).error ?? res.status);
+    }
+    if (error === "bridge.revoked") await pairing.unpair();
+    return error === "" ? { ok: true } : deny("service_refused", error);
+  } catch {
+    return deny("service_unreachable");
+  }
 }
 
 async function handleShell(raw: unknown, sender: chrome.runtime.MessageSender): Promise<ShellReply> {

@@ -3,7 +3,6 @@ package bridge
 
 import (
 	"crypto/rand"
-	"crypto/subtle"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -15,6 +14,7 @@ import (
 	"time"
 
 	"github.com/insightlabs38-pixel/vsf/backend/canon"
+	"github.com/insightlabs38-pixel/vsf/backend/pairing"
 	"github.com/insightlabs38-pixel/vsf/backend/schema"
 )
 
@@ -29,7 +29,9 @@ const (
 )
 
 type Config struct {
-	// Token is the pairing secret presented as a bearer credential; at least 32 hex characters.
+	// Pairing, when set, replaces the static token: callers hold per-peer credentials from an approved pairing.
+	Pairing *pairing.Service
+	// Token is a static development credential presented as a bearer token; at least 32 hex characters.
 	Token string
 	// AllowedOrigins are exact browser origins (for example chrome-extension://<id>) allowed to call the bridge.
 	AllowedOrigins []string
@@ -80,7 +82,7 @@ func NewToken() (string, error) {
 }
 
 func New(cfg Config) (*Server, error) {
-	if len(cfg.Token) < 32 {
+	if cfg.Pairing == nil && len(cfg.Token) < 32 {
 		return nil, errors.New("bridge: token must be at least 32 characters")
 	}
 	if cfg.MaxBody == 0 {
@@ -200,11 +202,15 @@ func (s *Server) handle(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
-	// 3. Authentication: bearer token only; never from URL, cookie or form field.
-	got, ok := strings.CutPrefix(r.Header.Get("Authorization"), "Bearer ")
-	if !ok || subtle.ConstantTimeCompare([]byte(got), []byte(s.cfg.Token)) != 1 {
-		deny(w, http.StatusUnauthorized, "bridge.unauthorized")
-		return
+	// 3. Authentication: bearer token only; never from URL, cookie or form field. Pairing calls start unauthenticated.
+	var who *pairing.Principal
+	if !s.unauthenticated(r) {
+		p, status, code := s.authenticate(r, origin)
+		if code != "" {
+			deny(w, status, code)
+			return
+		}
+		who = p
 	}
 	// 4. CSRF: state-changing calls need a non-simple content type and a custom header (forces a CORS preflight).
 	if r.Method != http.MethodGet && r.Method != http.MethodHead {
@@ -218,12 +224,14 @@ func (s *Server) handle(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	s.route(w, r)
+	s.route(w, r, who)
 }
 
-func (s *Server) route(w http.ResponseWriter, r *http.Request) {
+func (s *Server) route(w http.ResponseWriter, r *http.Request, who *pairing.Principal) {
 	path := r.URL.Path
 	switch {
+	case strings.HasPrefix(path, "/v1/pair/"):
+		s.pair(w, r, strings.TrimPrefix(path, "/v1/pair/"), who)
 	case path == "/v1/ping":
 		if r.Method != http.MethodGet {
 			deny(w, http.StatusMethodNotAllowed, "bridge.method_not_allowed")

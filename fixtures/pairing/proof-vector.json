@@ -1,0 +1,32 @@
+{
+  "schema": "vsf-pairing-proof-vector-v1",
+  "cases": [
+    {
+      "name": "typed with dash and lower case",
+      "code": "7k2m9-q4xvd",
+      "pair_id": "0f1e2d3c4b5a69788796a5b4c3d2e1f0",
+      "peer": "chrome-extension://lgnekpogndcjggibkbaekekanfonjhie",
+      "nonce_c": "00112233445566778899aabbccddeeff",
+      "nonce_s": "ffeeddccbbaa99887766554433221100",
+      "proof": "635bd947be47836339585f924769febac131d60a7cb482964e8e109c96a91b6a"
+    },
+    {
+      "name": "canonical form",
+      "code": "7K2M9Q4XVD",
+      "pair_id": "0f1e2d3c4b5a69788796a5b4c3d2e1f0",
+      "peer": "chrome-extension://lgnekpogndcjggibkbaekekanfonjhie",
+      "nonce_c": "00112233445566778899aabbccddeeff",
+      "nonce_s": "ffeeddccbbaa99887766554433221100",
+      "proof": "635bd947be47836339585f924769febac131d60a7cb482964e8e109c96a91b6a"
+    },
+    {
+      "name": "other peer",
+      "code": "7K2M9Q4XVD",
+      "pair_id": "0f1e2d3c4b5a69788796a5b4c3d2e1f0",
+      "peer": "chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "nonce_c": "00112233445566778899aabbccddeeff",
+      "nonce_s": "ffeeddccbbaa99887766554433221100",
+      "proof": "d4c69cb43c28690a8ce095fb281d3e810c69846121d529fa62b3d2ad94a58d99"
+    }
+  ]
+}

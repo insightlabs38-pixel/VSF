@@ -39,3 +39,18 @@ for (const type of ["transform", "restore"] as const) {
     result.textContent = JSON.stringify(await send({ type, tabId: tab.id }));
   });
 }
+
+const service = (): string => (document.getElementById("service") as HTMLInputElement | null)?.value ?? "";
+
+document.getElementById("pair")?.addEventListener("click", async () => {
+  result.textContent = JSON.stringify(await send({ type: "pair_begin", url: service() }));
+});
+
+document.getElementById("finish")?.addEventListener("click", async () => {
+  const code = (document.getElementById("code") as HTMLInputElement).value;
+  result.textContent = JSON.stringify(await send({ type: "pair_finish", code }));
+});
+
+document.getElementById("unpair")?.addEventListener("click", async () => {
+  result.textContent = JSON.stringify(await send({ type: "unpair" }));
+});
