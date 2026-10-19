@@ -1,6 +1,7 @@
 #![cfg_attr(test, allow(clippy::unwrap_used, clippy::expect_used, clippy::panic))]
 //! Version identity, lineage, promotion trust, semantic diff, impact selection and pin resolution.
 
+pub mod lineage;
 pub mod promotion;
 
 /// A refusal with a stable code; callers branch on the code, never on the text.
