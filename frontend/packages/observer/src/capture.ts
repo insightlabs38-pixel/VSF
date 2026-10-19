@@ -147,7 +147,12 @@ export interface Described {
 export interface DescribeCtx {
   opts: CaptureOptions;
   idOf(el: Element): number;
+  /** Labels naming a control, from an index built once per root instead of a document scan per control. */
+  labelsFor(el: Element): Element[];
 }
+
+const LABELABLE = new Set(["INPUT", "SELECT", "TEXTAREA", "BUTTON", "METER", "OUTPUT", "PROGRESS"]);
+export const isLabelable = (el: Element): boolean => LABELABLE.has(el.tagName);
 
 function textAlternative(el: Element, opts: CaptureOptions): string {
   const label = el.getAttribute("aria-label");
@@ -159,10 +164,11 @@ function textAlternative(el: Element, opts: CaptureOptions): string {
 function nameOf(
   el: Element,
   role: string | null,
-  opts: CaptureOptions,
+  ctx: DescribeCtx,
   deps: Element[],
   targets: { kind: RelKind; el: Element }[],
 ): string | null {
+  const opts = ctx.opts;
   const refs = el.getAttribute("aria-labelledby");
   if (refs) {
     const parts: string[] = [];
@@ -178,10 +184,10 @@ function nameOf(
   }
   const own = el.getAttribute("aria-label");
   if (own?.trim()) return collapse(own);
-  const labels = (el as HTMLInputElement).labels;
-  if (labels && labels.length > 0) {
+  const labels = isLabelable(el) ? ctx.labelsFor(el) : [];
+  if (labels.length > 0) {
     const parts: string[] = [];
-    for (const l of Array.from(labels)) {
+    for (const l of labels) {
       deps.push(l);
       targets.push({ kind: "label", el: l });
       const t = contentText(l, opts.maxTextChars);
@@ -250,7 +256,7 @@ export function describeElement(el: Element, ctx: DescribeCtx): Described {
   let flags = scopeFlag(scope);
   const control = el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT";
   if (scope !== "credential" || control) {
-    const rawName = nameOf(el, role, ctx.opts, deps, relTargets);
+    const rawName = nameOf(el, role, ctx, deps, relTargets);
     const rawText = scope === "credential" ? null : ownText(el);
     name = rawName === null ? null : redactText(clip(rawName, ctx.opts.maxTextChars));
     text = rawText === null ? null : redactText(clip(rawText, ctx.opts.maxTextChars));

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { CanonNode } from "@vsf/observer";
 import { labelsPage, PRIVATE_VALUE } from "../support/pages.ts";
-import { attach, startWorld } from "../support/world.ts";
+import { attach, startWorld, truthOf } from "../support/world.ts";
 
 const flat = (nodes: CanonNode[]): CanonNode[] => nodes.flatMap((n) => [n, ...flat(n[7])]);
 const FLAG = { visible: 1, interactive: 2, editable: 4, disabled: 16, rtl: 64 };
@@ -118,5 +118,59 @@ test("a label that changes updates every control named by it", async ({ page }) 
   await h.settle();
   const after = flat(h.collector.replica.canonical());
   expect((named(after, "الاسم")?.[4] ?? 0) & FLAG.disabled).toBeTruthy();
+  await world.stop();
+});
+
+test("labels that appear, disappear or retarget rename the controls they name", async ({ page }) => {
+  const { world, h, all } = await load(page);
+  await page.evaluate(() => {
+    const b = document.createElement("button");
+    b.id = "late-btn";
+    b.type = "button";
+    document.getElementById("f")?.append(b);
+  });
+  await h.settle();
+  expect(all().some((n) => n[1] === "button" && n[2] === null && n[3] === null)).toBe(true);
+  await page.evaluate(() => {
+    const l = document.createElement("label");
+    l.htmlFor = "late-btn";
+    l.textContent = "Late label";
+    document.getElementById("f")?.append(l);
+  });
+  await h.settle();
+  expect(named(all(), "Late label")?.[1]).toBe("button");
+  await page.evaluate(() => {
+    const other = document.createElement("input");
+    other.id = "other-in";
+    document.getElementById("f")?.append(other);
+    (document.querySelector('label[for="late-btn"]') as HTMLLabelElement).htmlFor = "other-in";
+  });
+  await h.settle();
+  const after = all();
+  expect(named(after, "Late label")?.[1]).toBe("textbox");
+  expect(after.some((n) => n[1] === "button" && n[2] === "Late label")).toBe(false);
+  await page.evaluate(() => document.querySelector('label[for="other-in"]')?.remove());
+  await h.settle();
+  expect(named(all(), "Late label")).toBeUndefined();
+  expect(h.collector.replica.canonical()).toEqual(await truthOf(page));
+  await world.stop();
+});
+
+test("naming thousands of controls that have ids stays linear in the page size", async ({ page }) => {
+  const world = await startWorld();
+  const rows = 16000;
+  world.a.pages.set(
+    "/",
+    `<!doctype html><html lang="en"><body><label for="b0">first</label>${Array.from({ length: rows }, (_, i) => `<button id="b${i}" type="button">B${i}</button>`).join("")}</body></html>`,
+  );
+  const h = await attach(page, { allow: [world.a.url] });
+  await page.goto(`${world.a.url}/`);
+  await page.waitForLoadState("load");
+  await h.settle();
+  const ms = await page.evaluate(() => (window as unknown as { __vsfColdMs: number }).__vsfColdMs);
+  expect(h.collector.replica.size).toBeGreaterThan(rows);
+  expect(ms).toBeLessThan(2500);
+  const labelled = [...h.collector.replica.nodes.values()].find((n) => n.tag === "button" && n.name === "first");
+  expect(labelled).toBeDefined();
   await world.stop();
 });

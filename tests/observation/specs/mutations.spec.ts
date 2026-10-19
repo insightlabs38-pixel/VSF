@@ -346,13 +346,19 @@ test("direct text-node edits update the owning element", async ({ page }) => {
   await world.stop();
 });
 
-test("a shadow root attached after capture is invisible until rescan and then appears", async ({ page }) => {
+test("a shadow root attached after the element was captured is invisible until rescan, one attached on insertion is not", async ({
+  page,
+}) => {
   const { world, h } = await rich(page);
   await page.evaluate(() => {
     const el = document.createElement("late-widget");
     el.id = "late";
     document.body.append(el);
-    el.attachShadow({ mode: "open" }).innerHTML = "<b>late shadow content</b>";
+  });
+  await h.settle();
+  await page.evaluate(() => {
+    (document.getElementById("late") as HTMLElement).attachShadow({ mode: "open" }).innerHTML =
+      "<b>late shadow content</b>";
   });
   await h.settle();
   expect([...h.collector.replica.nodes.values()].some((n) => n.text === "late shadow content")).toBe(false);
@@ -360,6 +366,13 @@ test("a shadow root attached after capture is invisible until rescan and then ap
   await h.settle();
   expect([...h.collector.replica.nodes.values()].some((n) => n.text === "late shadow content")).toBe(true);
   expect(h.collector.replica.canonical()).toEqual(await truthOf(page));
+  await page.evaluate(() => {
+    const el = document.createElement("sync-widget");
+    document.body.append(el);
+    el.attachShadow({ mode: "open" }).innerHTML = "<b>attached on insertion</b>";
+  });
+  await h.settle();
+  expect([...h.collector.replica.nodes.values()].some((n) => n.text === "attached on insertion")).toBe(true);
   await world.stop();
 });
 

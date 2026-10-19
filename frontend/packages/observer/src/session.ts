@@ -177,6 +177,9 @@ export class Session {
   private readonly frameGen = new WeakMap<Element, number>();
   private readonly frameListeners = new Map<Element, () => void>();
   private readonly ring: Batch[] = [];
+  private readonly labelIndex = new WeakMap<Node, { version: number; byFor: Map<string, Element[]> }>();
+  private labelVersion = 0;
+  private readonly pendingRedo = new Set<number>();
   private nextId = 1;
   private sum = 0;
   private truncated = false;
@@ -197,7 +200,7 @@ export class Session {
     this.limits = { ...DEFAULT_LIMITS, ...cfg.limits };
     this.caps = cfg.caps ?? {};
     const opts: CaptureOptions = { maxTextChars: this.limits.maxTextChars };
-    this.ctx = { opts, idOf: (el) => this.idOf(el) };
+    this.ctx = { opts, idOf: (el) => this.idOf(el), labelsFor: (el) => this.labelsFor(el) };
     this.onEnvChange = () => {
       this.envDirty = true;
       this.schedule();
@@ -342,6 +345,7 @@ export class Session {
       this.live.delete(cur.id);
       this.sum = sumSub(this.sum, cur.hash);
       for (const d of cur.deps) this.dependents.get(d)?.delete(cur.id);
+      for (const d of this.dependents.get(cur.id) ?? []) this.pendingRedo.add(d);
       this.dependents.delete(cur.id);
       const fn = cur.node && cur.node.nodeType === 1 ? this.frameListeners.get(cur.node as Element) : undefined;
       if (fn) {
@@ -369,6 +373,54 @@ export class Session {
     this.setDeps(live, d.deps);
     ops.push({ op: "set", id: live.id, role: f.role, name: f.name, text: f.text, flags: f.flags, rels: f.rels });
     return true;
+  }
+
+  private labelsFor(el: Element): Element[] {
+    const out: Element[] = [];
+    const wrap = el.closest("label");
+    if (wrap && (wrap as HTMLLabelElement).control === el) out.push(wrap);
+    if (el.id !== "") {
+      const root = el.getRootNode();
+      let entry = this.labelIndex.get(root);
+      if (!entry || entry.version !== this.labelVersion) {
+        const byFor = new Map<string, Element[]>();
+        const scan = root as unknown as ParentNode;
+        for (const l of Array.from(scan.querySelectorAll("label[for]"))) {
+          const key = l.getAttribute("for") as string;
+          const list = byFor.get(key) ?? [];
+          byFor.set(key, list);
+          list.push(l);
+        }
+        entry = { version: this.labelVersion, byFor };
+        this.labelIndex.set(root, entry);
+      }
+      for (const l of entry.byFor.get(el.id) ?? []) {
+        if (l !== wrap && (l as HTMLLabelElement).control === el) out.push(l);
+      }
+    }
+    if (out.length > 1) {
+      out.sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+    }
+    return out;
+  }
+
+  /** A label that appears, goes or retargets changes the names of the controls it names, which the DOM does not announce. */
+  private labelChanged(n: Node): void {
+    if (n.nodeType !== 1) return;
+    const el = n as Element;
+    const labels =
+      el.tagName === "LABEL"
+        ? [el, ...Array.from(el.querySelectorAll("label"))]
+        : Array.from(el.querySelectorAll("label"));
+    if (labels.length === 0) return;
+    this.labelVersion++;
+    for (const l of labels) {
+      const c = (l as HTMLLabelElement).control;
+      const live = c ? this.liveOf(c) : undefined;
+      if (live) this.pendingRedo.add(live.id);
+      const self = this.liveOf(l);
+      for (const d of this.dependents.get(self?.id ?? -1) ?? []) this.pendingRedo.add(d);
+    }
   }
 
   private modeledChildren(parent: Node): Element[] {
@@ -535,6 +587,8 @@ export class Session {
     this.truncated = false;
     this.scopeCount = 0;
     this.pending = [];
+    this.pendingRedo.clear();
+    this.labelVersion++;
     this.mo?.takeRecords();
     for (const [el, fn] of this.frameListeners) el.removeEventListener("load", fn);
     this.frameListeners.clear();
@@ -633,6 +687,7 @@ export class Session {
     this.pending = [];
     if (records.length > 0) this.process(records, ops);
     if (this.epochNo !== before) return true;
+    if (this.pendingRedo.size > 0) this.redoPending(ops, new Set());
     if (this.envDirty || records.length > 0) this.refreshEnv(ops);
     return false;
   }
@@ -673,6 +728,8 @@ export class Session {
           this.fullSync();
           return;
         }
+        for (const n of r.removedNodes) this.labelChanged(n);
+        for (const n of r.addedNodes) this.labelChanged(n);
         const list = structural.get(r.target) ?? [];
         structural.set(r.target, list);
         list.push(r);
@@ -685,6 +742,7 @@ export class Session {
         ) {
           this.envDirty = true;
         }
+        if (name === "for" && el.tagName === "LABEL") this.labelChanged(el);
         if (!RELEVANT_ATTRS.has(name) && !name.startsWith("aria-")) continue;
         const set = attrDirty.get(el) ?? new Set<string>();
         attrDirty.set(el, set);
@@ -749,21 +807,7 @@ export class Session {
       }
     }
     const seen = new Set<number>();
-    const redo = (el: Element): void => {
-      const live = this.liveOf(el);
-      if (!live || seen.has(live.id)) return;
-      seen.add(live.id);
-      const before = live.rec.flags;
-      const d = describeElement(el, this.ctx);
-      this.stats.described++;
-      this.updateFacts(ops, live, d);
-      const changed = before ^ live.rec.flags;
-      if (changed & (FLAG_VISIBLE | FLAG_DISABLED)) this.refreshSubtree(live, ops, seen);
-      for (const dep of this.dependents.get(live.id) ?? []) {
-        const dl = this.live.get(dep);
-        if (dl?.node && dl.node.nodeType === 1) redo(dl.node as Element);
-      }
-    };
+    const redo = (el: Element): void => this.redoElement(el, ops, seen);
     for (const [el, names] of attrDirty) {
       const live = this.liveOf(el);
       if (!live) continue;
@@ -780,6 +824,31 @@ export class Session {
         const l = this.liveOf(p);
         if (l?.rec.role && NAME_FROM_CONTENT.has(l.rec.role)) redo(p);
       }
+    }
+    this.redoPending(ops, seen);
+  }
+
+  private redoElement(el: Element, ops: Op[], seen: Set<number>): void {
+    const live = this.liveOf(el);
+    if (!live || seen.has(live.id)) return;
+    seen.add(live.id);
+    const before = live.rec.flags;
+    const d = describeElement(el, this.ctx);
+    this.stats.described++;
+    this.updateFacts(ops, live, d);
+    if ((before ^ live.rec.flags) & (FLAG_VISIBLE | FLAG_DISABLED)) this.refreshSubtree(live, ops, seen);
+    for (const dep of this.dependents.get(live.id) ?? []) {
+      const dl = this.live.get(dep);
+      if (dl?.node && dl.node.nodeType === 1) this.redoElement(dl.node as Element, ops, seen);
+    }
+  }
+
+  private redoPending(ops: Op[], seen: Set<number>): void {
+    const ids = [...this.pendingRedo];
+    this.pendingRedo.clear();
+    for (const id of ids) {
+      const node = this.live.get(id)?.node;
+      if (node && node.nodeType === 1) this.redoElement(node as Element, ops, seen);
     }
   }
 
