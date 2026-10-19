@@ -358,8 +358,7 @@ impl Walk<'_> {
     }
 }
 
-/// Both documents must be of the same family and one of the families this diff has rules for.
-/// Each side's version is the one the document was written under, so its digest is its stable identity.
+/// Same-family documents only; each version is the one the document was written under, so digests stay stable.
 pub fn diff(
     from: &Body,
     from_version: (u32, u32, u32),
