@@ -1,0 +1,17 @@
+$ pnpm --filter @vsf/e2e run test
+
+> @vsf/e2e@0.0.0 test /home/user/VSF/tests/e2e
+> playwright test
+
+
+Running 6 tests using 1 worker
+
+  ✓  1 specs/apps.spec.ts:35:1 › server-rendered form: invalid then valid submission (391ms)
+  ✓  2 specs/apps.spec.ts:50:1 › virtualized table renders a bounded window and scrolls deterministically (187ms)
+  ✓  3 specs/apps.spec.ts:69:1 › terminal placeholder accepts keyboard input (136ms)
+  ✓  4 specs/apps.spec.ts:78:1 › sequence editor flags invalid residues and reports stats (149ms)
+  ✓  5 specs/apps.spec.ts:87:1 › WASM smoke runs in the browser and matches the native golden digest (140ms)
+  ✓  6 specs/apps.spec.ts:97:1 › injected incompatible ABI makes the browser smoke fail closed (115ms)
+
+  6 passed (2.5s)
+[exit 0]

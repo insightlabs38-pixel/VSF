@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -run TestStaleRead|TestRevalidated|TestAWriteWithout|TestObservationWithin|TestSourceRequired|TestConfirmationIs|TestPolicyThat|TestAmbiguousEffects|TestReadOnly|TestAConfirmationToken ./execution/
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	1.186s
+[exit 0]

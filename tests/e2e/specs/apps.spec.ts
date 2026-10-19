@@ -2,13 +2,26 @@ import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { compareGolden, domOutline } from "../support/snapshot.ts";
 
+const loadFailures = new WeakMap<object, string[]>();
+
 test.beforeEach(({ page, baseURL }) => {
+  const failures: string[] = [];
+  loadFailures.set(page, failures);
+  page.on("pageerror", (err) => failures.push(`pageerror: ${err.message}`));
+  page.on("requestfailed", (req) => failures.push(`requestfailed: ${req.url()}`));
+  page.on("response", (res) => {
+    if (res.status() >= 400 && /\/(assets|artifacts)\//.test(res.url())) failures.push(`${res.status()}: ${res.url()}`);
+  });
   page.on("request", (req) => {
     expect(
       req.url().startsWith(baseURL as string) || req.url().startsWith("data:"),
       `external request ${req.url()}`,
     ).toBe(true);
   });
+});
+
+test.afterEach(({ page }) => {
+  expect(loadFailures.get(page), "module and asset loading must be clean").toEqual([]);
 });
 
 async function expectGolden(name: string, page: import("@playwright/test").Page): Promise<void> {

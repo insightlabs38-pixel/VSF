@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -run TestAnotherActor|TestAnUnchanged|TestAStaleRead|TestAFence|TestWithoutAFence|TestAReceipt|TestAnExecutorCannot|TestNonMonotonic|TestReconciliationRevalidates|TestAFreshSession|TestEveryReconciliation|TestTwoReconciliations|TestOnlyReconciliation|TestReconciliationChecks|TestReconciliationRefuses ./execution/
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	4.181s
+[exit 0]

@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B07-T09`
+**Next eligible:** `VSF-B08-T09`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -13,9 +13,9 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B04 | G4 | 8/8 | DONE | PROCEED |
 | B05 | G5 | 8/8 | DONE | PROCEED |
 | B06 | G6 | 18/18 | DONE | PROCEED |
-| B07 | G7 | 0/9 | READY | - |
-| B08 | G8 | 0/9 | TODO | - |
-| B09 | G9 | 0/8 | TODO | - |
+| B07 | G7 | 14/14 | DONE | PROCEED |
+| B08 | G8 | 0/10 | READY | - |
+| B09 | G9 | 0/9 | TODO | - |
 | B10 | G10 | 0/8 | TODO | - |
 | B11 | G11 | 0/6 | TODO | - |
 | B12 | G12 | 0/6 | TODO | - |
@@ -119,19 +119,24 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B07 · Implement verified deterministic execution
 
-- [ ] `VSF-B07-T01` Implement prepared/admitted/running/verified/failed/unknown states _(READY)_
-- [ ] `VSF-B07-T02` Bind VSF caller, source session, environment and exact contract
-- [ ] `VSF-B07-T03` Add preconditions, source-read freshness check, confirmation propagation
-- [ ] `VSF-B07-T04` Implement browser executor and mock documented API executor
-- [ ] `VSF-B07-T05` Implement safe retry policy requiring evidence of idempotency
-- [ ] `VSF-B07-T06` Provide long-task handle, cancellation and progress events
-- [ ] `VSF-B07-T07` Add session-scoped locks and basic rate-limit adaptation
-- [ ] `VSF-B07-T08` Inject crash/timeout after remote commit and record UNKNOWN_COMMIT
-- [ ] `VSF-B07-T09` Execution consumes only Validated<T> minted by Rust validation (F8 finding) _(READY)_
+- [x] `VSF-B07-T01` Implement prepared/admitted/running/verified/failed/unknown states
+- [x] `VSF-B07-T02` Bind VSF caller, source session, environment and exact contract
+- [x] `VSF-B07-T03` Add preconditions, source-read freshness check, confirmation propagation
+- [x] `VSF-B07-T04` Implement browser executor and mock documented API executor
+- [x] `VSF-B07-T05` Implement safe retry policy requiring evidence of idempotency
+- [x] `VSF-B07-T06` Provide long-task handle, cancellation and progress events
+- [x] `VSF-B07-T07` Add session-scoped locks and basic rate-limit adaptation
+- [x] `VSF-B07-T08` Inject crash/timeout after remote commit and record UNKNOWN_COMMIT
+- [x] `VSF-B07-T09` Execution consumes only Validated<T> minted by Rust validation (F8 finding)
+- [x] `VSF-B07-T10` Browser fixtures resolve the complete module graph and report load failures (wasm-browser finding)
+- [x] `VSF-B07-T11` Unresolved-write exclusion is atomic with admission to Running (concurrency finding)
+- [x] `VSF-B07-T12` Reconciliation revalidates authorization and closes only on evidence (reconciliation finding)
+- [x] `VSF-B07-T13` Execution-boundary review corrections (adjacent findings)
+- [x] `VSF-B07-T14` ADR-033 corrections, regenerated evidence and CI agreement
 
 ### B08 · Build version registry, semantic diff and pins
 
-- [ ] `VSF-B08-T01` Implement content-digest immutable manifest and version lineage DAG
+- [ ] `VSF-B08-T01` Implement content-digest immutable manifest and version lineage DAG _(READY)_
 - [ ] `VSF-B08-T02` Create deterministic IR diff and classify cosmetic/additive/breaking/permission/unknown changes
 - [ ] `VSF-B08-T03` Compute impacted dependency closure and targeted test selection
 - [ ] `VSF-B08-T04` Support contract-version pin and compatibility state on source drift
@@ -139,7 +144,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B08-T06` Create security revocation that overrides old pin
 - [ ] `VSF-B08-T07` Test old contract plus new source feature, missing required field and rollback
 - [ ] `VSF-B08-T08` Add draft diff result format for future Studio/CLI UI
-- [ ] `VSF-B08-T09` Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding)
+- [ ] `VSF-B08-T09` Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding) _(READY)_
+- [ ] `VSF-B08-T10` UI architecture contract and PresentationIR layout extension (UI checkpoint)
 
 ### B09 · Integrate extension and secure local bridge
 
@@ -151,6 +157,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B09-T06` Bind local worker capability manifest and source identity
 - [ ] `VSF-B09-T07` Add local encrypted settings and emergency fallback to source UI
 - [ ] `VSF-B09-T08` Create extension distribution policy checklist and reviewer-friendly architecture
+- [ ] `VSF-B09-T09` Integrated VSF shell and reference gallery with screenshot regression (UI checkpoint)
 
 ### B10 · Expose API, CLI and MCP vertical slice
 

@@ -37,3 +37,4 @@ Revisit when: trigger
 | [030](ADR-030-browser-observation-and-epochs.md) | Browser observation, epochs and incremental events | accepted |
 | [031](ADR-031-semantic-recognition-and-evidence-ledger.md) | Deterministic semantic recognition, evidence ledger and availability | accepted |
 | [032](ADR-032-foundation-stabilization.md) | Foundation stabilization before the presentation renderer closes | accepted |
+| [033](ADR-033-verified-deterministic-execution.md) | Verified deterministic execution | accepted |

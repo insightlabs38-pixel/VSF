@@ -202,6 +202,35 @@ jobs:
             artifacts/logs
           if-no-files-found: error
 
+  execution:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+      - name: Rust toolchain from manifest
+        run: rustup toolchain install "$(jq -r .rust toolchain/versions.json)" --profile minimal -c rustfmt -c clippy -t wasm32-unknown-unknown
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Locate the browser and the native worker
+        run: |
+          echo "VSF_CHROMIUM=$(node -e "console.log(require('@playwright/test').chromium.executablePath())")" >> "$GITHUB_ENV"
+          echo "VSF_FABRIC=$PWD/artifacts/bin/vsf-fabric" >> "$GITHUB_ENV"
+      - run: node tools/checks/src/cli.ts ci-run execution
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-execution
+          path: |
+            artifacts/ci/execution
+            artifacts/logs
+          if-no-files-found: error
+
   ui:
     runs-on: ubuntu-24.04
     steps:
@@ -270,7 +299,7 @@ jobs:
 
   gate:
     if: always()
-    needs: [hygiene, native, go, ts, wasm-browser, cross-language, browser, observation, ui, commit-policy, failure-canary]
+    needs: [hygiene, native, go, ts, wasm-browser, cross-language, browser, observation, ui, execution, commit-policy, failure-canary]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

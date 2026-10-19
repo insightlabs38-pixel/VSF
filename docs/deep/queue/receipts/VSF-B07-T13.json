@@ -1,0 +1,48 @@
+{
+  "task_id": "VSF-B07-T13",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+  "paths": [
+    "backend/execution/runtime.go",
+    "backend/execution/journal.go",
+    "backend/execution/cdp.go",
+    "backend/execution/browser_executor.go",
+    "backend/execution/types.go",
+    "backend/execution/integration_test.go",
+    "backend/execution/journal_test.go"
+  ],
+  "acceptance": "Authorization is repeated immediately before the effect against the admitted environment, source statuses that are not authoritative are not taken as proof of no effect, the journal survives a torn tail and oversized details, and the browser presses only usable controls.",
+  "positive": {
+    "fixture": "write whose session lapses during the source read never reaches the source",
+    "command": "go -C backend test -race -count=1 -run TestAuthorizationThatLapses ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "non-authoritative status, unproven throttle, torn journal tail, oversized detail, hidden, disabled and covered submit control",
+    "command": "go -C backend test -race -count=1 -run TestANonAuthoritative|TestThrottlingFromANon|TestATornFinal|TestAnOversized ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 -run TestTheBrowserOnlyPresses ./execution/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged; journal metadata optional keys added",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No source effect after the session, caller or environment changed since admission.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Field values are still set by script events; only the submit press is a trusted input event"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T13.late-authorization-and-non-authoritative-sources.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T13.journal-torn-tail-and-oversized-detail.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T13.browser-presses-only-usable-controls.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -73,10 +73,11 @@ func TestValidFixturesRoundTripToIdenticalBytes(t *testing.T) {
 		if perr != nil {
 			t.Fatal(perr)
 		}
-		body, ver, err := DecodeDocumentValueVersioned(v)
+		doc, err := DecodeDocumentValue(v)
 		if err != nil {
 			t.Fatalf("%s: %v", name, err)
 		}
+		body, ver := doc.Unsafe(), doc.Version()
 		out, ok := EncodeDocumentAt(body, ver)
 		if !ok || string(out) != string(b) {
 			t.Errorf("%s: re-encoded bytes differ", name)
@@ -107,10 +108,11 @@ func TestPinnedDigestsMatchTheRustAuthority(t *testing.T) {
 		if perr != nil {
 			t.Fatal(perr)
 		}
-		body, ver, err := DecodeDocumentValueVersioned(pv)
+		doc, err := DecodeDocumentValue(pv)
 		if err != nil {
 			t.Fatal(err)
 		}
+		body, ver := doc.Unsafe(), doc.Version()
 		if got, _ := DocumentDigestAt(body, ver); got != e["document_digest"] {
 			t.Errorf("%s: document digest differs", name)
 		}
@@ -118,10 +120,11 @@ func TestPinnedDigestsMatchTheRustAuthority(t *testing.T) {
 }
 
 func TestNFCAndNFDTextStayDistinct(t *testing.T) {
-	body, err := DecodeDocument(validBytes(t, "semantic-orders"))
+	doc, err := DecodeDocument(validBytes(t, "semantic-orders"))
 	if err != nil {
 		t.Fatal(err)
 	}
+	body := doc.Unsafe()
 	seen := map[string]bool{}
 	for _, e := range body.Semantic.Entities {
 		if e.Label != nil {

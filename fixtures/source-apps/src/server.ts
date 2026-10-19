@@ -11,6 +11,7 @@ const MAX_BODY = 16 * 1024;
 const MOUNTS: [string, string][] = [
   ["/assets/client/", join(here, "../dist")],
   ["/assets/schema/", join(repo, "frontend/packages/schema/dist")],
+  ["/assets/ir/", join(repo, "frontend/packages/ir/dist")],
   ["/assets/wasm-host/", join(repo, "frontend/packages/wasm-host/dist")],
   ["/assets/observer/", join(repo, "frontend/packages/observer/dist")],
   ["/artifacts/wasm/", join(repo, "artifacts/wasm")],

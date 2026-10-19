@@ -1,0 +1,52 @@
+{
+  "task_id": "VSF-B07-T04",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/api_executor.go",
+    "backend/execution/browser_executor.go",
+    "backend/execution/cdp.go",
+    "backend/execution/ws.go",
+    "backend/execution/integration_test.go",
+    "backend/execution/hazards_test.go"
+  ],
+  "acceptance": "Browser and documented-API executors share the same result taxonomy on equivalent controlled fixtures.",
+  "positive": {
+    "fixture": "7 scenarios give identical outcomes and identical source state in real Chromium and the API executor",
+    "command": "go -C backend test -tags integration -race -count=1 -run Taxonomy|ReadTheSameSnapshot|TestABrowsersOwnResend|TestStaleBrowserScreen ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "transport replay, redirects, contradicted no-effect claims and the browser's own resend",
+    "command": "go -C backend test -race -count=1 -run TestTheHTTPTransport|TestRedirects|TestAConnectionRefused|TestANoEffectClaim|TestAnUnreadable ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Executors never replay or redirect a write.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "A page that sends unconditional writes can still be resent by the browser"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T04.browser-and-api-share-one-taxonomy.log",
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T04.transport-hazards-and-contradicted-claims.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-integration-all.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}

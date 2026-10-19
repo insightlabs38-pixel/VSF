@@ -1,0 +1,40 @@
+{
+  "task_id": "VSF-B07-T06",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/handle.go",
+    "backend/execution/handle_test.go"
+  ],
+  "acceptance": "Long jobs emit queryable state/progress; cancellation never falsely claims the underlying action was cancelled.",
+  "positive": {
+    "fixture": "ordered, queryable progress events",
+    "command": "go -C backend test -race -count=1 -run TestLongTasks|TestCancelling ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "cancel during the write is unknown, never cancelled; cancel after commit still verifies",
+    "command": "go -C backend test -race -count=1 -run TestLongTasks|TestCancelling ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Cancellation never claims the source action was cancelled.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T06.handles-progress-and-cancellation.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}

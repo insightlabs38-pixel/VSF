@@ -1,0 +1,3 @@
+$ go -C backend test -tags integration -race -count=1 -run TestAmbiguousWriteNeverRetries|TestADeniedCaller ./execution/
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	1.520s
+[exit 0]

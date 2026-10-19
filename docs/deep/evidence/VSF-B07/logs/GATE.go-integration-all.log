@@ -1,0 +1,4 @@
+$ go -C backend test -tags integration -race -count=1 ./execution/...
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	8.927s
+?   	github.com/insightlabs38-pixel/vsf/backend/execution/internal/fixtureapp	[no test files]
+[exit 0]

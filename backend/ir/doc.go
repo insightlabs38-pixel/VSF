@@ -43,13 +43,33 @@ func TypedDigest(kind string, canonical []byte) string {
 	return "sha256:" + hex.EncodeToString(h.Sum(nil))
 }
 
-func DecodeDocumentValue(v any) (Body, error) {
-	b, _, err := DecodeDocumentValueVersioned(v)
-	return b, err
+// Unvalidated is a decoded document no validation has accepted; it can never be executed.
+type Unvalidated struct {
+	body    Body
+	version rt.Version
 }
 
-// DecodeDocumentValueVersioned also reports the schema version the document was written under.
-func DecodeDocumentValueVersioned(v any) (Body, rt.Version, error) {
+// Unsafe returns the decoded body, checked for shape only.
+func (u Unvalidated) Unsafe() Body { return u.body }
+
+// Version is the schema version the document was written under.
+func (u Unvalidated) Version() rt.Version { return u.version }
+
+// Digest is the typed digest of the document as it was written.
+func (u Unvalidated) Digest() string {
+	d, _ := DocumentDigestAt(u.body, u.version)
+	return d
+}
+
+func DecodeDocumentValue(v any) (Unvalidated, error) {
+	b, ver, err := decodeEnvelope(v)
+	if err != nil {
+		return Unvalidated{}, err
+	}
+	return Unvalidated{body: b, version: ver}, nil
+}
+
+func decodeEnvelope(v any) (Body, rt.Version, error) {
 	o, err := rt.NewObj(v, "")
 	if err != nil {
 		return Body{}, rt.Version{}, err
@@ -109,10 +129,10 @@ func DecodeDocumentValueVersioned(v any) (Body, rt.Version, error) {
 	return out, got, err
 }
 
-func DecodeDocument(input []byte) (Body, error) {
+func DecodeDocument(input []byte) (Unvalidated, error) {
 	v, err := canon.Parse(input)
 	if err != nil {
-		return Body{}, rt.Fail("", err.Error())
+		return Unvalidated{}, rt.Fail("", err.Error())
 	}
 	return DecodeDocumentValue(v)
 }

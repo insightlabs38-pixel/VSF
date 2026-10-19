@@ -1,0 +1,43 @@
+{
+  "task_id": "VSF-B07-T03",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/runtime.go",
+    "backend/execution/confirm.go",
+    "backend/execution/precond_test.go"
+  ],
+  "acceptance": "Stale reads and required source confirmation block writes until revalidated; ambiguous effects remain unverified.",
+  "positive": {
+    "fixture": "revalidated read allows a conditional write; confirmation given once",
+    "command": "go -C backend test -race -count=1 -run TestStaleRead|TestRevalidated|TestAWriteWithout|TestObservationWithin|TestSourceRequired|TestConfirmationIs|TestPolicyThat|TestAmbiguousEffects|TestReadOnly|TestAConfirmationToken ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "stale read, stale observation, missing, expired, forged, replayed or rebound confirmation, ambiguous effect",
+    "command": "go -C backend test -race -count=1 -run TestStaleRead|TestRevalidated|TestAWriteWithout|TestObservationWithin|TestSourceRequired|TestConfirmationIs|TestPolicyThat|TestAmbiguousEffects|TestReadOnly|TestAConfirmationToken ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Confirmations are HMAC bound to one request digest and work once.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Confirmation secrets are held in memory"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T03.freshness-and-confirmation-preconditions.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}

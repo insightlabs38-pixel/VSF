@@ -1,0 +1,44 @@
+{
+  "task_id": "VSF-B07-T02",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "3a56b5cdaaeb2ea06d505372151cee57cc145d8f",
+  "paths": [
+    "backend/execution/bind.go",
+    "backend/execution/worker.go",
+    "backend/execution/params.go",
+    "backend/execution/bind_test.go"
+  ],
+  "acceptance": "Caller, authenticated source principal, environment and pinned contract are checked before any source side effect.",
+  "positive": {
+    "fixture": "caller, session, environment and pinned contract accepted; authorized twice",
+    "command": "go -C backend test -race -count=1 -run TestBound|TestEveryBinding|TestMalformed|TestParameters|TestARoleRevoked|TestSessionLost|TestAuthorizationFromAnother|TestAZeroAuthorized ./execution/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "14 binding failures reach no source; revoked role and lost session while queued; foreign or zero authorization",
+    "command": "go -C backend test -race -count=1 -run TestBound|TestEveryBinding|TestMalformed|TestParameters|TestARoleRevoked|TestSessionLost|TestAuthorizationFromAnother|TestAZeroAuthorized ./execution/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Every check runs before any source contact and again before the side effect.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Session and caller directories are interfaces; real pairing is a later batch"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/VSF-B07-T02.caller-session-environment-contract-binding.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log"
+  ],
+  "review_result": "ACCEPTED"
+}

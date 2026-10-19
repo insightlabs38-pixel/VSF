@@ -1,0 +1,44 @@
+{
+  "task_id": "VSF-B07-T14",
+  "status": "DONE",
+  "branch": "vsf/b07-verified-execution",
+  "base_commit": "29d2a92146c2f9b32a2f3c27710cf9cbedad8e4c",
+  "commit": "42193ab26f86778e9e5e337f334ac0e90d460798",
+  "paths": [
+    "docs/deep/adr/ADR-033-verified-deterministic-execution.md",
+    "docs/deep/evidence/VSF-B07/collect.sh",
+    "docs/deep/evidence/VSF-B07/manifest.json"
+  ],
+  "acceptance": "ADR-033 states the corrected semantics and limits, the evidence bundle is regenerated from the corrected tree, and the remote CI result for the PR head is recorded separately from local runs.",
+  "positive": {
+    "fixture": "regenerated manifest with checksummed logs",
+    "command": "node tools/queue/src/cli.ts evidence-check B07",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a manifest with a failing or unchecksummed run is rejected by evidence-check",
+    "command": "pnpm --filter @vsf/checks run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0 unchanged; journal metadata optional keys added",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Local PASS logs are not offered as proof of a remote run; remote status is in remote-ci.md.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Evidence logs record outcomes, not the commit they ran on; the PR head is named in remote-ci.md"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-test-all.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.go-integration-all.log",
+    "docs/deep/evidence/VSF-B07/logs/GATE.cargo-test-workspace.log"
+  ],
+  "review_result": "ACCEPTED"
+}

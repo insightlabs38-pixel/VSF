@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -count=20 -run TestADifferentRequest|TestManyDistinct|TestCancellingDuring|TestACancelledWaiter ./execution/
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	3.377s
+[exit 0]

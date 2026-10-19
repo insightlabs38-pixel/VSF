@@ -1,7 +1,7 @@
 {
   "schema": "vsf-task-queue-v1",
   "source": "original B00-B24 execution steps, expanded with task-specific acceptance",
-  "task_count": 164,
+  "task_count": 171,
   "batches": [
     {
       "id": "B00",
@@ -172,7 +172,7 @@
       "depends_on": ["B02", "B03", "B07"],
       "gate": "G8",
       "category": "task-level foundational batch",
-      "acceptance": "Pin→change→diff→test→promote/degrade→rollback works; source-removed operation never pretends available; data rollback not implied.\n\nFor each completed step record: test command, fixture set, expected behavior, actual behavior, performance measurements when relevant, dependency/IR change list, and rollback procedure. A passing demo alone does not close the batch.",
+      "acceptance": "Pin→change→diff→test→promote/degrade→rollback works; source-removed operation never pretends available; data rollback not implied.\n\nFor each completed step record: test command, fixture set, expected behavior, actual behavior, performance measurements when relevant, dependency/IR change list, and rollback procedure. A passing demo alone does not close the batch.\n\nUI checkpoint (VSF-B08-T10): a written UI architecture contract and backward-compatible PresentationIR layout extension must exist before G8 closes.",
       "stop": "Treat versioning as product feature from day one, not optional after initial release.",
       "milestone": "M2",
       "risk_tests": [
@@ -192,7 +192,7 @@
       "depends_on": ["B06", "B07", "B08"],
       "gate": "G9",
       "category": "task-level foundational batch",
-      "acceptance": "Install extension, transform two fixtures, perform safe operation, restore source UI; malicious web origin cannot invoke local service; extension complies with review design.\n\nFor each completed step record: test command, fixture set, expected behavior, actual behavior, performance measurements when relevant, dependency/IR change list, and rollback procedure. A passing demo alone does not close the batch.",
+      "acceptance": "Install extension, transform two fixtures, perform safe operation, restore source UI; malicious web origin cannot invoke local service; extension complies with review design.\n\nFor each completed step record: test command, fixture set, expected behavior, actual behavior, performance measurements when relevant, dependency/IR change list, and rollback procedure. A passing demo alone does not close the batch.\n\nUI checkpoint (VSF-B09-T09): an integrated reference gallery with real-Chromium screenshot regression must pass before G9 closes.",
       "stop": "Native pairing should not be confused with permission to source accounts.",
       "milestone": "M2",
       "risk_tests": [
@@ -5038,6 +5038,260 @@
       "positive": "a newer sequence verifies and advances the stored high-water mark",
       "adversarial": "replayed older manifest, expired manifest, same sequence with different content, trust set found inside the package",
       "evidence_required": "docs/deep/evidence run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B07-T10",
+      "batch": "B07",
+      "sequence": 10,
+      "status": "TODO",
+      "category": "foundation correction",
+      "title": "Browser fixtures resolve the complete module graph and report load failures (wasm-browser finding)",
+      "intent": "Browser fixtures resolve the complete module graph and report load failures (wasm-browser finding)",
+      "acceptance": "The WASM smoke and bench pages resolve every bare specifier reachable through package exports, and a failed import, request or asset status fails the test with its cause instead of a timeout.",
+      "dependencies": [
+        "VSF-B07-T09"
+      ],
+      "planned_paths": "fixtures/source-apps; tests/e2e",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G7",
+      "evidence": "pnpm --filter @vsf/fixture-apps run test; pnpm --filter @vsf/e2e run test",
+      "risk_tests": [
+        "unresolved module",
+        "timeout masking a load error"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-033",
+      "lane": "correction",
+      "scope": "fixtures/source-apps; tests/e2e",
+      "contract": "fixture server import maps and mounts cover transitive package exports",
+      "positive": "the WASM smoke page reaches status ok in Chromium with @vsf/ir served",
+      "adversarial": "a page whose import map omits a transitively imported package fails the server graph test, and the e2e run reports the page error",
+      "evidence_required": "docs/deep/evidence run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B07-T11",
+      "batch": "B07",
+      "sequence": 11,
+      "status": "TODO",
+      "category": "foundation correction",
+      "title": "Unresolved-write exclusion is atomic with admission to Running (concurrency finding)",
+      "intent": "Unresolved-write exclusion is atomic with admission to Running (concurrency finding)",
+      "acceptance": "No write overlapping an unresolved write reaches the source: the check shares a critical section with the Unknown transition, is repeated after the lock is held, and survives cancellation, journal failure and restart.",
+      "dependencies": [
+        "VSF-B07-T10"
+      ],
+      "planned_paths": "backend/execution",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G7",
+      "evidence": "go -C backend test -race -count=1 ./execution/",
+      "risk_tests": [
+        "session concurrency",
+        "double submit",
+        "cancellation race",
+        "commit-before-timeout"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-033",
+      "lane": "correction",
+      "scope": "backend/execution",
+      "contract": "footprint exclusion for session, record and source-global scopes; single-process guarantee only",
+      "positive": "two different request ids queue behind one write that ends ambiguously and the second never contacts the source",
+      "adversarial": "barriers with injected ambiguity, cancellation while waiting, journal failure at the Unknown transition, restart, scope-key collisions, cross-scope overlap, race detector",
+      "evidence_required": "docs/deep/evidence run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B07-T12",
+      "batch": "B07",
+      "sequence": 12,
+      "status": "TODO",
+      "category": "foundation correction",
+      "title": "Reconciliation revalidates authorization and closes only on evidence (reconciliation finding)",
+      "intent": "Reconciliation revalidates authorization and closes only on evidence (reconciliation finding)",
+      "acceptance": "Reconciliation re-authorizes through the Rust boundary, refuses other sources, principals and revoked or expired sessions, records every attempt, and moves out of Unknown only on a receipt that proves commit or non-commit.",
+      "dependencies": [
+        "VSF-B07-T11"
+      ],
+      "planned_paths": "backend/execution",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G7",
+      "evidence": "go -C backend test -race -count=1 ./execution/; go -C backend test -tags integration -race -count=1 ./execution/",
+      "risk_tests": [
+        "revoked role",
+        "stale update",
+        "forged evidence",
+        "commit-before-timeout"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-033",
+      "lane": "correction",
+      "scope": "backend/execution",
+      "contract": "evidence levels proven_committed, proven_not_committed, state_matches_unproven, inconclusive",
+      "positive": "a receipt-backed disconnect reconciles to Verified or Failed and releases the exclusion",
+      "adversarial": "identical values from another actor, stale reads, unchanged or non-monotonic versions, a receipt for another request, an executor overclaiming its capability, revoked or expired sessions, a changed environment",
+      "evidence_required": "docs/deep/evidence run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B07-T13",
+      "batch": "B07",
+      "sequence": 13,
+      "status": "TODO",
+      "category": "foundation correction",
+      "title": "Execution-boundary review corrections (adjacent findings)",
+      "intent": "Execution-boundary review corrections (adjacent findings)",
+      "acceptance": "Authorization is repeated immediately before the effect against the admitted environment, source statuses that are not authoritative are not taken as proof of no effect, the journal survives a torn tail and oversized details, and the browser presses only usable controls.",
+      "dependencies": [
+        "VSF-B07-T12"
+      ],
+      "planned_paths": "backend/execution",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G7",
+      "evidence": "go -C backend test -race -count=1 ./execution/; go -C backend test -tags integration -race -count=1 ./execution/",
+      "risk_tests": [
+        "revoked role",
+        "stale update",
+        "partial write",
+        "synthetic input"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-033",
+      "lane": "correction",
+      "scope": "backend/execution",
+      "contract": "late authorization gate, authoritative-status capability, journal repair, actionable browser controls",
+      "positive": "a write whose session lapses during the source read never reaches the source",
+      "adversarial": "expired or revoked session, swapped runtime or capabilities, unproven throttle, torn journal tail, oversized detail, hidden, disabled or covered submit control",
+      "evidence_required": "docs/deep/evidence run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B07-T14",
+      "batch": "B07",
+      "sequence": 14,
+      "status": "TODO",
+      "category": "foundation correction",
+      "title": "ADR-033 corrections, regenerated evidence and CI agreement",
+      "intent": "ADR-033 corrections, regenerated evidence and CI agreement",
+      "acceptance": "ADR-033 states the corrected semantics and limits, the evidence bundle is regenerated from the corrected tree, and the remote CI result for the PR head is recorded separately from local runs.",
+      "dependencies": [
+        "VSF-B07-T13"
+      ],
+      "planned_paths": "docs/deep/adr; docs/deep/evidence/VSF-B07",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G7",
+      "evidence": "node tools/queue/src/cli.ts evidence-check B07",
+      "risk_tests": [
+        "stale evidence"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-033",
+      "lane": "correction",
+      "scope": "docs/deep/adr; docs/deep/evidence/VSF-B07",
+      "contract": "ADR-033 corrections C1-C6",
+      "positive": "evidence-check passes and every required remote check is green on the PR head",
+      "adversarial": "a manifest with a failing or unchecksummed run, or a local PASS offered for a failed remote run",
+      "evidence_required": "docs/deep/evidence run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B08-T10",
+      "batch": "B08",
+      "sequence": 10,
+      "status": "TODO",
+      "category": "ui architecture checkpoint",
+      "title": "UI architecture contract and PresentationIR layout extension (UI checkpoint)",
+      "intent": "UI architecture contract and PresentationIR layout extension (UI checkpoint)",
+      "acceptance": "A written, testable contract defines the VSF management shell and the generated-application surface, one design system, and backward-compatible PresentationIR layout abstractions; at least four representative compositions are specified and the accepted renderer fixtures are unchanged.",
+      "dependencies": [
+        "VSF-B06-T18",
+        "VSF-B08-T08"
+      ],
+      "planned_paths": "docs/deep/adr; docs/deep/ui; schemas/ir; frontend/packages/design-system; frontend/packages/renderer; tests/ui",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G8",
+      "evidence": "pnpm --filter @vsf/ui-tests run test; node --conditions=source tools/idlgen/src/cli.ts --check",
+      "risk_tests": [
+        "layout bypassing confirmation",
+        "focus loss",
+        "schema drift"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-035",
+      "scope": "docs/deep/adr; docs/deep/ui; schemas/ir; frontend/packages/design-system; frontend/packages/renderer; tests/ui",
+      "contract": "PresentationIR layout regions, groups, panels, sizing, responsive policy and preference overrides; shell information architecture; design tokens",
+      "positive": "the existing form and grid fixtures render unchanged and a region layout renders from the extended IR",
+      "adversarial": "a layout that moves or hides a confirmation, drops a binding, reorders keyboard flow unsafely or exceeds source permission is refused",
+      "evidence_required": "docs/deep/evidence run logs, the UI architecture contract and a task receipt"
+    },
+    {
+      "id": "VSF-B09-T09",
+      "batch": "B09",
+      "sequence": 9,
+      "status": "TODO",
+      "category": "ui integration checkpoint",
+      "title": "Integrated VSF shell and reference gallery with screenshot regression (UI checkpoint)",
+      "intent": "Integrated VSF shell and reference gallery with screenshot regression (UI checkpoint)",
+      "acceptance": "A runnable reference shows the VSF workspace shell, a dense enterprise grid, a grouped form and a multi-panel layout; real Chromium screenshots cover themes, viewports, densities and states, with layout, overflow, contrast and accessibility checks; unavailable operations are marked, not faked.",
+      "dependencies": [
+        "VSF-B09-T08",
+        "VSF-B08-T10"
+      ],
+      "planned_paths": "apps/gallery; frontend/packages/renderer; frontend/packages/design-system; tests/ui; docs/deep/evidence/VSF-B09",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G9",
+      "evidence": "pnpm --filter @vsf/ui-tests run test:visual",
+      "risk_tests": [
+        "clipping",
+        "overflow",
+        "contrast",
+        "focus loss",
+        "visual regression"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-035",
+      "scope": "apps/gallery; frontend/packages/renderer; frontend/packages/design-system; tests/ui; docs/deep/evidence/VSF-B09",
+      "contract": "reference gallery route and screenshot baseline policy",
+      "positive": "the gallery renders every reference composition in light and dark at desktop, tablet and narrow widths in both densities",
+      "adversarial": "clipping, overlap, overflow, layout shift, contrast failure or an unlabeled control fails the visual suite",
+      "evidence_required": "docs/deep/evidence run logs, reviewed reference screenshots and a task receipt"
     }
   ]
 }

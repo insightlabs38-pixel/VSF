@@ -1,0 +1,430 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B07",
+  "gate": "G7",
+  "runs": [
+    {
+      "task_id": "VSF-B07-T01",
+      "name": "lifecycle-journal-and-false-success",
+      "command": "go -C backend test -race -count=1 -run TestHappyPath|TestEveryIllegal|TestAcknowledgement|TestReadBack|TestSourceRejection|TestJournal|TestTampered|TestRestartSettles|TestBrokenJournal ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T01.lifecycle-journal-and-false-success.log",
+      "sha256": "c04cd25dd43afef50bd5d7d7263e4bddbf718c50ded7e23b1ded84b84098e73b"
+    },
+    {
+      "task_id": "VSF-B07-T02",
+      "name": "caller-session-environment-contract-binding",
+      "command": "go -C backend test -race -count=1 -run TestBound|TestEveryBinding|TestMalformed|TestParameters|TestARoleRevoked|TestSessionLost|TestAuthorizationFromAnother|TestAZeroAuthorized ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T02.caller-session-environment-contract-binding.log",
+      "sha256": "f63600cfeddffe1a11c2e9d1899585dbf2737f58a4508920ec7d10c0326c0c6d"
+    },
+    {
+      "task_id": "VSF-B07-T03",
+      "name": "freshness-and-confirmation-preconditions",
+      "command": "go -C backend test -race -count=1 -run TestStaleRead|TestRevalidated|TestAWriteWithout|TestObservationWithin|TestSourceRequired|TestConfirmationIs|TestPolicyThat|TestAmbiguousEffects|TestReadOnly|TestAConfirmationToken ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T03.freshness-and-confirmation-preconditions.log",
+      "sha256": "28d4cabc2766f1c727263ca8c6b7cabde3233d0939ea80fdefba4cb22acffcbb"
+    },
+    {
+      "task_id": "VSF-B07-T04",
+      "name": "browser-and-api-share-one-taxonomy",
+      "command": "go -C backend test -tags integration -race -count=1 -run Taxonomy|ReadTheSameSnapshot|TestABrowsersOwnResend|TestStaleBrowserScreen ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T04.browser-and-api-share-one-taxonomy.log",
+      "sha256": "c8c43ce6b65f24b006ebf667acf938123a756333cc277205a4742d58189d2b8b"
+    },
+    {
+      "task_id": "VSF-B07-T04",
+      "name": "transport-hazards-and-contradicted-claims",
+      "command": "go -C backend test -race -count=1 -run TestTheHTTPTransport|TestRedirects|TestAConnectionRefused|TestANoEffectClaim|TestAnUnreadable ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T04.transport-hazards-and-contradicted-claims.log",
+      "sha256": "0172423239205e1fa13cf7818671b8a88e4a51c4a08ee15e94323a7d3d36b153"
+    },
+    {
+      "task_id": "VSF-B07-T05",
+      "name": "safe-retry-policy",
+      "command": "go -C backend test -race -count=1 -run TestThrottled|TestNoDedup|TestRetriesAreBounded|TestUncertain|TestTransportErrors|TestUnsent|TestDefinitive|TestThrottlingSlows ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T05.safe-retry-policy.log",
+      "sha256": "ab558fb0e0b9da113133a7513f67672ebbec686822fab371de50685a5d618f9a"
+    },
+    {
+      "task_id": "VSF-B07-T05",
+      "name": "api-throttle-retry-with-source-hint",
+      "command": "go -C backend test -race -count=1 -run TestSourceThrottlingIsRetried ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T05.api-throttle-retry-with-source-hint.log",
+      "sha256": "d5768e2117d081988ec53a07c3fcd7b1a74759919499a1a1eb97f6457b9a1d5d"
+    },
+    {
+      "task_id": "VSF-B07-T06",
+      "name": "handles-progress-and-cancellation",
+      "command": "go -C backend test -race -count=1 -run TestLongTasks|TestCancelling ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T06.handles-progress-and-cancellation.log",
+      "sha256": "411db92a12c1c6cc34dcf267438ae5e440637b6034eaab4adfa8f7f98a9f4cc0"
+    },
+    {
+      "task_id": "VSF-B07-T07",
+      "name": "locks-and-rate-limit-adaptation",
+      "command": "go -C backend test -race -count=1 -run TestLocks|TestAWaiter|TestReleasing|TestConcurrencyScopes|TestRecordScope|TestResourceBudget|TestLimiter ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T07.locks-and-rate-limit-adaptation.log",
+      "sha256": "b62a66eba5d06549a84b7de2cf3fe21c7c3098ba9f3830c7c3fd651245170ec2"
+    },
+    {
+      "task_id": "VSF-B07-T08",
+      "name": "unknown-commit-injection",
+      "command": "go -C backend test -race -count=1 -run TestDisconnect|TestReconciliation|TestTimeoutWhile|TestARestartAfter|TestLosingTheJournal|TestConcurrentDouble|TestReusing|TestAPIExecutor|TestAnUnreachable|TestStaleVersion ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T08.unknown-commit-injection.log",
+      "sha256": "7445a0d41e0b8e526fbee03b0e3effad890c07563d420cb2914a9527f07a832a"
+    },
+    {
+      "task_id": "VSF-B07-T08",
+      "name": "ambiguous-write-and-denied-caller-live",
+      "command": "go -C backend test -tags integration -race -count=1 -run TestAmbiguousWriteNeverRetries|TestADeniedCaller ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T08.ambiguous-write-and-denied-caller-live.log",
+      "sha256": "e4655510ca40ca7766f8717485c34589e94e1be196db157a69dcea6e93b42821"
+    },
+    {
+      "task_id": "VSF-B07-T10",
+      "name": "fixture-server-module-graph",
+      "command": "pnpm --filter @vsf/fixture-apps run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T10.fixture-server-module-graph.log",
+      "sha256": "a5f4f1921ab75e4c6ef573ad3cc04f4a6a292b463d0689cede688d88b713f66b"
+    },
+    {
+      "task_id": "VSF-B07-T10",
+      "name": "browser-e2e-reports-load-failures",
+      "command": "pnpm --filter @vsf/e2e run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T10.browser-e2e-reports-load-failures.log",
+      "sha256": "48d332c16b8837c6da5915751fb1c73cb247be74f44ced20e935d19983f35104"
+    },
+    {
+      "task_id": "VSF-B07-T11",
+      "name": "exclusion-matrix",
+      "command": "go -C backend test -race -count=1 -run TestADifferentRequest|TestManyDistinct|TestUnresolvedWritesBlock|TestAnUnresolvedWriteBlocks|TestAWriteWithoutAScope|TestACancelledWaiter|TestCancellingDuring|TestAJournalFailure|TestExclusionSurvives|TestScopeKeys|TestLocksExclude|TestAWaiterBehind|TestStartRefuses|TestARecordWithoutAFootprint ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T11.exclusion-matrix.log",
+      "sha256": "bbf369804ba503d7b358caa80efb94a141f8eff6578da228429355f92989eaa1"
+    },
+    {
+      "task_id": "VSF-B07-T11",
+      "name": "exclusion-matrix-repeated-under-race",
+      "command": "go -C backend test -race -count=1 -count=20 -run TestADifferentRequest|TestManyDistinct|TestCancellingDuring|TestACancelledWaiter ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T11.exclusion-matrix-repeated-under-race.log",
+      "sha256": "00bab27dc53b893411a108e377a3e4ae76ac39baea1c1cd0e8b62dabdfa6b6ab"
+    },
+    {
+      "task_id": "VSF-B07-T12",
+      "name": "reconciliation-evidence-levels",
+      "command": "go -C backend test -race -count=1 -run TestAnotherActor|TestAnUnchanged|TestAStaleRead|TestAFence|TestWithoutAFence|TestAReceipt|TestAnExecutorCannot|TestNonMonotonic|TestReconciliationRevalidates|TestAFreshSession|TestEveryReconciliation|TestTwoReconciliations|TestOnlyReconciliation|TestReconciliationChecks|TestReconciliationRefuses ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T12.reconciliation-evidence-levels.log",
+      "sha256": "a03561ad33fdaf017c4e8247f6d79fbc3b8e74175c7e9cd22a75d34df4b52ab5"
+    },
+    {
+      "task_id": "VSF-B07-T13",
+      "name": "late-authorization-and-non-authoritative-sources",
+      "command": "go -C backend test -race -count=1 -run TestAuthorizationThatLapses|TestANonAuthoritative|TestThrottlingFromANon ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T13.late-authorization-and-non-authoritative-sources.log",
+      "sha256": "ac93c4864518cc3a25821c3dcd0f4ec2533467a1c3b1c0fedc66715fc5094cb6"
+    },
+    {
+      "task_id": "VSF-B07-T13",
+      "name": "journal-torn-tail-and-oversized-detail",
+      "command": "go -C backend test -race -count=1 -run TestATornFinal|TestACorruptMiddle|TestAnOversized ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T13.journal-torn-tail-and-oversized-detail.log",
+      "sha256": "d3e68884a7a1898b4b2d4e7fa3737c77dfc347911707160ed1f767a01afef572"
+    },
+    {
+      "task_id": "VSF-B07-T13",
+      "name": "browser-presses-only-usable-controls",
+      "command": "go -C backend test -tags integration -race -count=1 -run TestTheBrowserOnlyPresses ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T13.browser-presses-only-usable-controls.log",
+      "sha256": "2fd8b9c3d3a37add38731cb8edb5fc18e00b1426a1cf51ae41d6bee6c6a09e4e"
+    },
+    {
+      "task_id": "VSF-B07-T09",
+      "name": "rust-authorize-report",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test authorize",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T09.rust-authorize-report.log",
+      "sha256": "482116003bc3174124249bbb809bdeeca5d76018bc2092fb1ef04338f05df9f2"
+    },
+    {
+      "task_id": "VSF-B07-T09",
+      "name": "worker-serves-authorize",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T09.worker-serves-authorize.log",
+      "sha256": "2cf8ac761f0c20259a80a545783ad6941d41f9bae1e31a6aff383e3662c3a97a"
+    },
+    {
+      "task_id": "VSF-B07-T09",
+      "name": "go-authority-cannot-be-forged",
+      "command": "go -C backend test -race -count=1 -run TestCodeOutside|TestDecodingOnly ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T09.go-authority-cannot-be-forged.log",
+      "sha256": "35052e4a12fa337745dc23e3774676d213fc2af1837a9604fa1411431c10ebc9"
+    },
+    {
+      "task_id": "VSF-B07-T09",
+      "name": "rust-refuses-what-go-decodes",
+      "command": "go -C backend test -tags integration -race -count=1 -run TestRust|TestOnlyTheWorker|TestBothStrategies ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T09.rust-refuses-what-go-decodes.log",
+      "sha256": "bb559214f85f566b94916a4416ccd28318fee4dd4ca7acc1cd8ff61401f2643f"
+    },
+    {
+      "task_id": "VSF-B07-T09",
+      "name": "ts-validated-gate",
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T09.ts-validated-gate.log",
+      "sha256": "5cf9218d55d812659725017d0b05871cd22632abcf36937fba1a472a7cc0d95e"
+    },
+    {
+      "task_id": "VSF-B07-T09",
+      "name": "ts-unvalidated-decoder",
+      "command": "pnpm --filter @vsf/ir run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B07-T09.ts-unvalidated-decoder.log",
+      "sha256": "176262025d861683043106f9c6024a4c276459ce56253da6cee0a0c9ac26b192"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-test-all",
+      "command": "go -C backend test -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-test-all.log",
+      "sha256": "43949fd1339c3bf2af75012d56c423d0d9901d50f46695c423aca59e796d64f7"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-integration-all",
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-integration-all.log",
+      "sha256": "72a9280f7c72a4aaa68c4096f512112485ab7f6cc61c564c6d28e7c4564a46c2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-test-workspace",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-test-workspace.log",
+      "sha256": "4d93371e92a1611f3bcd5ad85f615ebe56ab69050931025aff3c9ad05cb033d9"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-fmt",
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-fmt.log",
+      "sha256": "c4e39a37190232bfa5639c36f34c68e12e10e629056589120a38922c90608dee"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-clippy.log",
+      "sha256": "472c3e658553c86adcfb8cc92f8199212648237918db3b65eb9e35cfad109059"
+    },
+    {
+      "task_id": "GATE",
+      "name": "gofmt",
+      "command": "scripts/gofmt-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.gofmt.log",
+      "sha256": "c0f28271d4d47306fac872605c06b1cc41b29e7602f82db35a4770b842a85b22"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-vet",
+      "command": "go -C backend vet -tags integration ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-vet.log",
+      "sha256": "fcfe5cf31ffc5fb18a3291ac5ea800f76090b35aadb4766f874bf01e5cc5dcda"
+    },
+    {
+      "task_id": "GATE",
+      "name": "build-ts",
+      "command": "pnpm build:ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.build-ts.log",
+      "sha256": "2b8f7484198b86215334321562ba0686ec0e2cb209f8c0dfb463a96bc0a7e81e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "typecheck",
+      "command": "pnpm typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.typecheck.log",
+      "sha256": "ee05b5810d84c8a90ac6e72f3dc64e70da97ffb38967528ebae64ab8e69cbabd"
+    },
+    {
+      "task_id": "GATE",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.biome.log",
+      "sha256": "a516af8ce1109cbdd5c86e6ff23d7a2b4355d88256b9336be8176487acde9cbb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "comment-limit",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.comment-limit.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "secret-scan",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.secret-scan.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "GATE",
+      "name": "idl-drift",
+      "command": "node --conditions=source tools/idlgen/src/cli.ts --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.idl-drift.log",
+      "sha256": "c293e6edf4034144bbceb9a420289f4314a609a867b4aaf6acdcbdad9b6e4dae"
+    },
+    {
+      "task_id": "GATE",
+      "name": "registry-manifest",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify . --development",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.registry-manifest.log",
+      "sha256": "97509049ecfc35034ac3b0394d5a102c17a8aa2b9403c5e3600c0325a3a651bd"
+    },
+    {
+      "task_id": "GATE",
+      "name": "workflow-check",
+      "command": "node tools/checks/src/cli.ts workflow-check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.workflow-check.log",
+      "sha256": "142a17841862e19786f62736859804529f6d9ca0a83bd1bf25eb13b26b01c3b8"
+    },
+    {
+      "task_id": "GATE",
+      "name": "vuln-scan",
+      "command": "node tools/checks/src/cli.ts vuln-scan",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.vuln-scan.log",
+      "sha256": "3f33532c356ae81a0c81003c10fd8ea151de11bd299b027fab4c1d56afe206af"
+    },
+    {
+      "task_id": "GATE",
+      "name": "checks-tests",
+      "command": "pnpm --filter @vsf/checks run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.checks-tests.log",
+      "sha256": "7b14bb89dd8948f551b2be35cda052a2d8f64e28eae24ac8f6e4f0016be01e8a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "adversarial-b00",
+      "command": "pnpm --filter @vsf/adversarial-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.adversarial-b00.log",
+      "sha256": "2ba90cb19c025afb98d93e9565623b8375efec7feb895224e852dc17fa5400e6"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cross-language",
+      "command": "pnpm --filter @vsf/cross-language-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cross-language.log",
+      "sha256": "b4e78cdd244d4b8d3d61df73cbda05dae771ac946daf9628027038c820b4274f"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ui-all",
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ui-all.log",
+      "sha256": "fa988df1f43cc30b4627db009a7e74e6943171d55306e7dc65bd21d1e54c3ace"
+    },
+    {
+      "task_id": "GATE",
+      "name": "wasm-browser-job",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.wasm-browser-job.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "observation-all",
+      "command": "pnpm --filter @vsf/observation-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.observation-all.log",
+      "sha256": "2157efc3733386f3380121377cab0ff07dc6401c41d0873fe69f686c23475d9c"
+    }
+  ]
+}

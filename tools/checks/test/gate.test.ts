@@ -25,7 +25,7 @@ const drop = (what: (t: string) => string): string[] => checkWorkflow(parseWorkf
 
 test("a gate that forgets a job, can be skipped or lets a job continue on error is rejected", () => {
   assert.ok(
-    drop((t) => t.replace("ui, commit-policy, failure-canary]", "ui, failure-canary]")).some((p) =>
+    drop((t) => t.replace(", commit-policy, failure-canary]", ", failure-canary]")).some((p) =>
       /does not wait for job commit-policy/.test(p),
     ),
   );

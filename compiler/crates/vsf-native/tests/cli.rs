@@ -174,3 +174,39 @@ fn serve_validates_ir_documents() {
     assert_eq!(out[0], 0);
     assert_eq!(&out[5..], expected.as_slice());
 }
+
+#[test]
+fn serve_authorizes_only_what_the_library_authorizes() {
+    let doc = ir_fixture("operation-witnessed-1-1", str::to_string);
+    let env = |runtime: &str| {
+        format!(
+            r#"{{"now":1792368400000,"runtime_id":"{runtime}","source_state":"sha256:{}","capability_digest":"sha256:{}","principal_ref":"prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2","variant_id":"var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"}}"#,
+            "3a".repeat(32),
+            "c4".repeat(32)
+        )
+        .into_bytes()
+    };
+    let mut input = Vec::new();
+    let mut frame = |env: &[u8], doc: &[u8]| {
+        input.extend_from_slice(&((env.len() + doc.len() + 5) as u32).to_le_bytes());
+        input.push(b'X');
+        input.extend_from_slice(&(env.len() as u32).to_le_bytes());
+        input.extend_from_slice(env);
+        input.extend_from_slice(doc);
+    };
+    frame(&env("rt_ext01"), &doc);
+    frame(&env("rt_other"), &doc);
+    input.extend_from_slice(&5u32.to_le_bytes());
+    input.extend_from_slice(&[b'X', 255, 255, 255, 255]);
+    let (code, out, _) = run(&["serve"], &input);
+    assert_eq!(code, 0);
+    let want = vsf_ir::api::authorize_report(&doc, &env("rt_ext01")).unwrap();
+    assert_eq!(out[0], 0);
+    assert_eq!(&out[5..5 + want.len()], want.as_slice());
+    assert!(String::from_utf8_lossy(&out).contains("\"authorized\":true"));
+    assert!(String::from_utf8_lossy(&out).contains("witness_other_environment"));
+    assert!(
+        out.windows(18)
+            .any(|w| w == b"authorize.truncated"[..18].as_ref())
+    );
+}

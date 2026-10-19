@@ -1,0 +1,64 @@
+$ pnpm --filter @vsf/checks run test
+
+> @vsf/checks@0.0.0 test /home/user/VSF/tools/checks
+> node --test --test-reporter=spec test/*.test.ts
+
+✔ imported registry is complete and entirely unimplemented (11.522978ms)
+✔ gap register imports all 41 gaps as open (0.329543ms)
+✔ promoting an entry without conformance evidence is rejected (11.330217ms)
+✔ dropped, duplicated and cross-family entries are rejected (8.996157ms)
+✔ a closed gap without evidence is rejected (8.02131ms)
+✔ passing job records checksums that verify (55.998138ms)
+✔ a failing step fails the job but later steps still run and are logged (75.112966ms)
+✔ induced failure canary turns a green job red (76.071068ms)
+✔ a missing binary is a failure, not a skip (3.122602ms)
+✔ tampered or deleted logs and forged PASS status are detected (80.391399ms)
+✔ secret-shaped output never reaches the stored log (38.331085ms)
+✔ tree digests are order-independent of creation and change with content (4.442164ms)
+✔ single-line comments pass (2.044926ms)
+✔ consecutive line comments are rejected (0.202976ms)
+✔ multi-line block comments are rejected, one-line blocks pass (0.11996ms)
+✔ shebang followed by one comment is allowed (0.168924ms)
+✔ accepts a concise technical message of nine lines (3.550444ms)
+✔ rejects ten lines and empty messages (0.446152ms)
+✔ rejects attribution, signatures and links (0.326526ms)
+✔ identity must be the repository owner (0.268602ms)
+✔ clean cargo lock passes; workspace members are ignored (3.333018ms)
+✔ floating git sources and missing checksums are flagged (0.553685ms)
+✔ pnpm lock parsing flags tarball sources and missing integrity (0.872533ms)
+✔ known-vulnerable test dependencies are flagged by the local advisories (0.658482ms)
+✔ version comparison boundaries (0.227681ms)
+✔ go replace directives to remote modules and missing sums are flagged (0.652101ms)
+✔ license policy: permissive passes, copyleft and missing fail (0.536ms)
+✔ license overrides fill in uninstalled platform packages and do not mask real problems (6.919641ms)
+✔ prefix overrides cover a whole platform-package family (0.556358ms)
+✔ the real workflow passes its own structural check (2.264748ms)
+✔ the gate waits for every other job, commit-policy included (0.309849ms)
+✔ a gate that forgets a job, can be skipped or lets a job continue on error is rejected (7.738077ms)
+✔ a ci job that no workflow job runs, or has no steps, is detected (0.194713ms)
+✔ all green passes on a pull request and on a push (0.413498ms)
+✔ a failed commit-policy cannot coexist with a green gate (0.138799ms)
+✔ skipped, cancelled, absent and failed required jobs all fail the gate (0.708141ms)
+✔ commit-policy skipped on a pull request is a failure, not an exemption (0.153422ms)
+✔ a job with no steps cannot pass vacuously (0.883065ms)
+✔ the request is deterministic, deduplicated and ecosystem-mapped (2.406069ms)
+✔ answers for every query and no vulnerabilities is clean (38.541156ms)
+✔ a reported vulnerability is a finding naming the package (1.065916ms)
+✔ network failure, timeout, server errors and malformed answers are unavailable, never clean (1.829448ms)
+✔ retries are bounded and a transient failure then success is clean (1.690184ms)
+✔ large lockfiles are sent in bounded batches and one failed batch makes the whole scan unavailable (9.19872ms)
+✔ ignores need an unexpired date; an expired one protects nothing (0.354389ms)
+✔ repository pins are consistent with the manifest (2.500269ms)
+✔ installed toolchains match the pins (437.954246ms)
+✔ each drifting pin is reported by id (5.390054ms)
+✔ a missing toolchain is reported, never skipped (7.312401ms)
+✔ a wrong installed version is reported (396.433877ms)
+ℹ tests 50
+ℹ suites 0
+ℹ pass 50
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1458.757059
+[exit 0]
