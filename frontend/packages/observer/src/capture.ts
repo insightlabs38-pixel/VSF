@@ -12,7 +12,15 @@ import {
   type RelKind,
 } from "./model.ts";
 import { redactText } from "./redact.ts";
-import { looksAccountSpecific, type SourceScope, scopeFlag, scopeOf } from "./sensitive.ts";
+import {
+  intrinsicScope,
+  isValueControl,
+  looksAccountSpecific,
+  markerScope,
+  type SourceScope,
+  scopeFlag,
+  stricter,
+} from "./sensitive.ts";
 
 export const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEMPLATE", "HEAD", "META", "LINK", "TITLE"]);
 const LEAF_TAGS = new Set(["SVG", "svg", "CANVAS", "OBJECT", "EMBED"]);
@@ -212,6 +220,14 @@ function nameOf(
   return ph?.trim() ? collapse(ph) : null;
 }
 
+/** The legend of the nearest fieldset names every control inside it; it is a dependency so an edit re-describes them. */
+function groupLabel(el: Element, deps: Element[]): string | null {
+  const legend = el.closest("fieldset")?.querySelector(":scope > legend");
+  if (!legend) return null;
+  deps.push(legend);
+  return contentText(legend, 120) || null;
+}
+
 function ownText(el: Element): string | null {
   const tag = el.tagName;
   if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return null;
@@ -248,15 +264,21 @@ function disabled(el: Element): boolean {
 /** Facts for one element. Form-control values are never read; credential regions yield no text at all. */
 export function describeElement(el: Element, ctx: DescribeCtx): Described {
   const role = roleOf(el);
-  const scope: SourceScope = scopeOf(el);
   const deps: Element[] = [];
   const relTargets: { kind: RelKind; el: Element }[] = [];
+  const control = isValueControl(el, role);
+  const marker = markerScope(el);
   let name: string | null = null;
   let text: string | null = null;
+  let rawName: string | null = null;
+  if (marker !== "credential" || control) rawName = nameOf(el, role, ctx, deps, relTargets);
+  const group = control ? groupLabel(el, deps) : null;
+  const scope: SourceScope = stricter(
+    marker,
+    intrinsicScope(el, role, [rawName, group].filter(Boolean).join(" ") || null),
+  );
   let flags = scopeFlag(scope);
-  const control = el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT";
   if (scope !== "credential" || control) {
-    const rawName = nameOf(el, role, ctx, deps, relTargets);
     const rawText = scope === "credential" ? null : ownText(el);
     name = rawName === null ? null : redactText(clip(rawName, ctx.opts.maxTextChars));
     text = rawText === null ? null : redactText(clip(rawText, ctx.opts.maxTextChars));

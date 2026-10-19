@@ -73,8 +73,7 @@ export function setGate(
   if (status === "ACCEPTED") {
     if (decision !== "PROCEED") throw new Error(`${gate}: ACCEPTED requires decision PROCEED`);
     const open = correctionTasks(plan, batch.id).filter((t) => state.task_states[t.id]?.status !== "DONE");
-    if (open.length > 0)
-      throw new Error(`${gate}: correction tasks unfinished: ${open.map((t) => t.id).join(", ")}`);
+    if (open.length > 0) throw new Error(`${gate}: correction tasks unfinished: ${open.map((t) => t.id).join(", ")}`);
     if (!batchComplete(plan, state, batch.id)) throw new Error(`${gate}: ${batch.id} has unfinished tasks`);
     if (!(patch.report ?? g.report) || !(patch.evidence ?? g.evidence))
       throw new Error(`${gate}: ACCEPTED requires report and evidence`);

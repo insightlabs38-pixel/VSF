@@ -11,6 +11,8 @@ import { type FlagProbe, observeEnvironment } from "./environment.ts";
 import {
   type Batch,
   type EnvironmentObservation,
+  FLAG_ACCOUNT,
+  FLAG_CREDENTIAL,
   FLAG_DISABLED,
   FLAG_OPAQUE,
   FLAG_VISIBLE,
@@ -836,7 +838,8 @@ export class Session {
     const d = describeElement(el, this.ctx);
     this.stats.described++;
     this.updateFacts(ops, live, d);
-    if ((before ^ live.rec.flags) & (FLAG_VISIBLE | FLAG_DISABLED)) this.refreshSubtree(live, ops, seen);
+    if ((before ^ live.rec.flags) & (FLAG_VISIBLE | FLAG_DISABLED | FLAG_ACCOUNT | FLAG_CREDENTIAL))
+      this.refreshSubtree(live, ops, seen);
     for (const dep of this.dependents.get(live.id) ?? []) {
       const dl = this.live.get(dep);
       if (dl?.node && dl.node.nodeType === 1) this.redoElement(dl.node as Element, ops, seen);

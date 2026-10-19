@@ -13,3 +13,4 @@ export { redactText } from "./redact.ts";
 export * from "./scope.ts";
 export * from "./sensitive.ts";
 export * from "./session.ts";
+export * from "./share.ts";

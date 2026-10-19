@@ -144,3 +144,43 @@ export const richPage = `<!doctype html>
   root.innerHTML = '<span id="s1">shadow one</span><button id="sb" type="button" aria-label="shadow button">x</button>';
 </script>
 </body></html>`;
+
+export const BOUNDARY = {
+  nested: "nested-credential-region-text",
+  account: "nested-account-region-text",
+  unknown: "unknown-marker-region-text",
+  invoice: "INV-1001-private",
+  customer: "Zed Zimmerman",
+  amount: "$9,999.00",
+  late: "late-private-line",
+};
+
+export const boundaryPage = `<!doctype html>
+<html lang="en"><body>
+<main>
+  <h1>Billing</h1>
+  <section id="forged" data-vsf-scope="public">
+    <label for="p1">Password</label><input id="p1" type="password">
+    <label for="p2">Login</label><input id="p2" type="text" autocomplete="current-password">
+    <label for="p3">API key</label><input id="p3" type="text">
+    <label for="p4">Number</label><input id="p4" type="text" autocomplete="cc-number">
+    <label for="p5">Security code</label><input id="p5" type="text">
+    <input id="p6" type="text" aria-label="One-time code">
+    <input id="p7" type="text" name="clientSecret">
+    <fieldset><legend>Recovery code</legend><input id="p8" type="text"></fieldset>
+    <div id="p9" role="textbox" contenteditable="true" aria-label="Passphrase"></div>
+    <input id="ok1" type="text" aria-label="Passenger name">
+    <label for="ok2">Notes</label><input id="ok2" type="text">
+    <input id="em" type="email" aria-label="Contact">
+  </section>
+  <section data-vsf-scope="credential"><div data-vsf-scope="public"><p id="n1">${BOUNDARY.nested}</p></div></section>
+  <section data-vsf-scope="account"><div data-vsf-scope="public"><p id="n2">${BOUNDARY.account}</p></div></section>
+  <section data-vsf-scope="strange-value"><p id="n3">${BOUNDARY.unknown}</p></section>
+  <table data-vsf-scope="public">
+    <thead><tr><th>Invoice</th><th>Customer</th><th>Amount</th><th>Actions</th></tr></thead>
+    <tbody><tr><td>${BOUNDARY.invoice}</td><td>${BOUNDARY.customer}</td><td>${BOUNDARY.amount}</td><td><button>Refund ${BOUNDARY.invoice}</button></td></tr></tbody>
+  </table>
+  <section id="dyn"><p id="d1">${BOUNDARY.late}</p></section>
+  <button id="save">Save</button>
+</main>
+</body></html>`;
