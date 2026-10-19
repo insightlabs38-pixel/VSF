@@ -4,6 +4,7 @@
 pub mod diff;
 pub mod impact;
 pub mod lineage;
+pub mod pin;
 pub mod promotion;
 
 /// A refusal with a stable code; callers branch on the code, never on the text.
