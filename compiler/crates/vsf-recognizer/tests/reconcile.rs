@@ -4,7 +4,7 @@ mod common;
 use common::*;
 use std::collections::BTreeSet;
 use std::path::PathBuf;
-use vsf_recognizer::contract::{Access, Availability, derive};
+use vsf_recognizer::contract::{Access, Availability};
 use vsf_recognizer::engine::recognize;
 use vsf_recognizer::ledger::{Certainty, Ledger, build_ledger};
 use vsf_recognizer::obs::Observation;
@@ -74,9 +74,9 @@ fn a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it() {
     let (obs, rec, mut l) = run("plain-form", "profile-conflict");
     let digest = field_by_label(&rec, "Weekly digest");
     let read_state = |l: &Ledger| {
-        derive(&rec, l, &BTreeSet::new())
+        bare_contract(&rec, l)
             .for_node(digest)
-            .find(|o| o.access == Access::Read)
+            .find(|o| o.access == Access::Local)
             .unwrap()
             .availability
     };
@@ -106,6 +106,12 @@ fn a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it() {
     )
     .unwrap();
     assert_eq!(read_state(&l), Availability::Available);
+    let write = bare_contract(&rec, &l)
+        .for_node(digest)
+        .find(|o| o.access == Access::Invoke)
+        .unwrap()
+        .availability;
+    assert_eq!(write, Availability::Unknown("effect_unverified"));
     assert_eq!(resolve(&mut l, d(PERSON, "again")), Err("already_resolved"));
     assert_eq!(open_conflicts(&l).len(), 1);
     let kept = l.claims.get(&id).unwrap();

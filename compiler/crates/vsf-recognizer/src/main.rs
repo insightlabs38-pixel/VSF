@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::collections::BTreeMap;
 use std::process::ExitCode;
 use vsf_recognizer::contract::derive;
 use vsf_recognizer::engine::{discovery_queries, recognize};
@@ -10,8 +10,9 @@ use vsf_recognizer::reconcile::{Protocol, reconcile, reconcile_contradictions};
 use vsf_recognizer::report::recognition_value;
 use vsf_recognizer::semantics::Rules;
 use vsf_recognizer::val::{count, list, n, obj, pretty, s};
+use vsf_recognizer::witness::{AcceptedWitnesses, WitnessPolicy};
 
-const USAGE: &str = "usage: vsf-recognizer <recognize|ledger|contract|bench-index> <snapshot.json> [--rules 1|2] [--captured-at N] [--protocol FILE]... [--witness ID,ID]";
+const USAGE: &str = "usage: vsf-recognizer <recognize|ledger|contract|bench-index> <snapshot.json> [--rules 1|2] [--captured-at N] [--protocol FILE]... [--witness FILE]... [--witness-policy FILE] [--policy FILE] [--shared]";
 
 fn flag<'a>(args: &'a [String], name: &str) -> Option<&'a str> {
     let at = args.iter().position(|a| a == name)?;
@@ -78,13 +79,39 @@ fn run(args: &[String]) -> Result<String, String> {
             Ok(pretty(&ledger.export(export)))
         }
         "contract" => {
+            if flag(args, "--witness").is_some_and(|w| w.parse::<u32>().is_ok() || w.contains(','))
+            {
+                return Err("bare node ids are not witnesses; pass witness documents".into());
+            }
             let ledger = build_ledger(&obs, &rec, captured_at);
-            let witnessed: BTreeSet<u32> = flag(args, "--witness")
-                .unwrap_or("")
-                .split(',')
-                .filter_map(|x| x.parse().ok())
-                .collect();
-            Ok(pretty(&derive(&rec, &ledger, &witnessed).to_value()))
+            let docs = flags(args, "--witness")
+                .into_iter()
+                .map(|f| {
+                    let raw = std::fs::read(f).map_err(|e| format!("read {f}: {e}"))?;
+                    vsf_canon::parse(&raw).map_err(|e| format!("witness.parse:{}", e.code()))
+                })
+                .collect::<Result<Vec<_>, String>>()?;
+            let accepted = match flag(args, "--witness-policy") {
+                None if docs.is_empty() => AcceptedWitnesses::none(),
+                None => return Err("witnesses need --witness-policy".into()),
+                Some(f) => {
+                    let raw = std::fs::read(f).map_err(|e| format!("read {f}: {e}"))?;
+                    let v =
+                        vsf_canon::parse(&raw).map_err(|e| format!("policy.parse:{}", e.code()))?;
+                    let pol = WitnessPolicy::from_value(&v)?;
+                    AcceptedWitnesses::collect(&docs, &pol, &obs)
+                }
+            };
+            let mut out = derive(&rec, &ledger, &accepted, &BTreeMap::new()).to_value();
+            if let vsf_canon::Value::Object(entries) = &mut out {
+                let rejected = accepted
+                    .rejected
+                    .iter()
+                    .map(|r| obj(vec![("id", s(&r.id)), ("reason", s(r.reason))]))
+                    .collect();
+                entries.push(("rejected_witnesses".to_string(), list(rejected)));
+            }
+            Ok(pretty(&out))
         }
         "bench-index" => {
             let index = FeatureIndex::build(&obs);

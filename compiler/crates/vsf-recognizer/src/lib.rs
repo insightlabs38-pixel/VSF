@@ -11,3 +11,4 @@ pub mod report;
 pub mod semantics;
 pub mod trust;
 pub mod val;
+pub mod witness;

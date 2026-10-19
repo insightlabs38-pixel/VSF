@@ -5,7 +5,6 @@ use common::*;
 use std::collections::BTreeSet;
 use std::path::PathBuf;
 use vsf_canon::Value;
-use vsf_recognizer::contract::derive;
 use vsf_recognizer::engine::recognize;
 use vsf_recognizer::ledger::{Certainty, SourceKind, build_ledger, build_ledger_in};
 use vsf_recognizer::protocol::{Grant, Protocol, ProtocolPolicy, Standing, assess, validate};
@@ -368,7 +367,7 @@ fn plain() -> (
 fn advisory_and_rejected_evidence_never_conflicts_and_never_changes_an_operation() {
     let (obs, rec) = plain();
     let clean = build_ledger(&obs, &rec, NOW);
-    let baseline = derive(&rec, &clean, &BTreeSet::new());
+    let baseline = bare_contract(&rec, &clean);
     let mut l = build_ledger(&obs, &rec, NOW);
     let conflicting = r#"{"name":"weekly_digest","type":"string","required":true},{"name":"phone","type":"string","required":true},{"name":"first_name","type":"integer","required":true}"#;
     for s in [
@@ -406,7 +405,7 @@ fn advisory_and_rejected_evidence_never_conflicts_and_never_changes_an_operation
             .all(|c| c.certainty != Certainty::Conflicted)
     );
     assert_eq!(l.validate(), vec![]);
-    assert_eq!(derive(&rec, &l, &BTreeSet::new()), baseline);
+    assert_eq!(bare_contract(&rec, &l), baseline);
 }
 
 #[test]
