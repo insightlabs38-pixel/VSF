@@ -20,6 +20,41 @@ fn v(code: &'static str, path: &str, detail: impl Into<String>) -> Violation {
     }
 }
 
+/// `scheme://host[:port]` in lowercase with no default port, no empty or hyphen-edged label and no path.
+pub fn origin_canonical(o: &str) -> bool {
+    let Some((scheme, rest)) = o.split_once("://") else {
+        return false;
+    };
+    let default = match scheme {
+        "http" => "80",
+        "https" => "443",
+        _ => return false,
+    };
+    let (host, port) = rest
+        .split_once(':')
+        .map_or((rest, None), |(h, p)| (h, Some(p)));
+    if let Some(p) = port {
+        let digits = !p.is_empty() && p.len() <= 5 && p.bytes().all(|b| b.is_ascii_digit());
+        if !digits
+            || p.starts_with('0')
+            || p == default
+            || p.parse::<u32>().is_ok_and(|n| n > 65535)
+        {
+            return false;
+        }
+    }
+    !host.is_empty()
+        && host.len() <= 253
+        && host.split('.').all(|l| {
+            !l.is_empty()
+                && l.len() <= 63
+                && !l.starts_with('-')
+                && !l.ends_with('-')
+                && l.bytes()
+                    .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'-')
+        })
+}
+
 // ---- effect and certainty algebra -------------------------------------------------------------
 
 /// Danger rank of an effect class; `indeterminate` is the most conservative.
@@ -116,6 +151,17 @@ pub fn witness_disqualified(w: &Witness) -> bool {
     w.synthetic == Some(true) || w.revoked_at.is_some()
 }
 
+/// What a witness demonstrated: a user's statement never counts, and a write needs observed behaviour.
+pub fn witness_proves(w: &Witness, write: bool) -> bool {
+    match w.kind {
+        WitnessKind::FixtureRun | WitnessKind::DifferentialTest | WitnessKind::ProtocolTrace => {
+            true
+        }
+        WitnessKind::DocumentedSchema => !write,
+        WitnessKind::UserAssertion => false,
+    }
+}
+
 /// What a host knows about the moment and place of execution.
 #[derive(Debug, Clone)]
 pub struct ExecEnv {
@@ -134,7 +180,10 @@ pub fn authorizes_execution(c: &OperationContract, env: &ExecEnv) -> Result<(), 
     }
     let mut last = "no_passing_witness";
     for w in &c.witnesses {
-        if w.result != WitnessResult::Passed || !witness_applies(w, &c.source) {
+        if w.result != WitnessResult::Passed
+            || !witness_applies(w, &c.source)
+            || !witness_proves(w, is_write(c.effect.class))
+        {
             continue;
         }
         let verdict = (|| {
@@ -250,6 +299,13 @@ pub fn validate_operation(c: &OperationContract) -> Vec<Violation> {
         ));
     }
     if write {
+        if c.authorization.required_scopes.is_empty() {
+            out.push(v(
+                "contract.write_without_scopes",
+                "/body/authorization/required_scopes",
+                class.as_str(),
+            ));
+        }
         if !c.verification.required || c.verification.strategy == VerificationStrategy::None {
             out.push(v(
                 "contract.write_without_verification",
@@ -385,16 +441,30 @@ pub fn validate_operation(c: &OperationContract) -> Vec<Violation> {
         {
             out.push(v("contract.failed_witness", "/body/witnesses", ""));
         }
-        if !c.witnesses.iter().any(|w| {
+        let usable = |w: &&Witness| {
             w.result == WitnessResult::Passed
                 && witness_applies(w, &c.source)
                 && !witness_disqualified(w)
-        }) {
-            out.push(v(
-                "contract.witness_not_applicable",
-                "/body/witnesses",
-                "no passing witness covers the source binding",
-            ));
+        };
+        if !c
+            .witnesses
+            .iter()
+            .filter(usable)
+            .any(|w| witness_proves(w, write))
+        {
+            if c.witnesses.iter().any(|w| usable(&w)) {
+                out.push(v(
+                    "contract.witness_kind_insufficient",
+                    "/body/witnesses",
+                    "a user assertion, or a document alone for a write, does not demonstrate behaviour",
+                ));
+            } else {
+                out.push(v(
+                    "contract.witness_not_applicable",
+                    "/body/witnesses",
+                    "no passing witness covers the source binding",
+                ));
+            }
         }
     }
     out
@@ -834,6 +904,15 @@ pub fn validate_environment(m: &EnvironmentCapabilityManifest) -> Vec<Violation>
             }
         }
     }
+    for (i, g) in m.permissions.iter().enumerate() {
+        if !origin_canonical(g.origin.as_str()) {
+            out.push(v(
+                "ir.origin_not_canonical",
+                &format!("/body/permissions/{i}/origin"),
+                g.origin.as_str(),
+            ));
+        }
+    }
     if m.variant_id.is_some() && m.app_id.is_none() {
         out.push(v(
             "environment.variant_without_app",
@@ -895,6 +974,13 @@ pub fn validate_environment(m: &EnvironmentCapabilityManifest) -> Vec<Violation>
 
 pub fn validate_observation(o: &ObservationIR) -> Vec<Violation> {
     let mut out = Vec::new();
+    if !origin_canonical(o.origin.as_str()) {
+        out.push(v(
+            "ir.origin_not_canonical",
+            "/body/origin",
+            o.origin.as_str(),
+        ));
+    }
     match (o.mode, o.base_epoch) {
         (ObservationMode::Delta, None) => {
             out.push(v("observation.delta_without_base", "/body/base_epoch", ""))
@@ -1308,6 +1394,29 @@ pub fn validate_version(m: &VersionManifest) -> Vec<Violation> {
         }
     }
     validate_isolation(m, &lineage, &mut out);
+    if let Some(o) = &m.origin
+        && !origin_canonical(o.as_str())
+    {
+        out.push(v("ir.origin_not_canonical", "/body/origin", o.as_str()));
+    }
+    let trust_fields = m.origin.is_some()
+        || m.rollback.is_some()
+        || m.revocations.is_some()
+        || m.artifacts
+            .iter()
+            .any(|a| a.visibility.is_some() || a.principal_ref.is_some());
+    if trust_fields
+        && matches!(m.channel, Channel::Stable | Channel::Pinned)
+        && m.promotion
+            .as_ref()
+            .is_some_and(|p| p.attestation.is_none())
+    {
+        out.push(v(
+            "version.unattested_promotion",
+            "/body/promotion/attestation",
+            "a promoted manifest that carries trust fields must name its signature",
+        ));
+    }
     let mut edges = BTreeSet::new();
     for (i, e) in m.migrations.iter().enumerate() {
         let path = format!("/body/migrations/{i}");

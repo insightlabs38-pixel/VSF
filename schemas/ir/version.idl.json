@@ -154,6 +154,19 @@
         }
       }
     },
+    "SignatureAlg": {
+      "kind": "enum",
+      "values": ["ed25519"]
+    },
+    "PromotionSignature": {
+      "kind": "struct",
+      "doc": "Names the algorithm, the key and the exact digest that was signed; the registry verifies it.",
+      "fields": {
+        "alg": { "type": "SignatureAlg" },
+        "key_id": { "type": "Ident" },
+        "signed_digest": { "type": "Digest" }
+      }
+    },
     "PromotionRecord": {
       "kind": "struct",
       "fields": {
@@ -173,6 +186,11 @@
         "previous": {
           "type": "Digest",
           "optional": true
+        },
+        "attestation": {
+          "type": "PromotionSignature",
+          "optional": true,
+          "since": "1.1.0"
         }
       }
     },

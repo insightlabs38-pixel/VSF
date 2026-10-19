@@ -12,7 +12,7 @@ pub const FAMILIES: &[(&str, &str, &str)] = &[
     ("semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"),
     ("operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"),
     ("presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"),
-    ("version", "VersionManifest", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"),
+    ("version", "VersionManifest", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"),
 ];
 /// Every (version, family, digest) a reader decodes: all released snapshots and the current schema.
 pub const ACCEPTED: &[((u32, u32, u32), &str, &str)] = &[
@@ -27,7 +27,7 @@ pub const ACCEPTED: &[((u32, u32, u32), &str, &str)] = &[
     ((1, 0, 0), "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"),
     ((1, 1, 0), "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"),
     ((1, 0, 0), "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"),
-    ((1, 1, 0), "version", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"),
+    ((1, 1, 0), "version", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"),
 ];
 
 static DIGEST_RULE: StrRule = StrRule { pattern: Some("^sha256:[0-9a-f]{64}$"), max_len: 71, text: TextMode::None };
@@ -4321,6 +4321,62 @@ impl GateResult {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum SignatureAlg {
+    Ed25519,
+}
+impl SignatureAlg {
+    pub const ALL: &'static [Self] = &[Self::Ed25519];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Ed25519 => "ed25519",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "ed25519" => Some(Self::Ed25519),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+/// Names the algorithm, the key and the exact digest that was signed; the registry verifies it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PromotionSignature {
+    pub alg: SignatureAlg,
+    pub key_id: Ident,
+    pub signed_digest: Digest,
+}
+impl PromotionSignature {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let alg = SignatureAlg::decode(o.req("alg")?, &rt::child(&path, "alg"), ctx)?;
+        let key_id = Ident::decode(o.req("key_id")?, &rt::child(&path, "key_id"), ctx)?;
+        let signed_digest = Digest::decode(o.req("signed_digest")?, &rt::child(&path, "signed_digest"), ctx)?;
+        o.finish()?;
+        Ok(Self { alg, key_id, signed_digest })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("alg".to_string(), self.alg.encode()));
+        f.push(("key_id".to_string(), self.key_id.encode()));
+        f.push(("signed_digest".to_string(), self.signed_digest.encode()));
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PromotionRecord {
     pub promoted_at: Instant,
@@ -4328,6 +4384,7 @@ pub struct PromotionRecord {
     pub signer: Label,
     pub signature: Label,
     pub previous: Option<Digest>,
+    pub attestation: Option<PromotionSignature>,
 }
 impl PromotionRecord {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -4343,8 +4400,12 @@ impl PromotionRecord {
             Some(v) => Some(Digest::decode(v, &rt::child(&path, "previous"), ctx)?),
             None => None,
         };
+        let attestation = match o.since("attestation", (1, 1, 0), false, ctx)? {
+            Some(v) => Some(PromotionSignature::decode(v, &rt::child(&path, "attestation"), ctx)?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { promoted_at, gates, signer, signature, previous })
+        Ok(Self { promoted_at, gates, signer, signature, previous, attestation })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -4354,6 +4415,9 @@ impl PromotionRecord {
         f.push(("signature".to_string(), self.signature.encode()));
         if let Some(x) = &self.previous {
             f.push(("previous".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.attestation {
+            f.push(("attestation".to_string(), x.encode()));
         }
         f
     }

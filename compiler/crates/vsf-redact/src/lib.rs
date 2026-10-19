@@ -11,9 +11,17 @@ struct Pattern {
     regex: Regex,
 }
 
-fn patterns() -> &'static [Pattern] {
-    static PATTERNS: OnceLock<Vec<Pattern>> = OnceLock::new();
-    PATTERNS.get_or_init(|| load(PATTERNS_JSON).unwrap_or_default())
+/// Shown instead of any text when the pattern set cannot be loaded: redaction never silently turns itself off.
+pub const UNAVAILABLE: &str = "[REDACTED:patterns_unavailable]";
+
+fn patterns() -> Option<&'static [Pattern]> {
+    static PATTERNS: OnceLock<Option<Vec<Pattern>>> = OnceLock::new();
+    PATTERNS.get_or_init(|| load(PATTERNS_JSON)).as_deref()
+}
+
+/// False only if the embedded pattern set failed to load, in which case every `redact` call withholds its input.
+pub fn available() -> bool {
+    patterns().is_some()
 }
 
 fn load(text: &str) -> Option<Vec<Pattern>> {
@@ -43,12 +51,24 @@ fn load(text: &str) -> Option<Vec<Pattern>> {
 }
 
 pub fn pattern_count() -> usize {
-    patterns().len()
+    patterns().map_or(0, <[Pattern]>::len)
 }
 
 pub fn redact(text: &str) -> String {
+    guarded(patterns(), text)
+}
+
+fn guarded(set: Option<&[Pattern]>, text: &str) -> String {
+    match set {
+        Some(set) => redact_with(set, text),
+        None if text.is_empty() => String::new(),
+        None => UNAVAILABLE.to_string(),
+    }
+}
+
+fn redact_with(set: &[Pattern], text: &str) -> String {
     let mut current = text.to_string();
-    for pattern in patterns() {
+    for pattern in set {
         let marker = format!("[REDACTED:{}]", pattern.kind);
         if pattern.regex.is_match(&current) {
             current = pattern
@@ -95,6 +115,18 @@ mod tests {
     #[test]
     fn loads_every_pattern() {
         assert_eq!(pattern_count(), 11);
+        assert!(available());
+    }
+
+    #[test]
+    fn a_broken_pattern_set_does_not_load_and_withholds_text() {
+        assert_eq!(guarded(None, "anything"), UNAVAILABLE);
+        assert_eq!(guarded(None, ""), "");
+        assert!(load("{}").is_none());
+        assert!(load(r#"{"patterns":[{"kind":"x","regex":"("}]}"#).is_none());
+        assert!(load(r#"{"patterns":[{"kind":"x"}]}"#).is_none());
+        assert!(load("not json").is_none());
+        assert!(load(r#"{"patterns":[{"kind":"ok","regex":"a+"}]}"#).is_some());
     }
 
     #[test]

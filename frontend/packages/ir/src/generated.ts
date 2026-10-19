@@ -11,7 +11,7 @@ export const FAMILIES: readonly (readonly [string, string, string])[] = [
   ["semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"],
   ["operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"],
   ["presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"],
-  ["version", "VersionManifest", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"],
+  ["version", "VersionManifest", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"],
 ];
 /** Every [version, family, digest] a reader decodes: all released snapshots and the current schema. */
 export const ACCEPTED: readonly (readonly [rt.Version, string, string])[] = [
@@ -26,7 +26,7 @@ export const ACCEPTED: readonly (readonly [rt.Version, string, string])[] = [
   [[1, 0, 0], "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"],
   [[1, 1, 0], "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"],
   [[1, 0, 0], "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"],
-  [[1, 1, 0], "version", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"],
+  [[1, 1, 0], "version", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"],
 ];
 
 /** Domain-separated SHA-256 of canonical bytes. */
@@ -3102,12 +3102,56 @@ export function encodeGateResult(x: GateResult): Value {
   return encodeGateResultFields(x);
 }
 
+export const SIGNATURE_ALG = ["ed25519"] as const;
+export type SignatureAlg = (typeof SIGNATURE_ALG)[number];
+export function decodeSignatureAlg(v: Value, path: string, _ctx: Ctx): SignatureAlg {
+  const s = rt.enumStr(v, path);
+  if (!(SIGNATURE_ALG as readonly string[]).includes(s)) throw new rt.IrError(path, "ir.bad_enum");
+  return s as SignatureAlg;
+}
+export function encodeSignatureAlg(x: SignatureAlg): Value {
+  return x;
+}
+
+/** Names the algorithm, the key and the exact digest that was signed; the registry verifies it. */
+export interface PromotionSignature {
+  alg: SignatureAlg;
+  key_id: Ident;
+  signed_digest: Digest;
+}
+export function decodePromotionSignatureFields(o: rt.Obj, ctx: Ctx): PromotionSignature {
+  const path = o.path;
+  const alg_ = decodeSignatureAlg(o.req("alg"), rt.child(path, "alg"), ctx);
+  const key_id_ = decodeIdent(o.req("key_id"), rt.child(path, "key_id"), ctx);
+  const signed_digest_ = decodeDigest(o.req("signed_digest"), rt.child(path, "signed_digest"), ctx);
+  o.finish();
+  const out = {} as PromotionSignature;
+  out.alg = alg_;
+  out.key_id = key_id_;
+  out.signed_digest = signed_digest_;
+  return out;
+}
+export function decodePromotionSignature(v: Value, path: string, ctx: Ctx): PromotionSignature {
+  return decodePromotionSignatureFields(rt.Obj.of(v, path), ctx);
+}
+export function encodePromotionSignatureFields(x: PromotionSignature): Map<string, Value> {
+  const e = new Map<string, Value>();
+  e.set("alg", encodeSignatureAlg(x.alg));
+  e.set("key_id", encodeIdent(x.key_id));
+  e.set("signed_digest", encodeDigest(x.signed_digest));
+  return e;
+}
+export function encodePromotionSignature(x: PromotionSignature): Value {
+  return encodePromotionSignatureFields(x);
+}
+
 export interface PromotionRecord {
   promoted_at: Instant;
   gates: GateResult[];
   signer: Label;
   signature: Label;
   previous?: Digest;
+  attestation?: PromotionSignature;
 }
 export function decodePromotionRecordFields(o: rt.Obj, ctx: Ctx): PromotionRecord {
   const path = o.path;
@@ -3117,6 +3161,8 @@ export function decodePromotionRecordFields(o: rt.Obj, ctx: Ctx): PromotionRecor
   const signature_ = decodeLabel(o.req("signature"), rt.child(path, "signature"), ctx);
   const previous_raw = o.opt("previous");
   const previous_ = previous_raw === undefined ? undefined : decodeDigest(previous_raw, rt.child(path, "previous"), ctx);
+  const attestation_raw = o.since("attestation", [1, 1, 0], false, ctx);
+  const attestation_ = attestation_raw === undefined ? undefined : decodePromotionSignature(attestation_raw, rt.child(path, "attestation"), ctx);
   o.finish();
   const out = {} as PromotionRecord;
   out.promoted_at = promoted_at_;
@@ -3124,6 +3170,7 @@ export function decodePromotionRecordFields(o: rt.Obj, ctx: Ctx): PromotionRecor
   out.signer = signer_;
   out.signature = signature_;
   if (previous_ !== undefined) out.previous = previous_;
+  if (attestation_ !== undefined) out.attestation = attestation_;
   return out;
 }
 export function decodePromotionRecord(v: Value, path: string, ctx: Ctx): PromotionRecord {
@@ -3136,6 +3183,7 @@ export function encodePromotionRecordFields(x: PromotionRecord): Map<string, Val
   e.set("signer", encodeLabel(x.signer));
   e.set("signature", encodeLabel(x.signature));
   if (x.previous !== undefined) e.set("previous", encodeDigest(x.previous));
+  if (x.attestation !== undefined) e.set("attestation", encodePromotionSignature(x.attestation));
   return e;
 }
 export function encodePromotionRecord(x: PromotionRecord): Value {

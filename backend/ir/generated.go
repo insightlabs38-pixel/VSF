@@ -21,7 +21,7 @@ var Families = [][3]string{
 	{"semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"},
 	{"operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"},
 	{"presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"},
-	{"version", "VersionManifest", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"},
+	{"version", "VersionManifest", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"},
 }
 
 // Accepted lists every version and family digest a reader decodes: all released snapshots and the current schema.
@@ -41,7 +41,7 @@ var Accepted = []struct {
 	{rt.Version{1, 0, 0}, "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"},
 	{rt.Version{1, 1, 0}, "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"},
 	{rt.Version{1, 0, 0}, "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"},
-	{rt.Version{1, 1, 0}, "version", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"},
+	{rt.Version{1, 1, 0}, "version", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"},
 }
 
 var ruleDigest = rt.StrRule{Pattern: regexp.MustCompile("^sha256:[0-9a-f]{64}$"), MaxLen: 71, Text: rt.TextNone}
@@ -7008,12 +7008,103 @@ func (x GateResult) encodeFields() *canon.Object {
 
 func (x GateResult) Encode() any { return x.encodeFields() }
 
+type SignatureAlg string
+
+const (
+	SignatureAlgEd25519 SignatureAlg = "ed25519"
+)
+
+var allSignatureAlg = []SignatureAlg{SignatureAlgEd25519}
+
+func DecodeSignatureAlg(v any, path string, _ rt.Ctx) (SignatureAlg, error) {
+	s, err := rt.EnumStr(v, path)
+	if err != nil {
+		return "", err
+	}
+	for _, c := range allSignatureAlg {
+		if string(c) == s {
+			return c, nil
+		}
+	}
+	return "", rt.Fail(path, "ir.bad_enum")
+}
+
+func (x SignatureAlg) Encode() any { return string(x) }
+
+// Names the algorithm, the key and the exact digest that was signed; the registry verifies it.
+type PromotionSignature struct {
+	Alg          SignatureAlg
+	KeyID        Ident
+	SignedDigest Digest
+}
+
+func DecodePromotionSignature(v any, path string, ctx rt.Ctx) (PromotionSignature, error) {
+	o, err := rt.NewObj(v, path)
+	if err != nil {
+		return PromotionSignature{}, err
+	}
+	return decodePromotionSignatureFields(o, path, ctx)
+}
+
+func decodePromotionSignatureFields(o *rt.Obj, path string, ctx rt.Ctx) (PromotionSignature, error) {
+	var out PromotionSignature
+	var f_alg SignatureAlg
+	{
+		raw, err := o.Req("alg")
+		if err != nil {
+			return out, err
+		}
+		f_alg, err = DecodeSignatureAlg(raw, rt.Child(path, "alg"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_key_id Ident
+	{
+		raw, err := o.Req("key_id")
+		if err != nil {
+			return out, err
+		}
+		f_key_id, err = DecodeIdent(raw, rt.Child(path, "key_id"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_signed_digest Digest
+	{
+		raw, err := o.Req("signed_digest")
+		if err != nil {
+			return out, err
+		}
+		f_signed_digest, err = DecodeDigest(raw, rt.Child(path, "signed_digest"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	if err := o.Finish(); err != nil {
+		return out, err
+	}
+	out = PromotionSignature{Alg: f_alg, KeyID: f_key_id, SignedDigest: f_signed_digest}
+	return out, nil
+}
+
+func (x PromotionSignature) encodeFields() *canon.Object {
+	e := canon.NewObject()
+	e.Set("alg", x.Alg.Encode())
+	e.Set("key_id", x.KeyID.Encode())
+	e.Set("signed_digest", x.SignedDigest.Encode())
+	return e
+}
+
+func (x PromotionSignature) Encode() any { return x.encodeFields() }
+
 type PromotionRecord struct {
-	PromotedAt Instant
-	Gates      []GateResult
-	Signer     Label
-	Signature  Label
-	Previous   *Digest
+	PromotedAt  Instant
+	Gates       []GateResult
+	Signer      Label
+	Signature   Label
+	Previous    *Digest
+	Attestation *PromotionSignature
 }
 
 func DecodePromotionRecord(v any, path string, ctx rt.Ctx) (PromotionRecord, error) {
@@ -7081,10 +7172,24 @@ func decodePromotionRecordFields(o *rt.Obj, path string, ctx rt.Ctx) (PromotionR
 			f_previous = &x
 		}
 	}
+	var f_attestation *PromotionSignature
+	{
+		raw, found, err := o.Since("attestation", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodePromotionSignature(raw, rt.Child(path, "attestation"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_attestation = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = PromotionRecord{PromotedAt: f_promoted_at, Gates: f_gates, Signer: f_signer, Signature: f_signature, Previous: f_previous}
+	out = PromotionRecord{PromotedAt: f_promoted_at, Gates: f_gates, Signer: f_signer, Signature: f_signature, Previous: f_previous, Attestation: f_attestation}
 	return out, nil
 }
 
@@ -7102,6 +7207,9 @@ func (x PromotionRecord) encodeFields() *canon.Object {
 	e.Set("signature", x.Signature.Encode())
 	if x.Previous != nil {
 		e.Set("previous", (*x.Previous).Encode())
+	}
+	if x.Attestation != nil {
+		e.Set("attestation", (*x.Attestation).Encode())
 	}
 	return e
 }

@@ -1,7 +1,7 @@
 {
   "schema": "vsf-task-queue-v1",
   "source": "original B00-B24 execution steps, expanded with task-specific acceptance",
-  "task_count": 162,
+  "task_count": 164,
   "batches": [
     {
       "id": "B00",
@@ -4978,6 +4978,66 @@
       "positive": "evidence-check passes",
       "adversarial": "evidence manifest with a failing or unchecksummed run",
       "evidence_required": "docs/deep/evidence/VSF-B06 run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B07-T09",
+      "batch": "B07",
+      "sequence": 9,
+      "status": "TODO",
+      "category": "foundation correction",
+      "title": "Execution consumes only Validated<T> minted by Rust validation (F8 finding)",
+      "intent": "Execution consumes only Validated<T> minted by Rust validation (F8 finding)",
+      "acceptance": "Go and TypeScript decoders return Unvalidated values; only the Rust validation report (native worker or WASM) mints Validated, and execution accepts nothing else.",
+      "dependencies": ["VSF-B06-T08"],
+      "planned_paths": "backend/ir; frontend/packages/ir; frontend/packages/wasm-host; backend/execution",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G7",
+      "evidence": "go test ./backend/...; pnpm --filter @vsf/ir test; execution fixtures",
+      "risk_tests": ["forged evidence", "stale witness"],
+      "origin": "adaptive",
+      "adr": "ADR-032",
+      "lane": "correction",
+      "scope": "backend/ir; frontend/packages/ir; frontend/packages/wasm-host; backend/execution",
+      "contract": "Execution consumes only Validated<T> minted by Rust validation (F8 finding)",
+      "positive": "a contract decoded in Go and in TypeScript is validated through Rust and then executes",
+      "adversarial": "an active contract with effect_understated, witness_not_applicable or write_without_verification decoded in Go or TS is refused by the executor",
+      "evidence_required": "docs/deep/evidence run logs plus a task receipt"
+    },
+    {
+      "id": "VSF-B08-T09",
+      "batch": "B08",
+      "sequence": 9,
+      "status": "TODO",
+      "category": "foundation correction",
+      "title": "Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding)",
+      "intent": "Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding)",
+      "acceptance": "A promoted or package manifest has a sequence number and not_after inside the signed body; a verifier given the last accepted sequence refuses replay and rollback.",
+      "dependencies": ["VSF-B07-T08"],
+      "planned_paths": "compiler/crates/vsf-registry; backend/registry",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G8",
+      "evidence": "cargo test -p vsf-registry; promotion transaction tests",
+      "risk_tests": ["forged evidence", "stale witness"],
+      "origin": "adaptive",
+      "adr": "ADR-032",
+      "lane": "correction",
+      "scope": "compiler/crates/vsf-registry; backend/registry",
+      "contract": "Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding)",
+      "positive": "a newer sequence verifies and advances the stored high-water mark",
+      "adversarial": "replayed older manifest, expired manifest, same sequence with different content, trust set found inside the package",
+      "evidence_required": "docs/deep/evidence run logs plus a task receipt"
     }
   ]
 }

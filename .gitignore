@@ -8,3 +8,4 @@ dist/
 /playwright-report/
 .DS_Store
 compiler/target-abi-inject/
+/frontend/packages/*/src/**/*.js

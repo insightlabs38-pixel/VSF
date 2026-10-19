@@ -1552,6 +1552,101 @@
         }
       ],
       "expect": ["environment.variant_without_app"]
+    },
+    {
+      "name": "op-user-assertion-is-not-a-witness",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/kind",
+          "value": "user_assertion"
+        }
+      ],
+      "expect": ["contract.witness_kind_insufficient"]
+    },
+    {
+      "name": "op-documentation-alone-does-not-prove-a-write",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/witnesses/0/kind",
+          "value": "documented_schema"
+        }
+      ],
+      "expect": ["contract.witness_kind_insufficient"]
+    },
+    {
+      "name": "op-write-without-scopes",
+      "base": "operation-update-stage",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/authorization/required_scopes",
+          "value": []
+        }
+      ],
+      "expect": ["contract.write_without_scopes"]
+    },
+    {
+      "name": "v11-promotion-without-attestation",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/promotion/attestation"
+        }
+      ],
+      "expect": ["version.unattested_promotion"]
+    },
+    {
+      "name": "v11-origin-with-default-port",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://crm.example.com:443"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
+    },
+    {
+      "name": "v11-origin-with-empty-label",
+      "base": "version-manifest-rollback-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://crm..example.com"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
+    },
+    {
+      "name": "e11-permission-origin-with-default-port",
+      "base": "environment-bound-1-1",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/permissions/0/origin",
+          "value": "http://127.0.0.1:80"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
+    },
+    {
+      "name": "obs-origin-with-leading-hyphen-label",
+      "base": "observation-full",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/origin",
+          "value": "https://-bad.example.com"
+        }
+      ],
+      "expect": ["ir.origin_not_canonical"]
     }
   ]
 }

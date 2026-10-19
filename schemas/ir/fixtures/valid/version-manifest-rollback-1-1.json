@@ -87,7 +87,12 @@
       ],
       "signer": "release-key-1",
       "signature": "MEUCIQD-test-signature",
-      "previous": "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d"
+      "previous": "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d",
+      "attestation": {
+        "alg": "ed25519",
+        "key_id": "release-key-1",
+        "signed_digest": "sha256:5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d5d"
+      }
     },
     "origin": "https://crm.example.com",
     "revocations": [

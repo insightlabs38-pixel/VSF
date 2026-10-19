@@ -7,6 +7,9 @@ use vsf_canon::{Value, to_canonical};
 
 const BLOCK: usize = 64;
 
+/// Shorter deployment keys make guessing variant ids from public inputs feasible.
+pub const MIN_KEY: usize = 16;
+
 pub fn hmac_sha256(key: &[u8], msg: &[u8]) -> [u8; 32] {
     let mut k = [0u8; BLOCK];
     if key.len() > BLOCK {
@@ -73,13 +76,12 @@ fn token(what: &str, s: &str) -> Result<(), IdentityError> {
 /// Case-normalizes a BCP 47 style tag (`en-us` -> `en-US`, `zh-hant-tw` -> `zh-Hant-TW`).
 pub fn canonical_locale(tag: &str) -> Result<String, IdentityError> {
     let parts: Vec<&str> = tag.split('-').collect();
-    let ok =
-        |p: &str| !p.is_empty() && p.len() <= 8 && p.bytes().all(|b| b.is_ascii_alphanumeric());
+    let ok = |p: &str| (2..=8).contains(&p.len()) && p.bytes().all(|b| b.is_ascii_alphanumeric());
     let lang = parts[0];
     if !(2..=3).contains(&lang.len())
         || !lang.bytes().all(|b| b.is_ascii_alphabetic())
         || !parts.iter().all(|p| ok(p))
-        || parts.len() > 6
+        || parts.len() > 4
     {
         return Err(err("identity.bad_locale", tag));
     }
@@ -156,6 +158,9 @@ fn canonical_descriptor(d: &VariantDescriptor) -> Vec<u8> {
 
 /// Keyed so identifiers cannot be guessed or correlated across deployments from public inputs.
 pub fn variant(key: &[u8], d: &VariantDescriptor) -> Result<Variant, IdentityError> {
+    if key.len() < MIN_KEY {
+        return Err(err("identity.weak_key", format!("{} bytes", key.len())));
+    }
     let n = normalize(d)?;
     let canonical = canonical_descriptor(&n);
     let mut msg = b"vsf.variant.v1\0".to_vec();
@@ -206,6 +211,24 @@ pub enum Visibility {
     Private,
 }
 
+fn hex_ids(x: &str, prefix: &str) -> bool {
+    x.strip_prefix(prefix).is_some_and(|h| {
+        h.len() == 32
+            && h.bytes()
+                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+    })
+}
+
+fn kind_ok(x: &str) -> bool {
+    let b = x.as_bytes();
+    (1..=64).contains(&b.len())
+        && b[0].is_ascii_lowercase()
+        && b[1..]
+            .iter()
+            .all(|&c| c.is_ascii_lowercase() || c.is_ascii_digit() || b"_.-".contains(&c))
+}
+
+/// Every part is validated and length-prefixed, so no value can borrow bytes from its neighbour.
 pub fn cache_key(
     key: &[u8],
     vis: Visibility,
@@ -213,13 +236,29 @@ pub fn cache_key(
     principal: &str,
     artifact_kind: &str,
     content: &str,
-) -> String {
-    let mut msg = b"vsf.cache.v1\0".to_vec();
-    msg.extend_from_slice(if vis == Visibility::Public {
-        b"public\0"
-    } else {
-        b"private\0"
-    });
+) -> Result<String, IdentityError> {
+    if key.len() < MIN_KEY {
+        return Err(err("identity.weak_key", format!("{} bytes", key.len())));
+    }
+    if !hex_ids(variant_id, "var_") {
+        return Err(err("identity.bad_variant", variant_id));
+    }
+    if vis == Visibility::Private && !hex_ids(principal, "prin_") {
+        return Err(err("identity.private_needs_principal", principal));
+    }
+    if !kind_ok(artifact_kind) {
+        return Err(err("identity.bad_artifact_kind", artifact_kind));
+    }
+    let digest = content.strip_prefix("sha256:").unwrap_or("");
+    if digest.len() != 64
+        || !digest
+            .bytes()
+            .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+    {
+        return Err(err("identity.bad_content_digest", content));
+    }
+    let mut msg = b"vsf.cache.v2\0".to_vec();
+    msg.push(u8::from(vis == Visibility::Private));
     for part in [
         variant_id,
         if vis == Visibility::Private {
@@ -230,8 +269,8 @@ pub fn cache_key(
         artifact_kind,
         content,
     ] {
+        msg.extend_from_slice(&(part.len() as u32).to_be_bytes());
         msg.extend_from_slice(part.as_bytes());
-        msg.push(0);
     }
-    format!("ck_{}", hex(&hmac_sha256(key, &msg)))
+    Ok(format!("ck_{}", hex(&hmac_sha256(key, &msg))))
 }

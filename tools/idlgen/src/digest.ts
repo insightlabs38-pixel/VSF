@@ -14,13 +14,13 @@ export function toValue(j: unknown): Value {
   return new Map(Object.entries(j as Record<string, unknown>).map(([k, v]) => [k, toValue(v)] as [string, Value]));
 }
 
-/** Prose never contributes to wire identity: fixing a typo in `doc` must not change a schema digest. */
+/** Prose never contributes to wire identity, but a field or type that is itself named `doc` always does. */
 export function withoutDocs(j: unknown): unknown {
   if (Array.isArray(j)) return j.map(withoutDocs);
   if (j && typeof j === "object") {
     return Object.fromEntries(
       Object.entries(j as Record<string, unknown>)
-        .filter(([k]) => k !== "doc")
+        .filter(([k, v]) => !(k === "doc" && typeof v === "string"))
         .map(([k, v]) => [k, withoutDocs(v)]),
     );
   }

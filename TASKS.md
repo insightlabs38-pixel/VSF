@@ -13,8 +13,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B04 | G4 | 8/8 | DONE | PROCEED |
 | B05 | G5 | 8/8 | DONE | PROCEED |
 | B06 | G6 | 0/18 | READY | - |
-| B07 | G7 | 0/8 | TODO | - |
-| B08 | G8 | 0/8 | TODO | - |
+| B07 | G7 | 0/9 | TODO | - |
+| B08 | G8 | 0/9 | TODO | - |
 | B09 | G9 | 0/8 | TODO | - |
 | B10 | G10 | 0/8 | TODO | - |
 | B11 | G11 | 0/6 | TODO | - |
@@ -127,6 +127,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B07-T06` Provide long-task handle, cancellation and progress events
 - [ ] `VSF-B07-T07` Add session-scoped locks and basic rate-limit adaptation
 - [ ] `VSF-B07-T08` Inject crash/timeout after remote commit and record UNKNOWN_COMMIT
+- [ ] `VSF-B07-T09` Execution consumes only Validated<T> minted by Rust validation (F8 finding)
 
 ### B08 · Build version registry, semantic diff and pins
 
@@ -138,6 +139,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B08-T06` Create security revocation that overrides old pin
 - [ ] `VSF-B08-T07` Test old contract plus new source feature, missing required field and rollback
 - [ ] `VSF-B08-T08` Add draft diff result format for future Studio/CLI UI
+- [ ] `VSF-B08-T09` Signed manifests carry monotonic sequence and expiry; trust set is injected out of band (F8 finding)
 
 ### B09 · Integrate extension and secure local bridge
 

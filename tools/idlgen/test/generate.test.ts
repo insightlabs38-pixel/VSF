@@ -74,3 +74,26 @@ test("every released snapshot and the working schema stay readable, each under i
     for (const a of now) assert.notEqual(a.digest, released[a.family], `${a.family} must differ once the schema moves`);
   }
 });
+
+test("prose never changes a digest, but a field that is itself named doc does", () => {
+  const base = digestOf(variant(() => {}));
+  const reword = digestOf(
+    variant((docs) => {
+      const t = docs.get("operation.idl.json").types.OperationContract;
+      t.doc = "Reworded prose.";
+    }),
+  );
+  assert.deepEqual(reword, base);
+  const field = digestOf(
+    variant((docs) => {
+      docs.get("operation.idl.json").types.OperationContract.fields.doc = { type: "Label", optional: true };
+    }),
+  );
+  assert.notEqual(field.operation, base.operation);
+  const retyped = digestOf(
+    variant((docs) => {
+      docs.get("operation.idl.json").types.OperationContract.fields.doc = { type: "LongText", optional: true };
+    }),
+  );
+  assert.notEqual(retyped.operation, field.operation);
+});

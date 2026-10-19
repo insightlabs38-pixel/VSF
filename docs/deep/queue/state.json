@@ -3,7 +3,7 @@
   "initialized": "2026-10-18",
   "source_plan": "07_Development_Sequence/00_Master_Sequence.md",
   "status": "ACTIVE",
-  "task_count": 162,
+  "task_count": 164,
   "batch_count": 25,
   "task_states": {
     "VSF-B00-T01": {
@@ -1115,6 +1115,18 @@
       "claimed_by": null,
       "commit": null,
       "evidence": null
+    },
+    "VSF-B07-T09": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
+    },
+    "VSF-B08-T09": {
+      "status": "TODO",
+      "claimed_by": null,
+      "commit": null,
+      "evidence": null
     }
   },
   "gate_states": {
@@ -1262,5 +1274,8 @@
       "evidence": null
     }
   },
-  "cursor": { "batch": "B06", "task": "VSF-B06-T09" }
+  "cursor": {
+    "batch": "B06",
+    "task": "VSF-B06-T09"
+  }
 }

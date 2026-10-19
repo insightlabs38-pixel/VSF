@@ -267,3 +267,14 @@ fn the_development_key_is_labelled_and_deterministic() {
     assert!(Signer::from_seed_hex("k", "zz").is_err());
     assert!(Signer::from_seed_hex("k", "00").is_err());
 }
+
+#[test]
+fn a_development_signature_never_passes_as_a_production_one() {
+    let v = verify(&repo(), &committed(), &trust()).unwrap();
+    assert_eq!(v.purpose, "development");
+    assert_eq!(
+        v.clone().require_purpose("production").unwrap_err().code,
+        "manifest.wrong_purpose"
+    );
+    assert!(v.require_purpose("development").is_ok());
+}

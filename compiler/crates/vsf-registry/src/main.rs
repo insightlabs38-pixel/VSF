@@ -66,10 +66,9 @@ fn run(args: &[String]) -> Result<String, String> {
             }
         }
         Some("manifest") => {
-            let root = Path::new(
-                args.get(2)
-                    .ok_or("usage: manifest <build|verify|trust> <repo-root>")?,
-            );
+            let root = Path::new(args.get(2).ok_or(
+                "usage: manifest <build|verify|trust> <repo-root> [--development | --trust FILE]",
+            )?);
             match args.get(1).map(String::as_str) {
                 Some("build") => {
                     let signer = match std::env::var("VSF_PACKAGE_SIGNING_SEED") {
@@ -101,19 +100,42 @@ fn run(args: &[String]) -> Result<String, String> {
                     Ok("wrote development trust\n".into())
                 }
                 Some("verify") => {
+                    let development = args.iter().any(|a| a == "--development");
+                    let trust_path = match args.iter().position(|a| a == "--trust") {
+                        Some(i) => {
+                            let given = Path::new(args.get(i + 1).ok_or("--trust needs a file")?);
+                            let inside = given
+                                .canonicalize()
+                                .and_then(|g| root.canonicalize().map(|r| g.starts_with(r)))
+                                .map_err(|e| e.to_string())?;
+                            if inside && !development {
+                                return Err("the trust set must come from outside the package being verified".into());
+                            }
+                            given.to_path_buf()
+                        }
+                        None if development => root.join(manifest::TRUST),
+                        None => {
+                            return Err(
+                                "pass --trust FILE from outside the package, or --development to accept the committed development trust"
+                                    .into(),
+                            );
+                        }
+                    };
                     let trust = manifest::Trust::decode(
-                        &model::load(&read(&root.join(manifest::TRUST).to_string_lossy())?)
-                            .map_err(|e| e.to_string())?,
+                        &model::load(&read(&trust_path.to_string_lossy())?).map_err(|e| e.to_string())?,
                     )
                     .map_err(|e| e.to_string())?;
                     let bytes = read(&root.join(manifest::MANIFEST).to_string_lossy())?;
                     let v = manifest::verify(root, &bytes, &trust).map_err(|e| e.to_string())?;
+                    let v = v
+                        .require_purpose(if development { "development" } else { "production" })
+                        .map_err(|e| e.to_string())?;
                     Ok(format!(
                         "verified v{} key={} ({}) files={} primitives={} root={}\n",
                         v.version, v.key_id, v.purpose, v.files, v.primitives, v.primitive_root
                     ))
                 }
-                _ => Err("usage: manifest <build|verify|trust> <repo-root>".into()),
+                _ => Err("usage: manifest <build|verify|trust> <repo-root> [--development | --trust FILE]".into()),
             }
         }
         _ => Err("usage: vsf-registry <import|gen-fixtures|check|dashboard|manifest>".into()),

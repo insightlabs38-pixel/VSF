@@ -157,7 +157,8 @@
           "--",
           "manifest",
           "verify",
-          "."
+          ".",
+          "--development"
         ]
       }
     ],

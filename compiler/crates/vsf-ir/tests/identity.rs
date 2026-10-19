@@ -140,6 +140,14 @@ fn invalid_descriptors_fail_closed() {
     assert_eq!(bad(x), "identity.bad_app_id");
 }
 
+const PA: &str = "prin_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+const PB: &str = "prin_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+const DIG: &str = "sha256:abababababababababababababababababababababababababababababababab";
+
+fn key_of(vis: Visibility, v: &str, p: &str, kind: &str) -> String {
+    cache_key(KEY, vis, v, p, kind, DIG).unwrap()
+}
+
 #[test]
 fn private_cache_state_is_never_shared_across_principals_or_variants() {
     let v1 = variant(KEY, &d(Some("acme"), &["admin"], "en-US", &[]))
@@ -148,40 +156,109 @@ fn private_cache_state_is_never_shared_across_principals_or_variants() {
     let v2 = variant(KEY, &d(Some("globex"), &["admin"], "en-US", &[]))
         .unwrap()
         .id;
-    let k = |vis, v: &str, p: &str, kind: &str| cache_key(KEY, vis, v, p, kind, "sha256:ab");
+    let k = key_of;
     assert_ne!(
-        k(Visibility::Private, &v1, "prin_a", "semantic"),
-        k(Visibility::Private, &v1, "prin_b", "semantic")
+        k(Visibility::Private, &v1, PA, "semantic"),
+        k(Visibility::Private, &v1, PB, "semantic")
     );
     assert_ne!(
-        k(Visibility::Private, &v1, "prin_a", "semantic"),
-        k(Visibility::Private, &v2, "prin_a", "semantic")
+        k(Visibility::Private, &v1, PA, "semantic"),
+        k(Visibility::Private, &v2, PA, "semantic")
     );
     assert_eq!(
-        k(Visibility::Private, &v1, "prin_a", "semantic"),
-        k(Visibility::Private, &v1, "prin_a", "semantic")
+        k(Visibility::Private, &v1, PA, "semantic"),
+        k(Visibility::Private, &v1, PA, "semantic")
     );
     assert_eq!(
-        k(Visibility::Public, &v1, "prin_a", "semantic"),
-        k(Visibility::Public, &v1, "prin_b", "semantic")
+        k(Visibility::Public, &v1, PA, "semantic"),
+        k(Visibility::Public, &v1, PB, "semantic")
     );
     assert_ne!(
-        k(Visibility::Public, &v1, "prin_a", "semantic"),
-        k(Visibility::Public, &v2, "prin_a", "semantic")
+        k(Visibility::Public, &v1, PA, "semantic"),
+        k(Visibility::Public, &v2, PA, "semantic")
     );
     assert_ne!(
-        k(Visibility::Public, &v1, "prin_a", "semantic"),
-        k(Visibility::Private, &v1, "prin_a", "semantic")
+        k(Visibility::Public, &v1, PA, "semantic"),
+        k(Visibility::Private, &v1, PA, "semantic")
     );
     assert_ne!(
-        k(Visibility::Public, &v1, "p", "semantic"),
-        k(Visibility::Public, &v1, "p", "operation")
+        k(Visibility::Public, &v1, PA, "semantic"),
+        k(Visibility::Public, &v1, PA, "operation")
     );
 }
 
 #[test]
-fn cache_key_fields_cannot_be_shifted_across_boundaries() {
-    let a = cache_key(KEY, Visibility::Private, "var_ab", "cd", "k", "x");
-    let b = cache_key(KEY, Visibility::Private, "var_a", "bcd", "k", "x");
+fn a_private_key_needs_a_real_principal_and_every_part_must_be_well_formed() {
+    let v = "var_0123456789abcdef0123456789abcdef";
+    let code = |vis, var: &str, prin: &str, kind: &str, content: &str, key: &[u8]| {
+        cache_key(key, vis, var, prin, kind, content)
+            .unwrap_err()
+            .code
+    };
+    assert_eq!(
+        code(Visibility::Private, v, "", "semantic", DIG, KEY),
+        "identity.private_needs_principal"
+    );
+    assert_eq!(
+        code(Visibility::Private, v, "prin_a", "semantic", DIG, KEY),
+        "identity.private_needs_principal"
+    );
+    assert_eq!(
+        code(Visibility::Private, "var_ab", PA, "semantic", DIG, KEY),
+        "identity.bad_variant"
+    );
+    assert_eq!(
+        code(Visibility::Public, v, "", "Sem antic", DIG, KEY),
+        "identity.bad_artifact_kind"
+    );
+    assert_eq!(
+        code(Visibility::Public, v, "", "semantic", "sha256:ab", KEY),
+        "identity.bad_content_digest"
+    );
+    assert_eq!(
+        code(Visibility::Public, v, "", "semantic", DIG, b"short"),
+        "identity.weak_key"
+    );
+    assert!(cache_key(KEY, Visibility::Public, v, "", "semantic", DIG).is_ok());
+}
+
+#[test]
+fn a_nul_byte_or_a_neighbouring_value_cannot_forge_another_key() {
+    let v = "var_0123456789abcdef0123456789abcdef";
+    assert!(cache_key(KEY, Visibility::Private, v, "prin_a\0b", "k", DIG).is_err());
+    assert!(cache_key(KEY, Visibility::Public, v, "", "a\0b", DIG).is_err());
+    let a = cache_key(KEY, Visibility::Public, v, "", "ab", DIG).unwrap();
+    let b = cache_key(KEY, Visibility::Public, v, "", "a", DIG).unwrap();
     assert_ne!(a, b);
+}
+
+#[test]
+fn deployment_keys_must_be_long_enough_to_resist_guessing() {
+    assert_eq!(
+        variant(b"short", &d(None, &[], "en-US", &[]))
+            .unwrap_err()
+            .code,
+        "identity.weak_key"
+    );
+}
+
+#[test]
+fn locale_tags_follow_the_ir_pattern_exactly() {
+    for ok in ["en", "en-US", "zh-Hant-TW", "sr-Latn-RS"] {
+        assert!(canonical_locale(ok).is_ok(), "{ok}");
+    }
+    for bad in [
+        "en-u-ca-gregory",
+        "en-x",
+        "en-US-a-b-c",
+        "e",
+        "en--US",
+        "en-USUSUSUSU",
+    ] {
+        assert_eq!(
+            canonical_locale(bad).unwrap_err().code,
+            "identity.bad_locale",
+            "{bad}"
+        );
+    }
 }
