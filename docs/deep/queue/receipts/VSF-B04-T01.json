@@ -1,0 +1,52 @@
+{
+  "task_id": "VSF-B04-T01",
+  "status": "DONE",
+  "branch": "vsf/b04-browser-observation",
+  "base_commit": "aed1c555298ad09e53b17226940a86fbbf73bd70",
+  "commit": "5c8eb32af1187d1b93c1738011b4f146957785c1",
+  "paths": [
+    "frontend/packages/observer/src/scope.ts",
+    "frontend/packages/observer/src/advertise.ts",
+    "frontend/packages/observer/src/session.ts",
+    "apps/extension/src/observe.ts",
+    "tests/observation/specs/scope.spec.ts"
+  ],
+  "acceptance": "Documents, frames and open shadow roots are enumerated at any depth; cross-origin, sandboxed, policy-blocked and unreadable regions become opaque placeholders with origin and reason and no content; closed roots are seen only with the extension API; the runtime advertises its limits.",
+  "positive": {
+    "fixture": "7 browser and 5 unit tests plus the extension spec: nested shadow roots entered, extension sees closed content",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/scope.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a cross-origin frame carrying the same secret text is never read; an ungranted origin is refused; depth limits become placeholders",
+    "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/scope.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-protocol-evidence-v1 new",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "The observer reads structure and declared labels only; form values are never read, credential regions yield no text, account text is flagged and withheld from shared evidence, and no network surface exists.",
+  "performance_memory_storage": "Scope discovery is one tree walk per scope; custom elements that may hide closed roots are counted, not probed.",
+  "known_limitations": [
+    "Page-context scripts cannot see closed shadow roots or cross-origin frames; both are reported as limits",
+    "Late attachShadow needs rescan()"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T01.scope-enumeration-browser.log",
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T01.scope-enumeration-unit.log",
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T01.extension-closed-shadow-and-limits.log",
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T01.extension-protocol-unit.log"
+  ],
+  "review_result": "ACCEPTED"
+}

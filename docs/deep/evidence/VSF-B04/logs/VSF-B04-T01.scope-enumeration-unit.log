@@ -1,0 +1,42 @@
+$ pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/scope.test.ts
+TAP version 13
+# Subtest: an accessible document whose origin is not granted becomes a policy placeholder
+ok 1 - an accessible document whose origin is not granted becomes a policy placeholder
+  ---
+  duration_ms: 2.359747
+  type: 'test'
+  ...
+# Subtest: about:blank and srcdoc documents inherit the parent origin
+ok 2 - about:blank and srcdoc documents inherit the parent origin
+  ---
+  duration_ms: 0.205286
+  type: 'test'
+  ...
+# Subtest: a frame with no readable document is classified by what the markup says
+ok 3 - a frame with no readable document is classified by what the markup says
+  ---
+  duration_ms: 0.456013
+  type: 'test'
+  ...
+# Subtest: an unreadable origin is never guessed
+ok 4 - an unreadable origin is never guessed
+  ---
+  duration_ms: 0.16889
+  type: 'test'
+  ...
+# Subtest: capability ids are valid IR capability ids and limits are stated, not implied
+ok 5 - capability ids are valid IR capability ids and limits are stated, not implied
+  ---
+  duration_ms: 5.888148
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 211.282562
+[exit 0]

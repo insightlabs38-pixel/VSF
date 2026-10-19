@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B04-T07",
+  "status": "DONE",
+  "branch": "vsf/b04-browser-observation",
+  "base_commit": "aed1c555298ad09e53b17226940a86fbbf73bd70",
+  "commit": "5c8eb32af1187d1b93c1738011b4f146957785c1",
+  "paths": [
+    "tests/observation/support/runner.ts",
+    "tests/observation/specs/navigation.spec.ts",
+    "frontend/packages/observer/src/epoch.ts",
+    "tests/observation/test/epoch.test.ts",
+    "tests/observation/specs/ir.spec.ts"
+  ],
+  "acceptance": "The fixture runner drives SPA, multi-page, reload, document replacement and iframe transitions: SPA keeps one epoch, page loads and replacements start larger epochs, frame navigation changes only the frame generation, and the replica equals the page after every step across three identical runs.",
+  "positive": {
+    "fixture": "5 browser tests, three runs with identical normalised traces",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/navigation.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "cleared storage and a different origin still produce larger or independent epochs; epochs never fall below the clock",
+    "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/epoch.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-protocol-evidence-v1 new",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "The observer reads structure and declared labels only; form values are never read, credential regions yield no text, account text is flagged and withheld from shared evidence, and no network surface exists.",
+  "performance_memory_storage": "Epoch allocation is one storage read and write per baseline.",
+  "known_limitations": [
+    "Back-forward cache restores are not distinguished from reloads"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T07.navigation-fixture-runner-run1.log",
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T07.navigation-fixture-runner-run2.log",
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T07.navigation-fixture-runner-run3.log",
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T07.epoch-allocation-unit.log"
+  ],
+  "review_result": "ACCEPTED"
+}

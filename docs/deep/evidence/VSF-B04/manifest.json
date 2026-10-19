@@ -1,0 +1,268 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B04",
+  "gate": "G4",
+  "runs": [
+    {
+      "task_id": "VSF-B04-T01",
+      "name": "scope-enumeration-unit",
+      "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/scope.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T01.scope-enumeration-unit.log",
+      "sha256": "fecb6effd838e98582559b5866c6cad15641833ee432a856d9685b7c2a091fd2"
+    },
+    {
+      "task_id": "VSF-B04-T01",
+      "name": "scope-enumeration-browser",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/scope.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T01.scope-enumeration-browser.log",
+      "sha256": "4edfed4a7ff713f95c327604caaec48d150bad44ad35e8fcb676856ac0319e46"
+    },
+    {
+      "task_id": "VSF-B04-T01",
+      "name": "extension-closed-shadow-and-limits",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-observe.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T01.extension-closed-shadow-and-limits.log",
+      "sha256": "4cef088581200c4d15c3a0a3e75ec51683d559bcaecc4ab5ce16a6d6c9c33196"
+    },
+    {
+      "task_id": "VSF-B04-T01",
+      "name": "extension-protocol-unit",
+      "command": "pnpm --filter @vsf/extension run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T01.extension-protocol-unit.log",
+      "sha256": "8b9e543cb54d17c7e977ac443369e10f2fc27eb7a3eb8a8678a988e1a505aed8"
+    },
+    {
+      "task_id": "VSF-B04-T02",
+      "name": "role-name-label-geometry-browser",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/capture.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T02.role-name-label-geometry-browser.log",
+      "sha256": "14e7cca0547d2a50c4431ddeb36a505b51937953f69491930c093464dd649fd6"
+    },
+    {
+      "task_id": "VSF-B04-T03",
+      "name": "replica-protocol-unit",
+      "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/replica.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T03.replica-protocol-unit.log",
+      "sha256": "a660208c497cc0abc9ce7aede2153380541fe833de5020d047c9263ec1aface0"
+    },
+    {
+      "task_id": "VSF-B04-T03",
+      "name": "mutation-batching-and-resync-browser",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/mutations.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T03.mutation-batching-and-resync-browser.log",
+      "sha256": "3f7247132adf41e6f9d4a1a4ff2d0f7c929829b54ca7c81550ca1901d751bdc4"
+    },
+    {
+      "task_id": "VSF-B04-T04",
+      "name": "environment-overlay-unit",
+      "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/environment.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T04.environment-overlay-unit.log",
+      "sha256": "69d762f3993ae5ba39e1aef46741541bbab38c75815628e15026f492a96037e5"
+    },
+    {
+      "task_id": "VSF-B04-T04",
+      "name": "environment-browser",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/environment.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T04.environment-browser.log",
+      "sha256": "0f61acb9de67cf6449474fc66f501fbe689e997de2c3310f50c8c60ff4c2ea4f"
+    },
+    {
+      "task_id": "VSF-B04-T05",
+      "name": "sensitive-scopes-redaction-and-local-mode",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/sensitive.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T05.sensitive-scopes-redaction-and-local-mode.log",
+      "sha256": "c7f9ae368cd31feb26f32ffc80181ee177db19a7f0fa2fecb48dd1f80a1b717a"
+    },
+    {
+      "task_id": "VSF-B04-T06",
+      "name": "protocol-evidence-schema-and-rules",
+      "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/protocol.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T06.protocol-evidence-schema-and-rules.log",
+      "sha256": "747e481307fbc68db46a16dd1c046d26a333095151e6640564a0186d0d756f5a"
+    },
+    {
+      "task_id": "VSF-B04-T07",
+      "name": "epoch-allocation-unit",
+      "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/epoch.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T07.epoch-allocation-unit.log",
+      "sha256": "7db9f77e9d2566ec09f1d15b2860db792ac15bbd082464ad14620f25b1bb0823"
+    },
+    {
+      "task_id": "VSF-B04-T07",
+      "name": "navigation-fixture-runner-run1",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/navigation.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T07.navigation-fixture-runner-run1.log",
+      "sha256": "02cb33ebc09ba66ff05486ce961f8b45c9bec0e53cdc7206c5b43ea57350987e"
+    },
+    {
+      "task_id": "VSF-B04-T07",
+      "name": "navigation-fixture-runner-run2",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/navigation.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T07.navigation-fixture-runner-run2.log",
+      "sha256": "4bda5439091495d26de49707507690383e107f901f983ac59b4f743ed05db8f5"
+    },
+    {
+      "task_id": "VSF-B04-T07",
+      "name": "navigation-fixture-runner-run3",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/navigation.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T07.navigation-fixture-runner-run3.log",
+      "sha256": "0f360795c11710f884837c569d1b8b359f8d623bad688d01901f27f4be246aa6"
+    },
+    {
+      "task_id": "VSF-B04-T08",
+      "name": "overhead-benchmark-1k-10k-50k",
+      "command": "pnpm --filter @vsf/observation-tests run bench",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T08.overhead-benchmark-1k-10k-50k.log",
+      "sha256": "05c8418d2d03cf077d33f4532c8177e1cf5bec8da1e59e41b11cf0847972390f"
+    },
+    {
+      "task_id": "VSF-B04-T08",
+      "name": "overhead-result-copied",
+      "command": "cp artifacts/observation/overhead.json docs/deep/evidence/VSF-B04/overhead.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B04-T08.overhead-result-copied.log",
+      "sha256": "5b76aec2a38f83448dd1302e9978ccd2523d0b5a7d80e2d16fc5c90314e488fa"
+    },
+    {
+      "task_id": "GATE",
+      "name": "registry-package-still-verifies",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.registry-package-still-verifies.log",
+      "sha256": "a40a61cb796eb91cf6edbd3d1657b1428e8e95d3a67af84cb16279605abbf5c6"
+    },
+    {
+      "task_id": "GATE",
+      "name": "full-rust-workspace",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.full-rust-workspace.log",
+      "sha256": "39da7870f339365200fd762b3e5096f82dbdbfbcd935385db7b70426adfbf3ae"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-hygiene",
+      "command": "node tools/checks/src/cli.ts ci-run hygiene",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-hygiene.log",
+      "sha256": "bba938f52666ed785a4a10f1b8e6cae61aede4159e7ac6d5a6226e234983adf3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-native",
+      "command": "node tools/checks/src/cli.ts ci-run native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-native.log",
+      "sha256": "678b09b74ce2bb06b7644bd5a799829e55219e0f4174569edc8f1c164723376e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-go",
+      "command": "node tools/checks/src/cli.ts ci-run go",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-go.log",
+      "sha256": "cdd71958b2933294c6095125b05ad0c2cf7b202963632db2d3390639fae09a34"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-ts",
+      "command": "node tools/checks/src/cli.ts ci-run ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-ts.log",
+      "sha256": "99e415a0c572f57d83404f4dc99e19993a3cf7d0d0dc984ea210fad180864b99"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-wasm-browser",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-wasm-browser.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-cross-language",
+      "command": "node tools/checks/src/cli.ts ci-run cross-language",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-cross-language.log",
+      "sha256": "a3557a3f5a8f25a6c7f9a3febf62640a81bc0d2318ef251723123556ebdab62a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-browser",
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-browser.log",
+      "sha256": "ae0f6c126047b744f0b5eefebd1d650ede1f8f3219617d1f48eec0b32a93a796"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-observation",
+      "command": "node tools/checks/src/cli.ts ci-run observation",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-observation.log",
+      "sha256": "67f27c33ddf5ca759fcbae22a734ad8a1b6169bda750a3ba431737f4f6dc42a5"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-canary",
+      "command": "node tools/checks/src/cli.ts ci-run canary",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-canary.log",
+      "sha256": "cb9ca4bf7787998ed148c72b29ec6c19de6cd9a436032a68b8db0832f70f0c29"
+    },
+    {
+      "task_id": "GATE",
+      "name": "clean-clone-reproducible",
+      "command": "scripts/clean-clone-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.clean-clone-reproducible.log",
+      "sha256": "cd5e7f52da0a3caa845f8df4aff893b8387dd4e2b277fdc2d01f34337655543b"
+    }
+  ]
+}

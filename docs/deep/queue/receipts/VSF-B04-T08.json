@@ -1,0 +1,48 @@
+{
+  "task_id": "VSF-B04-T08",
+  "status": "DONE",
+  "branch": "vsf/b04-browser-observation",
+  "base_commit": "aed1c555298ad09e53b17226940a86fbbf73bd70",
+  "commit": "5c8eb32af1187d1b93c1738011b4f146957785c1",
+  "paths": [
+    "tests/observation/support/overhead.ts",
+    "tests/observation/bench-overhead.ts",
+    "tests/observation/specs/overhead.spec.ts",
+    "docs/deep/evidence/VSF-B04/overhead.json"
+  ],
+  "acceptance": "The collector records cold and warm capture, hand-off, steady-state flush p50 and p95, renderer CPU per cycle, RSS and peak RSS, heap per node and heap growth over repeated rounds for 1k, 10k and 50k nodes.",
+  "positive": {
+    "fixture": "1k/10k/50k nodes: cold p50 32/133/505 ms, flush p95 0.6/0.6/1.8 ms",
+    "command": "pnpm --filter @vsf/observation-tests run bench",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "regression guards: flush p95 under 10 ms, cold p95 under 3 s and heap growth under 2 MiB at 3k nodes",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/overhead.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-protocol-evidence-v1 new",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "The observer reads structure and declared labels only; form values are never read, credential regions yield no text, account text is flagged and withheld from shared evidence, and no network surface exists.",
+  "performance_memory_storage": "Peak RSS 505 vs 350 MiB control at 50k nodes; heap 370 B per node; growth 180496 B over 4 rounds of 300 cycles.",
+  "known_limitations": [
+    "Hand-off time includes the Playwright binding serialization and is an upper bound for in-browser transport"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T08.overhead-benchmark-1k-10k-50k.log",
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T08.overhead-result-copied.log"
+  ],
+  "review_result": "ACCEPTED"
+}

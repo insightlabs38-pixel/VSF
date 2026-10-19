@@ -1,0 +1,12 @@
+$ pnpm --filter @vsf/observation-tests exec playwright test specs/navigation.spec.ts
+
+Running 5 tests using 1 worker
+
+  ✓  1 specs/navigation.spec.ts:57:1 › single-page navigation keeps one epoch and publishes the new route (522ms)
+  ✓  2 specs/navigation.spec.ts:73:1 › traditional navigation and reloads start a new, larger epoch every time (529ms)
+  ✓  3 specs/navigation.spec.ts:100:1 › document replacement inside one page is a new epoch even though nothing navigated (177ms)
+  ✓  4 specs/navigation.spec.ts:124:1 › iframe transitions change the frame's generation and never the page's epoch (311ms)
+  ✓  5 specs/navigation.spec.ts:182:1 › the same scenarios give the same traces on every run (1.2s)
+
+  5 passed (4.0s)
+[exit 0]

@@ -1,0 +1,54 @@
+$ pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/protocol.test.ts
+TAP version 13
+# Subtest: every valid fixture passes the schema and the promotion rules
+ok 1 - every valid fixture passes the schema and the promotion rules
+  ---
+  duration_ms: 7.126919
+  type: 'test'
+  ...
+# Subtest: every invalid fixture is rejected with exactly the expected reason
+ok 2 - every invalid fixture is rejected with exactly the expected reason
+  ---
+  duration_ms: 2.366259
+  type: 'test'
+  ...
+# Subtest: the schema file and the hand-written structural checks agree on every fixture
+ok 3 - the schema file and the hand-written structural checks agree on every fixture
+  ---
+  duration_ms: 2.256603
+  type: 'test'
+  ...
+# Subtest: undocumented traffic is never supported by default, whatever else is claimed
+ok 4 - undocumented traffic is never supported by default, whatever else is claimed
+  ---
+  duration_ms: 1.0474
+  type: 'test'
+  ...
+# Subtest: the factory refuses a request that carries credentials or crosses origins
+ok 5 - the factory refuses a request that carries credentials or crosses origins
+  ---
+  duration_ms: 0.404031
+  type: 'test'
+  ...
+# Subtest: path templating replaces identifiers and nothing else
+ok 6 - path templating replaces identifiers and nothing else
+  ---
+  duration_ms: 0.261548
+  type: 'test'
+  ...
+# Subtest: anything that is not an evidence object is invalid, never silently accepted
+ok 7 - anything that is not an evidence object is invalid, never silently accepted
+  ---
+  duration_ms: 0.232714
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 331.680422
+[exit 0]

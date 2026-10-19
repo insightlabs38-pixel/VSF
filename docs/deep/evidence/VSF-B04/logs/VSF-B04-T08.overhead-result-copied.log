@@ -1,0 +1,2 @@
+$ cp artifacts/observation/overhead.json docs/deep/evidence/VSF-B04/overhead.json
+[exit 0]

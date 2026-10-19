@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B04-T06",
+  "status": "DONE",
+  "branch": "vsf/b04-browser-observation",
+  "base_commit": "aed1c555298ad09e53b17226940a86fbbf73bd70",
+  "commit": "5c8eb32af1187d1b93c1738011b4f146957785c1",
+  "paths": [
+    "schemas/protocol-evidence/v1.schema.json",
+    "frontend/packages/observer/src/protocol.ts",
+    "schemas/protocol-evidence/fixtures",
+    "tests/observation/test/protocol.test.ts"
+  ],
+  "acceptance": "Protocol and API evidence is typed, authorized and provenance-tagged with shapes and templates only; undocumented traffic starts unsupported and can only be promoted with documentation and a reviewed witness.",
+  "positive": {
+    "fixture": "7 tests: 5 valid fixtures pass the schema and rules; the JSON Schema and the hand-written checks agree",
+    "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/protocol.test.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "20 invalid fixtures each rejected with exactly the expected reason, including unpromoted traffic, sample values, credentials in URLs and concrete identifiers",
+    "command": "pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/protocol.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-protocol-evidence-v1 new",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "The observer reads structure and declared labels only; form values are never read, credential regions yield no text, account text is flagged and withheld from shared evidence, and no network surface exists.",
+  "performance_memory_storage": "Validation is linear in document size.",
+  "known_limitations": [
+    "Not yet an IR family; adding one is an additive IR minor left to the first consumer"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T06.protocol-evidence-schema-and-rules.log"
+  ],
+  "review_result": "ACCEPTED"
+}

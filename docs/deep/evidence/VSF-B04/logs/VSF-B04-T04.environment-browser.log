@@ -1,0 +1,13 @@
+$ pnpm --filter @vsf/observation-tests exec playwright test specs/environment.spec.ts
+
+Running 6 tests using 1 worker
+
+  ✓  1 specs/environment.spec.ts:21:1 › the locale is what the page declares and never the browser's own language (221ms)
+  ✓  2 specs/environment.spec.ts:31:1 › a declared language is normalised and a content-language meta is the fallback (349ms)
+  ✓  3 specs/environment.spec.ts:45:1 › a locale change on the page is published and moves the cache overlay (143ms)
+  ✓  4 specs/environment.spec.ts:63:1 › the viewport is observed, resized and bucketed, and the overlay only moves across a bucket (208ms)
+  ✓  5 specs/environment.spec.ts:83:1 › only configured flag probes are read and a flag that is not visible stays unknown (158ms)
+  ✓  6 specs/environment.spec.ts:102:1 › an environment change does not force a new epoch (119ms)
+
+  6 passed (2.5s)
+[exit 0]

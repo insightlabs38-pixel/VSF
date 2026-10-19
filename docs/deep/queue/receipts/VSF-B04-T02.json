@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B04-T02",
+  "status": "DONE",
+  "branch": "vsf/b04-browser-observation",
+  "base_commit": "aed1c555298ad09e53b17226940a86fbbf73bd70",
+  "commit": "5c8eb32af1187d1b93c1738011b4f146957785c1",
+  "paths": [
+    "frontend/packages/observer/src/capture.ts",
+    "frontend/packages/observer/src/session.ts",
+    "tests/observation/specs/capture.spec.ts"
+  ],
+  "acceptance": "Role, name, labels and relations are computed per element and survive RTL, nesting and disabled controls; labels are indexed per root so naming stays linear; geometry is read only for probed nodes and carries an epoch and sequence stamp.",
+  "positive": {
+    "fixture": "6 browser tests: Arabic and bidi marks kept byte for byte, fieldset-disabled propagation, labelledby and describedby relations, zero layout reads during capture",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/capture.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "16000 buttons with ids capture without per-control document scans; labels that appear, move or vanish rename their controls; values are never read",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/capture.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-protocol-evidence-v1 new",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "The observer reads structure and declared labels only; form values are never read, credential regions yield no text, account text is flagged and withheld from shared evidence, and no network surface exists.",
+  "performance_memory_storage": "Cold capture of 50009 nodes fell from 12.7 s to 505 ms after the label index replaced per-control label scans.",
+  "known_limitations": [
+    "Names use a simplified accname algorithm, not the browser accessibility tree"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T02.role-name-label-geometry-browser.log"
+  ],
+  "review_result": "ACCEPTED"
+}

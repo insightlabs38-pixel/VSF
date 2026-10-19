@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B04-T01`
+**Next eligible:** `VSF-B05-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -10,8 +10,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B01 | G1 | 7/7 | DONE | PROCEED |
 | B02 | G2 | 8/8 | DONE | PROCEED |
 | B03 | G3 | 8/8 | DONE | PROCEED |
-| B04 | G4 | 0/8 | READY | - |
-| B05 | G5 | 0/8 | TODO | - |
+| B04 | G4 | 8/8 | DONE | PROCEED |
+| B05 | G5 | 0/8 | READY | - |
 | B06 | G6 | 0/8 | TODO | - |
 | B07 | G7 | 0/8 | TODO | - |
 | B08 | G8 | 0/8 | TODO | - |
@@ -76,18 +76,18 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B04 · Implement browser observation and incremental events
 
-- [ ] `VSF-B04-T01` Implement document/frame/shadow-root enumerators including opaque boundaries _(READY)_
-- [ ] `VSF-B04-T02` Capture role/name/labels and selected geometry lazily
-- [ ] `VSF-B04-T03` Implement mutation batching with sequence IDs and missing-event resync
-- [ ] `VSF-B04-T04` Track locale, viewport and feature flags where observable
-- [ ] `VSF-B04-T05` Mark source scopes and redact likely sensitive text before diagnostics
-- [ ] `VSF-B04-T06` Define schema for source protocol/API evidence rather than undocumented traffic
-- [ ] `VSF-B04-T07` Build stable fixture runner across SPA and traditional multi-page navigation
-- [ ] `VSF-B04-T08` Report collector CPU/RSS and cold/steady-state overhead
+- [x] `VSF-B04-T01` Implement document/frame/shadow-root enumerators including opaque boundaries
+- [x] `VSF-B04-T02` Capture role/name/labels and selected geometry lazily
+- [x] `VSF-B04-T03` Implement mutation batching with sequence IDs and missing-event resync
+- [x] `VSF-B04-T04` Track locale, viewport and feature flags where observable
+- [x] `VSF-B04-T05` Mark source scopes and redact likely sensitive text before diagnostics
+- [x] `VSF-B04-T06` Define schema for source protocol/API evidence rather than undocumented traffic
+- [x] `VSF-B04-T07` Build stable fixture runner across SPA and traditional multi-page navigation
+- [x] `VSF-B04-T08` Report collector CPU/RSS and cold/steady-state overhead
 
 ### B05 · Build semantic recognition and evidence engine
 
-- [ ] `VSF-B05-T01` Create feature bitset/inverted index; test against naive full-scan baseline
+- [ ] `VSF-B05-T01` Create feature bitset/inverted index; test against naive full-scan baseline _(READY)_
 - [ ] `VSF-B05-T02` Implement structural relationships, field/label binding and operation hypothesis pipeline
 - [ ] `VSF-B05-T03` Add evidence ledger with claim-level provenance
 - [ ] `VSF-B05-T04` Build dependency graph and incremental invalidation closure

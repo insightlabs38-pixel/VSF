@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run canary
+ci-run canary: PASS
+[exit 0]
