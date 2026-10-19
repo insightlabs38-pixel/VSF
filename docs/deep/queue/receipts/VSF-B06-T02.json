@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B06-T02",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "71612bc959ace6d5eb9077d07c8440c7f6fa4d97",
+  "paths": [
+    "frontend/packages/renderer/src/styles.ts",
+    "frontend/packages/design-system/",
+    "tests/ui/specs/tokens.spec.ts"
+  ],
+  "acceptance": "Light/dark/system and blue/mint accents render under independent design tokens; red/orange/yellow/green status semantics stay distinct.",
+  "positive": {
+    "fixture": "light, dark and system schemes with blue and mint accents resolve independently",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/tokens.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "status badges use four distinct tokens and a glyph; system preference changes live",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/tokens.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/smoke.spec.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No change to source permissions.",
+  "performance_memory_storage": "Not measured beyond test runtime.",
+  "known_limitations": [
+    "Contrast is checked for the focus ring and status tokens, not every composition"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T02.tokens-schemes-accents-status.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T01.form-and-grid-render.log"
+  ],
+  "review_result": "ACCEPTED"
+}

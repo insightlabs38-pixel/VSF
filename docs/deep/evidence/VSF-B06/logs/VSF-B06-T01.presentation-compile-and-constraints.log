@@ -1,0 +1,26 @@
+$ pnpm --filter @vsf/ui-tests run test:unit
+
+> @vsf/ui-tests@0.0.0 test:unit /home/user/VSF/tests/ui
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ a compiled form decodes as PresentationIR and carries every field and operation of the entity (16.772684ms)
+✔ operations are ordered safest first and the destructive one is last, as a hard constraint (1.125888ms)
+✔ forms, grids and navigation expose the same source operations (1.134846ms)
+✔ dropping an operation, a field or a binding target is rejected (1.261768ms)
+✔ structural defects: duplicates, unknown children, cycles, orphans and multiple parents (0.99759ms)
+✔ accessibility defects: missing names, wrong roles, labels without fields (0.973379ms)
+✔ constraints: unknown subjects, keep_together, target floor and coverage are enforced (0.839624ms)
+✔ a renderer whose tokens miss a hard constraint is reported, not trusted (0.534712ms)
+✔ compilation is deterministic and an unknown entity is refused (0.936594ms)
+✔ unsupported widgets are carried as preserved surfaces (2.269617ms)
+✔ operation order follows the IR danger order: destructive before indeterminate (0.251655ms)
+✔ component ids stay within the limit and never collide, however the source ids differ in case or length (0.420864ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 293.690062
+[exit 0]

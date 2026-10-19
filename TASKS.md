@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B06-T09`
+**Next eligible:** close G6 (B06)
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -12,7 +12,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B03 | G3 | 8/8 | DONE | PROCEED |
 | B04 | G4 | 8/8 | DONE | PROCEED |
 | B05 | G5 | 8/8 | DONE | PROCEED |
-| B06 | G6 | 0/18 | READY | - |
+| B06 | G6 | 18/18 | GATE_PENDING | - |
 | B07 | G7 | 0/9 | TODO | - |
 | B08 | G8 | 0/9 | TODO | - |
 | B09 | G9 | 0/8 | TODO | - |
@@ -98,24 +98,24 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B06 · Build presentation compiler and minimal accessible renderer
 
-- [ ] `VSF-B06-T01` Define PresentationIR constraints and reusable field/grid/nav/form components _(READY)_
-- [ ] `VSF-B06-T02` Implement light/dark/system tokens and blue/mint accents; status colors distinct
-- [ ] `VSF-B06-T03` Add keyboard/focus restoration/ARIA announcements and basic RTL handling
-- [ ] `VSF-B06-T04` Build keyed incremental rendering and local state subscriptions
-- [ ] `VSF-B06-T05` Add basic compact/spacious density, navigation and command palette
-- [ ] `VSF-B06-T06` Preserve source widgets in place/side-by-side when unsupported and permitted
-- [ ] `VSF-B06-T07` Apply per-source styles without destructive DOM changes
-- [ ] `VSF-B06-T08` Benchmark pure UI operation responsiveness and memory
-- [ ] `VSF-B06-T09` Queue correction lane and G6 closure rule (queue tooling)
-- [ ] `VSF-B06-T10` F1 Credential classification and sensitive-data boundaries (observer)
-- [ ] `VSF-B06-T11` F3 Evidence-ledger identity and provenance (recognizer)
-- [ ] `VSF-B06-T12` F7 Trust context, revocation and version-invalidation foundations (IR 1.1.0 additive)
-- [ ] `VSF-B06-T13` F2 Protocol evidence authority and complete validation (recognizer)
-- [ ] `VSF-B06-T14` F4 Typed behavioural witness contract (recognizer)
-- [ ] `VSF-B06-T15` F5 Separate intent, declared effect, demonstrated effect and authorization (recognizer)
-- [ ] `VSF-B06-T16` F6 CI gate integrity and reproducible vulnerability checking
-- [ ] `VSF-B06-T17` F8 Foundational review findings (B00-B06 interfaces)
-- [ ] `VSF-B06-T18` Foundation-stabilization ADR, migrations and closing evidence
+- [x] `VSF-B06-T01` Define PresentationIR constraints and reusable field/grid/nav/form components
+- [x] `VSF-B06-T02` Implement light/dark/system tokens and blue/mint accents; status colors distinct
+- [x] `VSF-B06-T03` Add keyboard/focus restoration/ARIA announcements and basic RTL handling
+- [x] `VSF-B06-T04` Build keyed incremental rendering and local state subscriptions
+- [x] `VSF-B06-T05` Add basic compact/spacious density, navigation and command palette
+- [x] `VSF-B06-T06` Preserve source widgets in place/side-by-side when unsupported and permitted
+- [x] `VSF-B06-T07` Apply per-source styles without destructive DOM changes
+- [x] `VSF-B06-T08` Benchmark pure UI operation responsiveness and memory
+- [x] `VSF-B06-T09` Queue correction lane and G6 closure rule (queue tooling)
+- [x] `VSF-B06-T10` F1 Credential classification and sensitive-data boundaries (observer)
+- [x] `VSF-B06-T11` F3 Evidence-ledger identity and provenance (recognizer)
+- [x] `VSF-B06-T12` F7 Trust context, revocation and version-invalidation foundations (IR 1.1.0 additive)
+- [x] `VSF-B06-T13` F2 Protocol evidence authority and complete validation (recognizer)
+- [x] `VSF-B06-T14` F4 Typed behavioural witness contract (recognizer)
+- [x] `VSF-B06-T15` F5 Separate intent, declared effect, demonstrated effect and authorization (recognizer)
+- [x] `VSF-B06-T16` F6 CI gate integrity and reproducible vulnerability checking
+- [x] `VSF-B06-T17` F8 Foundational review findings (B00-B06 interfaces)
+- [x] `VSF-B06-T18` Foundation-stabilization ADR, migrations and closing evidence
 
 ### B07 · Implement verified deterministic execution
 

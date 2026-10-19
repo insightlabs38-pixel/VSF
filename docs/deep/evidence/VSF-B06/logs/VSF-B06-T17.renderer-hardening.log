@@ -1,0 +1,13 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/hardening.spec.ts
+
+Running 6 tests using 1 worker
+
+  ✓  1 specs/hardening.spec.ts:26:1 › a presentation compiled for another semantic is refused before anything is drawn (148ms)
+  ✓  2 specs/hardening.spec.ts:34:1 › the visible name of an operation comes from the semantic, not from the presentation (184ms)
+  ✓  3 specs/hardening.spec.ts:46:1 › the shadow root is closed by default so page scripts cannot reach the controls (119ms)
+  ✓  4 specs/hardening.spec.ts:52:1 › a script-generated click never runs a write; a real key press does; a read-only click is harmless (144ms)
+  ✓  5 specs/hardening.spec.ts:73:1 › a harness may opt in to synthetic activations, and only then (117ms)
+  ✓  6 specs/hardening.spec.ts:79:1 › cyclic, over-deep, dangling and oversized presentations are refused and leave the screen unchanged (160ms)
+
+  6 passed (2.3s)
+[exit 0]

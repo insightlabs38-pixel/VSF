@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B06-T10",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "fd265360ec9fa1e858d2f11304c58f6ff042336a",
+  "paths": [
+    "frontend/packages/observer/src/",
+    "tests/observation/"
+  ],
+  "acceptance": "A page-supplied data-vsf-scope marker can only raise restriction; intrinsic credential classification is a floor; nested scopes take the strictest; shared evidence is structure-only unless a validated policy permits text; useful structure survives.",
+  "positive": {
+    "fixture": "structure survives; allow-listed text exports under a valid policy",
+    "command": "pnpm --filter @vsf/observation-tests run test:unit",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "public marker on credential fields, nested scopes, secret-like labels, account tables",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/boundary.spec.ts specs/sensitive.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test incremental",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Credential classification is a floor; page markers only raise it; shared evidence is structure-only by default.",
+  "performance_memory_storage": "Not measured beyond test runtime.",
+  "known_limitations": [
+    "Account detection is lexical and English"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T10.observer-unit-and-share-policy.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T10.boundary-and-sensitive-in-chromium.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T11.incremental-equals-fresh.log"
+  ],
+  "review_result": "ACCEPTED"
+}

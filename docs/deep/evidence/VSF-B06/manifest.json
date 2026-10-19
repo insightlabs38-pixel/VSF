@@ -1,0 +1,412 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B06",
+  "gate": "G6",
+  "runs": [
+    {
+      "task_id": "VSF-B06-T01",
+      "name": "presentation-compile-and-constraints",
+      "command": "pnpm --filter @vsf/ui-tests run test:unit",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T01.presentation-compile-and-constraints.log",
+      "sha256": "87ac7094fd7a0dac9acff9c6f1e816fd30203aa7fb3204c1bcb89affb0b98941"
+    },
+    {
+      "task_id": "VSF-B06-T01",
+      "name": "form-and-grid-render",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/smoke.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T01.form-and-grid-render.log",
+      "sha256": "eac82b915406780ef5443ed8c44ab3c941398859825d482116e0c5c282f53b70"
+    },
+    {
+      "task_id": "VSF-B06-T02",
+      "name": "tokens-schemes-accents-status",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/tokens.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T02.tokens-schemes-accents-status.log",
+      "sha256": "cecd119aeca86cf393d26f31118e343999d16f156d5b5d9bc8b0df604bc3d1ec"
+    },
+    {
+      "task_id": "VSF-B06-T03",
+      "name": "keyboard-focus-aria-rtl",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/a11y.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T03.keyboard-focus-aria-rtl.log",
+      "sha256": "7b15ec9755fdf0f763821c36c20d61f37a91a23d220823489ef8fe6b542ce316"
+    },
+    {
+      "task_id": "VSF-B06-T04",
+      "name": "keyed-incremental-write-counts",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/incremental.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T04.keyed-incremental-write-counts.log",
+      "sha256": "a29e262629293d7f1a3c0fd22b94b32034bd6dc2d0245ae92832931ed86f64f1"
+    },
+    {
+      "task_id": "VSF-B06-T05",
+      "name": "density-navigation-palette-reversible",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/customization.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T05.density-navigation-palette-reversible.log",
+      "sha256": "9002c6c651f89f0510850b149ff415c8e7cbfe124580b07191013035350f29bd"
+    },
+    {
+      "task_id": "VSF-B06-T06",
+      "name": "unsupported-widgets-preserved",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/preserve.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T06.unsupported-widgets-preserved.log",
+      "sha256": "0e0df42c86dcb6642d09324e179cdc5ef23a039f4f9d27baeb86e50e27fe4337"
+    },
+    {
+      "task_id": "VSF-B06-T07",
+      "name": "source-style-isolation",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/sourcestyle.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T07.source-style-isolation.log",
+      "sha256": "e1bcf57dfa6df0aad07f49b24f4dff16d94366b50fccd75526648cae6f6606cf"
+    },
+    {
+      "task_id": "VSF-B06-T08",
+      "name": "grid-1000-rows-responsiveness-memory",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/perf.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T08.grid-1000-rows-responsiveness-memory.log",
+      "sha256": "01a25cc675c65a3fffdb8c3688f9ef172020a6ffbe401816117a84eb2f1944c5"
+    },
+    {
+      "task_id": "VSF-B06-T08",
+      "name": "visual-contract-states-schemes",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/visual.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T08.visual-contract-states-schemes.log",
+      "sha256": "55110c9ce6dc1f99c63ba9a4cdb1001e4ed0a0ea3242f177b77288150cde21fa"
+    },
+    {
+      "task_id": "VSF-B06-T08",
+      "name": "benchmark-json",
+      "command": "pnpm --filter @vsf/ui-tests exec node --conditions=source bench-ui.ts /home/user/VSF/docs/deep/evidence/VSF-B06/bench/ui.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T08.benchmark-json.log",
+      "sha256": "146b156785fe643e23d6db256f40bb98ed072453f792e0b5ad11187b379c876f"
+    },
+    {
+      "task_id": "VSF-B06-T09",
+      "name": "correction-lane-queue-tests",
+      "command": "pnpm --filter @vsf/queue run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T09.correction-lane-queue-tests.log",
+      "sha256": "310cabf391ec080a6253ecea2865ace7c6c8a93740a8f01302c584dac9c03f13"
+    },
+    {
+      "task_id": "VSF-B06-T09",
+      "name": "queue-validate",
+      "command": "node tools/queue/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T09.queue-validate.log",
+      "sha256": "cf795f72a5341232c46f9236182f904b68591645922d62c6c7de06044a1a0983"
+    },
+    {
+      "task_id": "VSF-B06-T10",
+      "name": "observer-unit-and-share-policy",
+      "command": "pnpm --filter @vsf/observation-tests run test:unit",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T10.observer-unit-and-share-policy.log",
+      "sha256": "9b72aad0fbf1c2753d83d5c76cb42283e7dd71efa3adfedce8e220af469d3ace"
+    },
+    {
+      "task_id": "VSF-B06-T10",
+      "name": "boundary-and-sensitive-in-chromium",
+      "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/boundary.spec.ts specs/sensitive.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T10.boundary-and-sensitive-in-chromium.log",
+      "sha256": "665f8c8fb7c029b973059f361cdbf0b5c5717d1a3e20202b6348eaa6dc6a9b5a"
+    },
+    {
+      "task_id": "VSF-B06-T11",
+      "name": "ledger-identity-and-provenance",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test ledger",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T11.ledger-identity-and-provenance.log",
+      "sha256": "87c6bb9bb3d34427733e91ff139ad532c3564b578e45d43d5a46f8613e133002"
+    },
+    {
+      "task_id": "VSF-B06-T11",
+      "name": "incremental-equals-fresh",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test incremental",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T11.incremental-equals-fresh.log",
+      "sha256": "4cb806201359ab35ceb7773d9020d3ae9014be2398d3bf81a5128851934df15f"
+    },
+    {
+      "task_id": "VSF-B06-T12",
+      "name": "ir-semantics-identity-isolation",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T12.ir-semantics-identity-isolation.log",
+      "sha256": "094747d25fb5f086000b432e2fd7c3a7c3052d4254c8c11be3a817811c674f0b"
+    },
+    {
+      "task_id": "VSF-B06-T12",
+      "name": "idl-generator-and-snapshots",
+      "command": "pnpm --filter @vsf/idlgen run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T12.idl-generator-and-snapshots.log",
+      "sha256": "57179b41369833467a6b511aa1d6cebb0e8aece6ee4a41a3fb10d9d0175f2ee7"
+    },
+    {
+      "task_id": "VSF-B06-T12",
+      "name": "idl-compat",
+      "command": "node --conditions=source tools/idlgen/src/cli.ts compat",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T12.idl-compat.log",
+      "sha256": "f8f5d3c2bb32f86525c40043215c2372c1f1fb44536c087fe217845a1adc0d1d"
+    },
+    {
+      "task_id": "VSF-B06-T12",
+      "name": "go-ir-fixtures",
+      "command": "go -C backend test -count=1 ./ir/...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T12.go-ir-fixtures.log",
+      "sha256": "a06e2f74ee87e031953133535b1eadc3bde5c79d5544b610368a24fa0aa16f5c"
+    },
+    {
+      "task_id": "VSF-B06-T12",
+      "name": "ts-ir-fixtures",
+      "command": "pnpm --filter @vsf/ir run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T12.ts-ir-fixtures.log",
+      "sha256": "4f1570c1db927b098b39286c179f36e5739e873ef4328e65ccc3754c1d1c45cb"
+    },
+    {
+      "task_id": "VSF-B06-T13",
+      "name": "protocol-evidence-validation",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test protocol",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T13.protocol-evidence-validation.log",
+      "sha256": "ea70554eee90e5322967f8bf0bad126a0df65c21ea29086b65ff13a817d78641"
+    },
+    {
+      "task_id": "VSF-B06-T13",
+      "name": "reconciliation-conflicts",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test reconcile",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T13.reconciliation-conflicts.log",
+      "sha256": "4b14924bcc0cb97d146ead2f1c13968f93e7ad3e85b331609cd9e6f8490ceefe"
+    },
+    {
+      "task_id": "VSF-B06-T14",
+      "name": "witness-bound-availability",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T14.witness-bound-availability.log",
+      "sha256": "da2ba2e94f6a9cf869d1c0caaeec20b664dda741b4de726cb2ef70665ee8f158"
+    },
+    {
+      "task_id": "VSF-B06-T15",
+      "name": "hints-never-authorize",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test candidates",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T15.hints-never-authorize.log",
+      "sha256": "eaed58c875f9dfa88fb8adee52fec0e1b008686d82d3ea60ee8352b4685665b6"
+    },
+    {
+      "task_id": "VSF-B06-T16",
+      "name": "gate-and-osv-checks",
+      "command": "pnpm --filter @vsf/checks run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T16.gate-and-osv-checks.log",
+      "sha256": "1891c3271eebfae942d02b913b687d201a7d8bd615306aa9d4d267b3d02a8e32"
+    },
+    {
+      "task_id": "VSF-B06-T16",
+      "name": "workflow-check",
+      "command": "node tools/checks/src/cli.ts workflow-check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T16.workflow-check.log",
+      "sha256": "142a17841862e19786f62736859804529f6d9ca0a83bd1bf25eb13b26b01c3b8"
+    },
+    {
+      "task_id": "VSF-B06-T16",
+      "name": "vuln-scan",
+      "command": "node tools/checks/src/cli.ts vuln-scan",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T16.vuln-scan.log",
+      "sha256": "3f33532c356ae81a0c81003c10fd8ea151de11bd299b027fab4c1d56afe206af"
+    },
+    {
+      "task_id": "VSF-B06-T17",
+      "name": "renderer-hardening",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/hardening.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T17.renderer-hardening.log",
+      "sha256": "da5b7c75c90bac93a426e44e2d6e464b753a5829c930365842acddb614d275ef"
+    },
+    {
+      "task_id": "VSF-B06-T17",
+      "name": "redact-and-registry",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-redact -p vsf-registry",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T17.redact-and-registry.log",
+      "sha256": "265f0d67dcc61d02acbc5197c4c81c79e3b87f44be7eed716c9daac0f1fd989c"
+    },
+    {
+      "task_id": "VSF-B06-T17",
+      "name": "cross-language-interop",
+      "command": "pnpm --filter @vsf/cross-language-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T17.cross-language-interop.log",
+      "sha256": "598a26c6c64fd7e1283ef77649c1e53908db747e5efaab323b74547cb219b1b6"
+    },
+    {
+      "task_id": "VSF-B06-T18",
+      "name": "adr-032-present",
+      "command": "test -s docs/deep/adr/ADR-032-foundation-stabilization.md",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T18.adr-032-present.log",
+      "sha256": "b6477c9e6b1af4b9e131ef8b2ef18ef5179d88c0bf724137c7d3bdda01651785"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ui-all",
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ui-all.log",
+      "sha256": "412409f39760fe4122d7ccf61aa061c13e4978a166a5c90693540ed8af111b3e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-test-workspace",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-test-workspace.log",
+      "sha256": "059c30ba3375dc201bd2a51d9e6a9b7cc026d1b51dcaaab2a50e7a0632cec48f"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-fmt",
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-fmt.log",
+      "sha256": "c4e39a37190232bfa5639c36f34c68e12e10e629056589120a38922c90608dee"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-clippy.log",
+      "sha256": "169f1d25e7da25fd5117abb456b6c120eb35d46107b572ccca7fafa5a4bc7344"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-test",
+      "command": "go -C backend test -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-test.log",
+      "sha256": "410dc8c4ad16594471716b39cd1d203eacba7346a8ec357c7a1f17f4c9e237af"
+    },
+    {
+      "task_id": "GATE",
+      "name": "build-ts",
+      "command": "pnpm build:ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.build-ts.log",
+      "sha256": "2b8f7484198b86215334321562ba0686ec0e2cb209f8c0dfb463a96bc0a7e81e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "typecheck",
+      "command": "pnpm typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.typecheck.log",
+      "sha256": "ee05b5810d84c8a90ac6e72f3dc64e70da97ffb38967528ebae64ab8e69cbabd"
+    },
+    {
+      "task_id": "GATE",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.biome.log",
+      "sha256": "f5cd4254dc71be000f16c411e7f62fe0081681ee26a16b7086664261e3dc5ce2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "comment-limit",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.comment-limit.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "idl-drift",
+      "command": "node --conditions=source tools/idlgen/src/cli.ts --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.idl-drift.log",
+      "sha256": "c293e6edf4034144bbceb9a420289f4314a609a867b4aaf6acdcbdad9b6e4dae"
+    },
+    {
+      "task_id": "GATE",
+      "name": "registry-manifest",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify . --development",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.registry-manifest.log",
+      "sha256": "97509049ecfc35034ac3b0394d5a102c17a8aa2b9403c5e3600c0325a3a651bd"
+    },
+    {
+      "task_id": "GATE",
+      "name": "wasm-host",
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.wasm-host.log",
+      "sha256": "6039c394506dd3a815b54f6a73ee6f2291c8a4df6d08aab3cb9b275b82e2bb8a"
+    }
+  ]
+}

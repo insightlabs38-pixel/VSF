@@ -1,0 +1,49 @@
+{
+  "task_id": "VSF-B06-T09",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "670a6c919a240f08f5bd58824aed011d43ff0a38",
+  "paths": [
+    "tools/queue/src/",
+    "tools/queue/test/queue.test.ts",
+    "docs/deep/queue/"
+  ],
+  "acceptance": "Correction tasks run ahead of the sequential lane; G6 cannot be accepted while any correction task is not DONE; T01-T08 keep their honest status.",
+  "positive": {
+    "fixture": "correction lane ordering and gate closure",
+    "command": "pnpm --filter @vsf/queue run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "gate acceptance refused while a correction task is open",
+    "command": "pnpm --filter @vsf/queue run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No change to source permissions.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T09.correction-lane-queue-tests.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T09.queue-validate.log"
+  ],
+  "review_result": "ACCEPTED"
+}

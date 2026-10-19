@@ -1,0 +1,24 @@
+$ pnpm --filter @vsf/wasm-host run test
+
+> @vsf/wasm-host@0.0.0 test /home/user/VSF/frontend/packages/wasm-host
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ wasm output is byte-identical to native golden for every seed (37.18628ms)
+✔ injected incompatible ABI is rejected before any call (9.592769ms)
+✔ module without the ABI export is rejected (1.129825ms)
+✔ wasm surfaces stable error codes and recovers after errors (4.993025ms)
+✔ a truncated or corrupted module is rejected without partial initialization (3.723551ms)
+✔ pack analysis through WASM rejects truncated packs and keeps working afterwards (11.050637ms)
+✔ IR validation through WASM agrees with the pinned Rust digests for every valid fixture (36.443943ms)
+✔ IR decode failures surface the same code and path as native for every invalid case (52.772868ms)
+✔ semantic violations through WASM match the expected codes for every mutation case (86.86625ms)
+✔ non-canonical input is a call error, not a report (5.728101ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 481.145181
+[exit 0]

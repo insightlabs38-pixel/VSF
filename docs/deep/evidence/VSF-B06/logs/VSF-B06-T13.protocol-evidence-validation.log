@@ -1,0 +1,19 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test protocol
+
+running 10 tests
+test a_self_promoted_observation_is_rejected ... ok
+test a_ledger_bound_to_a_context_refuses_evidence_when_the_observation_origin_differs ... ok
+test a_supported_promoted_fresh_document_for_this_app_origin_and_principal_is_authoritative ... ok
+test candidate_unsupported_user_supplied_unpromoted_unverified_and_stale_evidence_is_advisory_only ... ok
+test forged_promotion_wrong_origin_app_principal_revoked_or_future_evidence_is_rejected ... ok
+test malformed_documents_are_refused_whole ... ok
+test contradictory_authoritative_sources_both_survive_and_clash ... ok
+test every_shared_valid_fixture_passes_and_every_invalid_one_fails_for_the_expected_reason ... ok
+test revoked_grants_reviewers_documents_and_witnesses_end_authority ... ok
+test advisory_and_rejected_evidence_never_conflicts_and_never_changes_an_operation ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/protocol.rs (compiler/target/debug/deps/protocol-1787391c075d697d)
+[exit 0]

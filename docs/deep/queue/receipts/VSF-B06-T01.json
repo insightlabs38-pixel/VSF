@@ -1,0 +1,53 @@
+{
+  "task_id": "VSF-B06-T01",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "71612bc959ace6d5eb9077d07c8440c7f6fa4d97",
+  "paths": [
+    "frontend/packages/renderer/src/",
+    "frontend/packages/design-system/",
+    "tests/ui/specs/smoke.spec.ts",
+    "tests/ui/test/compile.test.ts"
+  ],
+  "acceptance": "PresentationIR carries hard semantic constraints; generated forms, grids and navigation preserve required source operations.",
+  "positive": {
+    "fixture": "forms and grids render with labelled fields and operations",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/smoke.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "dropped operation, field or binding; structural, accessibility and constraint defects are rejected",
+    "command": "pnpm --filter @vsf/ui-tests run test:unit",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/tokens.spec.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Presentations decode only under the source semantic digest; no source permission is widened.",
+  "performance_memory_storage": "Not measured beyond test runtime.",
+  "known_limitations": [
+    "Neutral components only; no vendor styling"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T01.form-and-grid-render.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T01.presentation-compile-and-constraints.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T02.tokens-schemes-accents-status.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,3 @@
+$ cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify . --development
+verified v0.1.0 key=vsf-dev-1 (development) files=29 primitives=924 root=4bbad82882b81199789e7cb75579a2d89948c90272e47aa2c3ef4378566d78c2
+[exit 0]

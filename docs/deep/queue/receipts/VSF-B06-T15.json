@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B06-T15",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "ed0a464f9d01b7ce46faebed538b2d571ea73ebe",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/contract.rs",
+    "compiler/crates/vsf-recognizer/tests/candidates.rs"
+  ],
+  "acceptance": "A label never classifies an action as read-only or executable; unverified actions are provisional affordances; only a witness demonstrates the effect class.",
+  "positive": {
+    "fixture": "recognition emits provisional affordances",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test candidates",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "read-sounding labels never yield read-only or executable actions",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test incremental",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Lexical hints never authorize an action.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [
+    "English verb lexicon"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T15.hints-never-authorize.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T14.witness-bound-availability.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T11.incremental-equals-fresh.log"
+  ],
+  "review_result": "ACCEPTED"
+}

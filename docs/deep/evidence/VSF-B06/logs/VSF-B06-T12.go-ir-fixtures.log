@@ -1,0 +1,4 @@
+$ go -C backend test -count=1 ./ir/...
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir	0.048s
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir/rt	0.005s
+[exit 0]

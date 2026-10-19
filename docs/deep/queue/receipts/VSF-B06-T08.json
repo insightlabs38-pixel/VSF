@@ -1,0 +1,54 @@
+{
+  "task_id": "VSF-B06-T08",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "59930953ec8144f542954961e755ed6eb358f9a3",
+  "paths": [
+    "tests/ui/support/perf.ts",
+    "tests/ui/bench-ui.ts",
+    "tests/ui/specs/perf.spec.ts",
+    "tests/ui/specs/visual.spec.ts",
+    "tests/ui/golden/"
+  ],
+  "acceptance": "UI-only interaction benchmark includes 1k-row view and memory-growth probes; source/network delays reported separately.",
+  "positive": {
+    "fixture": "1,000-row grid: write counts, focus stability, memory growth and source-independent timing",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/perf.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "normal, error, empty, unknown, conflicted and disabled states across schemes match the golden contract",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/visual.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests exec node --conditions=source bench-ui.ts /home/user/VSF/docs/deep/evidence/VSF-B06/bench/ui.json",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "No change to source permissions.",
+  "performance_memory_storage": "Medians of 5 runs, 1,000 rows: render 90 ms, filter 4 ms, one cell update 1 write, sort 12 ms, 84 KB heap growth over 30 churn cycles, 0 DOM and 0 subscription growth; a 300 ms source delay is reported separately (bench/ui.json).",
+  "known_limitations": [
+    "Visual regression is a computed-style and ARIA contract, not pixel comparison"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T08.grid-1000-rows-responsiveness-memory.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T08.visual-contract-states-schemes.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T08.benchmark-json.log"
+  ],
+  "review_result": "ACCEPTED"
+}

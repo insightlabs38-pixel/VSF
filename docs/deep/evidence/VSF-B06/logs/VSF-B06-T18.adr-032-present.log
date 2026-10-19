@@ -1,0 +1,2 @@
+$ test -s docs/deep/adr/ADR-032-foundation-stabilization.md
+[exit 0]

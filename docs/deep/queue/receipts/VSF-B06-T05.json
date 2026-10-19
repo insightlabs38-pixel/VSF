@@ -1,0 +1,51 @@
+{
+  "task_id": "VSF-B06-T05",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "24285fe761b0abdb31b56e06991bd4d519310c92",
+  "paths": [
+    "frontend/packages/renderer/src/palette.ts",
+    "frontend/packages/renderer/src/renderer.ts",
+    "tests/ui/specs/customization.spec.ts"
+  ],
+  "acceptance": "Density presets, command palette and navigation choices are reversible without reauthorizing source operations.",
+  "positive": {
+    "fixture": "density presets, navigation and palette choices switch and restore",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/customization.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "layout and palette changes never authorize a source operation or dispatch",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/customization.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/a11y.spec.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Preferences change presentation only; palette runs commands only from trusted events and shows their effect class.",
+  "performance_memory_storage": "Palette opens in about 98 ms median with 1,000 rows (bench/ui.json).",
+  "known_limitations": [
+    "Preferences are per page session; persistence is a later batch"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T05.density-navigation-palette-reversible.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T03.keyboard-focus-aria-rtl.log"
+  ],
+  "review_result": "ACCEPTED"
+}

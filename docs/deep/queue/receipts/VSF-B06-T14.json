@@ -1,0 +1,48 @@
+{
+  "task_id": "VSF-B06-T14",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "ed0a464f9d01b7ce46faebed538b2d571ea73ebe",
+  "paths": [
+    "compiler/crates/vsf-recognizer/src/witness.rs",
+    "compiler/crates/vsf-recognizer/src/contract.rs"
+  ],
+  "acceptance": "A witness binds source app, variant, principal, environment, operation, effect, state version and status with freshness and revocation; any mismatch fails closed; synthetic witnesses never authorize production emission; a human decision is not a witness.",
+  "positive": {
+    "fixture": "a witness bound to node, context and state authorizes its effect",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "mismatched, stale, revoked, synthetic and human-decision witnesses fail closed",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test contract",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test candidates",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Synthetic witnesses never authorize production emission.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T14.witness-bound-availability.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T15.hints-never-authorize.log"
+  ],
+  "review_result": "ACCEPTED"
+}

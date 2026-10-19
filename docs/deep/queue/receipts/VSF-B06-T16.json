@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B06-T16",
+  "status": "DONE",
+  "branch": "vsf/b06-presentation-renderer",
+  "base_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599",
+  "commit": "38527d470d648e457f1d21a5842142dbf813cbd7",
+  "paths": [
+    ".github/workflows/ci.yml",
+    "tools/checks/src/",
+    "ci/jobs.json",
+    "supply-chain/"
+  ],
+  "acceptance": "The aggregate gate depends on every required job and fails on skipped, absent or failed jobs; vulnerability scanners are pinned, bounded and report unavailable as inconclusive.",
+  "positive": {
+    "fixture": "gate passes only when every job succeeded; scan covers every locked package",
+    "command": "pnpm --filter @vsf/checks run test",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "skipped, absent or failed jobs; network failure and empty queries are unavailable, never clean",
+    "command": "pnpm --filter @vsf/checks run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts workflow-check",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts vuln-scan",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "IR 1.1.0",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Scanner failure is inconclusive; ignores expire; the failure canary is unchanged.",
+  "performance_memory_storage": "Not applicable.",
+  "known_limitations": [
+    "Scan depends on osv.dev availability and reports unavailable otherwise"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T16.gate-and-osv-checks.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T16.workflow-check.log",
+    "docs/deep/evidence/VSF-B06/logs/VSF-B06-T16.vuln-scan.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,10 @@
+$ go -C backend test -race -count=1 ./...
+ok  	github.com/insightlabs38-pixel/vsf/backend/bridge	6.231s
+ok  	github.com/insightlabs38-pixel/vsf/backend/canon	1.135s
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfbench	[no test files]
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfbridge	[no test files]
+ok  	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfctl	1.019s
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir	1.307s
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir/rt	1.017s
+ok  	github.com/insightlabs38-pixel/vsf/backend/schema	1.020s
+[exit 0]

@@ -1,0 +1,17 @@
+$ pnpm --filter @vsf/ui-tests exec playwright test specs/tokens.spec.ts
+
+Running 10 tests using 1 worker
+
+  ✓   1 specs/tokens.spec.ts:37:5 › tokens resolve for light / none (190ms)
+  ✓   2 specs/tokens.spec.ts:37:5 › tokens resolve for light / blue (138ms)
+  ✓   3 specs/tokens.spec.ts:37:5 › tokens resolve for light / mint (120ms)
+  ✓   4 specs/tokens.spec.ts:37:5 › tokens resolve for dark / none (116ms)
+  ✓   5 specs/tokens.spec.ts:37:5 › tokens resolve for dark / blue (100ms)
+  ✓   6 specs/tokens.spec.ts:37:5 › tokens resolve for dark / mint (118ms)
+  ✓   7 specs/tokens.spec.ts:58:1 › system follows the operating system preference and updates live (118ms)
+  ✓   8 specs/tokens.spec.ts:68:1 › scheme, accent and density change independently (160ms)
+  ✓   9 specs/tokens.spec.ts:98:1 › rendered status badges use four distinct tokens and a glyph, never colour alone (135ms)
+  ✓  10 specs/tokens.spec.ts:130:1 › destructive operations are red and unavailable ones lose their emphasis (113ms)
+
+  10 passed (2.8s)
+[exit 0]
