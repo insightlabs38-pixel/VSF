@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"sync"
@@ -399,5 +400,47 @@ func TestABrowsersOwnResendCannotTurnACommittedWriteIntoAFailure(t *testing.T) {
 	}
 	if rec.State != Unknown && rec.State != Verified {
 		t.Fatalf("state %s", rec.State)
+	}
+}
+
+func TestTheBrowserOnlyPressesControlsAPersonCouldUse(t *testing.T) {
+	var clicks int
+	var mu sync.Mutex
+	srv := http.NewServeMux()
+	page := func(body string) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "text/html")
+			_, _ = w.Write([]byte(`<!doctype html><meta charset=utf-8><strong id="stage" data-version="v1">new</strong>
+<select id="next"><option>won</option></select><p id="result" data-status=""></p>` + body))
+		}
+	}
+	srv.HandleFunc("/hidden/{id}", page(`<button id="save" style="display:none" onclick="fetch('/click')">Save</button>`))
+	srv.HandleFunc("/disabled/{id}", page(`<button id="save" disabled onclick="fetch('/click')">Save</button>`))
+	srv.HandleFunc("/covered/{id}", page(`<button id="save" onclick="fetch('/click')">Save</button>
+<div style="position:fixed;inset:0;background:#fff8" id="consent">Accept cookies</div>`))
+	srv.HandleFunc("/open/{id}", page(`<button id="save" onclick="fetch('/click');document.getElementById('result').dataset.status='committed'">Save</button>`))
+	srv.HandleFunc("/click", func(http.ResponseWriter, *http.Request) { mu.Lock(); clicks++; mu.Unlock() })
+	ts := httptest.NewServer(srv)
+	defer ts.Close()
+	run := func(path string) (Result, error) {
+		e := NewBrowserExecutor(theBrowser(t), BrowserPlan{
+			BaseURL: ts.URL, PagePath: path, VersionSel: "#stage", Fields: map[string]string{"stage": "#stage"},
+			Inputs: map[string]string{"stage": "#next"}, Submit: "#save", Result: "#result", Timeout: 2 * time.Second,
+		})
+		return e.Apply(context.Background(), Call{Target: Target{Record: "o1", Params: map[string]any{"stage": "won"}}})
+	}
+	for _, p := range []string{"/hidden/%s", "/disabled/%s", "/covered/%s"} {
+		if _, err := run(p); !errors.Is(err, ErrNotSent) {
+			t.Errorf("%s: err %v; an unusable control must be reported as not sent", p, err)
+		}
+	}
+	mu.Lock()
+	n := clicks
+	mu.Unlock()
+	if n != 0 {
+		t.Fatalf("%d clicks reached controls a person could not press", n)
+	}
+	if res, err := run("/open/%s"); err != nil || res.Outcome != OutcomeCommitted {
+		t.Fatalf("%+v %v", res, err)
 	}
 }

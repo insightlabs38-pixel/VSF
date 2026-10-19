@@ -252,3 +252,56 @@ func (p *Page) Eval(ctx context.Context, expr string, out any) error {
 	}
 	return json.Unmarshal(r.Result.Value, out)
 }
+
+const actionableJS = `(sel, point) => {
+  const el = document.querySelector(sel);
+  if (!el) return { reason: "missing" };
+  const css = getComputedStyle(el);
+  if (el.disabled || el.readOnly || el.getAttribute("aria-disabled") === "true") return { reason: "disabled" };
+  if (css.display === "none" || css.visibility === "hidden" || el.getClientRects().length === 0) return { reason: "hidden" };
+  if (!point) return { ok: true };
+  el.scrollIntoView({ block: "center", inline: "center" });
+  const r = el.getBoundingClientRect();
+  const x = r.left + r.width / 2, y = r.top + r.height / 2;
+  const top = document.elementFromPoint(x, y);
+  if (!top || (top !== el && !el.contains(top))) return { reason: "covered" };
+  return { ok: true, x, y };
+}`
+
+// Actionable reports why a control cannot be used the way a person would use it, or "" when it can.
+func (p *Page) Actionable(ctx context.Context, selector string) (string, error) {
+	return p.probe(ctx, selector, false, nil, nil)
+}
+
+func (p *Page) probe(ctx context.Context, selector string, point bool, x, y *float64) (string, error) {
+	sel, _ := json.Marshal(selector)
+	var res struct {
+		Reason string  `json:"reason"`
+		X      float64 `json:"x"`
+		Y      float64 `json:"y"`
+	}
+	if err := p.Eval(ctx, fmt.Sprintf("(%s)(%s, %t)", actionableJS, sel, point), &res); err != nil {
+		return "", err
+	}
+	if x != nil {
+		*x, *y = res.X, res.Y
+	}
+	return res.Reason, nil
+}
+
+// Click presses a control with trusted input events, and only if it is visible, enabled and not covered by something else.
+func (p *Page) Click(ctx context.Context, selector string) (string, error) {
+	var x, y float64
+	reason, err := p.probe(ctx, selector, true, &x, &y)
+	if err != nil || reason != "" {
+		return reason, err
+	}
+	for _, typ := range []string{"mousePressed", "mouseReleased"} {
+		if _, err := p.b.call(ctx, p.session, "Input.dispatchMouseEvent", map[string]any{
+			"type": typ, "x": x, "y": y, "button": "left", "clickCount": 1,
+		}); err != nil {
+			return "", err
+		}
+	}
+	return "", nil
+}

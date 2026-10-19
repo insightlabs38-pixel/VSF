@@ -89,9 +89,16 @@ type Call struct {
 	Confirmed  bool
 }
 
+// Capabilities states only what a source guarantees; nothing here is inferred from behaviour.
 type Capabilities struct {
 	DedupTokens bool
 	ReadBack    bool
+	// AuthoritativeStatus: the source's own rejections prove nothing was applied.
+	AuthoritativeStatus bool
+	// ReceiptLookup: the source reports, per dedup token, whether that request committed.
+	ReceiptLookup bool
+	// Fencing: a negative receipt answer also stops that request from committing later.
+	Fencing bool
 }
 
 type Executor interface {

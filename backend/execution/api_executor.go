@@ -21,6 +21,9 @@ type APIConfig struct {
 	WritePath string
 	Client    *http.Client
 	Dedup     bool
+	// ReceiptPath, when set, is the source's documented per-key receipt lookup; Fenced says a miss is final.
+	ReceiptPath string
+	Fenced      bool
 }
 
 // APIExecutor drives a documented API and reports results in the shared taxonomy.
@@ -39,7 +42,10 @@ func NewAPIExecutor(cfg APIConfig) *APIExecutor {
 func (e *APIExecutor) Kind() string { return "provider_api_authorized" }
 
 func (e *APIExecutor) Capabilities() Capabilities {
-	return Capabilities{DedupTokens: e.cfg.Dedup, ReadBack: true}
+	return Capabilities{
+		DedupTokens: e.cfg.Dedup, ReadBack: true, AuthoritativeStatus: true,
+		ReceiptLookup: e.cfg.Dedup && e.cfg.ReceiptPath != "", Fencing: e.cfg.Fenced,
+	}
 }
 
 func (e *APIExecutor) endpoint(path, record string) string {
@@ -138,4 +144,39 @@ func classifyStatus(status int, retryAfter string, body io.Reader) Result {
 		return Result{Outcome: OutcomeRejected, Detail: strconv.Itoa(status)}
 	}
 	return Result{Outcome: OutcomeUnknown, Detail: "status " + strconv.Itoa(status)}
+}
+
+// Reconcile asks the source's receipt endpoint about this exact request; the answer must name the same key and record.
+func (e *APIExecutor) Reconcile(ctx context.Context, p Probe) (Evidence, error) {
+	if e.cfg.ReceiptPath == "" || p.DedupToken == "" {
+		return Evidence{Level: Inconclusive, Basis: "no_receipts"}, nil
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, e.cfg.BaseURL+fmt.Sprintf(e.cfg.ReceiptPath, url.PathEscape(p.DedupToken)), nil)
+	if err != nil {
+		return Evidence{}, err
+	}
+	res, err := e.cfg.Client.Do(req)
+	if err != nil {
+		return Evidence{}, err
+	}
+	defer res.Body.Close()
+	var doc struct {
+		Key       string `json:"key"`
+		Record    string `json:"record"`
+		Committed bool   `json:"committed"`
+		Fenced    bool   `json:"fenced"`
+		Version   string `json:"version"`
+	}
+	if err := json.NewDecoder(io.LimitReader(res.Body, 1<<16)).Decode(&doc); err != nil {
+		return Evidence{Level: Inconclusive, Basis: "receipt", Detail: "unreadable_receipt"}, nil
+	}
+	switch {
+	case doc.Key != p.DedupToken:
+		return Evidence{Level: Inconclusive, Basis: "receipt", Detail: "receipt_for_another_request"}, nil
+	case res.StatusCode == http.StatusOK && doc.Committed && doc.Record == p.Target.Record:
+		return Evidence{Level: ProvenCommitted, Basis: "receipt", Version: doc.Version}, nil
+	case res.StatusCode == http.StatusNotFound && !doc.Committed && doc.Fenced && e.cfg.Fenced:
+		return Evidence{Level: ProvenNotCommitted, Basis: "fenced_receipt"}, nil
+	}
+	return Evidence{Level: Inconclusive, Basis: "receipt", Detail: "no_decisive_receipt"}, nil
 }

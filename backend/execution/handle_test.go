@@ -64,7 +64,7 @@ func TestCancellingWhileQueuedReallyCancels(t *testing.T) {
 	q := r.request("second")
 	q.Params["stage"] = "proposal"
 	second, _ := r.rt.Submit(context.Background(), q)
-	for r.rt.locks.Waiting("r:"+sessionOne+":o1") == 0 {
+	for r.rt.locks.Waiting(Footprint{App: appID, Session: sessionOne, Record: "o1", Level: LevelRecord}) == 0 {
 		time.Sleep(time.Millisecond)
 	}
 	if ack := second.Cancel(); !ack.Requested {

@@ -41,6 +41,8 @@ type Runtime struct {
 	limiter *Limiter
 	mu      sync.Mutex
 	handles map[string]*Handle
+	// reconciling keeps two reconciliations of one operation from racing each other.
+	reconciling map[string]bool
 }
 
 var ErrInconclusive = errors.New("the source does not show whether the change was applied")
@@ -65,7 +67,7 @@ func NewRuntime(cfg Config) (*Runtime, error) {
 	if cfg.ApplyTimeout <= 0 {
 		cfg.ApplyTimeout = 30 * time.Second
 	}
-	r := &Runtime{j: cfg.Journal, cfg: cfg, clock: cfg.Clock, locks: cfg.Locks, limiter: cfg.Limiter, handles: map[string]*Handle{}}
+	r := &Runtime{j: cfg.Journal, cfg: cfg, clock: cfg.Clock, locks: cfg.Locks, limiter: cfg.Limiter, handles: map[string]*Handle{}, reconciling: map[string]bool{}}
 	if err := r.recover(); err != nil {
 		return nil, err
 	}
@@ -110,31 +112,16 @@ func (r *Runtime) handleFor(key string) *Handle {
 	return h
 }
 
-func (r *Runtime) unresolved(session, operation, record string) bool {
-	for _, k := range r.j.Keys() {
-		rec, _ := r.j.Get(k)
-		if rec.State == Unknown && rec.Session == session && rec.OperationID == operation && rec.RecordKey == record {
-			return true
+func validID(v string, max int) bool {
+	if v == "" || len(v) > max {
+		return false
+	}
+	for _, c := range v {
+		if c < 0x20 || c == 0x7f {
+			return false
 		}
 	}
-	return false
-}
-
-func lockKey(c ir.OperationContract, session, record string) (string, error) {
-	switch c.Effect.Concurrency {
-	case ir.ConcurrencyScopeNone:
-		return "", nil
-	case ir.ConcurrencyScopeSourceSession:
-		return "s:" + session, nil
-	case ir.ConcurrencyScopeSourceSessionAndRecord:
-		if record == "" {
-			return "", refuse("record_required")
-		}
-		return "r:" + session + ":" + record, nil
-	case ir.ConcurrencyScopeGlobalSource:
-		return "g:" + string(c.Source.AppID), nil
-	}
-	return "", refuse("concurrency_unknown")
+	return true
 }
 
 func isWrite(c ir.OperationContract) bool { return c.Effect.Class != ir.EffectClassReadOnly }
@@ -181,7 +168,8 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 	if err := r.j.Err(); err != nil {
 		return nil, err
 	}
-	if req.RequestID == "" || req.Caller == "" || req.SessionID == "" {
+	if !validID(req.RequestID, 256) || !validID(req.Caller, 256) || !validID(req.SessionID, 256) ||
+		(req.Record != "" && !validID(req.Record, 1024)) {
 		return nil, refuse("request_malformed")
 	}
 	un, err := ir.DecodeDocument(req.Contract)
@@ -196,10 +184,22 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 	digest := un.Digest()
 	key := keyOf(req.Caller, req.SessionID, req.RequestID, digest)
 	pd := requestDigest(digest, req.Record, req.Params)
-	rec, created, err := r.j.Create(key, r.now(), map[string]string{
+	var fp Footprint
+	var fpErr error
+	if isWrite(c) {
+		fp, fpErr = footprintOf(c, req.SessionID, req.Record)
+	}
+	meta := footprintMeta(fp)
+	if fp.Level == "" {
+		meta = footprintMeta(Footprint{App: string(c.Source.AppID), Level: LevelSession})
+	}
+	for k, v := range map[string]string{
 		"operation_id": string(c.OperationID), "contract_digest": digest, "params_digest": pd,
 		"caller": req.Caller, "session": req.SessionID, "record": req.Record,
-	})
+	} {
+		meta[k] = v
+	}
+	rec, created, err := r.j.Create(key, r.now(), meta)
 	if err != nil {
 		return nil, err
 	}
@@ -226,11 +226,11 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 		return r.refusedOp(key, h, err)
 	}
 	if isWrite(c) {
-		if r.unresolved(req.SessionID, string(c.OperationID), req.Record) {
-			return r.refusedOp(key, h, refuse("unresolved_unknown_commit"))
+		if fpErr != nil {
+			return r.refusedOp(key, h, fpErr)
 		}
-		if _, err := lockKey(c, req.SessionID, req.Record); err != nil {
-			return r.refusedOp(key, h, err)
+		if _, blocked := r.j.Blocking(fp, key); blocked {
+			return r.refusedOp(key, h, refuse("unresolved_unknown_commit"))
 		}
 		if c.Verification.Required && len(req.Expect) == 0 {
 			return r.refusedOp(key, h, refuse("expect_required"))
@@ -250,7 +250,8 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 	if !auth.valid() || auth.Digest() != digest {
 		return r.refusedOp(key, h, refuse("authorization_invalid"))
 	}
-	if err := r.j.Move(key, Admitted, "", "", r.now()); err != nil {
+	adm, _ := json.Marshal(Admission{Env: env, AppID: string(c.Source.AppID), VariantClass: string(c.Source.VariantClass)})
+	if err := r.j.Move(key, Admitted, "", string(adm), r.now()); err != nil {
 		return nil, err
 	}
 	h.progress("admitted", 0, "")
@@ -258,7 +259,7 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 	h.mu.Lock()
 	h.cancel = cancel
 	h.mu.Unlock()
-	go r.run(runCtx, h, req, c, digest, exec, strategy)
+	go r.run(runCtx, h, req, c, digest, exec, strategy, fp, env)
 	return h, nil
 }
 
@@ -266,6 +267,7 @@ type pending struct {
 	Record     string `json:"record"`
 	Strategy   string `json:"strategy"`
 	PreVersion string `json:"pre_version"`
+	PreMatched bool   `json:"pre_matched,omitempty"`
 	Expect     string `json:"expect_digest"`
 }
 
@@ -285,19 +287,44 @@ func (r *Runtime) finishWith(h *Handle, to State, reason, detail string, cancel 
 	h.finish(err)
 }
 
-func (r *Runtime) run(ctx context.Context, h *Handle, req Request, c ir.OperationContract, digest string, exec Executor, strategy string) {
+// authorize runs the whole trusted boundary again: caller, source session, environment and the Rust validator.
+// An operation keeps the environment it was admitted under; any drift from it is refused rather than re-authorized.
+func (r *Runtime) authorize(req Request, c ir.OperationContract, digest string, admitted *Env) error {
+	if err := r.j.Err(); err != nil {
+		return err
+	}
+	env, err := bind(c, r.cfg.Callers, r.cfg.Sessions, req.Caller, req.SessionID, r.clock.Now())
+	if err != nil {
+		return err
+	}
+	if admitted != nil && !sameEnvironment(*admitted, env) {
+		return refuse("environment_changed")
+	}
+	auth, err := r.cfg.Authorizer.Authorize(req.Contract, env)
+	if err != nil {
+		return err
+	}
+	if !auth.valid() || auth.Digest() != digest {
+		return refuse("authorization_invalid")
+	}
+	return nil
+}
+
+func sameEnvironment(a, b Env) bool {
+	return a.RuntimeID == b.RuntimeID && a.CapabilityDigest == b.CapabilityDigest && a.PrincipalRef == b.PrincipalRef && a.VariantID == b.VariantID
+}
+
+func (r *Runtime) run(ctx context.Context, h *Handle, req Request, c ir.OperationContract, digest string, exec Executor, strategy string, fp Footprint, admitted Env) {
 	defer h.cancel()
 	write := isWrite(c)
 	h.progress("queued", 0, "")
 	if write {
-		if key, _ := lockKey(c, req.SessionID, req.Record); key != "" {
-			release, err := r.locks.Acquire(ctx, key)
-			if err != nil {
-				r.finishWith(h, Failed, "cancelled_before_run", "", CancelBeforeEffect)
-				return
-			}
-			defer release()
+		release, err := r.locks.Acquire(ctx, fp)
+		if err != nil {
+			r.finishWith(h, Failed, "cancelled_before_run", "", CancelBeforeEffect)
+			return
 		}
+		defer release()
 	}
 	app := string(c.Source.AppID)
 	releaseSlot, err := r.limiter.Acquire(ctx, app)
@@ -307,31 +334,45 @@ func (r *Runtime) run(ctx context.Context, h *Handle, req Request, c ir.Operatio
 	}
 	defer releaseSlot()
 
-	env, err := bind(c, r.cfg.Callers, r.cfg.Sessions, req.Caller, req.SessionID, r.clock.Now())
-	if err == nil {
-		var auth Authorized
-		if auth, err = r.cfg.Authorizer.Authorize(req.Contract, env); err == nil && (!auth.valid() || auth.Digest() != digest) {
-			err = refuse("authorization_invalid")
+	if write {
+		if _, blocked := r.j.Blocking(fp, h.key); blocked {
+			r.finishWith(h, Failed, "unresolved_unknown_commit", "", CancelBeforeEffect)
+			return
 		}
 	}
-	if err != nil {
+	if err := r.authorize(req, c, digest, &admitted); err != nil {
 		r.finishWith(h, Failed, reasonOf(err), "", CancelBeforeEffect)
 		return
 	}
 	target := Target{OperationID: string(c.OperationID), Record: req.Record, Params: req.Params}
 	snap, ifMatch, why := r.preconditions(ctx, c, req, digest, exec, target, h)
-	pd, _ := json.Marshal(pending{Record: req.Record, Strategy: strategy, PreVersion: snap.Version, Expect: digestOf(req.Expect)})
-	if mv := r.j.Move(h.key, Running, "", string(pd), r.now()); mv != nil {
+	if why == "" {
+		// The source may have been read for seconds; nothing admitted earlier is trusted at the moment of the effect.
+		if err := r.authorize(req, c, digest, &admitted); err != nil {
+			why = reasonOf(err)
+		}
+	}
+	if why == "" && ctx.Err() != nil {
+		why = "cancelled_before_effect"
+	}
+	pd, _ := json.Marshal(pending{Record: req.Record, Strategy: strategy, PreVersion: snap.Version, PreMatched: snap.Fields != nil && matches(snap.Fields, req.Expect), Expect: digestOf(req.Expect)})
+	var mv error
+	if write {
+		mv = r.j.Start(h.key, string(pd), r.now())
+	} else {
+		mv = r.j.Move(h.key, Running, "", string(pd), r.now())
+	}
+	if errors.Is(mv, ErrBlocked) {
+		r.finishWith(h, Failed, "unresolved_unknown_commit", "", CancelBeforeEffect)
+		return
+	}
+	if mv != nil {
 		h.finish(mv)
 		return
 	}
 	h.progress("running", 0, "")
 	if why != "" {
 		r.finishWith(h, Failed, why, "", CancelBeforeEffect)
-		return
-	}
-	if ctx.Err() != nil {
-		r.finishWith(h, Failed, "cancelled_before_effect", "", CancelBeforeEffect)
 		return
 	}
 	if !write {
@@ -440,8 +481,8 @@ func (r *Runtime) apply(ctx context.Context, h *Handle, req Request, c ir.Operat
 		r.limiter.Ok(app)
 		r.verify(h, req, c, exec, t, res)
 	case OutcomeRejected, OutcomeConflict, OutcomeThrottled, OutcomeUnavailable:
-		if r.contradicted(exec, t, pre, req.Expect) {
-			r.finishWith(h, Unknown, ReasonUnknownCommit, "no_effect_contradicted:"+string(res.Outcome), CancelPending)
+		if why := r.noEffectDoubt(exec, t, pre, req.Expect); why != "" {
+			r.finishWith(h, Unknown, ReasonUnknownCommit, why+":"+string(res.Outcome), CancelPending)
 			return
 		}
 		r.finishWith(h, Failed, string(res.Outcome), res.Detail, CancelBeforeEffect)
@@ -454,23 +495,35 @@ func (r *Runtime) apply(ctx context.Context, h *Handle, req Request, c ir.Operat
 	}
 }
 
-// contradicted is true when the source now shows our change although an executor claimed it changed nothing.
-func (r *Runtime) contradicted(exec Executor, t Target, pre Snapshot, expect map[string]string) bool {
-	if pre.Version == "" || len(expect) == 0 {
-		return false
-	}
-	ctx, cancel := context.WithTimeout(context.WithoutCancel(context.Background()), r.cfg.ApplyTimeout)
-	defer cancel()
-	now, err := exec.Read(ctx, t)
-	if err != nil || now.Version == pre.Version {
-		return false
-	}
-	for k, want := range expect {
-		if now.Fields[k] != want {
+func matches(fields, want map[string]string) bool {
+	for k, v := range want {
+		if got, ok := fields[k]; !ok || got != v {
 			return false
 		}
 	}
 	return true
+}
+
+// noEffectDoubt re-reads the source after a "nothing changed" claim. A source that speaks authoritatively is only
+// doubted when it now shows our change; any other source must show its state untouched, or the claim is not believed.
+func (r *Runtime) noEffectDoubt(exec Executor, t Target, pre Snapshot, expect map[string]string) string {
+	ctx, cancel := context.WithTimeout(context.WithoutCancel(context.Background()), r.cfg.ApplyTimeout)
+	defer cancel()
+	authoritative := exec.Capabilities().AuthoritativeStatus
+	now, err := exec.Read(ctx, t)
+	if err != nil {
+		if authoritative {
+			return ""
+		}
+		return "no_effect_unproven"
+	}
+	if len(expect) > 0 && matches(now.Fields, expect) && !(pre.Fields != nil && matches(pre.Fields, expect)) {
+		return "no_effect_contradicted"
+	}
+	if !authoritative && (len(expect) == 0 || pre.Version == "" || now.Version != pre.Version) {
+		return "no_effect_unproven"
+	}
+	return ""
 }
 
 func (r *Runtime) backoff(attempt int, hint time.Duration) time.Duration {
@@ -488,7 +541,7 @@ func (r *Runtime) mayRetry(c ir.OperationContract, exec Executor, res Result, at
 	}
 	switch res.Outcome {
 	case OutcomeThrottled:
-		return true
+		return exec.Capabilities().AuthoritativeStatus
 	case OutcomeUnavailable:
 		return c.Effect.Idempotency == ir.IdempotencyIdempotent || exec.Capabilities().DedupTokens
 	}
@@ -520,53 +573,6 @@ func (r *Runtime) verify(h *Handle, req Request, c ir.OperationContract, exec Ex
 		}
 	}
 	r.finishWith(h, Verified, "verified", string(c.Verification.Strategy), CancelTooLate)
-}
-
-// Reconcile settles an Unknown operation from an authoritative read, or says it cannot.
-func (r *Runtime) Reconcile(ctx context.Context, caller, key string, expect map[string]string) (Record, error) {
-	rec, ok := r.j.Get(key)
-	if !ok || rec.State != Unknown {
-		return rec, refuse("not_unknown")
-	}
-	if rec.Caller != caller {
-		return rec, refuse("other_caller")
-	}
-	if c, ok := r.cfg.Callers.Lookup(caller); !ok || c.ID == "" {
-		return rec, refuse("unknown_caller")
-	}
-	var p pending
-	for _, e := range rec.Events {
-		if e.Kind == "state" && e.To == Running {
-			_ = json.Unmarshal([]byte(e.Detail), &p)
-		}
-	}
-	if p.Expect == "" || digestOf(expect) != p.Expect {
-		return rec, refuse("expect_mismatch")
-	}
-	exec, ok := r.cfg.Executors[p.Strategy]
-	if !ok {
-		return rec, refuse("no_executor")
-	}
-	snap, err := exec.Read(ctx, Target{OperationID: rec.OperationID, Record: p.Record})
-	if err != nil {
-		return rec, ErrInconclusive
-	}
-	applied := true
-	for k, want := range expect {
-		if snap.Fields[k] != want {
-			applied = false
-		}
-	}
-	switch {
-	case applied:
-		err = r.j.Move(key, Verified, "reconciled_committed", "", r.now())
-	case snap.Version == p.PreVersion && p.PreVersion != "":
-		err = r.j.Move(key, Failed, "reconciled_not_committed", "", r.now())
-	default:
-		return rec, ErrInconclusive
-	}
-	rec, _ = r.j.Get(key)
-	return rec, err
 }
 
 // Get returns the journal's view of an operation.

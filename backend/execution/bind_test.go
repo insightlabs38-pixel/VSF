@@ -23,8 +23,8 @@ func TestBoundCallerSessionAndContractRunTheOperation(t *testing.T) {
 		t.Fatal(err)
 	}
 	mustState(t, rec, Verified, "")
-	if r.auth.calls != 2 {
-		t.Fatalf("authorized %d times; want at admission and again before the side effect", r.auth.calls)
+	if r.auth.calls != 3 {
+		t.Fatalf("authorized %d times; want at admission, at the start of the run and again just before the side effect", r.auth.calls)
 	}
 	env := r.auth.seenEv[0]
 	if env.PrincipalRef != principal || env.RuntimeID != runtimeID || env.VariantID != variantID || env.SourceState != sourceState {
@@ -155,6 +155,9 @@ func TestARoleRevokedWhileQueuedNeverReachesTheSource(t *testing.T) {
 	r.ex.applyFn = func(ctx context.Context, c Call) (Result, error) {
 		close(started)
 		<-release
+		r.ex.mu.Lock()
+		r.ex.fields["stage"] = "won"
+		r.ex.mu.Unlock()
 		return Result{Outcome: OutcomeCommitted, Echo: map[string]string{}}, nil
 	}
 	first, err := r.rt.Submit(context.Background(), r.request("first"))
@@ -184,6 +187,9 @@ func TestSessionLostWhileQueuedIsRecheckedBeforeTheSideEffect(t *testing.T) {
 	r.ex.applyFn = func(ctx context.Context, c Call) (Result, error) {
 		close(started)
 		<-release
+		r.ex.mu.Lock()
+		r.ex.fields["stage"] = "won"
+		r.ex.mu.Unlock()
 		return Result{Outcome: OutcomeCommitted, Echo: map[string]string{}}, nil
 	}
 	first, _ := r.rt.Submit(context.Background(), r.request("first"))

@@ -103,6 +103,9 @@ func (e *BrowserExecutor) Apply(ctx context.Context, c Call) (Result, error) {
 		if !ok {
 			continue
 		}
+		if reason, err := p.Actionable(ctx, sel); err != nil || reason != "" {
+			return Result{}, fmt.Errorf("%w: control %s is not usable (%s)", ErrNotSent, sel, reason)
+		}
 		val, _ := json.Marshal(v)
 		script := fmt.Sprintf(`(() => { const el = document.querySelector(%s); if (!el) return false; el.value = %s; el.dispatchEvent(new Event("input", {bubbles:true})); el.dispatchEvent(new Event("change", {bubbles:true})); return true; })()`, js(sel), val)
 		var done bool
@@ -113,9 +116,10 @@ func (e *BrowserExecutor) Apply(ctx context.Context, c Call) (Result, error) {
 	if ctx.Err() != nil {
 		return Result{}, fmt.Errorf("%w: %v", ErrNotSent, ctx.Err())
 	}
-	var clicked bool
-	if err := p.Eval(ctx, fmt.Sprintf(`(() => { const el = document.querySelector(%s); if (!el) return false; el.click(); return true; })()`, js(e.plan.Submit)), &clicked); err != nil || !clicked {
-		return Result{}, fmt.Errorf("%w: submit control is missing", ErrNotSent)
+	if reason, err := p.Click(ctx, e.plan.Submit); err != nil {
+		return Result{}, err
+	} else if reason != "" {
+		return Result{}, fmt.Errorf("%w: submit control is not usable (%s)", ErrNotSent, reason)
 	}
 	deadline := time.Now().Add(e.plan.Timeout)
 	for {

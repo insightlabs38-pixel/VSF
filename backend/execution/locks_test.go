@@ -9,9 +9,11 @@ import (
 	"time"
 )
 
+var lk = Footprint{App: "a", Session: "s", Record: "k", Level: LevelRecord, Exclusive: true}
+
 func TestLocksServeWaitersInArrivalOrder(t *testing.T) {
 	l := NewLocks()
-	rel, _ := l.Acquire(context.Background(), "k")
+	rel, _ := l.Acquire(context.Background(), lk)
 	var order []int
 	var mu sync.Mutex
 	var wg sync.WaitGroup
@@ -19,7 +21,7 @@ func TestLocksServeWaitersInArrivalOrder(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			r, err := l.Acquire(context.Background(), "k")
+			r, err := l.Acquire(context.Background(), lk)
 			if err != nil {
 				return
 			}
@@ -28,7 +30,7 @@ func TestLocksServeWaitersInArrivalOrder(t *testing.T) {
 			mu.Unlock()
 			r()
 		}()
-		for l.Waiting("k") < i {
+		for l.Waiting(lk) < i {
 			time.Sleep(time.Millisecond)
 		}
 	}
@@ -43,11 +45,11 @@ func TestLocksServeWaitersInArrivalOrder(t *testing.T) {
 
 func TestAWaiterThatGivesUpNeverHoldsTheLock(t *testing.T) {
 	l := NewLocks()
-	rel, _ := l.Acquire(context.Background(), "k")
+	rel, _ := l.Acquire(context.Background(), lk)
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan error)
-	go func() { _, err := l.Acquire(ctx, "k"); done <- err }()
-	for l.Waiting("k") == 0 {
+	go func() { _, err := l.Acquire(ctx, lk); done <- err }()
+	for l.Waiting(lk) == 0 {
 		time.Sleep(time.Millisecond)
 	}
 	cancel()
@@ -55,19 +57,19 @@ func TestAWaiterThatGivesUpNeverHoldsTheLock(t *testing.T) {
 		t.Fatal("acquired after cancel")
 	}
 	rel()
-	r2, err := l.Acquire(context.Background(), "k")
+	r2, err := l.Acquire(context.Background(), lk)
 	if err != nil {
 		t.Fatal(err)
 	}
 	r2()
-	if l.Waiting("k") != 0 {
+	if l.Waiting(lk) != 0 {
 		t.Fatal("stale waiter")
 	}
 }
 
 func TestReleasingTwiceDoesNotHandOverTheLockTwice(t *testing.T) {
 	l := NewLocks()
-	rel, _ := l.Acquire(context.Background(), "k")
+	rel, _ := l.Acquire(context.Background(), lk)
 	rel()
 	rel()
 	var held atomic.Int32
@@ -76,7 +78,7 @@ func TestReleasingTwiceDoesNotHandOverTheLockTwice(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			r, _ := l.Acquire(context.Background(), "k")
+			r, _ := l.Acquire(context.Background(), lk)
 			if held.Add(1) != 1 {
 				t.Error("two holders")
 			}

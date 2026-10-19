@@ -17,14 +17,24 @@ type apiRig struct {
 }
 
 func newAPIRig(t *testing.T, dedup bool, edit func(map[string]any)) *apiRig {
+	return newReceiptRig(t, dedup, false, false, edit)
+}
+
+// newReceiptRig adds a source that keeps per-request receipts, optionally refusing any request it has said it never saw.
+func newReceiptRig(t *testing.T, dedup, receipts, fence bool, edit func(map[string]any)) *apiRig {
 	t.Helper()
 	app := fixtureapp.New(dedup)
+	app.SetReceipts(receipts, fence)
 	t.Cleanup(app.Close)
 	r := newRig(t, edit)
-	api := NewAPIExecutor(APIConfig{
+	cfg := APIConfig{
 		BaseURL: app.URL(), ReadPath: "/api/orders/%s", WritePath: "/api/orders/%s/stage", Dedup: dedup,
 		Client: &http.Client{Timeout: 2 * time.Second},
-	})
+	}
+	if receipts {
+		cfg.ReceiptPath, cfg.Fenced = "/api/receipts/%s", fence
+	}
+	api := NewAPIExecutor(cfg)
 	r.cfg.Executors = map[string]Executor{"provider_api_authorized": api}
 	r.cfg.ApplyTimeout = 400 * time.Millisecond
 	var err error
@@ -32,6 +42,12 @@ func newAPIRig(t *testing.T, dedup bool, edit func(map[string]any)) *apiRig {
 		t.Fatal(err)
 	}
 	return &apiRig{rig: r, app: app}
+}
+
+func (r *rig) reconcile(rec Record, q Request) (Reconciliation, error) {
+	return r.rt.Reconcile(context.Background(), ReconcileRequest{
+		Caller: q.Caller, SessionID: q.SessionID, Key: rec.Key, Contract: q.Contract, Expect: q.Expect,
+	})
 }
 
 func TestAPIExecutorCommitsAndTheReadBackVerifiesIt(t *testing.T) {
@@ -47,7 +63,7 @@ func TestAPIExecutorCommitsAndTheReadBackVerifiesIt(t *testing.T) {
 }
 
 func TestDisconnectAfterTheSourceCommittedEndsInUnknownCommitNeverADuplicate(t *testing.T) {
-	r := newAPIRig(t, false, nil)
+	r := newReceiptRig(t, true, true, true, nil)
 	r.app.SetFaults(fixtureapp.Faults{DropAfterCommit: 1})
 	q := r.request("req-1")
 	rec, _ := r.run(q)
@@ -74,18 +90,21 @@ func TestDisconnectAfterTheSourceCommittedEndsInUnknownCommitNeverADuplicate(t *
 		t.Fatal("a duplicate was committed")
 	}
 
-	got, err := r.rt.Reconcile(context.Background(), userCaller, rec.Key, q.Expect)
+	got, err := r.reconcile(rec, q)
 	if err != nil {
 		t.Fatal(err)
 	}
-	mustState(t, got, Verified, "reconciled_committed")
+	mustState(t, got.Record, Verified, "reconciled_committed")
+	if got.Evidence.Level != ProvenCommitted || got.Evidence.Basis != "receipt" {
+		t.Fatalf("evidence %+v", got.Evidence)
+	}
 	if r.app.Commits() != 1 {
 		t.Fatal("reconciliation wrote")
 	}
 }
 
 func TestDisconnectBeforeCommitReconcilesToFailedNotCommitted(t *testing.T) {
-	r := newAPIRig(t, false, nil)
+	r := newReceiptRig(t, true, true, true, nil)
 	r.app.SetFaults(fixtureapp.Faults{DropBeforeCommit: 1})
 	q := r.request("req-1")
 	rec, _ := r.run(q)
@@ -93,11 +112,14 @@ func TestDisconnectBeforeCommitReconcilesToFailedNotCommitted(t *testing.T) {
 	if r.app.Commits() != 0 {
 		t.Fatal("the source committed")
 	}
-	got, err := r.rt.Reconcile(context.Background(), userCaller, rec.Key, q.Expect)
+	got, err := r.reconcile(rec, q)
 	if err != nil {
 		t.Fatal(err)
 	}
-	mustState(t, got, Failed, "reconciled_not_committed")
+	mustState(t, got.Record, Failed, "reconciled_not_committed")
+	if got.Evidence.Level != ProvenNotCommitted || got.Evidence.Basis != "fenced_receipt" {
+		t.Fatalf("evidence %+v", got.Evidence)
+	}
 	next, err := r.run(r.request("req-2"))
 	if err != nil {
 		t.Fatal(err)
@@ -114,7 +136,7 @@ func TestReconciliationRefusesToGuessWhenTheSourceChangedMeanwhile(t *testing.T)
 	q := r.request("req-1")
 	rec, _ := r.run(q)
 	r.app.Change("o1", "qualified")
-	_, err := r.rt.Reconcile(context.Background(), userCaller, rec.Key, q.Expect)
+	_, err := r.reconcile(rec, q)
 	if !errors.Is(err, ErrInconclusive) {
 		t.Fatalf("err %v", err)
 	}
@@ -124,31 +146,59 @@ func TestReconciliationRefusesToGuessWhenTheSourceChangedMeanwhile(t *testing.T)
 }
 
 func TestReconciliationChecksWhoAsksAndWhatForIt(t *testing.T) {
-	r := newAPIRig(t, false, nil)
+	r := newReceiptRig(t, true, true, true, nil)
 	r.app.SetFaults(fixtureapp.Faults{DropAfterCommit: 1})
 	q := r.request("req-1")
 	rec, _ := r.run(q)
 	ctx := context.Background()
-	if _, err := r.rt.Reconcile(ctx, "caller-bob", rec.Key, q.Expect); reasonFrom(t, err) != "other_caller" {
-		t.Fatal(err)
+	ask := func(edit func(*ReconcileRequest)) error {
+		rq := ReconcileRequest{Caller: userCaller, SessionID: q.SessionID, Key: rec.Key, Contract: q.Contract, Expect: q.Expect}
+		edit(&rq)
+		_, err := r.rt.Reconcile(ctx, rq)
+		return err
 	}
-	if _, err := r.rt.Reconcile(ctx, userCaller, rec.Key, map[string]string{"stage": "qualified"}); reasonFrom(t, err) != "expect_mismatch" {
-		t.Fatal(err)
+	cases := []struct {
+		name string
+		edit func(*ReconcileRequest)
+		want string
+	}{
+		{"another caller", func(q *ReconcileRequest) { q.Caller = "caller-bob" }, "other_caller"},
+		{"other expectations", func(q *ReconcileRequest) { q.Expect = map[string]string{"stage": "qualified"} }, "expect_mismatch"},
+		{"an unknown operation", func(q *ReconcileRequest) { q.Key = "op_missing" }, "not_unknown"},
+		{"another contract", func(q *ReconcileRequest) {
+			q.Contract = contractDoc(t, func(b map[string]any) { b["operation_id"] = "other.op" })
+		}, "contract_mismatch"},
+		{"a session of another caller", func(q *ReconcileRequest) { q.SessionID = "sess-bob" }, "session_other_caller"},
+		{"an unknown session", func(q *ReconcileRequest) { q.SessionID = "sess-none" }, "unknown_session"},
 	}
-	if _, err := r.rt.Reconcile(ctx, userCaller, "op_missing", q.Expect); reasonFrom(t, err) != "not_unknown" {
-		t.Fatal(err)
+	for _, c := range cases {
+		if got := reasonFrom(t, ask(c.edit)); got != c.want {
+			t.Errorf("%s: refused for %q, want %q", c.name, got, c.want)
+		}
 	}
 	r.dir.revoke(userCaller)
-	if _, err := r.rt.Reconcile(ctx, userCaller, rec.Key, q.Expect); reasonFrom(t, err) != "unknown_caller" {
+	if err := ask(func(*ReconcileRequest) {}); reasonFrom(t, err) != "unknown_caller" {
 		t.Fatal(err)
 	}
 	if got, _ := r.rt.Get(rec.Key); got.State != Unknown {
 		t.Fatalf("state %s", got.State)
 	}
+	if n := attemptsOf(mustGet(t, r.rt, rec.Key)); n < len(cases) {
+		t.Fatalf("only %d attempts are on record", n)
+	}
+}
+
+func mustGet(t *testing.T, rt *Runtime, key string) Record {
+	t.Helper()
+	rec, ok := rt.Get(key)
+	if !ok {
+		t.Fatal("no such operation")
+	}
+	return rec
 }
 
 func TestTimeoutWhileTheSourceIsStillCommittingIsUnknownThenReconcilable(t *testing.T) {
-	r := newAPIRig(t, false, nil)
+	r := newReceiptRig(t, true, true, true, nil)
 	r.app.SetFaults(fixtureapp.Faults{DelayBeforeCommit: 900 * time.Millisecond})
 	q := r.request("req-1")
 	rec, _ := r.run(q)
@@ -160,11 +210,11 @@ func TestTimeoutWhileTheSourceIsStillCommittingIsUnknownThenReconcilable(t *test
 	if r.app.Commits() != 1 {
 		t.Fatal("the delayed commit never happened")
 	}
-	got, err := r.rt.Reconcile(context.Background(), userCaller, rec.Key, q.Expect)
+	got, err := r.reconcile(rec, q)
 	if err != nil {
 		t.Fatal(err)
 	}
-	mustState(t, got, Verified, "reconciled_committed")
+	mustState(t, got.Record, Verified, "reconciled_committed")
 }
 
 func TestARestartAfterTheProcessDiedMidWriteMarksItUnknownCommit(t *testing.T) {

@@ -5,77 +5,113 @@ import (
 	"sync"
 )
 
-type lockQueue struct {
-	held    bool
-	waiters []chan struct{}
+type waiter struct {
+	fp      Footprint
+	ready   chan struct{}
+	granted bool
 }
 
-// Locks serializes work per key in arrival order and lets a waiter give up.
+// Locks excludes overlapping footprints inside this process, serving waiters in arrival order.
+// It says nothing about other processes: a distributed worker pool needs a shared lease service.
 type Locks struct {
-	mu sync.Mutex
-	q  map[string]*lockQueue
+	mu    sync.Mutex
+	held  map[*Footprint]struct{}
+	queue []*waiter
 }
 
-func NewLocks() *Locks { return &Locks{q: map[string]*lockQueue{}} }
+func NewLocks() *Locks { return &Locks{held: map[*Footprint]struct{}{}} }
 
-func (l *Locks) Acquire(ctx context.Context, key string) (func(), error) {
+func (l *Locks) blockedByHeld(fp Footprint) bool {
+	for h := range l.held {
+		if h.Overlaps(fp) {
+			return true
+		}
+	}
+	return false
+}
+
+// pump grants every waiter that neither a holder nor an earlier waiter stands in front of.
+func (l *Locks) pump() {
+	var ahead []Footprint
+	rest := l.queue[:0]
+	for _, w := range l.queue {
+		blocked := l.blockedByHeld(w.fp)
+		for _, a := range ahead {
+			blocked = blocked || a.Overlaps(w.fp)
+		}
+		if blocked {
+			ahead = append(ahead, w.fp)
+			rest = append(rest, w)
+			continue
+		}
+		fp := w.fp
+		l.held[&fp] = struct{}{}
+		w.granted = true
+		close(w.ready)
+	}
+	for i := len(rest); i < len(l.queue); i++ {
+		l.queue[i] = nil
+	}
+	l.queue = rest
+}
+
+func (l *Locks) Acquire(ctx context.Context, fp Footprint) (func(), error) {
+	if !fp.Exclusive {
+		return func() {}, ctx.Err()
+	}
+	w := &waiter{fp: fp, ready: make(chan struct{})}
 	l.mu.Lock()
-	q := l.q[key]
-	if q == nil {
-		q = &lockQueue{}
-		l.q[key] = q
-	}
-	if !q.held {
-		q.held = true
-		l.mu.Unlock()
-		return l.releaser(key), nil
-	}
-	ch := make(chan struct{})
-	q.waiters = append(q.waiters, ch)
+	l.queue = append(l.queue, w)
+	l.pump()
 	l.mu.Unlock()
 	select {
-	case <-ch:
-		return l.releaser(key), nil
+	case <-w.ready:
+		return l.releaser(fp), nil
 	case <-ctx.Done():
 		l.mu.Lock()
-		for i, w := range q.waiters {
-			if w == ch {
-				q.waiters = append(q.waiters[:i], q.waiters[i+1:]...)
-				l.mu.Unlock()
-				return nil, ctx.Err()
+		if w.granted {
+			l.mu.Unlock()
+			l.releaser(fp)()
+			return nil, ctx.Err()
+		}
+		for i, q := range l.queue {
+			if q == w {
+				l.queue = append(l.queue[:i], l.queue[i+1:]...)
+				break
 			}
 		}
+		l.pump()
 		l.mu.Unlock()
-		<-ch
-		l.releaser(key)()
 		return nil, ctx.Err()
 	}
 }
 
-func (l *Locks) releaser(key string) func() {
+func (l *Locks) releaser(fp Footprint) func() {
 	var once sync.Once
 	return func() {
 		once.Do(func() {
 			l.mu.Lock()
 			defer l.mu.Unlock()
-			q := l.q[key]
-			if len(q.waiters) > 0 {
-				next := q.waiters[0]
-				q.waiters = q.waiters[1:]
-				close(next)
-				return
+			for h := range l.held {
+				if *h == fp {
+					delete(l.held, h)
+					break
+				}
 			}
-			delete(l.q, key)
+			l.pump()
 		})
 	}
 }
 
-// Waiting reports how many callers queue behind the holder of key.
-func (l *Locks) Waiting(key string) int {
+// Waiting reports how many queued callers overlap fp.
+func (l *Locks) Waiting(fp Footprint) int {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	if q := l.q[key]; q != nil {
-		return len(q.waiters)
+	n := 0
+	for _, w := range l.queue {
+		if w.fp.Overlaps(fp) {
+			n++
+		}
 	}
-	return 0
+	return n
 }

@@ -79,7 +79,7 @@ func TestANoEffectClaimTheSourceNowContradictsBecomesUnknown(t *testing.T) {
 		{"our change is visible under a new version", "v2", map[string]string{"stage": "won"}, Unknown, ReasonUnknownCommit},
 		{"nothing changed", "v1", map[string]string{"stage": "new"}, Failed, "conflict"},
 		{"someone else changed it to something else", "v2", map[string]string{"stage": "qualified"}, Failed, "conflict"},
-		{"the version is unchanged though the value matches", "v1", map[string]string{"stage": "won"}, Failed, "conflict"},
+		{"the version is unchanged though the value matches", "v1", map[string]string{"stage": "won"}, Unknown, ReasonUnknownCommit},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

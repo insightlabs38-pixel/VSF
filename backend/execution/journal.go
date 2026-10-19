@@ -14,6 +14,9 @@ import (
 
 var ErrCorrupt = errors.New("journal is corrupt")
 
+// ErrBlocked means an unresolved write overlaps the one that wanted to start.
+var ErrBlocked = errors.New("an unresolved write overlaps this one")
+
 type Event struct {
 	Seq    int64             `json:"seq"`
 	Key    string            `json:"key"`
@@ -107,7 +110,16 @@ type Record struct {
 	Reason         string
 	Detail         string
 	Seq            int64
+	Footprint      Footprint
+	Admitted       *Admission
 	Events         []Event
+}
+
+// Admission is the immutable execution identity an operation was admitted under.
+type Admission struct {
+	Env          Env    `json:"env"`
+	AppID        string `json:"app_id"`
+	VariantClass string `json:"variant_class"`
 }
 
 type Journal struct {
@@ -118,6 +130,7 @@ type Journal struct {
 	seq     int64
 	prev    string
 	broken  error
+	open    map[string]struct{}
 }
 
 func eventHash(e Event) string {
@@ -129,7 +142,7 @@ func eventHash(e Event) string {
 
 // OpenJournal replays the store and refuses a broken chain, a gap or an illegal transition.
 func OpenJournal(store Store) (*Journal, error) {
-	j := &Journal{store: store, records: map[string]*Record{}}
+	j := &Journal{store: store, records: map[string]*Record{}, open: map[string]struct{}{}}
 	lines, err := store.ReadAll()
 	if err != nil {
 		return nil, err
@@ -162,6 +175,7 @@ func (j *Journal) fold(e Event) error {
 		r = &Record{
 			Key: e.Key, State: Prepared, OperationID: e.Meta["operation_id"], ContractDigest: e.Meta["contract_digest"],
 			ParamsDigest: e.Meta["params_digest"], RecordKey: e.Meta["record"], Caller: e.Meta["caller"], Session: e.Meta["session"],
+			Footprint: footprintFromMeta(e.Meta),
 		}
 		j.records[e.Key] = r
 		j.order = append(j.order, e.Key)
@@ -170,6 +184,17 @@ func (j *Journal) fold(e Event) error {
 			return fmt.Errorf("illegal transition %s -> %s", e.From, e.To)
 		}
 		r.State, r.Reason, r.Detail = e.To, e.Reason, e.Detail
+		if e.To == Admitted {
+			var a Admission
+			if json.Unmarshal([]byte(e.Detail), &a) == nil {
+				r.Admitted = &a
+			}
+		}
+		if e.To == Unknown {
+			j.open[e.Key] = struct{}{}
+		} else {
+			delete(j.open, e.Key)
+		}
 	case "note":
 		if r == nil {
 			return errors.New("note for unknown operation")
@@ -261,4 +286,73 @@ func (j *Journal) Err() error {
 	j.mu.Lock()
 	defer j.mu.Unlock()
 	return j.broken
+}
+
+// footprintFromMeta reads what a create event recorded; a record without it is assumed to span its whole session.
+func footprintFromMeta(m map[string]string) Footprint {
+	fp := Footprint{App: m["app_id"], Session: m["session"], Record: m["record"], Level: Level(m["level"]), Exclusive: m["exclusive"] == "true"}
+	switch fp.Level {
+	case LevelRecord, LevelSession, LevelGlobal:
+	default:
+		fp.Level = LevelSession
+	}
+	return fp
+}
+
+func footprintMeta(fp Footprint) map[string]string {
+	return map[string]string{"app_id": fp.App, "level": string(fp.Level), "exclusive": fmt.Sprint(fp.Exclusive)}
+}
+
+// blocking returns an unresolved write, other than except, whose footprint overlaps fp.
+func (j *Journal) blocking(fp Footprint, except string) (Record, bool) {
+	for key := range j.open {
+		if key == except {
+			continue
+		}
+		if r := j.records[key]; r.Footprint.Overlaps(fp) {
+			return j.copy(r), true
+		}
+	}
+	return Record{}, false
+}
+
+// Blocking is the advisory form of the check Start makes atomically.
+func (j *Journal) Blocking(fp Footprint, except string) (Record, bool) {
+	j.mu.Lock()
+	defer j.mu.Unlock()
+	return j.blocking(fp, except)
+}
+
+// Start moves an admitted write to Running only if no overlapping write is unresolved, in one critical section.
+// Every transition into Unknown passes through the same mutex, so no source effect can slip between check and start.
+func (j *Journal) Start(key string, detail string, now int64) error {
+	j.mu.Lock()
+	defer j.mu.Unlock()
+	r := j.records[key]
+	if r == nil {
+		return errors.New("unknown operation")
+	}
+	if j.broken != nil {
+		return j.broken
+	}
+	if !canMove(r.State, Running) {
+		return fmt.Errorf("illegal transition %s -> %s", r.State, Running)
+	}
+	if other, ok := j.blocking(r.Footprint, key); ok {
+		return fmt.Errorf("%w: %s", ErrBlocked, other.Key)
+	}
+	return j.append(Event{Key: key, Kind: "state", From: r.State, To: Running, Detail: detail, At: now})
+}
+
+// Unresolved lists operations whose outcome is still unknown, oldest first.
+func (j *Journal) Unresolved() []Record {
+	j.mu.Lock()
+	defer j.mu.Unlock()
+	var out []Record
+	for _, k := range j.order {
+		if _, ok := j.open[k]; ok {
+			out = append(out, j.copy(j.records[k]))
+		}
+	}
+	return out
 }

@@ -205,16 +205,34 @@ type scripted struct {
 	inflight int
 	maxIn    int
 	onCommit func(s *scripted)
+	onRead   func()
+	recon    func(Probe) (Evidence, error)
+}
+
+func (s *scripted) Reconcile(_ context.Context, p Probe) (Evidence, error) {
+	s.mu.Lock()
+	fn := s.recon
+	s.mu.Unlock()
+	if fn == nil {
+		return Evidence{Level: Inconclusive, Basis: "none"}, nil
+	}
+	return fn(p)
 }
 
 func newScripted() *scripted {
-	return &scripted{kind: "provider_api_authorized", caps: Capabilities{ReadBack: true}, version: "v1", fields: map[string]string{"stage": "new"}}
+	return &scripted{kind: "provider_api_authorized", caps: Capabilities{ReadBack: true, AuthoritativeStatus: true}, version: "v1", fields: map[string]string{"stage": "new"}}
 }
 
 func (s *scripted) Kind() string               { return s.kind }
 func (s *scripted) Capabilities() Capabilities { return s.caps }
 
 func (s *scripted) Read(ctx context.Context, t Target) (Snapshot, error) {
+	s.mu.Lock()
+	hook := s.onRead
+	s.mu.Unlock()
+	if hook != nil {
+		hook()
+	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.reads++

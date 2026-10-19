@@ -30,23 +30,29 @@ type App struct {
 	mu        sync.Mutex
 	orders    map[string]*Order
 	seen      map[string]string
+	receipts  map[string]string
+	fenced    map[string]bool
+	Receipts  bool
+	Fence     bool
 	Faults    Faults
 	commits   int
 	reqs      []string
 	srv       *httptest.Server
 	Dedup     bool
 	KeepAlive bool
+	stale     map[string]*Order
 }
 
 var stages = map[string]bool{"new": true, "qualified": true, "proposal": true, "won": true}
 
 func New(dedup bool) *App {
-	a := &App{orders: map[string]*Order{}, seen: map[string]string{}, Dedup: dedup}
+	a := &App{orders: map[string]*Order{}, seen: map[string]string{}, receipts: map[string]string{}, fenced: map[string]bool{}, Dedup: dedup}
 	a.Put(Order{ID: "o1", Stage: "new", Version: 1})
 	a.Put(Order{ID: "o2", Stage: "new", Version: 1, ConfirmationRequired: true})
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/orders/{id}", a.get)
 	mux.HandleFunc("POST /api/orders/{id}/stage", a.post)
+	mux.HandleFunc("GET /api/receipts/{key}", a.receipt)
 	mux.HandleFunc("GET /ui/orders/{id}", a.page)
 	a.srv = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		a.mu.Lock()
@@ -58,6 +64,50 @@ func New(dedup bool) *App {
 		mux.ServeHTTP(w, r)
 	}))
 	return a
+}
+
+// SetReceipts makes the source answer, per idempotency key, whether that request committed; with fence it also
+// refuses any request whose key it was asked about before it committed.
+func (a *App) SetReceipts(on, fence bool) {
+	a.mu.Lock()
+	a.Receipts, a.Fence = on, fence
+	a.mu.Unlock()
+}
+
+// SetStale makes reads of one order report an older snapshot, the way a lagging replica does.
+func (a *App) SetStale(id string, snap *Order) {
+	a.mu.Lock()
+	if a.stale == nil {
+		a.stale = map[string]*Order{}
+	}
+	if snap == nil {
+		delete(a.stale, id)
+	} else {
+		a.stale[id] = snap
+	}
+	a.mu.Unlock()
+}
+
+func (a *App) receipt(w http.ResponseWriter, r *http.Request) {
+	key := r.PathValue("key")
+	a.mu.Lock()
+	on, fence := a.Receipts, a.Fence
+	rec, ok := a.receipts[key]
+	if on && !ok && fence {
+		a.fenced[key] = true
+	}
+	a.mu.Unlock()
+	if !on {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	if ok {
+		_, _ = w.Write([]byte(rec))
+		return
+	}
+	w.WriteHeader(http.StatusNotFound)
+	_, _ = fmt.Fprintf(w, `{"key":%q,"committed":false,"fenced":%t}`, key, fence)
 }
 
 // SetKeepAlive lets clients reuse connections, the way real sources usually allow.
@@ -121,6 +171,9 @@ func (a *App) get(w http.ResponseWriter, r *http.Request) {
 	var out Order
 	if o != nil {
 		out = *o
+		if st := a.stale[o.ID]; st != nil {
+			out = *st
+		}
 	}
 	a.mu.Unlock()
 	if o == nil {
@@ -143,6 +196,11 @@ func (a *App) post(w http.ResponseWriter, r *http.Request) {
 	a.reqs = append(a.reqs, "POST "+r.URL.Path)
 	f := a.Faults
 	o := a.orders[r.PathValue("id")]
+	if key != "" && a.fenced[key] {
+		a.mu.Unlock()
+		http.Error(w, `{"error":"fenced"}`, http.StatusConflict)
+		return
+	}
 	if a.Dedup && key != "" {
 		if prior, ok := a.seen[key]; ok {
 			a.mu.Unlock()
@@ -171,6 +229,11 @@ func (a *App) post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	a.mu.Lock()
+	if key != "" && a.fenced[key] {
+		a.mu.Unlock()
+		http.Error(w, `{"error":"fenced"}`, http.StatusConflict)
+		return
+	}
 	if m := strings.Trim(r.Header.Get("If-Match"), `"`); m != "" && m != version(o) {
 		a.mu.Unlock()
 		http.Error(w, `{"error":"version_conflict"}`, http.StatusConflict)
@@ -188,6 +251,7 @@ func (a *App) post(w http.ResponseWriter, r *http.Request) {
 	resp := fmt.Sprintf(`{"id":%q,"stage":%q,"version":%q}`, o.ID, o.Stage, version(o))
 	if key != "" {
 		a.seen[key] = resp
+		a.receipts[key] = fmt.Sprintf(`{"key":%q,"record":%q,"committed":true,"version":%q}`, key, o.ID, version(o))
 	}
 	if f.DropAfterCommit > 0 {
 		a.Faults.DropAfterCommit--

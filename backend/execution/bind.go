@@ -33,6 +33,7 @@ type Session struct {
 	SourceScopes     []string
 	Authenticated    bool
 	ExpiresAt        time.Time
+	Revoked          bool
 }
 
 type Sessions interface {
@@ -68,6 +69,9 @@ func bind(c ir.OperationContract, callers Callers, sessions Sessions, caller, se
 	s, ok := sessions.Lookup(sessionID)
 	if !ok {
 		return Env{}, refuse("unknown_session")
+	}
+	if s.Revoked {
+		return Env{}, refuse("session_revoked")
 	}
 	if a.RequiresSourceSession {
 		if !s.Authenticated {
