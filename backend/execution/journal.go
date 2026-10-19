@@ -1,7 +1,6 @@
 package execution
 
 import (
-	"bufio"
 	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
@@ -9,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 )
 
@@ -57,13 +57,22 @@ func (m *MemStore) ReadAll() ([][]byte, error) {
 type FileStore struct {
 	mu   sync.Mutex
 	path string
+	// keep is the byte length of the complete lines read, or -1 when nothing needs repair.
+	keep int64
 }
 
-func NewFileStore(path string) *FileStore { return &FileStore{path: path} }
+func NewFileStore(path string) *FileStore { return &FileStore{path: path, keep: -1} }
 
 func (f *FileStore) Append(line []byte) error {
 	f.mu.Lock()
 	defer f.mu.Unlock()
+	if f.keep >= 0 {
+		// A crash mid-write left a fragment that was never acknowledged; drop it before extending the chain.
+		if err := os.Truncate(f.path, f.keep); err != nil {
+			return err
+		}
+		f.keep = -1
+	}
 	fh, err := os.OpenFile(f.path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 	if err != nil {
 		return err
@@ -79,22 +88,28 @@ func (f *FileStore) Append(line []byte) error {
 	return fh.Close()
 }
 
+// ReadAll returns the complete lines. A final line without its newline is a torn write and is not part of the journal.
 func (f *FileStore) ReadAll() ([][]byte, error) {
-	fh, err := os.Open(f.path)
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	raw, err := os.ReadFile(f.path)
 	if errors.Is(err, os.ErrNotExist) {
 		return nil, nil
 	}
 	if err != nil {
 		return nil, err
 	}
-	defer fh.Close()
-	var out [][]byte
-	sc := bufio.NewScanner(fh)
-	sc.Buffer(make([]byte, 1<<20), 1<<20)
-	for sc.Scan() {
-		out = append(out, append([]byte(nil), sc.Bytes()...))
+	end := bytes.LastIndexByte(raw, '\n') + 1
+	if end < len(raw) {
+		f.keep = int64(end)
 	}
-	return out, sc.Err()
+	var out [][]byte
+	for _, line := range bytes.Split(raw[:end], []byte{'\n'}) {
+		if len(line) > 0 {
+			out = append(out, append([]byte(nil), line...))
+		}
+	}
+	return out, nil
 }
 
 // Record is the current view of one operation, folded from its events.
@@ -207,10 +222,20 @@ func (j *Journal) fold(e Event) error {
 	return nil
 }
 
+const maxDetail = 4096
+
+func clip(s string) string {
+	if len(s) <= maxDetail {
+		return s
+	}
+	return strings.ToValidUTF8(s[:maxDetail], "") + "…"
+}
+
 func (j *Journal) append(e Event) error {
 	if j.broken != nil {
 		return j.broken
 	}
+	e.Detail = clip(e.Detail)
 	e.Seq, e.Prev = j.seq+1, j.prev
 	e.Hash = eventHash(e)
 	line, _ := json.Marshal(e)
