@@ -2,6 +2,7 @@
 //! Version identity, lineage, promotion trust, semantic diff, impact selection and pin resolution.
 
 pub mod diff;
+pub mod impact;
 pub mod lineage;
 pub mod promotion;
 
