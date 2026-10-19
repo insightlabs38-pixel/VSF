@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { decodeDocument, familyDigest, typedDigest } from "@vsf/ir";
+import { decodeDocument, familyDigest, IR_VERSION_TEXT, typedDigest } from "@vsf/ir";
 import { encodePack, freshnessOf, type HostInfo, observationBody, REDACTION_PATTERNS } from "@vsf/observer";
 import { parse, toCanonical } from "@vsf/schema";
 import { innerPage, scopesPage } from "../support/pages.ts";
@@ -9,7 +9,7 @@ const enc = new TextEncoder();
 
 function documentBytes(body: Record<string, unknown>): Uint8Array {
   const doc = {
-    schema: "vsf.observation/1.0.0",
+    schema: `vsf.observation/${IR_VERSION_TEXT}`,
     schema_digest: familyDigest("observation"),
     body,
   };
