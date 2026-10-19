@@ -20,16 +20,16 @@ type Confirmation struct {
 
 type Confirmer struct {
 	mu     sync.Mutex
-	secret []byte
+	macKey []byte
 	used   map[string]bool
 }
 
-func NewConfirmer(secret []byte) *Confirmer {
-	return &Confirmer{secret: append([]byte(nil), secret...), used: map[string]bool{}}
+func NewConfirmer(key []byte) *Confirmer {
+	return &Confirmer{macKey: append([]byte(nil), key...), used: map[string]bool{}}
 }
 
 func (c *Confirmer) mac(digest, by string, exp time.Time) string {
-	m := hmac.New(sha256.New, c.secret)
+	m := hmac.New(sha256.New, c.macKey)
 	m.Write([]byte(digest + "\x00" + by + "\x00" + strconv.FormatInt(exp.UnixMilli(), 10)))
 	return hex.EncodeToString(m.Sum(nil))
 }
