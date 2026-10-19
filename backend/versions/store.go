@@ -262,8 +262,7 @@ func (s *Store) verdict(doc []byte) (Report, *mark, error) {
 	return again, &m, err
 }
 
-// Promote verifies and stores a manifest with all its artifacts; a stable or pinned manifest then becomes its channel's head.
-// Either the whole promotion is visible afterwards or none of it is, whatever the process does in between.
+// Promote stores a verified manifest and its artifacts atomically; stable and pinned ones then become the channel head.
 func (s *Store) Promote(req Request) (string, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()

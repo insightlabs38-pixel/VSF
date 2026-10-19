@@ -40,8 +40,7 @@ fn context(json: &[u8]) -> Result<(Trust, Freshness), &'static str> {
     Ok((trust, Freshness { now_ms, last }))
 }
 
-/// Request: u32-LE context length, context JSON (`now_ms`, `trust`, optional `last`), then the manifest document.
-/// Only a malformed frame is an `Err`; every other refusal is a report with `verified: false` and a reason.
+/// Frame: u32-LE context length, context JSON, manifest document; only a malformed frame is an `Err`.
 pub fn promotion_report(frame: &[u8]) -> Result<Vec<u8>, &'static str> {
     let (len, rest) = frame.split_at_checked(4).ok_or("promotion.truncated")?;
     let len = u32::from_le_bytes([len[0], len[1], len[2], len[3]]) as usize;
