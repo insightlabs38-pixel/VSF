@@ -249,9 +249,16 @@ export function button(r: RendererApi, c: PComponent, rowKey?: string, rowTitle?
   const action = c.binding?.action ?? "";
   const entity = c.binding?.entity ?? "";
   const def = r.rt.semantic.actions.find((a) => a.id === action);
+  const labelOf = (): string => def?.label ?? (inst.cur as PComponent).accessibility.name ?? action;
   const paint = (): void => {
     const cur = inst.cur as PComponent;
-    const name = cur.accessibility.name ?? cur.id;
+    const name = def?.label ?? cur.accessibility.name ?? cur.id;
+    r.dom.attr(el, "data-label-source", def ? "semantic" : "presentation");
+    r.dom.attr(
+      el,
+      "data-label-mismatch",
+      def && cur.accessibility.name && cur.accessibility.name !== def.label ? "true" : null,
+    );
     const title = rowTitle?.();
     const a = r.rt.availability(action);
     if (label.textContent !== name) {
@@ -273,12 +280,16 @@ export function button(r: RendererApi, c: PComponent, rowKey?: string, rowTitle?
     r.dom.attr(el, "aria-keyshortcuts", cur.accessibility.shortcut ?? null);
     r.dom.attr(el, "data-vsf-id", rowKey ? `act:${action}@${rowKey}` : `act:${action}`);
   };
-  const click = async (): Promise<void> => {
+  const click = async (e: Event): Promise<void> => {
     if (pending) return;
+    if (!e.isTrusted && !r.allowSynthetic && (def?.effect.declared ?? "indeterminate") !== "read_only") {
+      r.announcer.say(`${labelOf()} ignored: activation did not come from the user`, "assertive");
+      return;
+    }
     pending = true;
     r.dom.attr(el, "aria-busy", "true");
     try {
-      await r.press(action, entity, (inst.cur as PComponent).accessibility.name ?? action, rowKey);
+      await r.press(action, entity, labelOf(), rowKey);
     } finally {
       pending = false;
       r.dom.attr(el, "aria-busy", null);

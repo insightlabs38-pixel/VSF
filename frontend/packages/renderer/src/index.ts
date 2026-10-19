@@ -3,7 +3,7 @@ export { checkPresentation, type Measured, operationsOf, type Problem } from "./
 export { CONTROL_CONTRAST, compilePresentation, MIN_TARGET, TEXT_CONTRAST } from "./compile.ts";
 export * from "./model.ts";
 export type { Command } from "./palette.ts";
-export { type Prefs, Renderer, type RendererOptions } from "./renderer.ts";
+export { type Prefs, PresentationRejected, Renderer, type RendererOptions } from "./renderer.ts";
 export type { Availability, DispatchContext, DispatchResult, Runtime, SourceSurface } from "./runtime.ts";
 export { MAX_STYLE_BYTES, SourceStyles, type StyleProblem, validateSourceStyle } from "./sourcestyle.ts";
 export { type Row, RowSet, Store, type Value } from "./store.ts";

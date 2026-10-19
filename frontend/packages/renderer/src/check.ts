@@ -1,6 +1,9 @@
 import { CONTROL_CONTRAST, MIN_TARGET, TEXT_CONTRAST } from "./compile.ts";
 import { INTERACTIVE, type PComponent, type PresentationBody, ROLES, type SemanticView } from "./model.ts";
 
+export const MAX_COMPONENTS = 10_000;
+export const MAX_DEPTH = 64;
+
 export interface Problem {
   code: string;
   at: string;
@@ -49,6 +52,10 @@ export function checkPresentation(sem: SemanticView, body: PresentationBody, mea
   const add = (code: string, at: string, detail?: string): void => {
     p.push(detail === undefined ? { code, at } : { code, at, detail });
   };
+  if (body.components.length > MAX_COMPONENTS) {
+    add("body.too_large", "components", String(body.components.length));
+    return p;
+  }
   const ids = new Set<string>();
   for (const c of body.components) {
     if (ids.has(c.id)) add("component.duplicate_id", c.id);
@@ -83,6 +90,12 @@ export function checkPresentation(sem: SemanticView, body: PresentationBody, mea
       cur = parentOf.get(cur);
     }
   }
+  const depthOf = (id: string): number => {
+    let d = 0;
+    for (let cur = parentOf.get(id); cur !== undefined && d <= MAX_DEPTH + 1; cur = parentOf.get(cur)) d++;
+    return d;
+  };
+  for (const c of body.components) if (depthOf(c.id) > MAX_DEPTH) add("component.too_deep", c.id);
   const rendered = new Set<string>();
   const boundFields = new Set<string>();
   const boundActions = new Set<string>();

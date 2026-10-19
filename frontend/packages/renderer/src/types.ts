@@ -27,7 +27,9 @@ export interface RendererApi {
   readonly root: ShadowRoot;
   readonly body: PresentationBody;
   readonly rtl: boolean;
+  readonly allowSynthetic: boolean;
   activeEntity: string;
+  component(id: string): PComponent | undefined;
   syncKids(parent: Inst, ids: string[]): void;
   navigate(entity: string): void;
   press(action: string, entity: string, label: string, rowKey?: string): Promise<void>;

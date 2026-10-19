@@ -1,8 +1,8 @@
 import {
   type CompileOptions,
   EFFECT_ORDER,
+  IdAllocator,
   INTERACTIVE,
-  ident,
   type PComponent,
   type PConstraint,
   type PresentationBody,
@@ -29,39 +29,44 @@ const ROLE_OF: Record<string, string> = {
   text: "text",
 };
 
-function viewComponents(sem: SemanticView, view: ViewSpec, out: PComponent[], cons: PConstraint[]): string[] {
+function viewComponents(
+  sem: SemanticView,
+  view: ViewSpec,
+  out: PComponent[],
+  cons: PConstraint[],
+  ids: IdAllocator,
+): string[] {
   const ent = sem.entities.find((e) => e.id === view.entity);
   if (!ent) throw new Error(`unknown entity ${view.entity}`);
-  const e = ident(ent.id);
   const actions = sem.actions
     .filter((a) => a.entity === ent.id)
     .sort((a, b) => EFFECT_ORDER[a.effect.declared] - EFFECT_ORDER[b.effect.declared] || a.id.localeCompare(b.id));
   const title = ent.label ?? ent.id;
   const heading: PComponent = {
-    id: `hd_${e}`,
+    id: ids.id("hd", ent.id),
     kind: "heading",
     binding: { entity: ent.id },
     children: [],
     accessibility: { role: "heading", name_source: "explicit", name: title },
   };
   const actionComps: PComponent[] = actions.map((a) => ({
-    id: `act_${e}_${ident(a.id)}`,
+    id: ids.id("act", ent.id, a.id),
     kind: "button",
     binding: { entity: ent.id, action: a.id },
     children: [],
     accessibility: { role: "button", name_source: "explicit", name: a.label },
   }));
   const preserved: PComponent[] = (view.preserved ?? []).map((p) => ({
-    id: `surf_${ident(p.id)}`,
+    id: ids.id("surf", p.id),
     kind: "preserved_surface",
     children: [],
     accessibility: { role: "application", name_source: "explicit", name: p.name },
   }));
-  const root = view.layout === "form" ? `form_${e}` : `tbl_${e}`;
+  const root = ids.id(view.layout === "form" ? "form" : "tbl", ent.id);
   const fieldComps: PComponent[] = ent.fields.map((f) => {
     const kind = view.layout === "grid" ? "cell" : fieldKind(f.value_type);
     return {
-      id: `${view.layout === "grid" ? "col" : "fld"}_${e}_${ident(f.id)}`,
+      id: ids.id(view.layout === "grid" ? "col" : "fld", ent.id, f.id),
       kind,
       binding: { entity: ent.id, field: f.id },
       children: [],
@@ -74,7 +79,7 @@ function viewComponents(sem: SemanticView, view: ViewSpec, out: PComponent[], co
   if (view.layout === "form") {
     const group: PComponent | undefined = actionComps.length
       ? {
-          id: `grp_${e}_actions`,
+          id: ids.id("grp", ent.id, "actions"),
           kind: "group",
           children: actionComps.map((c) => c.id),
           accessibility: { role: "group", name_source: "explicit", name: `${title} actions` },
@@ -94,8 +99,12 @@ function viewComponents(sem: SemanticView, view: ViewSpec, out: PComponent[], co
     };
     out.push(form, heading, ...fieldComps, ...(group ? [group] : []), ...actionComps, ...preserved);
     if (actionComps.length > 1) {
-      cons.push({ id: `keep_${e}_actions`, kind: "keep_together", subjects: actionComps.map((c) => c.id) });
-      cons.push({ id: `order_${e}_actions`, kind: "ordering", subjects: actionComps.map((c) => c.id) });
+      cons.push({
+        id: ids.id("keep", ent.id, "actions"),
+        kind: "keep_together",
+        subjects: actionComps.map((c) => c.id),
+      });
+      cons.push({ id: ids.id("order", ent.id, "actions"), kind: "ordering", subjects: actionComps.map((c) => c.id) });
     }
   } else {
     const table: PComponent = {
@@ -107,7 +116,7 @@ function viewComponents(sem: SemanticView, view: ViewSpec, out: PComponent[], co
     };
     out.push(table, heading, ...fieldComps, ...actionComps, ...preserved);
     if (actionComps.length > 1) {
-      cons.push({ id: `order_${e}_actions`, kind: "ordering", subjects: actionComps.map((c) => c.id) });
+      cons.push({ id: ids.id("order", ent.id, "actions"), kind: "ordering", subjects: actionComps.map((c) => c.id) });
     }
   }
   return view.layout === "form" ? [root] : [heading.id, root, ...preserved.map((p) => p.id)];
@@ -118,15 +127,16 @@ export function compilePresentation(sem: SemanticView, opts: CompileOptions): Pr
   const components: PComponent[] = [];
   const constraints: PConstraint[] = [];
   const regions: PresentationBody["regions"] = [];
+  const alloc = new IdAllocator();
   for (const view of opts.views) {
-    const ids = viewComponents(sem, view, components, constraints);
-    regions.push({ id: `view_${ident(view.entity)}`, components: ids });
+    const roots = viewComponents(sem, view, components, constraints, alloc);
+    regions.push({ id: alloc.id("view", view.entity), components: roots });
   }
   if (opts.navigation && opts.views.length > 0) {
     const links: PComponent[] = opts.views.map((v) => {
       const ent = sem.entities.find((e) => e.id === v.entity);
       return {
-        id: `lnk_${ident(v.entity)}`,
+        id: alloc.id("lnk", v.entity),
         kind: "link",
         binding: { entity: v.entity },
         children: [],

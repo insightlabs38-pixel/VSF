@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { ACCENTS, contrast, DENSITY, PALETTE } from "@vsf/design-system";
-import { decodeDocumentValue, familyDigest } from "@vsf/ir";
+import { decodeDocumentValue, digestAt, IR_VERSION, IR_VERSION_TEXT } from "@vsf/ir";
 import {
   type CompileOptions,
   checkPresentation,
   compilePresentation,
+  EFFECT_ORDER,
+  IdAllocator,
   type Measured,
   operationsOf,
   type PresentationBody,
@@ -41,9 +43,11 @@ const codes = (b: PresentationBody, m?: Measured): string[] =>
 
 test("a compiled form decodes as PresentationIR and carries every field and operation of the entity", () => {
   const body = compilePresentation(sem, base);
-  const doc = { schema: "vsf.presentation/1.0.0", schema_digest: familyDigest("presentation"), body };
-  const decoded = decodeDocumentValue(parse(new TextEncoder().encode(JSON.stringify(doc))));
-  assert.ok(decoded);
+  for (const version of [[1, 0, 0] as const, IR_VERSION]) {
+    const text = version === IR_VERSION ? IR_VERSION_TEXT : version.join(".");
+    const doc = { schema: `vsf.presentation/${text}`, schema_digest: digestAt("presentation", version), body };
+    assert.ok(decodeDocumentValue(parse(new TextEncoder().encode(JSON.stringify(doc)))), text);
+  }
   assert.deepEqual(checkPresentation(sem, body, measured), []);
   const ops = operationsOf(sem, body).map((o) => o.action);
   assert.deepEqual(ops, ["delete_order", "open_order", "submit_order"]);
@@ -210,4 +214,34 @@ test("unsupported widgets are carried as preserved surfaces", () => {
   const surf = body.components.find((c) => c.kind === "preserved_surface");
   assert.equal(surf?.id, "surf_chart");
   assert.deepEqual(checkPresentation(sem, body, measured), []);
+});
+
+test("operation order follows the IR danger order: destructive before indeterminate", () => {
+  assert.deepEqual(
+    Object.entries(EFFECT_ORDER)
+      .sort((a, b) => a[1] - b[1])
+      .map(([k]) => k),
+    ["read_only", "idempotent_write", "conditional_write", "non_idempotent_write", "destructive", "indeterminate"],
+  );
+});
+
+test("component ids stay within the limit and never collide, however the source ids differ in case or length", () => {
+  const long = "a".repeat(70);
+  const ids = new IdAllocator();
+  const got = [
+    ids.id("act", "order", "Delete"),
+    ids.id("act", "order", "delete"),
+    ids.id("act", "order", "DELETE"),
+    ids.id("act", "order", long),
+    ids.id("act", "order", `${long}b`),
+    ids.id("act", "Order", "delete"),
+  ];
+  assert.equal(new Set(got).size, got.length);
+  for (const id of got) assert.ok(/^[a-z][a-z0-9_-]{0,63}$/.test(id), id);
+  const again = new IdAllocator();
+  assert.deepEqual(
+    [again.id("act", "order", "Delete"), again.id("act", "order", "delete")],
+    got.slice(0, 2),
+    "allocation is deterministic",
+  );
 });

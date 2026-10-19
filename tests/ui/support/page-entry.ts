@@ -40,6 +40,9 @@ export interface Boot {
   >;
   hotkeys?: boolean;
   mount?: string;
+  shadow?: "open" | "closed";
+  synthetic?: boolean;
+  runtimeDigest?: string;
 }
 
 export interface Dispatched {
@@ -56,8 +59,10 @@ function boot(cfg: Boot) {
   const listeners = new Set<() => void>();
   const dispatches: Dispatched[] = [];
   const pending = new Map<string, (r: DispatchResult) => void>();
+  const digest = `sha256:${"29".repeat(32)}`;
   const rt = {
     semantic: cfg.semantic,
+    semanticDigest: cfg.runtimeDigest ?? digest,
     store,
     availability: (a: string): Availability => avail[a] ?? { state: "available" },
     dispatch: (action: string, ctx: DispatchContext): DispatchResult | Promise<DispatchResult> => {
@@ -84,7 +89,7 @@ function boot(cfg: Boot) {
     },
   };
   const opts = (views: ViewSpec[]): CompileOptions => ({
-    semanticDigest: `sha256:${"29".repeat(32)}`,
+    semanticDigest: digest,
     locale: cfg.locale ?? "en-US",
     direction: cfg.direction ?? "ltr",
     theme: cfg.theme ?? { scheme: "light", accent: "blue", density: "comfortable" },
@@ -93,7 +98,11 @@ function boot(cfg: Boot) {
   });
   let body = compilePresentation(cfg.semantic, opts(cfg.views));
   const hostEl = document.querySelector<HTMLElement>(cfg.mount ?? "#vsf-host") as HTMLElement;
-  const renderer = new Renderer(hostEl, rt, body, { hotkeys: cfg.hotkeys ?? true });
+  const renderer = new Renderer(hostEl, rt, body, {
+    hotkeys: cfg.hotkeys ?? true,
+    shadow: cfg.shadow ?? "open",
+    allowSynthetic: cfg.synthetic ?? false,
+  });
   const app = {
     renderer,
     store,

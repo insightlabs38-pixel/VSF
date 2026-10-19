@@ -28,6 +28,8 @@ export interface SourceSurface {
 
 export interface Runtime {
   semantic: SemanticView;
+  /** Digest of that semantic; a presentation compiled for any other digest is refused. */
+  semanticDigest: string;
   store: Store;
   /** The only permission signal the renderer reads; it never grants or widens anything. */
   availability(action: string): Availability;

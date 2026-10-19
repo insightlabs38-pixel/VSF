@@ -1,4 +1,5 @@
 import { Announcer, captureFocus, resolveDirection, restoreFocus } from "./a11y.ts";
+import { checkPresentation } from "./check.ts";
 import { button, checkbox, choice, form, group, heading, link, list, textBlock, textInput } from "./components.ts";
 import { table } from "./grid.ts";
 import type { PComponent, PresentationBody } from "./model.ts";
@@ -19,6 +20,24 @@ export interface Prefs {
 export interface RendererOptions {
   hotkeys?: boolean;
   onPrefs?(prefs: Prefs): void;
+  /** `closed` (the default) keeps the page's own scripts from reaching the rendered controls. */
+  shadow?: "open" | "closed";
+  /** Lets script-generated activations run operations; for test harnesses only. */
+  allowSynthetic?: boolean;
+}
+
+export class PresentationRejected extends Error {
+  readonly problems: { code: string; at: string; detail?: string }[];
+
+  constructor(problems: { code: string; at: string; detail?: string }[]) {
+    super(
+      `presentation rejected: ${problems
+        .slice(0, 3)
+        .map((p) => `${p.code}@${p.at}`)
+        .join(", ")}`,
+    );
+    this.problems = problems;
+  }
 }
 
 const SELF_MANAGED = new Set(["table", "preserved_surface"]);
@@ -83,12 +102,18 @@ export class Renderer implements RendererApi {
   private savedHostStyle: string | null = null;
   private destroyed = false;
 
+  private byId = new Map<string, PComponent>();
+
+  readonly allowSynthetic: boolean;
+
   constructor(host: HTMLElement, rt: Runtime, body: PresentationBody, opts: RendererOptions = {}) {
     this.host = host;
     this.rt = rt;
+    this.accept(body);
     this.body = body;
     this.opts = opts;
-    this.root = host.shadowRoot ?? host.attachShadow({ mode: "open" });
+    this.allowSynthetic = opts.allowSynthetic === true;
+    this.root = host.shadowRoot ?? host.attachShadow({ mode: opts.shadow ?? "closed" });
     this.dom = new Dom(host.ownerDocument, this.stats);
     const style = this.dom.el("style");
     style.textContent = componentCss();
@@ -142,6 +167,20 @@ export class Renderer implements RendererApi {
     this.apply();
   }
 
+  /** Refuses a presentation made for another semantic, or one that is malformed, before anything is drawn. */
+  private accept(body: PresentationBody): void {
+    if (body.semantic !== this.rt.semanticDigest) {
+      throw new PresentationRejected([{ code: "semantic.digest_mismatch", at: "semantic", detail: body.semantic }]);
+    }
+    const problems = checkPresentation(this.rt.semantic, body);
+    if (problems.length > 0) throw new PresentationRejected(problems);
+    this.byId = new Map(body.components.map((c) => [c.id, c]));
+  }
+
+  component(id: string): PComponent | undefined {
+    return this.byId.get(id);
+  }
+
   get currentBody(): PresentationBody {
     return this.body;
   }
@@ -151,7 +190,7 @@ export class Renderer implements RendererApi {
     for (const rg of this.body.regions) {
       if (!rg.id.startsWith("view_")) continue;
       for (const id of rg.components) {
-        const c = this.body.components.find((x) => x.id === id);
+        const c = this.byId.get(id);
         if (c && (c.kind === "form" || c.kind === "table") && c.binding?.entity) {
           out.push({ entity: c.binding.entity, region: rg.id });
           break;
@@ -197,7 +236,7 @@ export class Renderer implements RendererApi {
     const wanted: Node[] = [];
     const keep = new Set<string>();
     for (const id of ids) {
-      const comp = this.body.components.find((c) => c.id === id);
+      const comp = this.byId.get(id);
       if (!comp) continue;
       keep.add(id);
       let k = parent.kids.get(id);
@@ -230,6 +269,7 @@ export class Renderer implements RendererApi {
 
   /** Replaces the presentation. Components with the same id are updated in place and focus follows the same operation. */
   update(body: PresentationBody): void {
+    this.accept(body);
     const mem = captureFocus(this.root);
     this.body = body;
     this.apply();

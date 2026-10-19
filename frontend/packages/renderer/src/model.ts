@@ -111,8 +111,8 @@ export const EFFECT_ORDER: Record<EffectClass, number> = {
   idempotent_write: 1,
   conditional_write: 2,
   non_idempotent_write: 3,
-  indeterminate: 4,
-  destructive: 5,
+  destructive: 4,
+  indeterminate: 5,
 };
 
 export const INTERACTIVE: ReadonlySet<ComponentKind> = new Set(["button", "link", "text_input", "choice", "checkbox"]);
@@ -134,11 +134,39 @@ export const ROLES: Record<ComponentKind, readonly string[]> = {
   preserved_surface: ["application", "group", "region", "document"],
 };
 
+export const MAX_ID = 64;
+
 export function ident(s: string): string {
-  const out = s
+  return s
     .toLowerCase()
     .replace(/[^a-z0-9_-]+/g, "_")
     .replace(/^[^a-z]+/, "x");
-  if (out.length > 64) throw new Error(`identifier too long: ${s}`);
-  return out;
+}
+
+function fnv(text: string, seed: number): string {
+  let h = seed >>> 0;
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  return h.toString(16).padStart(8, "0");
+}
+
+/** Gives every component a stable id within the identifier limit; different sources never share one. */
+export class IdAllocator {
+  private readonly owner = new Map<string, string>();
+
+  id(prefix: string, ...raw: string[]): string {
+    const key = [prefix, ...raw].join("\u0000");
+    const natural = [prefix, ...raw.map(ident)].join("_");
+    let candidate = natural;
+    for (let salt = 0; ; salt++) {
+      const taken = this.owner.get(candidate);
+      if (taken === undefined || taken === key) break;
+      candidate = `${natural.slice(0, MAX_ID - 9)}_${fnv(key, 2166136261 + salt)}`;
+    }
+    if (candidate.length > MAX_ID) candidate = `${natural.slice(0, MAX_ID - 9)}_${fnv(key, 2166136261)}`;
+    this.owner.set(candidate, key);
+    return candidate;
+  }
 }

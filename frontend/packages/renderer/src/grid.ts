@@ -285,7 +285,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
   inst.update = (n) => {
     r.dom.attr(tbl, "aria-label", n.accessibility.name ?? n.id);
     r.dom.attr(tbl, "data-vsf-id", `grid:${entity}`);
-    const kids = n.children.map((id) => r.body.components.find((x) => x.id === id)).filter((x): x is PComponent => !!x);
+    const kids = n.children.map((id) => r.component(id)).filter((x): x is PComponent => !!x);
     const nc = kids.filter((k) => k.kind === "cell");
     const na = kids.filter((k) => k.kind === "button");
     const same = JSON.stringify([nc, na]) === JSON.stringify([cols, acts]);
