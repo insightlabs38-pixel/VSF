@@ -56,8 +56,7 @@ func attemptsOf(rec Record) int {
 	return n
 }
 
-// Reconcile settles an Unknown operation only on evidence that proves how this operation ended.
-// A state that merely looks right never closes it: another actor could have produced the same values.
+// Reconcile settles an Unknown operation only on evidence of how this operation ended, never on a matching state.
 func (r *Runtime) Reconcile(ctx context.Context, q ReconcileRequest) (Reconciliation, error) {
 	rec, ok := r.j.Get(q.Key)
 	if !ok {

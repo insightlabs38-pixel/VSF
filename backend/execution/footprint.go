@@ -19,8 +19,7 @@ type Footprint struct {
 	Exclusive bool
 }
 
-// Overlaps is true when changes under a and b could touch the same source state.
-// Sessions are the unit of isolation; only the global scope reaches across them.
+// Overlaps is true when a and b could touch the same source state; only the global scope crosses sessions.
 func (a Footprint) Overlaps(b Footprint) bool {
 	if a.App != b.App {
 		return false
@@ -37,8 +36,7 @@ func (a Footprint) Overlaps(b Footprint) bool {
 	return a.Record == b.Record
 }
 
-// footprintOf maps a write's declared concurrency scope onto what it excludes and what an unresolved outcome blocks.
-// A write declaring no scope is exclusive nowhere but still blocks and is blocked by unresolved writes on its record.
+// footprintOf maps a declared scope onto what a write excludes and what its unresolved outcome blocks.
 func footprintOf(c ir.OperationContract, session, record string) (Footprint, error) {
 	fp := Footprint{App: string(c.Source.AppID), Session: session, Record: record}
 	switch c.Effect.Concurrency {

@@ -66,8 +66,7 @@ func New(dedup bool) *App {
 	return a
 }
 
-// SetReceipts makes the source answer, per idempotency key, whether that request committed; with fence it also
-// refuses any request whose key it was asked about before it committed.
+// SetReceipts makes the source report per key whether a request committed; with fence it also refuses unseen keys.
 func (a *App) SetReceipts(on, fence bool) {
 	a.mu.Lock()
 	a.Receipts, a.Fence = on, fence

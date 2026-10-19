@@ -287,8 +287,7 @@ func (r *Runtime) finishWith(h *Handle, to State, reason, detail string, cancel 
 	h.finish(err)
 }
 
-// authorize runs the whole trusted boundary again: caller, source session, environment and the Rust validator.
-// An operation keeps the environment it was admitted under; any drift from it is refused rather than re-authorized.
+// authorize reruns caller, session, environment and Rust validation; drift from the admitted environment is refused.
 func (r *Runtime) authorize(req Request, c ir.OperationContract, digest string, admitted *Env) error {
 	if err := r.j.Err(); err != nil {
 		return err
@@ -504,8 +503,7 @@ func matches(fields, want map[string]string) bool {
 	return true
 }
 
-// noEffectDoubt re-reads the source after a "nothing changed" claim. A source that speaks authoritatively is only
-// doubted when it now shows our change; any other source must show its state untouched, or the claim is not believed.
+// noEffectDoubt re-reads after a "nothing changed" claim; non-authoritative sources must show their state untouched.
 func (r *Runtime) noEffectDoubt(exec Executor, t Target, pre Snapshot, expect map[string]string) string {
 	ctx, cancel := context.WithTimeout(context.WithoutCancel(context.Background()), r.cfg.ApplyTimeout)
 	defer cancel()

@@ -11,8 +11,7 @@ type waiter struct {
 	granted bool
 }
 
-// Locks excludes overlapping footprints inside this process, serving waiters in arrival order.
-// It says nothing about other processes: a distributed worker pool needs a shared lease service.
+// Locks excludes overlapping footprints in arrival order within this process only; workers need a shared lease service.
 type Locks struct {
 	mu    sync.Mutex
 	held  map[*Footprint]struct{}

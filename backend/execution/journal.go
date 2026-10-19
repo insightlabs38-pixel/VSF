@@ -348,8 +348,7 @@ func (j *Journal) Blocking(fp Footprint, except string) (Record, bool) {
 	return j.blocking(fp, except)
 }
 
-// Start moves an admitted write to Running only if no overlapping write is unresolved, in one critical section.
-// Every transition into Unknown passes through the same mutex, so no source effect can slip between check and start.
+// Start moves an admitted write to Running unless an overlapping write is unresolved, under the same mutex as Unknown.
 func (j *Journal) Start(key string, detail string, now int64) error {
 	j.mu.Lock()
 	defer j.mu.Unlock()
