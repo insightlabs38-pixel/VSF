@@ -1,0 +1,41 @@
+{
+  "task_id": "VSF-B08-T02",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "98d923928f3e76b348ce27d22c176a9ba8091fca",
+  "paths": [
+    "compiler/crates/vsf-versioning/src/diff.rs",
+    "compiler/crates/vsf-versioning/tests/diff.rs"
+  ],
+  "acceptance": "Cosmetic, additive, breaking, permission and unknown semantic changes produce different diff classes with stable ordering.",
+  "positive": {
+    "fixture": "each family's change table yields the expected class and path; symmetric add and remove",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test diff",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "duplicate keys and unclassified shapes are unknown; family mismatch and unsupported families are refused",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test diff",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Any effect, authorization or action-binding change is a permission change.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Observation and environment diffs are unsupported"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T02.semantic-diff-classes.log"
+  ],
+  "review_result": "ACCEPTED"
+}

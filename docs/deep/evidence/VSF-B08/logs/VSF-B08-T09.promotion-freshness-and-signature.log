@@ -1,0 +1,15 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test promotion
+
+running 6 tests
+test a_recomputed_digest_without_the_key_still_fails_the_signature ... ok
+test a_signed_promotion_verifies_and_names_its_high_water_mark ... ok
+test only_trusted_active_keys_that_match_the_named_signer_pass ... ok
+test promotions_without_freshness_or_signature_are_not_trusted ... ok
+test nothing_inside_the_signed_body_can_change_after_signing ... ok
+test replay_rollback_expiry_and_conflict_are_refused ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/promotion.rs (compiler/target/debug/deps/promotion-c035f0ff3f4d5d8c)
+[exit 0]

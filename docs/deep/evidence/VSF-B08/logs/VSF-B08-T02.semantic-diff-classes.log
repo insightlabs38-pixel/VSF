@@ -1,0 +1,17 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test diff
+
+running 8 tests
+test a_button_that_triggers_another_action_is_a_permission_change ... ok
+test families_must_match_and_be_supported ... ok
+test identical_and_merely_reordered_documents_have_no_changes ... ok
+test the_diff_takes_the_most_severe_class_and_lists_changes_in_path_order ... ok
+test unclassifiable_shapes_are_unknown_never_cosmetic ... ok
+test presentation_changes_fall_into_distinct_classes ... ok
+test operation_changes_fall_into_distinct_classes ... ok
+test semantic_changes_fall_into_distinct_classes ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/diff.rs (compiler/target/debug/deps/diff-7bcdaa45c2a79393)
+[exit 0]

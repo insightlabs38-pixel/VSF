@@ -1,0 +1,98 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-registry
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test a_trust_set_inside_the_package_is_refused_for_production ... ok
+test the_watermark_advances_and_then_refuses_older_or_different_manifests ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+
+
+running 6 tests
+test source_apps_count_witness_fixtures_apart_from_unbound_ones ... ok
+test only_witnessed_claims_are_counted_and_nothing_is_validated_or_proven_yet ... ok
+test a_higher_maturity_moves_only_its_own_tier_and_never_the_total ... ok
+test extra_unbound_fixtures_and_apps_do_not_move_any_tier ... ok
+test the_committed_dashboard_is_the_current_one_and_the_text_names_the_denominator ... ok
+test the_denominator_is_the_whole_catalog_and_tiers_are_cumulative ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+
+running 10 tests
+test both_tables_share_one_composition ... ok
+test a_style_based_recognizer_is_caught_by_the_lookalike_fixture ... ok
+test at_most_one_collection_primitive_matches_any_node_in_any_fixture ... ok
+test every_fixture_descriptor_round_trips_and_ids_are_unique ... ok
+test malformed_descriptors_are_rejected ... ok
+test seeded_fixtures_are_reproducible_and_match_the_committed_files ... ok
+test changing_an_expectation_or_an_opt_out_role_fails_the_fixture ... ok
+test every_fixture_passes_the_shared_composite ... ok
+test an_implemented_claim_without_a_passing_witness_fails_the_package_load ... ok
+test two_independent_sources_yield_the_same_semantics_on_held_out_seeds ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+
+running 13 tests
+test a_development_signature_never_passes_as_a_production_one ... ok
+test a_substituted_trust_anchor_is_not_accepted_from_the_package_itself ... ok
+test changing_a_dependency_changes_every_dependent_digest_and_the_root ... ok
+test a_newer_sequence_verifies_and_advances_the_high_water_mark ... ok
+test missing_and_unlisted_files_fail ... ok
+test a_validly_signed_but_lying_manifest_is_caught_by_recomputation ... ok
+test signature_tampering_and_key_misuse_fail_before_content_is_trusted ... ok
+test sequence_and_expiry_are_inside_the_signed_body ... ok
+test the_development_key_is_labelled_and_deterministic ... ok
+test the_watermark_round_trips_and_rejects_foreign_shapes ... ok
+test replayed_expired_and_conflicting_manifests_are_refused ... ok
+test the_committed_manifest_verifies_and_rebuilds_byte_for_byte ... ok
+test a_flipped_byte_in_any_covered_file_is_a_hard_failure ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.19s
+
+
+running 16 tests
+test a_conformant_composite_needs_its_dependencies_implemented ... ok
+test ambiguous_recognitions_are_rejected_unless_exclusive_or_ordered ... ok
+test capability_mismatches_and_unknown_modes_are_rejected ... ok
+test graph_reports_the_exact_missing_dependency_and_cycle_chain ... ok
+test all_924_catalog_entries_import_unchanged_and_exactly_once ... ok
+test higher_maturity_levels_demand_independent_adversarial_and_field_evidence ... ok
+test malformed_recognitions_are_rejected ... ok
+test import_makes_no_maturity_claim_and_every_classification_is_justified ... ok
+test recognition_prefers_the_highest_precedence_and_honors_exclusions ... ok
+test ownership_dependencies_and_advancement_are_complete ... ok
+test import_rejects_duplicates_and_maturity_claims ... ok
+test registration_accepts_a_complete_implemented_primitive ... ok
+test registration_rejects_duplicates_unknown_ids_and_unresolved_kinds ... ok
+test registration_rejects_implemented_claims_without_a_witness ... ok
+test the_real_registry_has_complete_acyclic_dependencies_in_a_stable_order ... ok
+test committed_registry_equals_a_fresh_import ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_registry-b4ac762324666a50)
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_registry-70251edc43e09588)
+     Running tests/cli.rs (compiler/target/debug/deps/cli-00b64da9dc985a48)
+     Running tests/dashboard.rs (compiler/target/debug/deps/dashboard-3596dbc7f550e3f9)
+     Running tests/harness.rs (compiler/target/debug/deps/harness-6f4cc22f9b827712)
+     Running tests/manifest.rs (compiler/target/debug/deps/manifest-b4af8ba84162e202)
+     Running tests/registry.rs (compiler/target/debug/deps/registry-7aa82c2d8b5b7f53)
+   Doc-tests vsf_registry
+[exit 0]

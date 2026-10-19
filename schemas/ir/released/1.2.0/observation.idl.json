@@ -1,0 +1,86 @@
+{
+  "idl": "vsf-idl/1",
+  "ir_version": "1.2.0",
+  "family": "observation",
+  "root": "ObservationIR",
+  "types": {
+    "PackFormat": { "kind": "enum", "values": ["vsfs_pack_v1"] },
+    "ObservationMode": { "kind": "enum", "values": ["full", "delta"] },
+    "SignalKind": {
+      "kind": "enum",
+      "values": [
+        "accessibility_tree",
+        "layout",
+        "network",
+        "canvas_content",
+        "cross_origin_frame",
+        "closed_shadow_root",
+        "native_widget",
+        "protocol_stream"
+      ]
+    },
+    "MissingReason": {
+      "kind": "enum",
+      "values": ["not_permitted", "not_supported", "not_attempted", "failed", "unknown"]
+    },
+    "PackRef": {
+      "kind": "struct",
+      "fields": {
+        "format": { "type": "PackFormat" },
+        "digest": { "type": "Digest" },
+        "bytes": { "type": "Count" },
+        "nodes": { "type": "Count" }
+      }
+    },
+    "MissingSignal": {
+      "kind": "struct",
+      "fields": {
+        "signal": { "type": "SignalKind" },
+        "reason": { "type": "MissingReason" }
+      }
+    },
+    "ObservationScope": {
+      "kind": "struct",
+      "fields": {
+        "frames": { "type": "Count" },
+        "documents": { "type": "Count" },
+        "full_document": { "type": "bool" }
+      }
+    },
+    "Freshness": {
+      "kind": "struct",
+      "fields": {
+        "stale_after_ms": { "type": "Millis" },
+        "clock_skew_ms": { "type": "Millis", "optional": true }
+      }
+    },
+    "Redactions": {
+      "kind": "struct",
+      "fields": {
+        "redacted_nodes": { "type": "Count" },
+        "patterns": { "type": "Digest" }
+      }
+    },
+    "ObservationIR": {
+      "kind": "struct",
+      "doc": "Metadata and explicit gaps around one packed DOM observation.",
+      "fields": {
+        "observation_epoch": { "type": "ObservationEpoch" },
+        "mode": { "type": "ObservationMode" },
+        "base_epoch": { "type": "ObservationEpoch", "optional": true },
+        "source_app_id": { "type": "SourceAppId" },
+        "source_variant_id": { "type": "SourceVariantId", "optional": true },
+        "variant_resolution": { "type": "Certainty" },
+        "origin": { "type": "Origin" },
+        "captured_at": { "type": "Instant" },
+        "freshness": { "type": "Freshness" },
+        "runtime_id": { "type": "RuntimeId" },
+        "principal_ref": { "type": "PrincipalRef" },
+        "scope": { "type": "ObservationScope" },
+        "payload": { "type": "PackRef" },
+        "missing_signals": { "type": "list<MissingSignal>", "maxItems": 64 },
+        "redactions": { "type": "Redactions" }
+      }
+    }
+  }
+}

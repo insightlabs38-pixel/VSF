@@ -1,0 +1,36 @@
+$ pnpm --filter @vsf/ui-tests run test:unit
+
+> @vsf/ui-tests@0.0.0 test:unit /home/user/VSF/tests/ui
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ a compiled form decodes as PresentationIR and carries every field and operation of the entity (14.219979ms)
+✔ operations are ordered safest first and the destructive one is last, as a hard constraint (0.891376ms)
+✔ forms, grids and navigation expose the same source operations (1.262235ms)
+✔ dropping an operation, a field or a binding target is rejected (0.96705ms)
+✔ structural defects: duplicates, unknown children, cycles, orphans and multiple parents (0.812149ms)
+✔ accessibility defects: missing names, wrong roles, labels without fields (0.782433ms)
+✔ constraints: unknown subjects, keep_together, target floor and coverage are enforced (0.77521ms)
+✔ a renderer whose tokens miss a hard constraint is reported, not trusted (1.698868ms)
+✔ compilation is deterministic and an unknown entity is refused (0.830297ms)
+✔ unsupported widgets are carried as preserved surfaces (0.834052ms)
+✔ operation order follows the IR danger order: destructive before indeterminate (0.330387ms)
+✔ component ids stay within the limit and never collide, however the source ids differ in case or length (0.524033ms)
+✔ the semantic digest pin exists (0.925082ms)
+✔ every composition is a valid presentation of the same semantics (10.899088ms)
+✔ the committed composition documents are what the compiler writes (1.291205ms)
+✔ compositions differ in layout, not in what they expose (3.550786ms)
+✔ layout mistakes are refused with their own codes (1.97563ms)
+✔ a region a person or a narrow screen can hide may not hold a risky operation (0.794398ms)
+✔ responsive arrangement follows the tightest breakpoint the width is below (0.449627ms)
+✔ reading order is top, start, centre, end, bottom and parents precede children (0.40446ms)
+✔ preferences take effect only inside what the presentation grants (4.353774ms)
+✔ a customization can reorder siblings but never components inside a region (0.704986ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 285.99929
+[exit 0]

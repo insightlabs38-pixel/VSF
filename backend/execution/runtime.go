@@ -19,7 +19,13 @@ type RetryPolicy struct {
 	Max         time.Duration
 }
 
+// Revocations lets a store of published versions stop a contract that was revoked after it was pinned.
+type Revocations interface {
+	RevokedContract(documentDigest, operation, version string) (reason string, revoked bool)
+}
+
 type Config struct {
+	Revocations  Revocations
 	Journal      *Journal
 	Authorizer   Authorizer
 	Callers      Callers
@@ -218,6 +224,9 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 	if req.Pin.Version != string(c.ContractVersion) || req.Pin.Digest != digest {
 		return r.refusedOp(key, h, refuse("contract_pin_mismatch"))
 	}
+	if why, revoked := r.revoked(digest, c); revoked {
+		return r.refusedOp(key, h, refuse("contract_revoked:"+why))
+	}
 	exec, strategy, err := r.executorFor(c, req.Strategy)
 	if err != nil {
 		return r.refusedOp(key, h, err)
@@ -288,9 +297,19 @@ func (r *Runtime) finishWith(h *Handle, to State, reason, detail string, cancel 
 }
 
 // authorize reruns caller, session, environment and Rust validation; drift from the admitted environment is refused.
+func (r *Runtime) revoked(digest string, c ir.OperationContract) (string, bool) {
+	if r.cfg.Revocations == nil {
+		return "", false
+	}
+	return r.cfg.Revocations.RevokedContract(digest, string(c.OperationID), string(c.ContractVersion))
+}
+
 func (r *Runtime) authorize(req Request, c ir.OperationContract, digest string, admitted *Env) error {
 	if err := r.j.Err(); err != nil {
 		return err
+	}
+	if why, revoked := r.revoked(digest, c); revoked {
+		return refuse("contract_revoked:" + why)
 	}
 	env, err := bind(c, r.cfg.Callers, r.cfg.Sessions, req.Caller, req.SessionID, r.clock.Now())
 	if err != nil {

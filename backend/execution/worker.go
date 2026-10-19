@@ -44,6 +44,9 @@ type Authorizer interface {
 
 const maxFrame = 8 << 20
 
+// Raw exposes one framed worker operation to packages that own the payload format.
+func (w *Worker) Raw(op byte, payload []byte) ([]byte, error) { return w.call(op, payload) }
+
 // Worker talks to the native validator over length-prefixed stdio frames.
 type Worker struct {
 	mu  sync.Mutex

@@ -5,9 +5,23 @@ use vsf_canon::{Value, parse, to_canonical};
 use vsf_registry::harness::load_package;
 use vsf_registry::json::pretty;
 use vsf_registry::manifest::{
-    MANIFEST, Signer, TRUST, Trust, TrustedKey, build, file_set, primitive_digests, primitive_root,
-    sign, verify,
+    Accepted, Freshness, Issue, MANIFEST, Signer, TRUST, Trust, TrustedKey, Verified, build,
+    file_set, primitive_digests, primitive_root, read_watermark, sign, verify as verify_with,
+    watermark,
 };
+
+const NOW: i64 = 1_792_368_400_000;
+
+fn fresh() -> Freshness {
+    Freshness {
+        now_ms: NOW,
+        last: None,
+    }
+}
+
+fn verify(root: &Path, bytes: &[u8], t: &Trust) -> Result<Verified, vsf_registry::json::Error> {
+    verify_with(root, bytes, t, &fresh())
+}
 
 fn repo() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -65,9 +79,12 @@ fn the_committed_manifest_verifies_and_rebuilds_byte_for_byte() {
     );
     let pkg = load_package(&repo()).unwrap();
     let signer = Signer::development().unwrap();
-    let again = build(&pkg, &signer).unwrap();
+    let again = build(&pkg, &signer, Issue::DEVELOPMENT).unwrap();
     assert_eq!(pretty(&again).into_bytes(), committed());
-    assert_eq!(pretty(&build(&pkg, &signer).unwrap()), pretty(&again));
+    assert_eq!(
+        pretty(&build(&pkg, &signer, Issue::DEVELOPMENT).unwrap()),
+        pretty(&again)
+    );
 }
 
 #[test]
@@ -218,7 +235,7 @@ fn a_validly_signed_but_lying_manifest_is_caught_by_recomputation() {
 fn a_substituted_trust_anchor_is_not_accepted_from_the_package_itself() {
     let pkg = load_package(&repo()).unwrap();
     let attacker = Signer::from_seed_hex("attacker", &"09".repeat(32)).unwrap();
-    let forged = build(&pkg, &attacker).unwrap();
+    let forged = build(&pkg, &attacker, Issue::DEVELOPMENT).unwrap();
     assert_eq!(
         code(&repo(), &text(&forged), &trust()),
         "manifest.untrusted_key"
@@ -277,4 +294,146 @@ fn a_development_signature_never_passes_as_a_production_one() {
         "manifest.wrong_purpose"
     );
     assert!(v.require_purpose("development").is_ok());
+}
+
+fn reissue(sequence: i64, not_after_ms: i64) -> Vec<u8> {
+    let pkg = load_package(&repo()).unwrap();
+    let dev = Signer::development().unwrap();
+    text(
+        &build(
+            &pkg,
+            &dev,
+            Issue {
+                sequence,
+                not_after_ms,
+            },
+        )
+        .unwrap(),
+    )
+}
+
+fn accepted(v: &Verified) -> Accepted {
+    Accepted {
+        sequence: v.sequence,
+        digest: v.digest.clone(),
+    }
+}
+
+#[test]
+fn sequence_and_expiry_are_inside_the_signed_body() {
+    let m = parse(&committed()).unwrap();
+    let dev = Signer::development().unwrap();
+    for key in ["sequence", "not_after"] {
+        let changed = edit(&m, |e| *field(e, key) = Value::Int(99));
+        let stale_signature = edit(&changed, |_| {});
+        assert_eq!(
+            code(&repo(), &text(&stale_signature), &trust()),
+            "manifest.bad_signature",
+            "{key}"
+        );
+        let resigned = verify(&repo(), &text(&sign(changed, &dev).unwrap()), &trust());
+        assert_eq!(resigned.is_ok(), key == "sequence", "{key}");
+    }
+    let stripped = edit(&m, |e| e.retain(|(k, _)| k != "sequence"));
+    assert_eq!(
+        code(&repo(), &text(&sign(stripped, &dev).unwrap()), &trust()),
+        "registry.missing_field"
+    );
+}
+
+#[test]
+fn a_newer_sequence_verifies_and_advances_the_high_water_mark() {
+    let t = trust();
+    let first = verify(&repo(), &committed(), &t).unwrap();
+    assert_eq!(first.sequence, 1);
+    let mark = Freshness {
+        now_ms: NOW,
+        last: Some(accepted(&first)),
+    };
+    let second = verify_with(&repo(), &reissue(2, first.not_after_ms), &t, &mark).unwrap();
+    assert_eq!(second.sequence, 2);
+    let again = verify_with(&repo(), &committed(), &t, &mark);
+    assert!(again.is_ok(), "the accepted manifest verifies again");
+    let after = Freshness {
+        now_ms: NOW,
+        last: Some(accepted(&second)),
+    };
+    assert_eq!(
+        verify_with(&repo(), &committed(), &t, &after)
+            .unwrap_err()
+            .code,
+        "manifest.rollback"
+    );
+}
+
+#[test]
+fn replayed_expired_and_conflicting_manifests_are_refused() {
+    let t = trust();
+    let v = verify(&repo(), &committed(), &t).unwrap();
+    let newer = Freshness {
+        now_ms: NOW,
+        last: Some(Accepted {
+            sequence: 5,
+            digest: v.digest.clone(),
+        }),
+    };
+    assert_eq!(
+        verify_with(&repo(), &committed(), &t, &newer)
+            .unwrap_err()
+            .code,
+        "manifest.rollback"
+    );
+    let conflict = Freshness {
+        now_ms: NOW,
+        last: Some(Accepted {
+            sequence: 1,
+            digest: "0".repeat(64),
+        }),
+    };
+    assert_eq!(
+        verify_with(&repo(), &committed(), &t, &conflict)
+            .unwrap_err()
+            .code,
+        "manifest.sequence_conflict"
+    );
+    let late = Freshness {
+        now_ms: v.not_after_ms,
+        last: None,
+    };
+    assert_eq!(
+        verify_with(&repo(), &committed(), &t, &late)
+            .unwrap_err()
+            .code,
+        "manifest.expired"
+    );
+    assert_eq!(
+        verify_with(&repo(), &reissue(0, v.not_after_ms), &t, &fresh())
+            .unwrap_err()
+            .code,
+        "manifest.bad_sequence"
+    );
+    assert_eq!(
+        verify_with(&repo(), &reissue(3, NOW - 1), &t, &fresh())
+            .unwrap_err()
+            .code,
+        "manifest.expired"
+    );
+}
+
+#[test]
+fn the_watermark_round_trips_and_rejects_foreign_shapes() {
+    let v = verify(&repo(), &committed(), &trust()).unwrap();
+    let back = read_watermark(&watermark(&v)).unwrap();
+    assert_eq!(back, accepted(&v));
+    assert!(
+        read_watermark(&parse(br#"{"schema":"other","digest":"x","sequence":1}"#).unwrap())
+            .is_err()
+    );
+    assert!(
+        read_watermark(
+            &parse(br#"{"schema":"vsf-package-watermark-v1","digest":"x","sequence":1,"extra":1}"#)
+                .unwrap()
+        )
+        .is_err()
+    );
 }

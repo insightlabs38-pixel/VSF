@@ -1145,6 +1145,7 @@ pub fn validate_presentation(p: &PresentationIR, semantic: Option<&SemanticIR>) 
             }
         }
     }
+    validate_layout(p, semantic, &mut out);
     if let Some(sem) = semantic {
         for (i, c) in p.components.iter().enumerate() {
             let Some(b) = &c.binding else { continue };
@@ -1181,6 +1182,176 @@ pub fn validate_presentation(p: &PresentationIR, semantic: Option<&SemanticIR>) 
         }
     }
     out
+}
+
+/// Region layout: structure only, so a layout can never move, hide or merge an operation out of its confirmation context.
+fn validate_layout(p: &PresentationIR, semantic: Option<&SemanticIR>, out: &mut Vec<Violation>) {
+    let index: BTreeMap<&str, usize> = p
+        .regions
+        .iter()
+        .enumerate()
+        .map(|(i, r)| (r.id.as_str(), i))
+        .collect();
+    if index.len() != p.regions.len() {
+        out.push(v("ir.duplicate_id", "/body/regions", ""));
+    }
+    let mut kids: BTreeMap<&str, usize> = BTreeMap::new();
+    let mut mains: BTreeMap<&str, usize> = BTreeMap::new();
+    for (i, r) in p.regions.iter().enumerate() {
+        let path = format!("/body/regions/{i}");
+        let parent = r.parent.as_ref().map(|x| x.as_str());
+        match parent {
+            Some(par) if par == r.id.as_str() => {
+                out.push(v(
+                    "presentation.region_cycle",
+                    &format!("{path}/parent"),
+                    par,
+                ));
+            }
+            Some(par) if !index.contains_key(par) => {
+                out.push(v(
+                    "presentation.region_unknown_parent",
+                    &format!("{path}/parent"),
+                    par,
+                ));
+            }
+            Some(par) => *kids.entry(par).or_default() += 1,
+            None => {}
+        }
+        if r.role == Some(RegionRole::Main) {
+            *mains.entry(parent.unwrap_or("")).or_default() += 1;
+        }
+        if let Some(sz) = &r.size {
+            let bad = sz.max.as_ref().is_some_and(|m| m.0 < sz.min.0)
+                || sz
+                    .basis
+                    .as_ref()
+                    .is_some_and(|b| b.0 < sz.min.0 || sz.max.as_ref().is_some_and(|m| b.0 > m.0));
+            if bad {
+                out.push(v(
+                    "presentation.region_size",
+                    &format!("{path}/size"),
+                    r.id.as_str(),
+                ));
+            }
+        }
+        if r.dock.is_some()
+            && !matches!(
+                r.role,
+                Some(
+                    RegionRole::Navigation
+                        | RegionRole::Aside
+                        | RegionRole::Toolbar
+                        | RegionRole::Header
+                        | RegionRole::Footer
+                )
+            )
+        {
+            out.push(v(
+                "presentation.region_dock_role",
+                &format!("{path}/dock"),
+                r.id.as_str(),
+            ));
+        }
+        let mut last = u32::MAX as i64 + 1;
+        for (k, rs) in r.responsive.iter().flatten().enumerate() {
+            if rs.below.0 >= last {
+                out.push(v(
+                    "presentation.responsive_order",
+                    &format!("{path}/responsive/{k}"),
+                    r.id.as_str(),
+                ));
+            }
+            last = rs.below.0;
+        }
+    }
+    // The parent chain of every region must end at a root.
+    for (i, r) in p.regions.iter().enumerate() {
+        let mut cur = r.parent.as_ref().map(|x| x.as_str());
+        let mut hops = 0;
+        while let Some(par) = cur {
+            hops += 1;
+            if hops > p.regions.len() {
+                out.push(v(
+                    "presentation.region_cycle",
+                    &format!("/body/regions/{i}/parent"),
+                    r.id.as_str(),
+                ));
+                break;
+            }
+            cur = index
+                .get(par)
+                .and_then(|j| p.regions[*j].parent.as_ref().map(|x| x.as_str()));
+        }
+    }
+    if mains.values().any(|n| *n > 1) {
+        out.push(v(
+            "presentation.region_main_count",
+            "/body/regions",
+            "one main region per level",
+        ));
+    }
+    for (i, r) in p.regions.iter().enumerate() {
+        let needs_two = |a: Arrange| matches!(a, Arrange::Split | Arrange::Tabs);
+        let parts = kids.get(r.id.as_str()).copied().unwrap_or(0);
+        if r.arrange.is_some_and(needs_two) && parts < 2 {
+            out.push(v(
+                "presentation.region_arrange_empty",
+                &format!("/body/regions/{i}/arrange"),
+                r.id.as_str(),
+            ));
+        }
+        if r.responsive
+            .iter()
+            .flatten()
+            .any(|rs| needs_two(rs.arrange))
+            && parts < 2
+        {
+            out.push(v(
+                "presentation.region_arrange_empty",
+                &format!("/body/regions/{i}/responsive"),
+                r.id.as_str(),
+            ));
+        }
+    }
+    let Some(sem) = semantic else { return };
+    // A region a person or a narrow screen can hide must not hold an operation that needs to stay in view.
+    let comp_index: BTreeMap<&str, &Component> =
+        p.components.iter().map(|c| (c.id.as_str(), c)).collect();
+    for (i, r) in p.regions.iter().enumerate() {
+        let hideable = r.dock.as_ref().is_some_and(|d| d.collapsible)
+            || r.responsive.iter().flatten().any(|rs| rs.collapse);
+        if !hideable {
+            continue;
+        }
+        let mut stack: Vec<&str> = r.components.iter().map(|x| x.as_str()).collect();
+        let mut seen = BTreeSet::new();
+        while let Some(id) = stack.pop() {
+            if !seen.insert(id) {
+                continue;
+            }
+            let Some(c) = comp_index.get(id) else {
+                continue;
+            };
+            stack.extend(c.children.iter().map(|x| x.as_str()));
+            let Some(a) = c.binding.as_ref().and_then(|b| b.action.as_ref()) else {
+                continue;
+            };
+            let risky = sem.actions.iter().find(|x| x.id == *a).is_none_or(|d| {
+                !matches!(
+                    d.effect.declared,
+                    EffectClass::ReadOnly | EffectClass::IdempotentWrite
+                )
+            });
+            if risky {
+                out.push(v(
+                    "presentation.hideable_holds_risky_action",
+                    &format!("/body/regions/{i}"),
+                    a.as_str(),
+                ));
+            }
+        }
+    }
 }
 
 /// Private evidence stays private, revocations stay effective, and each kind of rollback restores only what it can.
@@ -1380,6 +1551,24 @@ pub fn validate_version(m: &VersionManifest) -> Vec<Violation> {
             Some(p) => {
                 if p.gates.is_empty() || p.gates.iter().any(|g| !g.passed) {
                     out.push(v("version.failed_gate", "/body/promotion/gates", ""));
+                }
+                if p.sequence.is_some() != p.not_after.is_some()
+                    || (p.sequence.is_some() && p.attestation.is_none())
+                {
+                    out.push(v(
+                        "version.freshness_incomplete",
+                        "/body/promotion/sequence",
+                        "sequence and not_after come together and only on a signed promotion",
+                    ));
+                }
+                if let Some(end) = &p.not_after
+                    && end.0 <= p.promoted_at.0
+                {
+                    out.push(v(
+                        "version.freshness_window",
+                        "/body/promotion/not_after",
+                        "",
+                    ));
                 }
                 if let Some(prev) = &p.previous
                     && !lineage.contains(prev.as_str())

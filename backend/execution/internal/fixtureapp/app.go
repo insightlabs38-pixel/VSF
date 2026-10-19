@@ -37,6 +37,7 @@ type App struct {
 	Faults    Faults
 	commits   int
 	reqs      []string
+	attempts  map[string]bool
 	srv       *httptest.Server
 	Dedup     bool
 	KeepAlive bool
@@ -140,6 +141,25 @@ func (a *App) Commits() int {
 	return a.commits
 }
 
+// attempt tells caller submissions apart from a browser re-sending one fetch after a dropped connection.
+func (a *App) attempt(r *http.Request) {
+	id := r.Header.Get("X-Submit")
+	if id == "" {
+		id = fmt.Sprintf("api-%d", len(a.reqs))
+	}
+	if a.attempts == nil {
+		a.attempts = map[string]bool{}
+	}
+	a.attempts[id] = true
+}
+
+// WriteAttempts counts distinct caller submissions; transport-level re-sends of one fetch count once.
+func (a *App) WriteAttempts() int {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	return len(a.attempts)
+}
+
 func (a *App) Requests() []string {
 	a.mu.Lock()
 	defer a.mu.Unlock()
@@ -193,6 +213,7 @@ func (a *App) post(w http.ResponseWriter, r *http.Request) {
 	key := r.Header.Get("Idempotency-Key")
 	a.mu.Lock()
 	a.reqs = append(a.reqs, "POST "+r.URL.Path)
+	a.attempt(r)
 	f := a.Faults
 	o := a.orders[r.PathValue("id")]
 	if key != "" && a.fenced[key] {
@@ -280,6 +301,7 @@ const pageHTML = `<!doctype html><meta charset="utf-8"><title>Order</title>
 <p id="result" role="status" data-status=""></p></main>
 <script>
 const id = document.getElementById("order-id").textContent;
+let submits = 0;
 document.getElementById("save").addEventListener("click", async () => {
   const stage = document.getElementById("stage");
   const out = document.getElementById("result");
@@ -287,7 +309,7 @@ document.getElementById("save").addEventListener("click", async () => {
   try {
     const res = await fetch("/api/orders/" + id + "/stage", {
       method: "POST",
-      headers: { "content-type": "application/json", "if-match": stage.dataset.version },
+      headers: { "content-type": "application/json", "if-match": stage.dataset.version, "x-submit": String(++submits) },
       body: JSON.stringify({ stage: document.getElementById("next").value }),
     });
     const text = await res.text();

@@ -10,6 +10,8 @@
       "!fixtures/golden",
       "!fixtures/recognition/snapshots",
       "!fixtures/primitives",
+      "!fixtures/versions",
+      "!fixtures/ui/compositions",
       "!registry",
       "!artifacts",
       "!compiler/target",

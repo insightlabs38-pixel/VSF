@@ -15,6 +15,9 @@ pub const MANIFEST: &str = "registry/primitives/package.manifest.v1.json";
 pub const TRUST: &str = "registry/primitives/trust.v1.json";
 pub const DASHBOARD: &str = "registry/primitives/dashboard.v1.json";
 pub const PACKAGE_VERSION: &str = "0.1.0";
+/// The committed development package; far-future expiry because it proves reproducibility, not a release.
+pub const DEV_SEQUENCE: i64 = 1;
+pub const DEV_NOT_AFTER_MS: i64 = 4_102_444_800_000;
 pub const DEV_KEY_ID: &str = "vsf-dev-1";
 const DOMAIN: &[u8] = b"vsf-primitive-package-v1\n";
 
@@ -67,6 +70,11 @@ impl Signer {
 
     pub fn public_hex(&self) -> String {
         hex(&self.pair.pk[..])
+    }
+
+    /// Signs arbitrary bytes; callers supply their own domain prefix.
+    pub fn sign_bytes(&self, message: &[u8]) -> String {
+        hex(&self.pair.sk.sign(message, None)[..])
     }
 }
 
@@ -301,7 +309,54 @@ pub fn sign(manifest: Value, signer: &Signer) -> Res<Value> {
     Ok(m)
 }
 
-pub fn build(pkg: &Package, signer: &Signer) -> Res<Value> {
+/// Where a package sits in its publisher's history and how long it may be trusted.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Issue {
+    pub sequence: i64,
+    pub not_after_ms: i64,
+}
+
+impl Issue {
+    pub const DEVELOPMENT: Issue = Issue {
+        sequence: DEV_SEQUENCE,
+        not_after_ms: DEV_NOT_AFTER_MS,
+    };
+}
+
+/// The newest manifest a verifier has accepted: anything older is a rollback, a different one at the same number is forged.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Accepted {
+    pub sequence: i64,
+    pub digest: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct Freshness {
+    pub now_ms: i64,
+    pub last: Option<Accepted>,
+}
+
+/// The state a verifier keeps between runs, written only after a manifest has verified.
+pub fn watermark(v: &Verified) -> Value {
+    object(vec![
+        ("digest", s(&v.digest)),
+        ("schema", s("vsf-package-watermark-v1")),
+        ("sequence", Value::Int(v.sequence)),
+    ])
+}
+
+pub fn read_watermark(v: &Value) -> Res<Accepted> {
+    let mut o = Obj::new(v, "")?;
+    if o.str("schema")? != "vsf-package-watermark-v1" {
+        return Err(err("manifest.bad_schema", "watermark"));
+    }
+    let digest = o.str("digest")?;
+    let sequence = o.int("sequence")?;
+    o.finish()?;
+    Ok(Accepted { sequence, digest })
+}
+
+pub fn build(pkg: &Package, signer: &Signer, issue: Issue) -> Res<Value> {
     let files = file_set(pkg)?
         .into_iter()
         .map(|rel| {
@@ -322,10 +377,12 @@ pub fn build(pkg: &Package, signer: &Signer) -> Res<Value> {
         ("catalog_sha256", s(&pkg.registry.catalog_sha256)),
         ("files", Value::Array(files)),
         ("ir_version", s(vsf_ir::generated::IR_VERSION_TEXT)),
+        ("not_after", Value::Int(issue.not_after_ms)),
         ("package", s("vsf-primitives")),
         ("primitive_root", s(&primitive_root(&digests))),
         ("primitives", Value::Array(prims)),
         ("schema", s(SCHEMA)),
+        ("sequence", Value::Int(issue.sequence)),
         ("version", s(PACKAGE_VERSION)),
     ]);
     sign(body, signer)
@@ -339,6 +396,10 @@ pub struct Verified {
     pub files: usize,
     pub primitives: usize,
     pub primitive_root: String,
+    pub sequence: i64,
+    pub not_after_ms: i64,
+    /// Digest of the signed body; a verifier stores it with the sequence as its high-water mark.
+    pub digest: String,
 }
 
 impl Verified {
@@ -367,6 +428,22 @@ fn field_strs(v: &Value, path: &str, keys: [&str; 2]) -> Res<Vec<(String, String
     Ok(out)
 }
 
+/// Checks `sig` over `message` against the active trusted key `key_id`; returns the key's purpose.
+pub fn verify_bytes(trust: &Trust, key_id: &str, message: &[u8], sig: &str) -> Res<String> {
+    let key = trust
+        .keys
+        .iter()
+        .find(|k| k.id == key_id && k.active)
+        .ok_or_else(|| err("manifest.untrusted_key", key_id))?;
+    let pk = PublicKey::from_slice(&unhex(&key.public_key)?)
+        .map_err(|_| err("manifest.bad_key", key_id))?;
+    let sig =
+        Signature::from_slice(&unhex(sig)?).map_err(|_| err("manifest.bad_signature", "length"))?;
+    pk.verify(message, &sig)
+        .map_err(|_| err("manifest.bad_signature", "does not verify"))?;
+    Ok(key.purpose.clone())
+}
+
 fn check_signature(manifest: &Value, trust: &Trust) -> Res<(String, String)> {
     let sig = manifest
         .get("signature")
@@ -378,22 +455,17 @@ fn check_signature(manifest: &Value, trust: &Trust) -> Res<(String, String)> {
     let key_id = o.str("key_id")?;
     let value = o.str("value")?;
     o.finish()?;
-    let key = trust
-        .keys
-        .iter()
-        .find(|k| k.id == key_id && k.active)
-        .ok_or_else(|| err("manifest.untrusted_key", key_id.clone()))?;
-    let pk = PublicKey::from_slice(&unhex(&key.public_key)?)
-        .map_err(|_| err("manifest.bad_key", key_id.clone()))?;
-    let sig = Signature::from_slice(&unhex(&value)?)
-        .map_err(|_| err("manifest.bad_signature", "length"))?;
-    pk.verify(signing_bytes(manifest)?, &sig)
-        .map_err(|_| err("manifest.bad_signature", "does not verify"))?;
-    Ok((key_id, key.purpose.clone()))
+    let purpose = verify_bytes(trust, &key_id, &signing_bytes(manifest)?, &value)?;
+    Ok((key_id, purpose))
 }
 
 /// Any mismatch is a hard error: signature first, then files, then claims and primitive digests.
-pub fn verify(root: &Path, manifest_bytes: &[u8], trust: &Trust) -> Result<Verified, Error> {
+pub fn verify(
+    root: &Path,
+    manifest_bytes: &[u8],
+    trust: &Trust,
+    fresh: &Freshness,
+) -> Result<Verified, Error> {
     let manifest = load(manifest_bytes)?;
     if manifest.get("schema").and_then(Value::as_str) != Some(SCHEMA) {
         return Err(err("manifest.bad_schema", "package"));
@@ -404,12 +476,32 @@ pub fn verify(root: &Path, manifest_bytes: &[u8], trust: &Trust) -> Result<Verif
     let files = field_strs(o.req("files")?, "/files", ["path", "sha256"])?;
     let ir = o.str("ir_version")?;
     let _ = o.str("package")?;
+    let not_after = o.int("not_after")?;
     let claimed_root = o.str("primitive_root")?;
     let prims = field_strs(o.req("primitives")?, "/primitives", ["id", "digest"])?;
     let _ = o.str("schema")?;
+    let sequence = o.int("sequence")?;
     let _ = o.opt("signature");
     let version = o.str("version")?;
     o.finish()?;
+    let digest = sha256_hex(&signing_bytes(&manifest)?);
+    if sequence < 1 {
+        return Err(err("manifest.bad_sequence", sequence.to_string()));
+    }
+    if fresh.now_ms >= not_after {
+        return Err(err("manifest.expired", not_after.to_string()));
+    }
+    if let Some(last) = &fresh.last {
+        if sequence < last.sequence {
+            return Err(err(
+                "manifest.rollback",
+                format!("{sequence} < {}", last.sequence),
+            ));
+        }
+        if sequence == last.sequence && digest != last.digest {
+            return Err(err("manifest.sequence_conflict", sequence.to_string()));
+        }
+    }
     if ir != vsf_ir::generated::IR_VERSION_TEXT {
         return Err(err("manifest.ir_mismatch", ir));
     }
@@ -456,5 +548,8 @@ pub fn verify(root: &Path, manifest_bytes: &[u8], trust: &Trust) -> Result<Verif
         files: files.len(),
         primitives: digests.len(),
         primitive_root: claimed_root,
+        sequence,
+        not_after_ms: not_after,
+        digest,
     })
 }

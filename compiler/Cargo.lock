@@ -173,6 +173,7 @@ dependencies = [
  "vsf-observation",
  "vsf-redact",
  "vsf-schema",
+ "vsf-versioning",
 ]
 
 [[package]]
@@ -213,6 +214,15 @@ name = "vsf-schema"
 version = "0.0.0"
 dependencies = [
  "vsf-canon",
+]
+
+[[package]]
+name = "vsf-versioning"
+version = "0.0.0"
+dependencies = [
+ "vsf-canon",
+ "vsf-ir",
+ "vsf-registry",
 ]
 
 [[package]]

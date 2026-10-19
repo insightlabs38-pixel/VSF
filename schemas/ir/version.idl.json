@@ -1,6 +1,6 @@
 {
   "idl": "vsf-idl/1",
-  "ir_version": "1.1.0",
+  "ir_version": "1.2.0",
   "family": "version",
   "root": "VersionManifest",
   "types": {
@@ -191,6 +191,18 @@
           "type": "PromotionSignature",
           "optional": true,
           "since": "1.1.0"
+        },
+        "sequence": {
+          "type": "Count",
+          "optional": true,
+          "since": "1.2.0",
+          "doc": "Strictly increasing per publisher; a verifier refuses anything not newer than the last accepted."
+        },
+        "not_after": {
+          "type": "Instant",
+          "optional": true,
+          "since": "1.2.0",
+          "doc": "The promotion is not trusted after this instant."
         }
       }
     },

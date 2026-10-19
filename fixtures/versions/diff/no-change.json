@@ -1,0 +1,11 @@
+{
+  "changes": [],
+  "class": null,
+  "family": "semantic",
+  "from": "sha256:3cd2d105e9c9afaf306b00f8df190c876b8aec42a423ce8b98ab13dd6e1ee627",
+  "review_required": false,
+  "schema": "vsf-diff-report-v1",
+  "summary": {"additive":0,"breaking":0,"cosmetic":0,"permission":0,"unknown":0},
+  "to": "sha256:3cd2d105e9c9afaf306b00f8df190c876b8aec42a423ce8b98ab13dd6e1ee627"
+}
+

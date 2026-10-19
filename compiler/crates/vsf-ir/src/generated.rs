@@ -4,30 +4,36 @@ use crate::rt::{self, Ctx, DecodeError, Res, StrRule, TextMode};
 use std::collections::BTreeMap;
 use vsf_canon::Value;
 
-pub const IR_VERSION: (u32, u32, u32) = (1, 1, 0);
-pub const IR_VERSION_TEXT: &str = "1.1.0";
+pub const IR_VERSION: (u32, u32, u32) = (1, 2, 0);
+pub const IR_VERSION_TEXT: &str = "1.2.0";
 pub const FAMILIES: &[(&str, &str, &str)] = &[
-    ("environment", "EnvironmentCapabilityManifest", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"),
-    ("observation", "ObservationIR", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"),
-    ("semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"),
-    ("operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"),
-    ("presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"),
-    ("version", "VersionManifest", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"),
+    ("environment", "EnvironmentCapabilityManifest", "sha256:fd6829d3d395ecc73356b0d7d4cebafd305a94ed3d976d9ac73098c298ae552d"),
+    ("observation", "ObservationIR", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"),
+    ("semantic", "SemanticIR", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"),
+    ("operation", "OperationContract", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"),
+    ("presentation", "PresentationIR", "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932"),
+    ("version", "VersionManifest", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"),
 ];
 /// Every (version, family, digest) a reader decodes: all released snapshots and the current schema.
 pub const ACCEPTED: &[((u32, u32, u32), &str, &str)] = &[
     ((1, 0, 0), "environment", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"),
     ((1, 1, 0), "environment", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"),
+    ((1, 2, 0), "environment", "sha256:fd6829d3d395ecc73356b0d7d4cebafd305a94ed3d976d9ac73098c298ae552d"),
     ((1, 0, 0), "observation", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"),
     ((1, 1, 0), "observation", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"),
+    ((1, 2, 0), "observation", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"),
     ((1, 0, 0), "operation", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"),
     ((1, 1, 0), "operation", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"),
+    ((1, 2, 0), "operation", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"),
     ((1, 0, 0), "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"),
     ((1, 1, 0), "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"),
+    ((1, 2, 0), "presentation", "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932"),
     ((1, 0, 0), "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"),
     ((1, 1, 0), "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"),
+    ((1, 2, 0), "semantic", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"),
     ((1, 0, 0), "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"),
     ((1, 1, 0), "version", "sha256:dbaa70587899e88dee8b6d2d7e414100a3ee3a2612e7be35f163245428ea7102"),
+    ((1, 2, 0), "version", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"),
 ];
 
 static DIGEST_RULE: StrRule = StrRule { pattern: Some("^sha256:[0-9a-f]{64}$"), max_len: 71, text: TextMode::None };
@@ -3868,6 +3874,13 @@ impl LayoutConstraint {
 pub struct Region {
     pub id: Ident,
     pub components: Vec<Ident>,
+    pub role: Option<RegionRole>,
+    pub arrange: Option<Arrange>,
+    pub parent: Option<Ident>,
+    pub order: Option<Count>,
+    pub size: Option<SizeBounds>,
+    pub dock: Option<Dock>,
+    pub responsive: Option<Vec<Responsive>>,
 }
 impl Region {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -3877,13 +3890,62 @@ impl Region {
         let path = o.path().to_string();
         let id = Ident::decode(o.req("id")?, &rt::child(&path, "id"), ctx)?;
         let components = rt::list(o.req("components")?, &rt::child(&path, "components"), 0, 1024, |e, p| Ident::decode(e, p, ctx))?;
+        let role = match o.since("role", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(RegionRole::decode(v, &rt::child(&path, "role"), ctx)?),
+            None => None,
+        };
+        let arrange = match o.since("arrange", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(Arrange::decode(v, &rt::child(&path, "arrange"), ctx)?),
+            None => None,
+        };
+        let parent = match o.since("parent", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(Ident::decode(v, &rt::child(&path, "parent"), ctx)?),
+            None => None,
+        };
+        let order = match o.since("order", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(Count::decode(v, &rt::child(&path, "order"), ctx)?),
+            None => None,
+        };
+        let size = match o.since("size", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(SizeBounds::decode(v, &rt::child(&path, "size"), ctx)?),
+            None => None,
+        };
+        let dock = match o.since("dock", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(Dock::decode(v, &rt::child(&path, "dock"), ctx)?),
+            None => None,
+        };
+        let responsive = match o.since("responsive", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(rt::list(v, &rt::child(&path, "responsive"), 0, 8, |e, p| Responsive::decode(e, p, ctx))?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { id, components })
+        Ok(Self { id, components, role, arrange, parent, order, size, dock, responsive })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
         f.push(("id".to_string(), self.id.encode()));
         f.push(("components".to_string(), Value::Array(self.components.iter().map(|e| e.encode()).collect())));
+        if let Some(x) = &self.role {
+            f.push(("role".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.arrange {
+            f.push(("arrange".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.parent {
+            f.push(("parent".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.order {
+            f.push(("order".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.size {
+            f.push(("size".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.dock {
+            f.push(("dock".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.responsive {
+            f.push(("responsive".to_string(), Value::Array(x.iter().map(|e| e.encode()).collect())));
+        }
         f
     }
     pub fn encode(&self) -> Value {
@@ -3902,6 +3964,7 @@ pub struct PresentationIR {
     pub constraints: Vec<LayoutConstraint>,
     pub components: Vec<Component>,
     pub regions: Vec<Region>,
+    pub customization: Option<Customization>,
 }
 impl PresentationIR {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -3917,8 +3980,12 @@ impl PresentationIR {
         let constraints = rt::list(o.req("constraints")?, &rt::child(&path, "constraints"), 0, 1024, |e, p| LayoutConstraint::decode(e, p, ctx))?;
         let components = rt::list(o.req("components")?, &rt::child(&path, "components"), 0, 16384, |e, p| Component::decode(e, p, ctx))?;
         let regions = rt::list(o.req("regions")?, &rt::child(&path, "regions"), 0, 256, |e, p| Region::decode(e, p, ctx))?;
+        let customization = match o.since("customization", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(Customization::decode(v, &rt::child(&path, "customization"), ctx)?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { presentation_version, semantic, locale, direction, theme, constraints, components, regions })
+        Ok(Self { presentation_version, semantic, locale, direction, theme, constraints, components, regions, customization })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -3930,6 +3997,260 @@ impl PresentationIR {
         f.push(("constraints".to_string(), Value::Array(self.constraints.iter().map(|e| e.encode()).collect())));
         f.push(("components".to_string(), Value::Array(self.components.iter().map(|e| e.encode()).collect())));
         f.push(("regions".to_string(), Value::Array(self.regions.iter().map(|e| e.encode()).collect())));
+        if let Some(x) = &self.customization {
+            f.push(("customization".to_string(), x.encode()));
+        }
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum RegionRole {
+    Navigation,
+    Header,
+    Main,
+    Aside,
+    Toolbar,
+    Footer,
+}
+impl RegionRole {
+    pub const ALL: &'static [Self] = &[Self::Navigation, Self::Header, Self::Main, Self::Aside, Self::Toolbar, Self::Footer];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Navigation => "navigation",
+            Self::Header => "header",
+            Self::Main => "main",
+            Self::Aside => "aside",
+            Self::Toolbar => "toolbar",
+            Self::Footer => "footer",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "navigation" => Some(Self::Navigation),
+            "header" => Some(Self::Header),
+            "main" => Some(Self::Main),
+            "aside" => Some(Self::Aside),
+            "toolbar" => Some(Self::Toolbar),
+            "footer" => Some(Self::Footer),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum Arrange {
+    Stack,
+    Row,
+    Grid,
+    Split,
+    Tabs,
+}
+impl Arrange {
+    pub const ALL: &'static [Self] = &[Self::Stack, Self::Row, Self::Grid, Self::Split, Self::Tabs];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Stack => "stack",
+            Self::Row => "row",
+            Self::Grid => "grid",
+            Self::Split => "split",
+            Self::Tabs => "tabs",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "stack" => Some(Self::Stack),
+            "row" => Some(Self::Row),
+            "grid" => Some(Self::Grid),
+            "split" => Some(Self::Split),
+            "tabs" => Some(Self::Tabs),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum DockEdge {
+    Start,
+    End,
+    Top,
+    Bottom,
+}
+impl DockEdge {
+    pub const ALL: &'static [Self] = &[Self::Start, Self::End, Self::Top, Self::Bottom];
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Start => "start",
+            Self::End => "end",
+            Self::Top => "top",
+            Self::Bottom => "bottom",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Self> {
+        match s {
+            "start" => Some(Self::Start),
+            "end" => Some(Self::End),
+            "top" => Some(Self::Top),
+            "bottom" => Some(Self::Bottom),
+            _ => None,
+        }
+    }
+    pub fn decode(v: &Value, path: &str, _ctx: &Ctx) -> Res<Self> {
+        Self::parse(rt::enum_str(v, path)?).ok_or_else(|| DecodeError::new(path, "ir.bad_enum"))
+    }
+    pub fn encode(self) -> Value {
+        Value::Str(self.as_str().to_string())
+    }
+}
+
+/// Bounds in character cells (ch), so a layout scales with text and density rather than pixels.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SizeBounds {
+    pub min: Count,
+    pub max: Option<Count>,
+    pub basis: Option<Count>,
+}
+impl SizeBounds {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let min = Count::decode(o.req("min")?, &rt::child(&path, "min"), ctx)?;
+        let max = match o.opt("max") {
+            Some(v) => Some(Count::decode(v, &rt::child(&path, "max"), ctx)?),
+            None => None,
+        };
+        let basis = match o.opt("basis") {
+            Some(v) => Some(Count::decode(v, &rt::child(&path, "basis"), ctx)?),
+            None => None,
+        };
+        o.finish()?;
+        Ok(Self { min, max, basis })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("min".to_string(), self.min.encode()));
+        if let Some(x) = &self.max {
+            f.push(("max".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.basis {
+            f.push(("basis".to_string(), x.encode()));
+        }
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
+/// An edge-attached region. A region that is not collapsible is always visible.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Dock {
+    pub edge: DockEdge,
+    pub collapsible: bool,
+    pub resizable: bool,
+}
+impl Dock {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let edge = DockEdge::decode(o.req("edge")?, &rt::child(&path, "edge"), ctx)?;
+        let collapsible = rt::boolean(o.req("collapsible")?, &rt::child(&path, "collapsible"))?;
+        let resizable = rt::boolean(o.req("resizable")?, &rt::child(&path, "resizable"))?;
+        o.finish()?;
+        Ok(Self { edge, collapsible, resizable })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("edge".to_string(), self.edge.encode()));
+        f.push(("collapsible".to_string(), Value::Bool(self.collapsible.to_owned())));
+        f.push(("resizable".to_string(), Value::Bool(self.resizable.to_owned())));
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
+/// Below this viewport width in ch the region arranges its children differently and may collapse.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Responsive {
+    pub below: Count,
+    pub arrange: Arrange,
+    pub collapse: bool,
+}
+impl Responsive {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let below = Count::decode(o.req("below")?, &rt::child(&path, "below"), ctx)?;
+        let arrange = Arrange::decode(o.req("arrange")?, &rt::child(&path, "arrange"), ctx)?;
+        let collapse = rt::boolean(o.req("collapse")?, &rt::child(&path, "collapse"))?;
+        o.finish()?;
+        Ok(Self { below, arrange, collapse })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("below".to_string(), self.below.encode()));
+        f.push(("arrange".to_string(), self.arrange.encode()));
+        f.push(("collapse".to_string(), Value::Bool(self.collapse.to_owned())));
+        f
+    }
+    pub fn encode(&self) -> Value {
+        Value::Object(self.encode_fields())
+    }
+}
+
+/// What a person may change without a new presentation version; none of it can hide or move an operation out of its confirmation context.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Customization {
+    pub reorder: bool,
+    pub resize: bool,
+    pub collapse: bool,
+    pub density: bool,
+    pub scheme: bool,
+}
+impl Customization {
+    pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
+        Self::decode_fields(rt::Obj::new(v, path)?, ctx)
+    }
+    pub(crate) fn decode_fields(mut o: rt::Obj<'_>, ctx: &Ctx) -> Res<Self> {
+        let path = o.path().to_string();
+        let reorder = rt::boolean(o.req("reorder")?, &rt::child(&path, "reorder"))?;
+        let resize = rt::boolean(o.req("resize")?, &rt::child(&path, "resize"))?;
+        let collapse = rt::boolean(o.req("collapse")?, &rt::child(&path, "collapse"))?;
+        let density = rt::boolean(o.req("density")?, &rt::child(&path, "density"))?;
+        let scheme = rt::boolean(o.req("scheme")?, &rt::child(&path, "scheme"))?;
+        o.finish()?;
+        Ok(Self { reorder, resize, collapse, density, scheme })
+    }
+    pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
+        let mut f: Vec<(String, Value)> = Vec::new();
+        f.push(("reorder".to_string(), Value::Bool(self.reorder.to_owned())));
+        f.push(("resize".to_string(), Value::Bool(self.resize.to_owned())));
+        f.push(("collapse".to_string(), Value::Bool(self.collapse.to_owned())));
+        f.push(("density".to_string(), Value::Bool(self.density.to_owned())));
+        f.push(("scheme".to_string(), Value::Bool(self.scheme.to_owned())));
         f
     }
     pub fn encode(&self) -> Value {
@@ -4385,6 +4706,8 @@ pub struct PromotionRecord {
     pub signature: Label,
     pub previous: Option<Digest>,
     pub attestation: Option<PromotionSignature>,
+    pub sequence: Option<Count>,
+    pub not_after: Option<Instant>,
 }
 impl PromotionRecord {
     pub fn decode(v: &Value, path: &str, ctx: &Ctx) -> Res<Self> {
@@ -4404,8 +4727,16 @@ impl PromotionRecord {
             Some(v) => Some(PromotionSignature::decode(v, &rt::child(&path, "attestation"), ctx)?),
             None => None,
         };
+        let sequence = match o.since("sequence", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(Count::decode(v, &rt::child(&path, "sequence"), ctx)?),
+            None => None,
+        };
+        let not_after = match o.since("not_after", (1, 2, 0), false, ctx)? {
+            Some(v) => Some(Instant::decode(v, &rt::child(&path, "not_after"), ctx)?),
+            None => None,
+        };
         o.finish()?;
-        Ok(Self { promoted_at, gates, signer, signature, previous, attestation })
+        Ok(Self { promoted_at, gates, signer, signature, previous, attestation, sequence, not_after })
     }
     pub(crate) fn encode_fields(&self) -> Vec<(String, Value)> {
         let mut f: Vec<(String, Value)> = Vec::new();
@@ -4418,6 +4749,12 @@ impl PromotionRecord {
         }
         if let Some(x) = &self.attestation {
             f.push(("attestation".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.sequence {
+            f.push(("sequence".to_string(), x.encode()));
+        }
+        if let Some(x) = &self.not_after {
+            f.push(("not_after".to_string(), x.encode()));
         }
         f
     }

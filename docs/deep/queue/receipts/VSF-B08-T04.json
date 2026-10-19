@@ -1,0 +1,41 @@
+{
+  "task_id": "VSF-B08-T04",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "965fb6ab53eef68ead6763ba7d74e71f5e5c663d",
+  "paths": [
+    "compiler/crates/vsf-versioning/src/pin.rs",
+    "compiler/crates/vsf-versioning/tests/pin.rs"
+  ],
+  "acceptance": "Pinned contract retains stable public schema while source drift is marked compatible/degraded/blocked; no false operational guarantee.",
+  "positive": {
+    "fixture": "a matching source is compatible and may write; drift changes the state, not the exposed schema",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test pin",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unobserved origin or principal, fingerprint change, unknown operation and a pin-mismatched candidate are never compatible",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test pin",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test matrix",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Degraded allows reads only; unknown inputs lower the state.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Presentation fallback also blocks writes (conservative)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T04.pin-and-compatibility-state.log"
+  ],
+  "review_result": "ACCEPTED"
+}

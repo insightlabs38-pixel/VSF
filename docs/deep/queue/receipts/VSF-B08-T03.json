@@ -1,0 +1,41 @@
+{
+  "task_id": "VSF-B08-T03",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "98d923928f3e76b348ce27d22c176a9ba8091fca",
+  "paths": [
+    "compiler/crates/vsf-versioning/src/impact.rs",
+    "compiler/crates/vsf-versioning/tests/impact.rs"
+  ],
+  "acceptance": "Dependency closure selects only relevant conformance tests, with a conservative full-test fallback for uncertain impact.",
+  "positive": {
+    "fixture": "a field change selects its tests and those of what is bound to it, not unrelated ones",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test impact",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unknown class, unmapped path, subject outside the graph and uncovered subject each run every test",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test impact",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test diff",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "Selection can only add tests, never skip the always set.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Operations are not linked to semantic actions in the IR"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T03.impact-and-test-selection.log"
+  ],
+  "review_result": "ACCEPTED"
+}

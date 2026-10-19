@@ -1,0 +1,12 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-ir --test layout
+
+running 3 tests
+test layout_fields_are_refused_in_documents_written_before_they_existed ... ok
+test a_region_that_can_be_hidden_may_not_hold_a_risky_operation ... ok
+test the_compositions_the_typescript_compiler_writes_validate_in_rust_against_their_semantics ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/layout.rs (compiler/target/debug/deps/layout-e3f054604717d643)
+[exit 0]

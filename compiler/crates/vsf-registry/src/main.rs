@@ -67,7 +67,7 @@ fn run(args: &[String]) -> Result<String, String> {
         }
         Some("manifest") => {
             let root = Path::new(args.get(2).ok_or(
-                "usage: manifest <build|verify|trust> <repo-root> [--development | --trust FILE]",
+                "usage: manifest <build|verify|trust> <repo-root> [--development | --trust FILE] [--now MS] [--watermark FILE]",
             )?);
             match args.get(1).map(String::as_str) {
                 Some("build") => {
@@ -84,7 +84,7 @@ fn run(args: &[String]) -> Result<String, String> {
                     }
                     .map_err(|e| e.to_string())?;
                     let pkg = harness::load_package(root).map_err(|e| e.to_string())?;
-                    let m = manifest::build(&pkg, &signer).map_err(|e| e.to_string())?;
+                    let m = manifest::build(&pkg, &signer, manifest::Issue::DEVELOPMENT).map_err(|e| e.to_string())?;
                     std::fs::write(root.join(manifest::MANIFEST), json::pretty(&m))
                         .map_err(|e| e.to_string())?;
                     Ok(format!(
@@ -126,16 +126,36 @@ fn run(args: &[String]) -> Result<String, String> {
                     )
                     .map_err(|e| e.to_string())?;
                     let bytes = read(&root.join(manifest::MANIFEST).to_string_lossy())?;
-                    let v = manifest::verify(root, &bytes, &trust).map_err(|e| e.to_string())?;
+                    let flag = |name: &str| args.iter().position(|a| a == name).and_then(|i| args.get(i + 1));
+                    let now_ms = match flag("--now") {
+                        Some(t) => t.parse::<i64>().map_err(|_| "--now takes epoch milliseconds")?,
+                        None => std::time::SystemTime::now()
+                            .duration_since(std::time::UNIX_EPOCH)
+                            .map_err(|e| e.to_string())
+                            .and_then(|d| i64::try_from(d.as_millis()).map_err(|e| e.to_string()))?,
+                    };
+                    let mark_path = flag("--watermark").map(std::path::PathBuf::from);
+                    let last = match &mark_path {
+                        Some(p) if p.exists() => Some(manifest::read_watermark(
+                            &model::load(&read(&p.to_string_lossy())?).map_err(|e| e.to_string())?,
+                        )
+                        .map_err(|e| e.to_string())?),
+                        _ => None,
+                    };
+                    let fresh = manifest::Freshness { now_ms, last };
+                    let v = manifest::verify(root, &bytes, &trust, &fresh).map_err(|e| e.to_string())?;
+                    if let Some(p) = &mark_path {
+                        std::fs::write(p, json::pretty(&manifest::watermark(&v))).map_err(|e| e.to_string())?;
+                    }
                     let v = v
                         .require_purpose(if development { "development" } else { "production" })
                         .map_err(|e| e.to_string())?;
                     Ok(format!(
-                        "verified v{} key={} ({}) files={} primitives={} root={}\n",
-                        v.version, v.key_id, v.purpose, v.files, v.primitives, v.primitive_root
+                        "verified v{} seq={} key={} ({}) files={} primitives={} root={}\n",
+                        v.version, v.sequence, v.key_id, v.purpose, v.files, v.primitives, v.primitive_root
                     ))
                 }
-                _ => Err("usage: manifest <build|verify|trust> <repo-root> [--development | --trust FILE]".into()),
+                _ => Err("usage: manifest <build|verify|trust> <repo-root> [--development | --trust FILE] [--now MS] [--watermark FILE]".into()),
             }
         }
         _ => Err("usage: vsf-registry <import|gen-fixtures|check|dashboard|manifest>".into()),

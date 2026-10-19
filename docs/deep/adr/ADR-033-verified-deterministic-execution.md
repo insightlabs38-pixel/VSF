@@ -34,7 +34,7 @@ Chromium resends a POST when a reused connection drops; if the first attempt com
 - A source without per-request receipts leaves an ambiguous write unresolved and its footprint blocked. There is no operator override yet; that decision path belongs with the version and approval workflows.
 - Record scope isolates sessions; two sessions writing the same record rely on the source's conditional write.
 - Form-input values are still set by script events; only the submit press uses trusted input.
-- A browser plan relies on the source's own conditional write; a page that sends unconditional writes can be resent by the browser.
+- A browser plan relies on the source's own conditional write; a page that sends unconditional writes can be resent by the browser. Chromium re-sends a fetch whose connection closed before any response (seen as a second POST with the same submission id); If-Match refused it, and tests count submissions, not raw requests.
 - The TypeScript brand cannot stop code in another realm that bypasses the module.
 
 ## Migration and rollback

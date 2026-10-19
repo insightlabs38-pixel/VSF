@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run cross-language
+ci-run cross-language: PASS
+[exit 0]

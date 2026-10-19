@@ -85,19 +85,31 @@ function viewComponents(
           accessibility: { role: "group", name_source: "explicit", name: `${title} actions` },
         }
       : undefined;
+    const grouped = new Set<string>();
+    const groupComps: PComponent[] = (view.groups ?? []).map((g) => {
+      const members = fieldComps.filter((c) => g.fields.includes(c.binding?.field ?? ""));
+      for (const m of members) grouped.add(m.id);
+      return {
+        id: ids.id("fgrp", ent.id, g.id),
+        kind: "group",
+        children: members.map((m) => m.id),
+        accessibility: { role: "group", name_source: "explicit", name: g.name },
+      };
+    });
     const form: PComponent = {
       id: root,
       kind: "form",
       binding: { entity: ent.id },
       children: [
         heading.id,
-        ...fieldComps.map((c) => c.id),
+        ...fieldComps.filter((c) => !grouped.has(c.id)).map((c) => c.id),
+        ...groupComps.map((g) => g.id),
         ...(group ? [group.id] : []),
         ...preserved.map((p) => p.id),
       ],
       accessibility: { role: "form", name_source: "explicit", name: title },
     };
-    out.push(form, heading, ...fieldComps, ...(group ? [group] : []), ...actionComps, ...preserved);
+    out.push(form, heading, ...fieldComps, ...groupComps, ...(group ? [group] : []), ...actionComps, ...preserved);
     if (actionComps.length > 1) {
       cons.push({
         id: ids.id("keep", ent.id, "actions"),
@@ -128,11 +140,14 @@ export function compilePresentation(sem: SemanticView, opts: CompileOptions): Pr
   const constraints: PConstraint[] = [];
   const regions: PresentationBody["regions"] = [];
   const alloc = new IdAllocator();
+  const rootsOf = new Map<string, string[]>();
   for (const view of opts.views) {
     const roots = viewComponents(sem, view, components, constraints, alloc);
-    regions.push({ id: alloc.id("view", view.entity), components: roots });
+    rootsOf.set(view.entity, roots);
+    if (!opts.layout) regions.push({ id: alloc.id("view", view.entity), components: roots });
   }
-  if (opts.navigation && opts.views.length > 0) {
+  const wantsNav = opts.layout ? opts.layout.regions.some((r) => r.nav) : opts.navigation;
+  if (wantsNav && opts.views.length > 0) {
     const links: PComponent[] = opts.views.map((v) => {
       const ent = sem.entities.find((e) => e.id === v.entity);
       return {
@@ -152,7 +167,14 @@ export function compilePresentation(sem: SemanticView, opts: CompileOptions): Pr
       },
       ...links,
     );
-    regions.unshift({ id: "nav", components: ["nav"] });
+    if (!opts.layout) regions.unshift({ id: "nav", components: ["nav"] });
+  }
+  for (const plan of opts.layout?.regions ?? []) {
+    const { views, nav, ...own } = plan;
+    regions.push({
+      ...own,
+      components: [...(nav ? ["nav"] : []), ...(views ?? []).flatMap((e) => rootsOf.get(e) ?? [])],
+    });
   }
   const interactive = components.filter((c) => INTERACTIVE.has(c.kind));
   const controls = interactive.filter((c) => c.kind === "button" || c.kind === "link").map((c) => c.id);
@@ -177,5 +199,6 @@ export function compilePresentation(sem: SemanticView, opts: CompileOptions): Pr
     constraints,
     components,
     regions,
+    ...(opts.layout?.customization ? { customization: opts.layout.customization } : {}),
   };
 }

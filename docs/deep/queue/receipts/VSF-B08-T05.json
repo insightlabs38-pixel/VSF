@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B08-T05",
+  "status": "DONE",
+  "branch": "vsf/b08-versioning-ui-checkpoint",
+  "base_commit": "1430ef3223945b4d758262b8fb324889cd8f0946",
+  "commit": "3a8b49bb7eb6f95fed1c25c6baf8401c3f4dd52c",
+  "paths": [
+    "backend/versions/store.go",
+    "backend/versions/verify.go",
+    "compiler/crates/vsf-versioning/src/api.rs",
+    "compiler/crates/vsf-native/src/main.rs",
+    "fixtures/versions"
+  ],
+  "acceptance": "Promotion is crash-consistent, verifies all artifact digests and rejects partial or mismatched manifests.",
+  "positive": {
+    "fixture": "history m1, m2, branch, m3, rollback promotes in order; every head verifies whole",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test api; go -C backend test -tags integration -race -count=1 ./versions/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "missing, resized and swapped artifacts, cut and edited manifests, crash at blobs, manifest, intent and pointer, recovery over a deleted artifact",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test api; go -C backend test -tags integration -race -count=1 ./versions/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test fixtures",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "worker operation P added",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "A head only ever names a complete manifest; Rust alone decides trust.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "One process per store; no distributed promotion"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T05.native-promotion-verdicts.log",
+    "docs/deep/evidence/VSF-B08/logs/VSF-B08-T05.crash-consistent-store.log"
+  ],
+  "review_result": "ACCEPTED"
+}

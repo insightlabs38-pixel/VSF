@@ -5,6 +5,7 @@ import {
   compilePresentation,
   type DispatchContext,
   type DispatchResult,
+  type LayoutPlan,
   type PresentationBody,
   Renderer,
   type Row,
@@ -20,6 +21,7 @@ export interface Boot {
   semantic: SemanticView;
   views: ViewSpec[];
   navigation?: boolean;
+  layout?: LayoutPlan;
   locale?: string;
   direction?: "ltr" | "rtl" | "auto";
   theme?: PresentationBody["theme"];
@@ -96,6 +98,7 @@ function boot(cfg: Boot) {
     theme: cfg.theme ?? { scheme: "light", accent: "blue", density: "comfortable" },
     views,
     navigation: cfg.navigation ?? false,
+    ...(cfg.layout ? { layout: cfg.layout } : {}),
   });
   let body = compilePresentation(cfg.semantic, opts(cfg.views));
   const hostEl = document.querySelector<HTMLElement>(cfg.mount ?? "#vsf-host") as HTMLElement;

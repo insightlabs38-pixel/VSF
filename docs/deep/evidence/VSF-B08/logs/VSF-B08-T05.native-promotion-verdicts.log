@@ -1,0 +1,11 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test api
+
+running 2 tests
+test the_report_carries_the_verdict_and_the_facts_the_store_needs ... ok
+test replay_expiry_tampering_and_garbage_are_unverified_not_trusted ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/api.rs (compiler/target/debug/deps/api-10ea16f59bc43934)
+[exit 0]

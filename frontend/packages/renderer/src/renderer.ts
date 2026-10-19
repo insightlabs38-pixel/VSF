@@ -1,10 +1,12 @@
 import { Announcer, captureFocus, resolveDirection, restoreFocus } from "./a11y.ts";
-import { checkPresentation } from "./check.ts";
+import { checkPresentation, documentOrder } from "./check.ts";
 import { button, checkbox, choice, form, group, heading, link, list, textBlock, textInput } from "./components.ts";
 import { table } from "./grid.ts";
+import { effectiveLayout, isLayout, type LayoutPrefs } from "./layout.ts";
 import type { PComponent, PresentationBody } from "./model.ts";
 import { type Command, Palette } from "./palette.ts";
 import { preservedSurface } from "./preserve.ts";
+import { RegionHost } from "./regions.ts";
 import type { DispatchResult, Runtime } from "./runtime.ts";
 import { componentCss } from "./styles.ts";
 import type { Inst, RendererApi } from "./types.ts";
@@ -15,6 +17,8 @@ export interface Prefs {
   accent?: "none" | "mint" | "blue";
   density?: "compact" | "comfortable" | "spacious";
   nav?: "top" | "side" | "hidden";
+  /** Region order, collapse and size; honoured only within what the presentation grants. */
+  layout?: LayoutPrefs;
 }
 
 export interface RendererOptions {
@@ -103,6 +107,10 @@ export class Renderer implements RendererApi {
   private destroyed = false;
 
   private byId = new Map<string, PComponent>();
+  private regionHost: RegionHost | null = null;
+  private layoutHistory: (LayoutPrefs | undefined)[] = [];
+  /** Counts accepted layout changes, so a saved layout can be tied to the revision it was made on. */
+  layoutRevision = 0;
 
   readonly allowSynthetic: boolean;
 
@@ -189,6 +197,7 @@ export class Renderer implements RendererApi {
 
   private viewEntities(): { entity: string; region: string }[] {
     const out: { entity: string; region: string }[] = [];
+    if (isLayout(this.body)) return out;
     for (const rg of this.body.regions) {
       if (!rg.id.startsWith("view_")) continue;
       for (const id of rg.components) {
@@ -225,6 +234,11 @@ export class Renderer implements RendererApi {
     dom.attr(this.host, "data-accent", t.accent);
     dom.attr(this.host, "data-density", t.density);
     dom.attr(this.app, "data-nav", this.prefs.nav ?? "top");
+    if (isLayout(this.body)) {
+      this.applyLayout();
+      return;
+    }
+    if (this.regionHost) this.leaveLayout();
     const views = this.viewEntities();
     if (!views.some((v) => v.entity === this.activeEntity)) this.activeEntity = views[0]?.entity ?? "";
     const navRegion = this.body.regions.find((x) => x.id === "nav");
@@ -232,6 +246,43 @@ export class Renderer implements RendererApi {
     const region = views.find((v) => v.entity === this.activeEntity)?.region;
     const ids = this.body.regions.find((x) => x.id === region)?.components ?? [];
     this.syncKids(this.mainRoot, ids);
+  }
+
+  private applyLayout(): void {
+    this.syncKids(this.navRoot, []);
+    this.syncKids(this.mainRoot, []);
+    this.dom.attr(this.app, "data-layout", "regions");
+    this.navHost.hidden = true;
+    this.regionHost ??= new RegionHost(this, this.main, this.app);
+    this.regionHost.sync(this.body, effectiveLayout(this.body, this.prefs.layout));
+  }
+
+  private leaveLayout(): void {
+    this.regionHost?.dispose();
+    this.regionHost = null;
+    this.navHost.hidden = false;
+    this.dom.attr(this.app, "data-layout", null);
+  }
+
+  /** Changes region order, collapse or size within the granted customization; every change can be undone. */
+  customizeLayout(change: LayoutPrefs): void {
+    this.layoutHistory.push(this.prefs.layout);
+    if (this.layoutHistory.length > 50) this.layoutHistory.shift();
+    this.prefs = { ...this.prefs, layout: { ...this.prefs.layout, ...change } };
+    this.layoutRevision++;
+    this.apply();
+    this.opts.onPrefs?.({ ...this.prefs });
+  }
+
+  undoLayout(): boolean {
+    if (this.layoutHistory.length === 0) return false;
+    const before = this.layoutHistory.pop();
+    const { layout: _gone, ...rest } = this.prefs;
+    this.prefs = before ? { ...rest, layout: before } : rest;
+    this.layoutRevision++;
+    this.apply();
+    this.opts.onPrefs?.({ ...this.prefs });
+    return true;
   }
 
   syncKids(parent: Inst, ids: string[]): void {
@@ -331,6 +382,7 @@ export class Renderer implements RendererApi {
 
   refreshAll(): void {
     for (const root of [this.navRoot, this.mainRoot]) this.walk(root, (i) => i.refresh?.());
+    this.regionHost?.walk((i) => i.refresh?.());
   }
 
   setPreference(p: Prefs): void {
@@ -355,14 +407,17 @@ export class Renderer implements RendererApi {
 
   private activeRowKey(): string | null {
     let row: string | null = null;
-    this.walk(this.mainRoot, (i) => {
-      if (i.activeRow) row = i.activeRow();
-    });
+    const see = (i: Inst): void => {
+      if (i.activeRow) row = i.activeRow() ?? row;
+    };
+    this.walk(this.mainRoot, see);
+    this.regionHost?.walk(see);
     return row;
   }
 
   /** Definitions shown in the active view, found from the presentation alone so a large grid costs nothing here. */
   private activeComponents(): PComponent[] {
+    if (this.regionHost) return documentOrder(this.body).map((id) => this.byId.get(id) as PComponent);
     const region = this.viewEntities().find((v) => v.entity === this.activeEntity)?.region;
     const stack = [...(this.body.regions.find((x) => x.id === region)?.components ?? [])].reverse();
     const seen = new Set<string>();
@@ -399,12 +454,12 @@ export class Renderer implements RendererApi {
     }
     const seen = new Set<string>();
     const row = this.activeRowKey();
-    const inGrid = this.body.components.some((c) => c.kind === "table" && c.binding?.entity === this.activeEntity);
     for (const c of this.activeComponents()) {
       if (c.kind !== "button" || !c.binding?.action || seen.has(c.binding.action)) continue;
       const action = c.binding.action;
       seen.add(action);
       const entity = c.binding.entity ?? this.activeEntity;
+      const inGrid = this.body.components.some((t) => t.kind === "table" && t.binding?.entity === entity);
       const name = this.labelOf(action, c);
       const needsRow = inGrid && row === null;
       out.push({
@@ -427,6 +482,8 @@ export class Renderer implements RendererApi {
       for (const k of root.kids.values()) k.dispose();
       root.kids.clear();
     }
+    this.regionHost?.dispose();
+    this.regionHost = null;
     this.dock(false);
     this.host.shadowRoot?.replaceChildren();
     for (const a of ["dir", "lang", "data-scheme", "data-accent", "data-density", "data-vsf-host"])
