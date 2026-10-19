@@ -18,6 +18,7 @@ vsf-fabric.workspace = true
 vsf-ir.workspace = true
 vsf-redact.workspace = true
 vsf-observation.workspace = true
+vsf-versioning.workspace = true
 
 [lints]
 workspace = true

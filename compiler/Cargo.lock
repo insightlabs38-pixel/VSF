@@ -173,6 +173,7 @@ dependencies = [
  "vsf-observation",
  "vsf-redact",
  "vsf-schema",
+ "vsf-versioning",
 ]
 
 [[package]]

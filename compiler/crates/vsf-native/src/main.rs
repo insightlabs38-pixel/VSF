@@ -121,6 +121,7 @@ fn serve_loop() -> ExitCode {
             b'C' => vsf_fabric::compile_envelope(&frame[1..]).map_err(|e| e.code()),
             b'V' => vsf_ir::api::validate_bytes(&frame[1..]),
             b'X' => authorize_frame(&frame[1..]),
+            b'P' => vsf_versioning::api::promotion_report(&frame[1..]),
             _ => Err("serve.unknown_op"),
         };
         let (status, payload) = match result {

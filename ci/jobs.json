@@ -325,11 +325,11 @@
       },
       {
         "name": "go-vet",
-        "cmd": ["go", "-C", "backend", "vet", "-tags", "integration", "./execution/..."]
+        "cmd": ["go", "-C", "backend", "vet", "-tags", "integration", "./execution/...", "./versions/..."]
       },
       {
         "name": "execution-integration",
-        "cmd": ["go", "-C", "backend", "test", "-tags", "integration", "-race", "-count=1", "./execution/..."]
+        "cmd": ["go", "-C", "backend", "test", "-tags", "integration", "-race", "-count=1", "./execution/...", "./versions/..."]
       }
     ],
     "ui": [

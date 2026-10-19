@@ -1,5 +1,7 @@
 #![allow(dead_code, clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
+pub mod sample;
+
 use vsf_canon::parse;
 use vsf_ir::doc::{decode_document, digest_at, encode_document};
 use vsf_ir::{Body, Channel, Digest, VersionManifest};
