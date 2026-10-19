@@ -110,7 +110,7 @@ function viewComponents(sem: SemanticView, view: ViewSpec, out: PComponent[], co
       cons.push({ id: `order_${e}_actions`, kind: "ordering", subjects: actionComps.map((c) => c.id) });
     }
   }
-  return [heading.id, root, ...preserved.map((p) => p.id)];
+  return view.layout === "form" ? [root] : [heading.id, root, ...preserved.map((p) => p.id)];
 }
 
 /** Compiles the semantic view into PresentationIR: every field and operation of a rendered entity is bound, with hard constraints. */

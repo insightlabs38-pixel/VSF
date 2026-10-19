@@ -46,7 +46,7 @@ button[aria-busy="true"]{opacity:.7}
 table{border-collapse:separate;border-spacing:0;inline-size:100%}
 th,td{padding:0 var(--vsf-pad-x);text-align:start;border-block-end:1px solid var(--vsf-border);block-size:var(--vsf-row);white-space:nowrap}
 th{position:sticky;inset-block-start:0;background:var(--vsf-surface-2);z-index:1}
-th button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-block-size:var(--vsf-target);font-weight:700}
+th button{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-block-size:var(--vsf-target);min-inline-size:var(--vsf-target);font-weight:700}
 tbody tr{content-visibility:auto;contain-intrinsic-size:auto var(--vsf-row)}
 td:focus-visible,th button:focus-visible{outline:3px solid var(--vsf-focus);outline-offset:-3px}
 td .row-actions{display:inline-flex;gap:var(--vsf-gap)}

@@ -50,6 +50,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
   let needle = "";
   let sort: { field: string; dir: 1 | -1 } | null = null;
   let active: { row: string | null; stop: number } = { row: null, stop: 0 };
+  let lastVisible: string[] = [];
 
   const headStops = (): HTMLElement[] => [...headRow.querySelectorAll<HTMLElement>("button[data-col]")];
   const stopsOf = (row: string | null): HTMLElement[] => {
@@ -143,8 +144,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
     const mem = active;
     const hadFocus = !!r.root.activeElement && tbl.contains(r.root.activeElement);
     const order = rows.order();
-    const had = visible();
-    const idx = mem.row ? had.indexOf(mem.row) : -1;
+    const idx = mem.row ? lastVisible.indexOf(mem.row) : -1;
     for (const [k, ri] of live) {
       if (!rows.row(k)) {
         disposeRow(ri);
@@ -163,6 +163,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
       trs.push(ri.tr);
     }
     placeChildren(r.dom, tbody, trs);
+    lastVisible = visible();
     if (mem.row !== null && !live.has(mem.row)) {
       const now = visible();
       const next = now[Math.min(Math.max(idx, 0), now.length - 1)] ?? null;
@@ -265,6 +266,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
     needle = filter.value.trim().toLowerCase();
     applyFilter();
     const vis = visible();
+    lastVisible = vis;
     if (active.row !== null && !vis.includes(active.row)) setActive(vis[0] ?? null, active.stop, false);
     r.announcer.say(`${vis.length} of ${rows.size} rows shown`);
   };
