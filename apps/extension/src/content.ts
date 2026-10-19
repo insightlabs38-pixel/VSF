@@ -19,3 +19,30 @@ function run(): { origin: string; nodes: number; truncated: boolean; captureMs: 
 }
 
 (globalThis as { __vsfRun?: typeof run }).__vsfRun = run;
+
+export interface Stamp {
+  tab: number;
+  epoch: string;
+  seq: number;
+  id: string;
+}
+
+/** The observation stage: the pack plus who captured it, stamped with values the service worker chose. */
+async function observationEnvelope(stamp: Stamp): Promise<unknown> {
+  const { snapshot, truncated } = snapshotDocument(document);
+  const bytes = encodePack(snapshot);
+  const digest = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes as BufferSource))]
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return {
+    v: 1,
+    kind: "observation",
+    id: stamp.id,
+    parent: null,
+    seq: stamp.seq,
+    source: { tab: stamp.tab, frame: window === window.top ? 0 : 1, origin: location.origin, epoch: stamp.epoch },
+    body: { pack: toBase64(bytes), digest, bytes: bytes.length, nodes: snapshot.nodes.length, truncated },
+  };
+}
+
+(globalThis as { __vsfEnvelope?: typeof observationEnvelope }).__vsfEnvelope = observationEnvelope;

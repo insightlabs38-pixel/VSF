@@ -1,0 +1,69 @@
+{
+  "id": "orders-stage",
+  "title": "Order stage",
+  "paths": [],
+  "match_prefix": "/ui/orders/",
+  "expect": {
+    "classes": {
+      "button": 1,
+      "heading": 1
+    }
+  },
+  "semantic": {
+    "entities": [
+      {
+        "id": "order",
+        "kind": "record",
+        "label": "Order",
+        "certainty": "verified",
+        "fields": [
+          {
+            "id": "order_id",
+            "name": "Order",
+            "value_type": "text",
+            "nullable": "no",
+            "certainty": "verified"
+          },
+          {
+            "id": "stage",
+            "name": "Stage",
+            "value_type": "choice",
+            "nullable": "no",
+            "certainty": "verified"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "set_stage",
+        "entity": "order",
+        "label": "Update stage",
+        "effect": {
+          "declared": "idempotent_write"
+        },
+        "source_confirmation": "no",
+        "certainty": "verified"
+      },
+      {
+        "id": "refresh_order",
+        "entity": "order",
+        "label": "Refresh",
+        "effect": {
+          "declared": "read_only"
+        },
+        "source_confirmation": "no",
+        "certainty": "verified"
+      }
+    ]
+  },
+  "views": [
+    {
+      "entity": "order",
+      "layout": "form"
+    }
+  ],
+  "choices": {
+    "order.stage": ["new", "qualified", "proposal", "won"]
+  }
+}

@@ -16,6 +16,7 @@ export const PACKAGE_FILES = [
   "observe.js",
   "panel.html",
   "panel.js",
+  "shell.js",
   "vsf_wasm.wasm",
 ] as const;
 

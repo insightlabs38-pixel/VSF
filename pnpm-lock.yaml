@@ -35,6 +35,9 @@ importers:
       '@vsf/observer':
         specifier: workspace:*
         version: link:../../frontend/packages/observer
+      '@vsf/renderer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/renderer
       '@vsf/schema':
         specifier: workspace:*
         version: link:../../frontend/packages/schema

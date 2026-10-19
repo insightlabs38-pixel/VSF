@@ -1,0 +1,67 @@
+{
+  "id": "forms-order",
+  "title": "Order form",
+  "paths": ["/forms/", "/forms"],
+  "expect": {
+    "classes": {
+      "textbox": 3,
+      "button": 1,
+      "form": 1,
+      "heading": 1
+    }
+  },
+  "semantic": {
+    "entities": [
+      {
+        "id": "order_draft",
+        "kind": "record",
+        "label": "Order",
+        "certainty": "verified",
+        "fields": [
+          {
+            "id": "name",
+            "name": "Name",
+            "value_type": "text",
+            "nullable": "no",
+            "certainty": "verified"
+          },
+          {
+            "id": "email",
+            "name": "Email",
+            "value_type": "text",
+            "nullable": "no",
+            "certainty": "verified"
+          },
+          {
+            "id": "quantity",
+            "name": "Quantity",
+            "value_type": "integer",
+            "nullable": "no",
+            "certainty": "verified"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "submit_order",
+        "entity": "order_draft",
+        "label": "Submit order",
+        "effect": {
+          "declared": "non_idempotent_write"
+        },
+        "source_confirmation": "no",
+        "certainty": "verified"
+      }
+    ]
+  },
+  "views": [
+    {
+      "entity": "order_draft",
+      "layout": "form"
+    }
+  ],
+  "unavailable": {
+    "submit_order": "No verified operation contract exists for this source."
+  }
+}

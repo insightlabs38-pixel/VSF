@@ -1,4 +1,6 @@
 import { type Fabric, loadFabric } from "@vsf/wasm-host";
+import { Chain, type Expected } from "./envelope.ts";
+import { type Deps, PipelineError, runStages } from "./pipeline.ts";
 import { isCommandSender, normalizeOrigin, parseCommand, type Reply } from "./protocol.ts";
 
 interface Stats {
@@ -134,6 +136,121 @@ async function capture(tabId: number): Promise<Reply> {
   }
 }
 
+interface Transform {
+  epoch: string;
+  origin: string;
+  app: string;
+  state: "ready" | "source_ui";
+}
+
+const chain = new Chain();
+
+async function transforms(): Promise<Record<string, Transform>> {
+  const { transforms: t } = await chrome.storage.session.get("transforms");
+  return (t as Record<string, Transform> | undefined) ?? {};
+}
+
+async function setTransform(tabId: number, value: Transform | undefined): Promise<void> {
+  const t = await transforms();
+  if (value === undefined) delete t[String(tabId)];
+  else t[String(tabId)] = value;
+  await chrome.storage.session.set({ transforms: t });
+}
+
+async function deps(): Promise<Deps> {
+  const f = await getFabric();
+  return {
+    analyze: (pack) => JSON.parse(new TextDecoder().decode(f.analyzePack(pack))) as Record<string, unknown>,
+    newId: () => crypto.randomUUID(),
+  };
+}
+
+/** Observation, compile and render as three validated envelopes; the page changes only if all three hold. */
+async function transform(tabId: number): Promise<Reply> {
+  let origin: string | null = null;
+  let path = "/";
+  try {
+    const tab = await chrome.tabs.get(tabId);
+    const url = tab.url ? new URL(tab.url) : null;
+    origin = url ? normalizeOrigin(url.origin) : null;
+    path = url?.pathname ?? "/";
+  } catch {
+    return deny("bad_request", "no such tab");
+  }
+  if (origin === null) return deny("origin_unobservable");
+  if (!(origin in (await grants()))) return deny("origin_not_granted");
+  const expect: Expected = { tab: tabId, frame: 0, origin, epoch: crypto.randomUUID() };
+  await bump((s) => {
+    s.executeCalls[origin as string] = (s.executeCalls[origin as string] ?? 0) + 1;
+  });
+  try {
+    await chrome.scripting.executeScript({ target: { tabId }, files: ["content.js"] });
+    const stamp = { tab: tabId, epoch: expect.epoch, seq: 1, id: crypto.randomUUID() };
+    const [injected] = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: (st) => (globalThis as unknown as { __vsfEnvelope(s: unknown): Promise<unknown> }).__vsfEnvelope(st),
+      args: [stamp],
+    });
+    const observation = chain.accept(injected?.result, expect);
+    if (!observation.ok) return deny(observation.code);
+    const stages = await runStages(observation.envelope, path, await deps());
+    for (const e of [stages.compiled, stages.render]) {
+      const checked = chain.accept(e, expect);
+      if (!checked.ok) return deny(checked.code);
+    }
+    await chrome.scripting.executeScript({ target: { tabId }, files: ["shell.js"] });
+    const [mounted] = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: (a) =>
+        (globalThis as unknown as { __vsfShell: { mount(a: unknown): Promise<unknown> } }).__vsfShell.mount(a),
+      args: [
+        {
+          render: stages.render,
+          tab: tabId,
+          epoch: expect.epoch,
+          compiled: { id: stages.compiled.id, seq: stages.compiled.seq },
+        },
+      ],
+    });
+    const result = mounted?.result as { ok: boolean; error?: string; state?: "ready" | "source_ui" } | undefined;
+    if (!result?.ok) return deny("render_failed", result?.error ?? "no result");
+    const app = (stages.render.body as { app: string }).app;
+    await setTransform(tabId, { epoch: expect.epoch, origin, app, state: result.state ?? "source_ui" });
+    await bump((s) => {
+      s.captures += 1;
+    });
+    return {
+      ok: true,
+      origin,
+      app,
+      state: result.state,
+      match: (stages.compiled.body as { match: string }).match,
+      reason: (stages.render.body as { reason?: string }).reason ?? null,
+      ids: { observation: observation.envelope.id, compiled: stages.compiled.id, render: stages.render.id },
+    };
+  } catch (e) {
+    if (e instanceof PipelineError) return deny(e.code);
+    return deny("inject_failed", e instanceof Error ? e.message.slice(0, 200) : "unknown");
+  }
+}
+
+/** Puts the source page back exactly as it was and ends the transform session. */
+async function restore(tabId: number): Promise<Reply> {
+  const t = (await transforms())[String(tabId)];
+  if (t === undefined) return { ok: true, restored: false };
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => (globalThis as unknown as { __vsfShell?: { unmount(): boolean } }).__vsfShell?.unmount() ?? false,
+    });
+  } catch {
+    // The tab may be gone or navigated away; the session still ends.
+  }
+  chain.end(tabId, t.epoch);
+  await setTransform(tabId, undefined);
+  return { ok: true, restored: true, app: t.app };
+}
+
 interface ObserveResult {
   origin: string;
   epoch: number;
@@ -195,7 +312,14 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
   if (cmd === null) return deny("bad_request");
   switch (cmd.type) {
     case "status":
-      return { ok: true, bootId, grants: Object.keys(await grants()), stats: await stats(), pending: await pending() };
+      return {
+        ok: true,
+        bootId,
+        grants: Object.keys(await grants()),
+        stats: await stats(),
+        pending: await pending(),
+        transforms: await transforms(),
+      };
     case "grant": {
       if (!(await holdsBrowserPermission(cmd.origin))) return deny("permission_not_held", cmd.origin);
       const g = await grants();
@@ -219,6 +343,10 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
       return capture(cmd.tabId);
     case "observe":
       return observe(cmd.tabId);
+    case "transform":
+      return transform(cmd.tabId);
+    case "restore":
+      return restore(cmd.tabId);
   }
 }
 

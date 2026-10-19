@@ -31,3 +31,11 @@ document.getElementById("capture")?.addEventListener("click", async () => {
   if (tab?.id === undefined) return;
   result.textContent = JSON.stringify(await send({ type: "capture", tabId: tab.id }));
 });
+
+for (const type of ["transform", "restore"] as const) {
+  document.getElementById(type)?.addEventListener("click", async () => {
+    const tab = await activeTab();
+    if (tab?.id === undefined) return;
+    result.textContent = JSON.stringify(await send({ type, tabId: tab.id }));
+  });
+}

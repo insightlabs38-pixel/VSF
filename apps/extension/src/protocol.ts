@@ -3,7 +3,9 @@ export type Command =
   | { type: "grant"; origin: string }
   | { type: "revoke"; origin: string }
   | { type: "capture"; tabId: number }
-  | { type: "observe"; tabId: number };
+  | { type: "observe"; tabId: number }
+  | { type: "transform"; tabId: number }
+  | { type: "restore"; tabId: number };
 
 export type DenyReason =
   | "sender_not_allowed"
@@ -12,6 +14,8 @@ export type DenyReason =
   | "origin_unobservable"
   | "origin_changed"
   | "inject_failed"
+  | "render_failed"
+  | "permission_not_held"
   | "pack_invalid";
 
 export type Reply = { ok: true; [key: string]: unknown } | { ok: false; error: DenyReason | string; detail?: string };
@@ -46,6 +50,8 @@ export function parseCommand(raw: unknown): Command | null {
     }
     case "capture":
     case "observe":
+    case "transform":
+    case "restore":
       return typeof m.tabId === "number" && Number.isSafeInteger(m.tabId) && m.tabId >= 0
         ? { type: m.type, tabId: m.tabId }
         : null;
