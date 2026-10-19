@@ -1,6 +1,7 @@
 import {
   type Availability,
   compilePresentation,
+  type DispatchContext,
   type DispatchResult,
   Renderer,
   type Runtime,
@@ -14,6 +15,8 @@ interface MountArgs {
   tab: number;
   epoch: string;
   compiled: { id: string; seq: number };
+  session: { key: string; epoch: string };
+  enabled: string[];
 }
 
 type MountResult = { ok: true; app: string; state: "ready" | "source_ui" } | { ok: false; error: string };
@@ -26,6 +29,64 @@ interface Live {
 
 let live: Live | undefined;
 const chain = new Chain();
+let session = { key: "", epoch: "", seq: 0 };
+
+type Reply = {
+  ok: boolean;
+  error?: string;
+  state?: "done" | "unknown" | "in_flight";
+  result?: { ok: boolean; message?: string };
+};
+
+async function ask(message: unknown): Promise<Reply | undefined> {
+  try {
+    return (await chrome.runtime.sendMessage(message)) as Reply | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/** The worker restarted, so the old key is gone: ask for a new one on the same tab and origin. */
+async function reconnect(): Promise<boolean> {
+  const r = await ask({ type: "reconnect", epoch: session.epoch });
+  if (!r?.ok || r.result?.message === undefined) return false;
+  const fresh = JSON.parse(r.result.message) as { key: string; epoch: string };
+  session = { key: fresh.key, epoch: fresh.epoch, seq: 0 };
+  return true;
+}
+
+const LOST = "Contact with the extension was lost. Check the source before trying again.";
+
+/** One user action, one request id: a retry after a worker restart reuses the id, so it cannot act twice. */
+async function send(requestId: string, action: string, ctx: DispatchContext, values: Record<string, unknown>) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const reply = await ask({
+      type: "dispatch",
+      requestId,
+      key: session.key,
+      epoch: session.epoch,
+      seq: ++session.seq,
+      action,
+      entity: ctx.entity,
+      ...(ctx.rowKey === undefined ? {} : { rowKey: ctx.rowKey }),
+      values,
+    });
+    if (reply !== undefined && reply.error !== "stale_session") return reply;
+    if (!(await reconnect())) break;
+  }
+  return undefined;
+}
+
+function describe(reply: Reply | undefined): DispatchResult {
+  if (reply === undefined) return { ok: false, message: LOST };
+  if (!reply.ok) return { ok: false, message: `Not sent: ${reply.error ?? "refused"}.` };
+  if (reply.state === "done") {
+    const r = reply.result;
+    return { ok: r?.ok === true, message: r?.message ?? (r?.ok ? "Done." : "Refused.") };
+  }
+  if (reply.state === "in_flight") return { ok: false, message: "Still running." };
+  return { ok: false, message: "The outcome is unknown. Check the source before trying again." };
+}
 
 function unmount(): boolean {
   if (live === undefined) return false;
@@ -57,17 +118,30 @@ async function mount(args: MountArgs): Promise<MountResult> {
   if ((await sha256Hex(canonicalJson(bundle))) !== body.bundle_digest || bundle.id !== body.app)
     return { ok: false, error: "envelope.digest" };
   unmount();
+  session = { key: args.session.key, epoch: args.session.epoch, seq: 0 };
+  const enabled = new Set(args.enabled);
+  const store = new Store();
   const digest = `sha256:${body.bundle_digest}`;
   const unusable = bundle.unavailable ?? {};
   const rt: Runtime = {
     semantic: bundle.semantic,
     semanticDigest: digest,
-    store: new Store(),
+    store,
     availability: (action: string): Availability =>
       action in unusable
         ? { state: "unusable", reason: unusable[action] as string }
-        : { state: "unknown", reason: "The local service is not connected." },
-    dispatch: (): DispatchResult => ({ ok: false, message: "The local service is not connected." }),
+        : enabled.has(action)
+          ? { state: "available" }
+          : { state: "unknown", reason: "The local service is not connected." },
+    dispatch: async (action: string, ctx: DispatchContext): Promise<DispatchResult> => {
+      if (!enabled.has(action)) return { ok: false, message: "This operation is not available." };
+      const values: Record<string, unknown> = {};
+      for (const f of bundle.semantic.entities.find((e) => e.id === ctx.entity)?.fields ?? []) {
+        const v = store.get(`${ctx.entity}.${f.id}`);
+        if (v !== null) values[f.id] = v;
+      }
+      return describe(await send(crypto.randomUUID(), action, ctx, values));
+    },
     choices: (entity: string, field: string): string[] => bundle.choices?.[`${entity}.${field}`] ?? [],
   };
   const host = document.createElement("div");

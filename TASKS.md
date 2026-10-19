@@ -149,7 +149,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B09 · Integrate extension and secure local bridge
 
-- [ ] `VSF-B09-T01` Package MV3 executable logic, narrow origin permissions and user activation _(ACTIVE)_
+- [ ] `VSF-B09-T01` Package MV3 executable logic, narrow origin permissions and user activation _(REVIEW)_
 - [ ] `VSF-B09-T02` Connect browser observation and IR compiler/renderer behind stable message protocol
 - [ ] `VSF-B09-T03` Implement reconnect/restart after service worker death
 - [ ] `VSF-B09-T04` Prototype authenticated pairing with native companion

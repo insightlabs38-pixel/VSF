@@ -138,7 +138,16 @@ test("the renderer inside the page refuses envelopes that do not verify", async 
           target: { tabId: t },
           func: (a) =>
             (globalThis as unknown as { __vsfShell: { mount(a: unknown): Promise<unknown> } }).__vsfShell.mount(a),
-          args: [{ render, tab: t, epoch, compiled: { id: "cmp-00000099", seq: 2 } }],
+          args: [
+            {
+              render,
+              tab: t,
+              epoch,
+              compiled: { id: "cmp-00000099", seq: 2 },
+              session: { key: "ab".repeat(24), epoch },
+              enabled: [],
+            },
+          ],
         });
         return r?.result;
       },

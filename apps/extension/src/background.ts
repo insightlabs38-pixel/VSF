@@ -1,7 +1,17 @@
 import { type Fabric, loadFabric } from "@vsf/wasm-host";
 import { Chain, type Expected } from "./envelope.ts";
+import { forward } from "./forward.ts";
+import { Ledger, type Op } from "./ledger.ts";
 import { type Deps, PipelineError, runStages } from "./pipeline.ts";
-import { isCommandSender, normalizeOrigin, parseCommand, type Reply } from "./protocol.ts";
+import {
+  isCommandSender,
+  normalizeOrigin,
+  parseCommand,
+  parseShellMessage,
+  type Reply,
+  type ShellMessage,
+} from "./protocol.ts";
+import { authenticate, newKey, type TabSession } from "./session.ts";
 
 interface Stats {
   captures: number;
@@ -76,7 +86,17 @@ async function reconcile(): Promise<void> {
     for (const rec of Object.values(p)) if (rec.state === "running") rec.state = "interrupted";
   });
 }
-const ready = reconcile();
+const ledger = new Ledger({
+  async get() {
+    const { ops } = await chrome.storage.session.get("ops");
+    return (ops as Record<string, Op> | undefined) ?? {};
+  },
+  async set(ops) {
+    await chrome.storage.session.set({ ops });
+  },
+});
+const sessions = new Map<number, TabSession>();
+const ready = reconcile().then(() => ledger.reconcile());
 
 async function capture(tabId: number): Promise<Reply> {
   let origin: string | null = null;
@@ -209,11 +229,17 @@ async function transform(tabId: number): Promise<Reply> {
           tab: tabId,
           epoch: expect.epoch,
           compiled: { id: stages.compiled.id, seq: stages.compiled.seq },
+          session: openSession(tabId, origin, expect.epoch),
+          enabled: await enabledActions(stages.bundle),
         },
       ],
     });
     const result = mounted?.result as { ok: boolean; error?: string; state?: "ready" | "source_ui" } | undefined;
-    if (!result?.ok) return deny("render_failed", result?.error ?? "no result");
+    if (!result?.ok) {
+      sessions.delete(tabId);
+      return deny("render_failed", result?.error ?? "no result");
+    }
+    if (result.state === "source_ui") sessions.delete(tabId);
     const app = (stages.render.body as { app: string }).app;
     await setTransform(tabId, { epoch: expect.epoch, origin, app, state: result.state ?? "source_ui" });
     await bump((s) => {
@@ -234,6 +260,30 @@ async function transform(tabId: number): Promise<Reply> {
   }
 }
 
+function openSession(tabId: number, origin: string, epoch: string): { key: string; epoch: string } {
+  const s: TabSession = { key: newKey(), epoch, seq: 0, origin };
+  sessions.set(tabId, s);
+  return { key: s.key, epoch: s.epoch };
+}
+
+async function service(): Promise<string | null> {
+  const { service: s } = await chrome.storage.local.get("service");
+  return typeof s === "string" ? s : null;
+}
+
+/** Actions the page-side renderer may offer: only with a connected service, and never ones the bundle marks unusable. */
+async function enabledActions(
+  bundle:
+    | { semantic: { actions: { id: string; effect: { declared: string } }[] }; unavailable?: Record<string, string> }
+    | undefined,
+): Promise<string[]> {
+  if (bundle === undefined || (await service()) === null) return [];
+  const blocked = bundle.unavailable ?? {};
+  return bundle.semantic.actions
+    .filter((a) => !(a.id in blocked) && ["read_only", "idempotent_write"].includes(a.effect.declared))
+    .map((a) => a.id);
+}
+
 /** Puts the source page back exactly as it was and ends the transform session. */
 async function restore(tabId: number): Promise<Reply> {
   const t = (await transforms())[String(tabId)];
@@ -247,6 +297,7 @@ async function restore(tabId: number): Promise<Reply> {
     // The tab may be gone or navigated away; the session still ends.
   }
   chain.end(tabId, t.epoch);
+  sessions.delete(tabId);
   await setTransform(tabId, undefined);
   return { ok: true, restored: true, app: t.app };
 }
@@ -319,6 +370,9 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
         stats: await stats(),
         pending: await pending(),
         transforms: await transforms(),
+        ops: await ledger.all(),
+        sessions: [...sessions.keys()],
+        service: await service(),
       };
     case "grant": {
       if (!(await holdsBrowserPermission(cmd.origin))) return deny("permission_not_held", cmd.origin);
@@ -337,6 +391,8 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
       } catch {
         removed = false;
       }
+      for (const [tab, t] of Object.entries(await transforms()))
+        if (t.origin === cmd.origin) await restore(Number(tab));
       return { ok: true, origin: cmd.origin, browserPermissionRemoved: removed };
     }
     case "capture":
@@ -347,10 +403,93 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
       return transform(cmd.tabId);
     case "restore":
       return restore(cmd.tabId);
+    case "connect":
+      await chrome.storage.local.set({ service: cmd.url });
+      return { ok: true, service: cmd.url };
+    case "disconnect":
+      await chrome.storage.local.remove("service");
+      return { ok: true };
   }
 }
 
+type ShellReply =
+  | {
+      ok: true;
+      state: "done" | "unknown" | "in_flight";
+      result?: { ok: boolean; message?: string };
+      reason?: string;
+      replayed?: boolean;
+    }
+  | { ok: false; error: string };
+
+async function operate(
+  msg: Extract<ShellMessage, { type: "dispatch" }>,
+  tab: number,
+  origin: string,
+): Promise<ShellReply> {
+  const base = await service();
+  if (base === null) return { ok: false, error: "service_not_connected" };
+  const begun = await ledger.begin(msg.requestId, tab, msg.action);
+  if (!begun.fresh) {
+    const op = begun.op;
+    if (op.state === "done")
+      return { ok: true, state: "done", ...(op.result ? { result: op.result } : {}), replayed: true };
+    return {
+      ok: true,
+      state: op.state === "started" ? "in_flight" : "unknown",
+      ...(op.reason ? { reason: op.reason } : {}),
+    };
+  }
+  const outcome = await forward(base, {
+    requestId: msg.requestId,
+    action: msg.action,
+    entity: msg.entity,
+    ...(msg.rowKey === undefined ? {} : { rowKey: msg.rowKey }),
+    values: msg.values,
+    origin,
+  });
+  if (outcome.kind === "lost") {
+    await ledger.lose(msg.requestId, outcome.reason);
+    return { ok: true, state: "unknown", reason: outcome.reason };
+  }
+  const result = { ok: outcome.ok, ...(outcome.message === undefined ? {} : { message: outcome.message }) };
+  await ledger.finish(msg.requestId, result);
+  return { ok: true, state: "done", result };
+}
+
+async function handleShell(raw: unknown, sender: chrome.runtime.MessageSender): Promise<ShellReply> {
+  await ready;
+  const msg = parseShellMessage(raw);
+  if (msg === null) return { ok: false, error: "bad_request" };
+  const granted = Object.keys(await grants());
+  if (msg.type === "reconnect") {
+    const tab = sender.tab?.id;
+    const record = tab === undefined ? undefined : (await transforms())[String(tab)];
+    const origin = sender.origin ?? (sender.url ? new URL(sender.url).origin : undefined);
+    if (sender.id !== chrome.runtime.id || sender.frameId !== 0 || tab === undefined || record === undefined)
+      return { ok: false, error: "sender_not_allowed" };
+    if (origin !== record.origin) return { ok: false, error: "origin_changed" };
+    if (!granted.includes(record.origin)) return { ok: false, error: "origin_not_granted" };
+    const old = sessions.get(tab);
+    if (old !== undefined && old.epoch !== msg.epoch) return { ok: false, error: "stale_session" };
+    const fresh = { key: newKey(), epoch: crypto.randomUUID(), seq: 0, origin: record.origin };
+    sessions.set(tab, fresh);
+    return {
+      ok: true,
+      state: "done",
+      result: { ok: true, message: JSON.stringify({ key: fresh.key, epoch: fresh.epoch }) },
+    };
+  }
+  const checked = authenticate(msg, sender, chrome.runtime.id, sessions, granted);
+  if (!checked.ok) return { ok: false, error: checked.error };
+  checked.auth.session.seq = msg.seq;
+  return operate(msg, checked.auth.tab, checked.auth.session.origin);
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  handle(message, sender).then(sendResponse, () => sendResponse({ ok: false, error: "internal" }));
+  const type = (message as { type?: unknown } | null)?.type;
+  const fromShell = sender.tab !== undefined && (type === "dispatch" || type === "reconnect");
+  const run = fromShell ? handleShell(message, sender) : handle(message, sender);
+  run.then(sendResponse, () => sendResponse({ ok: false, error: "internal" }));
   return true;
 });

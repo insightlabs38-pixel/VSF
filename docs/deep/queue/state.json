@@ -637,9 +637,9 @@
       "receipt": "docs/deep/queue/receipts/VSF-B08-T08.json"
     },
     "VSF-B09-T01": {
-      "status": "ACTIVE",
+      "status": "REVIEW",
       "claimed_by": "insightlabs38-pixel",
-      "commit": null,
+      "commit": "d8299ed0b249db3f2d4c7550d90ea980c9f0c313",
       "evidence": null,
       "branch": "vsf/b09-extension-local-integration",
       "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7"
