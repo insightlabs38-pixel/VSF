@@ -329,7 +329,18 @@
       },
       {
         "name": "execution-integration",
-        "cmd": ["go", "-C", "backend", "test", "-tags", "integration", "-race", "-count=1", "./execution/...", "./versions/..."]
+        "cmd": [
+          "go",
+          "-C",
+          "backend",
+          "test",
+          "-tags",
+          "integration",
+          "-race",
+          "-count=1",
+          "./execution/...",
+          "./versions/..."
+        ]
       }
     ],
     "ui": [

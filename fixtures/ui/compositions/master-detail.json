@@ -1,0 +1,258 @@
+{
+  "schema": "vsf.presentation/1.2.0",
+  "schema_digest": "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932",
+  "body": {
+    "presentation_version": "pv1",
+    "semantic": "sha256:3cd2d105e9c9afaf306b00f8df190c876b8aec42a423ce8b98ab13dd6e1ee627",
+    "locale": "en-US",
+    "direction": "ltr",
+    "theme": {
+      "scheme": "light",
+      "accent": "blue",
+      "density": "comfortable"
+    },
+    "constraints": [
+      {
+        "id": "order_order_actions",
+        "kind": "ordering",
+        "subjects": [
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order"
+        ]
+      },
+      {
+        "id": "target",
+        "kind": "min_target_size",
+        "subjects": [
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order",
+          "fld_customer_customer_name"
+        ],
+        "value": 24
+      },
+      {
+        "id": "contrast_controls",
+        "kind": "min_contrast",
+        "subjects": [
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order"
+        ],
+        "value": 4
+      },
+      {
+        "id": "contrast_text",
+        "kind": "min_contrast",
+        "subjects": [
+          "fld_customer_customer_name"
+        ],
+        "value": 7
+      }
+    ],
+    "components": [
+      {
+        "id": "tbl_order",
+        "kind": "table",
+        "binding": {
+          "entity": "order"
+        },
+        "children": [
+          "col_order_order_id",
+          "col_order_total",
+          "col_order_placed_on",
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order"
+        ],
+        "accessibility": {
+          "role": "grid",
+          "name_source": "explicit",
+          "name": "Order"
+        }
+      },
+      {
+        "id": "hd_order",
+        "kind": "heading",
+        "binding": {
+          "entity": "order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "heading",
+          "name_source": "explicit",
+          "name": "Order"
+        }
+      },
+      {
+        "id": "col_order_order_id",
+        "kind": "cell",
+        "binding": {
+          "entity": "order",
+          "field": "order_id"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "columnheader",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "col_order_total",
+        "kind": "cell",
+        "binding": {
+          "entity": "order",
+          "field": "total"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "columnheader",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "col_order_placed_on",
+        "kind": "cell",
+        "binding": {
+          "entity": "order",
+          "field": "placed_on"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "columnheader",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "act_order_open_order",
+        "kind": "button",
+        "binding": {
+          "entity": "order",
+          "action": "open_order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Open order"
+        }
+      },
+      {
+        "id": "act_order_submit_order",
+        "kind": "button",
+        "binding": {
+          "entity": "order",
+          "action": "submit_order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Submit order"
+        }
+      },
+      {
+        "id": "act_order_delete_order",
+        "kind": "button",
+        "binding": {
+          "entity": "order",
+          "action": "delete_order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Delete order"
+        }
+      },
+      {
+        "id": "form_customer",
+        "kind": "form",
+        "binding": {
+          "entity": "customer"
+        },
+        "children": [
+          "hd_customer",
+          "fld_customer_customer_name"
+        ],
+        "accessibility": {
+          "role": "form",
+          "name_source": "explicit",
+          "name": "Customer"
+        }
+      },
+      {
+        "id": "hd_customer",
+        "kind": "heading",
+        "binding": {
+          "entity": "customer"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "heading",
+          "name_source": "explicit",
+          "name": "Customer"
+        }
+      },
+      {
+        "id": "fld_customer_customer_name",
+        "kind": "text_input",
+        "binding": {
+          "entity": "customer",
+          "field": "customer_name"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "textbox",
+          "name_source": "field_label"
+        }
+      }
+    ],
+    "regions": [
+      {
+        "id": "md",
+        "role": "main",
+        "arrange": "split",
+        "responsive": [
+          {
+            "below": 100,
+            "arrange": "tabs",
+            "collapse": false
+          }
+        ],
+        "components": []
+      },
+      {
+        "id": "md_list",
+        "parent": "md",
+        "order": 0,
+        "size": {
+          "min": 40
+        },
+        "components": [
+          "hd_order",
+          "tbl_order"
+        ]
+      },
+      {
+        "id": "md_detail",
+        "parent": "md",
+        "order": 1,
+        "size": {
+          "min": 28
+        },
+        "components": [
+          "form_customer"
+        ]
+      }
+    ],
+    "customization": {
+      "reorder": true,
+      "resize": true,
+      "collapse": true,
+      "density": true,
+      "scheme": true
+    }
+  }
+}

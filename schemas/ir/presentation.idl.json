@@ -4,10 +4,22 @@
   "family": "presentation",
   "root": "PresentationIR",
   "types": {
-    "Direction": { "kind": "enum", "values": ["ltr", "rtl", "auto"] },
-    "ColorScheme": { "kind": "enum", "values": ["light", "dark", "system"] },
-    "Accent": { "kind": "enum", "values": ["none", "mint", "blue"] },
-    "Density": { "kind": "enum", "values": ["compact", "comfortable", "spacious"] },
+    "Direction": {
+      "kind": "enum",
+      "values": ["ltr", "rtl", "auto"]
+    },
+    "ColorScheme": {
+      "kind": "enum",
+      "values": ["light", "dark", "system"]
+    },
+    "Accent": {
+      "kind": "enum",
+      "values": ["none", "mint", "blue"]
+    },
+    "Density": {
+      "kind": "enum",
+      "values": ["compact", "comfortable", "spacious"]
+    },
     "ComponentKind": {
       "kind": "enum",
       "values": [
@@ -27,71 +39,269 @@
         "preserved_surface"
       ]
     },
-    "NameSource": { "kind": "enum", "values": ["field_label", "explicit", "content"] },
-    "ConstraintKind": { "kind": "enum", "values": ["min_contrast", "min_target_size", "keep_together", "ordering"] },
+    "NameSource": {
+      "kind": "enum",
+      "values": ["field_label", "explicit", "content"]
+    },
+    "ConstraintKind": {
+      "kind": "enum",
+      "values": ["min_contrast", "min_target_size", "keep_together", "ordering"]
+    },
     "Theme": {
       "kind": "struct",
       "fields": {
-        "scheme": { "type": "ColorScheme" },
-        "accent": { "type": "Accent" },
-        "density": { "type": "Density" }
+        "scheme": {
+          "type": "ColorScheme"
+        },
+        "accent": {
+          "type": "Accent"
+        },
+        "density": {
+          "type": "Density"
+        }
       }
     },
     "Binding": {
       "kind": "struct",
       "fields": {
-        "entity": { "type": "Ident", "optional": true },
-        "field": { "type": "Ident", "optional": true },
-        "action": { "type": "Ident", "optional": true }
+        "entity": {
+          "type": "Ident",
+          "optional": true
+        },
+        "field": {
+          "type": "Ident",
+          "optional": true
+        },
+        "action": {
+          "type": "Ident",
+          "optional": true
+        }
       }
     },
     "Accessibility": {
       "kind": "struct",
       "fields": {
-        "role": { "type": "Ident" },
-        "name_source": { "type": "NameSource" },
-        "name": { "type": "Label", "optional": true },
-        "shortcut": { "type": "Label", "optional": true }
+        "role": {
+          "type": "Ident"
+        },
+        "name_source": {
+          "type": "NameSource"
+        },
+        "name": {
+          "type": "Label",
+          "optional": true
+        },
+        "shortcut": {
+          "type": "Label",
+          "optional": true
+        }
       }
     },
     "Component": {
       "kind": "struct",
       "fields": {
-        "id": { "type": "Ident" },
-        "kind": { "type": "ComponentKind" },
-        "binding": { "type": "Binding", "optional": true },
-        "children": { "type": "list<Ident>", "maxItems": 1024 },
-        "accessibility": { "type": "Accessibility" }
+        "id": {
+          "type": "Ident"
+        },
+        "kind": {
+          "type": "ComponentKind"
+        },
+        "binding": {
+          "type": "Binding",
+          "optional": true
+        },
+        "children": {
+          "type": "list<Ident>",
+          "maxItems": 1024
+        },
+        "accessibility": {
+          "type": "Accessibility"
+        }
       }
     },
     "LayoutConstraint": {
       "kind": "struct",
       "fields": {
-        "id": { "type": "Ident" },
-        "kind": { "type": "ConstraintKind" },
-        "subjects": { "type": "list<Ident>", "maxItems": 256 },
-        "value": { "type": "Count", "optional": true }
+        "id": {
+          "type": "Ident"
+        },
+        "kind": {
+          "type": "ConstraintKind"
+        },
+        "subjects": {
+          "type": "list<Ident>",
+          "maxItems": 256
+        },
+        "value": {
+          "type": "Count",
+          "optional": true
+        }
       }
     },
     "Region": {
       "kind": "struct",
       "fields": {
-        "id": { "type": "Ident" },
-        "components": { "type": "list<Ident>", "maxItems": 1024 }
+        "id": {
+          "type": "Ident"
+        },
+        "components": {
+          "type": "list<Ident>",
+          "maxItems": 1024
+        },
+        "role": {
+          "type": "RegionRole",
+          "optional": true,
+          "since": "1.2.0"
+        },
+        "arrange": {
+          "type": "Arrange",
+          "optional": true,
+          "since": "1.2.0"
+        },
+        "parent": {
+          "type": "Ident",
+          "optional": true,
+          "since": "1.2.0"
+        },
+        "order": {
+          "type": "Count",
+          "optional": true,
+          "since": "1.2.0"
+        },
+        "size": {
+          "type": "SizeBounds",
+          "optional": true,
+          "since": "1.2.0"
+        },
+        "dock": {
+          "type": "Dock",
+          "optional": true,
+          "since": "1.2.0"
+        },
+        "responsive": {
+          "type": "list<Responsive>",
+          "maxItems": 8,
+          "optional": true,
+          "since": "1.2.0"
+        }
       }
     },
     "PresentationIR": {
       "kind": "struct",
       "doc": "Appearance and structure only; it carries no effect or authorization fields by construction.",
       "fields": {
-        "presentation_version": { "type": "PresentationVersion" },
-        "semantic": { "type": "Digest" },
-        "locale": { "type": "Locale" },
-        "direction": { "type": "Direction" },
-        "theme": { "type": "Theme" },
-        "constraints": { "type": "list<LayoutConstraint>", "maxItems": 1024 },
-        "components": { "type": "list<Component>", "maxItems": 16384 },
-        "regions": { "type": "list<Region>", "maxItems": 256 }
+        "presentation_version": {
+          "type": "PresentationVersion"
+        },
+        "semantic": {
+          "type": "Digest"
+        },
+        "locale": {
+          "type": "Locale"
+        },
+        "direction": {
+          "type": "Direction"
+        },
+        "theme": {
+          "type": "Theme"
+        },
+        "constraints": {
+          "type": "list<LayoutConstraint>",
+          "maxItems": 1024
+        },
+        "components": {
+          "type": "list<Component>",
+          "maxItems": 16384
+        },
+        "regions": {
+          "type": "list<Region>",
+          "maxItems": 256
+        },
+        "customization": {
+          "type": "Customization",
+          "optional": true,
+          "since": "1.2.0"
+        }
+      }
+    },
+    "RegionRole": {
+      "kind": "enum",
+      "values": ["navigation", "header", "main", "aside", "toolbar", "footer"]
+    },
+    "Arrange": {
+      "kind": "enum",
+      "values": ["stack", "row", "grid", "split", "tabs"]
+    },
+    "DockEdge": {
+      "kind": "enum",
+      "values": ["start", "end", "top", "bottom"]
+    },
+    "SizeBounds": {
+      "kind": "struct",
+      "doc": "Bounds in character cells (ch), so a layout scales with text and density rather than pixels.",
+      "fields": {
+        "min": {
+          "type": "Count"
+        },
+        "max": {
+          "type": "Count",
+          "optional": true
+        },
+        "basis": {
+          "type": "Count",
+          "optional": true
+        }
+      }
+    },
+    "Dock": {
+      "kind": "struct",
+      "doc": "An edge-attached region. A region that is not collapsible is always visible.",
+      "fields": {
+        "edge": {
+          "type": "DockEdge"
+        },
+        "collapsible": {
+          "type": "bool"
+        },
+        "resizable": {
+          "type": "bool"
+        }
+      }
+    },
+    "Responsive": {
+      "kind": "struct",
+      "doc": "Below this viewport width in ch the region arranges its children differently and may collapse.",
+      "fields": {
+        "below": {
+          "type": "Count"
+        },
+        "arrange": {
+          "type": "Arrange"
+        },
+        "collapse": {
+          "type": "bool"
+        }
+      }
+    },
+    "Customization": {
+      "kind": "struct",
+      "doc": "What a person may change without a new presentation version; none of it can hide or move an operation out of its confirmation context.",
+      "fields": {
+        "reorder": {
+          "type": "bool"
+        },
+        "resize": {
+          "type": "bool"
+        },
+        "collapse": {
+          "type": "bool"
+        },
+        "density": {
+          "type": "bool"
+        },
+        "scheme": {
+          "type": "bool"
+        }
       }
     }
   }

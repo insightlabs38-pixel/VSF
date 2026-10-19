@@ -1,4 +1,5 @@
 import { CONTROL_CONTRAST, MIN_TARGET, TEXT_CONTRAST } from "./compile.ts";
+import { hideable, renderOrder } from "./layout.ts";
 import { INTERACTIVE, type PComponent, type PresentationBody, ROLES, type SemanticView } from "./model.ts";
 
 export const MAX_COMPONENTS = 10_000;
@@ -17,7 +18,7 @@ export interface Measured {
   textContrast: number;
 }
 
-function documentOrder(body: PresentationBody): string[] {
+export function documentOrder(body: PresentationBody): string[] {
   const byId = new Map(body.components.map((c) => [c.id, c]));
   const out: string[] = [];
   const seen = new Set<string>();
@@ -27,7 +28,7 @@ function documentOrder(body: PresentationBody): string[] {
     out.push(id);
     for (const k of byId.get(id)?.children ?? []) walk(k);
   };
-  for (const r of body.regions) for (const id of r.components) walk(id);
+  for (const r of renderOrder(body)) for (const id of r.components) walk(id);
   return out;
 }
 
@@ -45,6 +46,80 @@ export function operationsOf(
     out.set(a, { action: a, entity: def?.entity ?? "", effect: def?.effect.declared ?? "unknown" });
   }
   return [...out.values()].sort((x, y) => x.action.localeCompare(y.action));
+}
+
+const IDENT = /^[a-z][a-z0-9_-]{0,63}$/;
+
+/** Mirrors the Rust layout rules, so a presentation the validator would refuse is never drawn. */
+function checkRegions(
+  sem: SemanticView,
+  body: PresentationBody,
+  byId: Map<string, PComponent>,
+  add: (code: string, at: string, detail?: string) => void,
+): void {
+  const ids = new Set<string>();
+  for (const r of body.regions) {
+    if (!IDENT.test(r.id)) add("region.bad_id", r.id);
+    if (ids.has(r.id)) add("region.duplicate_id", r.id);
+    ids.add(r.id);
+  }
+  const kids = new Map<string, number>();
+  const mains = new Map<string, number>();
+  for (const r of body.regions) {
+    if (r.parent !== undefined) {
+      if (r.parent === r.id) add("region.cycle", r.id);
+      else if (!ids.has(r.parent)) add("region.unknown_parent", r.id, r.parent);
+      else kids.set(r.parent, (kids.get(r.parent) ?? 0) + 1);
+    }
+    if (r.role === "main") mains.set(r.parent ?? "", (mains.get(r.parent ?? "") ?? 0) + 1);
+    const sz = r.size;
+    if (
+      sz &&
+      ((sz.max !== undefined && sz.max < sz.min) ||
+        (sz.basis !== undefined && (sz.basis < sz.min || (sz.max !== undefined && sz.basis > sz.max))))
+    )
+      add("region.size", r.id);
+    if (r.dock && !(r.role && ["navigation", "aside", "toolbar", "header", "footer"].includes(r.role)))
+      add("region.dock_role", r.id);
+    let last = Number.POSITIVE_INFINITY;
+    for (const rs of r.responsive ?? []) {
+      if (rs.below >= last) add("region.responsive_order", r.id);
+      last = rs.below;
+    }
+  }
+  for (const r of body.regions) {
+    const seen = new Set<string>([r.id]);
+    for (let cur = r.parent; cur !== undefined; cur = body.regions.find((x) => x.id === cur)?.parent) {
+      if (seen.has(cur)) {
+        add("region.cycle", r.id);
+        break;
+      }
+      seen.add(cur);
+    }
+  }
+  for (const [parent, n] of mains) if (n > 1) add("region.main_count", parent || "root");
+  const needsTwo = (a: string | undefined): boolean => a === "split" || a === "tabs";
+  for (const r of body.regions) {
+    const parts = kids.get(r.id) ?? 0;
+    if ((needsTwo(r.arrange) || (r.responsive ?? []).some((x) => needsTwo(x.arrange))) && parts < 2)
+      add("region.arrange_empty", r.id);
+    if (!hideable(r)) continue;
+    const stack = [...r.components];
+    const seen = new Set<string>();
+    while (stack.length > 0) {
+      const id = stack.pop() as string;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      const c = byId.get(id);
+      if (!c) continue;
+      stack.push(...c.children);
+      const action = c.binding?.action;
+      if (!action) continue;
+      const effect = sem.actions.find((a) => a.id === action)?.effect.declared;
+      if (effect === undefined || (effect !== "read_only" && effect !== "idempotent_write"))
+        add("region.hideable_holds_risky_action", r.id, action);
+    }
+  }
 }
 
 export function checkPresentation(sem: SemanticView, body: PresentationBody, measured?: Measured): Problem[] {
@@ -135,6 +210,7 @@ export function checkPresentation(sem: SemanticView, body: PresentationBody, mea
     for (const a of sem.actions)
       if (a.entity === e.id && !boundActions.has(a.id)) add("operation.action_dropped", a.id);
   }
+  checkRegions(sem, body, byId, add);
   const order = documentOrder(body);
   const index = new Map(order.map((id, i) => [id, i]));
   const covered = { target: new Set<string>(), controls: new Set<string>(), text: new Set<string>() };

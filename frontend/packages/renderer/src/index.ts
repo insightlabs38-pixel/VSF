@@ -1,6 +1,7 @@
 export { Announcer } from "./a11y.ts";
 export { checkPresentation, type Measured, operationsOf, type Problem } from "./check.ts";
 export { CONTROL_CONTRAST, compilePresentation, MIN_TARGET, TEXT_CONTRAST } from "./compile.ts";
+export { effectiveArrange, effectiveLayout, isLayout, type LayoutPrefs, renderOrder } from "./layout.ts";
 export * from "./model.ts";
 export type { Command } from "./palette.ts";
 export { type Prefs, PresentationRejected, Renderer, type RendererOptions } from "./renderer.ts";

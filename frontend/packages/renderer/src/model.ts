@@ -72,6 +72,31 @@ export interface PConstraint {
   value?: number;
 }
 
+export type RegionRole = "navigation" | "header" | "main" | "aside" | "toolbar" | "footer";
+export type Arrange = "stack" | "row" | "grid" | "split" | "tabs";
+export type DockEdge = "start" | "end" | "top" | "bottom";
+
+/** Region layout is structure only: sizes are character cells and nothing here can move an operation out of its context. */
+export interface PRegion {
+  id: string;
+  components: string[];
+  role?: RegionRole;
+  arrange?: Arrange;
+  parent?: string;
+  order?: number;
+  size?: { min: number; max?: number; basis?: number };
+  dock?: { edge: DockEdge; collapsible: boolean; resizable: boolean };
+  responsive?: { below: number; arrange: Arrange; collapse: boolean }[];
+}
+
+export interface PCustomization {
+  reorder: boolean;
+  resize: boolean;
+  collapse: boolean;
+  density: boolean;
+  scheme: boolean;
+}
+
 export interface PresentationBody {
   presentation_version: string;
   semantic: string;
@@ -84,7 +109,8 @@ export interface PresentationBody {
   };
   constraints: PConstraint[];
   components: PComponent[];
-  regions: { id: string; components: string[] }[];
+  regions: PRegion[];
+  customization?: PCustomization;
 }
 
 export type Layout = "form" | "grid";
@@ -93,6 +119,16 @@ export interface ViewSpec {
   entity: string;
   layout: Layout;
   preserved?: { id: string; name: string }[];
+  /** Forms only: fields gathered under a named group, in this order; the rest keep their place. */
+  groups?: { id: string; name: string; fields: string[] }[];
+}
+
+/** One region of a layout; `views` and `nav` say what it holds, the rest is the region's own layout. */
+export type RegionPlan = Omit<PRegion, "components"> & { views?: string[]; nav?: boolean };
+
+export interface LayoutPlan {
+  regions: RegionPlan[];
+  customization?: PCustomization;
 }
 
 export interface CompileOptions {
@@ -103,6 +139,8 @@ export interface CompileOptions {
   views: ViewSpec[];
   navigation: boolean;
   version?: string;
+  /** When present the regions come from this plan instead of one region per view. */
+  layout?: LayoutPlan;
 }
 
 /** Severity order used for the hard ordering constraint: safe operations first, destructive last. */

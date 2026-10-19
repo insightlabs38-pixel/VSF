@@ -1681,6 +1681,92 @@
         }
       ],
       "expect": ["version.freshness_window"]
+    },
+    {
+      "name": "r12-unknown-parent",
+      "base": "presentation-layout-1-2",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/regions/2/parent",
+          "value": "nowhere"
+        }
+      ],
+      "expect": ["presentation.region_unknown_parent"]
+    },
+    {
+      "name": "r12-self-parent",
+      "base": "presentation-layout-1-2",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/regions/2/parent",
+          "value": "shell_rail"
+        }
+      ],
+      "expect": ["presentation.region_cycle"]
+    },
+    {
+      "name": "r12-two-mains",
+      "base": "presentation-layout-1-2",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/regions/0/role",
+          "value": "main"
+        }
+      ],
+      "expect": ["presentation.region_main_count"]
+    },
+    {
+      "name": "r12-size-inverted",
+      "base": "presentation-layout-1-2",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/regions/0/size",
+          "value": { "min": 40, "max": 30 }
+        }
+      ],
+      "expect": ["presentation.region_size"]
+    },
+    {
+      "name": "r12-dock-without-role",
+      "base": "presentation-layout-1-2",
+      "edits": [
+        {
+          "op": "remove",
+          "path": "/body/regions/0/role"
+        }
+      ],
+      "expect": ["presentation.region_dock_role"]
+    },
+    {
+      "name": "r12-responsive-out-of-order",
+      "base": "presentation-layout-1-2",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/regions/0/responsive",
+          "value": [
+            { "below": 60, "arrange": "stack", "collapse": true },
+            { "below": 70, "arrange": "stack", "collapse": true }
+          ]
+        }
+      ],
+      "expect": ["presentation.responsive_order"]
+    },
+    {
+      "name": "r12-split-without-parts",
+      "base": "presentation-layout-1-2",
+      "edits": [
+        {
+          "op": "set",
+          "path": "/body/regions/1/arrange",
+          "value": "split"
+        }
+      ],
+      "expect": ["presentation.region_arrange_empty"]
     }
   ]
 }

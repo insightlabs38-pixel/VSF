@@ -57,9 +57,7 @@
         "visibility": "global_structure"
       }
     ],
-    "lineage": [
-      "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d"
-    ],
+    "lineage": ["sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d"],
     "migrations": [
       {
         "from": "0.9.0",
@@ -134,9 +132,7 @@
     "rollback": {
       "kind": "interface",
       "target": "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d",
-      "roles": [
-        "presentation"
-      ]
+      "roles": ["presentation"]
     }
   }
 }

@@ -1,0 +1,372 @@
+{
+  "schema": "vsf.presentation/1.2.0",
+  "schema_digest": "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932",
+  "body": {
+    "presentation_version": "pv1",
+    "semantic": "sha256:3cd2d105e9c9afaf306b00f8df190c876b8aec42a423ce8b98ab13dd6e1ee627",
+    "locale": "en-US",
+    "direction": "ltr",
+    "theme": {
+      "scheme": "light",
+      "accent": "blue",
+      "density": "comfortable"
+    },
+    "constraints": [
+      {
+        "id": "keep_order_actions",
+        "kind": "keep_together",
+        "subjects": [
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order"
+        ]
+      },
+      {
+        "id": "order_order_actions",
+        "kind": "ordering",
+        "subjects": [
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order"
+        ]
+      },
+      {
+        "id": "target",
+        "kind": "min_target_size",
+        "subjects": [
+          "fld_order_order_id",
+          "fld_order_total",
+          "fld_order_placed_on",
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order",
+          "fld_customer_customer_name",
+          "lnk_order",
+          "lnk_customer"
+        ],
+        "value": 24
+      },
+      {
+        "id": "contrast_controls",
+        "kind": "min_contrast",
+        "subjects": [
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order",
+          "lnk_order",
+          "lnk_customer"
+        ],
+        "value": 4
+      },
+      {
+        "id": "contrast_text",
+        "kind": "min_contrast",
+        "subjects": [
+          "fld_order_order_id",
+          "fld_order_total",
+          "fld_order_placed_on",
+          "fld_customer_customer_name"
+        ],
+        "value": 7
+      }
+    ],
+    "components": [
+      {
+        "id": "form_order",
+        "kind": "form",
+        "binding": {
+          "entity": "order"
+        },
+        "children": [
+          "hd_order",
+          "fgrp_order_identity",
+          "fgrp_order_money",
+          "grp_order_actions"
+        ],
+        "accessibility": {
+          "role": "form",
+          "name_source": "explicit",
+          "name": "Order"
+        }
+      },
+      {
+        "id": "hd_order",
+        "kind": "heading",
+        "binding": {
+          "entity": "order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "heading",
+          "name_source": "explicit",
+          "name": "Order"
+        }
+      },
+      {
+        "id": "fld_order_order_id",
+        "kind": "text_input",
+        "binding": {
+          "entity": "order",
+          "field": "order_id"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "textbox",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "fld_order_total",
+        "kind": "text_input",
+        "binding": {
+          "entity": "order",
+          "field": "total"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "textbox",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "fld_order_placed_on",
+        "kind": "text_input",
+        "binding": {
+          "entity": "order",
+          "field": "placed_on"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "textbox",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "fgrp_order_identity",
+        "kind": "group",
+        "children": [
+          "fld_order_order_id"
+        ],
+        "accessibility": {
+          "role": "group",
+          "name_source": "explicit",
+          "name": "Identity"
+        }
+      },
+      {
+        "id": "fgrp_order_money",
+        "kind": "group",
+        "children": [
+          "fld_order_total",
+          "fld_order_placed_on"
+        ],
+        "accessibility": {
+          "role": "group",
+          "name_source": "explicit",
+          "name": "Amounts and dates"
+        }
+      },
+      {
+        "id": "grp_order_actions",
+        "kind": "group",
+        "children": [
+          "act_order_open_order",
+          "act_order_submit_order",
+          "act_order_delete_order"
+        ],
+        "accessibility": {
+          "role": "group",
+          "name_source": "explicit",
+          "name": "Order actions"
+        }
+      },
+      {
+        "id": "act_order_open_order",
+        "kind": "button",
+        "binding": {
+          "entity": "order",
+          "action": "open_order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Open order"
+        }
+      },
+      {
+        "id": "act_order_submit_order",
+        "kind": "button",
+        "binding": {
+          "entity": "order",
+          "action": "submit_order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Submit order"
+        }
+      },
+      {
+        "id": "act_order_delete_order",
+        "kind": "button",
+        "binding": {
+          "entity": "order",
+          "action": "delete_order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "button",
+          "name_source": "explicit",
+          "name": "Delete order"
+        }
+      },
+      {
+        "id": "form_customer",
+        "kind": "form",
+        "binding": {
+          "entity": "customer"
+        },
+        "children": [
+          "hd_customer",
+          "fld_customer_customer_name"
+        ],
+        "accessibility": {
+          "role": "form",
+          "name_source": "explicit",
+          "name": "Customer"
+        }
+      },
+      {
+        "id": "hd_customer",
+        "kind": "heading",
+        "binding": {
+          "entity": "customer"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "heading",
+          "name_source": "explicit",
+          "name": "Customer"
+        }
+      },
+      {
+        "id": "fld_customer_customer_name",
+        "kind": "text_input",
+        "binding": {
+          "entity": "customer",
+          "field": "customer_name"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "textbox",
+          "name_source": "field_label"
+        }
+      },
+      {
+        "id": "nav",
+        "kind": "list",
+        "children": [
+          "lnk_order",
+          "lnk_customer"
+        ],
+        "accessibility": {
+          "role": "navigation",
+          "name_source": "explicit",
+          "name": "Views"
+        }
+      },
+      {
+        "id": "lnk_order",
+        "kind": "link",
+        "binding": {
+          "entity": "order"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "link",
+          "name_source": "explicit",
+          "name": "Order"
+        }
+      },
+      {
+        "id": "lnk_customer",
+        "kind": "link",
+        "binding": {
+          "entity": "customer"
+        },
+        "children": [],
+        "accessibility": {
+          "role": "link",
+          "name_source": "explicit",
+          "name": "Customer"
+        }
+      }
+    ],
+    "regions": [
+      {
+        "id": "form_nav",
+        "role": "navigation",
+        "dock": {
+          "edge": "start",
+          "collapsible": true,
+          "resizable": false
+        },
+        "size": {
+          "min": 16,
+          "basis": 18,
+          "max": 24
+        },
+        "responsive": [
+          {
+            "below": 60,
+            "arrange": "stack",
+            "collapse": true
+          }
+        ],
+        "components": [
+          "nav"
+        ]
+      },
+      {
+        "id": "form_main",
+        "role": "main",
+        "arrange": "stack",
+        "components": [
+          "form_order"
+        ]
+      },
+      {
+        "id": "form_side",
+        "role": "aside",
+        "dock": {
+          "edge": "end",
+          "collapsible": true,
+          "resizable": false
+        },
+        "size": {
+          "min": 24,
+          "basis": 28
+        },
+        "responsive": [
+          {
+            "below": 90,
+            "arrange": "stack",
+            "collapse": true
+          }
+        ],
+        "components": [
+          "form_customer"
+        ]
+      }
+    ],
+    "customization": {
+      "reorder": true,
+      "resize": true,
+      "collapse": true,
+      "density": true,
+      "scheme": true
+    }
+  }
+}

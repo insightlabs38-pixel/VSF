@@ -20,7 +20,7 @@ var Families = [][3]string{
 	{"observation", "ObservationIR", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"},
 	{"semantic", "SemanticIR", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"},
 	{"operation", "OperationContract", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"},
-	{"presentation", "PresentationIR", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"},
+	{"presentation", "PresentationIR", "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932"},
 	{"version", "VersionManifest", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"},
 }
 
@@ -41,7 +41,7 @@ var Accepted = []struct {
 	{rt.Version{1, 2, 0}, "operation", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"},
 	{rt.Version{1, 0, 0}, "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"},
 	{rt.Version{1, 1, 0}, "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"},
-	{rt.Version{1, 2, 0}, "presentation", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"},
+	{rt.Version{1, 2, 0}, "presentation", "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932"},
 	{rt.Version{1, 0, 0}, "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"},
 	{rt.Version{1, 1, 0}, "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"},
 	{rt.Version{1, 2, 0}, "semantic", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"},
@@ -6115,6 +6115,13 @@ func (x LayoutConstraint) Encode() any { return x.encodeFields() }
 type Region struct {
 	ID         Ident
 	Components []Ident
+	Role       *RegionRole
+	Arrange    *Arrange
+	Parent     *Ident
+	Order      *Count
+	Size       *SizeBounds
+	Dock       *Dock
+	Responsive *[]Responsive
 }
 
 func DecodeRegion(v any, path string, ctx rt.Ctx) (Region, error) {
@@ -6149,10 +6156,108 @@ func decodeRegionFields(o *rt.Obj, path string, ctx rt.Ctx) (Region, error) {
 			return out, err
 		}
 	}
+	var f_role *RegionRole
+	{
+		raw, found, err := o.Since("role", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeRegionRole(raw, rt.Child(path, "role"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_role = &x
+		}
+	}
+	var f_arrange *Arrange
+	{
+		raw, found, err := o.Since("arrange", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeArrange(raw, rt.Child(path, "arrange"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_arrange = &x
+		}
+	}
+	var f_parent *Ident
+	{
+		raw, found, err := o.Since("parent", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeIdent(raw, rt.Child(path, "parent"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_parent = &x
+		}
+	}
+	var f_order *Count
+	{
+		raw, found, err := o.Since("order", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeCount(raw, rt.Child(path, "order"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_order = &x
+		}
+	}
+	var f_size *SizeBounds
+	{
+		raw, found, err := o.Since("size", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeSizeBounds(raw, rt.Child(path, "size"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_size = &x
+		}
+	}
+	var f_dock *Dock
+	{
+		raw, found, err := o.Since("dock", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeDock(raw, rt.Child(path, "dock"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_dock = &x
+		}
+	}
+	var f_responsive *[]Responsive
+	{
+		raw, found, err := o.Since("responsive", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := rt.List(raw, rt.Child(path, "responsive"), 0, 8, func(e any, p string) (Responsive, error) { return DecodeResponsive(e, p, ctx) })
+			if err != nil {
+				return out, err
+			}
+			f_responsive = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = Region{ID: f_id, Components: f_components}
+	out = Region{ID: f_id, Components: f_components, Role: f_role, Arrange: f_arrange, Parent: f_parent, Order: f_order, Size: f_size, Dock: f_dock, Responsive: f_responsive}
 	return out, nil
 }
 
@@ -6166,6 +6271,33 @@ func (x Region) encodeFields() *canon.Object {
 		}
 		return out
 	}())
+	if x.Role != nil {
+		e.Set("role", (*x.Role).Encode())
+	}
+	if x.Arrange != nil {
+		e.Set("arrange", (*x.Arrange).Encode())
+	}
+	if x.Parent != nil {
+		e.Set("parent", (*x.Parent).Encode())
+	}
+	if x.Order != nil {
+		e.Set("order", (*x.Order).Encode())
+	}
+	if x.Size != nil {
+		e.Set("size", (*x.Size).Encode())
+	}
+	if x.Dock != nil {
+		e.Set("dock", (*x.Dock).Encode())
+	}
+	if x.Responsive != nil {
+		e.Set("responsive", func() any {
+			out := make([]any, 0, len((*x.Responsive)))
+			for _, e := range *x.Responsive {
+				out = append(out, e.Encode())
+			}
+			return out
+		}())
+	}
 	return e
 }
 
@@ -6181,6 +6313,7 @@ type PresentationIR struct {
 	Constraints         []LayoutConstraint
 	Components          []Component
 	Regions             []Region
+	Customization       *Customization
 }
 
 func DecodePresentationIR(v any, path string, ctx rt.Ctx) (PresentationIR, error) {
@@ -6281,10 +6414,24 @@ func decodePresentationIRFields(o *rt.Obj, path string, ctx rt.Ctx) (Presentatio
 			return out, err
 		}
 	}
+	var f_customization *Customization
+	{
+		raw, found, err := o.Since("customization", rt.Version{1, 2, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeCustomization(raw, rt.Child(path, "customization"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_customization = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = PresentationIR{PresentationVersion: f_presentation_version, Semantic: f_semantic, Locale: f_locale, Direction: f_direction, Theme: f_theme, Constraints: f_constraints, Components: f_components, Regions: f_regions}
+	out = PresentationIR{PresentationVersion: f_presentation_version, Semantic: f_semantic, Locale: f_locale, Direction: f_direction, Theme: f_theme, Constraints: f_constraints, Components: f_components, Regions: f_regions, Customization: f_customization}
 	return out, nil
 }
 
@@ -6316,10 +6463,392 @@ func (x PresentationIR) encodeFields() *canon.Object {
 		}
 		return out
 	}())
+	if x.Customization != nil {
+		e.Set("customization", (*x.Customization).Encode())
+	}
 	return e
 }
 
 func (x PresentationIR) Encode() any { return x.encodeFields() }
+
+type RegionRole string
+
+const (
+	RegionRoleNavigation RegionRole = "navigation"
+	RegionRoleHeader     RegionRole = "header"
+	RegionRoleMain       RegionRole = "main"
+	RegionRoleAside      RegionRole = "aside"
+	RegionRoleToolbar    RegionRole = "toolbar"
+	RegionRoleFooter     RegionRole = "footer"
+)
+
+var allRegionRole = []RegionRole{RegionRoleNavigation, RegionRoleHeader, RegionRoleMain, RegionRoleAside, RegionRoleToolbar, RegionRoleFooter}
+
+func DecodeRegionRole(v any, path string, _ rt.Ctx) (RegionRole, error) {
+	s, err := rt.EnumStr(v, path)
+	if err != nil {
+		return "", err
+	}
+	for _, c := range allRegionRole {
+		if string(c) == s {
+			return c, nil
+		}
+	}
+	return "", rt.Fail(path, "ir.bad_enum")
+}
+
+func (x RegionRole) Encode() any { return string(x) }
+
+type Arrange string
+
+const (
+	ArrangeStack Arrange = "stack"
+	ArrangeRow   Arrange = "row"
+	ArrangeGrid  Arrange = "grid"
+	ArrangeSplit Arrange = "split"
+	ArrangeTabs  Arrange = "tabs"
+)
+
+var allArrange = []Arrange{ArrangeStack, ArrangeRow, ArrangeGrid, ArrangeSplit, ArrangeTabs}
+
+func DecodeArrange(v any, path string, _ rt.Ctx) (Arrange, error) {
+	s, err := rt.EnumStr(v, path)
+	if err != nil {
+		return "", err
+	}
+	for _, c := range allArrange {
+		if string(c) == s {
+			return c, nil
+		}
+	}
+	return "", rt.Fail(path, "ir.bad_enum")
+}
+
+func (x Arrange) Encode() any { return string(x) }
+
+type DockEdge string
+
+const (
+	DockEdgeStart  DockEdge = "start"
+	DockEdgeEnd    DockEdge = "end"
+	DockEdgeTop    DockEdge = "top"
+	DockEdgeBottom DockEdge = "bottom"
+)
+
+var allDockEdge = []DockEdge{DockEdgeStart, DockEdgeEnd, DockEdgeTop, DockEdgeBottom}
+
+func DecodeDockEdge(v any, path string, _ rt.Ctx) (DockEdge, error) {
+	s, err := rt.EnumStr(v, path)
+	if err != nil {
+		return "", err
+	}
+	for _, c := range allDockEdge {
+		if string(c) == s {
+			return c, nil
+		}
+	}
+	return "", rt.Fail(path, "ir.bad_enum")
+}
+
+func (x DockEdge) Encode() any { return string(x) }
+
+// Bounds in character cells (ch), so a layout scales with text and density rather than pixels.
+type SizeBounds struct {
+	Min   Count
+	Max   *Count
+	Basis *Count
+}
+
+func DecodeSizeBounds(v any, path string, ctx rt.Ctx) (SizeBounds, error) {
+	o, err := rt.NewObj(v, path)
+	if err != nil {
+		return SizeBounds{}, err
+	}
+	return decodeSizeBoundsFields(o, path, ctx)
+}
+
+func decodeSizeBoundsFields(o *rt.Obj, path string, ctx rt.Ctx) (SizeBounds, error) {
+	var out SizeBounds
+	var f_min Count
+	{
+		raw, err := o.Req("min")
+		if err != nil {
+			return out, err
+		}
+		f_min, err = DecodeCount(raw, rt.Child(path, "min"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_max *Count
+	{
+		raw, found := o.Opt("max")
+		if found {
+			x, err := DecodeCount(raw, rt.Child(path, "max"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_max = &x
+		}
+	}
+	var f_basis *Count
+	{
+		raw, found := o.Opt("basis")
+		if found {
+			x, err := DecodeCount(raw, rt.Child(path, "basis"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_basis = &x
+		}
+	}
+	if err := o.Finish(); err != nil {
+		return out, err
+	}
+	out = SizeBounds{Min: f_min, Max: f_max, Basis: f_basis}
+	return out, nil
+}
+
+func (x SizeBounds) encodeFields() *canon.Object {
+	e := canon.NewObject()
+	e.Set("min", x.Min.Encode())
+	if x.Max != nil {
+		e.Set("max", (*x.Max).Encode())
+	}
+	if x.Basis != nil {
+		e.Set("basis", (*x.Basis).Encode())
+	}
+	return e
+}
+
+func (x SizeBounds) Encode() any { return x.encodeFields() }
+
+// An edge-attached region. A region that is not collapsible is always visible.
+type Dock struct {
+	Edge        DockEdge
+	Collapsible bool
+	Resizable   bool
+}
+
+func DecodeDock(v any, path string, ctx rt.Ctx) (Dock, error) {
+	o, err := rt.NewObj(v, path)
+	if err != nil {
+		return Dock{}, err
+	}
+	return decodeDockFields(o, path, ctx)
+}
+
+func decodeDockFields(o *rt.Obj, path string, ctx rt.Ctx) (Dock, error) {
+	var out Dock
+	var f_edge DockEdge
+	{
+		raw, err := o.Req("edge")
+		if err != nil {
+			return out, err
+		}
+		f_edge, err = DecodeDockEdge(raw, rt.Child(path, "edge"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_collapsible bool
+	{
+		raw, err := o.Req("collapsible")
+		if err != nil {
+			return out, err
+		}
+		f_collapsible, err = rt.Bool(raw, rt.Child(path, "collapsible"))
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_resizable bool
+	{
+		raw, err := o.Req("resizable")
+		if err != nil {
+			return out, err
+		}
+		f_resizable, err = rt.Bool(raw, rt.Child(path, "resizable"))
+		if err != nil {
+			return out, err
+		}
+	}
+	if err := o.Finish(); err != nil {
+		return out, err
+	}
+	out = Dock{Edge: f_edge, Collapsible: f_collapsible, Resizable: f_resizable}
+	return out, nil
+}
+
+func (x Dock) encodeFields() *canon.Object {
+	e := canon.NewObject()
+	e.Set("edge", x.Edge.Encode())
+	e.Set("collapsible", x.Collapsible)
+	e.Set("resizable", x.Resizable)
+	return e
+}
+
+func (x Dock) Encode() any { return x.encodeFields() }
+
+// Below this viewport width in ch the region arranges its children differently and may collapse.
+type Responsive struct {
+	Below    Count
+	Arrange  Arrange
+	Collapse bool
+}
+
+func DecodeResponsive(v any, path string, ctx rt.Ctx) (Responsive, error) {
+	o, err := rt.NewObj(v, path)
+	if err != nil {
+		return Responsive{}, err
+	}
+	return decodeResponsiveFields(o, path, ctx)
+}
+
+func decodeResponsiveFields(o *rt.Obj, path string, ctx rt.Ctx) (Responsive, error) {
+	var out Responsive
+	var f_below Count
+	{
+		raw, err := o.Req("below")
+		if err != nil {
+			return out, err
+		}
+		f_below, err = DecodeCount(raw, rt.Child(path, "below"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_arrange Arrange
+	{
+		raw, err := o.Req("arrange")
+		if err != nil {
+			return out, err
+		}
+		f_arrange, err = DecodeArrange(raw, rt.Child(path, "arrange"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_collapse bool
+	{
+		raw, err := o.Req("collapse")
+		if err != nil {
+			return out, err
+		}
+		f_collapse, err = rt.Bool(raw, rt.Child(path, "collapse"))
+		if err != nil {
+			return out, err
+		}
+	}
+	if err := o.Finish(); err != nil {
+		return out, err
+	}
+	out = Responsive{Below: f_below, Arrange: f_arrange, Collapse: f_collapse}
+	return out, nil
+}
+
+func (x Responsive) encodeFields() *canon.Object {
+	e := canon.NewObject()
+	e.Set("below", x.Below.Encode())
+	e.Set("arrange", x.Arrange.Encode())
+	e.Set("collapse", x.Collapse)
+	return e
+}
+
+func (x Responsive) Encode() any { return x.encodeFields() }
+
+// What a person may change without a new presentation version; none of it can hide or move an operation out of its confirmation context.
+type Customization struct {
+	Reorder  bool
+	Resize   bool
+	Collapse bool
+	Density  bool
+	Scheme   bool
+}
+
+func DecodeCustomization(v any, path string, ctx rt.Ctx) (Customization, error) {
+	o, err := rt.NewObj(v, path)
+	if err != nil {
+		return Customization{}, err
+	}
+	return decodeCustomizationFields(o, path, ctx)
+}
+
+func decodeCustomizationFields(o *rt.Obj, path string, ctx rt.Ctx) (Customization, error) {
+	var out Customization
+	var f_reorder bool
+	{
+		raw, err := o.Req("reorder")
+		if err != nil {
+			return out, err
+		}
+		f_reorder, err = rt.Bool(raw, rt.Child(path, "reorder"))
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_resize bool
+	{
+		raw, err := o.Req("resize")
+		if err != nil {
+			return out, err
+		}
+		f_resize, err = rt.Bool(raw, rt.Child(path, "resize"))
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_collapse bool
+	{
+		raw, err := o.Req("collapse")
+		if err != nil {
+			return out, err
+		}
+		f_collapse, err = rt.Bool(raw, rt.Child(path, "collapse"))
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_density bool
+	{
+		raw, err := o.Req("density")
+		if err != nil {
+			return out, err
+		}
+		f_density, err = rt.Bool(raw, rt.Child(path, "density"))
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_scheme bool
+	{
+		raw, err := o.Req("scheme")
+		if err != nil {
+			return out, err
+		}
+		f_scheme, err = rt.Bool(raw, rt.Child(path, "scheme"))
+		if err != nil {
+			return out, err
+		}
+	}
+	if err := o.Finish(); err != nil {
+		return out, err
+	}
+	out = Customization{Reorder: f_reorder, Resize: f_resize, Collapse: f_collapse, Density: f_density, Scheme: f_scheme}
+	return out, nil
+}
+
+func (x Customization) encodeFields() *canon.Object {
+	e := canon.NewObject()
+	e.Set("reorder", x.Reorder)
+	e.Set("resize", x.Resize)
+	e.Set("collapse", x.Collapse)
+	e.Set("density", x.Density)
+	e.Set("scheme", x.Scheme)
+	return e
+}
+
+func (x Customization) Encode() any { return x.encodeFields() }
 
 type Channel string
 

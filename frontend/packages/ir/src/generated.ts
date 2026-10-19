@@ -10,7 +10,7 @@ export const FAMILIES: readonly (readonly [string, string, string])[] = [
   ["observation", "ObservationIR", "sha256:59967f4b31a38aba6444413ad243cd5ce3d83f283695a41519f90e05527685ca"],
   ["semantic", "SemanticIR", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"],
   ["operation", "OperationContract", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"],
-  ["presentation", "PresentationIR", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"],
+  ["presentation", "PresentationIR", "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932"],
   ["version", "VersionManifest", "sha256:60154f3a63b0f91617a498281282198b68665f754eb88b1145d948b59874282b"],
 ];
 /** Every [version, family, digest] a reader decodes: all released snapshots and the current schema. */
@@ -26,7 +26,7 @@ export const ACCEPTED: readonly (readonly [rt.Version, string, string])[] = [
   [[1, 2, 0], "operation", "sha256:616dc2a18ea944730cec74a73ec536af84edb51132a440a365a370c59df9101a"],
   [[1, 0, 0], "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"],
   [[1, 1, 0], "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"],
-  [[1, 2, 0], "presentation", "sha256:ba7e0164c628ab3e6feab4dbd67002f100340e3e349b62ba5e6acf16356d150e"],
+  [[1, 2, 0], "presentation", "sha256:980fbe8a2246b58ec2b6ace39b8c0d20c7e5cd52b090af26aadf0611ac73f932"],
   [[1, 0, 0], "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"],
   [[1, 1, 0], "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"],
   [[1, 2, 0], "semantic", "sha256:d3b22df1d99c50f78bf1057bd5c6d70baa18478f3e031c0b1d66ef222103a79a"],
@@ -2744,15 +2744,43 @@ export function encodeLayoutConstraint(x: LayoutConstraint): Value {
 export interface Region {
   id: Ident;
   components: Ident[];
+  role?: RegionRole;
+  arrange?: Arrange;
+  parent?: Ident;
+  order?: Count;
+  size?: SizeBounds;
+  dock?: Dock;
+  responsive?: Responsive[];
 }
 export function decodeRegionFields(o: rt.Obj, ctx: Ctx): Region {
   const path = o.path;
   const id_ = decodeIdent(o.req("id"), rt.child(path, "id"), ctx);
   const components_ = rt.list(o.req("components"), rt.child(path, "components"), 0, 1024, (e, p) => decodeIdent(e, p, ctx));
+  const role_raw = o.since("role", [1, 2, 0], false, ctx);
+  const role_ = role_raw === undefined ? undefined : decodeRegionRole(role_raw, rt.child(path, "role"), ctx);
+  const arrange_raw = o.since("arrange", [1, 2, 0], false, ctx);
+  const arrange_ = arrange_raw === undefined ? undefined : decodeArrange(arrange_raw, rt.child(path, "arrange"), ctx);
+  const parent_raw = o.since("parent", [1, 2, 0], false, ctx);
+  const parent_ = parent_raw === undefined ? undefined : decodeIdent(parent_raw, rt.child(path, "parent"), ctx);
+  const order_raw = o.since("order", [1, 2, 0], false, ctx);
+  const order_ = order_raw === undefined ? undefined : decodeCount(order_raw, rt.child(path, "order"), ctx);
+  const size_raw = o.since("size", [1, 2, 0], false, ctx);
+  const size_ = size_raw === undefined ? undefined : decodeSizeBounds(size_raw, rt.child(path, "size"), ctx);
+  const dock_raw = o.since("dock", [1, 2, 0], false, ctx);
+  const dock_ = dock_raw === undefined ? undefined : decodeDock(dock_raw, rt.child(path, "dock"), ctx);
+  const responsive_raw = o.since("responsive", [1, 2, 0], false, ctx);
+  const responsive_ = responsive_raw === undefined ? undefined : rt.list(responsive_raw, rt.child(path, "responsive"), 0, 8, (e, p) => decodeResponsive(e, p, ctx));
   o.finish();
   const out = {} as Region;
   out.id = id_;
   out.components = components_;
+  if (role_ !== undefined) out.role = role_;
+  if (arrange_ !== undefined) out.arrange = arrange_;
+  if (parent_ !== undefined) out.parent = parent_;
+  if (order_ !== undefined) out.order = order_;
+  if (size_ !== undefined) out.size = size_;
+  if (dock_ !== undefined) out.dock = dock_;
+  if (responsive_ !== undefined) out.responsive = responsive_;
   return out;
 }
 export function decodeRegion(v: Value, path: string, ctx: Ctx): Region {
@@ -2762,6 +2790,13 @@ export function encodeRegionFields(x: Region): Map<string, Value> {
   const e = new Map<string, Value>();
   e.set("id", encodeIdent(x.id));
   e.set("components", x.components.map((e) => encodeIdent(e)));
+  if (x.role !== undefined) e.set("role", encodeRegionRole(x.role));
+  if (x.arrange !== undefined) e.set("arrange", encodeArrange(x.arrange));
+  if (x.parent !== undefined) e.set("parent", encodeIdent(x.parent));
+  if (x.order !== undefined) e.set("order", encodeCount(x.order));
+  if (x.size !== undefined) e.set("size", encodeSizeBounds(x.size));
+  if (x.dock !== undefined) e.set("dock", encodeDock(x.dock));
+  if (x.responsive !== undefined) e.set("responsive", x.responsive.map((e) => encodeResponsive(e)));
   return e;
 }
 export function encodeRegion(x: Region): Value {
@@ -2778,6 +2813,7 @@ export interface PresentationIR {
   constraints: LayoutConstraint[];
   components: Component[];
   regions: Region[];
+  customization?: Customization;
 }
 export function decodePresentationIRFields(o: rt.Obj, ctx: Ctx): PresentationIR {
   const path = o.path;
@@ -2789,6 +2825,8 @@ export function decodePresentationIRFields(o: rt.Obj, ctx: Ctx): PresentationIR 
   const constraints_ = rt.list(o.req("constraints"), rt.child(path, "constraints"), 0, 1024, (e, p) => decodeLayoutConstraint(e, p, ctx));
   const components_ = rt.list(o.req("components"), rt.child(path, "components"), 0, 16384, (e, p) => decodeComponent(e, p, ctx));
   const regions_ = rt.list(o.req("regions"), rt.child(path, "regions"), 0, 256, (e, p) => decodeRegion(e, p, ctx));
+  const customization_raw = o.since("customization", [1, 2, 0], false, ctx);
+  const customization_ = customization_raw === undefined ? undefined : decodeCustomization(customization_raw, rt.child(path, "customization"), ctx);
   o.finish();
   const out = {} as PresentationIR;
   out.presentation_version = presentation_version_;
@@ -2799,6 +2837,7 @@ export function decodePresentationIRFields(o: rt.Obj, ctx: Ctx): PresentationIR 
   out.constraints = constraints_;
   out.components = components_;
   out.regions = regions_;
+  if (customization_ !== undefined) out.customization = customization_;
   return out;
 }
 export function decodePresentationIR(v: Value, path: string, ctx: Ctx): PresentationIR {
@@ -2814,10 +2853,182 @@ export function encodePresentationIRFields(x: PresentationIR): Map<string, Value
   e.set("constraints", x.constraints.map((e) => encodeLayoutConstraint(e)));
   e.set("components", x.components.map((e) => encodeComponent(e)));
   e.set("regions", x.regions.map((e) => encodeRegion(e)));
+  if (x.customization !== undefined) e.set("customization", encodeCustomization(x.customization));
   return e;
 }
 export function encodePresentationIR(x: PresentationIR): Value {
   return encodePresentationIRFields(x);
+}
+
+export const REGION_ROLE = ["navigation", "header", "main", "aside", "toolbar", "footer"] as const;
+export type RegionRole = (typeof REGION_ROLE)[number];
+export function decodeRegionRole(v: Value, path: string, _ctx: Ctx): RegionRole {
+  const s = rt.enumStr(v, path);
+  if (!(REGION_ROLE as readonly string[]).includes(s)) throw new rt.IrError(path, "ir.bad_enum");
+  return s as RegionRole;
+}
+export function encodeRegionRole(x: RegionRole): Value {
+  return x;
+}
+
+export const ARRANGE = ["stack", "row", "grid", "split", "tabs"] as const;
+export type Arrange = (typeof ARRANGE)[number];
+export function decodeArrange(v: Value, path: string, _ctx: Ctx): Arrange {
+  const s = rt.enumStr(v, path);
+  if (!(ARRANGE as readonly string[]).includes(s)) throw new rt.IrError(path, "ir.bad_enum");
+  return s as Arrange;
+}
+export function encodeArrange(x: Arrange): Value {
+  return x;
+}
+
+export const DOCK_EDGE = ["start", "end", "top", "bottom"] as const;
+export type DockEdge = (typeof DOCK_EDGE)[number];
+export function decodeDockEdge(v: Value, path: string, _ctx: Ctx): DockEdge {
+  const s = rt.enumStr(v, path);
+  if (!(DOCK_EDGE as readonly string[]).includes(s)) throw new rt.IrError(path, "ir.bad_enum");
+  return s as DockEdge;
+}
+export function encodeDockEdge(x: DockEdge): Value {
+  return x;
+}
+
+/** Bounds in character cells (ch), so a layout scales with text and density rather than pixels. */
+export interface SizeBounds {
+  min: Count;
+  max?: Count;
+  basis?: Count;
+}
+export function decodeSizeBoundsFields(o: rt.Obj, ctx: Ctx): SizeBounds {
+  const path = o.path;
+  const min_ = decodeCount(o.req("min"), rt.child(path, "min"), ctx);
+  const max_raw = o.opt("max");
+  const max_ = max_raw === undefined ? undefined : decodeCount(max_raw, rt.child(path, "max"), ctx);
+  const basis_raw = o.opt("basis");
+  const basis_ = basis_raw === undefined ? undefined : decodeCount(basis_raw, rt.child(path, "basis"), ctx);
+  o.finish();
+  const out = {} as SizeBounds;
+  out.min = min_;
+  if (max_ !== undefined) out.max = max_;
+  if (basis_ !== undefined) out.basis = basis_;
+  return out;
+}
+export function decodeSizeBounds(v: Value, path: string, ctx: Ctx): SizeBounds {
+  return decodeSizeBoundsFields(rt.Obj.of(v, path), ctx);
+}
+export function encodeSizeBoundsFields(x: SizeBounds): Map<string, Value> {
+  const e = new Map<string, Value>();
+  e.set("min", encodeCount(x.min));
+  if (x.max !== undefined) e.set("max", encodeCount(x.max));
+  if (x.basis !== undefined) e.set("basis", encodeCount(x.basis));
+  return e;
+}
+export function encodeSizeBounds(x: SizeBounds): Value {
+  return encodeSizeBoundsFields(x);
+}
+
+/** An edge-attached region. A region that is not collapsible is always visible. */
+export interface Dock {
+  edge: DockEdge;
+  collapsible: boolean;
+  resizable: boolean;
+}
+export function decodeDockFields(o: rt.Obj, ctx: Ctx): Dock {
+  const path = o.path;
+  const edge_ = decodeDockEdge(o.req("edge"), rt.child(path, "edge"), ctx);
+  const collapsible_ = rt.boolean(o.req("collapsible"), rt.child(path, "collapsible"));
+  const resizable_ = rt.boolean(o.req("resizable"), rt.child(path, "resizable"));
+  o.finish();
+  const out = {} as Dock;
+  out.edge = edge_;
+  out.collapsible = collapsible_;
+  out.resizable = resizable_;
+  return out;
+}
+export function decodeDock(v: Value, path: string, ctx: Ctx): Dock {
+  return decodeDockFields(rt.Obj.of(v, path), ctx);
+}
+export function encodeDockFields(x: Dock): Map<string, Value> {
+  const e = new Map<string, Value>();
+  e.set("edge", encodeDockEdge(x.edge));
+  e.set("collapsible", x.collapsible);
+  e.set("resizable", x.resizable);
+  return e;
+}
+export function encodeDock(x: Dock): Value {
+  return encodeDockFields(x);
+}
+
+/** Below this viewport width in ch the region arranges its children differently and may collapse. */
+export interface Responsive {
+  below: Count;
+  arrange: Arrange;
+  collapse: boolean;
+}
+export function decodeResponsiveFields(o: rt.Obj, ctx: Ctx): Responsive {
+  const path = o.path;
+  const below_ = decodeCount(o.req("below"), rt.child(path, "below"), ctx);
+  const arrange_ = decodeArrange(o.req("arrange"), rt.child(path, "arrange"), ctx);
+  const collapse_ = rt.boolean(o.req("collapse"), rt.child(path, "collapse"));
+  o.finish();
+  const out = {} as Responsive;
+  out.below = below_;
+  out.arrange = arrange_;
+  out.collapse = collapse_;
+  return out;
+}
+export function decodeResponsive(v: Value, path: string, ctx: Ctx): Responsive {
+  return decodeResponsiveFields(rt.Obj.of(v, path), ctx);
+}
+export function encodeResponsiveFields(x: Responsive): Map<string, Value> {
+  const e = new Map<string, Value>();
+  e.set("below", encodeCount(x.below));
+  e.set("arrange", encodeArrange(x.arrange));
+  e.set("collapse", x.collapse);
+  return e;
+}
+export function encodeResponsive(x: Responsive): Value {
+  return encodeResponsiveFields(x);
+}
+
+/** What a person may change without a new presentation version; none of it can hide or move an operation out of its confirmation context. */
+export interface Customization {
+  reorder: boolean;
+  resize: boolean;
+  collapse: boolean;
+  density: boolean;
+  scheme: boolean;
+}
+export function decodeCustomizationFields(o: rt.Obj, ctx: Ctx): Customization {
+  const path = o.path;
+  const reorder_ = rt.boolean(o.req("reorder"), rt.child(path, "reorder"));
+  const resize_ = rt.boolean(o.req("resize"), rt.child(path, "resize"));
+  const collapse_ = rt.boolean(o.req("collapse"), rt.child(path, "collapse"));
+  const density_ = rt.boolean(o.req("density"), rt.child(path, "density"));
+  const scheme_ = rt.boolean(o.req("scheme"), rt.child(path, "scheme"));
+  o.finish();
+  const out = {} as Customization;
+  out.reorder = reorder_;
+  out.resize = resize_;
+  out.collapse = collapse_;
+  out.density = density_;
+  out.scheme = scheme_;
+  return out;
+}
+export function decodeCustomization(v: Value, path: string, ctx: Ctx): Customization {
+  return decodeCustomizationFields(rt.Obj.of(v, path), ctx);
+}
+export function encodeCustomizationFields(x: Customization): Map<string, Value> {
+  const e = new Map<string, Value>();
+  e.set("reorder", x.reorder);
+  e.set("resize", x.resize);
+  e.set("collapse", x.collapse);
+  e.set("density", x.density);
+  e.set("scheme", x.scheme);
+  return e;
+}
+export function encodeCustomization(x: Customization): Value {
+  return encodeCustomizationFields(x);
 }
 
 export const CHANNEL = ["stable", "preview", "pinned", "archived"] as const;
