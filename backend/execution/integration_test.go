@@ -326,14 +326,8 @@ func TestAmbiguousWriteNeverRetriesInEitherStrategy(t *testing.T) {
 			if app.Commits() != 1 {
 				t.Fatalf("commits %d", app.Commits())
 			}
-			posts := 0
-			for _, line := range app.Requests() {
-				if len(line) > 4 && line[:4] == "POST" {
-					posts++
-				}
-			}
-			if posts != 1 {
-				t.Fatalf("%d write requests; an ambiguous write was resent", posts)
+			if n := app.WriteAttempts(); n != 1 {
+				t.Fatalf("%d submissions; an ambiguous write was resent", n)
 			}
 		})
 	}
