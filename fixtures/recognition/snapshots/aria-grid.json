@@ -1,0 +1,263 @@
+{
+ "schema": "vsf-observation-snapshot-v1",
+ "nodes": [
+  {
+   "id": 1,
+   "parent": -1,
+   "tag": "#document",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 0,
+   "rels": [],
+   "scope": {
+    "kind": "document",
+    "origin": "http://127.0.0.1:36245",
+    "mode": null,
+    "opaque": null
+   }
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "html",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "body",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "main",
+   "role": "main",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 5,
+   "parent": 4,
+   "tag": "h1",
+   "role": "heading",
+   "name": "Inventory",
+   "text": "Inventory",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 6,
+   "parent": 4,
+   "tag": "div",
+   "role": "grid",
+   "name": "Inventory items",
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 7,
+   "parent": 6,
+   "tag": "div",
+   "role": "row",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 8,
+   "parent": 7,
+   "tag": "div",
+   "role": "columnheader",
+   "name": "SKU",
+   "text": "SKU",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 9,
+   "parent": 7,
+   "tag": "div",
+   "role": "columnheader",
+   "name": "Item",
+   "text": "Item",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 10,
+   "parent": 7,
+   "tag": "div",
+   "role": "columnheader",
+   "name": "Stock",
+   "text": "Stock",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 11,
+   "parent": 7,
+   "tag": "div",
+   "role": "columnheader",
+   "name": "Actions",
+   "text": "Actions",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 12,
+   "parent": 6,
+   "tag": "div",
+   "role": "row",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 13,
+   "parent": 12,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": "A-1",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 14,
+   "parent": 12,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": "Bolt",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 15,
+   "parent": 12,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": "120",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 16,
+   "parent": 12,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 17,
+   "parent": 16,
+   "tag": "button",
+   "role": "button",
+   "name": "Edit",
+   "text": "Edit",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 18,
+   "parent": 6,
+   "tag": "div",
+   "role": "row",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 19,
+   "parent": 18,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": "A-2",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 20,
+   "parent": 18,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": "Nut",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 21,
+   "parent": 18,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": "80",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 22,
+   "parent": 18,
+   "tag": "div",
+   "role": "gridcell",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 23,
+   "parent": 22,
+   "tag": "button",
+   "role": "button",
+   "name": "Edit",
+   "text": "Edit",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  }
+ ]
+}

@@ -1,0 +1,317 @@
+{
+ "schema": "vsf-observation-snapshot-v1",
+ "nodes": [
+  {
+   "id": 1,
+   "parent": -1,
+   "tag": "#document",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 0,
+   "rels": [],
+   "scope": {
+    "kind": "document",
+    "origin": "http://127.0.0.1:36245",
+    "mode": null,
+    "opaque": null
+   }
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "html",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "body",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "ds-app",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 5,
+   "parent": 4,
+   "tag": "ds-card",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 6,
+   "parent": 5,
+   "tag": "#shadow-root",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 0,
+   "rels": [],
+   "scope": {
+    "kind": "shadow",
+    "origin": "http://127.0.0.1:36245",
+    "mode": "open",
+    "opaque": null
+   }
+  },
+  {
+   "id": 7,
+   "parent": 6,
+   "tag": "h1",
+   "role": "heading",
+   "name": "Account settings",
+   "text": "Account settings",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 8,
+   "parent": 6,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 9,
+   "parent": 8,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 10,
+   "parent": 9,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Display name",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 11,
+   "parent": 8,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 12,
+   "parent": 11,
+   "tag": "input",
+   "role": "textbox",
+   "name": null,
+   "text": null,
+   "flags": 7,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 13,
+   "parent": 6,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 14,
+   "parent": 13,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 15,
+   "parent": 14,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Time zone",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 16,
+   "parent": 13,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 17,
+   "parent": 16,
+   "tag": "select",
+   "role": "combobox",
+   "name": null,
+   "text": null,
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 18,
+   "parent": 17,
+   "tag": "option",
+   "role": "option",
+   "name": "UTC",
+   "text": "UTC",
+   "flags": 2,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 19,
+   "parent": 17,
+   "tag": "option",
+   "role": "option",
+   "name": "CET",
+   "text": "CET",
+   "flags": 2,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 21,
+   "parent": 6,
+   "tag": "div",
+   "role": "group",
+   "name": "Notifications",
+   "text": null,
+   "flags": 1,
+   "rels": [
+    [
+     "labelledby",
+     20
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 20,
+   "parent": 21,
+   "tag": "h2",
+   "role": "heading",
+   "name": "Notifications",
+   "text": "Notifications",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 22,
+   "parent": 21,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 23,
+   "parent": 22,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": "Email me",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 24,
+   "parent": 23,
+   "tag": "input",
+   "role": "checkbox",
+   "name": null,
+   "text": null,
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 25,
+   "parent": 6,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 26,
+   "parent": 25,
+   "tag": "button",
+   "role": "button",
+   "name": "Save",
+   "text": "Save",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 27,
+   "parent": 25,
+   "tag": "button",
+   "role": "button",
+   "name": "Reset",
+   "text": "Reset",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  }
+ ]
+}

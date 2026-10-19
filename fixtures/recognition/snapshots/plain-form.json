@@ -1,0 +1,299 @@
+{
+ "schema": "vsf-observation-snapshot-v1",
+ "nodes": [
+  {
+   "id": 1,
+   "parent": -1,
+   "tag": "#document",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 0,
+   "rels": [],
+   "scope": {
+    "kind": "document",
+    "origin": "http://127.0.0.1:36245",
+    "mode": null,
+    "opaque": null
+   }
+  },
+  {
+   "id": 2,
+   "parent": 1,
+   "tag": "html",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 3,
+   "parent": 2,
+   "tag": "body",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 4,
+   "parent": 3,
+   "tag": "main",
+   "role": "main",
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 5,
+   "parent": 4,
+   "tag": "h1",
+   "role": "heading",
+   "name": "Customer profile",
+   "text": "Customer profile",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 6,
+   "parent": 4,
+   "tag": "form",
+   "role": "form",
+   "name": "Customer profile",
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 7,
+   "parent": 6,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "First name",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 8,
+   "parent": 6,
+   "tag": "input",
+   "role": "textbox",
+   "name": "First name",
+   "text": null,
+   "flags": 7,
+   "rels": [
+    [
+     "label",
+     7
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 9,
+   "parent": 6,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Last name",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 10,
+   "parent": 6,
+   "tag": "input",
+   "role": "textbox",
+   "name": "Last name",
+   "text": null,
+   "flags": 7,
+   "rels": [
+    [
+     "label",
+     9
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 11,
+   "parent": 6,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Email",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 12,
+   "parent": 11,
+   "tag": "input",
+   "role": "textbox",
+   "name": "Email",
+   "text": null,
+   "flags": 7,
+   "rels": [
+    [
+     "label",
+     11
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 13,
+   "parent": 6,
+   "tag": "div",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 14,
+   "parent": 13,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Country",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 15,
+   "parent": 13,
+   "tag": "select",
+   "role": "combobox",
+   "name": "Country",
+   "text": null,
+   "flags": 3,
+   "rels": [
+    [
+     "label",
+     14
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 16,
+   "parent": 15,
+   "tag": "option",
+   "role": "option",
+   "name": "Spain",
+   "text": "Spain",
+   "flags": 2,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 17,
+   "parent": 15,
+   "tag": "option",
+   "role": "option",
+   "name": "France",
+   "text": "France",
+   "flags": 2,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 18,
+   "parent": 6,
+   "tag": "fieldset",
+   "role": null,
+   "name": null,
+   "text": null,
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 19,
+   "parent": 18,
+   "tag": "legend",
+   "role": null,
+   "name": null,
+   "text": "Newsletter",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 20,
+   "parent": 18,
+   "tag": "label",
+   "role": null,
+   "name": null,
+   "text": "Weekly digest",
+   "flags": 1,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 21,
+   "parent": 20,
+   "tag": "input",
+   "role": "checkbox",
+   "name": "Weekly digest",
+   "text": null,
+   "flags": 3,
+   "rels": [
+    [
+     "label",
+     20
+    ]
+   ],
+   "scope": null
+  },
+  {
+   "id": 22,
+   "parent": 6,
+   "tag": "textarea",
+   "role": "textbox",
+   "name": "Notes",
+   "text": null,
+   "flags": 7,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 23,
+   "parent": 6,
+   "tag": "button",
+   "role": "button",
+   "name": "Save changes",
+   "text": "Save changes",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  },
+  {
+   "id": 24,
+   "parent": 6,
+   "tag": "button",
+   "role": "button",
+   "name": "Cancel",
+   "text": "Cancel",
+   "flags": 3,
+   "rels": [],
+   "scope": null
+  }
+ ]
+}

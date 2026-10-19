@@ -1,0 +1,17 @@
+[package]
+name = "vsf-recognizer"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "vsf-recognizer"
+path = "src/main.rs"
+
+[dependencies]
+vsf-canon.workspace = true
+
+[lints]
+workspace = true

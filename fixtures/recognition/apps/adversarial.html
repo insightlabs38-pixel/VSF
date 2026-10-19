@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><title>Checkout</title><style>.grid{display:grid;grid-template-columns:1fr 1fr}.pad{padding:1px}</style></head><body>
+<main>
+  <h1>Checkout</h1>
+  <section aria-labelledby="bill"><h2 id="bill">Billing</h2>
+    <label for="bn">Name</label><input id="bn" name="billing_name">
+    <label for="be">Email</label><input id="be" type="email">
+  </section>
+  <section aria-labelledby="ship"><h2 id="ship">Shipping</h2>
+    <label for="sn">Name</label><input id="sn" name="shipping_name">
+    <span>Phone</span><input id="p1"><input id="p2">
+  </section>
+  <input id="secret-token" type="text" hidden>
+  <div style="display:none"><label for="hid">Coupon</label><input id="hid"></div>
+  <label for="missing-target">Orphan label</label>
+  <div>
+    <a href="/invoice.pdf" role="button">Download invoice</a>
+    <div role="button" tabindex="0">Apply discount</div>
+    <button role="link" type="button">Terms</button>
+    <button type="submit">Place order</button>
+    <button type="button" disabled>Pay later</button>
+  </div>
+  <div class="grid"><div class="pad">Item</div><div class="pad">Price</div><div class="pad">Widget</div><div class="pad">4.00</div></div>
+</main>
+</body></html>

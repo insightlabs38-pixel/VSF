@@ -119,6 +119,23 @@ export type CanonNode = [
   children: CanonNode[],
 ];
 
+export interface RecognizerNode {
+  id: number;
+  parent: number;
+  tag: string;
+  role: string | null;
+  name: string | null;
+  text: string | null;
+  flags: number;
+  rels: [string, number][];
+  scope: { kind: ScopeKind; origin: string | null; mode: "open" | "closed" | null; opaque: OpaqueReason | null } | null;
+}
+
+export interface RecognizerInput {
+  schema: "vsf-observation-snapshot-v1";
+  nodes: RecognizerNode[];
+}
+
 export type ApplyResult =
   | { status: "ok" }
   | { status: "gap"; expected: number; got: number }
@@ -334,6 +351,32 @@ export class Replica {
       ];
     };
     return this.roots.map(build);
+  }
+
+  /** Preorder export with stable ids for the Rust recognizer; epochs, sequence and clocks are left out so equal pages give equal bytes. */
+  toRecognizerInput(): RecognizerInput {
+    const nodes: RecognizerNode[] = [];
+    const walk = (ids: number[]): void => {
+      for (const id of ids) {
+        const r = this.nodes.get(id) as NodeRec;
+        nodes.push({
+          id: r.id,
+          parent: r.parent,
+          tag: r.tag,
+          role: r.role,
+          name: r.name,
+          text: r.text,
+          flags: r.flags,
+          rels: r.rels.map(([k, t]): [string, number] => [k, t]),
+          scope: r.scope
+            ? { kind: r.scope.kind, origin: r.scope.origin, mode: r.scope.mode ?? null, opaque: r.scope.opaque ?? null }
+            : null,
+        });
+        walk(this.children.get(id) ?? []);
+      }
+    };
+    walk(this.roots);
+    return { schema: "vsf-observation-snapshot-v1", nodes };
   }
 
   /** The accessible tree as a VSFS pack snapshot; opaque placeholders are kept as tagged nodes. */
