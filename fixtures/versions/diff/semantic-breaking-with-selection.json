@@ -1,0 +1,16 @@
+{
+  "changes": [
+    {"after":"read_only","before":"non_idempotent_write","class":"permission","op":"modified","path":"/actions[submit_order]/effect/declared","pattern":"actions[]/effect/declared","review":true},
+    {"after":null,"before":"sha256:87d7594982eebbf37727478416e2bb0a3cdfcf102fa22631fbfb86e9bc609c50","class":"breaking","op":"removed","path":"/entities[order]/fields[total]","pattern":"entities[]/fields[]","review":true},
+    {"after":"Purchase","before":"Order","class":"cosmetic","op":"modified","path":"/entities[order]/label","pattern":"entities[]/label","review":false}
+  ],
+  "class": "permission",
+  "family": "semantic",
+  "from": "sha256:586367adca24fd17fb0ea4b085a2d77270c53849b616f4607c8143109f792fa0",
+  "review_required": true,
+  "schema": "vsf-diff-report-v1",
+  "selection": {"changed":["action:submit_order","entity:order","field:order.total"],"impacted":["action:delete_order","action:open_order","action:submit_order","component:btn_delete","component:btn_submit","component:form_order","component:txt_total","constraint:contrast","constraint:target","entity:order","field:order.order_id","field:order.placed_on","field:order.total","region:main","relationship:rel_order_customer","state_machine:sm_order"],"mode":"targeted","reason":null,"tests":["form","smoke","submit"]},
+  "summary": {"additive":0,"breaking":1,"cosmetic":1,"permission":1,"unknown":0},
+  "to": "sha256:49cefbbcc6ff5090747b42b5de6f626d750d2f49ea4e657b19e51338ad8c1b1f"
+}
+

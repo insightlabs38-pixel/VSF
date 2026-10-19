@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vsf-diff-report-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "family", "from", "to", "class", "review_required", "summary", "changes"],
+  "properties": {
+    "schema": { "const": "vsf-diff-report-v1" },
+    "family": { "enum": ["semantic", "operation", "presentation"] },
+    "from": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "to": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "class": { "enum": ["cosmetic", "additive", "breaking", "permission", "unknown", null] },
+    "review_required": { "type": "boolean" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cosmetic", "additive", "breaking", "permission", "unknown"],
+      "properties": {
+        "cosmetic": { "type": "integer", "minimum": 0 },
+        "additive": { "type": "integer", "minimum": 0 },
+        "breaking": { "type": "integer", "minimum": 0 },
+        "permission": { "type": "integer", "minimum": 0 },
+        "unknown": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "pattern", "op", "class", "before", "after", "review"],
+        "properties": {
+          "path": { "type": "string" },
+          "pattern": { "type": "string" },
+          "op": { "enum": ["added", "removed", "modified"] },
+          "class": { "enum": ["cosmetic", "additive", "breaking", "permission", "unknown"] },
+          "before": { "type": ["string", "null"] },
+          "after": { "type": ["string", "null"] },
+          "review": { "type": "boolean" }
+        }
+      }
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "reason", "changed", "impacted", "tests"],
+      "properties": {
+        "mode": { "enum": ["targeted", "full"] },
+        "reason": { "type": ["string", "null"] },
+        "changed": { "type": "array", "items": { "type": "string" } },
+        "impacted": { "type": "array", "items": { "type": "string" } },
+        "tests": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

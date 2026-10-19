@@ -7,6 +7,7 @@ pub mod impact;
 pub mod lineage;
 pub mod pin;
 pub mod promotion;
+pub mod report;
 
 /// A refusal with a stable code; callers branch on the code, never on the text.
 #[derive(Debug, Clone, PartialEq, Eq)]

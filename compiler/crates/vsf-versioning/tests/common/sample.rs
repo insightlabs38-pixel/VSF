@@ -136,7 +136,7 @@ fn manifest(
             sequence: Some(Count(sequence)),
             not_after: Some(Instant(promoted + 365 * 86_400_000)),
         }),
-        origin: None,
+        origin: Some(vsf_ir::Origin::new("https://crm.example.com").unwrap()),
         rollback,
         revocations: None,
     }
