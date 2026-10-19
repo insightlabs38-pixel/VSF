@@ -12,7 +12,8 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "package": "node --conditions=source build.ts",
-    "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts"
+    "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts",
+    "audit": "node --conditions=source audit.ts"
   },
   "exports": {
     "./build": "./build.ts"

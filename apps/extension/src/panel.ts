@@ -8,12 +8,22 @@ async function activeTab(): Promise<chrome.tabs.Tab | undefined> {
   return tab;
 }
 
-document.getElementById("authorize")?.addEventListener("click", async () => {
-  const tab = await activeTab();
-  if (!tab?.url) return;
+/** Host access is requested only inside a user click, one origin at a time; the browser shows its own prompt. */
+export async function authorize(tab: chrome.tabs.Tab | undefined): Promise<string> {
+  if (!navigator.userActivation.isActive) return "needs a click";
+  if (!tab?.url) return "no page";
   const origin = new URL(tab.url).origin;
-  const granted = await chrome.permissions.request({ origins: [`${origin}/*`] });
-  result.textContent = granted ? JSON.stringify(await send({ type: "grant", origin })) : "permission denied";
+  let granted = false;
+  try {
+    granted = await chrome.permissions.request({ origins: [`${origin}/*`] });
+  } catch (e) {
+    return e instanceof Error ? e.message : "permission error";
+  }
+  return granted ? JSON.stringify(await send({ type: "grant", origin })) : "permission denied";
+}
+
+document.getElementById("authorize")?.addEventListener("click", async () => {
+  result.textContent = await authorize(await activeTab());
 });
 
 document.getElementById("capture")?.addEventListener("click", async () => {

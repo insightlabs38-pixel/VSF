@@ -15,7 +15,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B06 | G6 | 18/18 | DONE | PROCEED |
 | B07 | G7 | 14/14 | DONE | PROCEED |
 | B08 | G8 | 10/10 | DONE | PROCEED |
-| B09 | G9 | 0/9 | READY | - |
+| B09 | G9 | 0/9 | IN_PROGRESS | - |
 | B10 | G10 | 0/8 | TODO | - |
 | B11 | G11 | 0/6 | TODO | - |
 | B12 | G12 | 0/6 | TODO | - |
@@ -149,7 +149,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B09 · Integrate extension and secure local bridge
 
-- [ ] `VSF-B09-T01` Package MV3 executable logic, narrow origin permissions and user activation _(READY)_
+- [ ] `VSF-B09-T01` Package MV3 executable logic, narrow origin permissions and user activation _(ACTIVE)_
 - [ ] `VSF-B09-T02` Connect browser observation and IR compiler/renderer behind stable message protocol
 - [ ] `VSF-B09-T03` Implement reconnect/restart after service worker death
 - [ ] `VSF-B09-T04` Prototype authenticated pairing with native companion

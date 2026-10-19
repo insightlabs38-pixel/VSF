@@ -30,6 +30,15 @@ async function grants(): Promise<Record<string, { at: number }>> {
   return (g as Record<string, { at: number }> | undefined) ?? {};
 }
 
+/** A VSF grant is only recorded for an origin the browser itself has granted the extension. */
+async function holdsBrowserPermission(origin: string): Promise<boolean> {
+  try {
+    return await chrome.permissions.contains({ origins: [`${origin}/*`] });
+  } catch {
+    return false;
+  }
+}
+
 async function stats(): Promise<Stats> {
   const { stats: s } = await chrome.storage.session.get("stats");
   return (s as Stats | undefined) ?? structuredClone(EMPTY_STATS);
@@ -188,6 +197,7 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
     case "status":
       return { ok: true, bootId, grants: Object.keys(await grants()), stats: await stats(), pending: await pending() };
     case "grant": {
+      if (!(await holdsBrowserPermission(cmd.origin))) return deny("permission_not_held", cmd.origin);
       const g = await grants();
       g[cmd.origin] = { at: Date.now() };
       await chrome.storage.local.set({ grants: g });
