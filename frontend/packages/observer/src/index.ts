@@ -9,7 +9,7 @@ export * from "./ir.ts";
 export * from "./model.ts";
 export * from "./pack.ts";
 export * from "./protocol.ts";
-export { redactText } from "./redact.ts";
+export { redactText, redactThenClip } from "./redact.ts";
 export * from "./scope.ts";
 export * from "./sensitive.ts";
 export * from "./session.ts";

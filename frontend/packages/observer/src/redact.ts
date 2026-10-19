@@ -14,3 +14,11 @@ export function redactText(text: string): string {
   }
   return out;
 }
+
+/** Redacts a bounded read of the whole text first, so a secret straddling the clip point cannot leak its head. */
+export function redactThenClip(raw: string, max: number): string {
+  const redacted = redactText(raw.slice(0, max * 4));
+  if (redacted.length <= max) return redacted;
+  const cut = redacted.charCodeAt(max - 1);
+  return redacted.slice(0, cut >= 0xd800 && cut < 0xdc00 ? max - 1 : max);
+}

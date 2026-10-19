@@ -160,3 +160,19 @@ test("private evidence cannot reach a reusable artifact: the observation body ca
   for (const v of Object.values(BOUNDARY)) expect(body).not.toContain(v);
   await world.stop();
 });
+
+test("the one-shot pack path honours the same scopes: marked and credential text is absent, ordinary text stays local", async ({
+  page,
+}) => {
+  const { world } = await boot(page);
+  const text = await page.evaluate(() => {
+    const O = (window as unknown as { VSFObserver: typeof import("@vsf/observer") }).VSFObserver;
+    return JSON.stringify(O.snapshotDocument(document).snapshot);
+  });
+  for (const v of [BOUNDARY.nested, BOUNDARY.account, BOUNDARY.unknown]) expect(text.includes(v), v).toBe(false);
+  expect(text).toContain("Billing");
+  expect(text).toContain(BOUNDARY.invoice);
+  expect(text, "benign controls keep their names").toContain("Passenger name");
+  expect(text.includes("One-time code"), "credential control names are withheld").toBe(false);
+  await world.stop();
+});

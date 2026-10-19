@@ -11,7 +11,7 @@ import {
   type Rel,
   type RelKind,
 } from "./model.ts";
-import { redactText } from "./redact.ts";
+import { redactThenClip } from "./redact.ts";
 import {
   intrinsicScope,
   isValueControl,
@@ -280,8 +280,8 @@ export function describeElement(el: Element, ctx: DescribeCtx): Described {
   let flags = scopeFlag(scope);
   if (scope !== "credential" || control) {
     const rawText = scope === "credential" ? null : ownText(el);
-    name = rawName === null ? null : redactText(clip(rawName, ctx.opts.maxTextChars));
-    text = rawText === null ? null : redactText(clip(rawText, ctx.opts.maxTextChars));
+    name = rawName === null ? null : redactThenClip(rawName, ctx.opts.maxTextChars);
+    text = rawText === null ? null : redactThenClip(rawText, ctx.opts.maxTextChars);
     if (
       (name !== null && name !== clip(rawName ?? "", ctx.opts.maxTextChars)) ||
       (text !== null && text !== clip(rawText ?? "", ctx.opts.maxTextChars))
