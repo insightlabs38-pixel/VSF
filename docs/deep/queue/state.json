@@ -1103,7 +1103,8 @@
       "decision": "PROCEED",
       "evidence": "docs/deep/evidence/VSF-B05",
       "report": "docs/deep/reports/VSF-B05.md",
-      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/6"
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/6",
+      "merge_commit": "c2736fdf53e52b95aa2251eda7fa1ccea632b599"
     },
     "G6": {
       "status": "PENDING",
