@@ -297,6 +297,10 @@
         "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "test:unit"]
       },
       {
+        "name": "recognition-snapshots",
+        "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "check:fixtures"]
+      },
+      {
         "name": "browser-tests",
         "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "test:browser"]
       }

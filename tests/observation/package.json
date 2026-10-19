@@ -14,6 +14,7 @@
     "test:unit": "node --conditions=source --test --test-reporter=spec test/*.test.ts",
     "test:browser": "playwright test",
     "test": "pnpm run test:unit && pnpm run test:browser",
-    "bench": "node --conditions=source bench-overhead.ts"
+    "bench": "node --conditions=source bench-overhead.ts",
+    "check:fixtures": "node --conditions=source gen-recognition-fixtures.ts --check"
   }
 }

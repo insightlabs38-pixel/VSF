@@ -1,47 +1,47 @@
 {
- "schema": "vsf-protocol-evidence-v1",
- "id": "pev_bbbbbbbbbbbbbbbbbbbb",
- "source_app_id": "acme:crm-eu1",
- "origin": "https://crm.example.com",
- "kind": "documented_api",
- "stability": "documented",
- "support": "supported",
- "provenance": {
-  "method": "vendor_documentation",
-  "reference": "https://docs.example.com/api/profile",
-  "recorded_at": 1790000000000,
-  "authorization": {
-   "basis": "public_documentation"
+  "schema": "vsf-protocol-evidence-v1",
+  "id": "pev_bbbbbbbbbbbbbbbbbbbb",
+  "source_app_id": "acme:crm-eu1",
+  "origin": "https://crm.example.com",
+  "kind": "documented_api",
+  "stability": "documented",
+  "support": "supported",
+  "provenance": {
+    "method": "vendor_documentation",
+    "reference": "https://docs.example.com/api/profile",
+    "recorded_at": 1790000000000,
+    "authorization": {
+      "basis": "public_documentation"
+    }
+  },
+  "endpoint": {
+    "protocol": "http",
+    "method": "POST",
+    "path_template": "/v1/profile"
+  },
+  "shape": {
+    "request": [
+      {
+        "name": "first_name",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "weekly_digest",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "phone",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "email",
+        "type": "string",
+        "required": true
+      }
+    ],
+    "response": []
   }
- },
- "endpoint": {
-  "protocol": "http",
-  "method": "POST",
-  "path_template": "/v1/profile"
- },
- "shape": {
-  "request": [
-   {
-    "name": "first_name",
-    "type": "string",
-    "required": true
-   },
-   {
-    "name": "weekly_digest",
-    "type": "string",
-    "required": false
-   },
-   {
-    "name": "phone",
-    "type": "string",
-    "required": true
-   },
-   {
-    "name": "email",
-    "type": "string",
-    "required": true
-   }
-  ],
-  "response": []
- }
 }

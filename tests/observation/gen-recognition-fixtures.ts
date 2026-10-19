@@ -4,7 +4,7 @@ import { captureApps, SNAPSHOTS_DIR } from "./support/recognition.ts";
 const check = process.argv.includes("--check");
 let stale = 0;
 for (const [name, snap] of await captureApps()) {
-  const text = `${JSON.stringify(snap, null, 1)}\n`;
+  const text = `${JSON.stringify(snap, null, 1)}\n`.replace(/http:\/\/127\.0\.0\.1:\d+/g, "http://fixture.invalid");
   const file = `${SNAPSHOTS_DIR}${name}.json`;
   if (check) {
     const have = await import("node:fs").then((fs) => (fs.existsSync(file) ? fs.readFileSync(file, "utf8") : ""));

@@ -12,7 +12,7 @@
    "rels": [],
    "scope": {
     "kind": "document",
-    "origin": "http://127.0.0.1:36245",
+    "origin": "http://fixture.invalid",
     "mode": null,
     "opaque": null
    }
