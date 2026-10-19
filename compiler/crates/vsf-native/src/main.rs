@@ -85,6 +85,14 @@ fn pack_bench(args: &[String]) -> ExitCode {
     ExitCode::SUCCESS
 }
 
+/// Authorize request: u32-LE environment length, the environment as JSON, then the contract document.
+fn authorize_frame(body: &[u8]) -> Result<Vec<u8>, &'static str> {
+    let (len, rest) = body.split_at_checked(4).ok_or("authorize.truncated")?;
+    let len = u32::from_le_bytes([len[0], len[1], len[2], len[3]]) as usize;
+    let (env, doc) = rest.split_at_checked(len).ok_or("authorize.truncated")?;
+    vsf_ir::api::authorize_report(doc, env)
+}
+
 /// Persistent worker: u32-LE length-prefixed request (op byte + payload), reply is status byte + u32-LE length + payload.
 fn serve() -> ExitCode {
     let code = serve_loop();
@@ -112,6 +120,7 @@ fn serve_loop() -> ExitCode {
             b'A' => vsf_observation::analyze(&frame[1..]).map_err(|e| e.code()),
             b'C' => vsf_fabric::compile_envelope(&frame[1..]).map_err(|e| e.code()),
             b'V' => vsf_ir::api::validate_bytes(&frame[1..]),
+            b'X' => authorize_frame(&frame[1..]),
             _ => Err("serve.unknown_op"),
         };
         let (status, payload) = match result {
