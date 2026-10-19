@@ -67,15 +67,6 @@
       "sha256": "0e0df42c86dcb6642d09324e179cdc5ef23a039f4f9d27baeb86e50e27fe4337"
     },
     {
-      "task_id": "VSF-B06-T07",
-      "name": "source-style-isolation",
-      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/sourcestyle.spec.ts",
-      "exit_code": 0,
-      "result": "PASS",
-      "log": "logs/VSF-B06-T07.source-style-isolation.log",
-      "sha256": "e1bcf57dfa6df0aad07f49b24f4dff16d94366b50fccd75526648cae6f6606cf"
-    },
-    {
       "task_id": "VSF-B06-T08",
       "name": "grid-1000-rows-responsiveness-memory",
       "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/perf.spec.ts",
@@ -407,6 +398,15 @@
       "result": "PASS",
       "log": "logs/GATE.wasm-host.log",
       "sha256": "6039c394506dd3a815b54f6a73ee6f2291c8a4df6d08aab3cb9b275b82e2bb8a"
+    },
+    {
+      "task_id": "VSF-B06-T07",
+      "name": "source-style-isolation",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/sourcestyle.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B06-T07.source-style-isolation.log",
+      "sha256": "2310d42173dd4cf85dbe1e3d8e05f3995a75892660d37038d3af08530cca6e61"
     }
   ]
 }

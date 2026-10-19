@@ -10,7 +10,7 @@ test.afterAll(async () => {
   await site.stop();
 });
 
-const SOURCE = `<main id="src"><h1 id="title">Source page</h1><button id="b">Source button</button><input id="i" value="typed"><p class="note" data-secret="s3cret">note</p></main>`;
+const SOURCE = `<main id="src"><h1 id="title">Source page</h1><button id="b">Source button</button><input id="i" value="typed"><p class="note" data-note="kept">note</p></main>`;
 const HEAD = `<style id="own">.note{color:rgb(1,2,3)}</style>`;
 
 const ev = <T>(page: Page, fn: string): Promise<T> =>
@@ -113,7 +113,7 @@ const REFUSED: [string, string, string][] = [
   ["webkit image-set", '.a{background:-webkit-image-set("https://evil.example/x.png" 1x)}', "style.external_url"],
   ["cross-fade", '.a{background:cross-fade(url(a.png), "https://evil.example/x.png", 50%)}', "style.external_url"],
   ["src()", '.a{background:src("https://evil.example/x.png")}', "style.external_url"],
-  ["attr() that can name a URL", ".a{content:attr(data-secret type(<url>))}", "style.external_url"],
+  ["attr() that can name a URL", ".a{content:attr(data-note type(<url>))}", "style.external_url"],
   ["an unknown function", ".a{width:frobnicate(3px)}", "style.unknown_function"],
   ["@import", '@import "https://evil.example/x.css";', "style.import"],
   ["@font-face", '@font-face{font-family:x;src:url("https://evil.example/f.woff2")}', "style.font_face"],
