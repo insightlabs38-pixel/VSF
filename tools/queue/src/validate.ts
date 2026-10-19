@@ -5,7 +5,7 @@ import { Ajv } from "ajv";
 import { checkEvidence } from "./evidence.ts";
 import type { Plan, State } from "./model.ts";
 import { TASK_ID } from "./model.ts";
-import { batchComplete, dependenciesDone, gateOf, nextTask } from "./queue.ts";
+import { batchComplete, correctionTasks, dependenciesDone, gateOf, nextTask } from "./queue.ts";
 import { renderTasks } from "./render.ts";
 import { checkReport } from "./report.ts";
 
@@ -66,6 +66,14 @@ export function validateQueue(p: Paths, plan: Plan, state: State, opts: Validate
     for (const d of t.dependencies) if (!planIds.has(d)) add("plan.unknown-dependency", `${t.id} -> ${d}`);
     if (t.origin === "adaptive" && (!t.adr || !t.acceptance))
       add("plan.adaptive-task", `${t.id} needs adr and acceptance`);
+    if (t.lane === "correction") {
+      if (t.origin !== "adaptive") add("plan.correction-task", `${t.id} must be an adaptive task`);
+      for (const key of ["scope", "contract", "positive", "adversarial", "evidence_required"] as const)
+        if (!t[key]) add("plan.correction-task", `${t.id} needs ${key}`);
+      const earlier = plan.tasks.filter((o) => o.batch === t.batch && o.sequence < t.sequence);
+      if (earlier.some((o) => o.lane === "correction" && !t.dependencies.length))
+        add("plan.correction-task", `${t.id} needs an explicit prerequisite`);
+    }
   }
   for (const id of planIds) if (!state.task_states[id]) add("state.missing-task", id);
   for (const id of Object.keys(state.task_states)) if (!planIds.has(id)) add("state.unknown-task", id);
@@ -110,6 +118,9 @@ export function validateQueue(p: Paths, plan: Plan, state: State, opts: Validate
       if (!batchComplete(plan, state, b.id))
         add("gate.accepted-incomplete", `${b.gate} accepted but ${b.id} has unfinished tasks`);
       if (gate.decision !== "PROCEED") add("gate.accepted-without-proceed", b.gate);
+      for (const c of correctionTasks(plan, b.id))
+        if (state.task_states[c.id]?.status !== "DONE")
+          add("gate.accepted-corrections-open", `${b.gate} accepted but ${c.id} is ${state.task_states[c.id]?.status}`);
       if (!gate.report) add("gate.report-missing", b.gate);
       else if (!existsSync(join(p.root, gate.report))) add("gate.report-file-missing", `${b.gate}: ${gate.report}`);
       else {

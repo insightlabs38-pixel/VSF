@@ -19,6 +19,13 @@ export interface PlanTask {
   dependencies: string[];
   origin?: "plan" | "adaptive";
   adr?: string;
+  /** Append-only tasks that must pass before their batch gate; they are ordered among themselves and ahead of the sequential lane. */
+  lane?: "correction";
+  scope?: string;
+  contract?: string;
+  positive?: string;
+  adversarial?: string;
+  evidence_required?: string;
 }
 
 export interface Plan {

@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B06-T01`
+**Next eligible:** `VSF-B06-T09`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -12,7 +12,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B03 | G3 | 8/8 | DONE | PROCEED |
 | B04 | G4 | 8/8 | DONE | PROCEED |
 | B05 | G5 | 8/8 | DONE | PROCEED |
-| B06 | G6 | 0/8 | READY | - |
+| B06 | G6 | 0/18 | READY | - |
 | B07 | G7 | 0/8 | TODO | - |
 | B08 | G8 | 0/8 | TODO | - |
 | B09 | G9 | 0/8 | TODO | - |
@@ -106,6 +106,16 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B06-T06` Preserve source widgets in place/side-by-side when unsupported and permitted
 - [ ] `VSF-B06-T07` Apply per-source styles without destructive DOM changes
 - [ ] `VSF-B06-T08` Benchmark pure UI operation responsiveness and memory
+- [ ] `VSF-B06-T09` Queue correction lane and G6 closure rule (queue tooling)
+- [ ] `VSF-B06-T10` F1 Credential classification and sensitive-data boundaries (observer)
+- [ ] `VSF-B06-T11` F3 Evidence-ledger identity and provenance (recognizer)
+- [ ] `VSF-B06-T12` F7 Trust context, revocation and version-invalidation foundations (IR 1.1.0 additive)
+- [ ] `VSF-B06-T13` F2 Protocol evidence authority and complete validation (recognizer)
+- [ ] `VSF-B06-T14` F4 Typed behavioural witness contract (recognizer)
+- [ ] `VSF-B06-T15` F5 Separate intent, declared effect, demonstrated effect and authorization (recognizer)
+- [ ] `VSF-B06-T16` F6 CI gate integrity and reproducible vulnerability checking
+- [ ] `VSF-B06-T17` F8 Foundational review findings (B00-B06 interfaces)
+- [ ] `VSF-B06-T18` Foundation-stabilization ADR, migrations and closing evidence
 
 ### B07 · Implement verified deterministic execution
 

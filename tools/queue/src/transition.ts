@@ -1,5 +1,5 @@
 import type { Decision, GateStatus, Plan, State, TaskStatus } from "./model.ts";
-import { batchAccepted, batchComplete, batchTasks, isEligible, nextTask } from "./queue.ts";
+import { batchAccepted, batchComplete, correctionTasks, isEligible, laneBefore, nextTask } from "./queue.ts";
 
 const ALLOWED: Record<TaskStatus, TaskStatus[]> = {
   TODO: ["READY"],
@@ -40,9 +40,7 @@ export function setTask(plan: Plan, state: State, id: string, to: TaskStatus, pa
   if (to === "READY" && !isEligible(plan, state, t))
     throw new Error(`${id}: dependencies or prerequisite gates are not satisfied`);
   if (to === "ACTIVE") {
-    const earlier = batchTasks(plan, t.batch).find(
-      (o) => o.sequence < t.sequence && state.task_states[o.id]?.status !== "DONE",
-    );
+    const earlier = laneBefore(plan, t).find((o) => state.task_states[o.id]?.status !== "DONE");
     if (earlier) throw new Error(`${id}: earlier task ${earlier.id} in the batch is not DONE`);
   }
   if (to === "DONE") {
@@ -74,6 +72,9 @@ export function setGate(
   if (!batch || !g) throw new Error(`unknown gate ${gate}`);
   if (status === "ACCEPTED") {
     if (decision !== "PROCEED") throw new Error(`${gate}: ACCEPTED requires decision PROCEED`);
+    const open = correctionTasks(plan, batch.id).filter((t) => state.task_states[t.id]?.status !== "DONE");
+    if (open.length > 0)
+      throw new Error(`${gate}: correction tasks unfinished: ${open.map((t) => t.id).join(", ")}`);
     if (!batchComplete(plan, state, batch.id)) throw new Error(`${gate}: ${batch.id} has unfinished tasks`);
     if (!(patch.report ?? g.report) || !(patch.evidence ?? g.evidence))
       throw new Error(`${gate}: ACCEPTED requires report and evidence`);
