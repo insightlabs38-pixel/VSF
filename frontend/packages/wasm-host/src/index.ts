@@ -91,3 +91,5 @@ export async function loadFabric(wasm: BufferSource, expectedAbi: number = EXPEC
     validateIr: (document) => call(ex.vsf_ir_validate, document),
   };
 }
+
+export { type ReportedViolation, requireValidated, Validated, ValidationRefused, validate } from "./validated.ts";

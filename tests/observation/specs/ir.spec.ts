@@ -49,7 +49,7 @@ test("an observation built from the replica is a valid ObservationIR with its ga
   const { world, h, stats, host, pack } = await observe(page);
   const body = observationBody(h.collector.replica, stats, {}, host);
   const decoded = decodeDocument(documentBytes(body));
-  expect(decoded.family).toBe("observation");
+  expect(decoded.unsafe().family).toBe("observation");
   expect(body.observation_epoch).toBe(h.collector.replica.epoch);
   expect(body.origin).toBe(world.a.url);
   expect(body.mode).toBe("full");

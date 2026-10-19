@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { parse, sha256Hex } from "@vsf/schema";
 import {
   decodeDocument,
-  decodeDocumentValueVersioned,
+  decodeDocumentValue,
   documentDigestAt,
   encodeDocument,
   encodeDocumentAt,
@@ -18,9 +18,15 @@ test("every valid fixture decodes and re-encodes to identical bytes", () => {
   assert.ok(names.length >= 10);
   for (const name of names) {
     const bytes = validBytes(name);
-    const { body, version } = decodeDocumentValueVersioned(parse(bytes));
+    const doc = decodeDocumentValue(parse(bytes));
+    const body = doc.unsafe();
+    const version = doc.version;
     assert.deepEqual(encodeDocumentAt(body, version), bytes, name);
-    assert.deepEqual(decodeDocument(encodeDocument(body)), body, `${name}: re-encoding at the current version`);
+    assert.deepEqual(
+      decodeDocument(encodeDocument(body)).unsafe(),
+      body,
+      `${name}: re-encoding at the current version`,
+    );
   }
 });
 
@@ -36,13 +42,15 @@ test("pinned digests written by the Rust authority match this implementation", a
     const bytes = validBytes(name);
     assert.equal(bytes.length, e.get("canonical_bytes"), name);
     assert.equal(await sha256Hex(bytes), e.get("canonical_sha256"), name);
-    const { body, version } = decodeDocumentValueVersioned(parse(bytes));
+    const doc = decodeDocumentValue(parse(bytes));
+    const body = doc.unsafe();
+    const version = doc.version;
     assert.equal(await documentDigestAt(body, version), e.get("document_digest"), name);
   }
 });
 
 test("NFC and NFD text are preserved and stay distinct", () => {
-  const body = decodeDocument(validBytes("semantic-orders"));
+  const body = decodeDocument(validBytes("semantic-orders")).unsafe();
   assert.equal(body.family, "semantic");
   if (body.family !== "semantic") return;
   const labels = body.body.entities.map((e) => e.label);

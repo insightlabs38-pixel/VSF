@@ -78,13 +78,13 @@ importers:
 
   frontend/packages/wasm-host:
     dependencies:
+      '@vsf/ir':
+        specifier: workspace:*
+        version: link:../ir
       '@vsf/schema':
         specifier: workspace:*
         version: link:../schema
     devDependencies:
-      '@vsf/ir':
-        specifier: workspace:*
-        version: link:../ir
       '@vsf/observer':
         specifier: workspace:*
         version: link:../observer

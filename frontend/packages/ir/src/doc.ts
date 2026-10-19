@@ -25,12 +25,28 @@ export async function typedDigest(kind: string, canonical: Uint8Array): Promise<
   return `sha256:${await sha256Hex(input)}`;
 }
 
-export function decodeDocumentValue(v: Value): Body {
-  return decodeDocumentValueVersioned(v).body;
+/** A decoded document no validation has accepted; it can never be executed. */
+export class Unvalidated {
+  readonly #body: Body;
+  readonly version: rt.Version;
+
+  constructor(body: Body, version: rt.Version) {
+    this.#body = body;
+    this.version = version;
+  }
+
+  /** The decoded body, checked for shape only. */
+  unsafe(): Body {
+    return this.#body;
+  }
 }
 
-/** Also reports the schema version the document was written under. */
-export function decodeDocumentValueVersioned(v: Value): { body: Body; version: rt.Version } {
+export function decodeDocumentValue(v: Value): Unvalidated {
+  const { body, version } = decodeEnvelope(v);
+  return new Unvalidated(body, version);
+}
+
+function decodeEnvelope(v: Value): { body: Body; version: rt.Version } {
   const o = Obj.of(v, "");
   const schema = enumStr(o.req("schema"), "/schema");
   const digest = enumStr(o.req("schema_digest"), "/schema_digest");
@@ -53,7 +69,7 @@ export function decodeDocumentValueVersioned(v: Value): { body: Body; version: r
   return { body: decodeBody(family, body, "/body", { version: got }), version: got };
 }
 
-export function decodeDocument(bytes: Uint8Array): Body {
+export function decodeDocument(bytes: Uint8Array): Unvalidated {
   let v: Value;
   try {
     v = parse(bytes);

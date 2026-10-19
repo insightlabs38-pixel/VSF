@@ -12,7 +12,8 @@
     }
   },
   "dependencies": {
-    "@vsf/schema": "workspace:*"
+    "@vsf/schema": "workspace:*",
+    "@vsf/ir": "workspace:*"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -20,7 +21,6 @@
     "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts"
   },
   "devDependencies": {
-    "@vsf/ir": "workspace:*",
     "@vsf/observer": "workspace:*"
   }
 }
