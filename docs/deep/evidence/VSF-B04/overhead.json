@@ -1,0 +1,174 @@
+{
+  "schema": "vsf-observation-overhead-v1",
+  "cycles": 300,
+  "results": [
+    {
+      "nodes": 1007,
+      "baselineBytes": 124643,
+      "baselineOps": 1009,
+      "cold": {
+        "n": 12,
+        "p50": 32.5,
+        "p95": 64.29999999981374,
+        "max": 64.29999999981374
+      },
+      "warm": {
+        "n": 36,
+        "p50": 11.600000000558794,
+        "p95": 16.59999999962747,
+        "max": 17.100000000558794
+      },
+      "coldTransport": {
+        "n": 12,
+        "p50": 12.600000000558794,
+        "p95": 19,
+        "max": 19
+      },
+      "steadyFlush": {
+        "n": 300,
+        "p50": 0.20000000018626451,
+        "p95": 0.599999999627471,
+        "max": 3.099999999627471
+      },
+      "steadyMutate": {
+        "n": 300,
+        "p50": 0,
+        "p95": 0.10000000055879354,
+        "max": 1.7999999998137355
+      },
+      "cpuSecondsObserved": 0.13999999999999999,
+      "cpuSecondsControl": 0.039999999999999994,
+      "cpuMsPerCycleObserved": 0.46666666666666656,
+      "cpuMsPerCycleControl": 0.1333333333333333,
+      "cycles": 300,
+      "scriptSecondsObserved": 0,
+      "scriptSecondsControl": 0,
+      "rssObserved": 143011840,
+      "rssControl": 132096000,
+      "peakRssObserved": 148520960,
+      "peakRssControl": 133505024,
+      "heapObserved": 1534420,
+      "heapControl": 620612,
+      "heapPerNode": 907.4558093346574,
+      "heapRounds": [
+        1772924,
+        1884880,
+        1901548,
+        1918876
+      ],
+      "heapGrowthBytes": 145952
+    },
+    {
+      "nodes": 10007,
+      "baselineBytes": 1268660,
+      "baselineOps": 10009,
+      "cold": {
+        "n": 12,
+        "p50": 132.70000000018626,
+        "p95": 297.6000000005588,
+        "max": 297.6000000005588
+      },
+      "warm": {
+        "n": 36,
+        "p50": 88.59999999962747,
+        "p95": 130.80000000074506,
+        "max": 133.20000000018626
+      },
+      "coldTransport": {
+        "n": 12,
+        "p50": 108.09999999962747,
+        "p95": 200.80000000074506,
+        "max": 200.80000000074506
+      },
+      "steadyFlush": {
+        "n": 300,
+        "p50": 0.2999999998137355,
+        "p95": 0.599999999627471,
+        "max": 1.900000000372529
+      },
+      "steadyMutate": {
+        "n": 300,
+        "p50": 0,
+        "p95": 0.10000000055879354,
+        "max": 0.20000000018626451
+      },
+      "cpuSecondsObserved": 0.20999999999999996,
+      "cpuSecondsControl": 0.030000000000000027,
+      "cpuMsPerCycleObserved": 0.7,
+      "cpuMsPerCycleControl": 0.10000000000000009,
+      "cycles": 300,
+      "scriptSecondsObserved": 0,
+      "scriptSecondsControl": 0,
+      "rssObserved": 179675136,
+      "rssControl": 163196928,
+      "peakRssObserved": 223383552,
+      "peakRssControl": 173826048,
+      "heapObserved": 4729060,
+      "heapControl": 620612,
+      "heapPerNode": 410.5574098131308,
+      "heapRounds": [
+        4974684,
+        5103016,
+        5126952,
+        5172328
+      ],
+      "heapGrowthBytes": 197644
+    },
+    {
+      "nodes": 50009,
+      "baselineBytes": 6475587,
+      "baselineOps": 50011,
+      "cold": {
+        "n": 5,
+        "p50": 505.20000000018626,
+        "p95": 936.2999999998137,
+        "max": 936.2999999998137
+      },
+      "warm": {
+        "n": 15,
+        "p50": 399.20000000018626,
+        "p95": 529.7000000001863,
+        "max": 529.7000000001863
+      },
+      "coldTransport": {
+        "n": 5,
+        "p50": 560.9000000003725,
+        "p95": 973.4000000003725,
+        "max": 973.4000000003725
+      },
+      "steadyFlush": {
+        "n": 300,
+        "p50": 0.39999999944120646,
+        "p95": 1.800000000745058,
+        "max": 6.199999999254942
+      },
+      "steadyMutate": {
+        "n": 300,
+        "p50": 0.10000000055879354,
+        "p95": 0.5,
+        "max": 1.400000000372529
+      },
+      "cpuSecondsObserved": 0.4299999999999997,
+      "cpuSecondsControl": 0.16999999999999993,
+      "cpuMsPerCycleObserved": 1.4333333333333325,
+      "cpuMsPerCycleControl": 0.5666666666666664,
+      "cycles": 300,
+      "scriptSecondsObserved": 0,
+      "scriptSecondsControl": 0,
+      "rssObserved": 339914752,
+      "rssControl": 283348992,
+      "peakRssObserved": 529956864,
+      "peakRssControl": 366538752,
+      "heapObserved": 19130880,
+      "heapControl": 620612,
+      "heapPerNode": 370.138735027695,
+      "heapRounds": [
+        19406016,
+        19508668,
+        19534404,
+        19586512
+      ],
+      "heapGrowthBytes": 180496
+    }
+  ]
+}

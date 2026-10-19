@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B04-T05",
+  "status": "DONE",
+  "branch": "vsf/b04-browser-observation",
+  "base_commit": "aed1c555298ad09e53b17226940a86fbbf73bd70",
+  "commit": "5c8eb32af1187d1b93c1738011b4f146957785c1",
+  "paths": [
+    "frontend/packages/observer/src/sensitive.ts",
+    "frontend/packages/observer/src/capture.ts",
+    "tests/observation/specs/sensitive.spec.ts"
+  ],
+  "acceptance": "Credential regions yield no text and values are never read; secret-shaped text is redacted at capture and when it appears later; account text is flagged, stays local and is withheld from shared evidence; diagnostics hold codes and numbers only; nothing leaves the page.",
+  "positive": {
+    "fixture": "6 browser tests with planted passwords, tokens, keys, personal data and a shadow-hosted credential region",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/sensitive.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "no planted secret appears in any batch, shared evidence or diagnostics; no fetch, XHR or beacon and no request outside the page origin",
+    "command": "pnpm --filter @vsf/observation-tests exec playwright test specs/sensitive.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/queue/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf IR 1.0.0 (unchanged); vsf-protocol-evidence-v1 new",
+    "primitive": "no primitive change"
+  },
+  "security_and_source_permissions": "The observer reads structure and declared labels only; form values are never read, credential regions yield no text, account text is flagged and withheld from shared evidence, and no network surface exists.",
+  "performance_memory_storage": "Classification is a few selector and regex checks per element.",
+  "known_limitations": [
+    "Personal-data detection is heuristic; explicit data-vsf-scope markers are authoritative"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B04/logs/VSF-B04-T05.sensitive-scopes-redaction-and-local-mode.log"
+  ],
+  "review_result": "ACCEPTED"
+}

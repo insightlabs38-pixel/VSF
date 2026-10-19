@@ -29,6 +29,7 @@ test("origins must be exact http(s) origins", () => {
 test("commands are validated strictly", () => {
   assert.deepEqual(parseCommand({ type: "status", extra: 1 }), { type: "status" });
   assert.deepEqual(parseCommand({ type: "capture", tabId: 7 }), { type: "capture", tabId: 7 });
+  assert.deepEqual(parseCommand({ type: "observe", tabId: 7 }), { type: "observe", tabId: 7 });
   assert.deepEqual(parseCommand({ type: "grant", origin: "https://a.test" }), {
     type: "grant",
     origin: "https://a.test",
@@ -44,6 +45,9 @@ test("commands are validated strictly", () => {
     { type: "capture", tabId: -1 },
     { type: "capture", tabId: 1.2 },
     { type: "capture", tabId: "1" },
+    { type: "observe" },
+    { type: "observe", tabId: -1 },
+    { type: "observe", tabId: "1" },
     { type: "grant", origin: "https://a.test/x" },
     { type: "revoke" },
     { type: "exec", code: "1" },

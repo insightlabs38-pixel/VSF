@@ -1,0 +1,13 @@
+$ pnpm --filter @vsf/observation-tests exec playwright test specs/sensitive.spec.ts
+
+Running 6 tests using 1 worker
+
+  ✓  1 specs/sensitive.spec.ts:38:1 › credentials never enter the observation, whether typed, labelled or in a credential region (362ms)
+  ✓  2 specs/sensitive.spec.ts:56:1 › secret-shaped text is redacted at capture and again when it appears later (178ms)
+  ✓  3 specs/sensitive.spec.ts:74:1 › account text stays local, is flagged, and is withheld from shared evidence (143ms)
+  ✓  4 specs/sensitive.spec.ts:96:1 › a scope marker on a shadow host covers the shadow tree (150ms)
+  ✓  5 specs/sensitive.spec.ts:106:1 › diagnostics hold codes and numbers only and never page text (140ms)
+  ✓  6 specs/sensitive.spec.ts:137:1 › local mode sends nothing anywhere: no request leaves the page's own origin (174ms)
+
+  6 passed (2.5s)
+[exit 0]

@@ -1,0 +1,60 @@
+$ pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/replica.test.ts
+TAP version 13
+# Subtest: a full batch builds the tree and the order of siblings follows the after pointers
+ok 1 - a full batch builds the tree and the order of siblings follows the after pointers
+  ---
+  duration_ms: 4.719301
+  type: 'test'
+  ...
+# Subtest: a skipped sequence number is a gap, changes nothing and a later replay repairs it
+ok 2 - a skipped sequence number is a gap, changes nothing and a later replay repairs it
+  ---
+  duration_ms: 2.183126
+  type: 'test'
+  ...
+# Subtest: a batch that fails midway is rolled back completely
+ok 3 - a batch that fails midway is rolled back completely
+  ---
+  duration_ms: 0.830028
+  type: 'test'
+  ...
+# Subtest: a digest mismatch is divergence even when every op applied cleanly
+ok 4 - a digest mismatch is divergence even when every op applied cleanly
+  ---
+  duration_ms: 0.382573
+  type: 'test'
+  ...
+# Subtest: deltas need their own epoch and a newer full batch replaces everything
+ok 5 - deltas need their own epoch and a newer full batch replaces everything
+  ---
+  duration_ms: 0.506704
+  type: 'test'
+  ...
+# Subtest: removing a subtree drops every descendant and set rewrites only mutable fields
+ok 6 - removing a subtree drops every descendant and set rewrites only mutable fields
+  ---
+  duration_ms: 0.762564
+  type: 'test'
+  ...
+# Subtest: canonical form is independent of node ids and relations point at positions
+ok 7 - canonical form is independent of node ids and relations point at positions
+  ---
+  duration_ms: 0.884575
+  type: 'test'
+  ...
+# Subtest: the pack snapshot keeps structure, drops relations and masks to the pack flag bits
+ok 8 - the pack snapshot keeps structure, drops relations and masks to the pack flag bits
+  ---
+  duration_ms: 0.642165
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 244.939593
+[exit 0]

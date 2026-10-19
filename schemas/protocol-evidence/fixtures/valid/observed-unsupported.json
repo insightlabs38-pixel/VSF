@@ -1,0 +1,45 @@
+{
+  "schema": "vsf-protocol-evidence-v1",
+  "id": "pev_cccccccccccccccccccc",
+  "source_app_id": "acme:crm-eu1",
+  "origin": "https://crm.example.com",
+  "kind": "observed_traffic",
+  "stability": "undocumented",
+  "support": "unsupported",
+  "provenance": {
+    "method": "runtime_observation",
+    "reference": "https://docs.example.com/api/orders",
+    "recorded_at": 1790000000000,
+    "authorization": {
+      "basis": "user_grant",
+      "principal_ref": "prin_0123456789abcdef0123456789abcdef",
+      "scope": "observe.protocol",
+      "granted_at": 1789999999000
+    }
+  },
+  "endpoint": {
+    "protocol": "http",
+    "method": "GET",
+    "path_template": "/v1/orders/{order_id}"
+  },
+  "shape": {
+    "request": [],
+    "response": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "total",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "note",
+        "type": "string",
+        "required": false
+      }
+    ]
+  }
+}

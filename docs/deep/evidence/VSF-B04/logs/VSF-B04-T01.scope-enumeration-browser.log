@@ -1,0 +1,14 @@
+$ pnpm --filter @vsf/observation-tests exec playwright test specs/scope.spec.ts
+
+Running 7 tests using 1 worker
+
+  ✓  1 specs/scope.spec.ts:20:1 › every document, frame and shadow root is enumerated and inaccessible ones are placeholders (285ms)
+  ✓  2 specs/scope.spec.ts:42:1 › the baseline carries opaque placeholders with their origin and never the inaccessible content (190ms)
+  ✓  3 specs/scope.spec.ts:67:1 › open shadow roots are entered at any depth and closed ones only when the runtime can see them (366ms)
+  ✓  4 specs/scope.spec.ts:99:1 › the runtime advertises what it cannot see and the baseline reports the matching gaps (176ms)
+  ✓  5 specs/scope.spec.ts:132:1 › an origin without a grant is refused before any content is read (156ms)
+  ✓  6 specs/scope.spec.ts:144:1 › scope depth and count limits turn the excess into explicit placeholders (144ms)
+  ✓  7 specs/scope.spec.ts:156:1 › a frame that navigates is replaced in place under a new generation (211ms)
+
+  7 passed (2.8s)
+[exit 0]

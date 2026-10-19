@@ -34,3 +34,4 @@ Revisit when: trigger
 | [027](ADR-027-versioned-ir-contracts.md) | Versioned IR contracts, semantics and identity | accepted |
 | [028](ADR-028-schema-compatibility-and-promotion.md) | Schema compatibility and promotion policy | accepted |
 | [029](ADR-029-primitive-registry-and-package.md) | Primitive registry, conformance harness and signed package | accepted |
+| [030](ADR-030-browser-observation-and-epochs.md) | Browser observation, epochs and incremental events | accepted |

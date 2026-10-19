@@ -1,0 +1,10 @@
+$ pnpm --filter @vsf/observation-tests run bench
+
+> @vsf/observation-tests@0.0.0 bench /home/user/VSF/tests/observation
+> node --conditions=source bench-overhead.ts
+
+1007 nodes | baseline 122 KiB, 1009 ops | cold (first layout included) p50 32.5 p95 64.3 ms, warm p50 11.6 p95 16.6 ms, hand-off p50 12.6 ms | steady flush p50 0.20 p95 0.60 ms | cpu/cycle 0.47 vs 0.13 ms | rss 136 vs 126 MiB, peak 142 vs 127 | heap/node 907 B | growth 145952 B
+10007 nodes | baseline 1239 KiB, 10009 ops | cold (first layout included) p50 132.7 p95 297.6 ms, warm p50 88.6 p95 130.8 ms, hand-off p50 108.1 ms | steady flush p50 0.30 p95 0.60 ms | cpu/cycle 0.70 vs 0.10 ms | rss 171 vs 156 MiB, peak 213 vs 166 | heap/node 411 B | growth 197644 B
+50009 nodes | baseline 6324 KiB, 50011 ops | cold (first layout included) p50 505.2 p95 936.3 ms, warm p50 399.2 p95 529.7 ms, hand-off p50 560.9 ms | steady flush p50 0.40 p95 1.80 ms | cpu/cycle 1.43 vs 0.57 ms | rss 324 vs 270 MiB, peak 505 vs 350 | heap/node 370 B | growth 180496 B
+wrote /home/user/VSF/artifacts/observation/overhead.json
+[exit 0]

@@ -1,0 +1,42 @@
+{
+  "schema": "vsf-protocol-evidence-v1",
+  "id": "pev_aaaaaaaaaaaaaaaaaaaa",
+  "source_app_id": "acme:crm-eu1",
+  "origin": "https://crm.example.com",
+  "kind": "published_schema",
+  "stability": "documented",
+  "support": "candidate",
+  "provenance": {
+    "method": "published_schema",
+    "reference": "https://api.example.com/openapi",
+    "recorded_at": 1790000000000,
+    "authorization": {
+      "basis": "source_terms"
+    }
+  },
+  "endpoint": {
+    "protocol": "http",
+    "method": "GET",
+    "path_template": "/v1/orders/{order_id}"
+  },
+  "shape": {
+    "request": [],
+    "response": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "total",
+        "type": "number",
+        "required": true
+      },
+      {
+        "name": "note",
+        "type": "string",
+        "required": false
+      }
+    ]
+  }
+}

@@ -125,6 +125,59 @@ async function capture(tabId: number): Promise<Reply> {
   }
 }
 
+interface ObserveResult {
+  origin: string;
+  epoch: number;
+  nodes: number;
+  state: string;
+  captureMs: number;
+  capabilities: unknown[];
+  missing: unknown[];
+  shadow: { open: number; closed: number };
+  env: unknown;
+  b64: string;
+}
+
+async function observe(tabId: number): Promise<Reply> {
+  let origin: string | null = null;
+  try {
+    const tab = await chrome.tabs.get(tabId);
+    origin = tab.url ? normalizeOrigin(new URL(tab.url).origin) : null;
+  } catch {
+    return deny("bad_request", "no such tab");
+  }
+  if (origin === null) return deny("origin_unobservable");
+  if (!(origin in (await grants()))) return deny("origin_not_granted");
+  await bump((s) => {
+    s.executeCalls[origin as string] = (s.executeCalls[origin as string] ?? 0) + 1;
+  });
+  try {
+    await chrome.scripting.executeScript({ target: { tabId }, files: ["observe.js"] });
+    const results = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: (o: string) => (globalThis as unknown as { __vsfObserve(o: string): unknown }).__vsfObserve(o),
+      args: [origin],
+    });
+    const r = results[0]?.result as ObserveResult | undefined;
+    if (!r) return deny("inject_failed", "no result");
+    if (r.origin !== origin) return deny("origin_changed");
+    const bin = atob(r.b64);
+    const pack = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) pack[i] = bin.charCodeAt(i);
+    const summary = JSON.parse(new TextDecoder().decode((await getFabric()).analyzePack(pack))) as Record<
+      string,
+      unknown
+    >;
+    await bump((s) => {
+      s.captures += 1;
+    });
+    const { b64: _unused, ...rest } = r;
+    return { ok: true, ...rest, summary, packBytes: pack.length };
+  } catch (e) {
+    return deny("inject_failed", e instanceof Error ? e.message.slice(0, 200) : "unknown");
+  }
+}
+
 async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promise<Reply> {
   await ready;
   if (!isCommandSender(sender, chrome.runtime.id, chrome.runtime.getURL("panel.html")))
@@ -154,6 +207,8 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
     }
     case "capture":
       return capture(cmd.tabId);
+    case "observe":
+      return observe(cmd.tabId);
   }
 }
 

@@ -1,0 +1,42 @@
+$ pnpm --filter @vsf/observation-tests exec node --conditions=source --test test/environment.test.ts
+TAP version 13
+# Subtest: declared locales are normalised and anything the IR would reject stays unknown
+ok 1 - declared locales are normalised and anything the IR would reject stays unknown
+  ---
+  duration_ms: 1.382435
+  type: 'test'
+  ...
+# Subtest: viewport buckets change exactly at the stated widths
+ok 2 - viewport buckets change exactly at the stated widths
+  ---
+  duration_ms: 1.348618
+  type: 'test'
+  ...
+# Subtest: the overlay uses only what is required and marks unknowns with a symbol no value can take
+ok 3 - the overlay uses only what is required and marks unknowns with a symbol no value can take
+  ---
+  duration_ms: 0.349216
+  type: 'test'
+  ...
+# Subtest: flag order and awkward values cannot alias two different environments
+ok 4 - flag order and awkward values cannot alias two different environments
+  ---
+  duration_ms: 0.178182
+  type: 'test'
+  ...
+# Subtest: variant inputs never invent a locale or a flag value
+ok 5 - variant inputs never invent a locale or a flag value
+  ---
+  duration_ms: 1.419202
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 219.995515
+[exit 0]

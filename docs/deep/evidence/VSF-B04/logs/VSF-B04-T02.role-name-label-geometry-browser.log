@@ -1,0 +1,13 @@
+$ pnpm --filter @vsf/observation-tests exec playwright test specs/capture.spec.ts
+
+Running 6 tests using 1 worker
+
+  ✓  1 specs/capture.spec.ts:38:1 › names, labels and relations survive RTL, nesting and disabled controls (263ms)
+  ✓  2 specs/capture.spec.ts:69:1 › bidirectional marks and Unicode form are kept byte for byte and values are never read (140ms)
+  ✓  3 specs/capture.spec.ts:79:1 › geometry is read only for the nodes asked about and carries a freshness stamp (148ms)
+  ✓  4 specs/capture.spec.ts:106:1 › a label that changes updates every control named by it (142ms)
+  ✓  5 specs/capture.spec.ts:124:1 › labels that appear, disappear or retarget rename the controls they name (171ms)
+  ✓  6 specs/capture.spec.ts:159:1 › naming thousands of controls that have ids stays linear in the page size (2.0s)
+
+  6 passed (4.1s)
+[exit 0]

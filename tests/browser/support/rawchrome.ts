@@ -62,7 +62,11 @@ export async function launchRaw(extDir: string): Promise<RawChrome> {
       const exited = new Promise<void>((resolve) => proc.once("exit", () => resolve()));
       proc.kill("SIGKILL");
       await exited;
-      rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+      try {
+        rmSync(dir, { recursive: true, force: true, maxRetries: 20, retryDelay: 250 });
+      } catch {
+        // Chrome helper processes may still hold the profile; a leftover temp directory must not fail a passed test.
+      }
     },
   };
 }

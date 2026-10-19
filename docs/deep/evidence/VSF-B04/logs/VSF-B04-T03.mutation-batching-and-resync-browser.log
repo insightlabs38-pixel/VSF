@@ -1,0 +1,25 @@
+$ pnpm --filter @vsf/observation-tests exec playwright test specs/mutations.spec.ts
+
+Running 18 tests using 1 worker
+
+  ✓   1 specs/mutations.spec.ts:34:1 › batches carry a fixed epoch and a sequence that rises by exactly one (276ms)
+  ✓   2 specs/mutations.spec.ts:52:1 › a burst of changes inside one tick is one batch and an add that is undone emits nothing (239ms)
+  ✓   3 specs/mutations.spec.ts:77:1 › a small change reconciles by touching only that change, not by rescanning the page (2.2s)
+  ✓   4 specs/mutations.spec.ts:111:1 › recreated nodes are removed and added again and the replica still equals the page (172ms)
+  ✓   5 specs/mutations.spec.ts:128:1 › reordering and moving keep the order and the identities consistent (137ms)
+  ✓   6 specs/mutations.spec.ts:142:1 › a lost batch is detected by its sequence gap and repaired by replay without a full rescan (150ms)
+  ✓   7 specs/mutations.spec.ts:165:1 › when the lost range is no longer buffered the page falls back to one full resync in a new epoch (200ms)
+  ✓   8 specs/mutations.spec.ts:187:1 › a corrupted batch is rejected as divergence and healed by a full resync (187ms)
+  ✓   9 specs/mutations.spec.ts:210:1 › a subtree resync rebuilds only that subtree inside the same epoch (203ms)
+  ✓  10 specs/mutations.spec.ts:226:1 › replacing the document starts a new epoch instead of patching the old one (140ms)
+  ✓  11 specs/mutations.spec.ts:243:1 › an input limit truncates the baseline visibly instead of silently (131ms)
+  ✓  12 specs/mutations.spec.ts:260:1 › changes inside shadow roots and same-origin frames are observed and reconciled (191ms)
+  ✓  13 specs/mutations.spec.ts:284:1 › removing a host drops its shadow tree and frame document and nothing keeps reporting for them (139ms)
+  ✓  14 specs/mutations.spec.ts:306:1 › hiding a container clears visibility below it and showing it restores the same state (146ms)
+  ✓  15 specs/mutations.spec.ts:322:1 › class and style churn that changes nothing observable publishes nothing (135ms)
+  ✓  16 specs/mutations.spec.ts:337:1 › direct text-node edits update the owning element (128ms)
+  ✓  17 specs/mutations.spec.ts:349:1 › a shadow root attached after the element was captured is invisible until rescan, one attached on insertion is not (144ms)
+  ✓  18 specs/mutations.spec.ts:379:1 › a stopped session publishes nothing more (215ms)
+
+  18 passed (6.6s)
+[exit 0]

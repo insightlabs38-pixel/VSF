@@ -56,6 +56,13 @@ export async function buildExtension(v: Variant, outRoot = join(root, "artifacts
   });
   await build({
     ...common,
+    entryPoints: [join(here, "src/observe.ts")],
+    outfile: join(out, "observe.js"),
+    format: "iife",
+    conditions: ["source"],
+  });
+  await build({
+    ...common,
     entryPoints: [join(here, "src/panel.ts")],
     outfile: join(out, "panel.js"),
     format: "esm",
