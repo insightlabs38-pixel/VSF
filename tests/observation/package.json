@@ -5,10 +5,15 @@
   "type": "module",
   "license": "UNLICENSED",
   "dependencies": {
-    "@vsf/observer": "workspace:*"
+    "@vsf/observer": "workspace:*",
+    "@vsf/ir": "workspace:*",
+    "@vsf/schema": "workspace:*"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts && playwright test"
+    "test:unit": "node --conditions=source --test --test-reporter=spec test/*.test.ts",
+    "test:browser": "playwright test",
+    "test": "pnpm run test:unit && pnpm run test:browser",
+    "bench": "node --conditions=source bench-overhead.ts"
   }
 }

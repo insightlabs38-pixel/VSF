@@ -97,3 +97,50 @@ export const secretsPage = `<!doctype html>
   document.getElementById("host").setAttribute("data-vsf-scope", "credential");
 </script>
 </body></html>`;
+
+export const spaPage = `<!doctype html>
+<html lang="en"><body>
+<nav><a id="go-orders" href="/spa/orders" data-route>Orders</a> <a id="go-customers" href="/spa/customers" data-route>Customers</a> <a id="go-home" href="/spa" data-route>Home</a></nav>
+<main id="view"></main>
+<script>
+  const views = {
+    "/spa": "<h1>Home</h1><p>Welcome</p>",
+    "/spa/orders": "<h1>Orders</h1><ul><li>Order A</li><li>Order B</li></ul>",
+    "/spa/customers": "<h1>Customers</h1><table><tr><th>Name</th></tr><tr><td>Zed</td></tr></table>",
+  };
+  const render = () => { document.getElementById("view").innerHTML = views[location.pathname] ?? "<h1>Not found</h1>"; };
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-route]");
+    if (!a) return;
+    e.preventDefault();
+    history.pushState({}, "", a.getAttribute("href"));
+    render();
+  });
+  addEventListener("popstate", render);
+  render();
+</script>
+</body></html>`;
+
+export const mpaPage = (n: number): string => `<!doctype html>
+<html lang="en"><body><h1>Page ${n}</h1><p>content of page ${n}</p><a id="next" href="/mpa/${n + 1}">next</a></body></html>`;
+
+export const framesPage = (cross: string): string => `<!doctype html>
+<html lang="en"><body><h1>Frames</h1>
+<iframe id="f1" src="/frames/a"></iframe>
+<iframe id="f2" src="${cross}/frames/x"></iframe>
+</body></html>`;
+
+export const framePage = (label: string): string => `<!doctype html>
+<html lang="en"><body><h2>frame ${label}</h2><button>btn ${label}</button></body></html>`;
+
+export const richPage = `<!doctype html>
+<html lang="en"><body>
+<div id="box"><p id="p1">one</p><p id="p2">two</p><button id="b1" type="button">go</button></div>
+<div id="shadow-host"></div>
+<iframe id="inner" srcdoc="<ul id='il'><li>a</li></ul>"></iframe>
+<p id="editable" contenteditable="true">edit me</p>
+<script>
+  const root = document.getElementById("shadow-host").attachShadow({ mode: "open" });
+  root.innerHTML = '<span id="s1">shadow one</span><button id="sb" type="button" aria-label="shadow button">x</button>';
+</script>
+</body></html>`;

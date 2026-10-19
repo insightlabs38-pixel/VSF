@@ -1,16 +1,17 @@
 const KEY = "vsf.epoch";
 
-/** Per-tab, per-origin counter that survives reloads; storage that is unavailable falls back to memory. */
-export function persistentEpochs(win: Window): () => number {
+/** Strictly increasing per tab and origin, and never below the wall clock so lost storage cannot reuse an epoch. */
+export function persistentEpochs(win: Window, now: () => number = Date.now): () => number {
   let memory = 0;
   return () => {
     try {
       const prev = Number(win.sessionStorage.getItem(KEY));
-      const next = (Number.isSafeInteger(prev) && prev >= 0 ? prev : 0) + 1;
+      const next = Math.max((Number.isSafeInteger(prev) && prev >= 0 ? prev : 0) + 1, now());
       win.sessionStorage.setItem(KEY, String(next));
       return next;
     } catch {
-      return ++memory;
+      memory = Math.max(memory + 1, now());
+      return memory;
     }
   };
 }

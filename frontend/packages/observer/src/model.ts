@@ -310,7 +310,7 @@ export class Replica {
     this.url = null;
   }
 
-  /** Id-free structure: relations point at preorder positions so independent captures compare equal. */
+  /** Id-free structure; relations are preorder positions and generations are history, so independent captures compare equal. */
   canonical(): CanonNode[] {
     const order = new Map<number, number>();
     const walk = (ids: number[]): void => {
@@ -329,7 +329,7 @@ export class Replica {
         r.text,
         r.flags,
         r.rels.map(([k, t]): [string, number] => [k, order.get(t) ?? -1]),
-        r.scope,
+        r.scope ? { ...r.scope, generation: 0 } : null,
         (this.children.get(id) ?? []).map(build),
       ];
     };

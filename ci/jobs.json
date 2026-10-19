@@ -278,6 +278,28 @@
         "name": "browser-tests",
         "cmd": ["pnpm", "--filter", "@vsf/browser-tests", "run", "test"]
       }
+    ],
+    "observation": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "build-ts",
+        "cmd": ["pnpm", "build:ts"]
+      },
+      {
+        "name": "typecheck",
+        "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "typecheck"]
+      },
+      {
+        "name": "unit-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "test:unit"]
+      },
+      {
+        "name": "browser-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/observation-tests", "run", "test:browser"]
+      }
     ]
   }
 }

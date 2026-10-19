@@ -2,7 +2,8 @@ export type Command =
   | { type: "status" }
   | { type: "grant"; origin: string }
   | { type: "revoke"; origin: string }
-  | { type: "capture"; tabId: number };
+  | { type: "capture"; tabId: number }
+  | { type: "observe"; tabId: number };
 
 export type DenyReason =
   | "sender_not_allowed"
@@ -44,8 +45,9 @@ export function parseCommand(raw: unknown): Command | null {
       return origin === null ? null : { type: m.type, origin };
     }
     case "capture":
+    case "observe":
       return typeof m.tabId === "number" && Number.isSafeInteger(m.tabId) && m.tabId >= 0
-        ? { type: "capture", tabId: m.tabId }
+        ? { type: m.type, tabId: m.tabId }
         : null;
     default:
       return null;

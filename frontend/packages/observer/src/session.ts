@@ -319,9 +319,10 @@ export class Session {
     const live: Live = { id, node, rec, hash: nodeHash(rec), kids: [], deps: [], sdepth, origin };
     let after = afterIn;
     if (parent) {
-      if (after === APPEND) after = parent.kids[parent.kids.length - 1] ?? NO_NODE;
-      const at = after === NO_NODE ? 0 : parent.kids.indexOf(after) + 1;
-      parent.kids.splice(at, 0, id);
+      const last = parent.kids[parent.kids.length - 1] ?? NO_NODE;
+      if (after === APPEND) after = last;
+      if (after === last) parent.kids.push(id);
+      else parent.kids.splice(after === NO_NODE ? 0 : parent.kids.indexOf(after) + 1, 0, id);
     } else after = NO_NODE;
     this.live.set(id, live);
     this.sum = sumAdd(this.sum, live.hash);

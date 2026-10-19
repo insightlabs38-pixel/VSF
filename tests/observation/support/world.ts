@@ -126,6 +126,9 @@ const BOOT = (opts: HarnessOptions): string => `
   const begin = () => {
     if (window.__vsf) window.__vsf.session.stop();
     const sends = [];
+    let starting = true;
+    const early = [];
+    const t0 = performance.now();
     const diag = new VSFObserver.Diagnostics();
     const caps = {};
     if (opts.closedShadowAccess) caps.openOrClosedShadowRoot = (el) => window.__vsfClosed?.get(el) ?? el.shadowRoot;
@@ -138,8 +141,13 @@ const BOOT = (opts: HarnessOptions): string => `
       limits: opts.limits,
       diagnostics: diag,
       flagProbes: (opts.flags ?? []).map((n) => VSFObserver.dataFlagProbe(n)),
-      sink: (b) => sends.push(window.__vsfSink(b)),
+      sink: (b) => { if (starting) early.push(b); else sends.push(window.__vsfSink(b)); },
     });
+    window.__vsfColdMs = performance.now() - t0;
+    starting = false;
+    const t1 = performance.now();
+    for (const b of early) sends.push(window.__vsfSink(b));
+    window.__vsfSendMs = performance.now() - t1;
     window.__vsf = { session, diag, drain: async () => { await Promise.all(sends.splice(0)); } };
   };
   window.__vsfBegin = begin;

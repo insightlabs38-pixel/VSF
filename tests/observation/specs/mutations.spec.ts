@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import type { Batch } from "@vsf/observer";
-import { listPage } from "../support/pages.ts";
+import { listPage, richPage } from "../support/pages.ts";
 import { attach, startWorld, truthOf } from "../support/world.ts";
 
 type Stats = {
@@ -244,5 +244,136 @@ test("an input limit truncates the baseline visibly instead of silently", async 
   const { world, h } = await boot(page, 200, { limits: { maxNodes: 50 } });
   expect(h.collector.replica.size).toBeLessThanOrEqual(50);
   expect(h.collector.replica.truncated).toBe(true);
+  await world.stop();
+});
+
+async function rich(page: import("@playwright/test").Page) {
+  const world = await startWorld();
+  world.a.pages.set("/", richPage);
+  const h = await attach(page, { allow: [world.a.url] });
+  await page.goto(`${world.a.url}/`);
+  await page.waitForLoadState("load");
+  await h.settle();
+  return { world, h };
+}
+
+test("changes inside shadow roots and same-origin frames are observed and reconciled", async ({ page }) => {
+  const { world, h } = await rich(page);
+  await page.evaluate(() => {
+    const root = (document.getElementById("shadow-host") as HTMLElement).shadowRoot as ShadowRoot;
+    (root.getElementById("s1") as HTMLElement).textContent = "shadow changed";
+    (root.getElementById("sb") as HTMLElement).setAttribute("aria-label", "renamed shadow button");
+    const p = document.createElement("p");
+    p.textContent = "added in shadow";
+    root.append(p);
+    const doc = (document.getElementById("inner") as HTMLIFrameElement).contentDocument as Document;
+    const li = doc.createElement("li");
+    li.textContent = "b";
+    (doc.getElementById("il") as HTMLElement).append(li);
+    (doc.querySelector("li") as HTMLElement).textContent = "a changed";
+  });
+  await h.settle();
+  const texts = [...h.collector.replica.nodes.values()].flatMap((n) => [n.text, n.name]);
+  for (const want of ["shadow changed", "renamed shadow button", "added in shadow", "b", "a changed"])
+    expect(texts).toContain(want);
+  expect(h.collector.replica.canonical()).toEqual(await truthOf(page));
+  expect(h.collector.results.filter((r) => r !== "ok")).toEqual([]);
+  await world.stop();
+});
+
+test("removing a host drops its shadow tree and frame document and nothing keeps reporting for them", async ({
+  page,
+}) => {
+  const { world, h } = await rich(page);
+  const before = h.collector.replica.size;
+  await page.evaluate(() => {
+    document.getElementById("shadow-host")?.remove();
+    document.getElementById("inner")?.remove();
+  });
+  await h.settle();
+  expect(h.collector.replica.size).toBeLessThan(before - 5);
+  expect(h.collector.replica.canonical()).toEqual(await truthOf(page));
+  const batches = h.collector.batches.length;
+  await page.evaluate(() => {
+    const detached = document.createElement("div");
+    detached.attachShadow({ mode: "open" }).innerHTML = "<p>never attached</p>";
+  });
+  await h.settle();
+  expect(h.collector.batches.length).toBe(batches);
+  await world.stop();
+});
+
+test("hiding a container clears visibility below it and showing it restores the same state", async ({ page }) => {
+  const { world, h } = await rich(page);
+  const visible = () => [...h.collector.replica.nodes.values()].filter((n) => n.tag === "p" && n.flags & 1).length;
+  const start = visible();
+  expect(start).toBeGreaterThan(1);
+  await page.evaluate(() => (document.getElementById("box") as HTMLElement).setAttribute("hidden", ""));
+  await h.settle();
+  expect(visible()).toBe(start - 2);
+  expect(h.collector.replica.canonical()).toEqual(await truthOf(page));
+  await page.evaluate(() => (document.getElementById("box") as HTMLElement).removeAttribute("hidden"));
+  await h.settle();
+  expect(visible()).toBe(start);
+  expect(h.collector.replica.canonical()).toEqual(await truthOf(page));
+  await world.stop();
+});
+
+test("class and style churn that changes nothing observable publishes nothing", async ({ page }) => {
+  const { world, h } = await rich(page);
+  const batches = h.collector.batches.length;
+  await page.evaluate(() => {
+    const box = document.getElementById("box") as HTMLElement;
+    for (let i = 0; i < 50; i++) {
+      box.classList.toggle("hover");
+      box.style.color = i % 2 ? "red" : "blue";
+    }
+  });
+  await h.settle();
+  expect(h.collector.batches.length).toBe(batches);
+  await world.stop();
+});
+
+test("direct text-node edits update the owning element", async ({ page }) => {
+  const { world, h } = await rich(page);
+  await page.evaluate(() => {
+    ((document.getElementById("editable") as HTMLElement).firstChild as Text).data = "edited text";
+  });
+  await h.settle();
+  const n = [...h.collector.replica.nodes.values()].find((x) => x.text === "edited text");
+  expect(n?.tag).toBe("p");
+  expect(h.collector.batches.at(-1)?.ops.map((o) => o.op)).toEqual(["set"]);
+  await world.stop();
+});
+
+test("a shadow root attached after capture is invisible until rescan and then appears", async ({ page }) => {
+  const { world, h } = await rich(page);
+  await page.evaluate(() => {
+    const el = document.createElement("late-widget");
+    el.id = "late";
+    document.body.append(el);
+    el.attachShadow({ mode: "open" }).innerHTML = "<b>late shadow content</b>";
+  });
+  await h.settle();
+  expect([...h.collector.replica.nodes.values()].some((n) => n.text === "late shadow content")).toBe(false);
+  await page.evaluate(() => (window as unknown as { __vsf: { session: { rescan(): void } } }).__vsf.session.rescan());
+  await h.settle();
+  expect([...h.collector.replica.nodes.values()].some((n) => n.text === "late shadow content")).toBe(true);
+  expect(h.collector.replica.canonical()).toEqual(await truthOf(page));
+  await world.stop();
+});
+
+test("a stopped session publishes nothing more", async ({ page }) => {
+  const { world, h } = await rich(page);
+  await page.evaluate(() => (window as unknown as { __vsf: { session: { stop(): void } } }).__vsf.session.stop());
+  const batches = h.collector.batches.length;
+  await page.evaluate(() => {
+    document.body.append(document.createElement("hr"));
+    (document.getElementById("inner") as HTMLIFrameElement).src = "about:blank";
+  });
+  await page.waitForTimeout(100);
+  await page.evaluate(() => (window as unknown as { __vsf: { session: { flush(): void } } }).__vsf.session.flush());
+  await h.drain();
+  expect(h.collector.batches.length).toBe(batches);
   await world.stop();
 });

@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vsf-protocol-evidence-v1",
+  "title": "Source protocol and API evidence",
+  "description": "Typed, authorized and provenance-tagged. Carries shapes and templates only, never traffic content.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "source_app_id",
+    "origin",
+    "kind",
+    "provenance",
+    "endpoint",
+    "shape",
+    "stability",
+    "support"
+  ],
+  "properties": {
+    "schema": { "const": "vsf-protocol-evidence-v1" },
+    "id": { "type": "string", "pattern": "^pev_[0-9a-f]{16,64}$" },
+    "source_app_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}:[a-z0-9][a-z0-9.-]{0,127}$" },
+    "origin": { "type": "string", "pattern": "^https?://[a-z0-9.-]{1,253}(:[0-9]{1,5})?$" },
+    "kind": { "enum": ["documented_api", "published_schema", "user_supplied_spec", "observed_traffic"] },
+    "stability": { "enum": ["documented", "undocumented"] },
+    "support": { "enum": ["unsupported", "candidate", "supported"] },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "recorded_at", "authorization"],
+      "properties": {
+        "method": { "enum": ["vendor_documentation", "published_schema", "user_assertion", "runtime_observation"] },
+        "reference": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "recorded_at": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["basis"],
+          "properties": {
+            "basis": { "enum": ["public_documentation", "source_terms", "user_grant"] },
+            "principal_ref": { "type": "string", "pattern": "^prin_[0-9a-f]{32}$" },
+            "scope": { "type": "string", "pattern": "^[a-z][a-z0-9_.:-]{0,95}$" },
+            "granted_at": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 }
+          }
+        }
+      }
+    },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "path_template"],
+      "properties": {
+        "protocol": { "enum": ["http", "graphql", "websocket", "grpc"] },
+        "method": { "enum": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"] },
+        "path_template": { "type": "string", "pattern": "^/[A-Za-z0-9_.{}/-]{0,198}$" },
+        "operation": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_.]{0,63}$" }
+      }
+    },
+    "shape": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request", "response"],
+      "properties": {
+        "request": { "$ref": "#/definitions/fields" },
+        "response": { "$ref": "#/definitions/fields" }
+      }
+    },
+    "promotion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "reviewed_by", "documentation_reference", "witnesses"],
+      "properties": {
+        "decision_id": { "type": "string", "pattern": "^[a-z][a-z0-9_.:-]{0,95}$" },
+        "reviewed_by": { "type": "string", "pattern": "^prin_[0-9a-f]{32}$" },
+        "documentation_reference": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "witnesses": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "fields": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type", "required"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,63}$" },
+          "type": { "enum": ["string", "integer", "number", "boolean", "object", "array", "null", "unknown"] },
+          "required": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

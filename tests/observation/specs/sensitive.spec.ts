@@ -11,13 +11,19 @@ async function boot(page: import("@playwright/test").Page) {
     w.__egress = [];
     const note = (what: string) => w.__egress.push(what);
     const f = window.fetch;
-    window.fetch = (...a: Parameters<typeof f>) => (note("fetch"), f(...a));
+    window.fetch = (...a: Parameters<typeof f>) => {
+      note("fetch");
+      return f(...a);
+    };
     const o = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function (this: XMLHttpRequest, ...a: unknown[]) {
       note("xhr");
       return (o as (...x: unknown[]) => void).apply(this, a);
     };
-    navigator.sendBeacon = () => (note("beacon"), false);
+    navigator.sendBeacon = () => {
+      note("beacon");
+      return false;
+    };
   });
   const requests: string[] = [];
   page.on("request", (r) => requests.push(r.url()));

@@ -1,0 +1,45 @@
+{
+  "expect": ["evidence.bad_template"],
+  "doc": {
+    "schema": "vsf-protocol-evidence-v1",
+    "id": "pev_0123456789abcdef0123",
+    "source_app_id": "acme:crm-eu1",
+    "origin": "https://crm.example.com",
+    "kind": "documented_api",
+    "stability": "documented",
+    "support": "supported",
+    "provenance": {
+      "method": "vendor_documentation",
+      "reference": "https://docs.example.com/api/orders",
+      "recorded_at": 1790000000000,
+      "authorization": {
+        "basis": "public_documentation"
+      }
+    },
+    "endpoint": {
+      "protocol": "http",
+      "method": "GET",
+      "path_template": "/v1/orders/{order_id"
+    },
+    "shape": {
+      "request": [],
+      "response": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "total",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "note",
+          "type": "string",
+          "required": false
+        }
+      ]
+    }
+  }
+}
