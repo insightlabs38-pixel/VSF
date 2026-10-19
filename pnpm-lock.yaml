@@ -54,6 +54,8 @@ importers:
         specifier: workspace:*
         version: link:../../frontend/packages/wasm-host
 
+  frontend/packages/design-system: {}
+
   frontend/packages/ir:
     dependencies:
       '@vsf/schema':
@@ -65,6 +67,12 @@ importers:
       '@vsf/schema':
         specifier: workspace:*
         version: link:../schema
+
+  frontend/packages/renderer:
+    dependencies:
+      '@vsf/design-system':
+        specifier: workspace:*
+        version: link:../design-system
 
   frontend/packages/schema: {}
 
@@ -130,6 +138,21 @@ importers:
       '@vsf/observer':
         specifier: workspace:*
         version: link:../../frontend/packages/observer
+      '@vsf/schema':
+        specifier: workspace:*
+        version: link:../../frontend/packages/schema
+
+  tests/ui:
+    dependencies:
+      '@vsf/design-system':
+        specifier: workspace:*
+        version: link:../../frontend/packages/design-system
+      '@vsf/ir':
+        specifier: workspace:*
+        version: link:../../frontend/packages/ir
+      '@vsf/renderer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/renderer
       '@vsf/schema':
         specifier: workspace:*
         version: link:../../frontend/packages/schema
