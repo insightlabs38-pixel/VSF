@@ -59,6 +59,7 @@ function boot(cfg: Boot) {
   const listeners = new Set<() => void>();
   const dispatches: Dispatched[] = [];
   const pending = new Map<string, (r: DispatchResult) => void>();
+  const prefsLog: unknown[] = [];
   const digest = `sha256:${"29".repeat(32)}`;
   const rt = {
     semantic: cfg.semantic,
@@ -101,6 +102,7 @@ function boot(cfg: Boot) {
   const renderer = new Renderer(hostEl, rt, body, {
     hotkeys: cfg.hotkeys ?? true,
     shadow: cfg.shadow ?? "open",
+    onPrefs: (p) => prefsLog.push(p),
     allowSynthetic: cfg.synthetic ?? false,
   });
   const app = {
@@ -108,6 +110,7 @@ function boot(cfg: Boot) {
     store,
     rt,
     dispatches,
+    prefsLog,
     pending,
     host: hostEl,
     body: () => body,

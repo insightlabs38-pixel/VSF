@@ -6,6 +6,8 @@ export interface Command {
   id: string;
   label: string;
   hint?: string;
+  /** Declared effect of the operation behind the command; navigation commands have none. */
+  effect?: string;
   availability: Availability;
   run(): Promise<void> | void;
 }
@@ -16,6 +18,8 @@ export interface PaletteHost {
   app: HTMLElement;
   main: HTMLElement;
   commands(): Command[];
+  /** True unless a test harness allows script-generated activations. */
+  trustedOnly(): boolean;
   say(message: string, level: "polite" | "assertive"): void;
 }
 
@@ -135,16 +139,20 @@ export class Palette {
       li.addEventListener("mousedown", (e) => {
         e.preventDefault();
         this.index = i;
-        void this.run();
+        void this.run(e.isTrusted);
       });
       dom.append(ul, li);
     });
     dom.attr(input, "aria-activedescendant", this.shown.length ? `${ul.id}-${this.index}` : null);
   }
 
-  private async run(): Promise<void> {
+  private async run(trusted: boolean): Promise<void> {
     const c = this.shown[this.index];
     if (!c) return;
+    if (!trusted && this.host.trustedOnly() && c.effect !== undefined && c.effect !== "read_only") {
+      this.host.say(`${c.label} ignored: activation did not come from the user`, "assertive");
+      return;
+    }
     if (c.availability.state !== "available") {
       this.host.say(`${c.label} is unavailable: ${c.availability.reason ?? c.availability.state}`, "assertive");
       return;
@@ -164,7 +172,7 @@ export class Palette {
       this.paint();
     } else if (e.key === "Enter") {
       e.preventDefault();
-      void this.run();
+      void this.run(e.isTrusted);
     } else if (e.key === "Tab") {
       e.preventDefault();
     }

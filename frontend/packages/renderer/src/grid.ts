@@ -40,8 +40,11 @@ export function table(r: RendererApi, c: PComponent): Inst {
   r.dom.append(tbl, thead);
   r.dom.append(tbl, tbody);
   r.dom.append(scroller, tbl);
+  const empty = r.dom.el("p", "empty");
+  r.dom.attr(empty, "hidden", "");
   r.dom.append(wrap, toolbar);
   r.dom.append(wrap, scroller);
+  r.dom.append(wrap, empty);
   const inst = base(r, c, wrap);
 
   let cols: PComponent[] = [];
@@ -62,6 +65,11 @@ export function table(r: RendererApi, c: PComponent): Inst {
     return out;
   };
   const visible = (): string[] => rows.order().filter((k) => !live.get(k)?.tr.hidden);
+
+  const showEmpty = (shown: number): void => {
+    r.dom.attr(empty, "hidden", shown > 0 ? "" : null);
+    r.dom.text(empty, shown > 0 ? "" : rows.size === 0 ? "No rows" : "No rows match the filter");
+  };
 
   const setActive = (row: string | null, stop: number, focus: boolean): void => {
     const stops = stopsOf(row);
@@ -164,6 +172,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
     }
     placeChildren(r.dom, tbody, trs);
     lastVisible = visible();
+    showEmpty(lastVisible.length);
     if (mem.row !== null && !live.has(mem.row)) {
       const now = visible();
       const next = now[Math.min(Math.max(idx, 0), now.length - 1)] ?? null;
@@ -267,6 +276,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
     applyFilter();
     const vis = visible();
     lastVisible = vis;
+    showEmpty(vis.length);
     if (active.row !== null && !vis.includes(active.row)) setActive(vis[0] ?? null, active.stop, false);
     r.announcer.say(`${vis.length} of ${rows.size} rows shown`);
   };

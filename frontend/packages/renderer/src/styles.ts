@@ -50,6 +50,8 @@ th button{all:unset;cursor:pointer;display:inline-flex;align-items:center;justif
 tbody tr{content-visibility:auto;contain-intrinsic-size:auto var(--vsf-row)}
 td:focus-visible,th button:focus-visible{outline:3px solid var(--vsf-focus);outline-offset:-3px}
 td .row-actions{display:inline-flex;gap:var(--vsf-gap)}
+.empty{margin:0;padding:var(--vsf-pad-y) var(--vsf-pad-x);color:var(--vsf-muted);border:1px dashed var(--vsf-border);border-radius:6px}
+.empty[hidden]{display:none}
 .toolbar{display:flex;gap:var(--vsf-gap);align-items:center;margin-block-end:var(--vsf-gap)}
 .palette-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:start center;padding-block-start:12vh;z-index:10}
 .palette{inline-size:min(36em,92vw);background:var(--vsf-bg);color:var(--vsf-text);border:1px solid var(--vsf-control-border);border-radius:10px;padding:var(--vsf-gap);display:grid;gap:var(--vsf-gap)}

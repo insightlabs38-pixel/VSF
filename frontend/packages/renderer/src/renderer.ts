@@ -115,6 +115,7 @@ export class Renderer implements RendererApi {
     this.allowSynthetic = opts.allowSynthetic === true;
     this.root = host.shadowRoot ?? host.attachShadow({ mode: opts.shadow ?? "closed" });
     this.dom = new Dom(host.ownerDocument, this.stats);
+    host.setAttribute("data-vsf-host", "");
     const style = this.dom.el("style");
     style.textContent = componentCss();
     this.root.append(style);
@@ -148,6 +149,7 @@ export class Renderer implements RendererApi {
       app: this.app,
       main: this.main,
       commands: () => this.commands(),
+      trustedOnly: () => !this.allowSynthetic,
       say: (m, l) => this.announcer.say(m, l === "assertive" ? "assertive" : "polite"),
     });
     if (opts.hotkeys !== false) {
@@ -359,6 +361,31 @@ export class Renderer implements RendererApi {
     return row;
   }
 
+  /** Definitions shown in the active view, found from the presentation alone so a large grid costs nothing here. */
+  private activeComponents(): PComponent[] {
+    const region = this.viewEntities().find((v) => v.entity === this.activeEntity)?.region;
+    const stack = [...(this.body.regions.find((x) => x.id === region)?.components ?? [])].reverse();
+    const seen = new Set<string>();
+    const out: PComponent[] = [];
+    while (stack.length > 0) {
+      const id = stack.pop() as string;
+      const c = this.byId.get(id);
+      if (!c || seen.has(id)) continue;
+      seen.add(id);
+      out.push(c);
+      for (let i = c.children.length - 1; i >= 0; i--) stack.push(c.children[i] as string);
+    }
+    return out;
+  }
+
+  private labelOf(action: string, c: PComponent): string {
+    return this.rt.semantic.actions.find((a) => a.id === action)?.label ?? c.accessibility.name ?? action;
+  }
+
+  private effectOf(action: string): string {
+    return this.rt.semantic.actions.find((a) => a.id === action)?.effect.declared ?? "indeterminate";
+  }
+
   commands(): Command[] {
     const out: Command[] = [];
     for (const v of this.viewEntities()) {
@@ -373,37 +400,20 @@ export class Renderer implements RendererApi {
     const seen = new Set<string>();
     const row = this.activeRowKey();
     const inGrid = this.body.components.some((c) => c.kind === "table" && c.binding?.entity === this.activeEntity);
-    const visit = (inst: Inst): void => {
-      const c = inst.cur;
-      if (c?.kind !== "button" || !c.binding?.action || seen.has(c.binding.action)) return;
+    for (const c of this.activeComponents()) {
+      if (c.kind !== "button" || !c.binding?.action || seen.has(c.binding.action)) continue;
       const action = c.binding.action;
       seen.add(action);
       const entity = c.binding.entity ?? this.activeEntity;
-      const name = c.accessibility.name ?? action;
-      const base = this.rt.availability(action);
+      const name = this.labelOf(action, c);
       const needsRow = inGrid && row === null;
       out.push({
         id: `act:${action}`,
         label: name,
-        availability: needsRow ? { state: "unusable", reason: "select a row first" } : base,
+        effect: this.effectOf(action),
+        availability: needsRow ? { state: "unusable", reason: "select a row first" } : this.rt.availability(action),
         run: () => this.press(action, entity, name, inGrid ? (row ?? undefined) : undefined),
       });
-    };
-    this.walk(this.mainRoot, visit);
-    for (const c of this.body.components) {
-      if (c.kind !== "button" || !c.binding?.action || seen.has(c.binding.action)) continue;
-      if (inGrid && c.binding.entity === this.activeEntity) {
-        seen.add(c.binding.action);
-        const action = c.binding.action;
-        const name = c.accessibility.name ?? action;
-        out.push({
-          id: `act:${action}`,
-          label: name,
-          availability:
-            row === null ? { state: "unusable", reason: "select a row first" } : this.rt.availability(action),
-          run: () => this.press(action, c.binding?.entity ?? this.activeEntity, name, row ?? undefined),
-        });
-      }
     }
     return out;
   }
@@ -419,6 +429,7 @@ export class Renderer implements RendererApi {
     }
     this.dock(false);
     this.host.shadowRoot?.replaceChildren();
-    for (const a of ["dir", "lang", "data-scheme", "data-accent", "data-density"]) this.host.removeAttribute(a);
+    for (const a of ["dir", "lang", "data-scheme", "data-accent", "data-density", "data-vsf-host"])
+      this.host.removeAttribute(a);
   }
 }
