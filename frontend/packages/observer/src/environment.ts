@@ -18,15 +18,24 @@ export function dataFlagProbe(name: string): FlagProbe {
   };
 }
 
-const LOCALE = /^[a-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$/;
+const IR_LOCALE = /^[a-z]{2,3}(-[A-Za-z0-9]{2,8}){0,3}$/;
 
-/** Lowercases the language subtag only; anything the IR Locale rule would reject stays unknown. */
+/** Same case rules as the Rust identity layer; a tag the IR Locale type would reject stays unknown. */
 export function declaredLocale(raw: string | null | undefined): string | null {
   if (!raw) return null;
   const parts = raw.trim().replace(/_/g, "-").split("-");
-  const head = parts[0]?.toLowerCase() ?? "";
-  const tag = [head, ...parts.slice(1)].join("-");
-  return LOCALE.test(tag) ? tag : null;
+  const lang = parts[0] ?? "";
+  if (!/^[A-Za-z]{2,3}$/.test(lang) || parts.length > 6) return null;
+  if (!parts.every((p) => /^[A-Za-z0-9]{1,8}$/.test(p))) return null;
+  const out = [lang.toLowerCase()];
+  for (const p of parts.slice(1)) {
+    const alpha = /^[A-Za-z]+$/.test(p);
+    if (p.length === 4 && alpha) out.push(p[0]?.toUpperCase() + p.slice(1).toLowerCase());
+    else if (p.length === 2 && alpha) out.push(p.toUpperCase());
+    else out.push(p.toLowerCase());
+  }
+  const tag = out.join("-");
+  return IR_LOCALE.test(tag) ? tag : null;
 }
 
 export function viewportBucket(width: number): Viewport["bucket"] {
@@ -104,4 +113,23 @@ export function cacheOverlay(env: EnvironmentObservation, needs: OverlayNeeds): 
     }
   }
   return { content: `env1;${parts.join(";")}`, shareable: missing.length === 0, unknown: missing };
+}
+
+export interface VariantInputs {
+  /** Null when the page declares no locale: a variant id must not be minted from a guess. */
+  locale: string | null;
+  flags: [string, string][];
+  unknownFlags: string[];
+}
+
+/** The observable part of an identity VariantDescriptor; unknown flags are listed, never defaulted. */
+export function variantInputs(env: EnvironmentObservation): VariantInputs {
+  const flags: [string, string][] = [];
+  const unknownFlags: string[] = [];
+  for (const name of Object.keys(env.flags).sort()) {
+    const f = env.flags[name];
+    if (f?.state === "observed") flags.push([name, f.value]);
+    else unknownFlags.push(name);
+  }
+  return { locale: env.locale.state === "observed" ? env.locale.value : null, flags, unknownFlags };
 }

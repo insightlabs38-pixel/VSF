@@ -184,3 +184,23 @@ export async function attach(page: Page, opts: HarnessOptions): Promise<Harness>
   };
   return h;
 }
+
+/** A second, independent capture of the same live page: the reference an incremental replica must equal. */
+export async function truthOf(page: Page): Promise<ReturnType<Replica["canonical"]>> {
+  const batches = await page.evaluate(() => {
+    const O = (window as unknown as { VSFObserver: typeof import("@vsf/observer") }).VSFObserver;
+    const out: unknown[] = [];
+    const s = O.Session.start({
+      doc: document,
+      policy: { allowOrigin: () => true },
+      batchMs: null,
+      nextEpoch: () => 1,
+      sink: (b) => out.push(b),
+    });
+    s.stop();
+    return out;
+  });
+  const r = new Replica();
+  for (const b of batches as Batch[]) r.apply(b);
+  return r.canonical();
+}

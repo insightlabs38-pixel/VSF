@@ -33,9 +33,20 @@ export function looksAccountSpecific(text: string): boolean {
   return PHONE.test(text) && !/^\d{1,4}([.,]\d+)?$/.test(text.trim());
 }
 
-/** Explicit `data-vsf-scope` wins; otherwise form controls that conventionally hold secrets are credentials. */
+function markerOf(el: Element): string | null | undefined {
+  let cur: Element | null = el;
+  while (cur) {
+    const hit = cur.closest("[data-vsf-scope]");
+    if (hit) return hit.getAttribute("data-vsf-scope");
+    const root = cur.getRootNode() as ShadowRoot;
+    cur = root.host ?? null;
+  }
+  return null;
+}
+
+/** Explicit `data-vsf-scope` (also across shadow boundaries) wins; otherwise form controls that conventionally hold secrets are credentials. */
 export function scopeOf(el: Element): SourceScope {
-  const marked = el.closest("[data-vsf-scope]")?.getAttribute("data-vsf-scope");
+  const marked = markerOf(el);
   if (marked === "credential" || marked === "account" || marked === "public") return marked;
   const tag = el.tagName;
   if (tag === "INPUT") {

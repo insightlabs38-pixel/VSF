@@ -248,9 +248,10 @@ export function describeElement(el: Element, ctx: DescribeCtx): Described {
   let name: string | null = null;
   let text: string | null = null;
   let flags = scopeFlag(scope);
-  if (scope !== "credential") {
+  const control = el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "SELECT";
+  if (scope !== "credential" || control) {
     const rawName = nameOf(el, role, ctx.opts, deps, relTargets);
-    const rawText = ownText(el);
+    const rawText = scope === "credential" ? null : ownText(el);
     name = rawName === null ? null : redactText(clip(rawName, ctx.opts.maxTextChars));
     text = rawText === null ? null : redactText(clip(rawText, ctx.opts.maxTextChars));
     if (
