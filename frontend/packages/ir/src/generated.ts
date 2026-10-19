@@ -3,15 +3,30 @@ import type { Value } from "@vsf/schema";
 import * as rt from "./rt.ts";
 import type { Ctx } from "./rt.ts";
 
-export const IR_VERSION: rt.Version = [1, 0, 0];
-export const IR_VERSION_TEXT = "1.0.0";
+export const IR_VERSION: rt.Version = [1, 1, 0];
+export const IR_VERSION_TEXT = "1.1.0";
 export const FAMILIES: readonly (readonly [string, string, string])[] = [
-  ["environment", "EnvironmentCapabilityManifest", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"],
-  ["observation", "ObservationIR", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"],
-  ["semantic", "SemanticIR", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"],
-  ["operation", "OperationContract", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"],
-  ["presentation", "PresentationIR", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"],
-  ["version", "VersionManifest", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"],
+  ["environment", "EnvironmentCapabilityManifest", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"],
+  ["observation", "ObservationIR", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"],
+  ["semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"],
+  ["operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"],
+  ["presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"],
+  ["version", "VersionManifest", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"],
+];
+/** Every [version, family, digest] a reader decodes: all released snapshots and the current schema. */
+export const ACCEPTED: readonly (readonly [rt.Version, string, string])[] = [
+  [[1, 0, 0], "environment", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"],
+  [[1, 1, 0], "environment", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"],
+  [[1, 0, 0], "observation", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"],
+  [[1, 1, 0], "observation", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"],
+  [[1, 0, 0], "operation", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"],
+  [[1, 1, 0], "operation", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"],
+  [[1, 0, 0], "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"],
+  [[1, 1, 0], "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"],
+  [[1, 0, 0], "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"],
+  [[1, 1, 0], "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"],
+  [[1, 0, 0], "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"],
+  [[1, 1, 0], "version", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"],
 ];
 
 /** Domain-separated SHA-256 of canonical bytes. */
@@ -342,7 +357,8 @@ export function encodeIdempotency(x: Idempotency): Value {
   return x;
 }
 
-export const COMPAT_STATUS = ["supported", "supported_with_translation", "degraded", "needs_reauth", "source_incompatible", "security_revoked", "unsupported_runtime"] as const;
+/** unknown: a previously evaluated context can no longer be confirmed; it never executes. */
+export const COMPAT_STATUS = ["supported", "supported_with_translation", "degraded", "needs_reauth", "source_incompatible", "security_revoked", "unsupported_runtime", "unknown"] as const;
 export type CompatStatus = (typeof COMPAT_STATUS)[number];
 export function decodeCompatStatus(v: Value, path: string, _ctx: Ctx): CompatStatus {
   const s = rt.enumStr(v, path);
@@ -350,6 +366,41 @@ export function decodeCompatStatus(v: Value, path: string, _ctx: Ctx): CompatSta
   return s as CompatStatus;
 }
 export function encodeCompatStatus(x: CompatStatus): Value {
+  return x;
+}
+
+/** Who may reuse an artifact; absent means private_principal, the most restrictive. */
+export const VISIBILITY = ["private_principal", "private_variant", "global_structure"] as const;
+export type Visibility = (typeof VISIBILITY)[number];
+export function decodeVisibility(v: Value, path: string, _ctx: Ctx): Visibility {
+  const s = rt.enumStr(v, path);
+  if (!(VISIBILITY as readonly string[]).includes(s)) throw new rt.IrError(path, "ir.bad_enum");
+  return s as Visibility;
+}
+export function encodeVisibility(x: Visibility): Value {
+  return x;
+}
+
+/** What a rollback restores; none of them rolls back the source application's data. */
+export const ROLLBACK_KIND = ["source_data", "interface", "artifact_version"] as const;
+export type RollbackKind = (typeof ROLLBACK_KIND)[number];
+export function decodeRollbackKind(v: Value, path: string, _ctx: Ctx): RollbackKind {
+  const s = rt.enumStr(v, path);
+  if (!(ROLLBACK_KIND as readonly string[]).includes(s)) throw new rt.IrError(path, "ir.bad_enum");
+  return s as RollbackKind;
+}
+export function encodeRollbackKind(x: RollbackKind): Value {
+  return x;
+}
+
+export const REVOCATION_KIND = ["operation", "witness", "trust_authority", "artifact", "principal_grant"] as const;
+export type RevocationKind = (typeof REVOCATION_KIND)[number];
+export function decodeRevocationKind(v: Value, path: string, _ctx: Ctx): RevocationKind {
+  const s = rt.enumStr(v, path);
+  if (!(REVOCATION_KIND as readonly string[]).includes(s)) throw new rt.IrError(path, "ir.bad_enum");
+  return s as RevocationKind;
+}
+export function encodeRevocationKind(x: RevocationKind): Value {
   return x;
 }
 
@@ -739,6 +790,8 @@ export interface EnvironmentCapabilityManifest {
   egress: EgressPolicy;
   limits: Limits;
   attestation?: Attestation;
+  app_id?: SourceAppId;
+  variant_id?: SourceVariantId;
 }
 export function decodeEnvironmentCapabilityManifestFields(o: rt.Obj, ctx: Ctx): EnvironmentCapabilityManifest {
   const path = o.path;
@@ -757,6 +810,10 @@ export function decodeEnvironmentCapabilityManifestFields(o: rt.Obj, ctx: Ctx): 
   const limits_ = decodeLimits(o.req("limits"), rt.child(path, "limits"), ctx);
   const attestation_raw = o.opt("attestation");
   const attestation_ = attestation_raw === undefined ? undefined : decodeAttestation(attestation_raw, rt.child(path, "attestation"), ctx);
+  const app_id_raw = o.since("app_id", [1, 1, 0], false, ctx);
+  const app_id_ = app_id_raw === undefined ? undefined : decodeSourceAppId(app_id_raw, rt.child(path, "app_id"), ctx);
+  const variant_id_raw = o.since("variant_id", [1, 1, 0], false, ctx);
+  const variant_id_ = variant_id_raw === undefined ? undefined : decodeSourceVariantId(variant_id_raw, rt.child(path, "variant_id"), ctx);
   o.finish();
   const out = {} as EnvironmentCapabilityManifest;
   out.runtime_id = runtime_id_;
@@ -773,6 +830,8 @@ export function decodeEnvironmentCapabilityManifestFields(o: rt.Obj, ctx: Ctx): 
   out.egress = egress_;
   out.limits = limits_;
   if (attestation_ !== undefined) out.attestation = attestation_;
+  if (app_id_ !== undefined) out.app_id = app_id_;
+  if (variant_id_ !== undefined) out.variant_id = variant_id_;
   return out;
 }
 export function decodeEnvironmentCapabilityManifest(v: Value, path: string, ctx: Ctx): EnvironmentCapabilityManifest {
@@ -794,6 +853,8 @@ export function encodeEnvironmentCapabilityManifestFields(x: EnvironmentCapabili
   e.set("egress", encodeEgressPolicy(x.egress));
   e.set("limits", encodeLimits(x.limits));
   if (x.attestation !== undefined) e.set("attestation", encodeAttestation(x.attestation));
+  if (x.app_id !== undefined) e.set("app_id", encodeSourceAppId(x.app_id));
+  if (x.variant_id !== undefined) e.set("variant_id", encodeSourceVariantId(x.variant_id));
   return e;
 }
 export function encodeEnvironmentCapabilityManifest(x: EnvironmentCapabilityManifest): Value {
@@ -2253,6 +2314,14 @@ export interface Witness {
   observed_at: Instant;
   applies_to: SourceBinding;
   authorized_context: AuthContext;
+  runtime_id?: RuntimeId;
+  observed_effect?: EffectClass;
+  source_state?: Digest;
+  capability_digest?: Digest;
+  expires_at?: Instant;
+  revoked_at?: Instant;
+  issuer?: Ident;
+  synthetic?: boolean;
 }
 export function decodeWitnessFields(o: rt.Obj, ctx: Ctx): Witness {
   const path = o.path;
@@ -2264,6 +2333,22 @@ export function decodeWitnessFields(o: rt.Obj, ctx: Ctx): Witness {
   const observed_at_ = decodeInstant(o.req("observed_at"), rt.child(path, "observed_at"), ctx);
   const applies_to_ = decodeSourceBinding(o.req("applies_to"), rt.child(path, "applies_to"), ctx);
   const authorized_context_ = decodeAuthContext(o.req("authorized_context"), rt.child(path, "authorized_context"), ctx);
+  const runtime_id_raw = o.since("runtime_id", [1, 1, 0], false, ctx);
+  const runtime_id_ = runtime_id_raw === undefined ? undefined : decodeRuntimeId(runtime_id_raw, rt.child(path, "runtime_id"), ctx);
+  const observed_effect_raw = o.since("observed_effect", [1, 1, 0], false, ctx);
+  const observed_effect_ = observed_effect_raw === undefined ? undefined : decodeEffectClass(observed_effect_raw, rt.child(path, "observed_effect"), ctx);
+  const source_state_raw = o.since("source_state", [1, 1, 0], false, ctx);
+  const source_state_ = source_state_raw === undefined ? undefined : decodeDigest(source_state_raw, rt.child(path, "source_state"), ctx);
+  const capability_digest_raw = o.since("capability_digest", [1, 1, 0], false, ctx);
+  const capability_digest_ = capability_digest_raw === undefined ? undefined : decodeDigest(capability_digest_raw, rt.child(path, "capability_digest"), ctx);
+  const expires_at_raw = o.since("expires_at", [1, 1, 0], false, ctx);
+  const expires_at_ = expires_at_raw === undefined ? undefined : decodeInstant(expires_at_raw, rt.child(path, "expires_at"), ctx);
+  const revoked_at_raw = o.since("revoked_at", [1, 1, 0], false, ctx);
+  const revoked_at_ = revoked_at_raw === undefined ? undefined : decodeInstant(revoked_at_raw, rt.child(path, "revoked_at"), ctx);
+  const issuer_raw = o.since("issuer", [1, 1, 0], false, ctx);
+  const issuer_ = issuer_raw === undefined ? undefined : decodeIdent(issuer_raw, rt.child(path, "issuer"), ctx);
+  const synthetic_raw = o.since("synthetic", [1, 1, 0], false, ctx);
+  const synthetic_ = synthetic_raw === undefined ? undefined : rt.boolean(synthetic_raw, rt.child(path, "synthetic"));
   o.finish();
   const out = {} as Witness;
   out.id = id_;
@@ -2274,6 +2359,14 @@ export function decodeWitnessFields(o: rt.Obj, ctx: Ctx): Witness {
   out.observed_at = observed_at_;
   out.applies_to = applies_to_;
   out.authorized_context = authorized_context_;
+  if (runtime_id_ !== undefined) out.runtime_id = runtime_id_;
+  if (observed_effect_ !== undefined) out.observed_effect = observed_effect_;
+  if (source_state_ !== undefined) out.source_state = source_state_;
+  if (capability_digest_ !== undefined) out.capability_digest = capability_digest_;
+  if (expires_at_ !== undefined) out.expires_at = expires_at_;
+  if (revoked_at_ !== undefined) out.revoked_at = revoked_at_;
+  if (issuer_ !== undefined) out.issuer = issuer_;
+  if (synthetic_ !== undefined) out.synthetic = synthetic_;
   return out;
 }
 export function decodeWitness(v: Value, path: string, ctx: Ctx): Witness {
@@ -2289,6 +2382,14 @@ export function encodeWitnessFields(x: Witness): Map<string, Value> {
   e.set("observed_at", encodeInstant(x.observed_at));
   e.set("applies_to", encodeSourceBinding(x.applies_to));
   e.set("authorized_context", encodeAuthContext(x.authorized_context));
+  if (x.runtime_id !== undefined) e.set("runtime_id", encodeRuntimeId(x.runtime_id));
+  if (x.observed_effect !== undefined) e.set("observed_effect", encodeEffectClass(x.observed_effect));
+  if (x.source_state !== undefined) e.set("source_state", encodeDigest(x.source_state));
+  if (x.capability_digest !== undefined) e.set("capability_digest", encodeDigest(x.capability_digest));
+  if (x.expires_at !== undefined) e.set("expires_at", encodeInstant(x.expires_at));
+  if (x.revoked_at !== undefined) e.set("revoked_at", encodeInstant(x.revoked_at));
+  if (x.issuer !== undefined) e.set("issuer", encodeIdent(x.issuer));
+  if (x.synthetic !== undefined) e.set("synthetic", x.synthetic);
   return e;
 }
 export function encodeWitness(x: Witness): Value {
@@ -2858,6 +2959,8 @@ export interface ArtifactRef {
   digest: Digest;
   bytes: Count;
   media_type: Label;
+  visibility?: Visibility;
+  principal_ref?: PrincipalRef;
 }
 export function decodeArtifactRefFields(o: rt.Obj, ctx: Ctx): ArtifactRef {
   const path = o.path;
@@ -2865,12 +2968,18 @@ export function decodeArtifactRefFields(o: rt.Obj, ctx: Ctx): ArtifactRef {
   const digest_ = decodeDigest(o.req("digest"), rt.child(path, "digest"), ctx);
   const bytes_ = decodeCount(o.req("bytes"), rt.child(path, "bytes"), ctx);
   const media_type_ = decodeLabel(o.req("media_type"), rt.child(path, "media_type"), ctx);
+  const visibility_raw = o.since("visibility", [1, 1, 0], false, ctx);
+  const visibility_ = visibility_raw === undefined ? undefined : decodeVisibility(visibility_raw, rt.child(path, "visibility"), ctx);
+  const principal_ref_raw = o.since("principal_ref", [1, 1, 0], false, ctx);
+  const principal_ref_ = principal_ref_raw === undefined ? undefined : decodePrincipalRef(principal_ref_raw, rt.child(path, "principal_ref"), ctx);
   o.finish();
   const out = {} as ArtifactRef;
   out.role = role_;
   out.digest = digest_;
   out.bytes = bytes_;
   out.media_type = media_type_;
+  if (visibility_ !== undefined) out.visibility = visibility_;
+  if (principal_ref_ !== undefined) out.principal_ref = principal_ref_;
   return out;
 }
 export function decodeArtifactRef(v: Value, path: string, ctx: Ctx): ArtifactRef {
@@ -2882,6 +2991,8 @@ export function encodeArtifactRefFields(x: ArtifactRef): Map<string, Value> {
   e.set("digest", encodeDigest(x.digest));
   e.set("bytes", encodeCount(x.bytes));
   e.set("media_type", encodeLabel(x.media_type));
+  if (x.visibility !== undefined) e.set("visibility", encodeVisibility(x.visibility));
+  if (x.principal_ref !== undefined) e.set("principal_ref", encodePrincipalRef(x.principal_ref));
   return e;
 }
 export function encodeArtifactRef(x: ArtifactRef): Value {
@@ -3031,6 +3142,90 @@ export function encodePromotionRecord(x: PromotionRecord): Value {
   return encodePromotionRecordFields(x);
 }
 
+/** This manifest was produced by a rollback of the stated kind. */
+export interface RollbackSpec {
+  kind: RollbackKind;
+  target: Digest;
+  roles: ArtifactRole[];
+}
+export function decodeRollbackSpecFields(o: rt.Obj, ctx: Ctx): RollbackSpec {
+  const path = o.path;
+  const kind_ = decodeRollbackKind(o.req("kind"), rt.child(path, "kind"), ctx);
+  const target_ = decodeDigest(o.req("target"), rt.child(path, "target"), ctx);
+  const roles_ = rt.list(o.req("roles"), rt.child(path, "roles"), 0, 8, (e, p) => decodeArtifactRole(e, p, ctx));
+  o.finish();
+  const out = {} as RollbackSpec;
+  out.kind = kind_;
+  out.target = target_;
+  out.roles = roles_;
+  return out;
+}
+export function decodeRollbackSpec(v: Value, path: string, ctx: Ctx): RollbackSpec {
+  return decodeRollbackSpecFields(rt.Obj.of(v, path), ctx);
+}
+export function encodeRollbackSpecFields(x: RollbackSpec): Map<string, Value> {
+  const e = new Map<string, Value>();
+  e.set("kind", encodeRollbackKind(x.kind));
+  e.set("target", encodeDigest(x.target));
+  e.set("roles", x.roles.map((e) => encodeArtifactRole(e)));
+  return e;
+}
+export function encodeRollbackSpec(x: RollbackSpec): Value {
+  return encodeRollbackSpecFields(x);
+}
+
+/** Withdraws trust in one operation, witness, authority, artifact or grant; a revoked artifact is never revived by a pin. */
+export interface Revocation {
+  kind: RevocationKind;
+  at: Instant;
+  reason: Label;
+  operation?: OperationId;
+  digest?: Digest;
+  authority?: Ident;
+  principal?: PrincipalRef;
+}
+export function decodeRevocationFields(o: rt.Obj, ctx: Ctx): Revocation {
+  const path = o.path;
+  const kind_ = decodeRevocationKind(o.req("kind"), rt.child(path, "kind"), ctx);
+  const at_ = decodeInstant(o.req("at"), rt.child(path, "at"), ctx);
+  const reason_ = decodeLabel(o.req("reason"), rt.child(path, "reason"), ctx);
+  const operation_raw = o.opt("operation");
+  const operation_ = operation_raw === undefined ? undefined : decodeOperationId(operation_raw, rt.child(path, "operation"), ctx);
+  const digest_raw = o.opt("digest");
+  const digest_ = digest_raw === undefined ? undefined : decodeDigest(digest_raw, rt.child(path, "digest"), ctx);
+  const authority_raw = o.opt("authority");
+  const authority_ = authority_raw === undefined ? undefined : decodeIdent(authority_raw, rt.child(path, "authority"), ctx);
+  const principal_raw = o.opt("principal");
+  const principal_ = principal_raw === undefined ? undefined : decodePrincipalRef(principal_raw, rt.child(path, "principal"), ctx);
+  o.finish();
+  const out = {} as Revocation;
+  out.kind = kind_;
+  out.at = at_;
+  out.reason = reason_;
+  if (operation_ !== undefined) out.operation = operation_;
+  if (digest_ !== undefined) out.digest = digest_;
+  if (authority_ !== undefined) out.authority = authority_;
+  if (principal_ !== undefined) out.principal = principal_;
+  return out;
+}
+export function decodeRevocation(v: Value, path: string, ctx: Ctx): Revocation {
+  return decodeRevocationFields(rt.Obj.of(v, path), ctx);
+}
+export function encodeRevocationFields(x: Revocation): Map<string, Value> {
+  const e = new Map<string, Value>();
+  e.set("kind", encodeRevocationKind(x.kind));
+  e.set("at", encodeInstant(x.at));
+  e.set("reason", encodeLabel(x.reason));
+  if (x.operation !== undefined) e.set("operation", encodeOperationId(x.operation));
+  if (x.digest !== undefined) e.set("digest", encodeDigest(x.digest));
+  if (x.authority !== undefined) e.set("authority", encodeIdent(x.authority));
+  if (x.principal !== undefined) e.set("principal", encodePrincipalRef(x.principal));
+  return e;
+}
+export function encodeRevocation(x: Revocation): Value {
+  return encodeRevocationFields(x);
+}
+
 export interface VersionManifest {
   created_at: Instant;
   channel: Channel;
@@ -3040,6 +3235,9 @@ export interface VersionManifest {
   migrations: MigrationEdge[];
   retention: Retention;
   promotion?: PromotionRecord;
+  origin?: Origin;
+  rollback?: RollbackSpec;
+  revocations?: Revocation[];
 }
 export function decodeVersionManifestFields(o: rt.Obj, ctx: Ctx): VersionManifest {
   const path = o.path;
@@ -3052,6 +3250,12 @@ export function decodeVersionManifestFields(o: rt.Obj, ctx: Ctx): VersionManifes
   const retention_ = decodeRetention(o.req("retention"), rt.child(path, "retention"), ctx);
   const promotion_raw = o.opt("promotion");
   const promotion_ = promotion_raw === undefined ? undefined : decodePromotionRecord(promotion_raw, rt.child(path, "promotion"), ctx);
+  const origin_raw = o.since("origin", [1, 1, 0], false, ctx);
+  const origin_ = origin_raw === undefined ? undefined : decodeOrigin(origin_raw, rt.child(path, "origin"), ctx);
+  const rollback_raw = o.since("rollback", [1, 1, 0], false, ctx);
+  const rollback_ = rollback_raw === undefined ? undefined : decodeRollbackSpec(rollback_raw, rt.child(path, "rollback"), ctx);
+  const revocations_raw = o.since("revocations", [1, 1, 0], false, ctx);
+  const revocations_ = revocations_raw === undefined ? undefined : rt.list(revocations_raw, rt.child(path, "revocations"), 0, 256, (e, p) => decodeRevocation(e, p, ctx));
   o.finish();
   const out = {} as VersionManifest;
   out.created_at = created_at_;
@@ -3062,6 +3266,9 @@ export function decodeVersionManifestFields(o: rt.Obj, ctx: Ctx): VersionManifes
   out.migrations = migrations_;
   out.retention = retention_;
   if (promotion_ !== undefined) out.promotion = promotion_;
+  if (origin_ !== undefined) out.origin = origin_;
+  if (rollback_ !== undefined) out.rollback = rollback_;
+  if (revocations_ !== undefined) out.revocations = revocations_;
   return out;
 }
 export function decodeVersionManifest(v: Value, path: string, ctx: Ctx): VersionManifest {
@@ -3077,6 +3284,9 @@ export function encodeVersionManifestFields(x: VersionManifest): Map<string, Val
   e.set("migrations", x.migrations.map((e) => encodeMigrationEdge(e)));
   e.set("retention", encodeRetention(x.retention));
   if (x.promotion !== undefined) e.set("promotion", encodePromotionRecord(x.promotion));
+  if (x.origin !== undefined) e.set("origin", encodeOrigin(x.origin));
+  if (x.rollback !== undefined) e.set("rollback", encodeRollbackSpec(x.rollback));
+  if (x.revocations !== undefined) e.set("revocations", x.revocations.map((e) => encodeRevocation(e)));
   return e;
 }
 export function encodeVersionManifest(x: VersionManifest): Value {

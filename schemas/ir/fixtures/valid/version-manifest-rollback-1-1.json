@@ -1,0 +1,131 @@
+{
+  "schema": "vsf.version/1.1.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "created_at": 1792368400000,
+    "channel": "stable",
+    "axes": {
+      "source_app": {
+        "fingerprint": "sha256:3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a",
+        "provider_release": "2026.10"
+      },
+      "source_variant": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "compiler": "0.1.0+c3c3c3c3c3c3",
+      "primitive_set": "sha256:1818181818181818181818181818181818181818181818181818181818181818",
+      "observation_schema": "1.0.0",
+      "semantic_schema": "1.0.0",
+      "operation_schema": "1.0.0",
+      "operations": {
+        "app.records.update_stage": "1.3.0",
+        "app.records.list": "1.0.2"
+      },
+      "presentation": "pv3",
+      "cache_format": 1,
+      "runtime": "0.0.1",
+      "policy": 4
+    },
+    "artifacts": [
+      {
+        "role": "observation",
+        "digest": "sha256:f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6",
+        "bytes": 308280,
+        "media_type": "application/vnd.vsf.pack",
+        "visibility": "private_principal",
+        "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+      },
+      {
+        "role": "semantic",
+        "digest": "sha256:4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b",
+        "bytes": 20480,
+        "media_type": "application/json",
+        "visibility": "private_principal",
+        "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+      },
+      {
+        "role": "operation_contract",
+        "digest": "sha256:5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c",
+        "bytes": 4096,
+        "media_type": "application/json",
+        "visibility": "private_principal",
+        "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+      },
+      {
+        "role": "presentation",
+        "digest": "sha256:2929292929292929292929292929292929292929292929292929292929292929",
+        "bytes": 8192,
+        "media_type": "application/json",
+        "visibility": "global_structure"
+      }
+    ],
+    "lineage": ["sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d"],
+    "migrations": [
+      {
+        "from": "0.9.0",
+        "to": "1.0.0",
+        "kind": "lossless",
+        "fixture": "sha256:7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e7e"
+      }
+    ],
+    "retention": {
+      "tier": "pro",
+      "immutable": true,
+      "pinned": false,
+      "legal_hold": false,
+      "expires_at": 1823904400000
+    },
+    "promotion": {
+      "promoted_at": 1792368500000,
+      "gates": [
+        {
+          "gate": "g2",
+          "passed": true
+        },
+        {
+          "gate": "differential",
+          "passed": true
+        }
+      ],
+      "signer": "release-key-1",
+      "signature": "MEUCIQD-test-signature",
+      "previous": "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d"
+    },
+    "origin": "https://crm.example.com",
+    "revocations": [
+      {
+        "kind": "artifact",
+        "at": 1792368450000,
+        "reason": "leaked build",
+        "digest": "sha256:9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a9a"
+      },
+      {
+        "kind": "operation",
+        "at": 1792368450000,
+        "reason": "retired by vendor",
+        "operation": "app.records.purge"
+      },
+      {
+        "kind": "trust_authority",
+        "at": 1792368450000,
+        "reason": "key rotated",
+        "authority": "old-verifier"
+      },
+      {
+        "kind": "principal_grant",
+        "at": 1792368450000,
+        "reason": "user revoked",
+        "principal": "prin_c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+      },
+      {
+        "kind": "witness",
+        "at": 1792368450000,
+        "reason": "superseded",
+        "digest": "sha256:8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b"
+      }
+    ],
+    "rollback": {
+      "kind": "interface",
+      "target": "sha256:6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d",
+      "roles": ["presentation"]
+    }
+  }
+}

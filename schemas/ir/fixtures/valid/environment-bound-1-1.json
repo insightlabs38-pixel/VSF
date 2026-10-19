@@ -1,0 +1,59 @@
+{
+  "schema": "vsf.environment/1.1.0",
+  "schema_digest": "$DIGEST",
+  "body": {
+    "runtime_id": "rt_ext01",
+    "mode": "extension",
+    "runtime_version": "0.0.1",
+    "compiler_version": "0.1.0+c3c3c3c3c3c3",
+    "generated_at": 1792368000000,
+    "principal_ref": "prin_b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+    "permissions": [
+      {
+        "origin": "http://127.0.0.1:4173",
+        "scopes": ["records.read"]
+      }
+    ],
+    "observation": [
+      {
+        "id": "dom.snapshot",
+        "state": "available"
+      },
+      {
+        "id": "cdp.network",
+        "state": "unavailable",
+        "reason": "not exposed to extensions"
+      },
+      {
+        "id": "a11y.tree",
+        "state": "unknown"
+      }
+    ],
+    "execution": [
+      {
+        "id": "input.synthetic",
+        "state": "degraded",
+        "constraints": ["user gesture required for some controls"]
+      },
+      {
+        "id": "api.direct",
+        "state": "unavailable"
+      }
+    ],
+    "persistence": "local",
+    "credential_isolation": "browser_profile_bound",
+    "egress": "none",
+    "limits": {
+      "max_payload_bytes": 16777216,
+      "max_nodes": 100000,
+      "max_concurrency": 2,
+      "max_wallclock_ms": 30000
+    },
+    "attestation": {
+      "kind": "signed_build",
+      "digest": "sha256:d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4"
+    },
+    "app_id": "vendor-console:app.vendor.test",
+    "variant_id": "var_a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+  }
+}

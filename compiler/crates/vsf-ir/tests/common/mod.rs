@@ -2,7 +2,6 @@
 
 use std::path::PathBuf;
 use vsf_canon::{Value, parse, to_canonical};
-use vsf_ir::doc::family_digest;
 
 pub fn fixtures() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../schemas/ir/fixtures")
@@ -12,15 +11,17 @@ pub fn fixtures() -> PathBuf {
 pub fn valid_bytes(name: &str) -> Vec<u8> {
     let text =
         std::fs::read_to_string(fixtures().join("valid").join(format!("{name}.json"))).unwrap();
-    let family = text
-        .split("\"schema\": \"vsf.")
-        .nth(1)
-        .unwrap()
-        .split('/')
-        .next()
-        .unwrap()
-        .to_string();
-    let text = text.replace("$DIGEST", family_digest(&family).unwrap());
+    let (family, version) = {
+        let rest = text.split("\"schema\": \"vsf.").nth(1).unwrap();
+        let (family, rest) = rest.split_once('/').unwrap();
+        let ver = rest.split('"').next().unwrap();
+        let mut it = ver.split('.').map(|x| x.parse::<u32>().unwrap());
+        (
+            family.to_string(),
+            (it.next().unwrap(), it.next().unwrap(), it.next().unwrap()),
+        )
+    };
+    let text = text.replace("$DIGEST", vsf_ir::doc::digest_at(&family, version).unwrap());
     to_canonical(&parse(text.as_bytes()).unwrap())
 }
 

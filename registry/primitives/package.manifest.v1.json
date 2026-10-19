@@ -31,7 +31,7 @@
     {"bytes":268292,"path":"registry/primitives/registry.v1.json","sha256":"af84408121bc30a0cda46ba076c2e9f11de7352b6e94a693502548edf5788421"},
     {"bytes":1842,"path":"registry/primitives/status.v1.json","sha256":"fc0e25d8f497c5b59f55367765dcb825b3854c711d1de0eb5722b350dd9ae8b6"}
   ],
-  "ir_version": "1.0.0",
+  "ir_version": "1.1.0",
   "package": "vsf-primitives",
   "primitive_root": "4bbad82882b81199789e7cb75579a2d89948c90272e47aa2c3ef4378566d78c2",
   "primitives": [
@@ -961,6 +961,6 @@
     {"digest":"d822d14b10f88b8ab90b38630351abf3856b880d961ee213cfc1ea6334c4eb6b","id":"TIME-028"}
   ],
   "schema": "vsf-primitive-package-v1",
-  "signature": {"alg":"ed25519","key_id":"vsf-dev-1","value":"457a56d94067ff31f3892784a3fcd1bf2da13b75ef95bfd627a2d4fcda8f89ec9cf6d3a20a5357f5a30d9ce2c288e1bec1c4abe6a3c91c8ad58963f828586f0e"},
+  "signature": {"alg":"ed25519","key_id":"vsf-dev-1","value":"bcfc84cf5007e9963080b2b5ce6a96889be59c839a1a154d7c1201fba351824a573ad83dec0fcf9f928fde2446b31f83b799e269121619e024791d4f2b809b0e"},
   "version": "0.1.0"
 }

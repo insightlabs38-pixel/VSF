@@ -10,18 +10,38 @@ import (
 
 var _ = regexp.MustCompile
 
-const IRVersionText = "1.0.0"
+const IRVersionText = "1.1.0"
 
-var IRVersion = rt.Version{1, 0, 0}
+var IRVersion = rt.Version{1, 1, 0}
 
 // Families lists each document family, its root type and the digest of its type closure.
 var Families = [][3]string{
-	{"environment", "EnvironmentCapabilityManifest", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"},
-	{"observation", "ObservationIR", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"},
-	{"semantic", "SemanticIR", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"},
-	{"operation", "OperationContract", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"},
-	{"presentation", "PresentationIR", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"},
-	{"version", "VersionManifest", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"},
+	{"environment", "EnvironmentCapabilityManifest", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"},
+	{"observation", "ObservationIR", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"},
+	{"semantic", "SemanticIR", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"},
+	{"operation", "OperationContract", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"},
+	{"presentation", "PresentationIR", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"},
+	{"version", "VersionManifest", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"},
+}
+
+// Accepted lists every version and family digest a reader decodes: all released snapshots and the current schema.
+var Accepted = []struct {
+	Version [3]uint32
+	Family  string
+	Digest  string
+}{
+	{rt.Version{1, 0, 0}, "environment", "sha256:b2b42cf703d172709c1fd5ecd221b246694782a983acd3f7a666a940a1194809"},
+	{rt.Version{1, 1, 0}, "environment", "sha256:d7e151cc672242d1b0b9c2dcb8b95db3563beef348f35856bdf31913ed209ef4"},
+	{rt.Version{1, 0, 0}, "observation", "sha256:e014a1972c0c37d9698ab334dffda162460f657c0c4a83adf8c24a0ce8806e57"},
+	{rt.Version{1, 1, 0}, "observation", "sha256:378739e3077e8f91630befc79cc6fe639e51a1fb4a152dba3c3f88189e277e9b"},
+	{rt.Version{1, 0, 0}, "operation", "sha256:e67c90e7057ac1c113afeb7c5e18fe3ee1fdcdbcfacf7c97dea3ebb5e5550646"},
+	{rt.Version{1, 1, 0}, "operation", "sha256:34d7c25cd28a0a2358443fe28ece6c12bb30057cc455cef1a2d568efbdfd3a12"},
+	{rt.Version{1, 0, 0}, "presentation", "sha256:5d614b8475bdbb5e1f32595cef99a3d5c18f7116ce58adcf5902b0f1bd629c53"},
+	{rt.Version{1, 1, 0}, "presentation", "sha256:8a6969b9d97ed7112dd18add6f35208c4c7f6750c80176fc6e80cacf7298948d"},
+	{rt.Version{1, 0, 0}, "semantic", "sha256:c0bf594e852faed5f25e93cb5249121b9679f8235ec9df6ebb1d816b8c5b21b7"},
+	{rt.Version{1, 1, 0}, "semantic", "sha256:751e63536d817f3752ec4f569407b74391b676d24c36c1ae931abcbeeaa6d0d6"},
+	{rt.Version{1, 0, 0}, "version", "sha256:bb0718b0fdab195aba941f5c9d8bdf0924f4a031e232afbb4e40ba9f55f9413f"},
+	{rt.Version{1, 1, 0}, "version", "sha256:d0b66826e78248051f3151420db3c7f23ca56add92832f8d693756b92b5cf5e8"},
 }
 
 var ruleDigest = rt.StrRule{Pattern: regexp.MustCompile("^sha256:[0-9a-f]{64}$"), MaxLen: 71, Text: rt.TextNone}
@@ -512,6 +532,7 @@ func DecodeIdempotency(v any, path string, _ rt.Ctx) (Idempotency, error) {
 
 func (x Idempotency) Encode() any { return string(x) }
 
+// unknown: a previously evaluated context can no longer be confirmed; it never executes.
 type CompatStatus string
 
 const (
@@ -522,9 +543,10 @@ const (
 	CompatStatusSourceIncompatible       CompatStatus = "source_incompatible"
 	CompatStatusSecurityRevoked          CompatStatus = "security_revoked"
 	CompatStatusUnsupportedRuntime       CompatStatus = "unsupported_runtime"
+	CompatStatusUnknown                  CompatStatus = "unknown"
 )
 
-var allCompatStatus = []CompatStatus{CompatStatusSupported, CompatStatusSupportedWithTranslation, CompatStatusDegraded, CompatStatusNeedsReauth, CompatStatusSourceIncompatible, CompatStatusSecurityRevoked, CompatStatusUnsupportedRuntime}
+var allCompatStatus = []CompatStatus{CompatStatusSupported, CompatStatusSupportedWithTranslation, CompatStatusDegraded, CompatStatusNeedsReauth, CompatStatusSourceIncompatible, CompatStatusSecurityRevoked, CompatStatusUnsupportedRuntime, CompatStatusUnknown}
 
 func DecodeCompatStatus(v any, path string, _ rt.Ctx) (CompatStatus, error) {
 	s, err := rt.EnumStr(v, path)
@@ -540,6 +562,85 @@ func DecodeCompatStatus(v any, path string, _ rt.Ctx) (CompatStatus, error) {
 }
 
 func (x CompatStatus) Encode() any { return string(x) }
+
+// Who may reuse an artifact; absent means private_principal, the most restrictive.
+type Visibility string
+
+const (
+	VisibilityPrivatePrincipal Visibility = "private_principal"
+	VisibilityPrivateVariant   Visibility = "private_variant"
+	VisibilityGlobalStructure  Visibility = "global_structure"
+)
+
+var allVisibility = []Visibility{VisibilityPrivatePrincipal, VisibilityPrivateVariant, VisibilityGlobalStructure}
+
+func DecodeVisibility(v any, path string, _ rt.Ctx) (Visibility, error) {
+	s, err := rt.EnumStr(v, path)
+	if err != nil {
+		return "", err
+	}
+	for _, c := range allVisibility {
+		if string(c) == s {
+			return c, nil
+		}
+	}
+	return "", rt.Fail(path, "ir.bad_enum")
+}
+
+func (x Visibility) Encode() any { return string(x) }
+
+// What a rollback restores; none of them rolls back the source application's data.
+type RollbackKind string
+
+const (
+	RollbackKindSourceData      RollbackKind = "source_data"
+	RollbackKindInterface       RollbackKind = "interface"
+	RollbackKindArtifactVersion RollbackKind = "artifact_version"
+)
+
+var allRollbackKind = []RollbackKind{RollbackKindSourceData, RollbackKindInterface, RollbackKindArtifactVersion}
+
+func DecodeRollbackKind(v any, path string, _ rt.Ctx) (RollbackKind, error) {
+	s, err := rt.EnumStr(v, path)
+	if err != nil {
+		return "", err
+	}
+	for _, c := range allRollbackKind {
+		if string(c) == s {
+			return c, nil
+		}
+	}
+	return "", rt.Fail(path, "ir.bad_enum")
+}
+
+func (x RollbackKind) Encode() any { return string(x) }
+
+type RevocationKind string
+
+const (
+	RevocationKindOperation      RevocationKind = "operation"
+	RevocationKindWitness        RevocationKind = "witness"
+	RevocationKindTrustAuthority RevocationKind = "trust_authority"
+	RevocationKindArtifact       RevocationKind = "artifact"
+	RevocationKindPrincipalGrant RevocationKind = "principal_grant"
+)
+
+var allRevocationKind = []RevocationKind{RevocationKindOperation, RevocationKindWitness, RevocationKindTrustAuthority, RevocationKindArtifact, RevocationKindPrincipalGrant}
+
+func DecodeRevocationKind(v any, path string, _ rt.Ctx) (RevocationKind, error) {
+	s, err := rt.EnumStr(v, path)
+	if err != nil {
+		return "", err
+	}
+	for _, c := range allRevocationKind {
+		if string(c) == s {
+			return c, nil
+		}
+	}
+	return "", rt.Fail(path, "ir.bad_enum")
+}
+
+func (x RevocationKind) Encode() any { return string(x) }
 
 type ValueType string
 
@@ -1349,6 +1450,8 @@ type EnvironmentCapabilityManifest struct {
 	Egress              EgressPolicy
 	Limits              Limits
 	Attestation         *Attestation
+	AppID               *SourceAppId
+	VariantID           *SourceVariantId
 }
 
 func DecodeEnvironmentCapabilityManifest(v any, path string, ctx rt.Ctx) (EnvironmentCapabilityManifest, error) {
@@ -1515,10 +1618,38 @@ func decodeEnvironmentCapabilityManifestFields(o *rt.Obj, path string, ctx rt.Ct
 			f_attestation = &x
 		}
 	}
+	var f_app_id *SourceAppId
+	{
+		raw, found, err := o.Since("app_id", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeSourceAppId(raw, rt.Child(path, "app_id"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_app_id = &x
+		}
+	}
+	var f_variant_id *SourceVariantId
+	{
+		raw, found, err := o.Since("variant_id", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeSourceVariantId(raw, rt.Child(path, "variant_id"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_variant_id = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = EnvironmentCapabilityManifest{RuntimeID: f_runtime_id, Mode: f_mode, RuntimeVersion: f_runtime_version, CompilerVersion: f_compiler_version, GeneratedAt: f_generated_at, PrincipalRef: f_principal_ref, Permissions: f_permissions, Observation: f_observation, Execution: f_execution, Persistence: f_persistence, CredentialIsolation: f_credential_isolation, Egress: f_egress, Limits: f_limits, Attestation: f_attestation}
+	out = EnvironmentCapabilityManifest{RuntimeID: f_runtime_id, Mode: f_mode, RuntimeVersion: f_runtime_version, CompilerVersion: f_compiler_version, GeneratedAt: f_generated_at, PrincipalRef: f_principal_ref, Permissions: f_permissions, Observation: f_observation, Execution: f_execution, Persistence: f_persistence, CredentialIsolation: f_credential_isolation, Egress: f_egress, Limits: f_limits, Attestation: f_attestation, AppID: f_app_id, VariantID: f_variant_id}
 	return out, nil
 }
 
@@ -1557,6 +1688,12 @@ func (x EnvironmentCapabilityManifest) encodeFields() *canon.Object {
 	e.Set("limits", x.Limits.Encode())
 	if x.Attestation != nil {
 		e.Set("attestation", (*x.Attestation).Encode())
+	}
+	if x.AppID != nil {
+		e.Set("app_id", (*x.AppID).Encode())
+	}
+	if x.VariantID != nil {
+		e.Set("variant_id", (*x.VariantID).Encode())
 	}
 	return e
 }
@@ -4842,6 +4979,14 @@ type Witness struct {
 	ObservedAt        Instant
 	AppliesTo         SourceBinding
 	AuthorizedContext AuthContext
+	RuntimeID         *RuntimeId
+	ObservedEffect    *EffectClass
+	SourceState       *Digest
+	CapabilityDigest  *Digest
+	ExpiresAt         *Instant
+	RevokedAt         *Instant
+	Issuer            *Ident
+	Synthetic         *bool
 }
 
 func DecodeWitness(v any, path string, ctx rt.Ctx) (Witness, error) {
@@ -4942,10 +5087,122 @@ func decodeWitnessFields(o *rt.Obj, path string, ctx rt.Ctx) (Witness, error) {
 			return out, err
 		}
 	}
+	var f_runtime_id *RuntimeId
+	{
+		raw, found, err := o.Since("runtime_id", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeRuntimeId(raw, rt.Child(path, "runtime_id"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_runtime_id = &x
+		}
+	}
+	var f_observed_effect *EffectClass
+	{
+		raw, found, err := o.Since("observed_effect", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeEffectClass(raw, rt.Child(path, "observed_effect"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_observed_effect = &x
+		}
+	}
+	var f_source_state *Digest
+	{
+		raw, found, err := o.Since("source_state", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeDigest(raw, rt.Child(path, "source_state"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_source_state = &x
+		}
+	}
+	var f_capability_digest *Digest
+	{
+		raw, found, err := o.Since("capability_digest", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeDigest(raw, rt.Child(path, "capability_digest"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_capability_digest = &x
+		}
+	}
+	var f_expires_at *Instant
+	{
+		raw, found, err := o.Since("expires_at", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeInstant(raw, rt.Child(path, "expires_at"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_expires_at = &x
+		}
+	}
+	var f_revoked_at *Instant
+	{
+		raw, found, err := o.Since("revoked_at", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeInstant(raw, rt.Child(path, "revoked_at"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_revoked_at = &x
+		}
+	}
+	var f_issuer *Ident
+	{
+		raw, found, err := o.Since("issuer", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeIdent(raw, rt.Child(path, "issuer"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_issuer = &x
+		}
+	}
+	var f_synthetic *bool
+	{
+		raw, found, err := o.Since("synthetic", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := rt.Bool(raw, rt.Child(path, "synthetic"))
+			if err != nil {
+				return out, err
+			}
+			f_synthetic = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = Witness{ID: f_id, Kind: f_kind, FixtureSet: f_fixture_set, VerifierSuite: f_verifier_suite, Result: f_result, ObservedAt: f_observed_at, AppliesTo: f_applies_to, AuthorizedContext: f_authorized_context}
+	out = Witness{ID: f_id, Kind: f_kind, FixtureSet: f_fixture_set, VerifierSuite: f_verifier_suite, Result: f_result, ObservedAt: f_observed_at, AppliesTo: f_applies_to, AuthorizedContext: f_authorized_context, RuntimeID: f_runtime_id, ObservedEffect: f_observed_effect, SourceState: f_source_state, CapabilityDigest: f_capability_digest, ExpiresAt: f_expires_at, RevokedAt: f_revoked_at, Issuer: f_issuer, Synthetic: f_synthetic}
 	return out, nil
 }
 
@@ -4959,6 +5216,30 @@ func (x Witness) encodeFields() *canon.Object {
 	e.Set("observed_at", x.ObservedAt.Encode())
 	e.Set("applies_to", x.AppliesTo.Encode())
 	e.Set("authorized_context", x.AuthorizedContext.Encode())
+	if x.RuntimeID != nil {
+		e.Set("runtime_id", (*x.RuntimeID).Encode())
+	}
+	if x.ObservedEffect != nil {
+		e.Set("observed_effect", (*x.ObservedEffect).Encode())
+	}
+	if x.SourceState != nil {
+		e.Set("source_state", (*x.SourceState).Encode())
+	}
+	if x.CapabilityDigest != nil {
+		e.Set("capability_digest", (*x.CapabilityDigest).Encode())
+	}
+	if x.ExpiresAt != nil {
+		e.Set("expires_at", (*x.ExpiresAt).Encode())
+	}
+	if x.RevokedAt != nil {
+		e.Set("revoked_at", (*x.RevokedAt).Encode())
+	}
+	if x.Issuer != nil {
+		e.Set("issuer", (*x.Issuer).Encode())
+	}
+	if x.Synthetic != nil {
+		e.Set("synthetic", (*x.Synthetic))
+	}
 	return e
 }
 
@@ -6385,10 +6666,12 @@ func (x VersionAxes) encodeFields() *canon.Object {
 func (x VersionAxes) Encode() any { return x.encodeFields() }
 
 type ArtifactRef struct {
-	Role      ArtifactRole
-	Digest    Digest
-	Bytes     Count
-	MediaType Label
+	Role         ArtifactRole
+	Digest       Digest
+	Bytes        Count
+	MediaType    Label
+	Visibility   *Visibility
+	PrincipalRef *PrincipalRef
 }
 
 func DecodeArtifactRef(v any, path string, ctx rt.Ctx) (ArtifactRef, error) {
@@ -6445,10 +6728,38 @@ func decodeArtifactRefFields(o *rt.Obj, path string, ctx rt.Ctx) (ArtifactRef, e
 			return out, err
 		}
 	}
+	var f_visibility *Visibility
+	{
+		raw, found, err := o.Since("visibility", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeVisibility(raw, rt.Child(path, "visibility"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_visibility = &x
+		}
+	}
+	var f_principal_ref *PrincipalRef
+	{
+		raw, found, err := o.Since("principal_ref", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodePrincipalRef(raw, rt.Child(path, "principal_ref"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_principal_ref = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = ArtifactRef{Role: f_role, Digest: f_digest, Bytes: f_bytes, MediaType: f_media_type}
+	out = ArtifactRef{Role: f_role, Digest: f_digest, Bytes: f_bytes, MediaType: f_media_type, Visibility: f_visibility, PrincipalRef: f_principal_ref}
 	return out, nil
 }
 
@@ -6458,6 +6769,12 @@ func (x ArtifactRef) encodeFields() *canon.Object {
 	e.Set("digest", x.Digest.Encode())
 	e.Set("bytes", x.Bytes.Encode())
 	e.Set("media_type", x.MediaType.Encode())
+	if x.Visibility != nil {
+		e.Set("visibility", (*x.Visibility).Encode())
+	}
+	if x.PrincipalRef != nil {
+		e.Set("principal_ref", (*x.PrincipalRef).Encode())
+	}
 	return e
 }
 
@@ -6791,15 +7108,218 @@ func (x PromotionRecord) encodeFields() *canon.Object {
 
 func (x PromotionRecord) Encode() any { return x.encodeFields() }
 
+// This manifest was produced by a rollback of the stated kind.
+type RollbackSpec struct {
+	Kind   RollbackKind
+	Target Digest
+	Roles  []ArtifactRole
+}
+
+func DecodeRollbackSpec(v any, path string, ctx rt.Ctx) (RollbackSpec, error) {
+	o, err := rt.NewObj(v, path)
+	if err != nil {
+		return RollbackSpec{}, err
+	}
+	return decodeRollbackSpecFields(o, path, ctx)
+}
+
+func decodeRollbackSpecFields(o *rt.Obj, path string, ctx rt.Ctx) (RollbackSpec, error) {
+	var out RollbackSpec
+	var f_kind RollbackKind
+	{
+		raw, err := o.Req("kind")
+		if err != nil {
+			return out, err
+		}
+		f_kind, err = DecodeRollbackKind(raw, rt.Child(path, "kind"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_target Digest
+	{
+		raw, err := o.Req("target")
+		if err != nil {
+			return out, err
+		}
+		f_target, err = DecodeDigest(raw, rt.Child(path, "target"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_roles []ArtifactRole
+	{
+		raw, err := o.Req("roles")
+		if err != nil {
+			return out, err
+		}
+		f_roles, err = rt.List(raw, rt.Child(path, "roles"), 0, 8, func(e any, p string) (ArtifactRole, error) { return DecodeArtifactRole(e, p, ctx) })
+		if err != nil {
+			return out, err
+		}
+	}
+	if err := o.Finish(); err != nil {
+		return out, err
+	}
+	out = RollbackSpec{Kind: f_kind, Target: f_target, Roles: f_roles}
+	return out, nil
+}
+
+func (x RollbackSpec) encodeFields() *canon.Object {
+	e := canon.NewObject()
+	e.Set("kind", x.Kind.Encode())
+	e.Set("target", x.Target.Encode())
+	e.Set("roles", func() any {
+		out := make([]any, 0, len(x.Roles))
+		for _, e := range x.Roles {
+			out = append(out, e.Encode())
+		}
+		return out
+	}())
+	return e
+}
+
+func (x RollbackSpec) Encode() any { return x.encodeFields() }
+
+// Withdraws trust in one operation, witness, authority, artifact or grant; a revoked artifact is never revived by a pin.
+type Revocation struct {
+	Kind      RevocationKind
+	At        Instant
+	Reason    Label
+	Operation *OperationId
+	Digest    *Digest
+	Authority *Ident
+	Principal *PrincipalRef
+}
+
+func DecodeRevocation(v any, path string, ctx rt.Ctx) (Revocation, error) {
+	o, err := rt.NewObj(v, path)
+	if err != nil {
+		return Revocation{}, err
+	}
+	return decodeRevocationFields(o, path, ctx)
+}
+
+func decodeRevocationFields(o *rt.Obj, path string, ctx rt.Ctx) (Revocation, error) {
+	var out Revocation
+	var f_kind RevocationKind
+	{
+		raw, err := o.Req("kind")
+		if err != nil {
+			return out, err
+		}
+		f_kind, err = DecodeRevocationKind(raw, rt.Child(path, "kind"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_at Instant
+	{
+		raw, err := o.Req("at")
+		if err != nil {
+			return out, err
+		}
+		f_at, err = DecodeInstant(raw, rt.Child(path, "at"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_reason Label
+	{
+		raw, err := o.Req("reason")
+		if err != nil {
+			return out, err
+		}
+		f_reason, err = DecodeLabel(raw, rt.Child(path, "reason"), ctx)
+		if err != nil {
+			return out, err
+		}
+	}
+	var f_operation *OperationId
+	{
+		raw, found := o.Opt("operation")
+		if found {
+			x, err := DecodeOperationId(raw, rt.Child(path, "operation"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_operation = &x
+		}
+	}
+	var f_digest *Digest
+	{
+		raw, found := o.Opt("digest")
+		if found {
+			x, err := DecodeDigest(raw, rt.Child(path, "digest"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_digest = &x
+		}
+	}
+	var f_authority *Ident
+	{
+		raw, found := o.Opt("authority")
+		if found {
+			x, err := DecodeIdent(raw, rt.Child(path, "authority"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_authority = &x
+		}
+	}
+	var f_principal *PrincipalRef
+	{
+		raw, found := o.Opt("principal")
+		if found {
+			x, err := DecodePrincipalRef(raw, rt.Child(path, "principal"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_principal = &x
+		}
+	}
+	if err := o.Finish(); err != nil {
+		return out, err
+	}
+	out = Revocation{Kind: f_kind, At: f_at, Reason: f_reason, Operation: f_operation, Digest: f_digest, Authority: f_authority, Principal: f_principal}
+	return out, nil
+}
+
+func (x Revocation) encodeFields() *canon.Object {
+	e := canon.NewObject()
+	e.Set("kind", x.Kind.Encode())
+	e.Set("at", x.At.Encode())
+	e.Set("reason", x.Reason.Encode())
+	if x.Operation != nil {
+		e.Set("operation", (*x.Operation).Encode())
+	}
+	if x.Digest != nil {
+		e.Set("digest", (*x.Digest).Encode())
+	}
+	if x.Authority != nil {
+		e.Set("authority", (*x.Authority).Encode())
+	}
+	if x.Principal != nil {
+		e.Set("principal", (*x.Principal).Encode())
+	}
+	return e
+}
+
+func (x Revocation) Encode() any { return x.encodeFields() }
+
 type VersionManifest struct {
-	CreatedAt  Instant
-	Channel    Channel
-	Axes       VersionAxes
-	Artifacts  []ArtifactRef
-	Lineage    []Digest
-	Migrations []MigrationEdge
-	Retention  Retention
-	Promotion  *PromotionRecord
+	CreatedAt   Instant
+	Channel     Channel
+	Axes        VersionAxes
+	Artifacts   []ArtifactRef
+	Lineage     []Digest
+	Migrations  []MigrationEdge
+	Retention   Retention
+	Promotion   *PromotionRecord
+	Origin      *Origin
+	Rollback    *RollbackSpec
+	Revocations *[]Revocation
 }
 
 func DecodeVersionManifest(v any, path string, ctx rt.Ctx) (VersionManifest, error) {
@@ -6900,10 +7420,52 @@ func decodeVersionManifestFields(o *rt.Obj, path string, ctx rt.Ctx) (VersionMan
 			f_promotion = &x
 		}
 	}
+	var f_origin *Origin
+	{
+		raw, found, err := o.Since("origin", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeOrigin(raw, rt.Child(path, "origin"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_origin = &x
+		}
+	}
+	var f_rollback *RollbackSpec
+	{
+		raw, found, err := o.Since("rollback", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := DecodeRollbackSpec(raw, rt.Child(path, "rollback"), ctx)
+			if err != nil {
+				return out, err
+			}
+			f_rollback = &x
+		}
+	}
+	var f_revocations *[]Revocation
+	{
+		raw, found, err := o.Since("revocations", rt.Version{1, 1, 0}, false, ctx)
+		if err != nil {
+			return out, err
+		}
+		if found {
+			x, err := rt.List(raw, rt.Child(path, "revocations"), 0, 256, func(e any, p string) (Revocation, error) { return DecodeRevocation(e, p, ctx) })
+			if err != nil {
+				return out, err
+			}
+			f_revocations = &x
+		}
+	}
 	if err := o.Finish(); err != nil {
 		return out, err
 	}
-	out = VersionManifest{CreatedAt: f_created_at, Channel: f_channel, Axes: f_axes, Artifacts: f_artifacts, Lineage: f_lineage, Migrations: f_migrations, Retention: f_retention, Promotion: f_promotion}
+	out = VersionManifest{CreatedAt: f_created_at, Channel: f_channel, Axes: f_axes, Artifacts: f_artifacts, Lineage: f_lineage, Migrations: f_migrations, Retention: f_retention, Promotion: f_promotion, Origin: f_origin, Rollback: f_rollback, Revocations: f_revocations}
 	return out, nil
 }
 
@@ -6936,6 +7498,21 @@ func (x VersionManifest) encodeFields() *canon.Object {
 	e.Set("retention", x.Retention.Encode())
 	if x.Promotion != nil {
 		e.Set("promotion", (*x.Promotion).Encode())
+	}
+	if x.Origin != nil {
+		e.Set("origin", (*x.Origin).Encode())
+	}
+	if x.Rollback != nil {
+		e.Set("rollback", (*x.Rollback).Encode())
+	}
+	if x.Revocations != nil {
+		e.Set("revocations", func() any {
+			out := make([]any, 0, len((*x.Revocations)))
+			for _, e := range *x.Revocations {
+				out = append(out, e.Encode())
+			}
+			return out
+		}())
 	}
 	return e
 }

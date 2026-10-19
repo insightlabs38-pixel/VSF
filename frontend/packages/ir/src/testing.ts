@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { parse, toCanonical, type Value } from "@vsf/schema";
-import { familyDigest } from "./doc.ts";
+import { digestAt } from "./doc.ts";
+import { parseVersion } from "./rt.ts";
 
 const dir = new URL("../../../../schemas/ir/fixtures/", import.meta.url);
 const enc = new TextEncoder();
@@ -15,8 +16,9 @@ export const validNames = (): string[] =>
 /** Canonical bytes of a valid fixture with its schema digest placeholder filled in. */
 export function validBytes(name: string): Uint8Array {
   const text = readFixture(`valid/${name}.json`);
-  const family = /"schema": "vsf\.([a-z]+)\//.exec(text)?.[1] as string;
-  return toCanonical(parse(enc.encode(text.replace("$DIGEST", familyDigest(family) as string))));
+  const m = /"schema": "vsf\.([a-z]+)\/([0-9.]+)"/.exec(text);
+  const digest = digestAt(m?.[1] as string, parseVersion(m?.[2] as string) as [number, number, number]) as string;
+  return toCanonical(parse(enc.encode(text.replace("$DIGEST", digest))));
 }
 
 export function pointerSet(root: Value, path: string, value: Value | undefined): void {

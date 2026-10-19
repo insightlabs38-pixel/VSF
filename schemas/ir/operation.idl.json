@@ -1,6 +1,6 @@
 {
   "idl": "vsf-idl/1",
-  "ir_version": "1.0.0",
+  "ir_version": "1.1.0",
   "family": "operation",
   "root": "OperationContract",
   "types": {
@@ -101,7 +101,15 @@
         "result": { "type": "WitnessResult" },
         "observed_at": { "type": "Instant" },
         "applies_to": { "type": "SourceBinding" },
-        "authorized_context": { "type": "AuthContext" }
+        "authorized_context": { "type": "AuthContext" },
+        "runtime_id": { "type": "RuntimeId", "optional": true, "since": "1.1.0" },
+        "observed_effect": { "type": "EffectClass", "optional": true, "since": "1.1.0" },
+        "source_state": { "type": "Digest", "optional": true, "since": "1.1.0" },
+        "capability_digest": { "type": "Digest", "optional": true, "since": "1.1.0" },
+        "expires_at": { "type": "Instant", "optional": true, "since": "1.1.0" },
+        "revoked_at": { "type": "Instant", "optional": true, "since": "1.1.0" },
+        "issuer": { "type": "Ident", "optional": true, "since": "1.1.0" },
+        "synthetic": { "type": "bool", "optional": true, "since": "1.1.0" }
       }
     },
     "OperationContract": {

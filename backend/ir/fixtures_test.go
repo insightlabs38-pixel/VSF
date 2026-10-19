@@ -38,7 +38,9 @@ func validBytes(t *testing.T, name string) []byte {
 	text := string(raw)
 	rest := text[strings.Index(text, `"schema": "vsf.`)+len(`"schema": "vsf.`):]
 	family := rest[:strings.Index(rest, "/")]
-	d, _ := familyDigest(family)
+	verText := rest[strings.Index(rest, "/")+1 : strings.Index(rest, `"`)]
+	ver, _ := rt.ParseVersion(verText)
+	d, _ := DigestAt(family, ver)
 	text = strings.Replace(text, "$DIGEST", d, 1)
 	v, err := canon.Parse([]byte(text))
 	if err != nil {
@@ -67,12 +69,20 @@ func TestValidFixturesRoundTripToIdenticalBytes(t *testing.T) {
 	}
 	for _, name := range names {
 		b := validBytes(t, name)
-		body, err := DecodeDocument(b)
+		v, perr := canon.Parse(b)
+		if perr != nil {
+			t.Fatal(perr)
+		}
+		body, ver, err := DecodeDocumentValueVersioned(v)
 		if err != nil {
 			t.Fatalf("%s: %v", name, err)
 		}
-		if string(EncodeDocument(body)) != string(b) {
+		out, ok := EncodeDocumentAt(body, ver)
+		if !ok || string(out) != string(b) {
 			t.Errorf("%s: re-encoded bytes differ", name)
+		}
+		if _, err := DecodeDocument(EncodeDocument(body)); err != nil {
+			t.Errorf("%s: re-encoding at the current version: %v", name, err)
 		}
 	}
 }
@@ -93,11 +103,15 @@ func TestPinnedDigestsMatchTheRustAuthority(t *testing.T) {
 		if int64(len(b)) != e["canonical_bytes"].(int64) || canon.SHA256Hex(b) != e["canonical_sha256"] {
 			t.Errorf("%s: canonical bytes or sha256 differ", name)
 		}
-		body, err := DecodeDocument(b)
+		pv, perr := canon.Parse(b)
+		if perr != nil {
+			t.Fatal(perr)
+		}
+		body, ver, err := DecodeDocumentValueVersioned(pv)
 		if err != nil {
 			t.Fatal(err)
 		}
-		if DocumentDigest(body) != e["document_digest"] {
+		if got, _ := DocumentDigestAt(body, ver); got != e["document_digest"] {
 			t.Errorf("%s: document digest differs", name)
 		}
 	}

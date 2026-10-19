@@ -525,8 +525,9 @@
         "observed": null
       },
       "expect": {
-        "source_app": "supported:not_observed",
-        "overall": "supported"
+        "source_app": "unknown:not_observed",
+        "source_variant": "unknown:not_observed",
+        "overall": "unknown"
       }
     },
     {

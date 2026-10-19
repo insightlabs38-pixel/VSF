@@ -111,6 +111,80 @@ pub fn witness_applies(w: &Witness, source: &SourceBinding) -> bool {
     range_contains(outer, inner)
 }
 
+/// A witness that is synthetic or already revoked never counts towards an executable contract.
+pub fn witness_disqualified(w: &Witness) -> bool {
+    w.synthetic == Some(true) || w.revoked_at.is_some()
+}
+
+/// What a host knows about the moment and place of execution.
+#[derive(Debug, Clone)]
+pub struct ExecEnv {
+    pub now: i64,
+    pub runtime_id: String,
+    pub source_state: String,
+    pub capability_digest: String,
+    pub principal_ref: String,
+    pub variant_id: String,
+}
+
+/// Fail-closed execution check: one fresh, unrevoked, non-synthetic witness must match this exact context.
+pub fn authorizes_execution(c: &OperationContract, env: &ExecEnv) -> Result<(), &'static str> {
+    if !is_executable(c) {
+        return Err("not_executable");
+    }
+    let mut last = "no_passing_witness";
+    for w in &c.witnesses {
+        if w.result != WitnessResult::Passed || !witness_applies(w, &c.source) {
+            continue;
+        }
+        let verdict = (|| {
+            if w.synthetic == Some(true) {
+                return Err("synthetic_witness");
+            }
+            if w.revoked_at.is_some_and(|r| r.0 <= env.now) {
+                return Err("witness_revoked");
+            }
+            let (Some(rt), Some(eff), Some(state), Some(cap), Some(exp), Some(_)) = (
+                &w.runtime_id,
+                w.observed_effect,
+                &w.source_state,
+                &w.capability_digest,
+                w.expires_at,
+                &w.issuer,
+            ) else {
+                return Err("witness_context_missing");
+            };
+            if exp.0 <= env.now {
+                return Err("witness_expired");
+            }
+            if w.authorized_context.principal_ref.as_str() != env.principal_ref {
+                return Err("witness_other_principal");
+            }
+            if w.authorized_context.variant_id.as_str() != env.variant_id {
+                return Err("witness_other_variant");
+            }
+            if rt.as_str() != env.runtime_id {
+                return Err("witness_other_environment");
+            }
+            if cap.as_str() != env.capability_digest {
+                return Err("witness_capability_changed");
+            }
+            if state.as_str() != env.source_state {
+                return Err("witness_source_state_changed");
+            }
+            if danger(eff) > danger(c.effect.class) {
+                return Err("witness_effect_understated");
+            }
+            Ok(())
+        })();
+        match verdict {
+            Ok(()) => return Ok(()),
+            Err(reason) => last = reason,
+        }
+    }
+    Err(last)
+}
+
 /// True only for a contract that passed every invariant and is in the `active` lifecycle.
 pub fn is_executable(c: &OperationContract) -> bool {
     c.lifecycle == Lifecycle::Active && validate_operation(c).is_empty()
@@ -241,6 +315,53 @@ pub fn validate_operation(c: &OperationContract) -> Vec<Violation> {
         }
     }
 
+    for (i, w) in c.witnesses.iter().enumerate() {
+        let path = format!("/body/witnesses/{i}");
+        let bundle = [
+            w.runtime_id.is_some(),
+            w.observed_effect.is_some(),
+            w.source_state.is_some(),
+            w.capability_digest.is_some(),
+            w.expires_at.is_some(),
+            w.issuer.is_some(),
+        ];
+        if bundle.iter().any(|b| *b) && !bundle.iter().all(|b| *b) {
+            out.push(v("contract.witness_context_incomplete", &path, ""));
+        }
+        if w.expires_at.is_some_and(|e| e.0 <= w.observed_at.0) {
+            out.push(v(
+                "contract.witness_expiry_order",
+                &format!("{path}/expires_at"),
+                "",
+            ));
+        }
+        if w.revoked_at.is_some_and(|r| r.0 < w.observed_at.0) {
+            out.push(v(
+                "contract.witness_revoked_before_observed",
+                &format!("{path}/revoked_at"),
+                "",
+            ));
+        }
+        if let Some(e) = w.observed_effect
+            && danger(e) > danger(class)
+        {
+            out.push(v(
+                "contract.witness_effect_understated",
+                &format!("{path}/observed_effect"),
+                format!(
+                    "witness observed {}, declared {}",
+                    e.as_str(),
+                    class.as_str()
+                ),
+            ));
+        }
+        if w.synthetic == Some(true)
+            && c.lifecycle == Lifecycle::Active
+            && w.result == WitnessResult::Passed
+        {
+            out.push(v("contract.synthetic_witness_on_active", &path, ""));
+        }
+    }
     if c.lifecycle == Lifecycle::Active {
         if class == EffectClass::Indeterminate {
             out.push(v("contract.active_indeterminate", "/body/effect/class", ""));
@@ -264,11 +385,11 @@ pub fn validate_operation(c: &OperationContract) -> Vec<Violation> {
         {
             out.push(v("contract.failed_witness", "/body/witnesses", ""));
         }
-        if !c
-            .witnesses
-            .iter()
-            .any(|w| w.result == WitnessResult::Passed && witness_applies(w, &c.source))
-        {
+        if !c.witnesses.iter().any(|w| {
+            w.result == WitnessResult::Passed
+                && witness_applies(w, &c.source)
+                && !witness_disqualified(w)
+        }) {
             out.push(v(
                 "contract.witness_not_applicable",
                 "/body/witnesses",
@@ -713,6 +834,13 @@ pub fn validate_environment(m: &EnvironmentCapabilityManifest) -> Vec<Violation>
             }
         }
     }
+    if m.variant_id.is_some() && m.app_id.is_none() {
+        out.push(v(
+            "environment.variant_without_app",
+            "/body/variant_id",
+            "a variant is only meaningful for a named application",
+        ));
+    }
     let hosted = matches!(
         m.mode,
         ExecutionMode::HostedSandbox | ExecutionMode::HeadlessWorker | ExecutionMode::PrivateVpc
@@ -969,6 +1097,154 @@ pub fn validate_presentation(p: &PresentationIR, semantic: Option<&SemanticIR>) 
     out
 }
 
+/// Private evidence stays private, revocations stay effective, and each kind of rollback restores only what it can.
+fn validate_isolation(m: &VersionManifest, lineage: &BTreeSet<&str>, out: &mut Vec<Violation>) {
+    let revoked: BTreeSet<&str> = m
+        .revocations
+        .iter()
+        .flatten()
+        .filter(|r| r.kind == RevocationKind::Artifact)
+        .filter_map(|r| r.digest.as_ref().map(|d| d.as_str()))
+        .collect();
+    for (i, a) in m.artifacts.iter().enumerate() {
+        let path = format!("/body/artifacts/{i}");
+        match (a.visibility, &a.principal_ref) {
+            (Some(Visibility::GlobalStructure), Some(_)) => {
+                out.push(v(
+                    "version.principal_on_shared",
+                    &format!("{path}/principal_ref"),
+                    "",
+                ));
+            }
+            (Some(Visibility::PrivatePrincipal), None) => {
+                out.push(v(
+                    "version.private_without_owner",
+                    &format!("{path}/principal_ref"),
+                    "",
+                ));
+            }
+            (Some(Visibility::PrivateVariant), Some(_)) => {
+                out.push(v(
+                    "version.principal_on_shared",
+                    &format!("{path}/principal_ref"),
+                    "",
+                ));
+            }
+            (None, Some(_)) => {
+                out.push(v(
+                    "version.owner_without_visibility",
+                    &format!("{path}/visibility"),
+                    "",
+                ));
+            }
+            _ => {}
+        }
+        if a.visibility == Some(Visibility::GlobalStructure)
+            && matches!(
+                a.role,
+                ArtifactRole::Observation | ArtifactRole::OperationContract
+            )
+        {
+            out.push(v(
+                "version.private_artifact_marked_global",
+                &format!("{path}/visibility"),
+                format!("{:?}", a.role),
+            ));
+        }
+        if revoked.contains(a.digest.as_str()) {
+            out.push(v(
+                "version.revoked_artifact_present",
+                &path,
+                a.digest.as_str(),
+            ));
+        }
+    }
+    for (i, r) in m.revocations.iter().flatten().enumerate() {
+        let path = format!("/body/revocations/{i}");
+        let (op, digest, authority, principal) = (
+            r.operation.is_some(),
+            r.digest.is_some(),
+            r.authority.is_some(),
+            r.principal.is_some(),
+        );
+        let ok = match r.kind {
+            RevocationKind::Operation => {
+                (op, digest, authority, principal) == (true, false, false, false)
+            }
+            RevocationKind::Artifact | RevocationKind::Witness => {
+                (op, digest, authority, principal) == (false, true, false, false)
+            }
+            RevocationKind::TrustAuthority => {
+                (op, digest, authority, principal) == (false, false, true, false)
+            }
+            RevocationKind::PrincipalGrant => {
+                (op, digest, authority, principal) == (false, false, false, true)
+            }
+        };
+        if !ok {
+            out.push(v("version.revocation_malformed", &path, r.kind.as_str()));
+        }
+    }
+    if let Some(rb) = &m.rollback {
+        let path = "/body/rollback";
+        let t = rb.target.as_str();
+        if revoked.contains(t) {
+            out.push(v(
+                "version.rollback_to_revoked",
+                &format!("{path}/target"),
+                t,
+            ));
+        }
+        let roles: BTreeSet<ArtifactRole> = rb.roles.iter().copied().collect();
+        if roles.len() != rb.roles.len() {
+            out.push(v("ir.duplicate_id", &format!("{path}/roles"), ""));
+        }
+        match rb.kind {
+            RollbackKind::ArtifactVersion => {
+                if roles.is_empty() {
+                    out.push(v(
+                        "version.rollback_scope",
+                        &format!("{path}/roles"),
+                        "artifact_version needs roles",
+                    ));
+                }
+                if !lineage.contains(t) {
+                    out.push(v(
+                        "version.rollback_target_not_in_lineage",
+                        &format!("{path}/target"),
+                        t,
+                    ));
+                }
+            }
+            RollbackKind::Interface => {
+                if roles.iter().any(|r| *r != ArtifactRole::Presentation) || roles.is_empty() {
+                    out.push(v(
+                        "version.rollback_scope",
+                        &format!("{path}/roles"),
+                        "an interface rollback touches the presentation only",
+                    ));
+                }
+                if !lineage.contains(t) {
+                    out.push(v(
+                        "version.rollback_target_not_in_lineage",
+                        &format!("{path}/target"),
+                        t,
+                    ));
+                }
+            }
+            RollbackKind::SourceData => {
+                if !roles.is_empty() {
+                    out.push(v(
+                        "version.rollback_scope",
+                        &format!("{path}/roles"),
+                        "a source-data rollback changes no VSF artifact",
+                    ));
+                }
+            }
+        }
+    }
+}
+
 pub fn validate_version(m: &VersionManifest) -> Vec<Violation> {
     let mut out = Vec::new();
     let mut lineage = BTreeSet::new();
@@ -1031,6 +1307,7 @@ pub fn validate_version(m: &VersionManifest) -> Vec<Violation> {
             }
         }
     }
+    validate_isolation(m, &lineage, &mut out);
     let mut edges = BTreeSet::new();
     for (i, e) in m.migrations.iter().enumerate() {
         let path = format!("/body/migrations/{i}");
