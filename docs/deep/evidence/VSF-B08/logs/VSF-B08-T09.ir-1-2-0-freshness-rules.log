@@ -14,7 +14,7 @@ running 2 tests
 test every_valid_fixture_passes_semantic_validation ... ok
 test every_semantic_case_reports_exactly_the_expected_codes ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
 
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
      Running tests/fixtures.rs (compiler/target/debug/deps/fixtures-0591456db67fa71a)

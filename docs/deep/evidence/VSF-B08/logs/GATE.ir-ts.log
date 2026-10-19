@@ -3,12 +3,12 @@ $ pnpm --filter @vsf/ir run test
 > @vsf/ir@0.0.0 test /home/user/VSF/frontend/packages/ir
 > node --conditions=source --test --test-reporter=spec test/*.test.ts
 
-✔ every valid fixture decodes and re-encodes to identical bytes (46.331339ms)
-✔ pinned digests written by the Rust authority match this implementation (36.910813ms)
-✔ NFC and NFD text are preserved and stay distinct (1.673898ms)
-✔ typed digests are domain separated (1.661769ms)
-✔ every invalid case fails closed with the expected code and path (51.535222ms)
-✔ since gates fields by the declared document version (2.260258ms)
+✔ every valid fixture decodes and re-encodes to identical bytes (35.424696ms)
+✔ pinned digests written by the Rust authority match this implementation (24.7495ms)
+✔ NFC and NFD text are preserved and stay distinct (1.220344ms)
+✔ typed digests are domain separated (1.396007ms)
+✔ every invalid case fails closed with the expected code and path (37.622034ms)
+✔ since gates fields by the declared document version (2.365497ms)
 ℹ tests 6
 ℹ suites 0
 ℹ pass 6
@@ -16,5 +16,5 @@ $ pnpm --filter @vsf/ir run test
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 324.093515
+ℹ duration_ms 302.022618
 [exit 0]

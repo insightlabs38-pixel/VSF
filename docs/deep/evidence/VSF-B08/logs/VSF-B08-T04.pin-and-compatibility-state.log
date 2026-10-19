@@ -1,17 +1,16 @@
 $ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-versioning --test pin
 
 running 7 tests
+test a_matching_source_is_compatible_and_may_write ... ok
 test a_pin_refuses_a_candidate_with_another_contract_but_keeps_the_pinned_one_usable ... ok
 test a_revocation_inside_the_manifest_also_blocks_a_pin ... ok
-test a_matching_source_is_compatible_and_may_write ... ok
-test a_published_revocation_overrides_a_pin_on_every_runtime_variant ... ok
 test findings_are_ordered_most_severe_first_and_deterministically ... ok
+test a_published_revocation_overrides_a_pin_on_every_runtime_variant ... ok
 test unobserved_origin_or_principal_is_never_compatible ... ok
 test source_drift_changes_the_state_never_the_public_contract ... ok
 
 test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
 
-   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.33s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
      Running tests/pin.rs (compiler/target/debug/deps/pin-3f80cd1aa48b5eb7)
 [exit 0]

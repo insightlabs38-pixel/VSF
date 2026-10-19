@@ -10,7 +10,6 @@ test replay_rollback_expiry_and_conflict_are_refused ... ok
 
 test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
 
-   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
      Running tests/promotion.rs (compiler/target/debug/deps/promotion-c035f0ff3f4d5d8c)
 [exit 0]

@@ -7,9 +7,8 @@ test an_old_pinned_contract_ignores_a_new_source_feature_and_stays_compatible ..
 test an_interface_rollback_restores_only_the_presentation_and_never_implies_a_data_rollback ... ok
 test a_simultaneous_newer_version_cannot_displace_the_pinned_one ... ok
 
-test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
 
-   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.36s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
      Running tests/scenarios.rs (compiler/target/debug/deps/scenarios-07d926ffcd1700cc)
 [exit 0]

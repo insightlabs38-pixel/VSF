@@ -4,9 +4,8 @@ running 2 tests
 test the_committed_version_fixtures_are_what_the_generator_writes ... ok
 test the_sample_history_is_valid_signed_and_forms_one_merged_lineage ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
 
-   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.34s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
      Running tests/fixtures.rs (compiler/target/debug/deps/fixtures-015eb78c85cdff03)
 [exit 0]

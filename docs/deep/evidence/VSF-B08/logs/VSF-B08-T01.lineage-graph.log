@@ -5,15 +5,14 @@ test a_chain_has_one_head_and_increasing_generations ... ok
 test corrupt_and_forged_stores_are_refused ... ok
 test cycles_and_bad_parents_are_refused ... ok
 test a_criss_cross_merge_reports_every_lowest_common_ancestor_in_a_stable_order ... ok
-test identity_is_the_content_digest_and_ignores_whitespace ... ok
 test pruned_history_acts_as_an_opaque_root_and_an_unpruned_gap_does_not ... ok
-test unrelated_roots_have_no_base ... ok
 test divergent_branches_are_two_heads_with_a_deterministic_merge_base ... ok
+test identity_is_the_content_digest_and_ignores_whitespace ... ok
+test unrelated_roots_have_no_base ... ok
 test rebuilding_in_any_order_gives_the_same_graph_and_order ... ok
 
-test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
 
-   Compiling vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.32s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
      Running tests/lineage.rs (compiler/target/debug/deps/lineage-8968199c9e972b80)
 [exit 0]

@@ -3,13 +3,13 @@ $ pnpm --filter @vsf/adversarial-tests run test
 > @vsf/adversarial-tests@0.0.0 test /home/user/VSF/tests/adversarial
 > node --test --test-reporter=spec --test-timeout=240000 *.test.ts
 
-✔ broken-lockfile: cargo --locked refuses a manifest the lockfile does not cover (281.496019ms)
-✔ broken-lockfile: pnpm --frozen-lockfile refuses package.json drift (397.881234ms)
-✔ broken-lockfile: floating git sources and missing checksums are flagged by dep-review (94.647047ms)
-✔ fixture intentional-failure: a tampered golden fixture fails the check (166.653642ms)
-✔ fixture intentional-failure: the CI canary job reports FAIL and verified logs (331.981686ms)
-✔ redaction-leak: the repository scan flags a planted secret shape (532.662231ms)
-✔ missing-toolchain: the toolchain check fails loudly without cargo/go on PATH (460.252941ms)
+✔ broken-lockfile: cargo --locked refuses a manifest the lockfile does not cover (283.381274ms)
+✔ broken-lockfile: pnpm --frozen-lockfile refuses package.json drift (397.453515ms)
+✔ broken-lockfile: floating git sources and missing checksums are flagged by dep-review (95.355098ms)
+✔ fixture intentional-failure: a tampered golden fixture fails the check (171.469987ms)
+✔ fixture intentional-failure: the CI canary job reports FAIL and verified logs (327.094082ms)
+✔ redaction-leak: the repository scan flags a planted secret shape (530.252436ms)
+✔ missing-toolchain: the toolchain check fails loudly without cargo/go on PATH (435.707668ms)
 ℹ tests 7
 ℹ suites 0
 ℹ pass 7
@@ -17,5 +17,5 @@ $ pnpm --filter @vsf/adversarial-tests run test
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 2400.012934
+ℹ duration_ms 2381.120912
 [exit 0]
