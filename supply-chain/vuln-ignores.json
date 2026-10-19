@@ -1,0 +1,5 @@
+{
+  "schema": "vsf-vuln-ignores-v1",
+  "note": "Each entry needs a reason and an expiry date; past its date it no longer suppresses anything.",
+  "ignores": []
+}

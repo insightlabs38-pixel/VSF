@@ -42,6 +42,14 @@
         "cmd": ["node", "tools/checks/src/cli.ts", "dep-review"]
       },
       {
+        "name": "vuln-scan",
+        "cmd": ["node", "tools/checks/src/cli.ts", "vuln-scan"]
+      },
+      {
+        "name": "workflow-check",
+        "cmd": ["node", "tools/checks/src/cli.ts", "workflow-check"]
+      },
+      {
         "name": "secret-scan",
         "cmd": ["node", "tools/checks/src/cli.ts", "secrets"]
       },

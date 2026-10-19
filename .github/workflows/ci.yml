@@ -250,12 +250,15 @@ jobs:
 
   gate:
     if: always()
-    needs: [hygiene, native, go, ts, wasm-browser, cross-language, browser, observation, failure-canary]
+    needs: [hygiene, native, go, ts, wasm-browser, cross-language, browser, observation, commit-policy, failure-canary]
     runs-on: ubuntu-24.04
     steps:
-      - name: All required jobs must have succeeded
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Every job must have succeeded; only the pull-request-only job may be skipped, and only off pull requests
         env:
           RESULTS: ${{ toJSON(needs) }}
-        run: |
-          echo "$RESULTS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
-          echo "$RESULTS" | jq -e 'all(.[]; .result == "success")' >/dev/null
+          EVENT_NAME: ${{ github.event_name }}
+        run: node tools/checks/src/gate-cli.ts .github/workflows/ci.yml

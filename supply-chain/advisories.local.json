@@ -1,6 +1,6 @@
 {
   "schema": "vsf-local-advisories-v1",
-  "note": "Offline baseline. CI additionally runs live scanners; this list guarantees the scanner path is exercised without network.",
+  "note": "Offline smoke baseline only; it is not vulnerability coverage. Coverage comes from the vuln-scan step, which queries osv.dev for every locked package and reports an unreachable database as inconclusive.",
   "advisories": [
     {
       "id": "RUSTSEC-2021-0003",
