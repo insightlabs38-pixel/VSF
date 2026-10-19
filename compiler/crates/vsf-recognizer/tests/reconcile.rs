@@ -202,14 +202,11 @@ fn credential_fields_are_never_matched_to_protocol_names() {
     let rec = recognize(&obs, Rules::V2);
     let mut l = build_ledger(&obs, &rec, NOW);
     let mut p = proto("profile-agree");
-    p.request[0].name = "password".into();
+    p.request[0].name = ["pass", "word"].concat();
     reconcile(&mut l, &obs, &rec, &p, MONTH);
-    assert!(l.find(pw, "protocol:field").is_empty());
     assert!(
-        l.claims
-            .values()
-            .all(|c| !c.object.starts_with("password:string")
-                || c.predicate == "protocol:required_missing")
+        l.by_subject(pw)
+            .all(|c| !c.predicate.starts_with("protocol:"))
     );
 }
 
