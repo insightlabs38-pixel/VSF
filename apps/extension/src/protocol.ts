@@ -3,16 +3,40 @@ export type Command =
   | { type: "grant"; origin: string }
   | { type: "revoke"; origin: string }
   | { type: "capture"; tabId: number }
-  | { type: "observe"; tabId: number };
+  | { type: "observe"; tabId: number }
+  | { type: "transform"; tabId: number }
+  | { type: "restore"; tabId: number }
+  | { type: "pair"; endpoint: string; code: string }
+  | { type: "unpair" }
+  | { type: "link" };
 
 export type DenyReason =
   | "sender_not_allowed"
   | "bad_request"
   | "origin_not_granted"
+  | "permission_not_held"
   | "origin_unobservable"
   | "origin_changed"
   | "inject_failed"
-  | "pack_invalid";
+  | "pack_invalid"
+  | "nothing_recognized"
+  | "render_failed"
+  | "transform_failed"
+  | "snapshot_too_large"
+  | "session_version_unsupported"
+  | "unknown_action"
+  | "action_unavailable"
+  | "companion_required"
+  | "pairing_unavailable"
+  | "bad_endpoint"
+  | "bad_code"
+  | "pair_denied"
+  | "bridge_unreachable"
+  | "bridge_protocol"
+  | "server_not_authentic"
+  | "rate_limited"
+  | "not_paired"
+  | "refresh_denied";
 
 export type Reply = { ok: true; [key: string]: unknown } | { ok: false; error: DenyReason | string; detail?: string };
 
@@ -33,12 +57,39 @@ export function normalizeOrigin(value: unknown): string | null {
   return url.origin;
 }
 
+/** Browser host permissions carry no port, so the pattern for an origin is scheme and host only. */
+export function originPattern(origin: string): string {
+  const u = new URL(origin);
+  return `${u.protocol}//${u.hostname}/*`;
+}
+
+/** Drops every grant whose browser-level permission was removed, so VSF never outlives the browser's own decision. */
+export function pruneGrants<T>(grants: Record<string, T>, removedPatterns: readonly string[]): Record<string, T> {
+  const gone = new Set(removedPatterns);
+  const kept: Record<string, T> = {};
+  for (const [origin, v] of Object.entries(grants)) {
+    if (!gone.has(originPattern(origin)) && !gone.has("<all_urls>")) kept[origin] = v;
+  }
+  return kept;
+}
+
 export function parseCommand(raw: unknown): Command | null {
   if (typeof raw !== "object" || raw === null) return null;
   const m = raw as Record<string, unknown>;
   switch (m.type) {
     case "status":
       return { type: "status" };
+    case "unpair":
+      return { type: "unpair" };
+    case "link":
+      return { type: "link" };
+    case "pair":
+      return typeof m.endpoint === "string" &&
+        /^127\.0\.0\.1:\d{4,5}$/.test(m.endpoint) &&
+        typeof m.code === "string" &&
+        m.code.length <= 40
+        ? { type: "pair", endpoint: m.endpoint, code: m.code }
+        : null;
     case "grant":
     case "revoke": {
       const origin = normalizeOrigin(m.origin);
@@ -46,6 +97,8 @@ export function parseCommand(raw: unknown): Command | null {
     }
     case "capture":
     case "observe":
+    case "transform":
+    case "restore":
       return typeof m.tabId === "number" && Number.isSafeInteger(m.tabId) && m.tabId >= 0
         ? { type: m.type, tabId: m.tabId }
         : null;
@@ -56,7 +109,7 @@ export function parseCommand(raw: unknown): Command | null {
 
 /** Only the packaged panel page may issue commands; content scripts and web pages never can. */
 export function isCommandSender(
-  sender: { id?: string; url?: string; tab?: unknown; frameId?: number },
+  sender: { id?: string | undefined; url?: string | undefined; tab?: unknown; frameId?: number | undefined },
   selfId: string,
   panelUrl: string,
 ): boolean {

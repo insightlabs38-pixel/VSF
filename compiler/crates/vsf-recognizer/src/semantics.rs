@@ -330,7 +330,7 @@ pub fn field_kind(n: &Node) -> Option<FieldKind> {
     })
 }
 
-fn is_action(n: &Node) -> bool {
+pub fn is_action(n: &Node) -> bool {
     matches!(role_of(n), "button" | "link" | "menuitem")
         || n.tag == "button"
         || (n.tag == "a" && n.role.as_deref() != Some("presentation"))
@@ -365,7 +365,7 @@ fn label_like(r: &Reader, i: usize) -> Option<String> {
     (explicit || word_count(&t) <= 8).then_some(t)
 }
 
-fn region_name(r: &Reader, i: usize) -> Option<String> {
+pub fn region_name(r: &Reader, i: usize) -> Option<String> {
     for a in r.obs.ancestors(i) {
         let n = r.node(a);
         let named_region = matches!(
@@ -671,12 +671,8 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
     })
 }
 
-pub fn recognize_collection(r: &Reader, i: usize) -> Option<Collection> {
-    let n = r.node(i);
-    let is_table = n.tag == "table" || matches!(role_of(n), "table" | "grid" | "treegrid");
-    if !is_table || !n.visible() {
-        return None;
-    }
+/// The header row and the body rows of a table-like node, in document order.
+pub fn table_rows(r: &Reader, i: usize) -> (Option<usize>, Vec<usize>) {
     let mut rows: Vec<usize> = Vec::new();
     let mut stack: Vec<usize> = r.children(i).iter().rev().copied().collect();
     while let Some(c) = stack.pop() {
@@ -697,14 +693,24 @@ pub fn recognize_collection(r: &Reader, i: usize) -> Option<Collection> {
                 .all(|&c| role_of(r.node(c)) == "columnheader" || r.node(c).tag == "th")
     };
     let header = rows.iter().copied().find(|&row| is_header(row));
-    let columns: Vec<Option<String>> = header
-        .map(|h| r.children(h).iter().map(|&c| text_of(r, c)).collect())
-        .unwrap_or_default();
-    let body: Vec<usize> = rows
+    let body = rows
         .iter()
         .copied()
         .filter(|&row| Some(row) != header && !r.children(row).is_empty())
         .collect();
+    (header, body)
+}
+
+pub fn recognize_collection(r: &Reader, i: usize) -> Option<Collection> {
+    let n = r.node(i);
+    let is_table = n.tag == "table" || matches!(role_of(n), "table" | "grid" | "treegrid");
+    if !is_table || !n.visible() {
+        return None;
+    }
+    let (header, body) = table_rows(r, i);
+    let columns: Vec<Option<String>> = header
+        .map(|h| r.children(h).iter().map(|&c| text_of(r, c)).collect())
+        .unwrap_or_default();
     if columns.is_empty() && body.is_empty() {
         return None;
     }

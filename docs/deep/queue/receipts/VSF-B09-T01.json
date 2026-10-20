@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B09-T01",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "ff164e16b6efb7435bc86ed0c3810ed5f78c63ae",
+  "paths": [
+    "apps/extension/manifest.template.json",
+    "apps/extension/build.ts",
+    "tools/checks/src/extaudit.ts",
+    "tools/checks/test/extaudit.test.ts",
+    "tests/browser/specs/extension-install.spec.ts",
+    "tests/browser/specs/extension-package.spec.ts"
+  ],
+  "acceptance": "Install and activation request minimal origin permissions and no remotely downloaded executable JS.",
+  "positive": {
+    "fixture": "reproducible package, installed permission set equals activeTab/scripting/storage, no install-time hosts, grant needs a browser permission",
+    "command": "pnpm --filter @vsf/extension run package && node tools/checks/src/cli.ts ext-audit",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "audit rejects mv2, extra permissions, remote script, eval, importScripts, unlisted network sink, wasm import, oversize or foreign file types",
+    "command": "pnpm --filter @vsf/checks run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-install.spec.ts specs/extension-permissions.spec.ts specs/extension-package.spec.ts",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "Optional per-site hosts; a page cannot fetch extension files; no externally_connectable.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Permission prompt needs a user gesture and is checked by hand"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T01.mv3-package-audit.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T01.mv3-audit-rules-and-defects.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T01.install-permissions-and-package.log"
+  ],
+  "review_result": "ACCEPTED"
+}

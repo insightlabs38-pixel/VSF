@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B09-T06",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "d895976a3279f6d24ed21a34f8e5457c1c2cb7b6",
+  "paths": [
+    "backend/bridge/bindings.go",
+    "backend/bridge/sessions_http.go",
+    "backend/bridge/native.go",
+    "apps/extension/src/manifest.ts",
+    "tests/cross-language/chain.test.ts"
+  ],
+  "acceptance": "Capability manifest binds each browser/local worker to its observed origin and effective user principal.",
+  "positive": {
+    "fixture": "Rust validates the manifest; binding ties client, origin, document, principal, runtime and manifest digest; renew and end",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'Manifest|Registration|Principal|Binding|Revoking|Session|RustValidator' ./bridge/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "static dev token cannot own a session, skewed or malformed manifest, second principal, binding cap, revoked client ends bindings",
+    "command": "go -C backend test -tags integration -race -count=1 ./bridge/...",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "One principal per client; skew 5 min; TTL 15 min; max age 8 h; max 8 bindings.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "The principal is a per-installation pseudonym, not an account identity"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T06.session-bindings.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T06.native-validator-chain.log",
+    "docs/deep/evidence/VSF-B09/logs/GATE.ci-job-browser.log"
+  ],
+  "review_result": "ACCEPTED"
+}

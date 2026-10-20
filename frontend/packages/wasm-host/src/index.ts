@@ -1,4 +1,4 @@
-export const EXPECTED_ABI_VERSION = 3;
+export const EXPECTED_ABI_VERSION = 4;
 
 export class WasmAbiError extends Error {
   readonly code = "wasm.abi_mismatch";
@@ -29,6 +29,7 @@ interface Exports {
   vsf_compile: (ptr: number, len: number) => number;
   vsf_pack_analyze: (ptr: number, len: number) => number;
   vsf_ir_validate: (ptr: number, len: number) => number;
+  vsf_assemble: (ptr: number, len: number) => number;
   vsf_output_ptr: () => number;
   vsf_output_len: () => number;
   vsf_error_ptr: () => number;
@@ -43,6 +44,7 @@ const REQUIRED = [
   "vsf_compile",
   "vsf_pack_analyze",
   "vsf_ir_validate",
+  "vsf_assemble",
   "vsf_output_ptr",
   "vsf_output_len",
   "vsf_error_ptr",
@@ -55,6 +57,8 @@ export interface Fabric {
   analyzePack(pack: Uint8Array): Uint8Array;
   /** Canonical JSON report: decode result, digest and semantic violations. */
   validateIr(document: Uint8Array): Uint8Array;
+  /** Frame of header length, header JSON and recognizer snapshot; returns the canonical `vsf-assembly-v1` document. */
+  assemble(frame: Uint8Array): Uint8Array;
 }
 
 export async function loadFabric(wasm: BufferSource, expectedAbi: number = EXPECTED_ABI_VERSION): Promise<Fabric> {
@@ -89,7 +93,9 @@ export async function loadFabric(wasm: BufferSource, expectedAbi: number = EXPEC
     compile: (envelope) => call(ex.vsf_compile, envelope),
     analyzePack: (pack) => call(ex.vsf_pack_analyze, pack),
     validateIr: (document) => call(ex.vsf_ir_validate, document),
+    assemble: (frame) => call(ex.vsf_assemble, frame),
   };
 }
 
+export * from "./assembly.ts";
 export { type ReportedViolation, requireValidated, Validated, ValidationRefused, validate } from "./validated.ts";

@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B09-T04",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "d895976a3279f6d24ed21a34f8e5457c1c2cb7b6",
+  "paths": [
+    "backend/bridge/pairing.go",
+    "backend/bridge/pairing_http.go",
+    "backend/bridge/pairing_store.go",
+    "backend/cmd/vsfbridge/main.go",
+    "apps/extension/src/link.ts",
+    "tests/cross-language/pairing.test.ts"
+  ],
+  "acceptance": "Local native pairing requires explicit authorization, renews and revokes credentials and denies unmatched peers.",
+  "positive": {
+    "fixture": "offer started by the user, code never on the wire, PBKDF2 and HMAC proofs both ways, rotation, revoke from either side, restart keeps a hashed registry",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'Pair|Offer|Access|Refresh|Revoke|Registry|Origins|StaticToken' ./bridge/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "wrong codes burn the offer, expired offer, other origin, rate limit, concurrent finish pairs once, reused refresh secret revokes the client",
+    "command": "pnpm --filter @vsf/cross-language-tests run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-bridge.spec.ts specs/bridge.spec.ts",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "Tokens are bound to the extension origin; the registry is hashed in a 0600 file.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "A local process that can read the code can pair; a spoofer can burn an offer and the user re-issues it"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T04.pairing-protocol-and-store.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T04.pairing-cross-language.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T04.extension-pairs-with-companion.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@vsf/gallery",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vsf/design-system": "workspace:*",
+    "@vsf/renderer": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "node --conditions=source build.ts"
+  },
+  "exports": {
+    "./build": "./build.ts",
+    "./compositions": "./src/compositions.ts"
+  }
+}

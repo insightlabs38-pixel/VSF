@@ -8,8 +8,22 @@
 <main>
 <h1>Varifold</h1>
 <p id="origin"></p>
+<section aria-labelledby="site">
+<h2 id="site">This site</h2>
 <button id="authorize" type="button">Authorize this site</button>
+<button id="transform" type="button">Show with Varifold</button>
+<button id="restore" type="button">Show original</button>
 <button id="capture" type="button">Capture</button>
+</section>
+<section aria-labelledby="companion">
+<h2 id="companion">Local companion</h2>
+<label for="endpoint">Address</label>
+<input id="endpoint" autocomplete="off" placeholder="127.0.0.1:port">
+<label for="code">Pairing code</label>
+<input id="code" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX">
+<button id="pair" type="button">Pair</button>
+<button id="unpair" type="button">Unpair</button>
+</section>
 <output id="result"></output>
 </main>
 <script type="module" src="panel.js"></script>

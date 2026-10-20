@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B09-T03",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "0446cc5365d9d1b61c7dfba26ac3558a98734ee8",
+  "paths": [
+    "apps/extension/src/core.ts",
+    "apps/extension/src/session.ts",
+    "tests/browser/specs/extension-lifecycle.spec.ts",
+    "tests/browser/specs/extension-idle.spec.ts"
+  ],
+  "acceptance": "Worker teardown and reconnect recover without duplicate source actions or access to stale session credentials.",
+  "positive": {
+    "fixture": "worker stopped mid-session; reconcile on next wake undoes assembling sessions, marks sent operations unknown; idle worker terminates",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-lifecycle.spec.ts specs/extension-idle.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "page falls back to the source UI on crash, heartbeat failure, unknown session, removed overlay and reload",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-fallback.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/extension run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "Ids are reserved as sent before any effect; a duplicate returns the recorded outcome; reconcile is lazy so the worker can idle.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Restoration is best effort when the page itself is gone"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T03.worker-death-and-idle.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T03.fallback-to-source-ui.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T02.envelope-session-core-units.log"
+  ],
+  "review_result": "ACCEPTED"
+}

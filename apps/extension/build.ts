@@ -11,6 +11,9 @@ export interface Variant {
   name: string;
   hostPermissions: string[];
   extraPermissions?: string[];
+  /** Test builds open the shadow roots so locators can reach them; the product build keeps them closed. */
+  shadow?: "open" | "closed";
+  heartbeatMs?: number;
 }
 
 export function extensionId(manifestKeyB64: string): string {
@@ -58,6 +61,17 @@ export async function buildExtension(v: Variant, outRoot = join(root, "artifacts
     ...common,
     entryPoints: [join(here, "src/observe.ts")],
     outfile: join(out, "observe.js"),
+    format: "iife",
+    conditions: ["source"],
+  });
+  await build({
+    ...common,
+    entryPoints: [join(here, "src/render.ts")],
+    outfile: join(out, "render.js"),
+    define: {
+      __VSF_SHADOW__: JSON.stringify(v.shadow ?? "closed"),
+      __VSF_HEARTBEAT_MS__: String(v.heartbeatMs ?? 4000),
+    },
     format: "iife",
     conditions: ["source"],
   });

@@ -1,0 +1,48 @@
+{
+  "task_id": "VSF-B09-T09",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "341f21b111e10a45fb0cd5c4a7f12f198300de50",
+  "paths": [
+    "apps/gallery",
+    "tests/ui/specs/gallery.spec.ts",
+    "tests/ui/specs/visual-defects.spec.ts",
+    "tests/ui/support/visual.ts",
+    "tests/ui/golden/gallery",
+    "frontend/packages/renderer/src",
+    "docs/deep/ui/01_Screenshot_Baseline_Policy.md"
+  ],
+  "acceptance": "A runnable reference shows the shell, dense grid, grouped form and multi-panel layout with Chromium screenshots across themes, viewports, densities and states and layout, overflow, contrast and accessibility checks; unavailable operations are marked.",
+  "positive": {
+    "fixture": "102 baselines stable on a second run, each scene passes overflow, clipping, overlap, contrast, naming, layout-shift and font-provenance checks",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/gallery.spec.ts specs/visual-defects.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "synthetic pages with overflow, clipping, overlap, unnamed controls, low contrast and a late layout shift are each caught",
+    "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/visual-defects.spec.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/ui-tests run test:browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "Reference data only; nothing connects to a site; unavailable operations carry state and reason.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Baselines are valid only on the pinned Linux Chromium",
+    "Narrow viewports scroll the action column inside its region"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T09.gallery-baselines-and-structure.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T09.renderer-regression-suite.log"
+  ],
+  "review_result": "ACCEPTED"
+}

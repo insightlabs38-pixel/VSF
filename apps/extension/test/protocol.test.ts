@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { isCommandSender, normalizeOrigin, parseCommand } from "../src/protocol.ts";
+import { isCommandSender, normalizeOrigin, originPattern, parseCommand, pruneGrants } from "../src/protocol.ts";
 
 test("origins must be exact http(s) origins", () => {
   assert.equal(normalizeOrigin("https://example.test"), "https://example.test");
@@ -66,4 +66,18 @@ test("only the packaged panel in the top frame may issue commands", () => {
   assert.equal(isCommandSender({ id: "abc", url: `${panel}.evil.html`, frameId: 0 }, "abc", panel), false);
   assert.equal(isCommandSender({ id: "abc", frameId: 0 }, "abc", panel), false);
   assert.equal(isCommandSender({ url: panel, frameId: 0 }, "abc", panel), false);
+});
+
+test("browser permission patterns drop the port", () => {
+  assert.equal(originPattern("http://127.0.0.1:8080"), "http://127.0.0.1/*");
+  assert.equal(originPattern("https://app.example.test"), "https://app.example.test/*");
+  assert.equal(originPattern("http://[::1]:9"), "http://[::1]/*");
+});
+
+test("removing a browser permission removes every grant it covered and nothing else", () => {
+  const grants = { "http://a.test:1": 1, "http://a.test:2": 2, "https://a.test": 3, "http://b.test": 4 };
+  assert.deepEqual(pruneGrants(grants, ["http://a.test/*"]), { "https://a.test": 3, "http://b.test": 4 });
+  assert.deepEqual(pruneGrants(grants, []), grants);
+  assert.deepEqual(pruneGrants(grants, ["<all_urls>"]), {});
+  assert.deepEqual(pruneGrants(grants, ["http://c.test/*"]), grants);
 });

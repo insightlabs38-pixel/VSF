@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts comments
+comments: ok
+[exit 0]

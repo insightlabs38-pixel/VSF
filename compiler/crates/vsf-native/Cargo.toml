@@ -11,6 +11,7 @@ name = "vsf-fabric"
 path = "src/main.rs"
 
 [dependencies]
+vsf-assemble.workspace = true
 vsf-canon.workspace = true
 vsf-schema.workspace = true
 vsf-fixtures.workspace = true

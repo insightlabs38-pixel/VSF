@@ -24,6 +24,9 @@ export async function createEnv(
   options: {
     hostPermissions?: string[];
     extraPermissions?: string[];
+    shadow?: "open" | "closed";
+    heartbeatMs?: number;
+    args?: string[];
     setupProfile?: (profileDir: string, extId: string) => void;
   } = {},
 ): Promise<{ env: Env; dispose(): Promise<void> }> {
@@ -33,6 +36,8 @@ export async function createEnv(
       name: "test-browser",
       hostPermissions: options.hostPermissions ?? ["http://127.0.0.1/*"],
       extraPermissions: options.extraPermissions ?? [],
+      shadow: options.shadow ?? "open",
+      heartbeatMs: options.heartbeatMs ?? 300,
     },
     join(dir, "ext"),
   );
@@ -42,7 +47,7 @@ export async function createEnv(
   const context = await chromium.launchPersistentContext(join(dir, "profile"), {
     channel: "chromium",
     headless: true,
-    args: [`--disable-extensions-except=${extDir}`, `--load-extension=${extDir}`],
+    args: [`--disable-extensions-except=${extDir}`, `--load-extension=${extDir}`, ...(options.args ?? [])],
   });
   let sw = context.serviceWorkers()[0];
   if (!sw) sw = await context.waitForEvent("serviceworker", { timeout: 15_000 });

@@ -1,0 +1,29 @@
+$ pnpm --filter @vsf/cross-language-tests run test
+
+> @vsf/cross-language-tests@0.0.0 test /home/user/VSF/tests/cross-language
+> node --conditions=source --test --test-reporter=spec *.test.ts
+
+✔ Rust -> TypeScript -> Go carries identical schema id and bytes (689.615676ms)
+✔ native compile and WASM compile agree byte for byte (158.057904ms)
+✔ incompatible schema is rejected by every binding with the same code (506.363728ms)
+✔ tampered digest and corrupted bytes are rejected by every binding (474.853613ms)
+✔ native assemble and WASM assemble agree byte for byte on every recognition fixture (125.116814ms)
+✔ the native worker answers assemble frames like the command line and reports errors with stable codes (8.028588ms)
+✔ every committed diff report satisfies the published schema (92.896003ms)
+✔ a consumer can summarize and gate a report without reading prose (2.412767ms)
+✔ a report the schema should refuse is refused (40.254339ms)
+✔ TypeScript, Rust native and WASM agree on pack bytes, digests and summaries (574.55021ms)
+✔ committed digests pin the pack format across all three implementations (100.596087ms)
+✔ malformed, empty and truncated inputs fail identically everywhere (50.821288ms)
+✔ the extension client pairs with the real companion, calls it, renews and revokes (311.78122ms)
+✔ wrong codes burn the offer, a new offer works, and the wrong extension or origin is turned away (538.760804ms)
+✔ unpairing ends access on the companion and a restarted companion still honours a renewal (234.228141ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2379.31215
+[exit 0]

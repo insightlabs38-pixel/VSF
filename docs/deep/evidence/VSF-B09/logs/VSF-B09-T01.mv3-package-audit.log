@@ -1,0 +1,8 @@
+$ bash -c pnpm --filter @vsf/extension run package && node tools/checks/src/cli.ts ext-audit
+
+> @vsf/extension@0.0.0 package /home/user/VSF/apps/extension
+> node --conditions=source build.ts
+
+extension built: product, test
+ext-audit: ok
+[exit 0]

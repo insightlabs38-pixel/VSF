@@ -1,0 +1,12 @@
+$ pnpm --filter @vsf/browser-tests exec playwright test specs/extension-lifecycle.spec.ts specs/extension-idle.spec.ts
+
+Running 5 tests using 1 worker
+
+  ✓  1 specs/extension-idle.spec.ts:14:1 › an idle extension worker is terminated by the browser at about 30 s (30.9s)
+  ✓  2 specs/extension-lifecycle.spec.ts:6:1 › worker termination and restart reconstruct state without losing grants (1.6s)
+  ✓  3 specs/extension-lifecycle.spec.ts:34:1 › a capture interrupted by termination is reported, never silently lost (6.0s)
+  ✓  4 specs/extension-lifecycle.spec.ts:57:1 › no secret appears in the pack, worker globals, storage, logs or replies (1.2s)
+  ✓  5 specs/extension-lifecycle.spec.ts:102:1 › the packaged scripts contain no logging calls (160ms)
+
+  5 passed (42.3s)
+[exit 0]

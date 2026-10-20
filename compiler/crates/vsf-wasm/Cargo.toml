@@ -13,6 +13,7 @@ crate-type = ["cdylib", "rlib"]
 inject-incompatible-abi = []
 
 [dependencies]
+vsf-assemble.workspace = true
 vsf-canon.workspace = true
 vsf-fabric.workspace = true
 vsf-ir.workspace = true

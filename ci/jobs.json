@@ -284,6 +284,18 @@
         "cmd": ["pnpm", "build:ts"]
       },
       {
+        "name": "package-extension",
+        "cmd": ["pnpm", "--filter", "@vsf/extension", "run", "package"]
+      },
+      {
+        "name": "extension-audit",
+        "cmd": ["node", "tools/checks/src/cli.ts", "ext-audit"]
+      },
+      {
+        "name": "extension-audit-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/checks", "run", "test"]
+      },
+      {
         "name": "browser-tests",
         "cmd": ["pnpm", "--filter", "@vsf/browser-tests", "run", "test"]
       }
@@ -325,7 +337,17 @@
       },
       {
         "name": "go-vet",
-        "cmd": ["go", "-C", "backend", "vet", "-tags", "integration", "./execution/...", "./versions/..."]
+        "cmd": [
+          "go",
+          "-C",
+          "backend",
+          "vet",
+          "-tags",
+          "integration",
+          "./execution/...",
+          "./versions/...",
+          "./bridge/..."
+        ]
       },
       {
         "name": "execution-integration",
@@ -339,7 +361,8 @@
           "-race",
           "-count=1",
           "./execution/...",
-          "./versions/..."
+          "./versions/...",
+          "./bridge/..."
         ]
       }
     ],

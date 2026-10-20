@@ -6,7 +6,7 @@ import { chromium } from "@playwright/test";
 
 export interface RawChrome {
   proc: ChildProcess;
-  send(method: string, params?: object): Promise<Record<string, unknown>>;
+  send(method: string, params?: object, sessionId?: string): Promise<Record<string, unknown>>;
   close(): Promise<void>;
 }
 
@@ -51,11 +51,11 @@ export async function launchRaw(extDir: string): Promise<RawChrome> {
   };
   return {
     proc,
-    send: (method, params = {}) =>
+    send: (method, params = {}, sessionId) =>
       new Promise((resolve) => {
         const n = ++id;
         waiting.set(n, resolve);
-        ws.send(JSON.stringify({ id: n, method, params }));
+        ws.send(JSON.stringify({ id: n, method, params, ...(sessionId ? { sessionId } : {}) }));
       }),
     async close() {
       ws.close();

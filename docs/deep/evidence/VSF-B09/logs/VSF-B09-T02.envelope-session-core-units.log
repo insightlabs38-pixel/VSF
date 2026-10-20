@@ -1,0 +1,59 @@
+$ pnpm --filter @vsf/extension run test
+
+> @vsf/extension@0.0.0 test /home/user/VSF/apps/extension
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ a transform injects the renderer before calling it and records a rendered session bound to the document (11.978269ms)
+✔ a render failure restores the tab, removes the session and reports why (2.149263ms)
+✔ nothing recognized means nothing is rendered (1.388887ms)
+✔ only the packaged panel may issue commands and a granted origin is required (1.005462ms)
+✔ an operation is sent to the companion once, even when the same envelope arrives twice at the same time (17.643564ms)
+✔ after a worker restart an operation that may have happened is reported unknown and never resent (23.703267ms)
+✔ a session left half-built by a dead worker is undone on restart and stale credentials are not reused (1.123921ms)
+✔ removing the browser permission drops the grant and restores every page of that origin (2.477338ms)
+✔ refresh updates rows in place when the shape is unchanged and re-renders when it changes (8.008086ms)
+✔ a session record from another version is never interpreted, never deleted, and its page is told to restore (1.689903ms)
+✔ a paired companion is given the document's capability manifest, bound to its origin and document (2.405287ms)
+✔ without a pairing, with a refusing or absent companion, or with an invalid manifest the page still works (17.017132ms)
+✔ ending the session, by any route, ends the binding; a lapsing binding is renewed by the heartbeat (4.112625ms)
+✔ stored preferences travel with the render request and are reported as restored (3.825816ms)
+✔ preferences nobody can vouch for are ignored, not applied, and the user is told (1.422759ms)
+✔ a preference change from the page is saved for that session's origin only (7.462072ms)
+✔ every kind round-trips with its own body (3.674851ms)
+✔ shape errors are classified, not guessed at (0.495872ms)
+✔ bodies are exact: no extra keys, no wrong types, no unbounded text (0.491375ms)
+✔ a body that cannot be serialized is refused instead of throwing (0.428179ms)
+✔ only loopback endpoints with unprivileged ports are accepted (7.944899ms)
+✔ codes normalize the way the companion does (0.308615ms)
+✔ malformed endpoints and codes never reach the network (2.258728ms)
+✔ an unreachable companion is reported as such (7.577992ms)
+✔ a companion that does not prove knowledge of the code is not trusted and stores nothing (138.820929ms)
+✔ a companion asking for fewer key-stretching rounds is refused (2.34382ms)
+✔ denials and rate limits map to stable codes (1.656512ms)
+✔ a valid access token is used as is; an expiring one is renewed once for concurrent callers (23.693422ms)
+✔ a refused renewal removes the credentials so the user must pair again (3.328197ms)
+✔ an expired refresh secret is dropped without contacting the companion (4.792565ms)
+✔ unpairing tells the companion and forgets locally even when it cannot (7.332121ms)
+✔ calls need a pairing and carry the bearer credential and the CSRF header (5.585979ms)
+✔ display preferences are accepted only from a closed vocabulary (4.156021ms)
+✔ anything outside that vocabulary is refused as a whole (0.689068ms)
+✔ parsing returns a copy that holds only what was accepted (0.327175ms)
+✔ origins must be exact http(s) origins (1.960924ms)
+✔ commands are validated strictly (2.644352ms)
+✔ only the packaged panel in the top frame may issue commands (0.320283ms)
+✔ browser permission patterns drop the port (0.263116ms)
+✔ removing a browser permission removes every grant it covered and nothing else (0.66059ms)
+✔ sealed values round-trip and the stored record holds no plaintext (16.562229ms)
+✔ the master key is non-extractable (3.051132ms)
+✔ tampering, swapping records between names and a different key are all detected (3.818206ms)
+✔ concurrent first use creates a single key (1.55054ms)
+✔ nonces are fresh for every seal (2.64295ms)
+ℹ tests 45
+ℹ suites 0
+ℹ pass 45
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 674.283218
+[exit 0]

@@ -26,6 +26,7 @@ import {
   sumAdd,
   sumSub,
 } from "./model.ts";
+import { ownUi } from "./own.ts";
 import {
   childScopes,
   DEFAULT_SCOPE_LIMITS,
@@ -157,6 +158,8 @@ function lis(seq: number[]): Set<number> {
   for (let i = tails[tails.length - 1] ?? -1; i >= 0; i = prev[i] as number) keep.add(i);
   return keep;
 }
+
+const own = ownUi();
 
 export class Session {
   readonly stats: SessionStats = {
@@ -434,7 +437,7 @@ export class Session {
     const out: Element[] = [];
     for (let i = 0; i < kids.length; i++) {
       const k = kids[i] as Element;
-      if (!SKIP_TAGS.has(k.tagName)) out.push(k);
+      if (!SKIP_TAGS.has(k.tagName) && !own.has(k)) out.push(k);
     }
     return out;
   }
@@ -551,7 +554,7 @@ export class Session {
       const kids = el.children;
       for (let i = kids.length - 1; i >= 0; i--) {
         const k = kids[i] as Element;
-        if (!SKIP_TAGS.has(k.tagName)) stack.push({ el: k, parent: live, after: APPEND });
+        if (!SKIP_TAGS.has(k.tagName) && !own.has(k)) stack.push({ el: k, parent: live, after: APPEND });
       }
     }
   }

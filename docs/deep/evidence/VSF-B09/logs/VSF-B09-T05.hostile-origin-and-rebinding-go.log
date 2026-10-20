@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -run DNSRebinding|Foreign|CSRF|Malformed|Oversized|Host|SecFetch|Preflight|Stolen|Recorded|Loopback|Unauthenticated ./bridge/
+ok  	github.com/insightlabs38-pixel/vsf/backend/bridge	5.809s
+[exit 0]

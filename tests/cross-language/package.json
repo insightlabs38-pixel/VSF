@@ -5,6 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "dependencies": {
+    "@vsf/extension": "workspace:*",
     "@vsf/observer": "workspace:*",
     "@vsf/schema": "workspace:*",
     "@vsf/wasm-host": "workspace:*"

@@ -1,0 +1,3 @@
+$ go -C backend test -tags integration -race -count=1 ./bridge/...
+ok  	github.com/insightlabs38-pixel/vsf/backend/bridge	20.852s
+[exit 0]

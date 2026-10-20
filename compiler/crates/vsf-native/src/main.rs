@@ -1,7 +1,7 @@
 use std::io::{Read, Write};
 use std::process::ExitCode;
 
-const USAGE: &str = "usage: vsf-fabric <emit-fixture --seed N | compile [FILE] | verify [FILE] | redact | pack-gen --seed N --nodes M | pack-analyze [FILE] | ir-validate [FILE] | pack-bench --seed N --nodes M --iterations K | serve | info>";
+const USAGE: &str = "usage: vsf-fabric <emit-fixture --seed N | compile [FILE] | verify [FILE] | redact | pack-gen --seed N --nodes M | pack-analyze [FILE] | ir-validate [FILE] | assemble [FILE] --origin O --variant V --epoch N --observed-at MS | pack-bench --seed N --nodes M --iterations K | serve | info>";
 
 fn read_input(path: Option<&String>) -> std::io::Result<Vec<u8>> {
     read_input_limited(path, vsf_canon::MAX_INPUT_BYTES)
@@ -100,6 +100,52 @@ fn serve() -> ExitCode {
     code
 }
 
+fn assemble_command(args: &[String]) -> ExitCode {
+    let flag = |name: &str| {
+        args.windows(2)
+            .find(|w| w[0] == name)
+            .map(|w| w[1].as_str())
+    };
+    let int = |name: &str| flag(name).and_then(|v| v.parse::<i64>().ok());
+    let (Some(origin), Some(variant), Some(epoch), Some(at)) = (
+        flag("--origin"),
+        flag("--variant"),
+        int("--epoch"),
+        int("--observed-at"),
+    ) else {
+        eprintln!(
+            "usage: vsf-fabric assemble <snapshot.json|-> --origin O --variant V --epoch N --observed-at MS"
+        );
+        return ExitCode::from(64);
+    };
+    let snapshot = match read_input_limited(args.get(1), 16 << 20) {
+        Ok(bytes) => bytes,
+        Err(err) => {
+            eprintln!("io: {err}");
+            return ExitCode::from(66);
+        }
+    };
+    let header = vsf_canon::Value::Object(vec![
+        ("epoch".to_string(), vsf_canon::Value::Int(epoch)),
+        ("observed_at".to_string(), vsf_canon::Value::Int(at)),
+        (
+            "origin".to_string(),
+            vsf_canon::Value::Str(origin.to_string()),
+        ),
+        (
+            "variant_id".to_string(),
+            vsf_canon::Value::Str(variant.to_string()),
+        ),
+    ]);
+    match vsf_assemble::assemble(&vsf_assemble::make_frame(&header, &snapshot)) {
+        Ok(bytes) => emit(&bytes),
+        Err(code) => {
+            eprintln!("error: {code}");
+            ExitCode::from(2)
+        }
+    }
+}
+
 fn serve_loop() -> ExitCode {
     let mut stdin = std::io::stdin().lock();
     let mut stdout = std::io::stdout().lock();
@@ -120,6 +166,7 @@ fn serve_loop() -> ExitCode {
             b'A' => vsf_observation::analyze(&frame[1..]).map_err(|e| e.code()),
             b'C' => vsf_fabric::compile_envelope(&frame[1..]).map_err(|e| e.code()),
             b'V' => vsf_ir::api::validate_bytes(&frame[1..]),
+            b'S' => vsf_assemble::assemble(&frame[1..]),
             b'X' => authorize_frame(&frame[1..]),
             b'P' => vsf_versioning::api::promotion_report(&frame[1..]),
             _ => Err("serve.unknown_op"),
@@ -226,6 +273,7 @@ fn main() -> ExitCode {
                 }
             }
         }
+        Some("assemble") => assemble_command(&args),
         Some("serve") => serve(),
         Some("pack-bench") => pack_bench(&args),
         Some("redact") => match read_input(None).map(String::from_utf8) {

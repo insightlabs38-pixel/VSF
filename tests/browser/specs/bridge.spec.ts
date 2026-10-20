@@ -17,7 +17,7 @@ interface Bridge {
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 
 async function startBridge(origin: string): Promise<Bridge> {
-  const proc = spawn(join(root, "artifacts/bin/vsfbridge"), ["-origins", origin], {
+  const proc = spawn(join(root, "artifacts/bin/vsfbridge"), ["-origins", origin, "-dev-token"], {
     stdio: ["ignore", "pipe", "pipe"],
   });
   const log: Bridge["log"] = [];

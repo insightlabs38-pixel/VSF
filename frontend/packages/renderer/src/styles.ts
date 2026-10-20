@@ -3,7 +3,7 @@ import { tokensCss } from "@vsf/design-system";
 /** Component CSS: logical properties only, so one stylesheet serves both directions. */
 export function componentCss(): string {
   return `${tokensCss()}
-:host{display:block;color:var(--vsf-text);background:var(--vsf-bg);font:var(--vsf-font)/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light dark;text-align:start}
+:host{display:block;color:var(--vsf-text);background:var(--vsf-bg);font:var(--vsf-font)/1.45 var(--vsf-font-family,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif);color-scheme:light dark;text-align:start}
 :host([data-scheme="light"]){color-scheme:light}
 :host([data-scheme="dark"]){color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
@@ -53,6 +53,11 @@ td .row-actions{display:inline-flex;gap:var(--vsf-gap)}
 .empty{margin:0;padding:var(--vsf-pad-y) var(--vsf-pad-x);color:var(--vsf-muted);border:1px dashed var(--vsf-border);border-radius:6px}
 .empty[hidden]{display:none}
 .toolbar{display:flex;gap:var(--vsf-gap);align-items:center;margin-block-end:var(--vsf-gap)}
+.toolbar label{white-space:nowrap}
+.toolbar input{flex:1 1 12ch;min-inline-size:0}
+td.num,th.num{text-align:end;font-variant-numeric:tabular-nums}
+.group.fields{border:1px solid var(--vsf-border);border-radius:8px;padding:var(--vsf-gap);align-items:flex-end}
+.group-title{flex:0 0 100%;font-weight:600;color:var(--vsf-muted)}
 .palette-scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:start center;padding-block-start:12vh;z-index:10}
 .palette{inline-size:min(36em,92vw);background:var(--vsf-bg);color:var(--vsf-text);border:1px solid var(--vsf-control-border);border-radius:10px;padding:var(--vsf-gap);display:grid;gap:var(--vsf-gap)}
 .palette ul{list-style:none;margin:0;padding:0;max-block-size:50vh;overflow:auto}

@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B09-T08",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "504112f8222193c9cf58c410ef0ba92a67af0df8",
+  "paths": [
+    "docs/deep/policy/mv3-distribution-checklist.md",
+    "docs/deep/adr/ADR-036-extension-integration-and-local-bridge.md",
+    "docs/deep/policy/mv3-design-review.md",
+    "tools/checks/src/extaudit.ts"
+  ],
+  "acceptance": "Policy checklist identifies compiled data versus executable logic and demonstrates distributable MV3 build.",
+  "positive": {
+    "fixture": "every checklist row names an enforcing rule; the audit reports file classes and digests",
+    "command": "node tools/checks/src/cli.ts ext-audit",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "audit rule defects in the checks unit tests",
+    "command": "pnpm --filter @vsf/checks run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "Reviewer reading order and data handling are stated in the checklist.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Store policy interpretation is confirmed at submission (B24)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T08.distribution-checklist-rules.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T01.mv3-audit-rules-and-defects.log",
+    "docs/deep/evidence/VSF-B09/logs/GATE.ci-job-browser.log"
+  ],
+  "review_result": "ACCEPTED"
+}

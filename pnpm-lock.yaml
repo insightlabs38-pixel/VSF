@@ -32,15 +32,30 @@ importers:
 
   apps/extension:
     dependencies:
+      '@vsf/ir':
+        specifier: workspace:*
+        version: link:../../frontend/packages/ir
       '@vsf/observer':
         specifier: workspace:*
         version: link:../../frontend/packages/observer
+      '@vsf/renderer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/renderer
       '@vsf/schema':
         specifier: workspace:*
         version: link:../../frontend/packages/schema
       '@vsf/wasm-host':
         specifier: workspace:*
         version: link:../../frontend/packages/wasm-host
+
+  apps/gallery:
+    dependencies:
+      '@vsf/design-system':
+        specifier: workspace:*
+        version: link:../../frontend/packages/design-system
+      '@vsf/renderer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/renderer
 
   fixtures/source-apps:
     dependencies:
@@ -114,6 +129,9 @@ importers:
 
   tests/cross-language:
     dependencies:
+      '@vsf/extension':
+        specifier: workspace:*
+        version: link:../../apps/extension
       '@vsf/observer':
         specifier: workspace:*
         version: link:../../frontend/packages/observer
@@ -151,6 +169,9 @@ importers:
       '@vsf/design-system':
         specifier: workspace:*
         version: link:../../frontend/packages/design-system
+      '@vsf/gallery':
+        specifier: workspace:*
+        version: link:../../apps/gallery
       '@vsf/ir':
         specifier: workspace:*
         version: link:../../frontend/packages/ir
@@ -166,6 +187,10 @@ importers:
       '@vsf/redact':
         specifier: workspace:*
         version: link:../redact
+    devDependencies:
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   tools/idlgen:
     dependencies:
