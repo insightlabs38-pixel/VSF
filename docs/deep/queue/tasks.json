@@ -1,7 +1,7 @@
 {
   "schema": "vsf-task-queue-v1",
   "source": "original B00-B24 execution steps, expanded with task-specific acceptance",
-  "task_count": 189,
+  "task_count": 190,
   "batches": [
     {
       "id": "B00",
@@ -3007,7 +3007,7 @@
       "title": "Add upload/download and export with security policy",
       "intent": "Add upload/download and export with security policy.",
       "acceptance": "Upload/download/export preserve original source authorization, file integrity and policy-denied outcomes.",
-      "dependencies": ["VSF-B11-T03"],
+      "dependencies": ["VSF-B11-T03", "VSF-B11-T08"],
       "planned_paths": "frontend/primitives/; compiler/primitive-registry/; tests/compatibility/",
       "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
       "invariants": [
@@ -3035,7 +3035,7 @@
       "title": "Improve bulk operation and pagination semantics with source rate limits",
       "intent": "Improve bulk operation and pagination semantics with source rate limits.",
       "acceptance": "Bulk selection, pagination and rate limits remain correct under hidden/virtualized records and concurrent updates.",
-      "dependencies": ["VSF-B11-T04"],
+      "dependencies": ["VSF-B11-T04", "VSF-B11-T08"],
       "planned_paths": "frontend/primitives/; compiler/primitive-registry/; tests/compatibility/",
       "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
       "invariants": [
@@ -5899,6 +5899,44 @@
       "positive": "manifest rules, matcher and metrics on synthetic annotations, pinned fetch and hermetic capture of every corpus page, baseline run on dev and validation partitions",
       "adversarial": "unpinned or unlicensed source, one template family in two partitions, annotation claiming to have seen recognizer output, workflow naming an unknown item, path traversal in the static server, unpinned CDN address",
       "evidence_required": "docs/deep/evidence/VSF-B11 run logs, corpus-baseline.json and a task receipt"
+    },
+    {
+      "id": "VSF-B11-T08",
+      "batch": "B11",
+      "sequence": 8,
+      "status": "TODO",
+      "category": "hardening correction",
+      "title": "Extend the development corpus with uploads, virtualized grids, pagination and bulk selection",
+      "intent": "Extend the development corpus with uploads, virtualized grids, pagination and bulk selection",
+      "acceptance": "Development or validation partitions gain independently developed applications whose page states exercise file inputs, virtualized or windowed lists, pagination and bulk selection, pinned, licensed, annotated by a separate session and measured on the unmodified recognizer, so T04 and T05 are ranked and tested on evidence; held-out stays untouched.",
+      "dependencies": [
+        "VSF-B11-T01"
+      ],
+      "planned_paths": "tests/corpus/; fixtures/corpus/; docs/deep/evidence/VSF-B11/",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G11",
+      "evidence": "docs/deep/evidence/VSF-B11 run logs, corpus baseline result and a task receipt",
+      "risk_tests": [
+        "virtualized rows",
+        "conditional forms",
+        "escaped filenames",
+        "stale pagination",
+        "bulk concurrent mutation"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-040",
+      "lane": "correction",
+      "scope": "tests/corpus/; fixtures/corpus/",
+      "contract": "corpus manifest vsf-corpus-v1; annotation vsf-corpus-annotation-v1; result vsf-corpus-result-v1",
+      "positive": "new applications captured reproducibly, annotated, and measured; manifest family rules still hold",
+      "adversarial": "a new application sharing a family with a held-out one is refused; unpinned or unlicensed source refused",
+      "evidence_required": "docs/deep/evidence/VSF-B11 run logs, updated baseline and a task receipt"
     }
   ]
 }

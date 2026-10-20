@@ -80,14 +80,37 @@ export interface Tally {
 }
 const tally = (): Tally => ({ annotated: 0, found: 0, exact: 0, coarser: 0, unclassified: 0, contradict: 0 });
 
+export function clusterKey(i: Pick<Item, "k" | "want" | "got" | "outcome">): string | null {
+  if (i.outcome === "exact") return null;
+  if (i.k === "composite") return `composite:${i.want}`;
+  if (i.k === "field") return i.outcome === "missing" ? `field-missing:${i.want}` : `field-kind:${i.want}-as-${i.got}`;
+  if (i.k === "action")
+    return i.outcome === "missing"
+      ? `action-missing:${i.want}`
+      : i.outcome === "unclassified"
+        ? `action-effect-unknown:${i.want}`
+        : `action-effect-wrong:${i.want}-as-${i.got}`;
+  return `collection-${i.outcome}`;
+}
+
+export interface Item {
+  k: "field" | "action" | "collection" | "composite";
+  name: string;
+  want: string;
+  got?: string;
+  outcome: Agreement | "missing";
+  cluster?: string | null;
+}
+
 export interface PageResult {
+  items: Item[];
   source: string;
   page: string;
   fields: Tally;
   actions: Tally;
   collections: Tally & { columnsExact: number; rowsExact: number; rowsChecked: number };
   composites: { annotated: number; recognized: number; byKind: Record<string, number> };
-  workflows: { annotated: number; supported: number; unsupported: string[] };
+  workflows: { annotated: number; supported: number; unsupported: string[]; blockedBy: Record<string, number> };
   recognizedOnPage: { fields: number; actions: number; collections: number };
   unannotated: { fields: number; actions: number; collections: number };
   unsupportedDeclared: number;
@@ -99,13 +122,14 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
   const units = rec.units;
   const used = new Set<number>();
   const r: PageResult = {
+    items: [],
     source: a.source,
     page: a.page,
     fields: tally(),
     actions: tally(),
     collections: { ...tally(), columnsExact: 0, rowsExact: 0, rowsChecked: 0 },
     composites: { annotated: a.composites.length, recognized: 0, byKind: {} },
-    workflows: { annotated: a.workflows.length, supported: 0, unsupported: [] },
+    workflows: { annotated: a.workflows.length, supported: 0, unsupported: [], blockedBy: {} },
     recognizedOnPage: { fields: 0, actions: 0, collections: 0 },
     unannotated: { fields: 0, actions: 0, collections: 0 },
     unsupportedDeclared: a.unsupported.length,
@@ -126,10 +150,12 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     const u = take("field", (x) => x.binding?.state === "bound" && norm(x.binding.text) === n);
     if (!u) {
       status.set(`f:${n}`, "missing");
+      r.items.push({ k: "field", name: f.name, want: f.kind, outcome: "missing" });
       continue;
     }
     r.fields.found++;
     const ag = fieldAgreement(f.kind, u.kind);
+    r.items.push({ k: "field", name: f.name, want: f.kind, got: u.kind ?? "?", outcome: ag });
     r.fields[ag]++;
     status.set(`f:${n}`, ag);
     if (ag === "contradict" && u.usable) r.falseClaims++;
@@ -140,10 +166,18 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     const u = take("action", (x) => norm(x.name) === n);
     if (!u) {
       status.set(`a:${n}`, "missing");
+      r.items.push({ k: "action", name: act.name, want: act.effect, outcome: "missing" });
       continue;
     }
     r.actions.found++;
     const ag = actionAgreement(act.effect, u.verbs);
+    r.items.push({
+      k: "action",
+      name: act.name,
+      want: act.effect,
+      got: (u.verbs ?? []).join("+") || "none",
+      outcome: ag,
+    });
     r.actions[ag]++;
     status.set(`a:${n}`, ag);
     if (ag === "contradict" && u.usable) r.falseClaims++;
@@ -157,6 +191,12 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     );
     if (!u) {
       status.set(`c:${norm(c.name)}`, "missing");
+      r.items.push({
+        k: "collection",
+        name: c.name,
+        want: `${cols.length} columns, ${c.rows ?? "?"} rows`,
+        outcome: "missing",
+      });
       continue;
     }
     r.collections.found++;
@@ -169,6 +209,13 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     }
     const ok = same && (c.rows === null || u.rows === c.rows);
     r.collections[ok ? "exact" : "contradict"]++;
+    r.items.push({
+      k: "collection",
+      name: c.name,
+      want: `${cols.length} columns${same ? "" : " (differs)"}, ${c.rows ?? "?"} rows`,
+      got: `${rc.length} columns, ${u.rows} rows`,
+      outcome: ok ? "exact" : "contradict",
+    });
     status.set(`c:${norm(c.name)}`, ok ? "exact" : "contradict");
     if (!ok) r.falseClaims++;
   }
@@ -176,7 +223,10 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     const type = k === "fields" ? "field" : k === "actions" ? "action" : "collection";
     r.unannotated[k] = units.filter((x) => x.type === type && !used.has(x.node)).length;
   }
-  for (const c of a.composites) r.composites.byKind[c.kind] = (r.composites.byKind[c.kind] ?? 0) + 1;
+  for (const c of a.composites) {
+    r.composites.byKind[c.kind] = (r.composites.byKind[c.kind] ?? 0) + 1;
+    r.items.push({ k: "composite", name: c.name, want: c.kind, outcome: "missing" });
+  }
   for (const w of a.workflows) {
     const ok = w.needs.every((need) => {
       const n = norm(need);
@@ -184,8 +234,19 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
       return hit === "exact" || hit === "coarser";
     });
     if (ok) r.workflows.supported++;
-    else r.workflows.unsupported.push(w.name);
+    else {
+      r.workflows.unsupported.push(w.name);
+      const blockers = new Set<string>();
+      for (const need of w.needs) {
+        const n = norm(need);
+        const hit = r.items.find((i) => norm(i.name) === n && i.outcome !== "exact" && i.outcome !== "coarser");
+        const key = hit ? clusterKey(hit) : null;
+        if (key) blockers.add(key);
+      }
+      for (const b of blockers) r.workflows.blockedBy[b] = (r.workflows.blockedBy[b] ?? 0) + 1;
+    }
   }
+  for (const i of r.items) i.cluster = clusterKey(i);
   return r;
 }
 

@@ -17,7 +17,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B08 | G8 | 10/10 | DONE | PROCEED |
 | B09 | G9 | 9/9 | DONE | PROCEED |
 | B10 | G10 | 8/8 | DONE | PROCEED |
-| B11 | G11 | 1/7 | IN_PROGRESS | - |
+| B11 | G11 | 1/8 | IN_PROGRESS | - |
 | B12 | G12 | 0/6 | TODO | - |
 | B13 | G13 | 5/5 | DONE | PROCEED |
 | B14 | G14 | 15/15 | DONE | PROCEED |
@@ -179,6 +179,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B11-T05` Improve bulk operation and pagination semantics with source rate limits
 - [ ] `VSF-B11-T06` Re-run independent app corpus and measure fix leverage
 - [x] `VSF-B11-T07` Bootstrap an independent application corpus and measured baseline
+- [ ] `VSF-B11-T08` Extend the development corpus with uploads, virtualized grids, pagination and bulk selection
 
 ### B12 · Expand advanced UI and developer/research tools
 

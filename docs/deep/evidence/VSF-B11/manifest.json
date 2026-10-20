@@ -101,6 +101,60 @@
       "result": "PASS",
       "log": "logs/GATE.secrets.log",
       "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "VSF-B11-T01",
+      "name": "positive-ranking",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T01.positive-ranking.log",
+      "sha256": "dd587afcbb5a1851209bbc075196db25433e4458fd90a2d71a204111a04b42b7"
+    },
+    {
+      "task_id": "VSF-B11-T01",
+      "name": "negative-ranking-order",
+      "command": "node --conditions=source --test --test-name-pattern=clusters rank tests/corpus/test/corpus.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T01.negative-ranking-order.log",
+      "sha256": "58e39008afd1f40faa0d537c84bb648b37ea3eaf62a4a690795553e74f5ad27e"
+    },
+    {
+      "task_id": "VSF-B11-T01",
+      "name": "negative-heldout-sealed",
+      "command": "python3 -I -c import json;d=json.load(open('docs/deep/evidence/VSF-B11/corpus-baseline-heldout.json'));assert 'rows' not in d and all(not c['examples'] for c in d['clusters']);print('held-out stored as aggregate only')",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T01.negative-heldout-sealed.log",
+      "sha256": "508f5df6dfa982232a134c0df484a22a5a0d4ff70a7cf7ba52779744046cf140"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t01-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t01-biome.log",
+      "sha256": "d4def1cc71f1c35abe0d1db7639d7a52dc0b85ae96f68bd09eb8bb254c325d4e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t01-corpus-tests",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t01-corpus-tests.log",
+      "sha256": "8cd8d31c34d6d0d2ea3e7b342c7fd05d511b33a940ad4ca5f2438ca7cbb71cc3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t01-queue-validate",
+      "command": "node tools/queue/src/cli.ts validate --no-git",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t01-queue-validate.log",
+      "sha256": "420ad8101efaa3e769e2c68cc57e32717fdd8648a7d1dbc99d1745f5ab08af48"
     }
   ]
 }

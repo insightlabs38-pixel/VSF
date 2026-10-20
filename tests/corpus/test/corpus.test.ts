@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { test } from "node:test";
 import { type Annotation, validateAnnotation } from "../src/annotation.ts";
 import { parseCdn } from "../src/cdn.ts";
+import { clusters } from "../src/evaluate.ts";
 import { loadManifest, type Manifest, validateManifest } from "../src/manifest.ts";
 import { actionAgreement, aggregate, fieldAgreement, matchPage, norm, type Recognition } from "../src/match.ts";
 import { serveStatic } from "../src/serve.ts";
@@ -185,4 +186,49 @@ test("annotations must declare independence and use the closed vocabularies", ()
   assert.notDeepEqual(validateAnnotation(ann({ actions: [{ name: "x", effect: "maybe" as never }] })), []);
   assert.notDeepEqual(validateAnnotation(ann({ composites: [{ kind: "carousel" as never, name: "c" }] })), []);
   assert.notDeepEqual(validateAnnotation({ ...ann(), dossierSha256: "short" }), []);
+});
+
+test("clusters rank by independent families first, then blocked workflows, and hide examples when asked", () => {
+  const item = (cluster: string, name: string) => ({
+    k: "action" as const,
+    name,
+    want: "read",
+    outcome: "unclassified" as const,
+    cluster,
+  });
+  const row = (
+    source: string,
+    page: string,
+    items: ReturnType<typeof item>[],
+    blockedBy: Record<string, number> = {},
+  ) =>
+    ({
+      source,
+      page,
+      partition: "dev",
+      nodes: 1,
+      recognizeMs: 1,
+      rssKb: 1,
+      captureMs: 1,
+      blocked: 0,
+      mirrored: 0,
+      result: { items, workflows: { blockedBy } },
+    }) as never;
+  const rows = [
+    row("a", "p1", [item("x", "one"), item("x", "two")], { x: 1 }),
+    row("b", "p1", [item("x", "three"), item("y", "four")], { y: 5 }),
+    row("a", "p2", [item("z", "five")], { z: 9 }),
+  ];
+  const ranked = clusters(rows, (s) => (s === "a" ? "fam-a" : "fam-b"), true);
+  assert.deepEqual(
+    ranked.map((c) => c.key),
+    ["x", "z", "y"],
+  );
+  assert.equal(ranked[0]?.instances, 3);
+  assert.equal(ranked[0]?.families, 2);
+  assert.equal(ranked[1]?.workflowsBlocked, 9);
+  assert.deepEqual(
+    clusters(rows, () => "f", false).map((c) => c.examples.length),
+    [0, 0, 0],
+  );
 });

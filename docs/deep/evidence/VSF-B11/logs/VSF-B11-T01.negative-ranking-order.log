@@ -1,0 +1,18 @@
+$ node --conditions=source --test --test-name-pattern=clusters rank tests/corpus/test/corpus.test.ts
+TAP version 13
+# Subtest: clusters rank by independent families first, then blocked workflows, and hide examples when asked
+ok 1 - clusters rank by independent families first, then blocked workflows, and hide examples when asked
+  ---
+  duration_ms: 1.998892
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 155.027822
+[exit 0]

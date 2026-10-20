@@ -72,12 +72,203 @@
    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
   },
   "latency": {
-   "recognizeMsP50": 26.6,
-   "recognizeMsMax": 34.6,
+   "recognizeMsP50": 26,
+   "recognizeMsMax": 30.7,
    "nodesMax": 866,
    "rssKbMax": 11088
   }
  },
+ "clusters": [
+  {
+   "key": "collection-missing",
+   "instances": 15,
+   "sources": 6,
+   "families": 3,
+   "pages": 12,
+   "workflowsBlocked": 14,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:read",
+   "instances": 49,
+   "sources": 6,
+   "families": 3,
+   "pages": 11,
+   "workflowsBlocked": 11,
+   "examples": []
+  },
+  {
+   "key": "composite:filter_bar",
+   "instances": 10,
+   "sources": 6,
+   "families": 3,
+   "pages": 10,
+   "workflowsBlocked": 9,
+   "examples": []
+  },
+  {
+   "key": "field-missing:toggle",
+   "instances": 15,
+   "sources": 6,
+   "families": 3,
+   "pages": 7,
+   "workflowsBlocked": 6,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:state_change",
+   "instances": 18,
+   "sources": 2,
+   "families": 2,
+   "pages": 9,
+   "workflowsBlocked": 10,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:navigation",
+   "instances": 28,
+   "sources": 2,
+   "families": 2,
+   "pages": 10,
+   "workflowsBlocked": 6,
+   "examples": []
+  },
+  {
+   "key": "composite:tabs",
+   "instances": 4,
+   "sources": 2,
+   "families": 2,
+   "pages": 4,
+   "workflowsBlocked": 3,
+   "examples": []
+  },
+  {
+   "key": "composite:bulk_selection",
+   "instances": 8,
+   "sources": 5,
+   "families": 2,
+   "pages": 8,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "composite:pagination",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": []
+  },
+  {
+   "key": "composite:dialog",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "field-kind:range-as-text",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:read-as-commit",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:read-as-navigate",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:state_change-as-navigate",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "composite:drag_drop",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "field-missing:text",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-destroy",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:sortable_columns",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:unknown",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-create",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:file_input",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  }
+ ],
  "perSource": {
   "adminlte": {
    "pages": 9,
@@ -142,8 +333,8 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 26.2,
-    "recognizeMsMax": 32.1,
+    "recognizeMsP50": 26.9,
+    "recognizeMsMax": 30.7,
     "nodesMax": 866,
     "rssKbMax": 11088
    }
@@ -209,10 +400,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 34.6,
-    "recognizeMsMax": 34.6,
+    "recognizeMsP50": 30.1,
+    "recognizeMsMax": 30.1,
     "nodesMax": 42,
-    "rssKbMax": 11080
+    "rssKbMax": 11056
    }
   },
   "todomvc-lit": {
@@ -276,10 +467,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 33.1,
-    "recognizeMsMax": 33.1,
+    "recognizeMsP50": 29.6,
+    "recognizeMsMax": 29.6,
     "nodesMax": 55,
-    "rssKbMax": 11084
+    "rssKbMax": 11064
    }
   },
   "todomvc-jquery": {
@@ -343,10 +534,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 34.1,
-    "recognizeMsMax": 34.1,
+    "recognizeMsP50": 27.8,
+    "recognizeMsMax": 27.8,
     "nodesMax": 48,
-    "rssKbMax": 11084
+    "rssKbMax": 11068
    }
   },
   "todomvc-svelte": {
@@ -410,10 +601,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 25.8,
-    "recognizeMsMax": 25.8,
+    "recognizeMsP50": 24.3,
+    "recognizeMsMax": 24.3,
     "nodesMax": 43,
-    "rssKbMax": 11080
+    "rssKbMax": 11084
    }
   },
   "filebrowser": {
@@ -481,10 +672,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 27,
-    "recognizeMsMax": 32,
+    "recognizeMsP50": 25,
+    "recognizeMsMax": 26.8,
     "nodesMax": 206,
-    "rssKbMax": 11084
+    "rssKbMax": 11088
    }
   }
  }

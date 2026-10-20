@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { validateAnnotation } from "./annotation.ts";
-import { summarize } from "./evaluate.ts";
+import { clusters, summarize } from "./evaluate.ts";
 import { fetchSource } from "./fetch.ts";
 import { loadManifest, PARTITIONS, type Partition, ROOT, type Source, validateManifest } from "./manifest.ts";
 import { ANNOTATIONS, annotationPath, captureSources, dossierPath, evaluateSources } from "./run.ts";
@@ -117,6 +117,11 @@ async function main(): Promise<number> {
         pages: rows.length,
         missing,
         summary: summarize(rows),
+        clusters: clusters(
+          rows,
+          (id) => m.sources.find((x) => x.id === id)?.family ?? id,
+          !args.includes("--aggregate-only"),
+        ),
         perSource: Object.fromEntries(
           [...new Set(rows.map((r) => r.source))].map((id) => [id, summarize(rows.filter((r) => r.source === id))]),
         ),

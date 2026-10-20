@@ -116,3 +116,65 @@ export function summarize(rows: Row[]) {
 
 export const sha256 = (s: string): string => createHash("sha256").update(s).digest("hex");
 export const readJson = <T>(p: string): T => JSON.parse(readFileSync(p, "utf8")) as T;
+
+export interface Cluster {
+  key: string;
+  instances: number;
+  sources: number;
+  families: number;
+  pages: number;
+  workflowsBlocked: number;
+  examples: string[];
+}
+
+/** Groups every miss and wrong reading by what is missing or wrong, counting how many independent applications show it. */
+export function clusters(rows: Row[], familyOf: (source: string) => string, withExamples: boolean): Cluster[] {
+  const by = new Map<
+    string,
+    { n: number; sources: Set<string>; families: Set<string>; pages: Set<string>; wf: number; ex: string[] }
+  >();
+  const slot = (k: string) => {
+    const have = by.get(k);
+    if (have) return have;
+    const c = {
+      n: 0,
+      sources: new Set<string>(),
+      families: new Set<string>(),
+      pages: new Set<string>(),
+      wf: 0,
+      ex: [] as string[],
+    };
+    by.set(k, c);
+    return c;
+  };
+  for (const r of rows) {
+    for (const i of r.result.items) {
+      if (!i.cluster) continue;
+      const c = slot(i.cluster);
+      c.n++;
+      c.sources.add(r.source);
+      c.families.add(familyOf(r.source));
+      c.pages.add(`${r.source}/${r.page}`);
+      if (withExamples && c.ex.length < 4)
+        c.ex.push(`${r.source}/${r.page}: ${i.name} (wanted ${i.want}${i.got ? `, got ${i.got}` : ""})`);
+    }
+    for (const [k, n] of Object.entries(r.result.workflows.blockedBy)) slot(k).wf += n;
+  }
+  return [...by.entries()]
+    .map(([key, c]) => ({
+      key,
+      instances: c.n,
+      sources: c.sources.size,
+      families: c.families.size,
+      pages: c.pages.size,
+      workflowsBlocked: c.wf,
+      examples: c.ex,
+    }))
+    .sort(
+      (a, b) =>
+        b.families - a.families ||
+        b.workflowsBlocked - a.workflowsBlocked ||
+        b.instances - a.instances ||
+        (a.key < b.key ? -1 : 1),
+    );
+}
