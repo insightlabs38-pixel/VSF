@@ -13,7 +13,7 @@ type Sessions struct {
 	Inner execution.Sessions
 }
 
-// Lookup returns the session with Authenticated, Revoked, expiry, principal and source scopes taken from the caller's grants for that application.
+// Lookup returns the session with Authenticated, Revoked, expiry and source scopes taken from the caller's grants for that application. A grant for a different person than the runtime reports counts as no sign-in.
 func (s Sessions) Lookup(id string) (execution.Session, bool) {
 	sess, ok := s.Inner.Lookup(id)
 	if !ok {
@@ -29,10 +29,9 @@ func (s Sessions) Lookup(id string) (execution.Session, bool) {
 		switch {
 		case g.State == StateRevoked:
 			ended++
-		case g.State == StateActive && s.Broker.Now().Before(g.ExpiresAt):
+		case g.State == StateActive && s.Broker.Now().Before(g.ExpiresAt) && (sess.PrincipalRef == "" || sess.PrincipalRef == g.PrincipalRef):
 			live++
 			sess.Authenticated = true
-			sess.PrincipalRef = g.PrincipalRef
 			sess.ExpiresAt = g.ExpiresAt
 			sess.SourceScopes = slices.Clone(g.Scopes)
 		}

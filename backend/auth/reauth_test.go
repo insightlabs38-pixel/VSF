@@ -195,12 +195,16 @@ func (f fixedSessions) Lookup(id string) (execution.Session, bool) { s, ok := f[
 
 func TestTheRuntimeSeesPausedExpiredAndEndedSignInsAsSuch(t *testing.T) {
 	br, b, cl, g := signedIn(t)
-	inner := fixedSessions{"s1": {ID: "s1", Owner: "alice", AppID: "app.mail", RuntimeID: "rt1", Authenticated: true},
+	inner := fixedSessions{"s1": {ID: "s1", Owner: "alice", AppID: "app.mail", RuntimeID: "rt1", PrincipalRef: "pr_one", Authenticated: true},
+		"s3": {ID: "s3", Owner: "alice", AppID: "app.mail", PrincipalRef: "pr_someone_else", Authenticated: true},
 		"s2": {ID: "s2", Owner: "bob", AppID: "app.mail", Authenticated: true}}
 	s := Sessions{Broker: b, Inner: inner}
 	got, ok := s.Lookup("s1")
 	if !ok || !got.Authenticated || got.Revoked || got.PrincipalRef != "pr_one" || !got.ExpiresAt.Equal(g.ExpiresAt) || len(got.SourceScopes) != 1 || got.RuntimeID != "rt1" {
 		t.Fatalf("%+v", got)
+	}
+	if wrong, _ := s.Lookup("s3"); wrong.Authenticated {
+		t.Fatalf("a sign-in by a different person than the runtime reports does not authenticate it: %+v", wrong)
 	}
 	if other, _ := s.Lookup("s2"); other.Authenticated || other.Revoked || other.PrincipalRef != "" {
 		t.Fatalf("another caller's session is untouched by alice's sign-in: %+v", other)

@@ -251,6 +251,8 @@ type Opts struct {
 	WrapExecutor func(execution.Executor) execution.Executor
 	// Delegations lets a person confirm for another caller.
 	Delegations api.Delegations
+	// WrapSessions lets a test put a layer, such as the sign-in overlay, in front of the directory's sessions.
+	WrapSessions func(execution.Sessions) execution.Sessions
 }
 
 // New starts the worker and the source, and serves the fixture contract through the service.
@@ -294,6 +296,10 @@ func New(t *testing.T, o Opts) *Stack {
 	if apply == 0 {
 		apply = 3 * time.Second
 	}
+	var sessions execution.Sessions = SessionView{s.Dir}
+	if o.WrapSessions != nil {
+		sessions = o.WrapSessions(sessions)
+	}
 	cfg := execution.APIConfig{
 		BaseURL: app.URL(), ReadPath: "/api/orders/%s", WritePath: "/api/orders/%s/stage", Dedup: dedup,
 		Client: &http.Client{Timeout: 2 * time.Second},
@@ -306,7 +312,7 @@ func New(t *testing.T, o Opts) *Stack {
 		ex = o.WrapExecutor(ex)
 	}
 	s.Cfg = execution.Config{
-		Journal: j, Authorizer: w, Callers: s.Dir, Sessions: SessionView{s.Dir}, Revocations: s.Rev,
+		Journal: j, Authorizer: w, Callers: s.Dir, Sessions: sessions, Revocations: s.Rev,
 		Executors: map[string]execution.Executor{"provider_api_authorized": ex},
 		Confirmer: execution.NewConfirmer([]byte("test-secret")), Clock: s.Clock, ApplyTimeout: apply,
 		Retry: execution.RetryPolicy{MaxAttempts: 3, Base: 10 * time.Millisecond, Max: 50 * time.Millisecond},
@@ -318,7 +324,7 @@ func New(t *testing.T, o Opts) *Stack {
 	if s.Auth, err = api.NewTokenAuth(s.Dir, s.Clock.Now, nil); err != nil {
 		t.Fatal(err)
 	}
-	s.Svc, err = api.NewService(api.ServiceConfig{Catalog: s.Cat, Runtime: s.RT, Callers: s.Dir, Sessions: SessionView{s.Dir}, Limiter: o.Limiter,
+	s.Svc, err = api.NewService(api.ServiceConfig{Catalog: s.Cat, Runtime: s.RT, Callers: s.Dir, Sessions: sessions, Limiter: o.Limiter,
 		Confirmer: s.Cfg.Confirmer, Now: s.Clock.Now, Delegations: o.Delegations})
 	if err != nil {
 		t.Fatal(err)
