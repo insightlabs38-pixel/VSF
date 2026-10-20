@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -run Corpus|Versions|Chunk|Summarize|WholeRun ./storage/bench/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bench	11.368s
+[exit 0]

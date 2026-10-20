@@ -1,0 +1,4 @@
+$ go -C backend test -race -count=1 ./storage/tcache/ ./storage/secret/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/tcache	1.072s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	2.010s
+[exit 0]

@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 ./storage/bundle/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bundle	20.749s
+[exit 0]

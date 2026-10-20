@@ -1,0 +1,4 @@
+$ go -C backend test -race -count=1 -run Damaged|Tampering|Dropped|AnotherTenant|Dies|SizeLimit|Sealed ./storage/bundle/ ./storage/secret/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bundle	19.010s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	1.604s
+[exit 0]

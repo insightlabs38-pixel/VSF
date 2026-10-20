@@ -1,0 +1,2 @@
+$ scripts/gofmt-check.sh
+[exit 0]
