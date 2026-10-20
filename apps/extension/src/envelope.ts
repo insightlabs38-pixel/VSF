@@ -1,6 +1,8 @@
 export const PROTOCOL = "vsf-ext-v1";
 
-export type PageKind = "hello" | "dispatch" | "refresh" | "restore" | "heartbeat";
+import { type Prefs, parsePrefs } from "./prefs.ts";
+
+export type PageKind = "hello" | "dispatch" | "refresh" | "restore" | "heartbeat" | "prefs";
 
 export const RESTORE_REASONS = ["user", "crash", "downgrade", "orphaned", "escape", "removed"] as const;
 export type RestoreReason = (typeof RESTORE_REASONS)[number];
@@ -17,6 +19,7 @@ export interface BodyOf {
   heartbeat: { at: number };
   restore: { reason: RestoreReason };
   dispatch: DispatchBody;
+  prefs: { prefs: Prefs };
 }
 
 export interface Envelope<K extends PageKind = PageKind> {
@@ -48,12 +51,13 @@ export const MAX_ENVELOPE_CHARS: Record<PageKind, number> = {
   restore: 512,
   heartbeat: 384,
   dispatch: 2048,
+  prefs: 4096,
 };
 
 const ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const IDENT = /^[a-z][a-z0-9_-]{0,63}$/;
 const ROW_KEY = /^[A-Za-z0-9_.:-]{1,128}$/;
-const KINDS = new Set<string>(["hello", "dispatch", "refresh", "restore", "heartbeat"]);
+const KINDS = new Set<string>(["hello", "dispatch", "refresh", "restore", "heartbeat", "prefs"]);
 const KEYS = new Set(["proto", "kind", "id", "session", "seq", "body"]);
 
 export type Parsed = { ok: true; env: Envelope } | { ok: false; error: EnvelopeError };
@@ -74,6 +78,8 @@ function bodyOk(kind: PageKind, body: Record<string, unknown>): boolean {
       return keys.length === 1 && typeof body.at === "number" && Number.isFinite(body.at);
     case "restore":
       return keys.length === 1 && (RESTORE_REASONS as readonly unknown[]).includes(body.reason);
+    case "prefs":
+      return keys.length === 1 && parsePrefs(body.prefs) !== null;
     case "dispatch": {
       if (keys.some((k) => k !== "action" && k !== "entity" && k !== "rowKey")) return false;
       if (typeof body.action !== "string" || !IDENT.test(body.action)) return false;

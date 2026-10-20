@@ -3,6 +3,7 @@ import { assemble } from "@vsf/wasm-host";
 import { type Envelope, parseEnvelope, type RestoreReason } from "./envelope.ts";
 import { type KV, Lock } from "./kv.ts";
 import { type CapabilityEntry, environmentDocument, localIdentity } from "./manifest.ts";
+import type { Prefs, SettingsStore } from "./prefs.ts";
 import {
   type Command,
   isCommandSender,
@@ -68,6 +69,7 @@ export interface Ports {
   uuid(): string;
   companion?: Companion;
   link?: LinkPort;
+  settings?: SettingsStore;
 }
 
 const EMPTY_STATS: Stats = { captures: 0, denied: 0, transforms: 0, executeCalls: {} };
@@ -429,9 +431,11 @@ export function createCore(p: Ports) {
         };
       });
       const t2 = p.perf();
+      const stored = p.settings ? await p.settings.load(origin).catch(() => "unreadable" as const) : null;
+      const prefs: Prefs = stored === null || stored === "unreadable" ? {} : stored;
       await p.inject(tabId, ["render.js"]);
       const rendered = await callPage(tabId, "__vsfRender", [
-        { session: id, seq: 0, origin, assembly: slim(assembly) },
+        { session: id, seq: 0, origin, assembly: slim(assembly), prefs },
       ]);
       const rr = rendered?.result as RenderResult | undefined;
       if (!rr?.ok) {
@@ -469,6 +473,7 @@ export function createCore(p: Ports) {
         rows,
         actions: states,
         withheld: assembly.withheld.length,
+        settings: stored === "unreadable" ? "unreadable" : stored === null ? "default" : "restored",
         truncated: assembly.limits.truncated,
         nodes: built.nodes,
         timings: { observeMs: built.observeMs, assembleMs: built.assembleMs, renderMs: p.perf() - t2 },
@@ -576,6 +581,11 @@ export function createCore(p: Ports) {
     }
   }
 
+  async function currentPrefs(origin: string): Promise<Prefs> {
+    const stored = p.settings ? await p.settings.load(origin).catch(() => null) : null;
+    return stored === null || stored === "unreadable" ? {} : stored;
+  }
+
   const refreshing = new Set<string>();
 
   async function refresh(session: SessionRecord): Promise<Reply> {
@@ -596,7 +606,13 @@ export function createCore(p: Ports) {
     const fn: PageCall = same ? "__vsfUpdate" : "__vsfRender";
     const arg = same
       ? { session: session.id, rows: assembly.rows, actions: slim(assembly).actions }
-      : { session: session.id, seq: session.lastSeq, origin: session.origin, assembly: slim(assembly) };
+      : {
+          session: session.id,
+          seq: session.lastSeq,
+          origin: session.origin,
+          assembly: slim(assembly),
+          prefs: await currentPrefs(session.origin),
+        };
     await p.inject(session.tabId, ["render.js"]);
     const got = await callPage(session.tabId, fn, [arg]);
     const rr = got?.result as RenderResult | undefined;
@@ -688,6 +704,11 @@ export function createCore(p: Ports) {
         const reply = await refresh(session);
         await settle(session.id, env.id, "refresh", "done", reply);
         return reply;
+      }
+      case "prefs": {
+        if (!p.settings) return { ok: true, saved: false };
+        await p.settings.save(session.origin, (env.body as Envelope<"prefs">["body"]).prefs);
+        return { ok: true, saved: true };
       }
       case "dispatch":
         return dispatch(session, env as Envelope<"dispatch">);

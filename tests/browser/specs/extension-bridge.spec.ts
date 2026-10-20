@@ -1,3 +1,4 @@
+import { createServer, request } from "node:http";
 import { type Apps, startApps } from "../support/apps.ts";
 import { type Companion, startCompanion } from "../support/companion.ts";
 import { expect, test } from "../support/harness.ts";
@@ -87,6 +88,110 @@ test("the stored credentials are sealed: no secret appears in any extension stor
     expect(dump).not.toMatch(/"(refresh|access)"\\s*:/);
     const sealed = JSON.parse(dump) as { local: Record<string, { ct?: string }> };
     expect(sealed.local["vault:bridge"]?.ct).toBeTruthy();
+  } finally {
+    await companion.stop();
+  }
+});
+
+test("a program pretending to be the companion cannot get the code or be believed", async ({ env }) => {
+  const received: string[] = [];
+  const impostor = createServer((req, res) => {
+    let body = "";
+    req.on("data", (d: Buffer) => {
+      body += d.toString();
+    });
+    req.on("end", () => {
+      received.push(`${req.method} ${req.url} ${body}`);
+      res.setHeader("content-type", "application/json");
+      res.setHeader("access-control-allow-origin", req.headers.origin ?? "*");
+      res.setHeader("access-control-allow-headers", "content-type, x-vsf-bridge, authorization");
+      if (req.method === "OPTIONS") return res.writeHead(204).end();
+      const rnd = (n: number): string =>
+        Buffer.from(Array.from({ length: n }, () => Math.floor(Math.random() * 256))).toString("base64url");
+      if (req.url === "/v1/pair/begin")
+        return res
+          .writeHead(200)
+          .end(
+            JSON.stringify({ offer_id: "o1", salt: rnd(16), nonce_s: rnd(16), iterations: 100000, expires_at: 9e9 }),
+          );
+      res
+        .writeHead(200)
+        .end(
+          JSON.stringify({
+            client_id: "cli_fake",
+            refresh: rnd(32),
+            refresh_expires: 9e9,
+            access: rnd(32),
+            access_expires: 9e9,
+            proof: rnd(32),
+          }),
+        );
+    });
+  });
+  await new Promise<void>((r) => impostor.listen(0, "127.0.0.1", r));
+  const port = (impostor.address() as { port: number }).port;
+  try {
+    const code = "ABCD-EFGH-JKMN-PQRS";
+    const reply = await env.send({ type: "pair", endpoint: `127.0.0.1:${port}`, code });
+    expect(reply).toMatchObject({ ok: false, error: "server_not_authentic" });
+    expect(await env.send({ type: "link" })).toMatchObject({ ok: true, paired: false });
+    const everything = received.join("\n");
+    expect(everything).not.toContain("ABCD");
+    expect(everything).not.toContain("ABCDEFGHJKMNPQRS");
+    expect(received.some((r) => r.includes("/v1/pair/finish"))).toBe(true);
+  } finally {
+    impostor.close();
+    impostor.closeAllConnections();
+  }
+});
+
+test("a local program that claims the extension's origin but does not know the code is turned away", async ({
+  env,
+}) => {
+  const companion = await startCompanion(`chrome-extension://${env.extId}`);
+  try {
+    const post = async (path: string, body: object): Promise<{ status: number; json: Record<string, unknown> }> => {
+      const res = await new Promise<{ status: number; text: string }>((resolve, reject) => {
+        const req = request(
+          {
+            host: "127.0.0.1",
+            port: companion.port,
+            path,
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              "x-vsf-bridge": "1",
+              origin: `chrome-extension://${env.extId}`,
+            },
+          },
+          (r) => {
+            let text = "";
+            r.on("data", (d: Buffer) => {
+              text += d.toString();
+            });
+            r.on("end", () => resolve({ status: r.statusCode ?? 0, text }));
+          },
+        );
+        req.on("error", reject);
+        req.end(JSON.stringify(body));
+      });
+      return { status: res.status, json: JSON.parse(res.text) as Record<string, unknown> };
+    };
+    for (let i = 0; i < 3; i++) {
+      const begin = await post("/v1/pair/begin", { nonce: Buffer.alloc(24, i + 1).toString("base64url") });
+      expect(begin.status).toBe(200);
+      const guess = await post("/v1/pair/finish", {
+        offer_id: begin.json.offer_id,
+        proof: Buffer.alloc(32, 7).toString("base64url"),
+        name: "spoof",
+      });
+      expect(guess.status).toBe(403);
+    }
+    expect(await env.send({ type: "pair", endpoint: companion.endpoint, code: companion.code })).toMatchObject({
+      ok: false,
+      error: "pair_denied",
+    });
+    expect(await env.send({ type: "link" })).toMatchObject({ ok: true, paired: false });
   } finally {
     await companion.stop();
   }

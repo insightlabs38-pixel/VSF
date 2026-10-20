@@ -2,7 +2,8 @@ import { type Fabric, loadFabric } from "@vsf/wasm-host";
 import { createCore } from "./core.ts";
 import { chromeKV } from "./kv.ts";
 import { BridgeLink } from "./link.ts";
-import { indexedDbKeyStore, Vault } from "./vault.ts";
+import { type Prefs, parsePrefs, SETTINGS_VERSION, type SettingsStore } from "./prefs.ts";
+import { indexedDbKeyStore, Vault, VaultError } from "./vault.ts";
 
 let fabric: Promise<Fabric> | undefined;
 
@@ -21,7 +22,32 @@ const link = new BridgeLink({
   now: () => Date.now(),
 });
 
+const hex = async (text: string): Promise<string> => {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
+};
+
+/** Preferences are kept per origin, sealed, under a name that does not reveal the origin. */
+const settings: SettingsStore = {
+  async load(origin) {
+    const name = `settings.${(await hex(origin)).slice(0, 24)}`;
+    try {
+      const stored = await vault.open<{ v: number; prefs: unknown }>(name);
+      if (stored === undefined) return null;
+      const prefs = stored.v === SETTINGS_VERSION ? parsePrefs(stored.prefs) : null;
+      return prefs ?? "unreadable";
+    } catch (e) {
+      if (e instanceof VaultError) return "unreadable";
+      throw e;
+    }
+  },
+  async save(origin: string, prefs: Prefs) {
+    await vault.seal(`settings.${(await hex(origin)).slice(0, 24)}`, { v: SETTINGS_VERSION, prefs });
+  },
+};
+
 const core = createCore({
+  settings,
   link,
   selfId: chrome.runtime.id,
   version: chrome.runtime.getManifest().version,
@@ -55,10 +81,7 @@ const core = createCore({
       : { result: first.result, documentId: first.documentId };
   },
   fabric: getFabric,
-  async sha256Hex(text) {
-    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-    return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
-  },
+  sha256Hex: hex,
   now: () => Date.now(),
   perf: () => performance.now(),
   uuid: () => crypto.randomUUID(),

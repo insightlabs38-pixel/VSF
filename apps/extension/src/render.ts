@@ -5,6 +5,7 @@ import {
   compilePresentation,
   type DispatchContext,
   type DispatchResult,
+  type Prefs,
   Renderer,
   type Row,
   type Runtime,
@@ -18,6 +19,7 @@ interface Boot {
   session: string;
   seq: number;
   origin: string;
+  prefs?: Prefs;
   assembly: {
     semantic: SemanticView;
     digest: string;
@@ -96,7 +98,33 @@ function emergency(a: Active, reason: RestoreReason): void {
   tell(a, reason);
 }
 
-function bar(a: { status: HTMLElement }, root: ShadowRoot, onRefresh: () => void, onRestore: () => void): void {
+function choice(
+  label: string,
+  options: readonly string[],
+  initial: string,
+  onChange: (value: string) => void,
+): HTMLElement {
+  const wrap = document.createElement("label");
+  wrap.append(`${label} `);
+  const select = document.createElement("select");
+  for (const o of options) {
+    const opt = document.createElement("option");
+    opt.value = o;
+    opt.textContent = o;
+    select.append(opt);
+  }
+  select.value = initial;
+  select.addEventListener("change", (e) => e.isTrusted && onChange(select.value));
+  wrap.append(select);
+  return wrap;
+}
+
+function bar(
+  a: { status: HTMLElement },
+  root: ShadowRoot,
+  prefs: Prefs,
+  on: { refresh(): void; restore(): void; pref(change: Prefs): void },
+): void {
   const header = document.createElement("header");
   header.className = "bar";
   header.setAttribute("role", "banner");
@@ -105,15 +133,26 @@ function bar(a: { status: HTMLElement }, root: ShadowRoot, onRefresh: () => void
   const refresh = document.createElement("button");
   refresh.type = "button";
   refresh.textContent = "Refresh from source";
-  refresh.addEventListener("click", (e) => e.isTrusted && onRefresh());
+  refresh.addEventListener("click", (e) => e.isTrusted && on.refresh());
   const original = document.createElement("button");
   original.type = "button";
   original.textContent = "Show original";
-  original.addEventListener("click", (e) => e.isTrusted && onRestore());
+  original.addEventListener("click", (e) => e.isTrusted && on.restore());
   a.status.className = "status";
   a.status.setAttribute("role", "status");
   a.status.setAttribute("aria-live", "polite");
-  header.append(title, a.status, refresh, original);
+  header.append(
+    title,
+    a.status,
+    choice("Theme", ["system", "light", "dark"], prefs.scheme ?? "system", (v) =>
+      on.pref({ scheme: v as NonNullable<Prefs["scheme"]> }),
+    ),
+    choice("Density", ["compact", "comfortable", "spacious"], prefs.density ?? "comfortable", (v) =>
+      on.pref({ density: v as NonNullable<Prefs["density"]> }),
+    ),
+    refresh,
+    original,
+  );
   root.append(header);
 }
 
@@ -178,16 +217,24 @@ function build(boot: Boot): { problems: string[]; make: () => Active } {
         return { ok: false, message: `Not performed: ${why}` };
       },
     };
-    bar(
-      self,
-      root,
-      () => void refresh(self),
-      () => emergency(self, "user"),
-    );
+    const prefs = boot.prefs ?? {};
+    bar(self, root, prefs, {
+      refresh: () => void refresh(self),
+      restore: () => emergency(self, "user"),
+      pref: (change) => self.renderer.setPreference(change),
+    });
     root.append(mount);
     ownUi().add(overlay);
     document.documentElement.append(overlay);
-    self.renderer = new Renderer(mount, rt, body, { shadow: __VSF_SHADOW__ });
+    let applying = true;
+    self.renderer = new Renderer(mount, rt, body, {
+      shadow: __VSF_SHADOW__,
+      onPrefs: (p) => {
+        if (!applying) void send(self, "prefs", { prefs: p }).catch(() => undefined);
+      },
+    });
+    if (Object.keys(prefs).length > 0) self.renderer.setPreference(prefs);
+    applying = false;
     return self;
   };
   return { problems, make };

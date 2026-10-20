@@ -3,6 +3,7 @@ import { test } from "node:test";
 import type { Assembly, Fabric } from "@vsf/wasm-host";
 import { type Companion, createCore, type LinkPort, type PageCall, type Ports } from "../src/core.ts";
 import { memoryKV } from "../src/kv.ts";
+import type { Prefs, SettingsStore } from "../src/prefs.ts";
 import { envelope } from "./helpers.ts";
 
 const ORIGIN = "http://127.0.0.1:9";
@@ -51,6 +52,7 @@ function rig(
     session?: ReturnType<typeof memoryKV>;
     companion?: Companion;
     link?: LinkPort;
+    settings?: SettingsStore;
   } = {},
 ): Rig {
   const local = opts.local ?? memoryKV();
@@ -107,6 +109,7 @@ function rig(
     uuid: () => `00000000-0000-4000-8000-${String(++n).padStart(12, "0")}`,
     ...(opts.companion ? { companion: opts.companion } : {}),
     ...(opts.link ? { link: opts.link } : {}),
+    ...(opts.settings ? { settings: opts.settings } : {}),
   };
   return {
     ports,
@@ -316,8 +319,7 @@ function fakeLink(
   const link: LinkPort = {
     async call(path, body) {
       calls.push({ path, body: body as Record<string, unknown> });
-      if (path === "/v1/session")
-        return over.reply ?? { status: 200, json: { session_id: "bs_1", expires_at: 2 } };
+      if (path === "/v1/session") return over.reply ?? { status: 200, json: { session_id: "bs_1", expires_at: 2 } };
       if (path === "/v1/session/renew") return { status: 200, json: { session_id: "bs_1", expires_at: 99_999 } };
       return { status: 200, json: { ok: true } };
     },
@@ -412,4 +414,52 @@ test("ending the session, by any route, ends the binding; a lapsing binding is r
   await built.core.handlePage(envelope("restore", built.id, 2, { reason: "user" }), s.page(TAB));
   assert.equal(second.calls.at(-1)?.path, "/v1/session/end");
   void id;
+});
+
+function fakeSettings(initial: Prefs | null | "unreadable" = null) {
+  const saved: { origin: string; prefs: Prefs }[] = [];
+  const store: SettingsStore = {
+    load: async () => initial,
+    save: async (origin, prefs) => {
+      saved.push({ origin, prefs });
+    },
+  };
+  return { store, saved };
+}
+
+test("stored preferences travel with the render request and are reported as restored", async () => {
+  const { store } = fakeSettings({ density: "compact" });
+  const r = rig({ settings: store });
+  const core = createCore(r.ports);
+  await core.handleCommand({ type: "grant", origin: ORIGIN }, r.panel);
+  const reply = await core.handleCommand({ type: "transform", tabId: TAB }, r.panel);
+  assert.equal((reply as { settings?: string }).settings, "restored");
+  const render = r.calls.find((c) => c.fn === "__vsfRender");
+  assert.deepEqual((render?.args[0] as { prefs: Prefs }).prefs, { density: "compact" });
+});
+
+test("preferences nobody can vouch for are ignored, not applied, and the user is told", async () => {
+  const { store } = fakeSettings("unreadable");
+  const r = rig({ settings: store });
+  const core = createCore(r.ports);
+  await core.handleCommand({ type: "grant", origin: ORIGIN }, r.panel);
+  const reply = await core.handleCommand({ type: "transform", tabId: TAB }, r.panel);
+  assert.equal(reply.ok, true);
+  assert.equal((reply as { settings?: string }).settings, "unreadable");
+  assert.deepEqual((r.calls.find((c) => c.fn === "__vsfRender")?.args[0] as { prefs: Prefs }).prefs, {});
+});
+
+test("a preference change from the page is saved for that session's origin only", async () => {
+  const { store, saved } = fakeSettings();
+  const r = rig({ settings: store });
+  const { core, id } = await transformed(r);
+  const reply = await core.handlePage(envelope("prefs", id, 1, { prefs: { scheme: "dark" } }), r.page(TAB));
+  assert.deepEqual(reply, { ok: true, saved: true });
+  assert.deepEqual(saved, [{ origin: ORIGIN, prefs: { scheme: "dark" } }]);
+  const bad = await core.handlePage(envelope("prefs", id, 2, { prefs: { scheme: "plaid" } }), r.page(TAB));
+  assert.deepEqual(bad, { ok: false, error: "bad_body" });
+  assert.equal(saved.length, 1);
+  const stranger = await core.handlePage(envelope("prefs", id, 3, { prefs: { scheme: "light" } }), r.page(TAB + 1));
+  assert.equal(stranger.ok, false);
+  assert.equal(saved.length, 1);
 });
