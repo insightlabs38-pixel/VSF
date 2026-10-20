@@ -147,6 +147,9 @@ type Store interface {
 
 func validName(s string) bool { return nameRe.MatchString(s) }
 
+// ValidName reports whether s may name a channel, pin reason, hold holder or intent kind.
+func ValidName(s string) bool { return validName(s) }
+
 // Maintenance is the cross-tenant view a sweep needs; only maintenance code may hold it, never a request handler.
 type Maintenance interface {
 	// PublicDigestInUse reports whether any tenant still records a public artifact with this digest.

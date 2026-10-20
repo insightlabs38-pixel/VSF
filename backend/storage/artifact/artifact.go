@@ -163,6 +163,15 @@ func validProvenance(p json.RawMessage) (string, error) {
 	return string(p), nil
 }
 
+// ValidProvenance reports whether p is acceptable provenance, so a caller can refuse bad input before it writes anything.
+func ValidProvenance(p json.RawMessage) error {
+	_, err := validProvenance(p)
+	return err
+}
+
+// MaxArtifact is the largest artifact this store accepts.
+func (s *Store) MaxArtifact() int { return s.cfg.MaxArtifact }
+
 // PutArtifact stores bytes and records them for a tenant; the object is written before the record, so a record never lacks its object.
 func (s *Store) PutArtifact(ctx context.Context, t meta.Tenant, data []byte, in ArtifactInput) (string, error) {
 	if !meta.ValidTenant(t) || (in.Class != meta.Public && in.Class != meta.Private) {
@@ -393,6 +402,44 @@ func (s *Store) verifyManifest(t meta.Tenant, rec meta.ManifestRecord) (Manifest
 	}
 	return Manifest{ID: rec.ID, Kind: doc.Kind, Version: doc.Version, Parent: doc.Parent, Classification: doc.Classification,
 		Artifacts: doc.Artifacts, Provenance: doc.Provenance, CreatedAt: doc.CreatedAt, KeyID: doc.KeyID}, nil
+}
+
+// CheckManifest proves signed manifest bytes are intact, trusted and for this tenant without storing anything.
+func (s *Store) CheckManifest(t meta.Tenant, stored []byte) (Manifest, error) {
+	var env envelope
+	var doc manifestDoc
+	if json.Unmarshal(stored, &env) != nil || json.Unmarshal(env.Doc, &doc) != nil {
+		return Manifest{}, ErrCorrupt
+	}
+	return s.verifyManifest(t, meta.ManifestRecord{ID: Digest(stored), Doc: stored, KeyID: doc.KeyID})
+}
+
+// AdoptManifest records an already signed manifest once it checks out and every artifact it names is stored; repeating it is harmless.
+func (s *Store) AdoptManifest(ctx context.Context, t meta.Tenant, stored []byte) (string, error) {
+	m, err := s.CheckManifest(t, stored)
+	if err != nil {
+		return "", err
+	}
+	s.gate.RLock()
+	defer s.gate.RUnlock()
+	links := make([]string, 0, len(m.Artifacts))
+	for _, a := range m.Artifacts {
+		rec, err := s.cfg.Meta.Artifact(ctx, t, a.Digest)
+		if err != nil {
+			if errors.Is(err, meta.ErrNotFound) {
+				return "", fmt.Errorf("%w: %s", ErrMissingArtifact, a.Digest)
+			}
+			return "", err
+		}
+		if rec.Size != a.Size || rec.Class != a.Class {
+			return "", fmt.Errorf("%w: %s", ErrCorrupt, a.Digest)
+		}
+		links = append(links, a.Digest)
+	}
+	if err := s.cfg.Meta.PublishManifest(ctx, t, meta.ManifestRecord{ID: m.ID, Kind: m.Kind, Doc: stored, KeyID: m.KeyID, ParentID: m.Parent}, links); err != nil {
+		return "", err
+	}
+	return m.ID, nil
 }
 
 // VerifyManifest checks the manifest and then every artifact it names, byte for byte.
