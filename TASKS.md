@@ -20,8 +20,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B11 | G11 | 0/6 | BLOCKED | - |
 | B12 | G12 | 0/6 | TODO | - |
 | B13 | G13 | 0/5 | READY | - |
-| B14 | G14 | 0/6 | TODO | - |
-| B15 | G15 | 0/5 | TODO | - |
+| B14 | G14 | 0/7 | TODO | - |
+| B15 | G15 | 0/6 | TODO | - |
 | B16 | G16 | 0/7 | TODO | - |
 | B17 | G17 | 0/5 | TODO | - |
 | B18 | G18 | 0/7 | TODO | - |
@@ -204,6 +204,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B14-T04` Handle MFA/reauth pause and revoke behavior
 - [ ] `VSF-B14-T05` Add per-account capability profile and session expiry
 - [ ] `VSF-B14-T06` Let a person confirm in the user interface a request an agent caller will run
+- [ ] `VSF-B14-T07` Rewrap sealed data under the newest key and move a tenant's keys between installations
 
 ### B15 · Build hosted and on-demand execution
 
@@ -212,6 +213,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B15-T03` Separate interactive and background queues and per-session locks
 - [ ] `VSF-B15-T04` Add task pause/resume for authentication and unknown commits
 - [ ] `VSF-B15-T05` Meter resource usage with stable event IDs
+- [ ] `VSF-B15-T06` Scope decoded-contract caches to the calling principal before multi-tenant hosting
 
 ### B16 · Build desktop and premium localhost service
 

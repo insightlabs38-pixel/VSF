@@ -3560,6 +3560,35 @@
       ]
     },
     {
+      "id": "VSF-B14-T07",
+      "batch": "B14",
+      "sequence": 7,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Rewrap sealed data under the newest key and move a tenant's keys between installations",
+      "intent": "Rewrap sealed data under the newest key and move a tenant's keys between installations.",
+      "acceptance": "Sealed artifacts and caches can be re-encrypted under the newest data key without renaming them, and a tenant's key material can be exported wrapped and imported elsewhere so bundles of private versions open there.",
+      "dependencies": ["VSF-B14-T06"],
+      "planned_paths": "backend/storage/secret/; backend/storage/artifact/; tests/auth/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B13 seals private artifacts with a versioned data key and keyed identifiers, but it can only add keys: old objects keep the old key, and a bundle opens only where the same keyring is held.",
+      "gate": "G14",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "token audience mismatch",
+        "stolen session",
+        "MFA interruption",
+        "keychain unavailable",
+        "revoked authorization"
+      ]
+    },
+    {
       "id": "VSF-B15-T01",
       "batch": "B15",
       "sequence": 1,
@@ -3668,6 +3697,35 @@
       "gate": "G15",
       "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
       "risk_tests": ["SSRF metadata/redirect/DNS", "queue starvation", "OOM", "timeout-after-commit", "double charge"]
+    },
+    {
+      "id": "VSF-B15-T06",
+      "batch": "B15",
+      "sequence": 6,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Scope decoded-contract caches to the calling principal before multi-tenant hosting",
+      "intent": "Scope decoded-contract caches to the calling principal before multi-tenant hosting.",
+      "acceptance": "A cache hit on a contract document is observable only to the principal that supplied it; one caller cannot learn by timing or memory that another used the same document.",
+      "dependencies": ["VSF-B15-T05"],
+      "planned_paths": "backend/execution/; tests/execution/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "The decoded-contract cache in backend/execution is process-wide and keyed by content only, so on a shared runtime a hit tells a caller that another caller used the same document. Found by B13 (ADR-038).",
+      "gate": "G15",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "SSRF metadata/redirect/DNS",
+        "queue starvation",
+        "OOM",
+        "timeout-after-commit",
+        "double charge"
+      ]
     },
     {
       "id": "VSF-B16-T01",
