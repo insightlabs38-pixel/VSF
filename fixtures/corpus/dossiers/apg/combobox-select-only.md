@@ -1,0 +1,356 @@
+# W3C ARIA Authoring Practices Guide examples - combobox-select-only
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Select-Only Combobox Example
+State: as loaded
+What people do here (from the manifest):
+- choose a fruit from a select-only combobox
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/118
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../combobox-pattern.html
+- main:
+  - heading "Select-Only Combobox Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The following example implementation of the
+    - link "Combobox Pattern":
+      - /url: ../combobox-pattern.html
+    - text: demonstrates a single-select combobox widget that is functionally similar to an HTML
+    - code: select
+    - text: element. Unlike the editable combobox examples, this select-only combobox is not made with an
+    - code: <input>
+    - text: element, and it does not accept freeform user input. However, like an HTML
+    - code: <select>
+    - text: ", users can type characters to select matching options."
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Editable Combobox with Both List and Inline Autocomplete":
+        - /url: combobox-autocomplete-both.html
+      - text: ": An editable combobox that demonstrates the autocomplete behavior known as list with inline autocomplete."
+    - listitem:
+      - link "Editable Combobox with List Autocomplete":
+        - /url: combobox-autocomplete-list.html
+      - text: ": An editable combobox that demonstrates the autocomplete behavior known as list with manual selection."
+    - listitem:
+      - link "Editable Combobox Without Autocomplete":
+        - /url: combobox-autocomplete-none.html
+      - text: ": An editable combobox that demonstrates the behavior associated with"
+      - code: aria-autocomplete=none
+      - text: .
+    - listitem:
+      - link "Editable Combobox with Grid Popup":
+        - /url: grid-combo.html
+      - text: ": An editable combobox that presents suggestions in a grid, enabling users to navigate descriptive information about each suggestion."
+    - listitem:
+      - link "Date Picker Combobox":
+        - /url: combobox-datepicker.html
+      - text: ": An editable date input combobox that opens a dialog containing a calendar grid and buttons for navigating by month and year."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - text: Favorite Fruit
+  - combobox "Favorite Fruit": Choose a Fruit
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - paragraph:
+    - text: While the functionality and user experience of this example are nearly equivalent to an HTML
+    - code: select
+    - text: element with the attribute
+    - code: size="1"
+    - text: ", the following differences in behavior are implemented to improve both accessibility and general usability."
+  - list:
+    - listitem:
+      - text: If the combobox is collapsed and the user types printable characters, the listbox is displayed and receives accessibility focus via
+      - code: aria-activedescendant
+      - text: . This enables users to perceive the presence of the options, and enables assistive technology users to comprehend the size of the list of options.
+    - listitem: Navigating the list of options does not set the value of the input. This gives screen reader users, who need to navigate among the options to perceive them, the ability to explore options without losing the current value of the input. The value is set when users press Space , Enter , or Tab , or when focus moves out of the combobox. The current value is retained if the listbox is closed with Escape or if the user collapses the list by clicking the input.
+    - listitem:
+      - text: Browsers do not manage visibility of elements referenced by
+      - code: aria-activedescendant
+      - text: like they do for elements with focus. When a keyboard event changes the active option in the listbox, the JavaScript scrolls the option referenced by
+      - code: aria-activedescendant
+      - text: into view. Managing
+      - code: aria-activedescendant
+      - text: visibility is essential to accessibility for people who use a browser's zoom feature to increase the size of content.
+  - heading "Keyboard Support" [level=2]
+  - paragraph:
+    - text: The example combobox on this page implements the following keyboard interface. Other variations and options for the keyboard interface are described in the
+    - link "Keyboard Interaction section of the combobox pattern.":
+      - /url: ../combobox-pattern.html#keyboard_interaction
+  - heading "Closed Combobox" [level=3]
+  - table "Closed Combobox Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Down Arrow Opens the listbox if it is not already displayed without moving focus or changing selection. DOM focus remains on the combobox.":
+        - cell "Down Arrow"
+        - cell "Opens the listbox if it is not already displayed without moving focus or changing selection. DOM focus remains on the combobox.":
+          - list:
+            - listitem: Opens the listbox if it is not already displayed without moving focus or changing selection.
+            - listitem: DOM focus remains on the combobox.
+      - row "Alt + Down Arrow Opens the listbox without moving focus or changing selection.":
+        - cell "Alt + Down Arrow"
+        - cell "Opens the listbox without moving focus or changing selection."
+      - row "Up Arrow First opens the listbox if it is not already displayed and then moves visual focus to the first option. DOM focus remains on the combobox.":
+        - cell "Up Arrow"
+        - cell "First opens the listbox if it is not already displayed and then moves visual focus to the first option. DOM focus remains on the combobox.":
+          - list:
+            - listitem: First opens the listbox if it is not already displayed and then moves visual focus to the first option.
+            - listitem: DOM focus remains on the combobox.
+      - row "Enter Opens the listbox without moving focus or changing selection.":
+        - cell "Enter"
+        - cell "Opens the listbox without moving focus or changing selection."
+      - row "Space Opens the listbox without moving focus or changing selection.":
+        - cell "Space"
+        - cell "Opens the listbox without moving focus or changing selection."
+      - row "Home Opens the listbox and moves visual focus to the first option.":
+        - cell "Home"
+        - cell "Opens the listbox and moves visual focus to the first option."
+      - row "End Opens the listbox and moves visual focus to the last option.":
+        - cell "End"
+        - cell "Opens the listbox and moves visual focus to the last option."
+      - row "Printable Characters First opens the listbox if it is not already displayed and then moves visual focus to the first option that matches the typed character. If multiple keys are typed in quick succession, visual focus moves to the first option that matches the full string. If the same character is typed in succession, visual focus cycles among the options starting with that character.":
+        - cell "Printable Characters"
+        - cell "First opens the listbox if it is not already displayed and then moves visual focus to the first option that matches the typed character. If multiple keys are typed in quick succession, visual focus moves to the first option that matches the full string. If the same character is typed in succession, visual focus cycles among the options starting with that character.":
+          - list:
+            - listitem: First opens the listbox if it is not already displayed and then moves visual focus to the first option that matches the typed character.
+            - listitem: If multiple keys are typed in quick succession, visual focus moves to the first option that matches the full string.
+            - listitem: If the same character is typed in succession, visual focus cycles among the options starting with that character.
+  - heading "Listbox Popup" [level=3]
+  - paragraph:
+    - strong: "NOTE:"
+    - text: When visual focus is in the listbox, DOM focus remains on the combobox and the value of
+    - code: aria-activedescendant
+    - text: on the combobox is set to a value that refers to the listbox option that is visually indicated as focused. Where the following descriptions of keyboard commands mention focus, they are referring to the visual focus indicator. For more information about this focus management technique, see
+    - link "Managing Focus in Composites Using aria-activedescendant":
+      - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_focus_activedescendant
+    - text: .
+  - table "Listbox Popup Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Sets the value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the combobox.":
+        - cell "Enter"
+        - cell "Sets the value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the combobox.":
+          - list:
+            - listitem: Sets the value to the content of the focused option in the listbox.
+            - listitem: Closes the listbox.
+            - listitem: Sets visual focus on the combobox.
+      - row "Space Sets the value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the combobox.":
+        - cell "Space"
+        - cell "Sets the value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the combobox.":
+          - list:
+            - listitem: Sets the value to the content of the focused option in the listbox.
+            - listitem: Closes the listbox.
+            - listitem: Sets visual focus on the combobox.
+      - 'row "Tab Sets the value to the content of the focused option in the listbox. Closes the listbox. Performs the default action, moving focus to the next focusable element. Note: the native <select> element closes the listbox but does not move focus on tab. This pattern matches the behavior of the other comboboxes rather than the native element in this case."':
+        - cell "Tab"
+        - 'cell "Sets the value to the content of the focused option in the listbox. Closes the listbox. Performs the default action, moving focus to the next focusable element. Note: the native <select> element closes the listbox but does not move focus on tab. This pattern matches the behavior of the other comboboxes rather than the native element in this case."':
+          - list:
+            - listitem: Sets the value to the content of the focused option in the listbox.
+            - listitem: Closes the listbox.
+            - listitem:
+              - text: "Performs the default action, moving focus to the next focusable element. Note: the native"
+              - code: <select>
+              - text: element closes the listbox but does not move focus on tab. This pattern matches the behavior of the other comboboxes rather than the native element in this case.
+      - row "Escape Closes the listbox. Sets visual focus on the combobox.":
+        - cell "Escape"
+        - cell "Closes the listbox. Sets visual focus on the combobox.":
+          - list:
+            - listitem: Closes the listbox.
+            - listitem: Sets visual focus on the combobox.
+      - row "Down Arrow Moves visual focus to the next option. If visual focus is on the last option, visual focus does not move.":
+        - cell "Down Arrow"
+        - cell "Moves visual focus to the next option. If visual focus is on the last option, visual focus does not move.":
+          - list:
+            - listitem: Moves visual focus to the next option.
+            - listitem: If visual focus is on the last option, visual focus does not move.
+      - row "Up Arrow Moves visual focus to the previous option. If visual focus is on the first option, visual focus does not move.":
+        - cell "Up Arrow"
+        - cell "Moves visual focus to the previous option. If visual focus is on the first option, visual focus does not move.":
+          - list:
+            - listitem: Moves visual focus to the previous option.
+            - listitem: If visual focus is on the first option, visual focus does not move.
+      - row "Alt + Up Arrow Sets the value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the combobox.":
+        - cell "Alt + Up Arrow"
+        - cell "Sets the value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the combobox.":
+          - list:
+            - listitem: Sets the value to the content of the focused option in the listbox.
+            - listitem: Closes the listbox.
+            - listitem: Sets visual focus on the combobox.
+      - row "Home Moves visual focus to the first option.":
+        - cell "Home"
+        - cell "Moves visual focus to the first option."
+      - row "End Moves visual focus to the last option.":
+        - cell "End"
+        - cell "Moves visual focus to the last option."
+      - row "PageUp Jumps visual focus up 10 options (or to first option).":
+        - cell "PageUp"
+        - cell "Jumps visual focus up 10 options (or to first option)."
+      - row "PageDown Jumps visual focus down 10 options (or to last option).":
+        - cell "PageDown"
+        - cell "Jumps visual focus down 10 options (or to last option)."
+      - row "Printable Characters First opens the listbox if it is not already displayed and then moves visual focus to the first option that matches the typed character. If multiple keys are typed in quick succession, visual focus moves to the first option that matches the full string. If the same character is typed in succession, visual focus cycles among the options starting with that character.":
+        - cell "Printable Characters"
+        - cell "First opens the listbox if it is not already displayed and then moves visual focus to the first option that matches the typed character. If multiple keys are typed in quick succession, visual focus moves to the first option that matches the full string. If the same character is typed in succession, visual focus cycles among the options starting with that character.":
+          - list:
+            - listitem: First opens the listbox if it is not already displayed and then moves visual focus to the first option that matches the typed character.
+            - listitem: If multiple keys are typed in quick succession, visual focus moves to the first option that matches the full string.
+            - listitem: If the same character is typed in succession, visual focus cycles among the options starting with that character.
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - paragraph:
+    - text: The example combobox on this page implements the following ARIA roles, states, and properties. Information about other ways of applying ARIA roles, states, and properties is available in the
+    - link "Roles, States, and Properties section of the Combobox Pattern":
+      - /url: ../combobox-pattern.html#roles_states_properties
+    - text: .
+  - heading "Combobox" [level=3]
+  - table "Combobox Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "combobox div Identifies the input as a combobox.":
+        - rowheader "combobox":
+          - code: combobox
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the input as a combobox."
+      - row "aria-labelledby=\"#IDREF\" div Identifies the element that labels the combobox.":
+        - cell
+        - rowheader "aria-labelledby=\"#IDREF\"":
+          - code: aria-labelledby="#IDREF"
+        - cell "div":
+          - code: div
+        - cell "Identifies the element that labels the combobox."
+      - row "aria-controls=\"#IDREF\" div Identifies the element that serves as the popup.":
+        - cell
+        - rowheader "aria-controls=\"#IDREF\"":
+          - code: aria-controls="#IDREF"
+        - cell "div":
+          - code: div
+        - cell "Identifies the element that serves as the popup."
+      - row "aria-expanded=\"false\" div Indicates that the popup element is not displayed.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "div":
+          - code: div
+        - cell "Indicates that the popup element is not displayed.":
+          - text: Indicates that the popup element
+          - strong: is not
+          - text: displayed.
+      - row "aria-expanded=\"true\" div Indicates that the popup element is displayed.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "div":
+          - code: div
+        - cell "Indicates that the popup element is displayed.":
+          - text: Indicates that the popup element
+          - strong: is
+          - text: displayed.
+      - row "aria-activedescendant=\"IDREF\" div When an option in the listbox is visually indicated as having keyboard focus, refers to that option. When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the input element. For more information about this focus management technique, see Managing Focus in Composites Using aria-activedescendant.":
+        - cell
+        - rowheader "aria-activedescendant=\"IDREF\"":
+          - code: aria-activedescendant="IDREF"
+        - cell "div":
+          - code: div
+        - cell "When an option in the listbox is visually indicated as having keyboard focus, refers to that option. When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the input element. For more information about this focus management technique, see Managing Focus in Composites Using aria-activedescendant.":
+          - list:
+            - listitem: When an option in the listbox is visually indicated as having keyboard focus, refers to that option.
+            - listitem: When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value.
+            - listitem:
+              - text: Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the
+              - code: input
+              - text: element.
+            - listitem:
+              - text: For more information about this focus management technique, see
+              - link "Managing Focus in Composites Using aria-activedescendant":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_focus_activedescendant
+              - text: .
+  - heading "Listbox Popup" [level=3]
+  - table "Listbox Popup Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "listbox div Identifies the element as a listbox.":
+        - rowheader "listbox":
+          - code: listbox
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the element as a listbox.":
+          - text: Identifies the element as a
+          - code: listbox
+          - text: .
+      - row "option div Identifies the element as a listbox option. The text content of the element provides the accessible name of the option.":
+        - rowheader "option":
+          - code: option
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the element as a listbox option. The text content of the element provides the accessible name of the option.":
+          - list:
+            - listitem:
+              - text: Identifies the element as a
+              - code: listbox
+              - code: option
+              - text: .
+            - listitem:
+              - text: The text content of the element provides the accessible name of the
+              - code: option
+              - text: .
+      - row "aria-selected=\"true\" li Specified on an option in the listbox when it is visually highlighted as selected. Occurs only when an option in the list is referenced by aria-activedescendant.":
+        - cell
+        - rowheader "aria-selected=\"true\"":
+          - code: aria-selected="true"
+        - cell "li":
+          - code: li
+        - cell "Specified on an option in the listbox when it is visually highlighted as selected. Occurs only when an option in the list is referenced by aria-activedescendant.":
+          - list:
+            - listitem: Specified on an option in the listbox when it is visually highlighted as selected.
+            - listitem:
+              - text: Occurs only when an option in the list is referenced by
+              - code: aria-activedescendant
+              - text: .
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "select-only.css":
+        - /url: css/select-only.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "select-only.js":
+        - /url: js/select-only.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: <div class="combo js-select"> <div id="combo1-label" class="combo-label"> Favorite Fruit </div> <div aria-controls="listbox1" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="combo1-label" id="combo1" class="combo-input" role="combobox" tabindex="0"></div> <div class="combo-menu" role="listbox" id="listbox1" aria-labelledby="combo1-label" tabindex="-1"> <!-- options are inserted here --> <!-- e.g. <div role="option" id="op1">option text</div> --> </div> </div>
+  - separator "End of HTML Source Code"
+```

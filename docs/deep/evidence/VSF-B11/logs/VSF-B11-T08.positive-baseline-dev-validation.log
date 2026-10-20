@@ -1,0 +1,2 @@
+$ node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation-t08.json
+[exit 0]

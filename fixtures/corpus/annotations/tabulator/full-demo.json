@@ -1,0 +1,139 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "tabulator",
+  "page": "full-demo",
+  "dossierSha256": "192ebbbee22d930fe001019ddd3a989a8e8b79df18a661389a80d998d95b511a",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-tabulator",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/tabulator/full-demo.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Name",
+      "kind": "text"
+    },
+    {
+      "name": "Department",
+      "kind": "text"
+    },
+    {
+      "name": "Active",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select Row",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Add row",
+      "effect": "state_change"
+    },
+    {
+      "name": "Delete selected",
+      "effect": "destructive"
+    },
+    {
+      "name": "Download CSV",
+      "effect": "read"
+    },
+    {
+      "name": "Download JSON",
+      "effect": "read"
+    },
+    {
+      "name": "Download HTML",
+      "effect": "read"
+    },
+    {
+      "name": "Reset saved layout",
+      "effect": "destructive"
+    },
+    {
+      "name": "🗑",
+      "effect": "destructive"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Full Demo",
+      "columns": [
+        "Select Row",
+        "Name",
+        "Department",
+        "Progress",
+        "Rating",
+        "Revenue",
+        "Active",
+        "DOB"
+      ],
+      "rows": 6
+    }
+  ],
+  "composites": [
+    {
+      "kind": "bulk_selection",
+      "name": "Row selection"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Header filters"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sortable columns"
+    },
+    {
+      "kind": "editable_cell",
+      "name": "Editable cells"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Add a row and edit it",
+      "needs": [
+        "Add row",
+        "Editable cells",
+        "Full Demo"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Select rows and delete them",
+      "needs": [
+        "Select Row",
+        "Row selection",
+        "Delete selected",
+        "Full Demo"
+      ],
+      "effect": "destructive"
+    },
+    {
+      "name": "Filter the table by name or department",
+      "needs": [
+        "Name",
+        "Department",
+        "Header filters",
+        "Full Demo"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Download the table",
+      "needs": [
+        "Download CSV",
+        "Download JSON",
+        "Download HTML"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

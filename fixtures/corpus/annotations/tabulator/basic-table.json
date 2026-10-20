@@ -1,0 +1,48 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "tabulator",
+  "page": "basic-table",
+  "dossierSha256": "553f6f7468cd4c3c0102b711ce2b59ee19923491501f9b82256649fc251f52b5",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-tabulator",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/tabulator/basic-table.md"
+    ]
+  },
+  "fields": [],
+  "actions": [],
+  "collections": [
+    {
+      "name": "Basic Table",
+      "columns": [
+        "ID",
+        "Name",
+        "Age",
+        "Country",
+        "Rating"
+      ],
+      "rows": 7
+    }
+  ],
+  "composites": [
+    {
+      "kind": "sortable_columns",
+      "name": "Sortable columns"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Sort the records by a column",
+      "needs": [
+        "Sortable columns",
+        "Basic Table"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

@@ -1,0 +1,392 @@
+# AdminLTE 4 admin dashboard template - projects
+Upstream: https://github.com/ColorlibHQ/AdminLTE
+Framework: bootstrap-5
+Ground truth basis: AdminLTE page descriptions; Chromium accessibility tree
+Page title: AdminLTE 4 | Projects
+State: as loaded
+What people do here (from the manifest):
+- browse a list of projects and open or delete one
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Skip to main content":
+  - /url: "#main"
+- link "Skip to navigation":
+  - /url: "#navigation"
+- navigation:
+  - list:
+    - listitem:
+      - button "Toggle sidebar": 
+    - listitem:
+      - link "Live preview":
+        - /url: ../index.html
+    - listitem:
+      - link "Documentation":
+        - /url: ../docs/introduction.html
+  - search:
+    - text: Search
+    - searchbox "Search"
+    - button "Submit search"
+  - list:
+    - listitem:
+      - 'link "Messages: 3 unread"':
+        - /url: "#"
+        - text:  3
+    - listitem:
+      - 'link "Notifications: 15 unread"':
+        - /url: "#"
+        - text:  15
+    - listitem:
+      - link "Change language, current language English":
+        - /url: "#"
+    - listitem:
+      - link "Toggle fullscreen":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Toggle color scheme":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Alexander Pierce Alexander Pierce":
+        - /url: "#"
+        - img "Alexander Pierce"
+        - text: Alexander Pierce
+- complementary:
+  - link "AdminLTE Logo AdminLTE 4":
+    - /url: ../index.html
+    - img "AdminLTE Logo"
+    - text: AdminLTE 4
+  - search:
+    - text: Filter menu
+    - searchbox "Filter menu"
+  - navigation "Main navigation":
+    - list:
+      - listitem:
+        - link " Dashboard ":
+          - /url: "#"
+          - text: 
+          - paragraph: Dashboard 
+      - listitem:
+        - link " Starter Page":
+          - /url: ../starter.html
+          - text: 
+          - paragraph: Starter Page
+      - listitem:
+        - link " Theme Generate":
+          - /url: ../generate/theme.html
+          - text: 
+          - paragraph: Theme Generate
+      - listitem:
+        - link " Widgets ":
+          - /url: "#"
+          - text: 
+          - paragraph: Widgets 
+      - listitem:
+        - link " Layout Options 12 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Layout Options 12 
+      - listitem:
+        - link " UI Elements ":
+          - /url: "#"
+          - text: 
+          - paragraph: UI Elements 
+      - listitem:
+        - link " Mailbox ":
+          - /url: "#"
+          - text: 
+          - paragraph: Mailbox 
+      - listitem:
+        - link " Forms ":
+          - /url: "#"
+          - text: 
+          - paragraph: Forms 
+      - listitem:
+        - link " Tables ":
+          - /url: "#"
+          - text: 
+          - paragraph: Tables 
+      - listitem:
+        - link " Charts ":
+          - /url: "#"
+          - text: 
+          - paragraph: Charts 
+      - listitem: PAGES
+      - listitem:
+        - link " Pages " [expanded]:
+          - /url: "#"
+          - text: 
+          - paragraph: Pages 
+        - list:
+          - listitem:
+            - link " Profile":
+              - /url: ../pages/profile.html
+              - text: 
+              - paragraph: Profile
+          - listitem:
+            - link " Settings":
+              - /url: ../pages/settings.html
+              - text: 
+              - paragraph: Settings
+          - listitem:
+            - link " Invoice":
+              - /url: ../pages/invoice.html
+              - text: 
+              - paragraph: Invoice
+          - listitem:
+            - link " Calendar":
+              - /url: ../pages/calendar.html
+              - text: 
+              - paragraph: Calendar
+          - listitem:
+            - link " Kanban":
+              - /url: ../pages/kanban.html
+              - text: 
+              - paragraph: Kanban
+          - listitem:
+            - link " Chat":
+              - /url: ../pages/chat.html
+              - text: 
+              - paragraph: Chat
+          - listitem:
+            - link " File Manager":
+              - /url: ../pages/file-manager.html
+              - text: 
+              - paragraph: File Manager
+          - listitem:
+            - link " Projects":
+              - /url: ../pages/projects.html
+              - text: 
+              - paragraph: Projects
+          - listitem:
+            - link " Gallery":
+              - /url: ../pages/gallery.html
+              - text: 
+              - paragraph: Gallery
+          - listitem:
+            - link " Search Results":
+              - /url: ../pages/search-results.html
+              - text: 
+              - paragraph: Search Results
+          - listitem:
+            - link " Pricing":
+              - /url: ../pages/pricing.html
+              - text: 
+              - paragraph: Pricing
+          - listitem:
+            - link " FAQ":
+              - /url: ../pages/faq.html
+              - text: 
+              - paragraph: FAQ
+          - listitem:
+            - link " Error ":
+              - /url: "#"
+              - text: 
+              - paragraph: Error 
+      - listitem:
+        - link " Users":
+          - /url: ../users.html
+          - text: 
+          - paragraph: Users
+      - listitem: EXAMPLES
+      - listitem:
+        - link " Auth ":
+          - /url: "#"
+          - text: 
+          - paragraph: Auth 
+      - listitem: MULTI LEVEL EXAMPLE
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem:
+        - link " Level 1 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1 
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem: LABELS
+      - listitem:
+        - link " Important":
+          - /url: "#"
+          - text: 
+          - paragraph: Important
+      - listitem:
+        - link " Warning":
+          - /url: "#"
+          - text: 
+          - paragraph: Warning
+      - listitem:
+        - link " Informational":
+          - /url: "#"
+          - text: 
+          - paragraph: Informational
+    - link "View documentation":
+      - /url: ../docs/introduction.html
+- main:
+  - heading "Projects" [level=1]
+  - navigation "breadcrumb":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: "#"
+      - listitem: / Projects
+  - paragraph: Active projects
+  - heading "6" [level=3]
+  - paragraph: On track
+  - heading "3" [level=3]
+  - paragraph: At risk / delayed
+  - heading "2" [level=3]
+  - paragraph: Completed
+  - heading "1" [level=3]
+  - heading "All projects" [level=3]
+  - searchbox "Search projects"
+  - combobox "Filter by status":
+    - option "All statuses" [selected]
+    - option "On track"
+    - option "At risk"
+    - option "Delayed"
+    - option "Completed"
+  - button "New project"
+  - table:
+    - rowgroup:
+      - row "Project Status Progress Team Budget Due Priority Actions":
+        - columnheader "Project"
+        - columnheader "Status"
+        - columnheader "Progress"
+        - columnheader "Team"
+        - columnheader "Budget"
+        - columnheader "Due"
+        - columnheader "Priority"
+        - columnheader "Actions"
+    - rowgroup:
+      - row "AdminLTE 4 Release Internal On track 78 78% JD OB DM $24,500 Jun 14, 2026 High":
+        - cell "AdminLTE 4 Release Internal":
+          - link "AdminLTE 4 Release":
+            - /url: "#"
+          - text: Internal
+        - cell "On track"
+        - cell "78 78%":
+          - progressbar
+          - text: 78%
+        - cell "JD OB DM"
+        - cell "$24,500"
+        - cell "Jun 14, 2026"
+        - cell "High"
+        - cell:
+          - button "View"
+          - button "Edit"
+          - button "More"
+      - row "Marketing Site Redesign Acme Corp At risk 42 42% OB MR $48,000 Jul 02, 2026 High":
+        - cell "Marketing Site Redesign Acme Corp":
+          - link "Marketing Site Redesign":
+            - /url: "#"
+          - text: Acme Corp
+        - cell "At risk"
+        - cell "42 42%":
+          - progressbar
+          - text: 42%
+        - cell "OB MR"
+        - cell "$48,000"
+        - cell "Jul 02, 2026"
+        - cell "High"
+        - cell:
+          - button "View"
+          - button "Edit"
+          - button "More"
+      - row "Mobile App v2 Nimbus Labs On track 61 61% LC ED AF SK $92,500 Aug 18, 2026 Medium":
+        - cell "Mobile App v2 Nimbus Labs":
+          - link "Mobile App v2":
+            - /url: "#"
+          - text: Nimbus Labs
+        - cell "On track"
+        - cell "61 61%":
+          - progressbar
+          - text: 61%
+        - cell "LC ED AF SK"
+        - cell "$92,500"
+        - cell "Aug 18, 2026"
+        - cell "Medium"
+        - cell:
+          - button "View"
+          - button "Edit"
+          - button "More"
+      - row "Analytics Pipeline Internal Delayed 22 22% DM $12,000 May 30, 2026 Medium":
+        - cell "Analytics Pipeline Internal":
+          - link "Analytics Pipeline":
+            - /url: "#"
+          - text: Internal
+        - cell "Delayed"
+        - cell "22 22%":
+          - progressbar
+          - text: 22%
+        - cell "DM"
+        - cell "$12,000"
+        - cell "May 30, 2026"
+        - cell "Medium"
+        - cell:
+          - button "View"
+          - button "Edit"
+          - button "More"
+      - row "Brand Style Guide Riverhaus Completed 100 100% OB ED $8,200 May 09, 2026 Low":
+        - cell "Brand Style Guide Riverhaus":
+          - link "Brand Style Guide":
+            - /url: "#"
+          - text: Riverhaus
+        - cell "Completed"
+        - cell "100 100%":
+          - progressbar
+          - text: 100%
+        - cell "OB ED"
+        - cell "$8,200"
+        - cell "May 09, 2026"
+        - cell "Low"
+        - cell:
+          - button "View"
+          - button "Edit"
+          - button "More"
+      - row "Onboarding Email Flow Acme Corp On track 55 55% MR JD $6,800 Jun 22, 2026 Low":
+        - cell "Onboarding Email Flow Acme Corp":
+          - link "Onboarding Email Flow":
+            - /url: "#"
+          - text: Acme Corp
+        - cell "On track"
+        - cell "55 55%":
+          - progressbar
+          - text: 55%
+        - cell "MR JD"
+        - cell "$6,800"
+        - cell "Jun 22, 2026"
+        - cell "Low"
+        - cell:
+          - button "View"
+          - button "Edit"
+          - button "More"
+  - text: Showing 6 of 6
+  - navigation "Pagination":
+    - list:
+      - listitem:
+        - link "Previous":
+          - /url: "#"
+      - listitem:
+        - link "1":
+          - /url: "#"
+      - listitem:
+        - link "Next":
+          - /url: "#"
+- contentinfo:
+  - text: Anything you want
+  - strong:
+    - text: Copyright © 2014-2026
+    - link "AdminLTE.io":
+      - /url: https://adminlte.io
+    - text: .
+  - text: All rights reserved.
+- status
+```

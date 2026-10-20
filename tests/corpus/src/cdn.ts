@@ -9,6 +9,17 @@ export interface NpmRef {
   path: string;
 }
 
+const TYPES: Record<string, string> = {
+  js: "text/javascript",
+  mjs: "text/javascript",
+  css: "text/css",
+  woff2: "font/woff2",
+  woff: "font/woff",
+  svg: "image/svg+xml",
+  json: "application/json",
+  map: "application/json",
+};
+
 const NPM_CDN =
   /^https:\/\/(?:cdn\.jsdelivr\.net\/npm|unpkg\.com)\/((?:@[^/@]+\/)?[^/@]+)@(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)\/(.+)$/;
 
@@ -55,21 +66,31 @@ export function ensurePackage(r: NpmRef): string {
   return dir;
 }
 
-export function mirrorFile(url: string): { body: Buffer; type: string } | null {
-  const ref = parseCdn(url);
+export function parseAlias(spec: string): NpmRef | null {
+  const m = /^((?:@[^/@]+\/)?[^/@]+)@(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)\/(.+)$/.exec(spec);
+  return m && !(m[3] ?? "").split("/").includes("..")
+    ? { name: m[1] ?? "", version: m[2] ?? "", path: m[3] ?? "" }
+    : null;
+}
+
+export function mirrorFile(
+  url: string,
+  aliases: Record<string, string> = {},
+  root = "",
+): { body: Buffer; type: string } | null {
+  const aliased = aliases[url.split("?")[0] ?? ""];
+  if (aliased?.startsWith("file:")) {
+    const rel = aliased.slice(5);
+    if (!root || rel.split("/").includes("..") || !existsSync(`${root}${rel}`)) return null;
+    return {
+      body: readFileSync(`${root}${rel}`),
+      type: TYPES[rel.split(".").pop() ?? ""] ?? "application/octet-stream",
+    };
+  }
+  const ref = aliased ? parseAlias(aliased) : parseCdn(url);
   if (!ref) return null;
   const file = `${ensurePackage(ref)}${ref.path}`;
   if (!existsSync(file)) return null;
   const ext = ref.path.split(".").pop() ?? "";
-  const types: Record<string, string> = {
-    js: "text/javascript",
-    mjs: "text/javascript",
-    css: "text/css",
-    woff2: "font/woff2",
-    woff: "font/woff",
-    svg: "image/svg+xml",
-    json: "application/json",
-    map: "application/json",
-  };
-  return { body: readFileSync(file), type: types[ext] ?? "application/octet-stream" };
+  return { body: readFileSync(file), type: TYPES[ext] ?? "application/octet-stream" };
 }

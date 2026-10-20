@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { test } from "node:test";
 import { type Annotation, validateAnnotation } from "../src/annotation.ts";
-import { parseCdn } from "../src/cdn.ts";
+import { parseAlias, parseCdn } from "../src/cdn.ts";
 import { clusters } from "../src/evaluate.ts";
 import { loadManifest, type Manifest, validateManifest } from "../src/manifest.ts";
 import { actionAgreement, aggregate, fieldAgreement, matchPage, norm, type Recognition } from "../src/match.ts";
@@ -231,4 +231,29 @@ test("clusters rank by independent families first, then blocked workflows, and h
     clusters(rows, () => "f", false).map((c) => c.examples.length),
     [0, 0, 0],
   );
+});
+
+test("aliases and mounts only reach pinned packages and the served tree", async () => {
+  assert.deepEqual(parseAlias("tabulator-tables@6.6.1/dist"), {
+    name: "tabulator-tables",
+    version: "6.6.1",
+    path: "dist",
+  });
+  assert.equal(parseAlias("tabulator-tables@latest/dist"), null);
+  assert.equal(parseAlias("tabulator-tables@6.6.1/../x"), null);
+  const dir = mkdtempSync(`${tmpdir()}/corpus-mount-`);
+  mkdirSync(`${dir}/site`);
+  mkdirSync(`${dir}/pkg`);
+  writeFileSync(`${dir}/site/index.html`, "site");
+  writeFileSync(`${dir}/pkg/lib.js`, "lib");
+  writeFileSync(`${dir}/secret.txt`, "no");
+  const s = await serveStatic(`${dir}/site`, { "/dist": `${dir}/pkg` });
+  try {
+    assert.equal(await (await fetch(`${s.origin}/dist/lib.js`)).text(), "lib");
+    assert.notEqual(await (await fetch(`${s.origin}/dist/..%2fsecret.txt`)).text(), "no");
+    assert.notEqual(await (await fetch(`${s.origin}/dist/%2e%2e/secret.txt`)).text(), "no");
+    assert.equal(await (await fetch(`${s.origin}/`)).text(), "site");
+  } finally {
+    await s.stop();
+  }
 });

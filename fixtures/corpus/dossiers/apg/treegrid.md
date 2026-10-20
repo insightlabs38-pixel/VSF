@@ -1,0 +1,416 @@
+# W3C ARIA Authoring Practices Guide examples - treegrid
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Treegrid Email Inbox Example
+State: as loaded
+What people do here (from the manifest):
+- expand and collapse rows of a tree grid
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/117
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../treegrid-pattern.html
+- main:
+  - heading "Treegrid Email Inbox Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The following example demonstrates how the
+    - link "Treegrid Pattern":
+      - /url: ../treegrid-pattern.html
+    - text: can be used to make an interactive tree that enables users to both navigate the hierarchical structure of email conversations and also navigate elements that describe each email, such as subject and sender.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Data Grid Examples":
+        - /url: ../../grid/examples/data-grids.html
+      - text: ": Three example implementations of grid that include features relevant to presenting tabular information, such as content editing, sort, and column hiding."
+    - listitem:
+      - link "File Directory Treeview using computed properties":
+        - /url: ../../treeview/examples/treeview-1a.html
+        - text: File Directory Treeview using
+        - emphasis: computed
+        - text: properties
+    - listitem:
+      - link "File Directory Treeview using declared properties":
+        - /url: ../../treeview/examples/treeview-1b.html
+        - text: File Directory Treeview using
+        - emphasis: declared
+        - text: properties
+    - listitem:
+      - link "Navigation Treeview Example":
+        - /url: ../../treeview/examples/treeview-navigation.html
+  - heading "Example Usage Options" [level=2]
+  - paragraph: "This example demonstrates three different ways of implementing the keyboard navigation specified in the treegrid pattern. The following links change the behavior of the navigation keys:"
+  - list:
+    - listitem:
+      - link "Current Rows are focused first, but cells can be focused":
+        - /url: ./treegrid-1.html?cell
+      - text: ": Useful when the desired experience is for the treegrid to act primarily like a tree where each row is treated like a node in a tree, but it is still possible for users to navigate across the cells in a row."
+    - listitem:
+      - link "Cells are focused first, but rows can be focused":
+        - /url: ./treegrid-1.html?cell=start
+      - text: ": Useful when the desired experience is for the treegrid to act primarily like a grid where arrow keys move among cells, but it is still possible for users to focus a row and then start navigating the structure like a tree."
+    - listitem:
+      - link "Only cells can be focused":
+        - /url: ./treegrid-1.html?cell=force
+      - text: ": Useful when the desired experience is that the treegrid act primarily like a grid and there is no need to focus complete rows."
+  - paragraph:
+    - text: "Note: A row-only option is not provided. A treegrid where cells cannot be focused would be implemented as a"
+    - link "tree view":
+      - /url: ../../treeview/treeview-pattern.html
+    - text: ". A treeview that has columns in its visual presentation may be appropriate when all the following conditions are present:"
+  - list:
+    - listitem: Columns are guaranteed to fit horizontally (no horizontal scrolling necessary).
+    - listitem: Columns are merely for attractive presentation; there is no need to navigate them individually.
+    - listitem: A screen reader user can easily understand the UI when all information in a row is announced as a single string without any separation.
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - treegrid "Inbox":
+    - rowgroup:
+      - row "Subject Summary Email":
+        - columnheader "Subject"
+        - columnheader "Summary"
+        - columnheader "Email"
+    - rowgroup:
+      - row "Treegrids are awesome Want to learn how to use them? aaron@thegoogle.rocks" [expanded] [level=1]:
+        - gridcell "Treegrids are awesome"
+        - gridcell "Want to learn how to use them?"
+        - gridcell "aaron@thegoogle.rocks":
+          - link "aaron@thegoogle.rocks":
+            - /url: mailto:aaron@thegoogle.rocks
+      - 'row "re: Treegrids are awesome I agree with you, they are the shizzle joe@blahblahblah.blahblah" [level=2]':
+        - 'gridcell "re: Treegrids are awesome"'
+        - gridcell "I agree with you, they are the shizzle"
+        - gridcell "joe@blahblahblah.blahblah":
+          - link "joe@blahblahblah.blahblah":
+            - /url: mailto:joe@blahblahblah.blahblah
+      - 'row "re: Treegrids are awesome They are great for showing a lot of data, like a grid billy@dangerous.fish" [level=2]':
+        - 'gridcell "re: Treegrids are awesome"'
+        - gridcell "They are great for showing a lot of data, like a grid"
+        - gridcell "billy@dangerous.fish":
+          - link "billy@dangerous.fish":
+            - /url: mailto:billy@dangerous.fish
+      - 'row "re: Treegrids are awesome I hear the Fancytree library is going to align with this example! someone@please-do-it.company" [level=2]':
+        - 'gridcell "re: Treegrids are awesome"'
+        - gridcell "I hear the Fancytree library is going to align with this example!"
+        - gridcell "someone@please-do-it.company":
+          - link "someone@please-do-it.company":
+            - /url: mailto:someone@please-do-it.company
+  - separator "End of Example"
+  - heading "Keyboard Support" [level=2]
+  - paragraph:
+    - strong: "NOTE:"
+    - text: The following table includes descriptions of how keyboard commands move focus among cells and rows in the treegrid implementation on this page. In the example on this page, some cells contain a single focusable widget, and if a cell contains a widget, the cell is not focusable; the widget receives focus instead of the cell. So, when a keyboard command description says a command moves focus to a cell, the command may either focus the cell or a widget inside the cell.
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Right Arrow If a row is focused, and it is collapsed, expands the current row. If a row is focused, and it is expanded, focuses the first cell in the row. If a cell is focused, moves one cell to the right. If focus is on the right most cell, focus does not move.":
+        - rowheader "Right Arrow"
+        - cell "If a row is focused, and it is collapsed, expands the current row. If a row is focused, and it is expanded, focuses the first cell in the row. If a cell is focused, moves one cell to the right. If focus is on the right most cell, focus does not move.":
+          - list:
+            - listitem: If a row is focused, and it is collapsed, expands the current row.
+            - listitem: If a row is focused, and it is expanded, focuses the first cell in the row.
+            - listitem: If a cell is focused, moves one cell to the right.
+            - listitem: If focus is on the right most cell, focus does not move.
+      - row "Left Arrow If a row is focused, and it is expanded, collapses the current row. If a row is focused, and it is collapsed, moves to the parent row (if there is one). If a cell in the first column is focused, focuses the row. If a cell in a different column is focused, moves focus one cell to the left.":
+        - rowheader "Left Arrow"
+        - cell "If a row is focused, and it is expanded, collapses the current row. If a row is focused, and it is collapsed, moves to the parent row (if there is one). If a cell in the first column is focused, focuses the row. If a cell in a different column is focused, moves focus one cell to the left.":
+          - list:
+            - listitem: If a row is focused, and it is expanded, collapses the current row.
+            - listitem: If a row is focused, and it is collapsed, moves to the parent row (if there is one).
+            - listitem: If a cell in the first column is focused, focuses the row.
+            - listitem: If a cell in a different column is focused, moves focus one cell to the left.
+      - row "Down Arrow Moves focus one row or one cell down, depending on whether a row or cell is currently focused. If focus is on the bottom row, focus does not move.":
+        - rowheader "Down Arrow"
+        - cell "Moves focus one row or one cell down, depending on whether a row or cell is currently focused. If focus is on the bottom row, focus does not move.":
+          - list:
+            - listitem: Moves focus one row or one cell down, depending on whether a row or cell is currently focused.
+            - listitem: If focus is on the bottom row, focus does not move.
+      - row "Up Arrow Moves focus one row or one cell up, depending on whether a row or cell is currently focused. If focus is on the top row, focus does not move.":
+        - rowheader "Up Arrow"
+        - cell "Moves focus one row or one cell up, depending on whether a row or cell is currently focused. If focus is on the top row, focus does not move.":
+          - list:
+            - listitem: Moves focus one row or one cell up, depending on whether a row or cell is currently focused.
+            - listitem: If focus is on the top row, focus does not move.
+      - row "Tab Moves focus to the next interactive widget in the current row. If there are no more interactive widgets in the current row, moves focus out of the treegrid.":
+        - rowheader "Tab"
+        - cell "Moves focus to the next interactive widget in the current row. If there are no more interactive widgets in the current row, moves focus out of the treegrid.":
+          - list:
+            - listitem: Moves focus to the next interactive widget in the current row.
+            - listitem: If there are no more interactive widgets in the current row, moves focus out of the treegrid.
+      - row "Shift + Tab If a cell is focused, moves focus to the previous interactive widget in the current row. If a row is focused, moves focus out of the treegrid.":
+        - rowheader "Shift + Tab"
+        - cell "If a cell is focused, moves focus to the previous interactive widget in the current row. If a row is focused, moves focus out of the treegrid.":
+          - list:
+            - listitem: If a cell is focused, moves focus to the previous interactive widget in the current row.
+            - listitem: If a row is focused, moves focus out of the treegrid.
+      - row "Home If a row is focused, moves to the first row. If a cell is focused, moves focus to the first cell in the row containing focus.":
+        - rowheader "Home"
+        - cell "If a row is focused, moves to the first row. If a cell is focused, moves focus to the first cell in the row containing focus.":
+          - list:
+            - listitem: If a row is focused, moves to the first row.
+            - listitem: If a cell is focused, moves focus to the first cell in the row containing focus.
+      - row "End If a row is focused, moves to the last row. If a cell is focused, moves focus to the last cell in the row containing focus.":
+        - rowheader "End"
+        - cell "If a row is focused, moves to the last row. If a cell is focused, moves focus to the last cell in the row containing focus.":
+          - list:
+            - listitem: If a row is focused, moves to the last row.
+            - listitem: If a cell is focused, moves focus to the last cell in the row containing focus.
+      - row "Control + Home If a row has focus, moves focus to the first row. If a cell has focus, moves focus to the cell in the first row in the same column as the cell that had focus.":
+        - rowheader "Control + Home"
+        - cell "If a row has focus, moves focus to the first row. If a cell has focus, moves focus to the cell in the first row in the same column as the cell that had focus.":
+          - list:
+            - listitem: If a row has focus, moves focus to the first row.
+            - listitem: If a cell has focus, moves focus to the cell in the first row in the same column as the cell that had focus.
+      - row "Control + End If a row has focus, moves focus to the last row. If a cell has focus, moves focus to the cell in the last row in the same column as the cell that had focus.":
+        - rowheader "Control + End"
+        - cell "If a row has focus, moves focus to the last row. If a cell has focus, moves focus to the cell in the last row in the same column as the cell that had focus.":
+          - list:
+            - listitem: If a row has focus, moves focus to the last row.
+            - listitem: If a cell has focus, moves focus to the cell in the last row in the same column as the cell that had focus.
+      - row "Enter Performs default action associated with row or cell that has focus, e.g. opens message or navigate to link. If focus is on the cell with the expand/collapse button, and there is no other action, will toggle expansion of the current row.":
+        - rowheader "Enter"
+        - cell "Performs default action associated with row or cell that has focus, e.g. opens message or navigate to link. If focus is on the cell with the expand/collapse button, and there is no other action, will toggle expansion of the current row.":
+          - list:
+            - listitem: Performs default action associated with row or cell that has focus, e.g. opens message or navigate to link.
+            - listitem: If focus is on the cell with the expand/collapse button, and there is no other action, will toggle expansion of the current row.
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "treegrid table Identifies the element as a treegrid.":
+        - rowheader "treegrid":
+          - code: treegrid
+        - cell
+        - cell "table":
+          - code: table
+        - cell "Identifies the element as a treegrid.":
+          - text: Identifies the element as a
+          - code: treegrid
+          - text: .
+      - row "aria-label=\"Inbox\" table Provides an accessible name for the treegrid.":
+        - cell
+        - rowheader "aria-label=\"Inbox\"":
+          - code: aria-label="Inbox"
+        - cell "table":
+          - code: table
+        - cell "Provides an accessible name for the treegrid.":
+          - text: Provides an accessible name for the
+          - code: treegrid
+          - text: .
+      - row "row tr Identifies the element as a row. The row role is not an implicit semantic for the tr element when in a treegrid.":
+        - rowheader "row":
+          - code: row
+        - cell
+        - cell "tr":
+          - code: tr
+        - cell "Identifies the element as a row. The row role is not an implicit semantic for the tr element when in a treegrid.":
+          - list:
+            - listitem:
+              - text: Identifies the element as a
+              - code: row
+              - text: .
+            - listitem:
+              - text: The
+              - code: row
+              - text: role is not an implicit semantic for the
+              - code: tr
+              - text: element when in a
+              - code: treegrid
+              - text: .
+      - row "tabindex=\"-1\" tr or td Makes the element focusable without including it in the tab sequence of the page. All row and gridcell elements are focusable, but only one is included in the tab sequence.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "tr or td":
+          - code: tr
+          - text: or
+          - code: td
+        - cell "Makes the element focusable without including it in the tab sequence of the page. All row and gridcell elements are focusable, but only one is included in the tab sequence.":
+          - list:
+            - listitem: Makes the element focusable without including it in the tab sequence of the page.
+            - listitem:
+              - text: All
+              - code: row
+              - text: and
+              - code: gridcell
+              - text: elements are focusable, but only one is included in the tab sequence.
+      - row "tabindex=\"0\" tr or td Includes the element in the tab sequence. Only one row or gridcell in the treegrid has tabindex=\"0\". In this implementation, the first row in the treegrid is included in the tab sequence when the page loads. When the user moves focus in the treegrid, the element included in the tab sequence changes to the element with focus as described in the practice for Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"0\"":
+          - code: tabindex="0"
+        - cell "tr or td":
+          - code: tr
+          - text: or
+          - code: td
+        - cell "Includes the element in the tab sequence. Only one row or gridcell in the treegrid has tabindex=\"0\". In this implementation, the first row in the treegrid is included in the tab sequence when the page loads. When the user moves focus in the treegrid, the element included in the tab sequence changes to the element with focus as described in the practice for Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Includes the element in the tab sequence.
+            - listitem:
+              - text: Only one
+              - code: row
+              - text: or
+              - code: gridcell
+              - text: in the
+              - code: treegrid
+              - text: has
+              - code: tabindex="0"
+              - text: .
+            - listitem:
+              - text: In this implementation, the first
+              - code: row
+              - text: in the
+              - code: treegrid
+              - text: is included in the tab sequence when the page loads.
+            - listitem:
+              - text: When the user moves focus in the
+              - code: treegrid
+              - text: ", the element included in the tab sequence changes to the element with focus as described in the practice for"
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "aria-expanded=\"false\" tr or td Applied only to parent row or first cell of parent row, i.e., next set of rows are responses to the message in this row Indicates the parent row is closed, i.e., the descendant rows are not visible. The visual indication of the collapsed state is synchronized by a CSS attribute selector. When the treegrid is configured to support focus on rows aria-expanded is on the tr elements, but when the treegrid is configured to support focus on cells only, aria-expanded is on the first td element contained in each row.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "tr or td":
+          - code: tr
+          - text: or
+          - code: td
+        - cell "Applied only to parent row or first cell of parent row, i.e., next set of rows are responses to the message in this row Indicates the parent row is closed, i.e., the descendant rows are not visible. The visual indication of the collapsed state is synchronized by a CSS attribute selector. When the treegrid is configured to support focus on rows aria-expanded is on the tr elements, but when the treegrid is configured to support focus on cells only, aria-expanded is on the first td element contained in each row.":
+          - list:
+            - listitem: Applied only to parent row or first cell of parent row, i.e., next set of rows are responses to the message in this row
+            - listitem: Indicates the parent row is closed, i.e., the descendant rows are not visible.
+            - listitem: The visual indication of the collapsed state is synchronized by a CSS attribute selector.
+            - listitem:
+              - text: When the treegrid is configured to support focus on rows
+              - code: aria-expanded
+              - text: is on the
+              - code: tr
+              - text: elements, but when the treegrid is configured to support focus on cells only,
+              - code: aria-expanded
+              - text: is on the first
+              - code: td
+              - text: element contained in each row.
+      - row "aria-expanded=\"true\" tr or td Applied only to parent rows or the first cell in parent rows, i.e., next set of rows are responses to the message in this row Indicates the parent row is open, i.e., the descendant rows are visible. The visual indication of the open state is synchronized by a CSS attribute selector. When the treegrid is configured to support focus on rows aria-expanded is on the tr elements, but when the treegrid is configured to support focus on cells only, aria-expanded is on the first td element contained in each row.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "tr or td":
+          - code: tr
+          - text: or
+          - code: td
+        - cell "Applied only to parent rows or the first cell in parent rows, i.e., next set of rows are responses to the message in this row Indicates the parent row is open, i.e., the descendant rows are visible. The visual indication of the open state is synchronized by a CSS attribute selector. When the treegrid is configured to support focus on rows aria-expanded is on the tr elements, but when the treegrid is configured to support focus on cells only, aria-expanded is on the first td element contained in each row.":
+          - list:
+            - listitem: Applied only to parent rows or the first cell in parent rows, i.e., next set of rows are responses to the message in this row
+            - listitem: Indicates the parent row is open, i.e., the descendant rows are visible.
+            - listitem: The visual indication of the open state is synchronized by a CSS attribute selector.
+            - listitem:
+              - text: When the treegrid is configured to support focus on rows
+              - code: aria-expanded
+              - text: is on the
+              - code: tr
+              - text: elements, but when the treegrid is configured to support focus on cells only,
+              - code: aria-expanded
+              - text: is on the first
+              - code: td
+              - text: element contained in each row.
+      - row "aria-level=\"number\" tr Defines the level of the row in the hierarchical treegrid structure. Counting is one-based. Root rows have aria-level=“1”.":
+        - cell
+        - rowheader "aria-level=\"number\"":
+          - code:
+            - text: aria-level="
+            - emphasis: number
+            - text: "\""
+        - cell "tr":
+          - code: tr
+        - cell "Defines the level of the row in the hierarchical treegrid structure. Counting is one-based. Root rows have aria-level=“1”.":
+          - list:
+            - listitem: Defines the level of the row in the hierarchical treegrid structure.
+            - listitem: Counting is one-based.
+            - listitem: Root rows have aria-level=“1”.
+      - row "aria-setsize=\"number\" tr Defines the number of rows in the set of rows that are in the same branch and at the same level within the hierarchy.":
+        - cell
+        - rowheader "aria-setsize=\"number\"":
+          - code:
+            - text: aria-setsize="
+            - emphasis: number
+            - text: "\""
+        - cell "tr":
+          - code: tr
+        - cell "Defines the number of rows in the set of rows that are in the same branch and at the same level within the hierarchy."
+      - row "aria-posinset=\"number\" tr Defines the position of the row within the set of other rows that are in the same branch and at the same level within the hierarchy. Counting is one-based, not zero-based.":
+        - cell
+        - rowheader "aria-posinset=\"number\"":
+          - code:
+            - text: aria-posinset="
+            - emphasis: number
+            - text: "\""
+        - cell "tr":
+          - code: tr
+        - cell "Defines the position of the row within the set of other rows that are in the same branch and at the same level within the hierarchy. Counting is one-based, not zero-based.":
+          - list:
+            - listitem: Defines the position of the row within the set of other rows that are in the same branch and at the same level within the hierarchy.
+            - listitem: Counting is one-based, not zero-based.
+      - row "gridcell td Identifies the element as a gridcell. The gridcell role is not an implicit semantic for the td element when in a treegrid.":
+        - rowheader "gridcell":
+          - code: gridcell
+        - cell
+        - cell "td":
+          - code: td
+        - cell "Identifies the element as a gridcell. The gridcell role is not an implicit semantic for the td element when in a treegrid.":
+          - list:
+            - listitem:
+              - text: Identifies the element as a
+              - code: gridcell
+              - text: .
+            - listitem:
+              - text: The
+              - code: gridcell
+              - text: role is not an implicit semantic for the
+              - code: td
+              - text: element when in a
+              - code: treegrid
+              - text: .
+  - paragraph:
+    - strong: "NOTE:"
+    - text: Due to an error in the ARIA 1.1 specification, the
+    - code: aria-posinset
+    - text: and
+    - code: aria-setsize
+    - text: properties are not supported on row elements. This is being corrected in ARIA 1.2. Consequently, when validating the HTML in this example, errors are generated.
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "treegrid-1.css":
+        - /url: css/treegrid-1.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "treegrid-1.js":
+        - /url: js/treegrid-1.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: "<table id=\"treegrid\" role=\"treegrid\" aria-label=\"Inbox\"> <colgroup> <col id=\"treegrid-col1\"> <col id=\"treegrid-col2\"> <col id=\"treegrid-col3\"> </colgroup> <thead> <tr> <th scope=\"col\"> Subject </th> <th scope=\"col\"> Summary </th> <th scope=\"col\"> Email </th> </tr> </thead> <tbody> <tr role=\"row\" aria-level=\"1\" aria-posinset=\"1\" aria-setsize=\"1\" aria-expanded=\"true\"> <td role=\"gridcell\"> Treegrids are awesome </td> <td role=\"gridcell\"> Want to learn how to use them? </td> <td role=\"gridcell\"> <a href=\"mailto:aaron@thegoogle.rocks\"> aaron@thegoogle.rocks </a> </td> </tr> <tr role=\"row\" aria-level=\"2\" aria-posinset=\"1\" aria-setsize=\"3\"> <td role=\"gridcell\"> re: Treegrids are awesome </td> <td role=\"gridcell\"> I agree with you, they are the shizzle </td> <td role=\"gridcell\"> <a href=\"mailto:joe@blahblahblah.blahblah\"> joe@blahblahblah.blahblah </a> </td> </tr> <tr role=\"row\" aria-level=\"2\" aria-posinset=\"2\" aria-setsize=\"3\" aria-expanded=\"false\"> <td role=\"gridcell\"> re: Treegrids are awesome </td> <td role=\"gridcell\"> They are great for showing a lot of data, like a grid </td> <td role=\"gridcell\"> <a href=\"mailto:billy@dangerous.fish\"> billy@dangerous.fish </a> </td> </tr> <tr role=\"row\" aria-level=\"3\" aria-posinset=\"1\" aria-setsize=\"1\" class=\"hidden\"> <td role=\"gridcell\"> re: Treegrids are awesome </td> <td role=\"gridcell\"> Cool, we've been needing an example and documentation </td> <td role=\"gridcell\"> <a href=\"mailto:doris@rufflazydogs.sleep\"> doris@rufflazydogs.sleep </a> </td> </tr> <tr role=\"row\" aria-level=\"2\" aria-posinset=\"3\" aria-setsize=\"3\" aria-expanded=\"false\"> <td role=\"gridcell\"> re: Treegrids are awesome </td> <td role=\"gridcell\"> I hear the Fancytree library is going to align with this example! </td> <td role=\"gridcell\"> <a href=\"mailto:someone@please-do-it.company\"> someone@please-do-it.company </a> </td> </tr> <tr role=\"row\" aria-level=\"3\" aria-posinset=\"1\" aria-setsize=\"1\" aria-expanded=\"false\" class=\"hidden\"> <td role=\"gridcell\"> re: Treegrids are awesome </td> <td role=\"gridcell\"> Sometimes they are more like trees, others are more like grids </td> <td role=\"gridcell\"> <a href=\"mailto:mari@beingpractical.com\"> mari@beingpractical.com </a> </td> </tr> <tr role=\"row\" aria-level=\"4\" aria-posinset=\"1\" aria-setsize=\"2\" class=\"hidden\"> <td role=\"gridcell\"> re: Treegrids are awesome </td> <td role=\"gridcell\"> Cool, when it's a tree, let's keep left/right to collapse/expand </td> <td role=\"gridcell\"> <a href=\"mailto:issie@imadeadcatsadly.wascute\"> issie@imadeadcatsadly.wascute </a> </td> </tr> <tr role=\"row\" aria-level=\"4\" aria-posinset=\"2\" aria-setsize=\"2\" class=\"hidden\"> <td role=\"gridcell\"> re: Treegrids are awesome </td> <td role=\"gridcell\"> I see, sometimes right arrow moves by column </td> <td role=\"gridcell\"> <a href=\"mailto:kitten@kittenseason.future\"> kitten@kittenseason.future </a> </td> </tr> </tbody> </table>"
+  - separator "End of HTML Source Code"
+```

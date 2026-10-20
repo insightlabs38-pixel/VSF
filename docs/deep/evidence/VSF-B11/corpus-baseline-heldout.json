@@ -10,17 +10,17 @@
   "structural": {
    "fields": {
     "annotated": 72,
-    "found": 56,
-    "recall": 0.778,
-    "semanticExact": 0.964,
-    "semanticExactOrCoarser": 0.964
+    "found": 57,
+    "recall": 0.792,
+    "semanticExact": 0.965,
+    "semanticExactOrCoarser": 0.965
    },
    "actions": {
-    "annotated": 137,
-    "found": 137,
-    "recall": 1,
-    "semanticExact": 0.241,
-    "semanticExactOrCoarser": 0.241
+    "annotated": 155,
+    "found": 153,
+    "recall": 0.987,
+    "semanticExact": 0.268,
+    "semanticExactOrCoarser": 0.268
    },
    "collections": {
     "annotated": 17,
@@ -52,13 +52,13 @@
    }
   },
   "workflows": {
-   "annotated": 62,
-   "supported": 21,
-   "coverage": 0.339
+   "annotated": 61,
+   "supported": 22,
+   "coverage": 0.361
   },
   "unannotatedRecognized": {
-   "fields": 57,
-   "actions": 1088,
+   "fields": 56,
+   "actions": 1072,
    "collections": 0
   },
   "recognizedOnPage": {
@@ -72,8 +72,8 @@
    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
   },
   "latency": {
-   "recognizeMsP50": 26,
-   "recognizeMsMax": 30.7,
+   "recognizeMsP50": 24.5,
+   "recognizeMsMax": 32.7,
    "nodesMax": 866,
    "rssKbMax": 11088
   }
@@ -85,7 +85,7 @@
    "sources": 6,
    "families": 3,
    "pages": 12,
-   "workflowsBlocked": 14,
+   "workflowsBlocked": 15,
    "examples": []
   },
   {
@@ -94,16 +94,7 @@
    "sources": 6,
    "families": 3,
    "pages": 11,
-   "workflowsBlocked": 11,
-   "examples": []
-  },
-  {
-   "key": "composite:filter_bar",
-   "instances": 10,
-   "sources": 6,
-   "families": 3,
-   "pages": 10,
-   "workflowsBlocked": 9,
+   "workflowsBlocked": 8,
    "examples": []
   },
   {
@@ -116,21 +107,21 @@
    "examples": []
   },
   {
+   "key": "composite:filter_bar",
+   "instances": 10,
+   "sources": 6,
+   "families": 3,
+   "pages": 10,
+   "workflowsBlocked": 5,
+   "examples": []
+  },
+  {
    "key": "action-effect-unknown:state_change",
    "instances": 18,
    "sources": 2,
    "families": 2,
    "pages": 9,
-   "workflowsBlocked": 10,
-   "examples": []
-  },
-  {
-   "key": "action-effect-unknown:navigation",
-   "instances": 28,
-   "sources": 2,
-   "families": 2,
-   "pages": 10,
-   "workflowsBlocked": 6,
+   "workflowsBlocked": 11,
    "examples": []
   },
   {
@@ -143,12 +134,30 @@
    "examples": []
   },
   {
+   "key": "action-effect-unknown:navigation",
+   "instances": 36,
+   "sources": 2,
+   "families": 2,
+   "pages": 10,
+   "workflowsBlocked": 2,
+   "examples": []
+  },
+  {
    "key": "composite:bulk_selection",
    "instances": 8,
    "sources": 5,
    "families": 2,
    "pages": 8,
-   "workflowsBlocked": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:dialog",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
    "examples": []
   },
   {
@@ -161,11 +170,11 @@
    "examples": []
   },
   {
-   "key": "composite:dialog",
+   "key": "action-missing:state_change",
    "instances": 2,
    "sources": 1,
    "families": 1,
-   "pages": 2,
+   "pages": 1,
    "workflowsBlocked": 1,
    "examples": []
   },
@@ -207,15 +216,6 @@
   },
   {
    "key": "composite:drag_drop",
-   "instances": 1,
-   "sources": 1,
-   "families": 1,
-   "pages": 1,
-   "workflowsBlocked": 1,
-   "examples": []
-  },
-  {
-   "key": "field-missing:text",
    "instances": 1,
    "sources": 1,
    "families": 1,
@@ -333,10 +333,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 26.9,
-    "recognizeMsMax": 30.7,
+    "recognizeMsP50": 26.6,
+    "recognizeMsMax": 32.7,
     "nodesMax": 866,
-    "rssKbMax": 11088
+    "rssKbMax": 11084
    }
   },
   "todomvc-react": {
@@ -400,10 +400,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 30.1,
-    "recognizeMsMax": 30.1,
+    "recognizeMsP50": 23.8,
+    "recognizeMsMax": 23.8,
     "nodesMax": 42,
-    "rssKbMax": 11056
+    "rssKbMax": 11076
    }
   },
   "todomvc-lit": {
@@ -467,10 +467,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 29.6,
-    "recognizeMsMax": 29.6,
+    "recognizeMsP50": 23.6,
+    "recognizeMsMax": 23.6,
     "nodesMax": 55,
-    "rssKbMax": 11064
+    "rssKbMax": 11088
    }
   },
   "todomvc-jquery": {
@@ -534,10 +534,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 27.8,
-    "recognizeMsMax": 27.8,
+    "recognizeMsP50": 23.8,
+    "recognizeMsMax": 23.8,
     "nodesMax": 48,
-    "rssKbMax": 11068
+    "rssKbMax": 11080
    }
   },
   "todomvc-svelte": {
@@ -601,10 +601,10 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 24.3,
-    "recognizeMsMax": 24.3,
+    "recognizeMsP50": 24.5,
+    "recognizeMsMax": 24.5,
     "nodesMax": 43,
-    "rssKbMax": 11084
+    "rssKbMax": 11080
    }
   },
   "filebrowser": {
@@ -612,17 +612,17 @@
    "structural": {
     "fields": {
      "annotated": 28,
-     "found": 26,
-     "recall": 0.929,
-     "semanticExact": 0.923,
-     "semanticExactOrCoarser": 0.923
+     "found": 27,
+     "recall": 0.964,
+     "semanticExact": 0.926,
+     "semanticExactOrCoarser": 0.926
     },
     "actions": {
-     "annotated": 71,
-     "found": 71,
-     "recall": 1,
-     "semanticExact": 0.197,
-     "semanticExactOrCoarser": 0.197
+     "annotated": 89,
+     "found": 87,
+     "recall": 0.978,
+     "semanticExact": 0.253,
+     "semanticExactOrCoarser": 0.253
     },
     "collections": {
      "annotated": 4,
@@ -652,13 +652,13 @@
     }
    },
    "workflows": {
-    "annotated": 15,
-    "supported": 1,
-    "coverage": 0.067
+    "annotated": 14,
+    "supported": 2,
+    "coverage": 0.143
    },
    "unannotatedRecognized": {
-    "fields": 10,
-    "actions": 88,
+    "fields": 9,
+    "actions": 72,
     "collections": 0
    },
    "recognizedOnPage": {
@@ -672,8 +672,8 @@
     "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
    },
    "latency": {
-    "recognizeMsP50": 25,
-    "recognizeMsMax": 26.8,
+    "recognizeMsP50": 24.9,
+    "recognizeMsMax": 26.2,
     "nodesMax": 206,
     "rssKbMax": 11088
    }

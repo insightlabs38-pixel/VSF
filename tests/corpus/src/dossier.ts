@@ -16,9 +16,17 @@ export function dossierOf(s: Source, p: Page, c: Capture): { text: string; sha25
     "",
     "## Accessibility tree (Chromium, full page)",
     "```yaml",
-    c.aria.trim(),
+    withholdSecretLooking(c.aria.trim()),
     "```",
     "",
   ].join("\n");
   return { text, sha256: sha256(text) };
+}
+
+/** Values shown in password-like fields are demo placeholders, but a dossier never carries them. */
+export function withholdSecretLooking(aria: string): string {
+  return aria.replace(
+    /^(\s*- textbox "[^"]*(?:password|passcode|secret|token)[^"]*"): .+$/gim,
+    "$1: [ value withheld ]",
+  );
 }

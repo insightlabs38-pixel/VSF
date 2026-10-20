@@ -1,0 +1,838 @@
+# W3C ARIA Authoring Practices Guide examples - toolbar
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Toolbar Example
+State: as loaded
+What people do here (from the manifest):
+- apply text formatting from a toolbar
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/135
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../toolbar-pattern.html
+- main:
+  - heading "Toolbar Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The following example of an editor toolbar implements the
+    - link "Toolbar Pattern":
+      - /url: ../toolbar-pattern.html
+    - text: and demonstrates how a toolbar can group a set of interactive widgets into a single tab stop. For illustrative and interoperability assessment purposes, this implementation includes a diverse set of widgets, some of which may not be ordinarily grouped in the same toolbar. For instance, it includes both a checkbox and toggle buttons. In a typical implementation, the design would use either one or the other but not both. Similarly, the edit field is included to help simulate actual implementation and is not intended to represent an actual rich text editor. This example also illustrates the practice of
+    - link "Managing Focus Within Components Using a Roving tabindex":
+      - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+    - text: .
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - toolbar "Text Formatting":
+    - button "Bold"
+    - button "Italic"
+    - button "Underline"
+    - radiogroup "Text Alignment":
+      - radio "Text Align Left" [checked]
+      - radio "Text Align Center"
+      - radio "Text Align Right"
+    - button "Copy" [disabled]
+    - button "Paste" [disabled]
+    - button "Cut" [disabled]
+    - 'button "Font: Sans-serif"': SANS-SERIF
+    - spinbutton "Font size in points":
+      - text: 14 Point
+      - img
+      - img
+    - checkbox "Night Mode"
+    - text: Night Mode
+    - link "Help":
+      - /url: help.html
+  - text: Text Sample
+  - textbox "Text Sample": Abraham Lincoln's Gettysburg Address Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation, so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this. But, in a larger sense, we can not dedicate, we can not consecrate, we can not hallow, this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us, that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion, that we here highly resolve that these dead shall not have died in vain, that this nation, under God, shall have a new birth of freedom, and that government of the people, by the people, for the people, shall not perish from the earth.
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - heading "Keyboard Features" [level=3]
+  - list:
+    - listitem:
+      - text: When tabbing into the toolbar, focus returns to the control that last had focus. Focus movement inside the toolbar implements the practice of
+      - link "Managing Focus Within Components Using a Roving tabindex":
+        - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+      - text: .
+    - listitem:
+      - text: When any of the cut, copy and paste buttons are disabled they remain focusable to ensure screen reader users are aware of their presence. For additional guidance, see
+      - link "Focusability of disabled controls":
+        - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_disabled_controls
+      - text: .
+    - listitem:
+      - text: "Left Arrow and Right Arrow navigate among elements in the toolbar so Up Arrow and Down Arrow are available to:"
+      - list:
+        - listitem: Navigate among radios in the text alignment group. For instance, Down Arrow moves focus from last to first member in the group.
+        - listitem: Open the font menu button, which can also be opened with Enter .
+        - listitem: Increase and decrease the font size spin button.
+  - heading "Focus Styling" [level=3]
+  - list:
+    - listitem: When the toolbar has focus, the container element border is highlighted, helping indicate that the container supports directional navigation with the arrow keys.
+    - listitem: When a toolbar item has focus, its border is highlighted and the background color of the button also changes.
+  - heading "Button Popup Labels" [level=3]
+  - paragraph:
+    - text: The bold, italic, underline, and text align buttons have popup labels that implement the requirements of
+    - link "WCAG Success Criterion 1.4.13 Content on Hover or Focus":
+      - /url: https://www.w3.org/TR/WCAG21/#content-on-hover-or-focus
+    - text: ":"
+  - list:
+    - listitem: When a bold, italic, underline, or text align button receives focus or mouse hover, a popup appears above the button revealing its text label.
+    - listitem: The popup label remains visible when the pointer hovers over the label content.
+    - listitem: Pressing Esc hides the popup label .
+  - heading "Keyboard Support" [level=2]
+  - heading "Toolbar" [level=3]
+  - paragraph:
+    - text: The toolbar provides the following keyboard support described in the
+    - link "toolbar pattern":
+      - /url: ../toolbar-pattern.html#keyboard_interaction
+    - text: .
+  - table "Toolbar Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Tab Moves focus into and out of the toolbar. The first control is focused if the toolbar is receiving focus for the first time after page load. Otherwise, the most recently focused control receives focus.":
+        - cell "Tab"
+        - cell "Moves focus into and out of the toolbar. The first control is focused if the toolbar is receiving focus for the first time after page load. Otherwise, the most recently focused control receives focus.":
+          - list:
+            - listitem: Moves focus into and out of the toolbar.
+            - listitem: The first control is focused if the toolbar is receiving focus for the first time after page load.
+            - listitem: Otherwise, the most recently focused control receives focus.
+      - row "Right Arrow Moves focus to the next control. If the last control has focus, focus moves to the first control. If an item in the popup menu has focus, does nothing.":
+        - cell "Right Arrow"
+        - cell "Moves focus to the next control. If the last control has focus, focus moves to the first control. If an item in the popup menu has focus, does nothing.":
+          - list:
+            - listitem: Moves focus to the next control.
+            - listitem: If the last control has focus, focus moves to the first control.
+            - listitem: If an item in the popup menu has focus, does nothing.
+      - row "Left Arrow Moves focus to the previous control. If the first control has focus, focus moves to the last control. If an item in the popup menu has focus, does nothing.":
+        - cell "Left Arrow"
+        - cell "Moves focus to the previous control. If the first control has focus, focus moves to the last control. If an item in the popup menu has focus, does nothing.":
+          - list:
+            - listitem: Moves focus to the previous control.
+            - listitem: If the first control has focus, focus moves to the last control.
+            - listitem: If an item in the popup menu has focus, does nothing.
+      - row "Home Moves focus to the first control.":
+        - cell "Home"
+        - cell "Moves focus to the first control."
+      - row "End Moves focus to the last control.":
+        - cell "End"
+        - cell "Moves focus to the last control."
+      - row "ESC If a button popup label is visible, hides it.":
+        - cell "ESC"
+        - cell "If a button popup label is visible, hides it."
+  - heading "Toggle Buttons (Bold, Italic, Underline)" [level=3]
+  - paragraph:
+    - text: The toggle buttons for choosing to apply Bold, Italic, and Underline styling provide the following keyboard support described in the
+    - link "Button Pattern":
+      - /url: ../../button/button-pattern.html#keyboard_interaction
+    - text: .
+  - table "Toggle Buttons (Bold, Italic, Underline) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Space Toggle the pressed state of the button.":
+        - cell "Enter Space"
+        - cell "Toggle the pressed state of the button."
+  - heading "Radio Group (Text Alignment)" [level=3]
+  - paragraph:
+    - text: The buttons for choosing left, center, or right text alignment are styled like toggle buttons. However, since pressing one toggles off another so that only one button in the group is in the pressed state, the toggles behave like radio buttons. Because ARIA is designed to inform assistive technologies about UI semantics and behaviors, not styling, the alignment toggles provide the following keyboard support described in the
+    - link "Radio Group Pattern":
+      - /url: ../../radio/radio-group-pattern.html#keyboard_interaction
+    - text: ". As described in the pattern, nesting a radio group in a toolbar calls for an important behavioral difference compared to radios outside a toolbar: moving focus inside the group does not automatically change which button is checked. In addition, because Left Arrow and Right Arrow are needed by the parent toolbar, they are not captured by the radio group. The toolbar thus provides navigation into, inside, and out of the nested radio group."
+  - table "Radio Group (Text Alignment) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Space If the focused radio button is checked, do nothing. Otherwise, uncheck the currently checked radio button and check the radio button that has focus.":
+        - cell "Enter Space"
+        - cell "If the focused radio button is checked, do nothing. Otherwise, uncheck the currently checked radio button and check the radio button that has focus.":
+          - list:
+            - listitem: If the focused radio button is checked, do nothing.
+            - listitem: Otherwise, uncheck the currently checked radio button and check the radio button that has focus.
+      - row "Down Arrow Moves focus to the next radio button. If the last radio button has focus, focus moves to the first radio button.":
+        - cell "Down Arrow"
+        - cell "Moves focus to the next radio button. If the last radio button has focus, focus moves to the first radio button.":
+          - list:
+            - listitem: Moves focus to the next radio button.
+            - listitem: If the last radio button has focus, focus moves to the first radio button.
+      - row "Up Arrow Moves focus to the previous radio button. If the radio button has focus, focus moves to the last radio button.":
+        - cell "Up Arrow"
+        - cell "Moves focus to the previous radio button. If the radio button has focus, focus moves to the last radio button.":
+          - list:
+            - listitem: Moves focus to the previous radio button.
+            - listitem: If the radio button has focus, focus moves to the last radio button.
+  - heading "Button (Cut, Copy, Paste)" [level=3]
+  - paragraph:
+    - text: The buttons for cut, copy, and paste provide the following keyboard support described in the
+    - link "Button Pattern":
+      - /url: ../../button/button-pattern.html#keyboard_interaction
+    - text: . While they are HTML button elements, as described in the accessibility features section above, in order to remain focusable when disabled, they have
+    - code: aria-disabled
+    - text: instead of the HTML
+    - code: disabled
+    - text: attribute.
+  - table "Button (Cut, Copy, Paste) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Space If the button is enabled, execute the action associated with the button. Otherwise, do nothing.":
+        - cell "Enter Space"
+        - cell "If the button is enabled, execute the action associated with the button. Otherwise, do nothing."
+  - heading "Menu Button (Font Family)" [level=3]
+  - paragraph:
+    - text: The menu button for opening the font family menu provides the following keyboard support described in the
+    - link "Menu Button Pattern":
+      - /url: ../../menu-button/menu-button-pattern.html#keyboard_interaction
+    - text: .
+  - table "Menu Button (Font Family) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Space Down Arrow Up Arrow Open the menu and place focus on a menu item. In this implementation, the focus is set on the currently selected font family when the menu opens.":
+        - cell "Enter Space Down Arrow Up Arrow"
+        - cell "Open the menu and place focus on a menu item. In this implementation, the focus is set on the currently selected font family when the menu opens."
+  - heading "Menu (Font Family)" [level=3]
+  - paragraph:
+    - text: The menu for choosing a font family provides the following keyboard support described in the
+    - link "Menu and Menubar Pattern":
+      - /url: ../../menubar/menu-and-menubar-pattern.html#keyboard_interaction
+    - text: .
+  - table "Menu (Font Family) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Space Activate the menu item, close the menu, and place focus on the menu button.":
+        - cell "Enter Space"
+        - cell "Activate the menu item, close the menu, and place focus on the menu button."
+      - row "Down Arrow Moves focus to the next menu item. If the last menu item has focus, focus moves to the first menu item.":
+        - cell "Down Arrow"
+        - cell "Moves focus to the next menu item. If the last menu item has focus, focus moves to the first menu item.":
+          - list:
+            - listitem: Moves focus to the next menu item.
+            - listitem: If the last menu item has focus, focus moves to the first menu item.
+      - row "Up Arrow Moves focus to the previous menu item. If the first menu item has focus, focus moves to the last menu item.":
+        - cell "Up Arrow"
+        - cell "Moves focus to the previous menu item. If the first menu item has focus, focus moves to the last menu item.":
+          - list:
+            - listitem: Moves focus to the previous menu item.
+            - listitem: If the first menu item has focus, focus moves to the last menu item.
+      - row "ESC Closes the menu and moves focus to the menu button.":
+        - cell "ESC"
+        - cell "Closes the menu and moves focus to the menu button."
+  - heading "Spin Button (Font Size)" [level=3]
+  - paragraph:
+    - text: The spin button for changing font size provides the following keyboard support described in the
+    - link "Spin Button Pattern":
+      - /url: ../..//spinbutton/spinbutton-pattern.html#keyboard_interaction
+    - text: .
+  - table "Spin Button (Font Size) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Down Arrow Decreases the font size of the text in the textarea by 1 point.":
+        - cell "Down Arrow"
+        - cell "Decreases the font size of the text in the textarea by 1 point.":
+          - text: Decreases the font size of the text in the
+          - code: textarea
+          - text: by 1 point.
+      - row "Up Arrow Increases the font size of the text in the textarea by 1 point.":
+        - cell "Up Arrow"
+        - cell "Increases the font size of the text in the textarea by 1 point.":
+          - text: Increases the font size of the text in the
+          - code: textarea
+          - text: by 1 point.
+      - row "Page Down Decreases the font size of the text in the textarea by 5 points.":
+        - cell "Page Down"
+        - cell "Decreases the font size of the text in the textarea by 5 points.":
+          - text: Decreases the font size of the text in the
+          - code: textarea
+          - text: by 5 points.
+      - row "Page Up Increases the font size of the text in the textarea by 5 points.":
+        - cell "Page Up"
+        - cell "Increases the font size of the text in the textarea by 5 points.":
+          - text: Increases the font size of the text in the
+          - code: textarea
+          - text: by 5 points.
+  - heading "Checkbox (Night Mode)" [level=3]
+  - paragraph:
+    - text: The checkbox for toggling night mode provides the following keyboard support defined in the
+    - link "Checkbox Pattern":
+      - /url: ../../checkbox/checkbox-pattern.html#keyboard_interaction
+    - text: . As an HTML input element, the browser provides the keyboard support.
+  - table "Checkbox (Night Mode) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Space Toggles the state of the checkbox.":
+        - cell "Space"
+        - cell "Toggles the state of the checkbox."
+  - heading "Link (Help)" [level=3]
+  - paragraph:
+    - text: The link for opening a help page provides the following keyboard support described in the
+    - link "Link Pattern":
+      - /url: ../../link/link-pattern.html#keyboard_interaction
+    - text: . As an HTML link, the keyboard support is provided by the browser.
+  - table "Link (Help) Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Space Activate the link.":
+        - cell "Enter Space"
+        - cell "Activate the link."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - heading "Toolbar" [level=3]
+  - paragraph:
+    - text: The toolbar implements the following ARIA attributes described in the
+    - link "Toolbar Pattern":
+      - /url: ../toolbar-pattern.html#roles_states_properties
+    - text: .
+  - table "Toolbar Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "toolbar div Indicates the container is a toolbar. The toolbar div is not focusable because it implements the practice of Managing Focus Within Components Using a Roving tabindex.":
+        - rowheader "toolbar":
+          - code: toolbar
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Indicates the container is a toolbar. The toolbar div is not focusable because it implements the practice of Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem:
+              - text: Indicates the container is a
+              - code: toolbar
+              - text: .
+            - listitem:
+              - text: The toolbar div is not focusable because it implements the practice of
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "aria-label=\"Text Formatting\" div Provides the toolbar with an accessible name of \"Text Formatting\".":
+        - cell
+        - rowheader "aria-label=\"Text Formatting\"":
+          - code: aria-label="Text Formatting"
+        - cell "div":
+          - code: div
+        - cell "Provides the toolbar with an accessible name of \"Text Formatting\"."
+      - row "aria-controls=\"IDREF\" div Set to a value that references the text area, indicating the toolbar controls the text area.":
+        - cell
+        - rowheader "aria-controls=\"IDREF\"":
+          - code: aria-controls="IDREF"
+        - cell "div":
+          - code: div
+        - cell "Set to a value that references the text area, indicating the toolbar controls the text area."
+      - row "tabindex=\"-1\" button, div, input[type=\"checkbox\"], a Makes the toolbar item focusable but not part of the page Tab sequence. Applied to all toolbar items contained in the toolbar except for one that is included in the page Tab sequence. This approach to managing focus is described in the practice of Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "button, div, input[type=\"checkbox\"], a":
+          - code: button
+          - text: ","
+          - code: div
+          - text: ","
+          - code: input[type="checkbox"]
+          - text: ","
+          - code: a
+        - cell "Makes the toolbar item focusable but not part of the page Tab sequence. Applied to all toolbar items contained in the toolbar except for one that is included in the page Tab sequence. This approach to managing focus is described in the practice of Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Makes the toolbar item focusable but not part of the page Tab sequence.
+            - listitem: Applied to all toolbar items contained in the toolbar except for one that is included in the page Tab sequence.
+            - listitem:
+              - text: This approach to managing focus is described in the practice of
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "tabindex=\"0\" button, div, input[type=\"checkbox\"], a Makes the toolbar item part of the page Tab sequence. Set on only one item contained in the toolbar. On page load, set on the first item in the toolbar. Moves with focus inside the toolbar so the most recently focused item is included in the page Tab sequence. This approach to managing focus is described in the practice of Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"0\"":
+          - code: tabindex="0"
+        - cell "button, div, input[type=\"checkbox\"], a":
+          - code: button
+          - text: ","
+          - code: div
+          - text: ","
+          - code: input[type="checkbox"]
+          - text: ","
+          - code: a
+        - cell "Makes the toolbar item part of the page Tab sequence. Set on only one item contained in the toolbar. On page load, set on the first item in the toolbar. Moves with focus inside the toolbar so the most recently focused item is included in the page Tab sequence. This approach to managing focus is described in the practice of Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Makes the toolbar item part of the page Tab sequence.
+            - listitem: Set on only one item contained in the toolbar.
+            - listitem: On page load, set on the first item in the toolbar.
+            - listitem: Moves with focus inside the toolbar so the most recently focused item is included in the page Tab sequence.
+            - listitem:
+              - text: This approach to managing focus is described in the practice of
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+  - heading "Toggle Buttons (Bold, Italic, Underline)" [level=3]
+  - paragraph:
+    - text: The toggle buttons for choosing to apply Bold, Italic, and Underline styling implement the following ARIA attributes described in the
+    - link "Button Pattern":
+      - /url: ../../button/button-pattern.html#roles_states_properties
+    - text: .
+  - table "Toggle Buttons (Bold, Italic, Underline) Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "aria-pressed=\"true\" button Indicates the button is a toggle and that the styling controlled by the button has been applied.":
+        - cell
+        - rowheader "aria-pressed=\"true\"":
+          - code: aria-pressed="true"
+        - cell "button":
+          - code: button
+        - cell "Indicates the button is a toggle and that the styling controlled by the button has been applied."
+      - row "aria-pressed=false button Indicates the button is a toggle and that the styling controlled by the button has NOT been applied.":
+        - cell
+        - rowheader "aria-pressed=false":
+          - code: aria-pressed=false
+        - cell "button":
+          - code: button
+        - cell "Indicates the button is a toggle and that the styling controlled by the button has NOT been applied.":
+          - text: Indicates the button is a toggle and that the styling controlled by the button has
+          - strong: NOT
+          - text: been applied.
+      - row "aria-hidden=\"true\" span Hides the icon character from being included in the accessible name.":
+        - cell
+        - rowheader "aria-hidden=\"true\"":
+          - code: aria-hidden="true"
+        - cell "span":
+          - code: span
+        - cell "Hides the icon character from being included in the accessible name."
+  - heading "Radio Group (Text Alignment)" [level=3]
+  - paragraph:
+    - text: The buttons for choosing left, center, or right text alignment are styled like toggle buttons. However, since pressing one toggles off another so that only one button in the group is in the pressed state, the toggles behave like radio buttons. Because ARIA is designed to inform assistive technologies about UI semantics and behavior, not styling, the alignment toggles implement the following ARIA attributes described in the
+    - link "Radio Group Pattern":
+      - /url: ../../radio/radio-group-pattern.html#roles_states_properties
+    - text: .
+  - table "Radio Group (Text Alignment) Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "radiogroup div Identifies the div element as a container for group of radio buttons.":
+        - rowheader "radiogroup":
+          - code: radiogroup
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the div element as a container for group of radio buttons.":
+          - text: Identifies the
+          - code: div
+          - text: element as a container for group of radio buttons.
+      - row "aria-label=\"Text Alignment\" div Defines the accessible name for the group of radio buttons as \"Text Alignment\".":
+        - cell
+        - rowheader "aria-label=\"Text Alignment\"":
+          - code: aria-label="Text Alignment"
+        - cell "div":
+          - code: div
+        - cell "Defines the accessible name for the group of radio buttons as \"Text Alignment\"."
+      - row "radio button Identifies the button element as a radio button. The accessible name comes from the child text content of the button element.":
+        - rowheader "radio":
+          - code: radio
+        - cell
+        - cell "button":
+          - code: button
+        - cell "Identifies the button element as a radio button. The accessible name comes from the child text content of the button element.":
+          - list:
+            - listitem:
+              - text: Identifies the
+              - code: button
+              - text: element as a
+              - code: radio
+              - text: button.
+            - listitem:
+              - text: The accessible name comes from the child text content of the
+              - code: button
+              - text: element.
+      - row "aria-checked=\"true\" button Indicates the radio button is checked, i.e., the type of alignment currently applied to the text area. Only one radio button in the group has aria-checked set to true at any given time.":
+        - cell
+        - rowheader "aria-checked=\"true\"":
+          - code: aria-checked="true"
+        - cell "button":
+          - code: button
+        - cell "Indicates the radio button is checked, i.e., the type of alignment currently applied to the text area. Only one radio button in the group has aria-checked set to true at any given time.":
+          - list:
+            - listitem: Indicates the radio button is checked, i.e., the type of alignment currently applied to the text area.
+            - listitem:
+              - text: Only one radio button in the group has
+              - code: aria-checked
+              - text: set to
+              - code: "true"
+              - text: at any given time.
+      - row "aria-checked=\"false\" button Indicates the radio button is NOT checked. All radio buttons in the group, except for one, have aria-checked set to false.":
+        - cell
+        - rowheader "aria-checked=\"false\"":
+          - code: aria-checked="false"
+        - cell "button":
+          - code: button
+        - cell "Indicates the radio button is NOT checked. All radio buttons in the group, except for one, have aria-checked set to false.":
+          - list:
+            - listitem:
+              - text: Indicates the radio button is
+              - strong: NOT
+              - text: checked.
+            - listitem:
+              - text: All radio buttons in the group, except for one, have
+              - code: aria-checked
+              - text: set to
+              - code: "false"
+              - text: .
+      - row "aria-hidden=\"true\" span Hides the icon character from being included in the accessible name.":
+        - cell
+        - rowheader "aria-hidden=\"true\"":
+          - code: aria-hidden="true"
+        - cell "span":
+          - code: span
+        - cell "Hides the icon character from being included in the accessible name."
+  - heading "Button (Cut, Copy, Paste)" [level=3]
+  - paragraph:
+    - text: The buttons for cut, copy, and paste implement the following ARIA attributes described in the
+    - link "Button Pattern":
+      - /url: ../../button/button-pattern.html#roles_states_properties
+    - text: . While they are HTML button elements, as described in the accessibility features section above, in order to remain focusable when disabled, they have
+    - code: aria-disabled
+    - text: instead of the HTML
+    - code: disabled
+    - text: attribute.
+  - table "Button (Cut, Copy, Paste) Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "aria-disabled=\"true\" button Set when the button is disable to inform assistive technologies of the disabled state.":
+        - cell
+        - rowheader "aria-disabled=\"true\"":
+          - code: aria-disabled="true"
+        - cell "button":
+          - code: button
+        - cell "Set when the button is disable to inform assistive technologies of the disabled state."
+      - row "aria-disabled=\"false\" button Set when the function provided by the button is available.":
+        - cell
+        - rowheader "aria-disabled=\"false\"":
+          - code: aria-disabled="false"
+        - cell "button":
+          - code: button
+        - cell "Set when the function provided by the button is available."
+  - heading "Menu Button (Font Family)" [level=3]
+  - paragraph:
+    - text: The menu button for opening the font family menu implements the following ARIA attributes described in the
+    - link "Menu Button Pattern.":
+      - /url: ../../menu-button/menu-button-pattern.html#roles_states_properties
+  - table "Menu Button (Font Family) Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - 'row "aria-label=\"Font: FONT_FAMILY_NAME\" button Defines the accessible name for the menu button by concatenating Font: with the name of the font family currently checked in the menu. Updated when a different font family is chosen in the font family menu."':
+        - cell
+        - 'rowheader "aria-label=\"Font: FONT_FAMILY_NAME\""':
+          - code: "aria-label=\"Font: FONT_FAMILY_NAME\""
+        - cell "button":
+          - code: button
+        - 'cell "Defines the accessible name for the menu button by concatenating Font: with the name of the font family currently checked in the menu. Updated when a different font family is chosen in the font family menu."':
+          - list:
+            - listitem: "Defines the accessible name for the menu button by concatenating Font: with the name of the font family currently checked in the menu."
+            - listitem: Updated when a different font family is chosen in the font family menu.
+      - 'row "aria-haspopup=\"true\" button Indicates the button opens a menu. NOTE: While ARIA does not include a menubutton, most platform accessibility APIs have a menubutton role. On those platforms, assistive technologies identify buttons with aria-haspopup set to either true or menu as menu buttons."':
+        - cell
+        - rowheader "aria-haspopup=\"true\"":
+          - code: aria-haspopup="true"
+        - cell "button":
+          - code: button
+        - 'cell "Indicates the button opens a menu. NOTE: While ARIA does not include a menubutton, most platform accessibility APIs have a menubutton role. On those platforms, assistive technologies identify buttons with aria-haspopup set to either true or menu as menu buttons."':
+          - list:
+            - listitem:
+              - text: Indicates the
+              - code: button
+              - text: opens a menu.
+            - listitem:
+              - strong: "NOTE:"
+              - text: While ARIA does not include a
+              - code: menubutton
+              - text: ", most platform accessibility APIs have a"
+              - code: menubutton
+              - text: role. On those platforms, assistive technologies identify buttons with
+              - code: aria-haspopup
+              - text: set to either
+              - code: "true"
+              - text: or
+              - code: menu
+              - text: as menu buttons.
+      - row "aria-controls=\"IDREF\" button Set to a value that references the element with role menu. Indicates the button opens and closes the menu.":
+        - cell
+        - rowheader "aria-controls=\"IDREF\"":
+          - code: aria-controls="IDREF"
+        - cell "button":
+          - code: button
+        - cell "Set to a value that references the element with role menu. Indicates the button opens and closes the menu.":
+          - list:
+            - listitem:
+              - text: Set to a value that references the element with role
+              - code: menu
+              - text: .
+            - listitem: Indicates the button opens and closes the menu.
+      - row "aria-expanded=\"false\" button Indicates the menu is not displayed and that activating the menu button opens the menu.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "button":
+          - code: button
+        - cell "Indicates the menu is not displayed and that activating the menu button opens the menu."
+      - row "aria-expanded=\"true\" button Indicates the menu is displayed and that activating the menu button closes the menu.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "button":
+          - code: button
+        - cell "Indicates the menu is displayed and that activating the menu button closes the menu."
+  - heading "Menu (Font Family)" [level=3]
+  - paragraph:
+    - text: The menu for choosing a font family implements the following ARIA attributes described in the
+    - link "Menu and Menubar Pattern":
+      - /url: ../../menubar/menu-and-menubar-pattern.html#roles_states_properties
+    - text: .
+  - table "Menu (Font Family) Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "menu ul Identifies the ul element as a menu.":
+        - rowheader "menu":
+          - code: menu
+        - cell
+        - cell "ul":
+          - code: ul
+        - cell "Identifies the ul element as a menu.":
+          - text: Identifies the
+          - code: ul
+          - text: element as a
+          - code: menu
+          - text: .
+      - row "aria-label=\"Font Family\" ul Defines the accessible name for the menu as \"Font Family\".":
+        - cell
+        - rowheader "aria-label=\"Font Family\"":
+          - code: aria-label="Font Family"
+        - cell "ul":
+          - code: ul
+        - cell "Defines the accessible name for the menu as \"Font Family\"."
+      - row "menuitemradio li Identifies the li element as a menuitemradio. The text content of the li element provides the accessible name of the menuitemradio.":
+        - rowheader "menuitemradio":
+          - code: menuitemradio
+        - cell
+        - cell "li":
+          - code: li
+        - cell "Identifies the li element as a menuitemradio. The text content of the li element provides the accessible name of the menuitemradio.":
+          - list:
+            - listitem:
+              - text: Identifies the
+              - code: li
+              - text: element as a
+              - code: menuitemradio
+              - text: .
+            - listitem:
+              - text: The text content of the
+              - code: li
+              - text: element provides the accessible name of the
+              - code: menuitemradio
+              - text: .
+      - row "aria-checked=\"true\" li Applied to an element with role menuitemradio to indicate the item is checked, informing users which font is applied to the text area. Only one item in the menu has the checked state at any given time.":
+        - cell
+        - rowheader "aria-checked=\"true\"":
+          - code: aria-checked="true"
+        - cell "li":
+          - code: li
+        - cell "Applied to an element with role menuitemradio to indicate the item is checked, informing users which font is applied to the text area. Only one item in the menu has the checked state at any given time.":
+          - list:
+            - listitem:
+              - text: Applied to an element with role
+              - code: menuitemradio
+              - text: to indicate the item is checked, informing users which font is applied to the text area.
+            - listitem: Only one item in the menu has the checked state at any given time.
+      - row "aria-checked=\"false\" li Applied to elements with role menuitemradio to indicate the items are NOT checked. All items in the menu, except one, have this value.":
+        - cell
+        - rowheader "aria-checked=\"false\"":
+          - code: aria-checked="false"
+        - cell "li":
+          - code: li
+        - cell "Applied to elements with role menuitemradio to indicate the items are NOT checked. All items in the menu, except one, have this value.":
+          - list:
+            - listitem:
+              - text: Applied to elements with role
+              - code: menuitemradio
+              - text: to indicate the items are
+              - strong: NOT
+              - text: checked.
+            - listitem: All items in the menu, except one, have this value.
+      - row "tabindex=\"-1\" li Makes the menuitemradio element focusable so DOM focus can be set on the menu item. Dynamically added by JavaScript.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "li":
+          - code: li
+        - cell "Makes the menuitemradio element focusable so DOM focus can be set on the menu item. Dynamically added by JavaScript.":
+          - list:
+            - listitem:
+              - text: Makes the
+              - code: menuitemradio
+              - text: element focusable so DOM focus can be set on the menu item.
+            - listitem: Dynamically added by JavaScript.
+  - heading "Spin Button (Font Size)" [level=3]
+  - paragraph:
+    - text: The spin button for changing font size implements the following ARIA attributes described in the
+    - link "Spin Button Pattern":
+      - /url: ../../spinbutton/spinbutton-pattern.html#roles_states_properties
+    - text: .
+  - table "Spin Button (Font Size) Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "spinbutton div Identifies the div element as a spinbutton.":
+        - rowheader "spinbutton":
+          - code: spinbutton
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the div element as a spinbutton.":
+          - text: Identifies the
+          - code: div
+          - text: element as a
+          - code: spinbutton
+          - text: .
+      - row "aria-label=\"Font size in points\" div Defines the accessible name for the spin button as \"Font size in points\".":
+        - cell
+        - rowheader "aria-label=\"Font size in points\"":
+          - code: aria-label="Font size in points"
+        - cell "div":
+          - code: div
+        - cell "Defines the accessible name for the spin button as \"Font size in points\"."
+      - row "aria-valuenow=\"NUMBER_POINTS\" div Indicates the current value of the spin button. Updated by JavaScript as users adjust the value of the spin button.":
+        - cell
+        - rowheader "aria-valuenow=\"NUMBER_POINTS\"":
+          - code: aria-valuenow="NUMBER_POINTS"
+        - cell "div":
+          - code: div
+        - cell "Indicates the current value of the spin button. Updated by JavaScript as users adjust the value of the spin button.":
+          - list:
+            - listitem: Indicates the current value of the spin button.
+            - listitem: Updated by JavaScript as users adjust the value of the spin button.
+      - row "aria-valuetext=\"NUMBER_POINTS Points\" div Provides a more user friendly announcement of the current value for screen reader users. NUMBER_POINTS is updated by JavaScript as the user adjusts the value of the spin button. As users adjust the value, instead of hearing only a number, they will hear the current value followed by the word Points, e.g., 10 Points.":
+        - cell
+        - rowheader "aria-valuetext=\"NUMBER_POINTS Points\"":
+          - code: aria-valuetext="NUMBER_POINTS Points"
+        - cell "div":
+          - code: div
+        - cell "Provides a more user friendly announcement of the current value for screen reader users. NUMBER_POINTS is updated by JavaScript as the user adjusts the value of the spin button. As users adjust the value, instead of hearing only a number, they will hear the current value followed by the word Points, e.g., 10 Points.":
+          - list:
+            - listitem: Provides a more user friendly announcement of the current value for screen reader users.
+            - listitem:
+              - code: NUMBER_POINTS
+              - text: is updated by JavaScript as the user adjusts the value of the spin button.
+            - listitem: As users adjust the value, instead of hearing only a number, they will hear the current value followed by the word Points, e.g., 10 Points.
+      - row "aria-valuemin=\"8\" div Indicates the minimum allowed value for the spin button, i.e., smallest supported font size.":
+        - cell
+        - rowheader "aria-valuemin=\"8\"":
+          - code: aria-valuemin="8"
+        - cell "div":
+          - code: div
+        - cell "Indicates the minimum allowed value for the spin button, i.e., smallest supported font size."
+      - row "aria-valuemax=\"40\" div Indicates the maximum allowed value for the spin button, i.e., largest supported font size.":
+        - cell
+        - rowheader "aria-valuemax=\"40\"":
+          - code: aria-valuemax="40"
+        - cell "div":
+          - code: div
+        - cell "Indicates the maximum allowed value for the spin button, i.e., largest supported font size."
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "toolbar.css":
+        - /url: css/toolbar.css
+    - listitem:
+      - text: "CSS:"
+      - link "menuButton.css":
+        - /url: css/menuButton.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "FormatToolbar.js":
+        - /url: js/FormatToolbar.js
+    - listitem:
+      - text: "JavaScript:"
+      - link "FormatToolbarItem.js":
+        - /url: js/FormatToolbarItem.js
+    - listitem:
+      - text: "JavaScript:"
+      - link "FontMenuButton.js":
+        - /url: js/FontMenuButton.js
+    - listitem:
+      - text: "JavaScript:"
+      - link "FontMenu.js":
+        - /url: js/FontMenu.js
+    - listitem:
+      - text: "JavaScript:"
+      - link "FontMenuItem.js":
+        - /url: js/FontMenuItem.js
+    - listitem:
+      - text: "JavaScript:"
+      - link "SpinButton.js":
+        - /url: js/SpinButton.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML for HTML Source Code"
+  - code: "<div class=\"format\" role=\"toolbar\" aria-label=\"Text Formatting\" aria-controls=\"textarea1\"> <div class=\"group characteristics\"> <button type=\"button\" class=\"item bold popup\" aria-pressed=\"false\" value=\"bold\" tabindex=\"0\"> <span class=\"fas fa-bold\" aria-hidden=\"true\"></span> <span class=\"popup-label\"> Bold </span> </button> <button type=\"button\" class=\"item italic popup\" aria-pressed=\"false\" value=\"italic\" tabindex=\"-1\"> <span class=\"fas fa-italic\" aria-hidden=\"true\"></span> <span class=\"popup-label\"> Italic </span> </button> <button type=\"button\" class=\"item underline popup\" aria-pressed=\"false\" value=\"underline\" tabindex=\"-1\"> <span class=\"fas fa-underline\" aria-hidden=\"true\"></span> <span class=\"popup-label\"> Underline </span> </button> </div> <div class=\"group\" role=\"radiogroup\" aria-label=\"Text Alignment\"> <button type=\"button\" role=\"radio\" class=\"item align-left popup\" aria-checked=\"true\" tabindex=\"-1\"> <span class=\"fas fa-align-left\" aria-hidden=\"true\"></span> <span class=\"popup-label\"> Text Align Left </span> </button> <button type=\"button\" role=\"radio\" class=\"item align-center popup\" aria-checked=\"false\" tabindex=\"-1\"> <span class=\"fas fa-align-center\" aria-hidden=\"true\"></span> <span class=\"popup-label\"> Text Align Center </span> </button> <button type=\"button\" role=\"radio\" class=\"item align-right popup\" aria-checked=\"false\" tabindex=\"-1\"> <span class=\"fas fa-align-right\" aria-hidden=\"true\"></span> <span class=\"popup-label\"> Text Align Right </span> </button> </div> <div class=\"group\"> <button type=\"button\" class=\"item copy\" aria-disabled=\"true\" tabindex=\"-1\"> Copy </button> <button type=\"button\" class=\"item paste\" aria-disabled=\"true\" tabindex=\"-1\"> Paste </button> <button type=\"button\" class=\"item cut\" aria-disabled=\"true\" tabindex=\"-1\"> Cut </button> </div> <div class=\"menu-popup group\"> <button type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-controls=\"menu1\" class=\"item menu-button\" tabindex=\"-1\" aria-label=\"Font: Sans-serif\" style=\"text-align: left; width: 140px; font-family: sans-serif\"> SANS-SERIF <span></span> </button> <ul role=\"menu\" id=\"menu1\" aria-label=\"Font Family\"> <li role=\"menuitemradio\" aria-checked=\"true\" style=\"font-family: sans-serif\"> Sans-serif </li> <li role=\"menuitemradio\" aria-checked=\"false\" style=\"font-family: serif\"> Serif </li> <li role=\"menuitemradio\" aria-checked=\"false\" style=\"font-family: monospace\"> Monospace </li> <li role=\"menuitemradio\" aria-checked=\"false\" style=\"font-family: fantasy\"> Fantasy </li> <li role=\"menuitemradio\" aria-checked=\"false\" style=\"font-family: cursive\"> Cursive </li> </ul> </div> <div class=\"group\"> <div class=\"item spinbutton\" role=\"spinbutton\" tabindex=\"-1\" aria-valuenow=\"14\" aria-valuetext=\"14pt\" aria-valuemin=\"8\" aria-valuemax=\"40\" aria-label=\"Font size in points\"> <span class=\"value\"> 14pt </span> <span class=\"increase\"> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\"> <polygon class=\"increase\" fill=\"#333\" points=\"0,12 11,12 6,2\"></polygon> </svg> </span> <span class=\"decrease\"> <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\"> <polygon class=\"decrease\" fill=\"#333\" points=\"0,2 11,2 6,12\"></polygon> </svg> </span> </div> </div> <div class=\"group\"> <label class=\"input\"> <input id=\"checkbox\" class=\"item nightmode\" type=\"checkbox\" tabindex=\"-1\"> Night Mode </label> <a id=\"link\" class=\"item link\" href=\"help.html\" tabindex=\"-1\"> Help </a> </div> </div> <label for=\"textarea1\" class=\"hidden\"> Text Sample </label> <br> <textarea id=\"textarea1\" rows=\"20\" cols=\"80\" style=\"font-family: sans-serif\"> Abraham Lincoln's Gettysburg Address Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation, so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this. But, in a larger sense, we can not dedicate, we can not consecrate, we can not hallow, this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us, that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion, that we here highly resolve that these dead shall not have died in vain, that this nation, under God, shall have a new birth of freedom, and that government of the people, by the people, for the people, shall not perish from the earth. </textarea>"
+  - separator "End of HTML for HTML Source Code"
+```

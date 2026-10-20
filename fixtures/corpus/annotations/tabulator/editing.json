@@ -1,0 +1,50 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "tabulator",
+  "page": "editing",
+  "dossierSha256": "66b9d1758854d86bc976d6583506fe2416327c636f420d3fd462488aeb10993f",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-tabulator",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/tabulator/editing.md"
+    ]
+  },
+  "fields": [],
+  "actions": [],
+  "collections": [
+    {
+      "name": "Inline Editing & Validation",
+      "columns": [
+        "Name",
+        "Location",
+        "Progress",
+        "Gender",
+        "Rating",
+        "Date Of Birth",
+        "Driver"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "editable_cell",
+      "name": "Editable cells"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Edit a cell in place",
+      "needs": [
+        "Editable cells",
+        "Inline Editing & Validation"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

@@ -1,0 +1,834 @@
+# DataTables examples - scroll-y
+Upstream: https://github.com/DataTables/DataTables
+Framework: jquery
+Ground truth basis: DataTables example descriptions and reference documentation; Chromium accessibility tree
+Page title: DataTables example - Scroll - vertical
+State: as loaded
+What people do here (from the manifest):
+- scroll a fixed-height table
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- heading "DataTables example Scroll - vertical" [level=1]
+- paragraph: This example shows the DataTables table body scrolling in the vertical direction. This can generally be seen as an alternative method to pagination for displaying a large table in a fairly small vertical area, and as such pagination has been disabled here (note that this is not mandatory, it will work just fine with pagination enabled as well!).
+- paragraph:
+  - text: To enable y-scrolling simply set the
+  - link "scrollY Option":
+    - /url: //datatables.net/reference/option/scrollY
+    - code: scrollY Option
+  - text: parameter to be whatever you want the container wrapper's height to be (any CSS measurement is acceptable, or just a number which is treated as pixels).
+- paragraph:
+  - text: Note also that the
+  - link "scrollCollapse Option":
+    - /url: //datatables.net/reference/option/scrollCollapse
+    - code: scrollCollapse Option
+  - text: option is enabled in this example. This will have the container match the height of the rows shown in the table if that height is smaller than that given height by the
+  - link "scrollY Option":
+    - /url: //datatables.net/reference/option/scrollY
+    - code: scrollY Option
+  - text: .
+- text: "Search:"
+- searchbox "Search:"
+- grid:
+  - rowgroup:
+    - 'row "Name: activate to sort column descending Position: activate to sort column ascending Office: activate to sort column ascending Age: activate to sort column ascending Start date: activate to sort column ascending Salary: activate to sort column ascending"':
+      - 'gridcell "Name: activate to sort column descending"': Name
+      - 'gridcell "Position: activate to sort column ascending"': Position
+      - 'gridcell "Office: activate to sort column ascending"': Office
+      - 'gridcell "Age: activate to sort column ascending"': Age
+      - 'gridcell "Start date: activate to sort column ascending"': Start date
+      - 'gridcell "Salary: activate to sort column ascending"': Salary
+- grid:
+  - rowgroup:
+    - row "Name Position Office Age Start date Salary":
+      - gridcell "Name"
+      - gridcell "Position"
+      - gridcell "Office"
+      - gridcell "Age"
+      - gridcell "Start date"
+      - gridcell "Salary"
+  - rowgroup:
+    - row "Name Position Office Age Start date Salary":
+      - gridcell "Name"
+      - gridcell "Position"
+      - gridcell "Office"
+      - gridcell "Age"
+      - gridcell "Start date"
+      - gridcell "Salary"
+  - rowgroup:
+    - row "Airi Satou Accountant Tokyo 33 2008/11/28 $162,700":
+      - gridcell "Airi Satou"
+      - gridcell "Accountant"
+      - gridcell "Tokyo"
+      - gridcell "33"
+      - gridcell "2008/11/28"
+      - gridcell "$162,700"
+    - row "Angelica Ramos Chief Executive Officer (CEO) London 47 2009/10/09 $1,200,000":
+      - gridcell "Angelica Ramos"
+      - gridcell "Chief Executive Officer (CEO)"
+      - gridcell "London"
+      - gridcell "47"
+      - gridcell "2009/10/09"
+      - gridcell "$1,200,000"
+    - row "Ashton Cox Junior Technical Author San Francisco 66 2009/01/12 $86,000":
+      - gridcell "Ashton Cox"
+      - gridcell "Junior Technical Author"
+      - gridcell "San Francisco"
+      - gridcell "66"
+      - gridcell "2009/01/12"
+      - gridcell "$86,000"
+    - row "Bradley Greer Software Engineer London 41 2012/10/13 $132,000":
+      - gridcell "Bradley Greer"
+      - gridcell "Software Engineer"
+      - gridcell "London"
+      - gridcell "41"
+      - gridcell "2012/10/13"
+      - gridcell "$132,000"
+    - row "Brenden Wagner Software Engineer San Francisco 28 2011/06/07 $206,850":
+      - gridcell "Brenden Wagner"
+      - gridcell "Software Engineer"
+      - gridcell "San Francisco"
+      - gridcell "28"
+      - gridcell "2011/06/07"
+      - gridcell "$206,850"
+    - row "Brielle Williamson Integration Specialist New York 61 2012/12/02 $372,000":
+      - gridcell "Brielle Williamson"
+      - gridcell "Integration Specialist"
+      - gridcell "New York"
+      - gridcell "61"
+      - gridcell "2012/12/02"
+      - gridcell "$372,000"
+    - row "Bruno Nash Software Engineer London 38 2011/05/03 $163,500":
+      - gridcell "Bruno Nash"
+      - gridcell "Software Engineer"
+      - gridcell "London"
+      - gridcell "38"
+      - gridcell "2011/05/03"
+      - gridcell "$163,500"
+    - row "Caesar Vance Pre-Sales Support New York 21 2011/12/12 $106,450":
+      - gridcell "Caesar Vance"
+      - gridcell "Pre-Sales Support"
+      - gridcell "New York"
+      - gridcell "21"
+      - gridcell "2011/12/12"
+      - gridcell "$106,450"
+    - row "Cara Stevens Sales Assistant New York 46 2011/12/06 $145,600":
+      - gridcell "Cara Stevens"
+      - gridcell "Sales Assistant"
+      - gridcell "New York"
+      - gridcell "46"
+      - gridcell "2011/12/06"
+      - gridcell "$145,600"
+    - row "Cedric Kelly Senior Javascript Developer Edinburgh 22 2012/03/29 $433,060":
+      - gridcell "Cedric Kelly"
+      - gridcell "Senior Javascript Developer"
+      - gridcell "Edinburgh"
+      - gridcell "22"
+      - gridcell "2012/03/29"
+      - gridcell "$433,060"
+    - row "Charde Marshall Regional Director San Francisco 36 2008/10/16 $470,600":
+      - gridcell "Charde Marshall"
+      - gridcell "Regional Director"
+      - gridcell "San Francisco"
+      - gridcell "36"
+      - gridcell "2008/10/16"
+      - gridcell "$470,600"
+    - row "Colleen Hurst Javascript Developer San Francisco 39 2009/09/15 $205,500":
+      - gridcell "Colleen Hurst"
+      - gridcell "Javascript Developer"
+      - gridcell "San Francisco"
+      - gridcell "39"
+      - gridcell "2009/09/15"
+      - gridcell "$205,500"
+    - row "Dai Rios Personnel Lead Edinburgh 35 2012/09/26 $217,500":
+      - gridcell "Dai Rios"
+      - gridcell "Personnel Lead"
+      - gridcell "Edinburgh"
+      - gridcell "35"
+      - gridcell "2012/09/26"
+      - gridcell "$217,500"
+    - row "Donna Snider Customer Support New York 27 2011/01/25 $112,000":
+      - gridcell "Donna Snider"
+      - gridcell "Customer Support"
+      - gridcell "New York"
+      - gridcell "27"
+      - gridcell "2011/01/25"
+      - gridcell "$112,000"
+    - row "Doris Wilder Sales Assistant Sydney 23 2010/09/20 $85,600":
+      - gridcell "Doris Wilder"
+      - gridcell "Sales Assistant"
+      - gridcell "Sydney"
+      - gridcell "23"
+      - gridcell "2010/09/20"
+      - gridcell "$85,600"
+    - row "Finn Camacho Support Engineer San Francisco 47 2009/07/07 $87,500":
+      - gridcell "Finn Camacho"
+      - gridcell "Support Engineer"
+      - gridcell "San Francisco"
+      - gridcell "47"
+      - gridcell "2009/07/07"
+      - gridcell "$87,500"
+    - row "Fiona Green Chief Operating Officer (COO) San Francisco 48 2010/03/11 $850,000":
+      - gridcell "Fiona Green"
+      - gridcell "Chief Operating Officer (COO)"
+      - gridcell "San Francisco"
+      - gridcell "48"
+      - gridcell "2010/03/11"
+      - gridcell "$850,000"
+    - row "Garrett Winters Accountant Tokyo 63 2011/07/25 $170,750":
+      - gridcell "Garrett Winters"
+      - gridcell "Accountant"
+      - gridcell "Tokyo"
+      - gridcell "63"
+      - gridcell "2011/07/25"
+      - gridcell "$170,750"
+    - row "Gavin Cortez Team Leader San Francisco 22 2008/10/26 $235,500":
+      - gridcell "Gavin Cortez"
+      - gridcell "Team Leader"
+      - gridcell "San Francisco"
+      - gridcell "22"
+      - gridcell "2008/10/26"
+      - gridcell "$235,500"
+    - row "Gavin Joyce Developer Edinburgh 42 2010/12/22 $92,575":
+      - gridcell "Gavin Joyce"
+      - gridcell "Developer"
+      - gridcell "Edinburgh"
+      - gridcell "42"
+      - gridcell "2010/12/22"
+      - gridcell "$92,575"
+    - row "Gloria Little Systems Administrator New York 59 2009/04/10 $237,500":
+      - gridcell "Gloria Little"
+      - gridcell "Systems Administrator"
+      - gridcell "New York"
+      - gridcell "59"
+      - gridcell "2009/04/10"
+      - gridcell "$237,500"
+    - row "Haley Kennedy Senior Marketing Designer London 43 2012/12/18 $313,500":
+      - gridcell "Haley Kennedy"
+      - gridcell "Senior Marketing Designer"
+      - gridcell "London"
+      - gridcell "43"
+      - gridcell "2012/12/18"
+      - gridcell "$313,500"
+    - row "Hermione Butler Regional Director London 47 2011/03/21 $356,250":
+      - gridcell "Hermione Butler"
+      - gridcell "Regional Director"
+      - gridcell "London"
+      - gridcell "47"
+      - gridcell "2011/03/21"
+      - gridcell "$356,250"
+    - row "Herrod Chandler Sales Assistant San Francisco 59 2012/08/06 $137,500":
+      - gridcell "Herrod Chandler"
+      - gridcell "Sales Assistant"
+      - gridcell "San Francisco"
+      - gridcell "59"
+      - gridcell "2012/08/06"
+      - gridcell "$137,500"
+    - row "Hope Fuentes Secretary San Francisco 41 2010/02/12 $109,850":
+      - gridcell "Hope Fuentes"
+      - gridcell "Secretary"
+      - gridcell "San Francisco"
+      - gridcell "41"
+      - gridcell "2010/02/12"
+      - gridcell "$109,850"
+    - row "Howard Hatfield Office Manager San Francisco 51 2008/12/16 $164,500":
+      - gridcell "Howard Hatfield"
+      - gridcell "Office Manager"
+      - gridcell "San Francisco"
+      - gridcell "51"
+      - gridcell "2008/12/16"
+      - gridcell "$164,500"
+    - row "Jackson Bradshaw Director New York 65 2008/09/26 $645,750":
+      - gridcell "Jackson Bradshaw"
+      - gridcell "Director"
+      - gridcell "New York"
+      - gridcell "65"
+      - gridcell "2008/09/26"
+      - gridcell "$645,750"
+    - row "Jena Gaines Office Manager London 30 2008/12/19 $90,560":
+      - gridcell "Jena Gaines"
+      - gridcell "Office Manager"
+      - gridcell "London"
+      - gridcell "30"
+      - gridcell "2008/12/19"
+      - gridcell "$90,560"
+    - row "Jenette Caldwell Development Lead New York 30 2011/09/03 $345,000":
+      - gridcell "Jenette Caldwell"
+      - gridcell "Development Lead"
+      - gridcell "New York"
+      - gridcell "30"
+      - gridcell "2011/09/03"
+      - gridcell "$345,000"
+    - row "Jennifer Acosta Junior Javascript Developer Edinburgh 43 2013/02/01 $75,650":
+      - gridcell "Jennifer Acosta"
+      - gridcell "Junior Javascript Developer"
+      - gridcell "Edinburgh"
+      - gridcell "43"
+      - gridcell "2013/02/01"
+      - gridcell "$75,650"
+    - row "Jennifer Chang Regional Director Singapore 28 2010/11/14 $357,650":
+      - gridcell "Jennifer Chang"
+      - gridcell "Regional Director"
+      - gridcell "Singapore"
+      - gridcell "28"
+      - gridcell "2010/11/14"
+      - gridcell "$357,650"
+    - row "Jonas Alexander Developer San Francisco 30 2010/07/14 $86,500":
+      - gridcell "Jonas Alexander"
+      - gridcell "Developer"
+      - gridcell "San Francisco"
+      - gridcell "30"
+      - gridcell "2010/07/14"
+      - gridcell "$86,500"
+    - row "Lael Greer Systems Administrator London 21 2009/02/27 $103,500":
+      - gridcell "Lael Greer"
+      - gridcell "Systems Administrator"
+      - gridcell "London"
+      - gridcell "21"
+      - gridcell "2009/02/27"
+      - gridcell "$103,500"
+    - row "Martena Mccray Post-Sales support Edinburgh 46 2011/03/09 $324,050":
+      - gridcell "Martena Mccray"
+      - gridcell "Post-Sales support"
+      - gridcell "Edinburgh"
+      - gridcell "46"
+      - gridcell "2011/03/09"
+      - gridcell "$324,050"
+    - row "Michael Bruce Javascript Developer Singapore 29 2011/06/27 $183,000":
+      - gridcell "Michael Bruce"
+      - gridcell "Javascript Developer"
+      - gridcell "Singapore"
+      - gridcell "29"
+      - gridcell "2011/06/27"
+      - gridcell "$183,000"
+    - row "Michael Silva Marketing Designer London 66 2012/11/27 $198,500":
+      - gridcell "Michael Silva"
+      - gridcell "Marketing Designer"
+      - gridcell "London"
+      - gridcell "66"
+      - gridcell "2012/11/27"
+      - gridcell "$198,500"
+    - row "Michelle House Integration Specialist Sydney 37 2011/06/02 $95,400":
+      - gridcell "Michelle House"
+      - gridcell "Integration Specialist"
+      - gridcell "Sydney"
+      - gridcell "37"
+      - gridcell "2011/06/02"
+      - gridcell "$95,400"
+    - row "Olivia Liang Support Engineer Singapore 64 2011/02/03 $234,500":
+      - gridcell "Olivia Liang"
+      - gridcell "Support Engineer"
+      - gridcell "Singapore"
+      - gridcell "64"
+      - gridcell "2011/02/03"
+      - gridcell "$234,500"
+    - row "Paul Byrd Chief Financial Officer (CFO) New York 64 2010/06/09 $725,000":
+      - gridcell "Paul Byrd"
+      - gridcell "Chief Financial Officer (CFO)"
+      - gridcell "New York"
+      - gridcell "64"
+      - gridcell "2010/06/09"
+      - gridcell "$725,000"
+    - row "Prescott Bartlett Technical Author London 27 2011/05/07 $145,000":
+      - gridcell "Prescott Bartlett"
+      - gridcell "Technical Author"
+      - gridcell "London"
+      - gridcell "27"
+      - gridcell "2011/05/07"
+      - gridcell "$145,000"
+    - row "Quinn Flynn Support Lead Edinburgh 22 2013/03/03 $342,000":
+      - gridcell "Quinn Flynn"
+      - gridcell "Support Lead"
+      - gridcell "Edinburgh"
+      - gridcell "22"
+      - gridcell "2013/03/03"
+      - gridcell "$342,000"
+    - row "Rhona Davidson Integration Specialist Tokyo 55 2010/10/14 $327,900":
+      - gridcell "Rhona Davidson"
+      - gridcell "Integration Specialist"
+      - gridcell "Tokyo"
+      - gridcell "55"
+      - gridcell "2010/10/14"
+      - gridcell "$327,900"
+    - row "Sakura Yamamoto Support Engineer Tokyo 37 2009/08/19 $139,575":
+      - gridcell "Sakura Yamamoto"
+      - gridcell "Support Engineer"
+      - gridcell "Tokyo"
+      - gridcell "37"
+      - gridcell "2009/08/19"
+      - gridcell "$139,575"
+    - row "Serge Baldwin Data Coordinator Singapore 64 2012/04/09 $138,575":
+      - gridcell "Serge Baldwin"
+      - gridcell "Data Coordinator"
+      - gridcell "Singapore"
+      - gridcell "64"
+      - gridcell "2012/04/09"
+      - gridcell "$138,575"
+    - row "Shad Decker Regional Director Edinburgh 51 2008/11/13 $183,000":
+      - gridcell "Shad Decker"
+      - gridcell "Regional Director"
+      - gridcell "Edinburgh"
+      - gridcell "51"
+      - gridcell "2008/11/13"
+      - gridcell "$183,000"
+    - row "Shou Itou Regional Marketing Tokyo 20 2011/08/14 $163,000":
+      - gridcell "Shou Itou"
+      - gridcell "Regional Marketing"
+      - gridcell "Tokyo"
+      - gridcell "20"
+      - gridcell "2011/08/14"
+      - gridcell "$163,000"
+    - row "Sonya Frost Software Engineer Edinburgh 23 2008/12/13 $103,600":
+      - gridcell "Sonya Frost"
+      - gridcell "Software Engineer"
+      - gridcell "Edinburgh"
+      - gridcell "23"
+      - gridcell "2008/12/13"
+      - gridcell "$103,600"
+    - row "Suki Burks Developer London 53 2009/10/22 $114,500":
+      - gridcell "Suki Burks"
+      - gridcell "Developer"
+      - gridcell "London"
+      - gridcell "53"
+      - gridcell "2009/10/22"
+      - gridcell "$114,500"
+    - row "Tatyana Fitzpatrick Regional Director London 19 2010/03/17 $385,750":
+      - gridcell "Tatyana Fitzpatrick"
+      - gridcell "Regional Director"
+      - gridcell "London"
+      - gridcell "19"
+      - gridcell "2010/03/17"
+      - gridcell "$385,750"
+    - row "Thor Walton Developer New York 61 2013/08/11 $98,540":
+      - gridcell "Thor Walton"
+      - gridcell "Developer"
+      - gridcell "New York"
+      - gridcell "61"
+      - gridcell "2013/08/11"
+      - gridcell "$98,540"
+    - row "Tiger Nixon System Architect Edinburgh 61 2011/04/25 $320,800":
+      - gridcell "Tiger Nixon"
+      - gridcell "System Architect"
+      - gridcell "Edinburgh"
+      - gridcell "61"
+      - gridcell "2011/04/25"
+      - gridcell "$320,800"
+    - row "Timothy Mooney Office Manager London 37 2008/12/11 $136,200":
+      - gridcell "Timothy Mooney"
+      - gridcell "Office Manager"
+      - gridcell "London"
+      - gridcell "37"
+      - gridcell "2008/12/11"
+      - gridcell "$136,200"
+    - row "Unity Butler Marketing Designer San Francisco 47 2009/12/09 $85,675":
+      - gridcell "Unity Butler"
+      - gridcell "Marketing Designer"
+      - gridcell "San Francisco"
+      - gridcell "47"
+      - gridcell "2009/12/09"
+      - gridcell "$85,675"
+    - row "Vivian Harrell Financial Controller San Francisco 62 2009/02/14 $452,500":
+      - gridcell "Vivian Harrell"
+      - gridcell "Financial Controller"
+      - gridcell "San Francisco"
+      - gridcell "62"
+      - gridcell "2009/02/14"
+      - gridcell "$452,500"
+    - row "Yuri Berry Chief Marketing Officer (CMO) New York 40 2009/06/25 $675,000":
+      - gridcell "Yuri Berry"
+      - gridcell "Chief Marketing Officer (CMO)"
+      - gridcell "New York"
+      - gridcell "40"
+      - gridcell "2009/06/25"
+      - gridcell "$675,000"
+    - row "Zenaida Frank Software Engineer New York 63 2010/01/04 $125,250":
+      - gridcell "Zenaida Frank"
+      - gridcell "Software Engineer"
+      - gridcell "New York"
+      - gridcell "63"
+      - gridcell "2010/01/04"
+      - gridcell "$125,250"
+    - row "Zorita Serrano Software Engineer San Francisco 56 2012/06/01 $115,000":
+      - gridcell "Zorita Serrano"
+      - gridcell "Software Engineer"
+      - gridcell "San Francisco"
+      - gridcell "56"
+      - gridcell "2012/06/01"
+      - gridcell "$115,000"
+- grid:
+  - rowgroup:
+    - row "Name Position Office Age Start date Salary":
+      - gridcell "Name"
+      - gridcell "Position"
+      - gridcell "Office"
+      - gridcell "Age"
+      - gridcell "Start date"
+      - gridcell "Salary"
+- status: Showing 1 to 57 of 57 entries
+- list:
+  - listitem: Javascript
+  - listitem: HTML
+  - listitem: CSS
+- paragraph: "The Javascript shown below is used to initialise the table shown in this example:"
+- link "Javascript":
+  - /url: "#"
+- table:
+  - rowgroup:
+    - 'row "1 2 3 4 5 6 7 $(document).ready(function() { $(''#example'').DataTable( { \"scrollY\": \"200px\", \"scrollCollapse\": true, \"paging\": false } ); } );"':
+      - cell "1 2 3 4 5 6 7"
+      - 'cell "$(document).ready(function() { $(''#example'').DataTable( { \"scrollY\": \"200px\", \"scrollCollapse\": true, \"paging\": false } ); } );"':
+        - code: $(document).ready(
+        - code: function
+        - code: "() {"
+        - code
+        - code: $(
+        - code: "'#example'"
+        - code: ").DataTable( {"
+        - code
+        - code: "\"scrollY\""
+        - code: ":"
+        - code: "\"200px\""
+        - code: ","
+        - code
+        - code: "\"scrollCollapse\""
+        - code: ":"
+        - code: "true"
+        - code: ","
+        - code
+        - code: "\"paging\""
+        - code: ":"
+        - code: "false"
+        - code
+        - code: "} );"
+        - code: "} );"
+- paragraph: "In addition to the above code, the following Javascript library files are loaded for use in this example:"
+- list:
+  - listitem:
+    - link "https://code.jquery.com/jquery-3.5.1.js":
+      - /url: https://code.jquery.com/jquery-3.5.1.js
+  - listitem:
+    - link "../../media/js/jquery.dataTables.js":
+      - /url: ../../media/js/jquery.dataTables.js
+- heading "Other examples" [level=2]
+- heading "Basic initialisation" [level=3]:
+  - link "Basic initialisation":
+    - /url: ./index.html
+- list:
+  - listitem:
+    - link "Zero configuration":
+      - /url: ./zero_configuration.html
+  - listitem:
+    - link "Feature enable / disable":
+      - /url: ./filter_only.html
+  - listitem:
+    - link "Default ordering (sorting)":
+      - /url: ./table_sorting.html
+  - listitem:
+    - link "Multi-column ordering":
+      - /url: ./multi_col_sort.html
+  - listitem:
+    - link "Multiple tables":
+      - /url: ./multiple_tables.html
+  - listitem:
+    - link "Hidden columns":
+      - /url: ./hidden_columns.html
+  - listitem:
+    - link "Complex headers (rowspan and colspan)":
+      - /url: ./complex_header.html
+  - listitem:
+    - link "DOM positioning":
+      - /url: ./dom.html
+  - listitem:
+    - link "Flexible table width":
+      - /url: ./flexible_width.html
+  - listitem:
+    - link "State saving":
+      - /url: ./state_save.html
+  - listitem:
+    - link "Data rendering":
+      - /url: ./data_rendering.html
+  - listitem:
+    - link "Alternative pagination":
+      - /url: ./alt_pagination.html
+  - listitem:
+    - link "Scroll - vertical":
+      - /url: ./scroll_y.html
+  - listitem:
+    - link "Scroll - vertical, dynamic height":
+      - /url: ./scroll_y_dynamic.html
+  - listitem:
+    - link "Scroll - horizontal":
+      - /url: ./scroll_x.html
+  - listitem:
+    - link "Scroll - horizontal and vertical":
+      - /url: ./scroll_xy.html
+  - listitem:
+    - link "Language - Comma decimal place":
+      - /url: ./comma-decimal.html
+  - listitem:
+    - link "Language options":
+      - /url: ./language.html
+- heading "Advanced initialisation" [level=3]:
+  - link "Advanced initialisation":
+    - /url: ../advanced_init/index.html
+- list:
+  - listitem:
+    - link "DOM / jQuery events":
+      - /url: ../advanced_init/events_live.html
+  - listitem:
+    - link "DataTables events":
+      - /url: ../advanced_init/dt_events.html
+  - listitem:
+    - link "Column rendering":
+      - /url: ../advanced_init/column_render.html
+  - listitem:
+    - link "Page length options":
+      - /url: ../advanced_init/length_menu.html
+  - listitem:
+    - link "Multiple table control elements":
+      - /url: ../advanced_init/dom_multiple_elements.html
+  - listitem:
+    - link "Complex headers with column visibility":
+      - /url: ../advanced_init/complex_header.html
+  - listitem:
+    - link "Read HTML to data objects":
+      - /url: ../advanced_init/object_dom_read.html
+  - listitem:
+    - link "HTML5 data-* attributes - cell data":
+      - /url: ../advanced_init/html5-data-attributes.html
+  - listitem:
+    - link "HTML5 data-* attributes - table options":
+      - /url: ../advanced_init/html5-data-options.html
+  - listitem:
+    - link "Language file":
+      - /url: ../advanced_init/language_file.html
+  - listitem:
+    - link "Setting defaults":
+      - /url: ../advanced_init/defaults.html
+  - listitem:
+    - link "Row created callback":
+      - /url: ../advanced_init/row_callback.html
+  - listitem:
+    - link "Row grouping":
+      - /url: ../advanced_init/row_grouping.html
+  - listitem:
+    - link "Footer callback":
+      - /url: ../advanced_init/footer_callback.html
+  - listitem:
+    - link "Custom toolbar elements":
+      - /url: ../advanced_init/dom_toolbar.html
+  - listitem:
+    - link "Order direction sequence control":
+      - /url: ../advanced_init/sort_direction_control.html
+- heading "Styling" [level=3]:
+  - link "Styling":
+    - /url: ../styling/index.html
+- list:
+  - listitem:
+    - link "Base style":
+      - /url: ../styling/display.html
+  - listitem:
+    - link "Base style - no styling classes":
+      - /url: ../styling/no-classes.html
+  - listitem:
+    - link "Base style - cell borders":
+      - /url: ../styling/cell-border.html
+  - listitem:
+    - link "Base style - compact":
+      - /url: ../styling/compact.html
+  - listitem:
+    - link "Base style - hover":
+      - /url: ../styling/hover.html
+  - listitem:
+    - link "Base style - order-column":
+      - /url: ../styling/order-column.html
+  - listitem:
+    - link "Base style - row borders":
+      - /url: ../styling/row-border.html
+  - listitem:
+    - link "Base style - stripe":
+      - /url: ../styling/stripe.html
+  - listitem:
+    - link "Bootstrap 3":
+      - /url: ../styling/bootstrap.html
+  - listitem:
+    - link "Bootstrap 4":
+      - /url: ../styling/bootstrap4.html
+  - listitem:
+    - link "Foundation":
+      - /url: ../styling/foundation.html
+  - listitem:
+    - link "Semantic UI":
+      - /url: ../styling/semanticui.html
+  - listitem:
+    - link "jQuery UI ThemeRoller":
+      - /url: ../styling/jqueryUI.html
+  - listitem:
+    - link "Material Design (Tech. preview)":
+      - /url: ../styling/material.html
+  - listitem:
+    - link "UIKit 3 (Tech. preview)":
+      - /url: ../styling/uikit.html
+- heading "Data sources" [level=3]:
+  - link "Data sources":
+    - /url: ../data_sources/index.html
+- list:
+  - listitem:
+    - link "HTML (DOM) sourced data":
+      - /url: ../data_sources/dom.html
+  - listitem:
+    - link "Ajax sourced data":
+      - /url: ../data_sources/ajax.html
+  - listitem:
+    - link "Javascript sourced data":
+      - /url: ../data_sources/js_array.html
+  - listitem:
+    - link "Server-side processing":
+      - /url: ../data_sources/server_side.html
+- heading "API" [level=3]:
+  - link "API":
+    - /url: ../api/index.html
+- list:
+  - listitem:
+    - link "Add rows":
+      - /url: ../api/add_row.html
+  - listitem:
+    - link "Individual column searching (text inputs)":
+      - /url: ../api/multi_filter.html
+  - listitem:
+    - link "Individual column searching (select inputs)":
+      - /url: ../api/multi_filter_select.html
+  - listitem:
+    - link "Highlighting rows and columns":
+      - /url: ../api/highlight.html
+  - listitem:
+    - link "Child rows (show extra / detailed information)":
+      - /url: ../api/row_details.html
+  - listitem:
+    - link "Row selection (multiple rows)":
+      - /url: ../api/select_row.html
+  - listitem:
+    - link "Row selection and deletion (single row)":
+      - /url: ../api/select_single_row.html
+  - listitem:
+    - link "Form inputs":
+      - /url: ../api/form.html
+  - listitem:
+    - link "Index column":
+      - /url: ../api/counter_columns.html
+  - listitem:
+    - link "Show / hide columns dynamically":
+      - /url: ../api/show_hide.html
+  - listitem:
+    - link "Using API in callbacks":
+      - /url: ../api/api_in_init.html
+  - listitem:
+    - link "Scrolling and Bootstrap tabs":
+      - /url: ../api/tabs_and_scrolling.html
+  - listitem:
+    - link "Search API (regular expressions)":
+      - /url: ../api/regex.html
+- heading "Ajax" [level=3]:
+  - link "Ajax":
+    - /url: ../ajax/index.html
+- list:
+  - listitem:
+    - link "Ajax data source (arrays)":
+      - /url: ../ajax/simple.html
+  - listitem:
+    - link "Ajax data source (objects)":
+      - /url: ../ajax/objects.html
+  - listitem:
+    - link "Nested object data (objects)":
+      - /url: ../ajax/deep.html
+  - listitem:
+    - link "Nested object data (arrays)":
+      - /url: ../ajax/objects_subarrays.html
+  - listitem:
+    - link "Orthogonal data":
+      - /url: ../ajax/orthogonal-data.html
+  - listitem:
+    - link "Generated content for a column":
+      - /url: ../ajax/null_data_source.html
+  - listitem:
+    - link "Custom data source property":
+      - /url: ../ajax/custom_data_property.html
+  - listitem:
+    - link "Flat array data source":
+      - /url: ../ajax/custom_data_flat.html
+  - listitem:
+    - link "Deferred rendering for speed":
+      - /url: ../ajax/defer_render.html
+- heading "Server-side" [level=3]:
+  - link "Server-side":
+    - /url: ../server_side/index.html
+- list:
+  - listitem:
+    - link "Server-side processing":
+      - /url: ../server_side/simple.html
+  - listitem:
+    - link "Custom HTTP variables":
+      - /url: ../server_side/custom_vars.html
+  - listitem:
+    - link "POST data":
+      - /url: ../server_side/post.html
+  - listitem:
+    - link "Automatic addition of row ID attributes":
+      - /url: ../server_side/ids.html
+  - listitem:
+    - link "Object data source":
+      - /url: ../server_side/object_data.html
+  - listitem:
+    - link "Row details":
+      - /url: ../server_side/row_details.html
+  - listitem:
+    - link "Row selection":
+      - /url: ../server_side/select_rows.html
+  - listitem:
+    - link "JSONP data source for remote domains":
+      - /url: ../server_side/jsonp.html
+  - listitem:
+    - link "Deferred loading of data":
+      - /url: ../server_side/defer_loading.html
+  - listitem:
+    - link "Pipelining data to reduce Ajax calls for paging":
+      - /url: ../server_side/pipeline.html
+- heading "Plug-ins" [level=3]:
+  - link "Plug-ins":
+    - /url: ../plug-ins/index.html
+- list:
+  - listitem:
+    - link "API plug-in methods":
+      - /url: ../plug-ins/api.html
+  - listitem:
+    - link "Ordering plug-ins (with type detection)":
+      - /url: ../plug-ins/sorting_auto.html
+  - listitem:
+    - link "Ordering plug-ins (no type detection)":
+      - /url: ../plug-ins/sorting_manual.html
+  - listitem:
+    - link "Custom filtering - range search":
+      - /url: ../plug-ins/range_filtering.html
+  - listitem:
+    - link "Live DOM ordering":
+      - /url: ../plug-ins/dom_sort.html
+- paragraph:
+  - text: Please refer to the
+  - link "DataTables documentation":
+    - /url: http://www.datatables.net
+  - text: for full information about its API properties and methods. Additionally, there are a wide range of
+  - link "extensions":
+    - /url: http://www.datatables.net/extensions
+  - text: and
+  - link "plug-ins":
+    - /url: http://www.datatables.net/plug-ins
+  - text: which extend the capabilities of DataTables.
+- paragraph:
+  - text: DataTables designed and created by
+  - link "SpryMedia Ltd":
+    - /url: http://www.sprymedia.co.uk
+  - text: © 2007-2020 DataTables is licensed under the
+  - link "MIT license":
+    - /url: http://www.datatables.net/mit
+  - text: .
+```

@@ -31,7 +31,7 @@ export interface Running {
 }
 
 /** Serves a directory read-only and refuses to leave it. */
-export function serveStatic(root: string): Promise<Running> {
+export function serveStatic(root: string, mounts: Record<string, string> = {}): Promise<Running> {
   const base = normalize(root.endsWith(sep) ? root : root + sep);
   const server: Server = createServer((req, res) => {
     let path: string;
@@ -41,8 +41,12 @@ export function serveStatic(root: string): Promise<Running> {
       res.writeHead(400).end();
       return;
     }
-    let file = normalize(join(base, path));
-    if (!file.startsWith(base)) {
+    const mount = Object.keys(mounts).find((m) => path === m || path.startsWith(`${m}/`));
+    const mountBase = mount
+      ? normalize(mounts[mount]?.endsWith(sep) ? (mounts[mount] as string) : `${mounts[mount]}${sep}`)
+      : base;
+    let file = normalize(join(mountBase, mount ? path.slice(mount.length) : path));
+    if (!file.startsWith(mountBase)) {
       res.writeHead(403).end();
       return;
     }

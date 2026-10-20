@@ -695,7 +695,7 @@
           [
             "sh",
             "-c",
-            "mkdir -p {work}/root/photos {work}/root/docs && printf 'hello\\n' > {work}/root/readme.txt && printf 'id,name\\n1,a\\n' > {work}/root/data.csv && printf 'x' > {work}/root/docs/notes.md"
+            "mkdir -p {work}/root/photos {work}/root/docs && printf 'hello\\n' > {work}/root/readme.txt && printf 'id,name\\n1,a\\n' > {work}/root/data.csv && printf 'x' > {work}/root/docs/notes.md && touch -d 2020-01-01T00:00:00Z {work}/root/readme.txt {work}/root/data.csv {work}/root/docs/notes.md {work}/root/docs {work}/root/photos {work}/root"
           ]
         ],
         "command": ["{src}/filebrowser", "-d", "{work}/fb.db", "-r", "{work}/root", "-a", "127.0.0.1", "-p", "{port}"]
@@ -845,6 +845,138 @@
               "click": "role=button[name=\"Settings\"]"
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "jquery-file-upload",
+      "name": "jQuery File Upload demo",
+      "upstream": "https://github.com/blueimp/jQuery-File-Upload",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/blueimp/jQuery-File-Upload",
+        "rev": "0e92a4d4613d4ed5231ee0d8513519f2e04f99ba"
+      },
+      "license": "MIT",
+      "licenseNote": "Demo ships with the library under the MIT license; no upload server is run, so files are only queued.",
+      "framework": "jquery-bootstrap-3",
+      "family": "blueimp-upload",
+      "partition": "dev",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": ""
+      },
+      "aliases": {
+        "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js": "jquery@1.12.4/dist/jquery.min.js",
+        "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css": "bootstrap@3.3.7/dist/css/bootstrap.min.css",
+        "https://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js": "blueimp-tmpl@3.20.0/js/tmpl.min.js",
+        "https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js": "blueimp-load-image@5.16.0/js/load-image.all.min.js",
+        "https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js": "blueimp-canvas-to-blob@3.29.0/js/canvas-to-blob.min.js",
+        "https://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js": "blueimp-gallery@3.4.0/js/jquery.blueimp-gallery.min.js",
+        "https://blueimp.github.io/Gallery/css/blueimp-gallery.min.css": "blueimp-gallery@3.4.0/css/blueimp-gallery.min.css"
+      },
+      "groundTruth": {
+        "basis": ["jQuery File Upload documentation and demo description", "Chromium accessibility tree"],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "empty",
+          "path": "/index.html",
+          "workflows": ["choose files to upload"]
+        },
+        {
+          "id": "files-queued",
+          "path": "/index.html",
+          "workflows": ["review queued files, start or cancel uploads, select files and delete them"],
+          "state": "two files queued",
+          "steps": [
+            {
+              "upload": {
+                "selector": "input[type=file]",
+                "files": [
+                  {
+                    "name": "notes.txt",
+                    "text": "first"
+                  },
+                  {
+                    "name": "report.csv",
+                    "text": "a,b\n1,2\n"
+                  }
+                ]
+              },
+              "waitMs": 800
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tabulator",
+      "name": "Tabulator examples",
+      "upstream": "https://github.com/olifolkerd/tabulator",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/olifolkerd/tabulator",
+        "rev": "f50492e5dc86460876de4f13394a341451a87c66",
+        "sparse": ["examples"]
+      },
+      "license": "MIT",
+      "licenseNote": "Examples ship with the library under the MIT license; the built library is the published npm package of the same version.",
+      "framework": "vanilla-js",
+      "family": "tabulator",
+      "partition": "dev",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": ""
+      },
+      "mounts": {
+        "/dist": "tabulator-tables@6.6.1/dist"
+      },
+      "aliases": {},
+      "groundTruth": {
+        "basis": ["Tabulator documentation and example descriptions", "Chromium accessibility tree"],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "basic-table",
+          "path": "/examples/01-basic-table.html",
+          "workflows": ["read a table of records"]
+        },
+        {
+          "id": "sorting-filtering",
+          "path": "/examples/03-sorting-filtering.html",
+          "workflows": ["sort columns and filter rows"]
+        },
+        {
+          "id": "editing",
+          "path": "/examples/04-editing.html",
+          "workflows": ["edit cells in place"]
+        },
+        {
+          "id": "pagination",
+          "path": "/examples/05-pagination.html",
+          "workflows": ["move through pages of records", "change the page size"]
+        },
+        {
+          "id": "selection",
+          "path": "/examples/07-selection.html",
+          "workflows": ["select rows and act on the selection"]
+        },
+        {
+          "id": "tree-data",
+          "path": "/examples/09-tree-data.html",
+          "workflows": ["expand and collapse nested rows"]
+        },
+        {
+          "id": "full-demo",
+          "path": "/examples/10-full-demo.html",
+          "workflows": ["browse, search, select and edit a large table"]
         }
       ]
     }

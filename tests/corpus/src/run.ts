@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { chromium } from "@playwright/test";
 import type { Annotation } from "./annotation.ts";
 import { type Capture, capturePage } from "./capture.ts";
+import { ensurePackage, parseAlias } from "./cdn.ts";
 import { dossierOf } from "./dossier.ts";
 import { evaluateOne, type Row, readJson, recognize } from "./evaluate.ts";
 import { dirOf, fetchSource } from "./fetch.ts";
@@ -12,7 +13,7 @@ import { type Running, serveProcess, serveStatic } from "./serve.ts";
 
 export const ANNOTATIONS = `${ROOT}fixtures/corpus/annotations/`;
 export const capturePath = (s: string, p: string): string => `${CACHE}captures/${s}/${p}.json`;
-export const dossierPath = (s: string, p: string): string => `${CACHE}dossiers/${s}/${p}.md`;
+export const dossierPath = (s: string, p: string): string => `${ROOT}fixtures/corpus/dossiers/${s}/${p}.md`;
 export const annotationPath = (s: string, p: string): string => `${ANNOTATIONS}${s}/${p}.json`;
 
 function freePort(): Promise<number> {
@@ -27,7 +28,15 @@ function freePort(): Promise<number> {
 
 export async function start(s: Source): Promise<Running> {
   const dir = fetchSource(s);
-  if (s.serve?.kind === "static") return serveStatic(`${dir}${s.serve.root}`);
+  if (s.serve?.kind === "static") {
+    const mounts: Record<string, string> = {};
+    for (const [prefix, spec] of Object.entries(s.mounts ?? {})) {
+      const ref = parseAlias(spec);
+      if (!ref) throw new Error(`${s.id}: bad mount ${spec}`);
+      mounts[prefix] = `${ensurePackage(ref)}${ref.path}`;
+    }
+    return serveStatic(`${dir}${s.serve.root}`, mounts);
+  }
   if (s.serve?.kind === "process") {
     const work = mkdtempSync(`${tmpdir()}/corpus-${s.id}-`);
     return serveProcess(s, work, await freePort());
@@ -35,8 +44,8 @@ export async function start(s: Source): Promise<Running> {
   throw new Error(`${s.id}: nothing to serve`);
 }
 
-/** Captures every page of the given sources in one browser and stores captures and dossiers under the cache. */
-export async function captureSources(sources: Source[], only?: string[]): Promise<Capture[]> {
+/** Captures every page of the given sources in one browser and stores captures under the cache and writes a dossier only when none is frozen yet. */
+export async function captureSources(sources: Source[], only?: string[], refreshDossiers = false): Promise<Capture[]> {
   const browser = await chromium.launch({ channel: "chromium" });
   const out: Capture[] = [];
   try {
@@ -47,9 +56,10 @@ export async function captureSources(sources: Source[], only?: string[]): Promis
           if (only && !only.includes(`${s.id}/${p.id}`)) continue;
           const c = await capturePage(browser, running.origin, s, p);
           mkdirSync(`${CACHE}captures/${s.id}`, { recursive: true });
-          mkdirSync(`${CACHE}dossiers/${s.id}`, { recursive: true });
+          mkdirSync(`${ROOT}fixtures/corpus/dossiers/${s.id}`, { recursive: true });
           writeFileSync(capturePath(s.id, p.id), JSON.stringify(c));
-          writeFileSync(dossierPath(s.id, p.id), dossierOf(s, p, c).text);
+          if (refreshDossiers || !existsSync(dossierPath(s.id, p.id)))
+            writeFileSync(dossierPath(s.id, p.id), dossierOf(s, p, c).text);
           out.push(c);
         }
       } finally {

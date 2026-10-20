@@ -1,0 +1,69 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "tabulator",
+  "page": "selection",
+  "dossierSha256": "4cb88fef8e9d5e9eaa907079e2907c249bfae3acda9c46909da5b72ebcfbf2ea",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-tabulator",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/tabulator/selection.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Select Row",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Select all",
+      "effect": "state_change"
+    },
+    {
+      "name": "Deselect all",
+      "effect": "state_change"
+    },
+    {
+      "name": "Log selected data",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Row Selection",
+      "columns": [
+        "Select Row",
+        "Name",
+        "Department",
+        "Age"
+      ],
+      "rows": 6
+    }
+  ],
+  "composites": [
+    {
+      "kind": "bulk_selection",
+      "name": "Row selection"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Select rows and log the selection",
+      "needs": [
+        "Select Row",
+        "Select all",
+        "Deselect all",
+        "Log selected data",
+        "Row selection",
+        "Row Selection"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

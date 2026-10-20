@@ -183,7 +183,7 @@
    "mirrored": 1
   },
   "filebrowser/files": {
-   "structureSha256": "d75bb4de4ef223bc7ac3f57ece9de504fafb9f786251bdd7838ab8a6cf4d8634",
+   "structureSha256": "75ebed5cf3a23ab409fa29e32995994e227943eba8e01c27005f34320bcbd82d",
    "nodes": 174,
    "blocked": 0,
    "mirrored": 0
@@ -195,13 +195,13 @@
    "mirrored": 0
   },
   "filebrowser/new-folder": {
-   "structureSha256": "f432dd608e400194705267455a748a4c5d0f43cc8f6726728d028b037822c89c",
+   "structureSha256": "d0038b90c10b1fc9d34000c08fb82e63e3f36a359e970368ca8d48557b8c81a3",
    "nodes": 187,
    "blocked": 0,
    "mirrored": 0
   },
   "filebrowser/selected": {
-   "structureSha256": "05a9da66866e6183b02db4342b5a1e485c87545cb07cf8329ccdde673a6e4510",
+   "structureSha256": "a27376a7ff274ebe73d51d277e2934fe71a3e92dbb0451fda57a2602172f3b09",
    "nodes": 206,
    "blocked": 0,
    "mirrored": 0
@@ -213,10 +213,22 @@
    "mirrored": 0
   },
   "filebrowser/upload": {
-   "structureSha256": "36074768612b7eca2e0a9044de972939bc04ef682ec25f2b056648b706e8095c",
+   "structureSha256": "d1a9c62fdde2b517e215152dbc4c5a1476fe67adf787e9cae848656d36460a20",
    "nodes": 188,
    "blocked": 0,
    "mirrored": 0
+  },
+  "jquery-file-upload/empty": {
+   "structureSha256": "dff477de54f0fd79ca60dfe6a09744f9beabfdb1aeb85c39130f3f7a8f7667f7",
+   "nodes": 70,
+   "blocked": 3,
+   "mirrored": 7
+  },
+  "jquery-file-upload/files-queued": {
+   "structureSha256": "3d3ca80a245d60b44fda47c406bd42d5fe42e1300deb6b4342dcc9d03678be0c",
+   "nodes": 104,
+   "blocked": 3,
+   "mirrored": 7
   },
   "jquery-ui/accordion-default": {
    "structureSha256": "644dc83e33048dc92355ca65f9523d211efeeedbaa4f38a6c531a712a31cbf44",
@@ -283,6 +295,48 @@
    "nodes": 20,
    "blocked": 0,
    "mirrored": 0
+  },
+  "tabulator/basic-table": {
+   "structureSha256": "2457020d9dfec415b43f8fde6cb0141b717b0f4c65795765e009bc587ab02ca2",
+   "nodes": 127,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  "tabulator/editing": {
+   "structureSha256": "b2b581f6e0149d845fb97755c38f365fb04a511dceea5f66a53142339a6dd5fd",
+   "nodes": 168,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  "tabulator/full-demo": {
+   "structureSha256": "71c6085961a5850f56865a9f8281676345c150b4b1ef793e7660139a1fb64adf",
+   "nodes": 309,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  "tabulator/pagination": {
+   "structureSha256": "ed738c8c5ec94700e21a431e3df00c7c2e44acb14cf49cf5ee16a88e76f2757b",
+   "nodes": 206,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  "tabulator/selection": {
+   "structureSha256": "67ca296eec12d800cee331fccb189e336d445af9f374c1d94c5fb02d75fbd2b3",
+   "nodes": 110,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  "tabulator/sorting-filtering": {
+   "structureSha256": "a6df3af9a9d01328818572e92d27c244d3714b5d7d1ca049473b2dc2c4b4cc69",
+   "nodes": 137,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  "tabulator/tree-data": {
+   "structureSha256": "a99e831010b8684ee8926e47e8418feb2c2e157a6a301564387957dc21f2963f",
+   "nodes": 73,
+   "blocked": 0,
+   "mirrored": 1
   },
   "todomvc-jquery/empty": {
    "structureSha256": "37809bfd7b9dd2c6b59d9f9116fd68bada16d17c2736e63f4eccf812a13470d5",

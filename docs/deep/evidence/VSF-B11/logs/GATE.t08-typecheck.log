@@ -1,0 +1,6 @@
+$ pnpm --filter @vsf/corpus-tests run typecheck
+
+> @vsf/corpus-tests@0.0.0 typecheck /home/user/VSF/tests/corpus
+> tsc -p tsconfig.json --noEmit
+
+[exit 0]

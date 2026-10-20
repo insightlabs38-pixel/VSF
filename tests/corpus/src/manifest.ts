@@ -8,11 +8,17 @@ export const MANIFEST_PATH = fileURLToPath(new URL("../corpus.json", import.meta
 export type Partition = "dev" | "validation" | "heldout";
 export const PARTITIONS: Partition[] = ["dev", "validation", "heldout"];
 
+export interface UploadStep {
+  selector: string;
+  files: { name: string; text: string; mimeType?: string }[];
+}
+
 export interface PageStep {
   /** A user-level action reaching a state worth annotating, e.g. opening a dialog. */
   click?: string;
   fill?: { selector: string; value: string };
   press?: string;
+  upload?: UploadStep;
   waitMs?: number;
 }
 
@@ -64,6 +70,10 @@ export interface Source {
     | { kind: "process"; command: string[]; port: number; health: string; setup?: string[][] };
   groundTruth: GroundTruth;
   pages: Page[];
+  /** Exact third-party URLs the application loads, mapped to the pinned npm file that serves them, as `pkg@x.y.z/path`. */
+  aliases?: Record<string, string>;
+  /** Paths the application expects but does not ship (built output), served from a pinned npm package as `pkg@x.y.z/subdir`. */
+  mounts?: Record<string, string>;
   /** Pages considered and not kept, with why. */
   dropped?: { page: string; reason: string }[];
 }

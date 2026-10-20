@@ -1,0 +1,442 @@
+# W3C ARIA Authoring Practices Guide examples - combobox-autocomplete-list
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Editable Combobox With List Autocomplete Example
+State: as loaded
+What people do here (from the manifest):
+- choose a US state by typing into an editable combobox and picking from the suggestion list
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/118
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../combobox-pattern.html
+- main:
+  - heading "Editable Combobox With List Autocomplete Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The below combobox for choosing the name of a US state or territory demonstrates the
+    - link "Combobox Pattern":
+      - /url: ../combobox-pattern.html
+    - text: . The design pattern describes four types of autocomplete behavior. This example illustrates the autocomplete behavior known as list autocomplete with manual selection. If the user types one or more characters in the edit box and the typed characters match the beginning of the name of one or more states or territories, a listbox popup appears containing the matching names. When the listbox appears, a suggested name is not automatically selected. Thus, after typing, if the user tabs or clicks out of the combobox without choosing a value from the listbox, the typed string becomes the value of the combobox. Note that this implementation enables users to input the name of a state or territory, but it does not prevent input of any other arbitrary value.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Select-Only Combobox":
+        - /url: combobox-select-only.html
+      - text: ": A single-select combobox with no text input that is functionally similar to an HTML"
+      - code: select
+      - text: element.
+    - listitem:
+      - link "Editable Combobox with Both List and Inline Autocomplete":
+        - /url: combobox-autocomplete-both.html
+      - text: ": An editable combobox that demonstrates the autocomplete behavior known as list with inline autocomplete."
+    - listitem:
+      - link "Editable Combobox Without Autocomplete":
+        - /url: combobox-autocomplete-none.html
+      - text: ": An editable combobox that demonstrates the behavior associated with"
+      - code: aria-autocomplete=none
+      - text: .
+    - listitem:
+      - link "Editable Combobox with Grid Popup":
+        - /url: grid-combo.html
+      - text: ": An editable combobox that presents suggestions in a grid, enabling users to navigate descriptive information about each suggestion."
+    - listitem:
+      - link "Date Picker Combobox":
+        - /url: combobox-datepicker.html
+      - text: ": An editable date input combobox that opens a dialog containing a calendar grid and buttons for navigating by month and year."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - text: State
+  - combobox "State"
+  - button "States"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem: Browsers do not manage visibility of elements referenced by aria-activedescendant like they do for elements with focus. When a keyboard event changes the active option in the listbox, the JavaScript scrolls the option referenced by aria-activedescendant into view. Managing aria-activedescendant visibility is essential to accessibility for people who use a browser's zoom feature to increase the size of content.
+    - listitem:
+      - text: To enhance perceivability when operating the combobox, visual keyboard focus and hover are styled using the CSS
+      - code: :hover
+      - text: pseudo-class, and
+      - code: focus
+      - text: and
+      - code: blur
+      - text: "event handlers:"
+      - list:
+        - listitem:
+          - text: To make it easier to perceive when the combobox receives focus, focus creates a 2 pixel focus ring around both the
+          - code: input
+          - text: and
+          - code: button
+          - text: elements with 2 pixels of space between the focus ring and the combobox.
+        - listitem: To make it easier to perceive that either the input or button can be clicked to open the listbox, hover causes the same styling as focus.
+        - listitem: To help people with visual impairments identify the combobox as an interactive element, the cursor is changed to a pointer when hovering over the combobox or list.
+        - listitem: To make it easier to distinguish the selected listbox option from other options, selection creates a 2 pixel border above and below the option.
+        - listitem: "Note: Because transparent borders are visible on some systems with operating system high contrast settings enabled, transparency cannot be used to create a visual difference between the element that is focused and other elements. Instead of using transparency, the focused element has a thicker border and less padding. When an element receives focus, its border changes from zero to two pixels and padding is reduced by two pixels. When an element loses focus, its border changes from two pixels to zero and padding is increased by two pixels."
+    - listitem:
+      - text: To ensure the inline SVG graphic used for the arrow in the open button has sufficient contrast with the background when high contrast settings change the color of text content, CSS
+      - code: forced-color-adjust
+      - text: is set to
+      - code: auto
+      - text: on the
+      - code: svg
+      - text: element and and the
+      - code: fill
+      - text: attribute of the
+      - code: polygon
+      - text: element is set to
+      - code: currentcolor
+      - text: . This causes the colors of the
+      - code: fill
+      - text: of the polygon elements to be overridden by the high contrast color setting. If
+      - code: forced-color-adjust
+      - text: were not used to override the colors specified for the
+      - code: fill
+      - text: "property, the color would remain the same in high contrast mode, which could lead to insufficient contrast between the arrow and the background or even make it invisible if the color matched the high contrast mode background. Note: The explicit setting of"
+      - code: forced-color-adjust
+      - text: is necessary because some browsers do not use
+      - code: auto
+      - text: as the default value for SVG graphics.
+  - heading "Keyboard Support" [level=2]
+  - paragraph:
+    - text: The example combobox on this page implements the following keyboard interface. Other variations and options for the keyboard interface are described in the
+    - link "Keyboard Interaction section of the Combobox Pattern":
+      - /url: ../combobox-pattern.html#keyboard_interaction
+    - text: .
+  - heading "Textbox" [level=3]
+  - table "Textbox Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Down Arrow If the textbox is not empty and the listbox is displayed, moves visual focus to the first suggested value. If the textbox is empty and the listbox is not displayed, opens the listbox and moves visual focus to the first option. In both cases DOM focus remains on the textbox.":
+        - cell "Down Arrow"
+        - cell "If the textbox is not empty and the listbox is displayed, moves visual focus to the first suggested value. If the textbox is empty and the listbox is not displayed, opens the listbox and moves visual focus to the first option. In both cases DOM focus remains on the textbox.":
+          - list:
+            - listitem: If the textbox is not empty and the listbox is displayed, moves visual focus to the first suggested value.
+            - listitem: If the textbox is empty and the listbox is not displayed, opens the listbox and moves visual focus to the first option.
+            - listitem: In both cases DOM focus remains on the textbox.
+      - row "Alt + Down Arrow Opens the listbox without moving focus or changing selection.":
+        - cell "Alt + Down Arrow"
+        - cell "Opens the listbox without moving focus or changing selection."
+      - row "Up Arrow If the textbox is not empty and the listbox is displayed, moves visual focus to the last suggested value. If the textbox is empty, first opens the listbox if it is not already displayed and then moves visual focus to the last option. In both cases DOM focus remains on the textbox.":
+        - cell "Up Arrow"
+        - cell "If the textbox is not empty and the listbox is displayed, moves visual focus to the last suggested value. If the textbox is empty, first opens the listbox if it is not already displayed and then moves visual focus to the last option. In both cases DOM focus remains on the textbox.":
+          - list:
+            - listitem: If the textbox is not empty and the listbox is displayed, moves visual focus to the last suggested value.
+            - listitem: If the textbox is empty, first opens the listbox if it is not already displayed and then moves visual focus to the last option.
+            - listitem: In both cases DOM focus remains on the textbox.
+      - row "Enter Closes the listbox if it is displayed.":
+        - cell "Enter"
+        - cell "Closes the listbox if it is displayed."
+      - row "Escape If the listbox is displayed, closes it. If the listbox is not displayed, clears the textbox.":
+        - cell "Escape"
+        - cell "If the listbox is displayed, closes it. If the listbox is not displayed, clears the textbox.":
+          - list:
+            - listitem: If the listbox is displayed, closes it.
+            - listitem: If the listbox is not displayed, clears the textbox.
+      - row "Standard single line text editing keys Keys used for cursor movement and text manipulation, such as Delete and Shift + Right Arrow . An HTML input with type=\"text\" is used for the textbox so the browser will provide platform-specific editing keys.":
+        - cell "Standard single line text editing keys"
+        - cell "Keys used for cursor movement and text manipulation, such as Delete and Shift + Right Arrow . An HTML input with type=\"text\" is used for the textbox so the browser will provide platform-specific editing keys.":
+          - list:
+            - listitem: Keys used for cursor movement and text manipulation, such as Delete and Shift + Right Arrow .
+            - listitem:
+              - text: An HTML
+              - code: input
+              - text: with
+              - code: type="text"
+              - text: is used for the textbox so the browser will provide platform-specific editing keys.
+  - heading "Listbox Popup" [level=3]
+  - paragraph:
+    - strong: "NOTE:"
+    - text: When visual focus is in the listbox, DOM focus remains on the textbox and the value of
+    - code: aria-activedescendant
+    - text: on the textbox is set to a value that refers to the listbox option that is visually indicated as focused. Where the following descriptions of keyboard commands mention focus, they are referring to the visual focus indicator. For more information about this focus management technique, see
+    - link "Managing Focus in Composites Using aria-activedescendant":
+      - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_focus_activedescendant
+    - text: .
+  - table "Listbox Popup Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Enter Sets the textbox value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the textbox.":
+        - cell "Enter"
+        - cell "Sets the textbox value to the content of the focused option in the listbox. Closes the listbox. Sets visual focus on the textbox.":
+          - list:
+            - listitem: Sets the textbox value to the content of the focused option in the listbox.
+            - listitem: Closes the listbox.
+            - listitem: Sets visual focus on the textbox.
+      - row "Escape Closes the listbox. Sets visual focus on the textbox.":
+        - cell "Escape"
+        - cell "Closes the listbox. Sets visual focus on the textbox.":
+          - list:
+            - listitem: Closes the listbox.
+            - listitem: Sets visual focus on the textbox.
+      - 'row "Down Arrow Moves visual focus to the next option. If visual focus is on the last option, moves visual focus to the first option. Note: This wrapping behavior is useful when Home and End move the editing cursor as described below."':
+        - cell "Down Arrow"
+        - 'cell "Moves visual focus to the next option. If visual focus is on the last option, moves visual focus to the first option. Note: This wrapping behavior is useful when Home and End move the editing cursor as described below."':
+          - list:
+            - listitem: Moves visual focus to the next option.
+            - listitem: If visual focus is on the last option, moves visual focus to the first option.
+            - listitem: "Note: This wrapping behavior is useful when Home and End move the editing cursor as described below."
+      - 'row "Up Arrow Moves visual focus to the previous option. If visual focus is on the first option, moves visual focus to the last option. Note: This wrapping behavior is useful when Home and End move the editing cursor as described below."':
+        - cell "Up Arrow"
+        - 'cell "Moves visual focus to the previous option. If visual focus is on the first option, moves visual focus to the last option. Note: This wrapping behavior is useful when Home and End move the editing cursor as described below."':
+          - list:
+            - listitem: Moves visual focus to the previous option.
+            - listitem: If visual focus is on the first option, moves visual focus to the last option.
+            - listitem: "Note: This wrapping behavior is useful when Home and End move the editing cursor as described below."
+      - row "Right Arrow Moves visual focus to the textbox and moves the editing cursor one character to the right.":
+        - cell "Right Arrow"
+        - cell "Moves visual focus to the textbox and moves the editing cursor one character to the right."
+      - row "Left Arrow Moves visual focus to the textbox and moves the editing cursor one character to the left.":
+        - cell "Left Arrow"
+        - cell "Moves visual focus to the textbox and moves the editing cursor one character to the left."
+      - row "Home Moves visual focus to the textbox and places the editing cursor at the beginning of the field.":
+        - cell "Home"
+        - cell "Moves visual focus to the textbox and places the editing cursor at the beginning of the field."
+      - row "End Moves visual focus to the textbox and places the editing cursor at the end of the field.":
+        - cell "End"
+        - cell "Moves visual focus to the textbox and places the editing cursor at the end of the field."
+      - row "Printable Characters Moves visual focus to the textbox. Types the character in the textbox. Options in the listbox are filtered based on characters in the textbox.":
+        - cell "Printable Characters"
+        - cell "Moves visual focus to the textbox. Types the character in the textbox. Options in the listbox are filtered based on characters in the textbox.":
+          - list:
+            - listitem: Moves visual focus to the textbox.
+            - listitem: Types the character in the textbox.
+            - listitem: Options in the listbox are filtered based on characters in the textbox.
+  - heading "Button" [level=3]
+  - paragraph: The button has been removed from the tab sequence of the page, but is still important to assistive technologies for mobile devices that use touch events to open the list of options.
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - paragraph:
+    - text: The example combobox on this page implements the following ARIA roles, states, and properties. Information about other ways of applying ARIA roles, states, and properties is available in the
+    - link "Roles, States, and Properties section of the Combobox Pattern":
+      - /url: ../combobox-pattern.html#roles_states_properties
+    - text: .
+  - heading "Textbox" [level=3]
+  - table "Textbox Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "combobox input[type=\"text\"] Identifies the input as a combobox.":
+        - rowheader "combobox":
+          - code: combobox
+        - cell
+        - cell "input[type=\"text\"]":
+          - code: input[type="text"]
+        - cell "Identifies the input as a combobox."
+      - row "aria-autocomplete=\"list\" input[type=\"text\"] Indicates that the autocomplete behavior of the text input is to suggest a list of possible values in a popup and that the suggestions are related to the string that is present in the textbox.":
+        - cell
+        - rowheader "aria-autocomplete=\"list\"":
+          - code: aria-autocomplete="list"
+        - cell "input[type=\"text\"]":
+          - code: input[type="text"]
+        - cell "Indicates that the autocomplete behavior of the text input is to suggest a list of possible values in a popup and that the suggestions are related to the string that is present in the textbox."
+      - row "aria-controls=\"ID_REF\" input[type=\"text\"] Identifies the element that serves as the popup.":
+        - cell
+        - rowheader "aria-controls=\"ID_REF\"":
+          - code: aria-controls="ID_REF"
+        - cell "input[type=\"text\"]":
+          - code: input[type="text"]
+        - cell "Identifies the element that serves as the popup."
+      - row "aria-expanded=\"false\" input[type=\"text\"] Indicates that the popup element is not displayed.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "input[type=\"text\"]":
+          - code: input[type="text"]
+        - cell "Indicates that the popup element is not displayed.":
+          - text: Indicates that the popup element
+          - strong: is not
+          - text: displayed.
+      - row "aria-expanded=\"true\" input[type=\"text\"] Indicates that the popup element is displayed.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "input[type=\"text\"]":
+          - code: input[type="text"]
+        - cell "Indicates that the popup element is displayed.":
+          - text: Indicates that the popup element
+          - strong: is
+          - text: displayed.
+      - row "id=\"string\" input[type=\"text\"] Referenced by for attribute of label element to provide an accessible name. Recommended naming method for HTML input elements because clicking label focuses input.":
+        - cell
+        - rowheader "id=\"string\"":
+          - code: id="string"
+        - cell "input[type=\"text\"]":
+          - code: input[type="text"]
+        - cell "Referenced by for attribute of label element to provide an accessible name. Recommended naming method for HTML input elements because clicking label focuses input.":
+          - list:
+            - listitem:
+              - text: Referenced by
+              - code: for
+              - text: attribute of
+              - code: label
+              - text: element to provide an accessible name.
+            - listitem: Recommended naming method for HTML input elements because clicking label focuses input.
+      - row "aria-activedescendant=\"ID_REF\" input[type=\"text\"] When an option in the listbox is visually indicated as having keyboard focus, refers to that option. When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the input element. For more information about this focus management technique, see Managing Focus in Composites Using aria-activedescendant.":
+        - cell
+        - rowheader "aria-activedescendant=\"ID_REF\"":
+          - code: aria-activedescendant="ID_REF"
+        - cell "input[type=\"text\"]":
+          - code: input[type="text"]
+        - cell "When an option in the listbox is visually indicated as having keyboard focus, refers to that option. When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the input element. For more information about this focus management technique, see Managing Focus in Composites Using aria-activedescendant.":
+          - list:
+            - listitem: When an option in the listbox is visually indicated as having keyboard focus, refers to that option.
+            - listitem: When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value.
+            - listitem:
+              - text: Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the
+              - code: input
+              - text: element.
+            - listitem:
+              - text: For more information about this focus management technique, see
+              - link "Managing Focus in Composites Using aria-activedescendant":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_focus_activedescendant
+              - text: .
+  - heading "Listbox Popup" [level=3]
+  - table "Listbox Popup Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "listbox ul Identifies the ul element as a listbox.":
+        - rowheader "listbox":
+          - code: listbox
+        - cell
+        - cell "ul":
+          - code: ul
+        - cell "Identifies the ul element as a listbox.":
+          - text: Identifies the
+          - code: ul
+          - text: element as a
+          - code: listbox
+          - text: .
+      - row "aria-label=\"States\" ul Provides a label for the listbox.":
+        - cell
+        - rowheader "aria-label=\"States\"":
+          - code: aria-label="States"
+        - cell "ul":
+          - code: ul
+        - cell "Provides a label for the listbox.":
+          - text: Provides a label for the
+          - code: listbox
+          - text: .
+      - row "option li Identifies the element as a listbox option. The text content of the element provides the accessible name of the option.":
+        - rowheader "option":
+          - code: option
+        - cell
+        - cell "li":
+          - code: li
+        - cell "Identifies the element as a listbox option. The text content of the element provides the accessible name of the option.":
+          - list:
+            - listitem:
+              - text: Identifies the element as a
+              - code: listbox
+              - code: option
+              - text: .
+            - listitem:
+              - text: The text content of the element provides the accessible name of the
+              - code: option
+              - text: .
+      - row "aria-selected=\"true\" li Specified on an option in the listbox when it is visually highlighted as selected. Occurs only when an option in the list is referenced by aria-activedescendant.":
+        - cell
+        - rowheader "aria-selected=\"true\"":
+          - code: aria-selected="true"
+        - cell "li":
+          - code: li
+        - cell "Specified on an option in the listbox when it is visually highlighted as selected. Occurs only when an option in the list is referenced by aria-activedescendant.":
+          - list:
+            - listitem: Specified on an option in the listbox when it is visually highlighted as selected.
+            - listitem:
+              - text: Occurs only when an option in the list is referenced by
+              - code: aria-activedescendant
+              - text: .
+  - heading "Button" [level=3]
+  - table "Button Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "tabindex=\"-1\" button Removes the button from the tab sequence of the page because its function is redundant with the keyboard operation of the combobox.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "button":
+          - code: button
+        - cell "Removes the button from the tab sequence of the page because its function is redundant with the keyboard operation of the combobox."
+      - row "aria-label=\"States\" button Provides a label for the button.":
+        - cell
+        - rowheader "aria-label=\"States\"":
+          - code: aria-label="States"
+        - cell "button":
+          - code: button
+        - cell "Provides a label for the button.":
+          - text: Provides a label for the
+          - code: button
+          - text: .
+      - row "aria-controls=\"ID_REF\" button Identifies the element that serves as the popup.":
+        - cell
+        - rowheader "aria-controls=\"ID_REF\"":
+          - code: aria-controls="ID_REF"
+        - cell "button":
+          - code: button
+        - cell "Identifies the element that serves as the popup."
+      - row "aria-expanded=\"false\" button Indicates that the popup element is not displayed.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "button":
+          - code: button
+        - cell "Indicates that the popup element is not displayed.":
+          - text: Indicates that the popup element
+          - strong: is not
+          - text: displayed.
+      - row "aria-expanded=\"true\" button Indicates that the popup element is displayed.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "button":
+          - code: button
+        - cell "Indicates that the popup element is displayed.":
+          - text: Indicates that the popup element
+          - strong: is
+          - text: displayed.
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "combobox-autocomplete.css":
+        - /url: css/combobox-autocomplete.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "combobox-autocomplete.js":
+        - /url: js/combobox-autocomplete.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: "<label for=\"cb1-input\"> State </label> <div class=\"combobox combobox-list\"> <div class=\"group\"> <input id=\"cb1-input\" class=\"cb_edit\" type=\"text\" role=\"combobox\" aria-autocomplete=\"list\" aria-expanded=\"false\" aria-controls=\"cb1-listbox\"> <button id=\"cb1-button\" tabindex=\"-1\" aria-label=\"States\" aria-expanded=\"false\" aria-controls=\"cb1-listbox\"> <svg width=\"18\" height=\"16\" aria-hidden=\"true\" focusable=\"false\" style=\"forced-color-adjust: auto\"> <polygon class=\"arrow\" stroke-width=\"0\" fill-opacity=\"0.75\" fill=\"currentcolor\" points=\"3,6 15,6 9,14\"></polygon> </svg> </button> </div> <ul id=\"cb1-listbox\" role=\"listbox\" aria-label=\"States\"> <li id=\"lb1-al\" role=\"option\"> Alabama </li> <li id=\"lb1-ak\" role=\"option\"> Alaska </li> <li id=\"lb1-as\" role=\"option\"> American Samoa </li> <li id=\"lb1-az\" role=\"option\"> Arizona </li> <li id=\"lb1-ar\" role=\"option\"> Arkansas </li> <li id=\"lb1-ca\" role=\"option\"> California </li> <li id=\"lb1-co\" role=\"option\"> Colorado </li> <li id=\"lb1-ct\" role=\"option\"> Connecticut </li> <li id=\"lb1-de\" role=\"option\"> Delaware </li> <li id=\"lb1-dc\" role=\"option\"> District of Columbia </li> <li id=\"lb1-fl\" role=\"option\"> Florida </li> <li id=\"lb1-ga\" role=\"option\"> Georgia </li> <li id=\"lb1-gm\" role=\"option\"> Guam </li> <li id=\"lb1-hi\" role=\"option\"> Hawaii </li> <li id=\"lb1-id\" role=\"option\"> Idaho </li> <li id=\"lb1-il\" role=\"option\"> Illinois </li> <li id=\"lb1-in\" role=\"option\"> Indiana </li> <li id=\"lb1-ia\" role=\"option\"> Iowa </li> <li id=\"lb1-ks\" role=\"option\"> Kansas </li> <li id=\"lb1-ky\" role=\"option\"> Kentucky </li> <li id=\"lb1-la\" role=\"option\"> Louisiana </li> <li id=\"lb1-me\" role=\"option\"> Maine </li> <li id=\"lb1-md\" role=\"option\"> Maryland </li> <li id=\"lb1-ma\" role=\"option\"> Massachusetts </li> <li id=\"lb1-mi\" role=\"option\"> Michigan </li> <li id=\"lb1-mn\" role=\"option\"> Minnesota </li> <li id=\"lb1-ms\" role=\"option\"> Mississippi </li> <li id=\"lb1-mo\" role=\"option\"> Missouri </li> <li id=\"lb1-mt\" role=\"option\"> Montana </li> <li id=\"lb1-ne\" role=\"option\"> Nebraska </li> <li id=\"lb1-nv\" role=\"option\"> Nevada </li> <li id=\"lb1-nh\" role=\"option\"> New Hampshire </li> <li id=\"lb1-nj\" role=\"option\"> New Jersey </li> <li id=\"lb1-nm\" role=\"option\"> New Mexico </li> <li id=\"lb1-ny\" role=\"option\"> New York </li> <li id=\"lb1-nc\" role=\"option\"> North Carolina </li> <li id=\"lb1-nd\" role=\"option\"> North Dakota </li> <li id=\"lb1-mp\" role=\"option\"> Northern Marianas Islands </li> <li id=\"lb1-oh\" role=\"option\"> Ohio </li> <li id=\"lb1-ok\" role=\"option\"> Oklahoma </li> <li id=\"lb1-or\" role=\"option\"> Oregon </li> <li id=\"lb1-pa\" role=\"option\"> Pennsylvania </li> <li id=\"lb1-pr\" role=\"option\"> Puerto Rico </li> <li id=\"lb1-ri\" role=\"option\"> Rhode Island </li> <li id=\"lb1-sc\" role=\"option\"> South Carolina </li> <li id=\"lb1-sd\" role=\"option\"> South Dakota </li> <li id=\"lb1-tn\" role=\"option\"> Tennessee </li> <li id=\"lb1-tx\" role=\"option\"> Texas </li> <li id=\"lb1-ut\" role=\"option\"> Utah </li> <li id=\"lb1-ve\" role=\"option\"> Vermont </li> <li id=\"lb1-va\" role=\"option\"> Virginia </li> <li id=\"lb1-vi\" role=\"option\"> Virgin Islands </li> <li id=\"lb1-wa\" role=\"option\"> Washington </li> <li id=\"lb1-wv\" role=\"option\"> West Virginia </li> <li id=\"lb1-wi\" role=\"option\"> Wisconsin </li> <li id=\"lb1-wy\" role=\"option\"> Wyoming </li> </ul> </div>"
+  - separator "End of HTML Source Code"
+```

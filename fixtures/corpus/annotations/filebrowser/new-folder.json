@@ -2,15 +2,16 @@
   "schema": "vsf-corpus-annotation-v1",
   "source": "filebrowser",
   "page": "new-folder",
-  "dossierSha256": "b198772e1805d9a97026e518228489a52593a9fc6c1f621b2259b534413f48e1",
+  "dossierSha256": "3c9b4d2cac248a5b0b3e3d5bda95744471f820714996e2f6f7efdd56228679a4",
   "annotator": {
     "kind": "separate-agent",
-    "id": "annotator-filebrowser",
+    "id": "annotator-filebrowser-2",
     "sawRecognizerOutput": false,
     "basis": [
-      "tests/corpus/ANNOTATION.md",
-      "tests/corpus/src/annotation.ts",
-      ".corpus-cache/dossiers/filebrowser/new-folder.md"
+      "ANNOTATION.md",
+      "annotation.ts (shape)",
+      "dossier accessibility tree",
+      "textbox in the New directory dialog has no accessible name; named by its visible prompt text 'Name your new directory.'"
     ]
   },
   "fields": [
@@ -19,13 +20,29 @@
       "kind": "text"
     },
     {
-      "name": "New directory name",
+      "name": "Name your new directory",
       "kind": "text"
     }
   ],
   "actions": [
     {
-      "name": "Home",
+      "name": "My files",
+      "effect": "navigation"
+    },
+    {
+      "name": "New folder",
+      "effect": "state_change"
+    },
+    {
+      "name": "New file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "Logout",
       "effect": "navigation"
     },
     {
@@ -103,15 +120,15 @@
   "composites": [
     {
       "kind": "filter_bar",
-      "name": "Search and file types"
+      "name": "Search"
     },
     {
       "kind": "sortable_columns",
-      "name": "Sort headers"
+      "name": "Sort by name, size, last modified"
     },
     {
       "kind": "bulk_selection",
-      "name": "Multiple selection"
+      "name": "Select multiple"
     },
     {
       "kind": "dialog",
@@ -120,34 +137,22 @@
   ],
   "workflows": [
     {
-      "name": "Browse and open a folder",
-      "needs": [
-        "Files and folders",
-        "Home"
-      ],
-      "effect": "navigation"
-    },
-    {
-      "name": "Search or filter files",
-      "needs": [
-        "Search...",
-        "Images",
-        "Music",
-        "Video",
-        "PDF",
-        "Search and file types"
-      ],
-      "effect": "read"
-    },
-    {
       "name": "Create a folder",
       "needs": [
+        "New folder",
         "New directory",
-        "New directory name",
-        "Create",
-        "Cancel"
+        "Name your new directory",
+        "Create"
       ],
       "effect": "state_change"
+    },
+    {
+      "name": "Cancel folder creation",
+      "needs": [
+        "New directory",
+        "Cancel"
+      ],
+      "effect": "navigation"
     }
   ],
   "unsupported": []

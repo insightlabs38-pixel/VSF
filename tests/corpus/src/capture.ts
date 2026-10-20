@@ -3,6 +3,7 @@ import type { Browser } from "@playwright/test";
 import type { RecognizerInput } from "@vsf/observer";
 import { attach } from "../../observation/support/world.ts";
 import { mirrorFile } from "./cdn.ts";
+import { dirOf } from "./fetch.ts";
 import type { Page, Source } from "./manifest.ts";
 
 export interface Capture {
@@ -55,7 +56,7 @@ export async function capturePage(browser: Browser, origin: string, s: Source, p
     if (url.startsWith(origin) || url.startsWith("data:") || url.startsWith("blob:") || url.startsWith("about:"))
       return route.continue();
     try {
-      const hit = mirrorFile(url);
+      const hit = mirrorFile(url, s.aliases, dirOf(s));
       if (hit) {
         mirrored.push(url);
         return route.fulfill({
@@ -80,6 +81,17 @@ export async function capturePage(browser: Browser, origin: string, s: Source, p
       if (step.click) await page.locator(step.click).first().click({ timeout: 5000 });
       if (step.fill) await page.locator(step.fill.selector).first().fill(step.fill.value, { timeout: 5000 });
       if (step.press) await page.keyboard.press(step.press);
+      if (step.upload)
+        await page
+          .locator(step.upload.selector)
+          .first()
+          .setInputFiles(
+            step.upload.files.map((f) => ({
+              name: f.name,
+              mimeType: f.mimeType ?? "text/plain",
+              buffer: Buffer.from(f.text),
+            })),
+          );
       await page.waitForTimeout(step.waitMs ?? 250);
     }
     await h.settle();

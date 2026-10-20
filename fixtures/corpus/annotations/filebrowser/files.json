@@ -2,15 +2,15 @@
   "schema": "vsf-corpus-annotation-v1",
   "source": "filebrowser",
   "page": "files",
-  "dossierSha256": "7f7bbd210da2539ec4bcee6f3e43c889346608cda997745c74d27e86f93e0117",
+  "dossierSha256": "0318259e19616845e3cb508d9547f7bd20bc02909f458f9ccae8c0a0ebb33d1b",
   "annotator": {
     "kind": "separate-agent",
-    "id": "annotator-filebrowser",
+    "id": "annotator-filebrowser-2",
     "sawRecognizerOutput": false,
     "basis": [
-      "tests/corpus/ANNOTATION.md",
-      "tests/corpus/src/annotation.ts",
-      ".corpus-cache/dossiers/filebrowser/files.md"
+      "ANNOTATION.md",
+      "annotation.ts (shape)",
+      "dossier accessibility tree"
     ]
   },
   "fields": [
@@ -21,7 +21,23 @@
   ],
   "actions": [
     {
-      "name": "Home",
+      "name": "My files",
+      "effect": "navigation"
+    },
+    {
+      "name": "New folder",
+      "effect": "state_change"
+    },
+    {
+      "name": "New file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "Logout",
       "effect": "navigation"
     },
     {
@@ -91,35 +107,40 @@
   "composites": [
     {
       "kind": "filter_bar",
-      "name": "Search and file types"
+      "name": "Search"
     },
     {
       "kind": "sortable_columns",
-      "name": "Sort headers"
+      "name": "Sort by name, size, last modified"
     },
     {
       "kind": "bulk_selection",
-      "name": "Multiple selection"
+      "name": "Select multiple"
     }
   ],
   "workflows": [
     {
-      "name": "Browse and open a folder",
+      "name": "Open a folder",
       "needs": [
-        "Files and folders",
-        "Home"
+        "Files and folders"
       ],
       "effect": "navigation"
     },
     {
-      "name": "Search or filter files",
+      "name": "Search files",
       "needs": [
         "Search...",
-        "Images",
-        "Music",
-        "Video",
-        "PDF",
-        "Search and file types"
+        "Search"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Sort the listing",
+      "needs": [
+        "Sort by name",
+        "Sort by size",
+        "Sort by last modified",
+        "Files and folders"
       ],
       "effect": "read"
     }

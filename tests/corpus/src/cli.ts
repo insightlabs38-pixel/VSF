@@ -50,7 +50,7 @@ async function main(): Promise<number> {
       for (const s of pick()) console.log(`${s.id}: ${fetchSource(s)}`);
       return 0;
     case "capture": {
-      const caps = await captureSources(pick(), only);
+      const caps = await captureSources(pick(), only, args.includes("--refresh-dossiers"));
       for (const c of caps)
         console.log(
           `${c.source}/${c.page} nodes=${(c.snapshot.nodes as unknown[]).length} ms=${c.captureMs} blocked=${c.blocked.length} mirrored=${c.mirrored.length} sha=${c.snapshotSha256.slice(0, 12)}`,

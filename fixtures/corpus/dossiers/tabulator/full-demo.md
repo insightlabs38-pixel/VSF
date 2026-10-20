@@ -1,0 +1,182 @@
+# Tabulator examples - full-demo
+Upstream: https://github.com/olifolkerd/tabulator
+Framework: vanilla-js
+Ground truth basis: Tabulator documentation and example descriptions; Chromium accessibility tree
+Page title: Tabulator Example — 10 Full Demo
+State: as loaded
+What people do here (from the manifest):
+- browse, search, select and edit a large table
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- main:
+  - heading "10 · Full Demo (release smoke-test)" [level=1]
+  - paragraph:
+    - text: "A kitchen-sink table that exercises many modules at once: inline editing & validation, formatters, header filters, grouping, top/bottom calculations, row selection, add/delete rows, dependency-free downloads (CSV/JSON/HTML) and layout persistence (sorts, filters and column order survive a reload via"
+    - code: localStorage
+    - text: ).
+    - link "← back to index":
+      - /url: index.html
+  - button "Add row"
+  - button "Delete selected"
+  - button "Download CSV"
+  - button "Download JSON"
+  - button "Download HTML"
+  - button "Reset saved layout"
+  - grid:
+    - rowgroup:
+      - row "Select Row Name Department Progress Rating Revenue Active DOB":
+        - columnheader "Select Row":
+          - checkbox "Select Row"
+        - columnheader "Name":
+          - text: Name
+          - searchbox
+        - columnheader "Department":
+          - text: Department
+          - searchbox
+        - columnheader "Progress"
+        - columnheader "Rating"
+        - columnheader "Revenue"
+        - columnheader "Active":
+          - text: Active
+          - checkbox [checked=mixed]
+        - columnheader "DOB"
+        - columnheader
+    - rowgroup:
+      - rowgroup: Engineering(3 items)
+      - row "Select Row Oli Bob Engineering 12 1 $12,000 2005-08-14 🗑":
+        - gridcell "Select Row":
+          - checkbox "Select Row"
+        - gridcell "Oli Bob"
+        - gridcell "Engineering"
+        - gridcell "12"
+        - gridcell "1":
+          - img
+          - img
+          - img
+          - img
+          - img
+        - gridcell "$12,000"
+        - gridcell:
+          - img
+        - gridcell "2005-08-14"
+        - gridcell "🗑"
+      - row "Select Row Chris L. Engineering 42 0 $9,000 1980-11-23 🗑":
+        - gridcell "Select Row":
+          - checkbox "Select Row"
+        - gridcell "Chris L."
+        - gridcell "Engineering"
+        - gridcell "42"
+        - gridcell "0":
+          - img
+          - img
+          - img
+          - img
+          - img
+        - gridcell "$9,000"
+        - gridcell:
+          - img
+        - gridcell "1980-11-23"
+        - gridcell "🗑"
+      - row "Select Row Van Ng Engineering 70 3 $27,000 1975-09-12 🗑":
+        - gridcell "Select Row":
+          - checkbox "Select Row"
+        - gridcell "Van Ng"
+        - gridcell "Engineering"
+        - gridcell "70"
+        - gridcell "3":
+          - img
+          - img
+          - img
+          - img
+          - img
+        - gridcell "$27,000"
+        - gridcell:
+          - img
+        - gridcell "1975-09-12"
+        - gridcell "🗑"
+      - row "41 $48,000":
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell "41"
+        - gridcell
+        - gridcell "$48,000"
+        - gridcell
+        - gridcell
+        - gridcell
+      - rowgroup: Sales(2 items)
+      - row "Select Row Mary May Sales 90 4 $48,000 1989-02-01 🗑":
+        - gridcell "Select Row":
+          - checkbox "Select Row"
+        - gridcell "Mary May"
+        - gridcell "Sales"
+        - gridcell "90"
+        - gridcell "4":
+          - img
+          - img
+          - img
+          - img
+          - img
+        - gridcell "$48,000"
+        - gridcell:
+          - img
+        - gridcell "1989-02-01"
+        - gridcell "🗑"
+      - row "Select Row Margret M. Sales 16 5 $33,500 1998-06-30 🗑":
+        - gridcell "Select Row":
+          - checkbox "Select Row"
+        - gridcell "Margret M."
+        - gridcell "Sales"
+        - gridcell "16"
+        - gridcell "5":
+          - img
+          - img
+          - img
+          - img
+          - img
+        - gridcell "$33,500"
+        - gridcell:
+          - img
+        - gridcell "1998-06-30"
+        - gridcell "🗑"
+      - row "53 $81,500":
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell "53"
+        - gridcell
+        - gridcell "$81,500"
+        - gridcell
+        - gridcell
+        - gridcell
+      - rowgroup: Marketing(1 item)
+      - row "Select Row Brendon P. Marketing 100 1 $21,000 1992-04-18 🗑":
+        - gridcell "Select Row":
+          - checkbox "Select Row"
+        - gridcell "Brendon P."
+        - gridcell "Marketing"
+        - gridcell "100"
+        - gridcell "1":
+          - img
+          - img
+          - img
+          - img
+          - img
+        - gridcell "$21,000"
+        - gridcell:
+          - img
+        - gridcell "1992-04-18"
+        - gridcell "🗑"
+      - row "100 $21,000":
+        - gridcell
+        - gridcell
+        - gridcell
+        - gridcell "100"
+        - gridcell
+        - gridcell "$21,000"
+        - gridcell
+        - gridcell
+        - gridcell
+  - paragraph: "Tip: sort/filter/reorder columns, then reload the page — your layout is remembered."
+```

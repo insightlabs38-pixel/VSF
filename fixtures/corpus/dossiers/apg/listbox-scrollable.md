@@ -1,0 +1,236 @@
+# W3C ARIA Authoring Practices Guide examples - listbox-scrollable
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Scrollable Listbox Example
+State: as loaded
+What people do here (from the manifest):
+- choose one item in a scrollable listbox
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/131
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../listbox-pattern.html
+- main:
+  - heading "Scrollable Listbox Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The following example implementation of the
+    - link "Listbox Pattern":
+      - /url: ../listbox-pattern.html
+    - text: demonstrates a scrollable single-select listbox widget. This widget is functionally similar to an HTML
+    - code: select
+    - text: input where the
+    - code: size
+    - text: attribute has a value greater than one.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Example Listboxes with Rearrangeable Options":
+        - /url: listbox-rearrangeable.html
+      - text: ": Examples of both single-select and multi-select listboxes with accompanying toolbars where options can be added, moved, and removed."
+    - listitem:
+      - link "Listbox Example with Grouped Options":
+        - /url: listbox-grouped.html
+      - text: ": Single-select listbox with grouped options, similar to an HTML"
+      - code: select
+      - text: with
+      - code: optgroup
+      - text: children.
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - paragraph: Choose your favorite transuranic element (actinide or transactinide).
+  - text: "Transuranium elements:"
+  - listbox "Transuranium elements:":
+    - option "None"
+    - option "Neptunium"
+    - option "Plutonium"
+    - option "Americium"
+    - option "Curium"
+    - option "Berkelium"
+    - option "Californium"
+    - option "Einsteinium"
+    - option "Fermium"
+    - option "Mendelevium"
+    - option "Nobelium"
+    - option "Lawrencium"
+    - option "Rutherfordium"
+    - option "Dubnium"
+    - option "Seaborgium"
+    - option "Bohrium"
+    - option "Hassium"
+    - option "Meitnerium"
+    - option "Darmstadtium"
+    - option "Roentgenium"
+    - option "Copernicium"
+    - option "Nihonium"
+    - option "Flerovium"
+    - option "Moscovium"
+    - option "Livermorium"
+    - option "Tennessine"
+    - option "Oganesson"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem:
+      - text: Because this listbox implementation is scrollable and manages which option is focused by
+      - link "using aria-activedescendant":
+        - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_focus_activedescendant
+      - text: ", the JavaScript must ensure the focused option is visible. So, when a keyboard or pointer event changes the option referenced by"
+      - code: aria-activedescendant
+      - text: ", if the referenced option is not fully visible, the JavaScript scrolls the listbox to position the option in view."
+    - listitem:
+      - text: To enhance perceivability when operating the listbox, visual keyboard focus and hover are styled using the CSS
+      - code: :hover
+      - text: and
+      - code: :focus
+      - text: "pseudo-classes:"
+      - list:
+        - listitem: To help people with visual impairments identify the listbox as an interactive element, the cursor is changed to a pointer when hovering over the list.
+        - listitem: To make it easier to distinguish the selected listbox option from other options, selection creates a 2 pixel border above and below the option.
+  - heading "Keyboard Support" [level=2]
+  - paragraph:
+    - text: The example listbox on this page implements the following keyboard interface. Other variations and options for the keyboard interface are described in the
+    - link "Keyboard Interaction section of the Listbox Pattern":
+      - /url: ../listbox-pattern.html#keyboard_interaction
+    - text: .
+  - paragraph:
+    - strong: "NOTE:"
+    - text: When visual focus is on an option in this listbox implementation, DOM focus remains on the listbox element and the value of
+    - code: aria-activedescendant
+    - text: on the listbox refers to the descendant option that is visually indicated as focused. Where the following descriptions of keyboard commands mention focus, they are referring to the visual focus indicator, not DOM focus. For more information about this focus management technique, see
+    - link "Managing Focus in Composites Using aria-activedescendant":
+      - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_focus_activedescendant
+    - text: .
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Tab Moves focus into and out of the listbox.":
+        - cell "Tab"
+        - cell "Moves focus into and out of the listbox."
+      - row "Down Arrow Moves focus to and selects the next option.":
+        - cell "Down Arrow"
+        - cell "Moves focus to and selects the next option."
+      - row "Up Arrow Moves focus to and selects the previous option.":
+        - cell "Up Arrow"
+        - cell "Moves focus to and selects the previous option."
+      - row "Home Moves focus to and selects the first option.":
+        - cell "Home"
+        - cell "Moves focus to and selects the first option."
+      - row "End Moves focus to and selects the last option.":
+        - cell "End"
+        - cell "Moves focus to and selects the last option."
+      - 'row "Printable Characters Type a character: focus moves to the next item with a name that starts with the typed character. Type multiple characters in rapid succession: focus moves to the next item with a name that starts with the string of characters typed."':
+        - cell "Printable Characters"
+        - 'cell "Type a character: focus moves to the next item with a name that starts with the typed character. Type multiple characters in rapid succession: focus moves to the next item with a name that starts with the string of characters typed."':
+          - list:
+            - listitem: "Type a character: focus moves to the next item with a name that starts with the typed character."
+            - listitem: "Type multiple characters in rapid succession: focus moves to the next item with a name that starts with the string of characters typed."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - paragraph:
+    - text: The example listbox on this page implements the following ARIA roles, states, and properties. Information about other ways of applying ARIA roles, states, and properties is available in the
+    - link "Roles, States, and Properties section of the Listbox Pattern":
+      - /url: ../listbox-pattern.html#roles_states_properties
+    - text: .
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "listbox ul Identifies the focusable element that has listbox behaviors and contains the listbox options.":
+        - rowheader "listbox":
+          - code: listbox
+        - cell
+        - cell "ul":
+          - code: ul
+        - cell "Identifies the focusable element that has listbox behaviors and contains the listbox options."
+      - row "aria-labelledby=\"ID_REF\" ul Refers to the element containing the listbox label.":
+        - cell
+        - rowheader "aria-labelledby=\"ID_REF\"":
+          - code: aria-labelledby="ID_REF"
+        - cell "ul":
+          - code: ul
+        - cell "Refers to the element containing the listbox label."
+      - row "tabindex=\"0\" ul Includes the listbox in the page tab sequence.":
+        - cell
+        - rowheader "tabindex=\"0\"":
+          - code: tabindex="0"
+        - cell "ul":
+          - code: ul
+        - cell "Includes the listbox in the page tab sequence."
+      - row "aria-activedescendant=\"ID_REF\" ul When an option in the listbox is visually indicated as having keyboard focus, refers to that option. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the listbox element. When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value. For more information about this focus management technique, see Managing Focus in Composites Using aria-activedescendant.":
+        - cell
+        - rowheader "aria-activedescendant=\"ID_REF\"":
+          - code: aria-activedescendant="ID_REF"
+        - cell "ul":
+          - code: ul
+        - cell "When an option in the listbox is visually indicated as having keyboard focus, refers to that option. Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the listbox element. When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value. For more information about this focus management technique, see Managing Focus in Composites Using aria-activedescendant.":
+          - list:
+            - listitem: When an option in the listbox is visually indicated as having keyboard focus, refers to that option.
+            - listitem: Enables assistive technologies to know which element the application regards as focused while DOM focus remains on the listbox element.
+            - listitem: When navigation keys, such as Down Arrow , are pressed, the JavaScript changes the value.
+            - listitem:
+              - text: For more information about this focus management technique, see
+              - link "Managing Focus in Composites Using aria-activedescendant":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_focus_activedescendant
+              - text: .
+      - row "option li Identifies each selectable element containing the name of an option.":
+        - rowheader "option":
+          - code: option
+        - cell
+        - cell "li":
+          - code: li
+        - cell "Identifies each selectable element containing the name of an option."
+      - row "aria-selected=\"true\" li Indicates that the option is selected. Applied to the element with role option that is visually styled as selected. The option with this attribute is always the same as the option that is referenced by aria-activedescendant because it is a single-select listbox where selection follows focus.":
+        - cell
+        - rowheader "aria-selected=\"true\"":
+          - code: aria-selected="true"
+        - cell "li":
+          - code: li
+        - cell "Indicates that the option is selected. Applied to the element with role option that is visually styled as selected. The option with this attribute is always the same as the option that is referenced by aria-activedescendant because it is a single-select listbox where selection follows focus.":
+          - list:
+            - listitem: Indicates that the option is selected.
+            - listitem: Applied to the element with role option that is visually styled as selected.
+            - listitem: The option with this attribute is always the same as the option that is referenced by aria-activedescendant because it is a single-select listbox where selection follows focus.
+      - row "aria-hidden=\"true\" span Removes the character entity used for the check mark icon from the accessibility tree to prevent it from being included in the accessible name of the option.":
+        - cell
+        - cell "aria-hidden=\"true\"":
+          - code: aria-hidden="true"
+        - cell "span":
+          - code: span
+        - cell "Removes the character entity used for the check mark icon from the accessibility tree to prevent it from being included in the accessible name of the option."
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "listbox.css":
+        - /url: css/listbox.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "listbox.js":
+        - /url: js/listbox.js
+      - text: ","
+      - link "listbox-scrollable.js":
+        - /url: js/listbox-scrollable.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: "<p> Choose your favorite transuranic element (actinide or transactinide). </p> <div class=\"listbox-area\"> <div> <span id=\"ss_elem\" class=\"listbox-label\"> Transuranium elements: </span> <ul id=\"ss_elem_list\" tabindex=\"0\" role=\"listbox\" aria-labelledby=\"ss_elem\"> <li id=\"ss_elem_None\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> None </li> <li id=\"ss_elem_Np\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Neptunium </li> <li id=\"ss_elem_Pu\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Plutonium </li> <li id=\"ss_elem_Am\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Americium </li> <li id=\"ss_elem_Cm\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Curium </li> <li id=\"ss_elem_Bk\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Berkelium </li> <li id=\"ss_elem_Cf\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Californium </li> <li id=\"ss_elem_Es\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Einsteinium </li> <li id=\"ss_elem_Fm\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Fermium </li> <li id=\"ss_elem_Md\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Mendelevium </li> <li id=\"ss_elem_No\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Nobelium </li> <li id=\"ss_elem_Lr\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Lawrencium </li> <li id=\"ss_elem_Rf\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Rutherfordium </li> <li id=\"ss_elem_Db\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Dubnium </li> <li id=\"ss_elem_Sg\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Seaborgium </li> <li id=\"ss_elem_Bh\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Bohrium </li> <li id=\"ss_elem_Hs\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Hassium </li> <li id=\"ss_elem_Mt\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Meitnerium </li> <li id=\"ss_elem_Ds\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Darmstadtium </li> <li id=\"ss_elem_Rg\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Roentgenium </li> <li id=\"ss_elem_Cn\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Copernicium </li> <li id=\"ss_elem_Nh\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Nihonium </li> <li id=\"ss_elem_Fl\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Flerovium </li> <li id=\"ss_elem_Mc\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Moscovium </li> <li id=\"ss_elem_Lv\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Livermorium </li> <li id=\"ss_elem_Ts\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Tennessine </li> <li id=\"ss_elem_Og\" role=\"option\"> <span class=\"checkmark\" aria-hidden=\"true\"></span> Oganesson </li> </ul> </div> </div>"
+  - separator "End of HTML Source Code"
+```

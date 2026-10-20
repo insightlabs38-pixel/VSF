@@ -1,0 +1,328 @@
+# W3C ARIA Authoring Practices Guide examples - menu-button-links
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Navigation Menu Button Example
+State: menu opened
+What people do here (from the manifest):
+- open a menu of links from a menu button
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/125
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../menu-button-pattern.html
+- main:
+  - heading "Navigation Menu Button Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: This example demonstrates the
+    - link "Menu Button Pattern":
+      - /url: ../menu-button-pattern.html
+    - text: for a button that displays a menu of link targets. The menu items are made from HTML links, so they maintain their HTML link behaviors. That is, activating a menuitem loads the link target, and the browser's link context menu and associated actions are available.
+  - paragraph:
+    - text: In this implementation, an HTML
+    - code: button
+    - text: element reveals a menu structure made with an HTML
+    - code: ul
+    - text: element. The
+    - code: menuitem
+    - text: role is on the HTML
+    - code: a
+    - text: element contained by each
+    - code: li
+    - text: element so link behaviors are available when focus is set on the menu item. Another reason for applying the
+    - code: menuitem
+    - text: role to the
+    - code: a
+    - text: element instead of the
+    - code: li
+    - text: element is that the semantics of descendants of
+    - code: menuitem
+    - text: elements are not exposed in the accessibility tree. That is, an item in a menu can only be a
+    - code: menuitem
+    - text: because accessibility APIs do not enable assistive technologies to render elements contained inside of an item in a menu. For a more detailed description of this constraint, see
+    - link "Roles That Automatically Hide Semantics by Making Their Descendants Presentational":
+      - /url: ../../../practices/hiding-semantics/hiding-semantics-practice.html#children_presentational
+    - text: .
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Action Menu Button Example Using element.focus()":
+        - /url: menu-button-actions.html
+      - text: ": A button that opens a menu of actions or commands where focus in the menu is managed using"
+      - code: element.focus()
+      - text: .
+    - listitem:
+      - link "Action Menu Button Example Using aria-activedescendant":
+        - /url: menu-button-actions-active-descendant.html
+      - text: ": A button that opens a menu of actions or commands where focus in the menu is managed using aria-activedescendant."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - button "WAI-ARIA Quick Links" [expanded]:
+    - text: WAI-ARIA Quick Links
+    - img
+  - menu "WAI-ARIA Quick Links":
+    - menuitem "W3C Home Page"
+    - menuitem "W3C Web Accessibility Initiative"
+    - menuitem "Accessible Rich Internet Application Specification"
+    - menuitem "WAI-ARIA Authoring Practices"
+    - menuitem "WAI-ARIA Implementation Guide"
+    - menuitem "Accessible Name and Description"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem: A down arrow icon is included to help users understand that the button opens a menu.
+    - listitem:
+      - text: "To support operating system high contrast settings:"
+      - list:
+        - listitem: Because transparent borders are visible on some systems with operating system high contrast settings enabled, transparency cannot be used to create a visual difference between the element that is focused and other elements. Instead of using transparency, the focused element has a thicker border and less padding. When an element receives focus, its border changes from 1 to 3 pixels and padding is reduced by 2 pixels. When an element loses focus, its border changes from 3 pixels to 1 and padding is increased by 2 pixels.
+        - listitem: Because background color and text color styles can be overridden by operating system high contrast settings, a border is used to ensure the button has a visible boundary when high contrast mode is enabled.
+        - listitem:
+          - text: To ensure the arrow icons used to indicate the expanded or collapsed state have sufficient contrast with the background when high contrast settings invert colors, the CSS
+          - code: currentcolor
+          - text: value for the
+          - code: fill
+          - text: and
+          - code: stroke
+          - text: properties of the SVG
+          - code: polygon
+          - text: element is used to synchronize the color with text content. If specific colors are used to specify the
+          - code: fill
+          - text: and
+          - code: stroke
+          - text: properties, these colors will remain the same in high contrast mode, which could lead to insufficient contrast between the icon and the background or even make the icon invisible if its color matches the high contrast mode background.
+  - heading "Keyboard Support" [level=2]
+  - heading "Menu Button" [level=3]
+  - table "Menu Button Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Down Arrow Space Enter Opens menu and moves focus to first menuitem":
+        - cell "Down Arrow Space Enter"
+        - cell "Opens menu and moves focus to first menuitem":
+          - text: Opens
+          - code: menu
+          - text: and moves focus to first
+          - code: menuitem
+      - row "Up Arrow Opens menu and moves focus to last menuitem":
+        - cell "Up Arrow"
+        - cell "Opens menu and moves focus to last menuitem":
+          - text: Opens
+          - code: menu
+          - text: and moves focus to last
+          - code: menuitem
+  - heading "Menu" [level=3]
+  - table "Menu Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Space Enter Activates the menu item, which is equivalent to activating the link element from which the menu item is made.":
+        - cell "Space Enter"
+        - cell "Activates the menu item, which is equivalent to activating the link element from which the menu item is made."
+      - row "Escape Closes the menu. Sets focus to the menu button.":
+        - cell "Escape"
+        - cell "Closes the menu. Sets focus to the menu button.":
+          - list:
+            - listitem: Closes the menu.
+            - listitem: Sets focus to the menu button.
+      - row "Up Arrow Moves focus to the previous menu item. If focus is on the first menu item, moves focus to the last menu item.":
+        - cell "Up Arrow"
+        - cell "Moves focus to the previous menu item. If focus is on the first menu item, moves focus to the last menu item.":
+          - list:
+            - listitem: Moves focus to the previous menu item.
+            - listitem: If focus is on the first menu item, moves focus to the last menu item.
+      - row "Down Arrow Moves focus to the next menu item. If focus is on the last menu item, moves focus to the first menu item.":
+        - cell "Down Arrow"
+        - cell "Moves focus to the next menu item. If focus is on the last menu item, moves focus to the first menu item.":
+          - list:
+            - listitem: Moves focus to the next menu item.
+            - listitem: If focus is on the last menu item, moves focus to the first menu item.
+      - row "Home Moves focus to the first menu item.":
+        - cell "Home"
+        - cell "Moves focus to the first menu item."
+      - row "End Moves focus to the last menu item.":
+        - cell "End"
+        - cell "Moves focus to the last menu item."
+      - row "A-Z a-z Moves focus to the next menu item with a label that starts with the typed character if such an menu item exists. Otherwise, focus does not move.":
+        - cell "A-Z a-z"
+        - cell "Moves focus to the next menu item with a label that starts with the typed character if such an menu item exists. Otherwise, focus does not move.":
+          - list:
+            - listitem: Moves focus to the next menu item with a label that starts with the typed character if such an menu item exists.
+            - listitem: Otherwise, focus does not move.
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - heading "Menu Button" [level=3]
+  - table "Menu Button Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - 'row "aria-haspopup=\"true\" button Indicates the button opens a menu. NOTE: While ARIA does not include a role specifically for menu buttons, most platform accessibility APIs include a menubutton role. Consequently, on such platforms, assistive technologies, such as screen readers, identify buttons that have aria-haspopup set to either true or menu as menu buttons."':
+        - cell
+        - rowheader "aria-haspopup=\"true\"":
+          - code: aria-haspopup="true"
+        - cell "button":
+          - code: button
+        - 'cell "Indicates the button opens a menu. NOTE: While ARIA does not include a role specifically for menu buttons, most platform accessibility APIs include a menubutton role. Consequently, on such platforms, assistive technologies, such as screen readers, identify buttons that have aria-haspopup set to either true or menu as menu buttons."':
+          - list:
+            - listitem: Indicates the button opens a menu.
+            - listitem:
+              - strong: "NOTE:"
+              - text: While ARIA does not include a role specifically for menu buttons, most platform accessibility APIs include a menubutton role. Consequently, on such platforms, assistive technologies, such as screen readers, identify buttons that have
+              - code: aria-haspopup
+              - text: set to either
+              - code: "true"
+              - text: or
+              - code: menu
+              - text: as menu buttons.
+      - 'row "aria-controls=\"ID_REFERENCE\" button Refers to the menu element controlled by the menu button. Optional attribute: assistive technology users can operate the menu if not present."':
+        - cell
+        - rowheader "aria-controls=\"ID_REFERENCE\"":
+          - code: aria-controls="ID_REFERENCE"
+        - cell "button":
+          - code: button
+        - 'cell "Refers to the menu element controlled by the menu button. Optional attribute: assistive technology users can operate the menu if not present."':
+          - list:
+            - listitem: Refers to the menu element controlled by the menu button.
+            - listitem: "Optional attribute: assistive technology users can operate the menu if not present."
+      - row "aria-expanded=\"false\" button Indicates the menu is not displayed and that activating the menu button opens the menu.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "button":
+          - code: button
+        - cell "Indicates the menu is not displayed and that activating the menu button opens the menu."
+      - row "aria-expanded=\"true\" button Indicates the menu is displayed and that activating the menu button closes the menu.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "button":
+          - code: button
+        - cell "Indicates the menu is displayed and that activating the menu button closes the menu."
+  - heading "Note" [level=4]
+  - paragraph:
+    - text: The label for the button is provided by the text content of the
+    - code: button
+    - text: element.
+  - heading "Menu" [level=3]
+  - table "Menu Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "menu ul Identifies the ul element as a menu.":
+        - rowheader "menu":
+          - code: menu
+        - cell
+        - cell "ul":
+          - code: ul
+        - cell "Identifies the ul element as a menu.":
+          - text: Identifies the
+          - code: ul
+          - text: element as a
+          - code: menu
+          - text: .
+      - row "aria-labelledby=\"ID_REFERENCE\" ul Refers to the element that contains the accessible name for the menu. The menu is labeled by the menu button.":
+        - cell:
+          - code
+        - rowheader "aria-labelledby=\"ID_REFERENCE\"":
+          - code: aria-labelledby="ID_REFERENCE"
+        - cell "ul":
+          - code: ul
+        - cell "Refers to the element that contains the accessible name for the menu. The menu is labeled by the menu button.":
+          - list:
+            - listitem:
+              - text: Refers to the element that contains the accessible name for the
+              - code: menu
+              - text: .
+            - listitem: The menu is labeled by the menu button.
+      - row "none li Hides the implied listitem role of the li element from assistive technologies. For more details, see Hiding Semantics with the presentation Role.":
+        - rowheader "none":
+          - code: none
+        - cell
+        - cell "li":
+          - code: li
+        - cell "Hides the implied listitem role of the li element from assistive technologies. For more details, see Hiding Semantics with the presentation Role.":
+          - list:
+            - listitem:
+              - text: Hides the implied
+              - code: listitem
+              - text: role of the
+              - code: li
+              - text: element from assistive technologies.
+            - listitem:
+              - text: For more details, see
+              - link "Hiding Semantics with the presentation Role":
+                - /url: ../../../practices/hiding-semantics/hiding-semantics-practice.html
+                - text: Hiding Semantics with the
+                - code: presentation
+                - text: Role
+              - text: .
+      - row "menuitem a Identifies the element as a menuitem. The text content of the a element provides the accessible name of the menuitem.":
+        - rowheader "menuitem":
+          - code: menuitem
+        - cell
+        - cell "a":
+          - code: a
+        - cell "Identifies the element as a menuitem. The text content of the a element provides the accessible name of the menuitem.":
+          - list:
+            - listitem:
+              - text: Identifies the element as a
+              - code: menuitem
+              - text: .
+            - listitem:
+              - text: The text content of the
+              - code: a
+              - text: element provides the accessible name of the
+              - code: menuitem
+              - text: .
+      - row "tabindex=\"-1\" a removes the a element from the page tab sequence but keeps it focusable with JavaScript.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "a":
+          - code: a
+        - cell "removes the a element from the page tab sequence but keeps it focusable with JavaScript.":
+          - text: removes the
+          - code: a
+          - text: element from the page tab sequence but keeps it focusable with JavaScript.
+  - heading "Assistive Technology Support" [level=2]
+  - paragraph:
+    - link "Learn how to interpret and use assistive technology support data":
+      - /url: ../../../about/at-support-tables/at-support-tables.html
+  - iframe
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "menu-button-links.css":
+        - /url: css/menu-button-links.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "menu-button-links.js":
+        - /url: js/menu-button-links.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: <div class="menu-button-links"> <button type="button" id="menubutton" aria-haspopup="true" aria-controls="menu2" aria-expanded="false"> WAI-ARIA Quick Links <svg xmlns="http://www.w3.org/2000/svg" class="down" width="12" height="9" viewBox="0 0 12 9"> <polygon points="1 0, 11 0, 6 8"></polygon> </svg> </button> <ul id="menu2" role="menu" aria-labelledby="menubutton"> <li role="none"> <a role="menuitem" href="https://www.w3.org/"> W3C Home Page </a> </li> <li role="none"> <a role="menuitem" href="https://www.w3.org/standards/webdesign/accessibility"> W3C Web Accessibility Initiative </a> </li> <li role="none"> <a role="menuitem" href="https://www.w3.org/TR/wai-aria/"> Accessible Rich Internet Application Specification </a> </li> <li role="none"> <a role="menuitem" href="https://www.w3.org/TR/wai-aria-practices/"> WAI-ARIA Authoring Practices </a> </li> <li role="none"> <a role="menuitem" href="https://www.w3.org/TR/wai-aria-implementation/"> WAI-ARIA Implementation Guide </a> </li> <li role="none"> <a role="menuitem" href="https://www.w3.org/TR/accname-aam-1.1/"> Accessible Name and Description </a> </li> </ul> </div>
+  - separator "End of HTML Source Code"
+```

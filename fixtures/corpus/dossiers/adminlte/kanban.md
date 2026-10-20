@@ -1,0 +1,309 @@
+# AdminLTE 4 admin dashboard template - kanban
+Upstream: https://github.com/ColorlibHQ/AdminLTE
+Framework: bootstrap-5
+Ground truth basis: AdminLTE page descriptions; Chromium accessibility tree
+Page title: AdminLTE 4 | Kanban Board
+State: as loaded
+What people do here (from the manifest):
+- move cards between kanban columns
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Skip to main content":
+  - /url: "#main"
+- link "Skip to navigation":
+  - /url: "#navigation"
+- navigation:
+  - list:
+    - listitem:
+      - button "Toggle sidebar": 
+    - listitem:
+      - link "Live preview":
+        - /url: ../index.html
+    - listitem:
+      - link "Documentation":
+        - /url: ../docs/introduction.html
+  - search:
+    - text: Search
+    - searchbox "Search"
+    - button "Submit search"
+  - list:
+    - listitem:
+      - 'link "Messages: 3 unread"':
+        - /url: "#"
+        - text:  3
+    - listitem:
+      - 'link "Notifications: 15 unread"':
+        - /url: "#"
+        - text:  15
+    - listitem:
+      - link "Change language, current language English":
+        - /url: "#"
+    - listitem:
+      - link "Toggle fullscreen":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Toggle color scheme":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Alexander Pierce Alexander Pierce":
+        - /url: "#"
+        - img "Alexander Pierce"
+        - text: Alexander Pierce
+- complementary:
+  - link "AdminLTE Logo AdminLTE 4":
+    - /url: ../index.html
+    - img "AdminLTE Logo"
+    - text: AdminLTE 4
+  - search:
+    - text: Filter menu
+    - searchbox "Filter menu"
+  - navigation "Main navigation":
+    - list:
+      - listitem:
+        - link " Dashboard ":
+          - /url: "#"
+          - text: 
+          - paragraph: Dashboard 
+      - listitem:
+        - link " Starter Page":
+          - /url: ../starter.html
+          - text: 
+          - paragraph: Starter Page
+      - listitem:
+        - link " Theme Generate":
+          - /url: ../generate/theme.html
+          - text: 
+          - paragraph: Theme Generate
+      - listitem:
+        - link " Widgets ":
+          - /url: "#"
+          - text: 
+          - paragraph: Widgets 
+      - listitem:
+        - link " Layout Options 12 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Layout Options 12 
+      - listitem:
+        - link " UI Elements ":
+          - /url: "#"
+          - text: 
+          - paragraph: UI Elements 
+      - listitem:
+        - link " Mailbox ":
+          - /url: "#"
+          - text: 
+          - paragraph: Mailbox 
+      - listitem:
+        - link " Forms ":
+          - /url: "#"
+          - text: 
+          - paragraph: Forms 
+      - listitem:
+        - link " Tables ":
+          - /url: "#"
+          - text: 
+          - paragraph: Tables 
+      - listitem:
+        - link " Charts ":
+          - /url: "#"
+          - text: 
+          - paragraph: Charts 
+      - listitem: PAGES
+      - listitem:
+        - link " Pages " [expanded]:
+          - /url: "#"
+          - text: 
+          - paragraph: Pages 
+        - list:
+          - listitem:
+            - link " Profile":
+              - /url: ../pages/profile.html
+              - text: 
+              - paragraph: Profile
+          - listitem:
+            - link " Settings":
+              - /url: ../pages/settings.html
+              - text: 
+              - paragraph: Settings
+          - listitem:
+            - link " Invoice":
+              - /url: ../pages/invoice.html
+              - text: 
+              - paragraph: Invoice
+          - listitem:
+            - link " Calendar":
+              - /url: ../pages/calendar.html
+              - text: 
+              - paragraph: Calendar
+          - listitem:
+            - link " Kanban":
+              - /url: ../pages/kanban.html
+              - text: 
+              - paragraph: Kanban
+          - listitem:
+            - link " Chat":
+              - /url: ../pages/chat.html
+              - text: 
+              - paragraph: Chat
+          - listitem:
+            - link " File Manager":
+              - /url: ../pages/file-manager.html
+              - text: 
+              - paragraph: File Manager
+          - listitem:
+            - link " Projects":
+              - /url: ../pages/projects.html
+              - text: 
+              - paragraph: Projects
+          - listitem:
+            - link " Gallery":
+              - /url: ../pages/gallery.html
+              - text: 
+              - paragraph: Gallery
+          - listitem:
+            - link " Search Results":
+              - /url: ../pages/search-results.html
+              - text: 
+              - paragraph: Search Results
+          - listitem:
+            - link " Pricing":
+              - /url: ../pages/pricing.html
+              - text: 
+              - paragraph: Pricing
+          - listitem:
+            - link " FAQ":
+              - /url: ../pages/faq.html
+              - text: 
+              - paragraph: FAQ
+          - listitem:
+            - link " Error ":
+              - /url: "#"
+              - text: 
+              - paragraph: Error 
+      - listitem:
+        - link " Users":
+          - /url: ../users.html
+          - text: 
+          - paragraph: Users
+      - listitem: EXAMPLES
+      - listitem:
+        - link " Auth ":
+          - /url: "#"
+          - text: 
+          - paragraph: Auth 
+      - listitem: MULTI LEVEL EXAMPLE
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem:
+        - link " Level 1 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1 
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem: LABELS
+      - listitem:
+        - link " Important":
+          - /url: "#"
+          - text: 
+          - paragraph: Important
+      - listitem:
+        - link " Warning":
+          - /url: "#"
+          - text: 
+          - paragraph: Warning
+      - listitem:
+        - link " Informational":
+          - /url: "#"
+          - text: 
+          - paragraph: Informational
+    - link "View documentation":
+      - /url: ../docs/introduction.html
+- main:
+  - heading "Kanban Board" [level=1]
+  - navigation "breadcrumb":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: "#"
+      - listitem: / Kanban
+  - paragraph: Drag cards between lanes. Try dropping “In progress” items into “Done”.
+  - button "Filter"
+  - button "Sort"
+  - button "Add lane"
+  - heading "3 Backlog" [level=2]
+  - button "Lane actions"
+  - article:
+    - text: tech debt
+    - paragraph: Audit unused SCSS variables
+    - paragraph: Identify deprecated Bootstrap 5.3.4 variables and add comments.
+    - text: DM
+  - article:
+    - text: docs
+    - paragraph: Document hreflang setup
+    - text: JD
+  - article:
+    - text: bug
+    - paragraph: Investigate Safari iOS calendar drag bug
+    - text: OB MK May 28
+  - button "Add card"
+  - heading "2 To do" [level=2]
+  - button "Lane actions"
+  - article:
+    - text: feature
+    - paragraph: Add Tom Select recommended-integration doc
+    - paragraph: Cover install, theming, single + multi select examples.
+    - text: JD May 24
+  - article:
+    - text: feature
+    - paragraph: Wire up profile page avatar upload
+    - text: EM
+  - button "Add card"
+  - heading "2 In progress" [level=2]
+  - button "Lane actions"
+  - article:
+    - text: feature
+    - paragraph: Build kanban board demo
+    - paragraph: SortableJS, draggable between lanes, MIT license.
+    - text: JD Today
+  - article:
+    - text: qa
+    - paragraph: Tabulator + FullCalendar integration QA
+    - text: OB
+  - button "Add card"
+  - heading "3 Done" [level=2]
+  - button "Lane actions"
+  - article:
+    - text: feature
+    - paragraph: Upgrade to Bootstrap 5.3.8
+    - text: DM
+  - article:
+    - text: feature
+    - paragraph: Ship 8 Tier-1 page templates
+    - paragraph: Profile, settings, invoice, pricing, FAQ, 404/500/maintenance.
+    - text: JD OB
+  - article:
+    - text: tech debt
+    - paragraph: Drop dead eslint-config-xo deps
+    - text: DM
+  - button "Add card"
+- contentinfo:
+  - text: Anything you want
+  - strong:
+    - text: Copyright © 2014-2026
+    - link "AdminLTE.io":
+      - /url: https://adminlte.io
+    - text: .
+  - text: All rights reserved.
+- status
+```
