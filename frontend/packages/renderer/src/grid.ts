@@ -15,6 +15,11 @@ interface RowInst {
   title: string;
 }
 
+const numeric = (r: RendererApi, col: PComponent): boolean => {
+  const t = fieldOf(r, col)?.value_type;
+  return t === "integer" || t === "decimal";
+};
+
 /** Roving-focus grid. Every cell and every row action is one navigation stop; exactly one stop is in the tab order. */
 export function table(r: RendererApi, c: PComponent): Inst {
   const entity = c.binding?.entity ?? "";
@@ -100,6 +105,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
     cols.forEach((col, i) => {
       const td = r.dom.el("td");
       r.dom.attr(td, "role", "gridcell");
+      if (numeric(r, col)) r.dom.attr(td, "class", "num");
       r.dom.attr(td, "tabindex", "-1");
       r.dom.attr(td, "data-stop", "");
       r.dom.attr(td, "data-vsf-id", `cell:${key}/${col.binding?.field}`);
@@ -186,6 +192,7 @@ export function table(r: RendererApi, c: PComponent): Inst {
       const th = r.dom.el("th");
       r.dom.attr(th, "scope", "col");
       r.dom.attr(th, "role", "columnheader");
+      if (numeric(r, col)) r.dom.attr(th, "class", "num");
       const field = col.binding?.field ?? "";
       const b = r.dom.el("button");
       r.dom.attr(b, "type", "button");

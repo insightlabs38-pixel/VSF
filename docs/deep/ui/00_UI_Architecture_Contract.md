@@ -74,7 +74,13 @@ The management shell is a fifth composition owned by B09: navigation region (wor
 - TypeScript: composition compile and drift, mirrored rules, responsive and customization functions (22 unit tests).
 - Chromium: 19 layout tests across desktop, tablet and phone: no horizontal overflow, no operation lost or hidden, tabs and collapse by keyboard, preserved surface inside a panel, reversible customization, rejected layouts never drawn.
 - Existing renderer, accessibility, visual-contract and incremental-update suites are unchanged and pass.
-B09 adds screenshot baselines and the integrated shell and gallery.
+B09 added screenshot baselines and the integrated shell and gallery (section 10).
 
 ## 9. Limits
 No drag handles or live region reordering UI yet (preferences API only); no team or organization profiles; shell screens are specified, not built; pixel appearance is not yet verified (computed-style contract only until B09).
+
+## 10. B09 update (screenshots, gallery and shell)
+- The management shell and the reference gallery exist in `apps/gallery`; 102 screenshot baselines cover every composition, the states page and each shell section across scheme, density and three viewports. Policy: `01_Screenshot_Baseline_Policy.md`.
+- The renderer takes its font family from the token `--vsf-font-family` (default unchanged), so the gallery can render with embedded fonts. Numeric cells right-align (`.num`), form groups show a visible title, and toolbar labels no longer wrap.
+- Structural checks (overflow, clipping, overlap, contrast, names, layout shift, font provenance) run on every scene and are proven by synthetic defect pages.
+- "Pixel appearance is not yet verified" in section 9 no longer holds for the reference scenes; it still holds for any composition not in the gallery.

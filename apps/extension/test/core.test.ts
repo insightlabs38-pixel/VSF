@@ -435,7 +435,8 @@ test("stored preferences travel with the render request and are reported as rest
   const reply = await core.handleCommand({ type: "transform", tabId: TAB }, r.panel);
   assert.equal((reply as { settings?: string }).settings, "restored");
   const render = r.calls.find((c) => c.fn === "__vsfRender");
-  assert.deepEqual((render?.args[0] as { prefs: Prefs }).prefs, { density: "compact" });
+  assert.ok(render);
+  assert.deepEqual((render.args[0] as { prefs: Prefs }).prefs, { density: "compact" });
 });
 
 test("preferences nobody can vouch for are ignored, not applied, and the user is told", async () => {
@@ -446,7 +447,9 @@ test("preferences nobody can vouch for are ignored, not applied, and the user is
   const reply = await core.handleCommand({ type: "transform", tabId: TAB }, r.panel);
   assert.equal(reply.ok, true);
   assert.equal((reply as { settings?: string }).settings, "unreadable");
-  assert.deepEqual((r.calls.find((c) => c.fn === "__vsfRender")?.args[0] as { prefs: Prefs }).prefs, {});
+  const drawn = r.calls.find((c) => c.fn === "__vsfRender");
+  assert.ok(drawn);
+  assert.deepEqual((drawn.args[0] as { prefs: Prefs }).prefs, {});
 });
 
 test("a preference change from the page is saved for that session's origin only", async () => {

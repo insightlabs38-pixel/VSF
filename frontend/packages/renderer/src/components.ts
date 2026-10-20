@@ -85,10 +85,19 @@ export function form(r: RendererApi, c: PComponent): Inst {
 }
 
 export function group(r: RendererApi, c: PComponent): Inst {
-  const el = r.dom.el("div", "group");
+  const titled = c.id.startsWith("fgrp");
+  const el = r.dom.el("div", titled ? "group fields" : "group");
   r.dom.attr(el, "role", "group");
+  const title = titled ? r.dom.el("span", "group-title") : null;
+  if (title) {
+    r.dom.attr(title, "aria-hidden", "true");
+    r.dom.append(el, title);
+  }
   const inst = base(r, c, el);
-  inst.update = (n) => r.dom.attr(el, "aria-label", n.accessibility.name ?? n.id);
+  inst.update = (n) => {
+    r.dom.attr(el, "aria-label", n.accessibility.name ?? n.id);
+    if (title) r.dom.text(title, n.accessibility.name ?? "");
+  };
   inst.update(c);
   return inst;
 }

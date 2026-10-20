@@ -114,18 +114,16 @@ test("a program pretending to be the companion cannot get the code or be believe
           .end(
             JSON.stringify({ offer_id: "o1", salt: rnd(16), nonce_s: rnd(16), iterations: 100000, expires_at: 9e9 }),
           );
-      res
-        .writeHead(200)
-        .end(
-          JSON.stringify({
-            client_id: "cli_fake",
-            refresh: rnd(32),
-            refresh_expires: 9e9,
-            access: rnd(32),
-            access_expires: 9e9,
-            proof: rnd(32),
-          }),
-        );
+      res.writeHead(200).end(
+        JSON.stringify({
+          client_id: "cli_fake",
+          refresh: rnd(32),
+          refresh_expires: 9e9,
+          access: rnd(32),
+          access_expires: 9e9,
+          proof: rnd(32),
+        }),
+      );
     });
   });
   await new Promise<void>((r) => impostor.listen(0, "127.0.0.1", r));

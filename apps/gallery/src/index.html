@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Varifold gallery</title>
+<style>
+@font-face{font-family:"VSF Sans";font-weight:400;font-display:block;src:url("fonts/inter-regular.woff2") format("woff2")}
+@font-face{font-family:"VSF Sans";font-weight:600 700;font-display:block;src:url("fonts/inter-semibold.woff2") format("woff2")}
+@font-face{font-family:"VSF Symbols";font-display:block;src:url("fonts/symbols.woff2") format("woff2")}
+@font-face{font-family:"VSF Mono";font-display:block;src:url("fonts/mono.woff2") format("woff2")}
+html{--vsf-font-family:"VSF Sans","VSF Symbols",sans-serif;font-family:var(--vsf-font-family);-webkit-text-size-adjust:100%}
+body{margin:0}
+.states{display:grid;gap:24px;padding:16px;max-inline-size:1100px;margin-inline:auto}
+.states h2{margin:0 0 4px}
+.states .note{margin:0 0 8px;opacity:.85}
+.states .panel{border:1px solid currentColor;border-radius:8px;overflow:hidden}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="gallery.js"></script>
+</body>
+</html>

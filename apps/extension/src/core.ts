@@ -327,7 +327,7 @@ export function createCore(p: Ports) {
   ): Promise<SessionRecord["bridge"]> {
     if (!p.link || !rec.documentId) return undefined;
     try {
-      if (!(await p.link.status())["paired"]) return undefined;
+      if (!(await p.link.status()).paired) return undefined;
       let salt = (await p.local.get("variant_salt")) as string | undefined;
       if (!salt) {
         salt = p.uuid();
@@ -355,8 +355,8 @@ export function createCore(p: Ports) {
       ) as { valid?: boolean };
       if (report.valid !== true) return { error: "manifest_invalid" };
       const r = await p.link.call("/v1/session", { origin: rec.origin, document: rec.documentId, manifest });
-      if (r.status !== 200) return { error: String(r.json["error"] ?? `status_${r.status}`) };
-      return { id: String(r.json["session_id"]), expiresAt: Number(r.json["expires_at"]) };
+      if (r.status !== 200) return { error: String(r.json.error ?? `status_${r.status}`) };
+      return { id: String(r.json.session_id), expiresAt: Number(r.json.expires_at) };
     } catch (e) {
       const code = (e as { code?: unknown }).code;
       return { error: typeof code === "string" ? code : "bridge_unavailable" };
@@ -373,8 +373,8 @@ export function createCore(p: Ports) {
         if (s)
           s.bridge =
             r.status === 200
-              ? { id: b.id, expiresAt: Number(r.json["expires_at"]) }
-              : { error: String(r.json["error"] ?? "renew_failed") };
+              ? { id: b.id, expiresAt: Number(r.json.expires_at) }
+              : { error: String(r.json.error ?? "renew_failed") };
       });
     } catch {
       // the next heartbeat tries again; the binding simply lapses if the companion stays away

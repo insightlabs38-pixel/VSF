@@ -48,6 +48,15 @@ importers:
         specifier: workspace:*
         version: link:../../frontend/packages/wasm-host
 
+  apps/gallery:
+    dependencies:
+      '@vsf/design-system':
+        specifier: workspace:*
+        version: link:../../frontend/packages/design-system
+      '@vsf/renderer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/renderer
+
   fixtures/source-apps:
     dependencies:
       '@vsf/observer':
@@ -160,6 +169,9 @@ importers:
       '@vsf/design-system':
         specifier: workspace:*
         version: link:../../frontend/packages/design-system
+      '@vsf/gallery':
+        specifier: workspace:*
+        version: link:../../apps/gallery
       '@vsf/ir':
         specifier: workspace:*
         version: link:../../frontend/packages/ir

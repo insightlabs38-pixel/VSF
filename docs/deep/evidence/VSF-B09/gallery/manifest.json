@@ -1,0 +1,13 @@
+{
+  "note": "reviewed copies of baselines in tests/ui/golden/gallery",
+  "sha256": {
+    "enterprise-grid-light-compact-desktop.png": "b539d6add717057acf89dfd8bd15dd31a0114b97a06ee02ac466b5f09de911de",
+    "grouped-form-light-comfortable-desktop.png": "af182b006acfd9ae838273b1c3aa7af552c9a6ec8c153fd0f8c3cd17f1d8ccb3",
+    "master-detail-dark-comfortable-tablet.png": "8e63f32b08d844fedef283196c0eb8251bb11537869cbbbd87c69a10be848724",
+    "shell-environments-light-comfortable-tablet.png": "dadc7d76074aa0141044bca374d2228678b39e9b1ef7d0b6c55ec0e660d3fef2",
+    "shell-interface-dark-comfortable-desktop.png": "ff992855ec6c6bac5f30b9b3f00225593b7a3f3aa46f26ebd5e6bbc4bf48ae47",
+    "shell-interface-light-comfortable-desktop.png": "810c960d38977c2629866f040dfccdd1808aa126ab8ad2689adb02fc40ea73df",
+    "states-dark-comfortable-tablet.png": "ac254e112815c76fd8a6f2af68795fe7a8f04d91f9011ace81dee1f02674a6de",
+    "workbench-split-dark-compact-narrow.png": "ce9ecf94b9c4106ad8d3349319bb3362f011c29697bd18d2e18566bb7f2d6f65"
+  }
+}

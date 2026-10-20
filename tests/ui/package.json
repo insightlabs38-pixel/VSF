@@ -6,6 +6,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@vsf/design-system": "workspace:*",
+    "@vsf/gallery": "workspace:*",
     "@vsf/ir": "workspace:*",
     "@vsf/renderer": "workspace:*",
     "@vsf/schema": "workspace:*"

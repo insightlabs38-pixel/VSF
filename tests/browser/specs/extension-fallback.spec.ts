@@ -71,7 +71,7 @@ test("a script cannot fake the escape chord or the buttons", async ({ env }) => 
     window.dispatchEvent(e);
     document.dispatchEvent(e);
     for (const b of document.querySelectorAll("[data-vsf-overlay]"))
-      b.shadowRoot?.querySelectorAll("button").forEach((x) => x.click());
+      for (const x of b.shadowRoot?.querySelectorAll("button") ?? []) x.click();
   });
   await page.waitForTimeout(500);
   expect(await overlays(page)).toBe(1);
