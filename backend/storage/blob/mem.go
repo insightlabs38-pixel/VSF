@@ -38,6 +38,9 @@ func (m *Mem) Put(_ context.Context, key string, data []byte) error {
 }
 
 func (m *Mem) Get(_ context.Context, key string) ([]byte, error) {
+	if !ValidKey(key) {
+		return nil, ErrBadKey
+	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	b, ok := m.objs[key]
@@ -48,6 +51,9 @@ func (m *Mem) Get(_ context.Context, key string) ([]byte, error) {
 }
 
 func (m *Mem) Stat(_ context.Context, key string) (Info, error) {
+	if !ValidKey(key) {
+		return Info{}, ErrBadKey
+	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	b, ok := m.objs[key]
@@ -58,6 +64,9 @@ func (m *Mem) Stat(_ context.Context, key string) (Info, error) {
 }
 
 func (m *Mem) Delete(_ context.Context, key string) error {
+	if !ValidKey(key) {
+		return ErrBadKey
+	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if _, ok := m.objs[key]; !ok {

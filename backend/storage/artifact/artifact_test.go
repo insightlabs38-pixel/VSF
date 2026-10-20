@@ -163,10 +163,22 @@ func TestBitRotAndLostObjectsAreDetectedNotServed(t *testing.T) {
 func TestInvalidInputsAreRefusedBeforeAnythingIsWritten(t *testing.T) {
 	r := newRig(t, func(c *Config) { c.MaxArtifact = 16 })
 	for name, f := range map[string]func() error{
-		"bad tenant":       func() error { _, e := r.store.PutArtifact(ctx, "Bad Tenant", []byte("x"), ArtifactInput{Class: meta.Public}); return e },
-		"bad class":        func() error { _, e := r.store.PutArtifact(ctx, "acme", []byte("x"), ArtifactInput{Class: "secret"}); return e },
-		"too large":        func() error { _, e := r.store.PutArtifact(ctx, "acme", make([]byte, 17), ArtifactInput{Class: meta.Public}); return e },
-		"provenance array": func() error { _, e := r.store.PutArtifact(ctx, "acme", []byte("x"), ArtifactInput{Class: meta.Public, Provenance: json.RawMessage(`[1]`)}); return e },
+		"bad tenant": func() error {
+			_, e := r.store.PutArtifact(ctx, "Bad Tenant", []byte("x"), ArtifactInput{Class: meta.Public})
+			return e
+		},
+		"bad class": func() error {
+			_, e := r.store.PutArtifact(ctx, "acme", []byte("x"), ArtifactInput{Class: "secret"})
+			return e
+		},
+		"too large": func() error {
+			_, e := r.store.PutArtifact(ctx, "acme", make([]byte, 17), ArtifactInput{Class: meta.Public})
+			return e
+		},
+		"provenance array": func() error {
+			_, e := r.store.PutArtifact(ctx, "acme", []byte("x"), ArtifactInput{Class: meta.Public, Provenance: json.RawMessage(`[1]`)})
+			return e
+		},
 		"provenance huge": func() error {
 			_, e := r.store.PutArtifact(ctx, "acme", []byte("x"), ArtifactInput{Class: meta.Public, Provenance: json.RawMessage(`{"a":"` + strings.Repeat("x", 5000) + `"}`)})
 			return e
