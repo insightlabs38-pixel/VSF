@@ -122,6 +122,9 @@ func (o *OAuth) Begin(owner, account string, p *Provider) (string, error) {
 	if live >= maxPending {
 		return "", ErrDenied
 	}
+	snap := *p
+	snap.Scopes = slices.Clone(p.Scopes)
+	p = &snap
 	pd := &pending{owner: owner, account: account, p: p, state: randToken(32), verifier: randToken(32), nonce: randToken(24), expires: now.Add(pendingTTL)}
 	o.pending[pd.state] = pd
 	sum := sha256.Sum256([]byte(pd.verifier))
@@ -176,6 +179,14 @@ func (p *Provider) post(form url.Values) (tokenReply, int, error) {
 		return tokenReply{}, resp.StatusCode, ErrUntrusted
 	}
 	return tr, resp.StatusCode, nil
+}
+
+// digest identifies the provider configuration a grant was created under: who issues, where tokens come from, which client and redirect, for which resource and source, with which scopes. Keys are not part of it, so a key rotation does not change a provider's identity.
+func (p *Provider) digest() string {
+	sc := scopeSet(strings.Join(p.Scopes, " "))
+	b, _ := json.Marshal([]any{p.Issuer, p.AuthorizeURL, p.TokenURL, p.ClientID, p.RedirectURI, p.Audience, p.Source, sc})
+	sum := sha256.Sum256(b)
+	return hex.EncodeToString(sum[:16])
 }
 
 func principalRef(iss, sub string) string {
@@ -240,64 +251,144 @@ func (o *OAuth) Complete(owner, state, code, iss string) (Grant, error) {
 		}
 		sub = c.Subject
 	}
+	if o.Broker.Vault == nil {
+		return Grant{}, ErrInvalid
+	}
 	appScopes := slices.DeleteFunc(slices.Clone(granted), func(s string) bool { return s == "openid" })
-	g, err := o.Broker.Issue(Grant{Account: pd.account, Owner: owner, Source: p.Source, Audience: p.Audience, Issuer: p.Issuer, Scopes: appScopes,
-		Method: MethodOAuthPKCE, PrincipalRef: principalRef(p.Issuer, sub), ExpiresAt: now.Add(life)})
+	ng := Grant{Account: pd.account, Owner: owner, Source: p.Source, Audience: p.Audience, Issuer: p.Issuer, Scopes: appScopes, Provider: p.digest(),
+		Method: MethodOAuthPKCE, ExpiresAt: now.Add(life)}
+	if sub != "" {
+		ng.PrincipalRef, ng.IdentityVerified = principalRef(p.Issuer, sub), true
+	}
+	g, err := o.Broker.Issue(ng)
 	if err != nil {
 		return Grant{}, err
 	}
 	an, rn := secretNames(g.ID)
-	if o.Broker.Vault == nil {
-		return Grant{}, ErrInvalid
-	}
-	if err := o.Broker.Vault.Put(g.Account, an, []byte(tr.AccessToken)); err != nil {
-		o.Broker.Revoke(g.ID, owner)
+	fail := func(err error) (Grant, error) {
+		_, _ = o.Broker.endGrant(g.ID, owner, ReasonRevoked)
 		return Grant{}, err
 	}
 	if tr.RefreshToken != "" {
 		if err := o.Broker.Vault.Put(g.Account, rn, []byte(tr.RefreshToken)); err != nil {
-			o.Broker.Revoke(g.ID, owner)
-			return Grant{}, err
+			return fail(err)
 		}
+	}
+	if err := o.Broker.Vault.Put(g.Account, an, []byte(tr.AccessToken)); err != nil {
+		return fail(err)
 	}
 	o.Broker.note(EventSignedIn, g, owner, ReasonOK)
 	return g, nil
 }
 
-// Refresh renews a grant's access token with its refresh token. A refusal by the server ends the grant; a network failure leaves it as it was.
+type flight struct {
+	done chan struct{}
+	g    Grant
+	err  error
+}
+
+// Refresh renews a grant's access token with its refresh token, under the provider configuration the grant was made with. A refusal by the server ends the grant; a network failure leaves it as it was. Concurrent refreshes of one grant in this process share one request, so a rotating refresh token is never spent twice; across processes the caller must arrange a single refresher per grant.
 func (o *OAuth) Refresh(owner, grantID string, p *Provider) (Grant, error) {
 	g, ok := o.Broker.Store.Get(grantID)
-	if !ok || g.Owner != owner || g.Method != MethodOAuthPKCE || g.Source != p.Source || g.Audience != p.Audience || g.State != StateActive {
+	if !ok || g.Owner != owner || g.Method != MethodOAuthPKCE || g.State == StateRevoked || p == nil {
 		return Grant{}, ErrDenied
 	}
+	if g.State == StatePaused {
+		return Grant{}, ErrReauth
+	}
+	if p.check() != nil || g.Provider == "" || p.digest() != g.Provider || g.Source != p.Source || g.Audience != p.Audience || g.Issuer != p.Issuer || o.Broker.Vault == nil {
+		o.Broker.note(EventRefused, g, safeActor(owner), ReasonProvider)
+		return Grant{}, ErrDenied
+	}
+	b := o.Broker
+	b.mu.Lock()
+	if f, running := b.flights[g.ID]; running {
+		b.mu.Unlock()
+		<-f.done
+		return f.g, f.err
+	}
+	f := &flight{done: make(chan struct{})}
+	b.flights[g.ID] = f
+	b.mu.Unlock()
+	f.g, f.err = o.refreshOnce(owner, g, p)
+	b.mu.Lock()
+	delete(b.flights, g.ID)
+	b.mu.Unlock()
+	close(f.done)
+	return f.g, f.err
+}
+
+func (o *OAuth) refreshOnce(owner string, g Grant, p *Provider) (Grant, error) {
+	b := o.Broker
 	an, rn := secretNames(g.ID)
-	rt, err := o.Broker.Vault.Get(g.Account, rn)
+	rt, err := b.Vault.Get(g.Account, rn)
 	if err != nil {
 		return Grant{}, ErrReauth
 	}
 	tr, status, err := p.post(url.Values{"grant_type": {"refresh_token"}, "refresh_token": {string(rt)}, "client_id": {p.ClientID}})
+	zero(rt)
 	if err != nil {
 		return Grant{}, fmt.Errorf("%w: refresh unavailable", ErrUntrusted)
 	}
 	if status == http.StatusBadRequest || status == http.StatusUnauthorized {
-		o.Broker.Revoke(g.ID, owner)
+		_, _ = b.endGrant(g.ID, owner, ReasonRevoked)
 		return Grant{}, ErrReauth
 	}
 	life := time.Duration(tr.ExpiresIn) * time.Second
-	if status != http.StatusOK || tr.AccessToken == "" || !strings.EqualFold(tr.TokenType, "bearer") || life <= 0 || life > maxAccessLife {
+	if status != http.StatusOK || tr.Error != "" || tr.AccessToken == "" || !strings.EqualFold(tr.TokenType, "bearer") || life <= 0 || life > maxAccessLife {
 		return Grant{}, ErrUntrusted
 	}
-	if err := o.Broker.Vault.Put(g.Account, an, []byte(tr.AccessToken)); err != nil {
-		return Grant{}, err
+	scopes := g.Scopes
+	if tr.Scope != "" {
+		granted := slices.DeleteFunc(scopeSet(tr.Scope), func(s string) bool { return s == "openid" })
+		for _, s := range granted {
+			if !slices.Contains(g.Scopes, s) {
+				return Grant{}, ErrUntrusted
+			}
+		}
+		scopes = granted
 	}
-	if tr.RefreshToken != "" {
-		if err := o.Broker.Vault.Put(g.Account, rn, []byte(tr.RefreshToken)); err != nil {
-			return Grant{}, err
+	if tr.IDToken != "" && g.IdentityVerified {
+		c, err := VerifyToken(tr.IDToken, p.Keys, Expect{Issuer: p.Issuer, Audience: p.ClientID, Now: b.Now()})
+		if err != nil {
+			return Grant{}, ErrUntrusted
+		}
+		if principalRef(p.Issuer, c.Subject) != g.PrincipalRef {
+			_, _ = b.endGrant(g.ID, owner, ReasonSwitched)
+			return Grant{}, ErrDenied
 		}
 	}
-	g.ExpiresAt = o.Broker.Now().Add(life)
-	if err := o.Broker.Store.Put(g); err != nil {
+	mu := b.stripe(g.ID)
+	mu.Lock()
+	defer mu.Unlock()
+	cur, ok := b.Store.Get(g.ID)
+	if !ok || cur.State == StateRevoked || cur.Epoch != g.Epoch {
+		return Grant{}, ErrDenied
+	}
+	rotated := tr.RefreshToken != ""
+	if rotated {
+		if err := b.Vault.Put(g.Account, rn, []byte(tr.RefreshToken)); err != nil {
+			_, _ = b.endGrant(g.ID, owner, ReasonRevoked)
+			return Grant{}, fmt.Errorf("%w: rotated credential could not be stored", ErrReauth)
+		}
+	}
+	if err := b.Vault.Put(g.Account, an, []byte(tr.AccessToken)); err != nil {
 		return Grant{}, err
 	}
-	return g, nil
+	exp := b.Now().Add(life)
+	next, _, err := b.update(g.ID, func(x *Grant) error {
+		if x.State == StateRevoked || x.Epoch != g.Epoch {
+			return ErrDenied
+		}
+		x.ExpiresAt, x.Scopes = exp, slices.Clone(scopes)
+		x.SecretGen++
+		return nil
+	})
+	if err != nil {
+		_ = b.Vault.Delete(g.Account, an)
+		_ = b.Vault.Delete(g.Account, rn)
+		return Grant{}, err
+	}
+	b.note(EventRefreshed, next, owner, ReasonOK)
+	return next, nil
 }

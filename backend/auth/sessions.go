@@ -13,30 +13,39 @@ type Sessions struct {
 	Inner execution.Sessions
 }
 
-// Lookup returns the session with Authenticated, Revoked, expiry and source scopes taken from the caller's grants for that application. A grant for a different person than the runtime reports counts as no sign-in.
+// Lookup binds a session to exactly one grant: same caller, application, exact origin, source principal and runtime, a verified identity and a source-managed sign-in. With any of those missing, or more than one live grant fitting, the session counts as not signed in; scopes come from that one grant only. A session whose matching grants have all ended is reported revoked.
 func (s Sessions) Lookup(id string) (execution.Session, bool) {
 	sess, ok := s.Inner.Lookup(id)
 	if !ok {
 		return execution.Session{}, false
 	}
-	var live, ended int
-	sess.Authenticated = false
-	sess.SourceScopes = nil
+	sess.Authenticated, sess.SourceScopes, sess.Generation = false, nil, ""
+	if sess.Owner == "" || sess.AppID == "" || sess.Origin == "" || sess.PrincipalRef == "" || sess.RuntimeID == "" {
+		return sess, true
+	}
+	now := s.Broker.Now()
+	var live []Grant
+	ended := 0
 	for _, g := range s.Broker.Store.List(sess.Owner) {
-		if g.Source.AppID != sess.AppID || g.Method != MethodSourceBrowser {
+		if g.Method != MethodSourceBrowser || !g.IdentityVerified || g.Source.AppID != sess.AppID || g.Source.Origin != sess.Origin ||
+			g.PrincipalRef != sess.PrincipalRef || g.RuntimeID != sess.RuntimeID {
 			continue
 		}
 		switch {
 		case g.State == StateRevoked:
 			ended++
-		case g.State == StateActive && s.Broker.Now().Before(g.ExpiresAt) && (sess.PrincipalRef == "" || sess.PrincipalRef == g.PrincipalRef):
-			live++
-			sess.Authenticated = true
-			sess.ExpiresAt = g.ExpiresAt
-			sess.SourceScopes = slices.Clone(g.Scopes)
+		case g.State == StateActive && now.Before(g.ExpiresAt):
+			live = append(live, g)
 		}
 	}
-	if live == 0 && ended > 0 {
+	switch {
+	case len(live) == 1:
+		g := live[0]
+		sess.Authenticated, sess.ExpiresAt, sess.Generation = true, g.ExpiresAt, g.Generation()
+		sess.SourceScopes = slices.Clone(g.Scopes)
+	case len(live) > 1:
+		s.Broker.note(EventRefused, live[0], safeActor(sess.Owner), ReasonAmbiguous)
+	case ended > 0:
 		sess.Revoked = true
 	}
 	return sess, true

@@ -10,6 +10,11 @@ var (
 	ErrReauth    = errors.New("auth.reauth_required")
 	ErrInvalid   = errors.New("auth.invalid")
 	ErrUntrusted = errors.New("auth.untrusted_token")
+	// ErrStale rejects evidence that is old, replayed or out of order; ErrAudit reports a mandatory security record that is not on the log.
+	ErrStale = errors.New("auth.stale")
+	ErrAudit = errors.New("auth.audit_unavailable")
+	// ErrWipePending means a grant is revoked and unusable but some secret could not yet be physically deleted; FlushWipes retries.
+	ErrWipePending = errors.New("auth.wipe_pending")
 )
 
 // Reason is the closed set of causes the audit log records.
@@ -25,4 +30,11 @@ const (
 	ReasonRevoked      Reason = "revoked"
 	ReasonPaused       Reason = "reauth_required"
 	ReasonOK           Reason = "ok"
+	ReasonEpoch        Reason = "signin_changed"
+	ReasonIdentity     Reason = "identity_unverified"
+	ReasonRuntime      Reason = "runtime_unproven"
+	ReasonReplay       Reason = "replayed_observation"
+	ReasonWipe         Reason = "secret_not_deleted"
+	ReasonProvider     Reason = "provider_mismatch"
+	ReasonAmbiguous    Reason = "ambiguous_grant"
 )

@@ -3,8 +3,10 @@ package auth
 import (
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/insightlabs38-pixel/vsf/backend/storage/meta"
 	"github.com/insightlabs38-pixel/vsf/backend/storage/secret"
@@ -15,10 +17,43 @@ const (
 	maxSecret    = 64 << 10
 )
 
-// FileVault keeps each secret in its own private file, sealed under the account's key, with an opaque name. It is the vault where no OS keychain exists.
+// tmpFile is the part of a file a replacement uses; tests substitute failing ones.
+type tmpFile interface {
+	Write([]byte) (int, error)
+	Sync() error
+	Chmod(os.FileMode) error
+	Close() error
+	Name() string
+}
+
+type fsOps struct {
+	createTemp func(dir, pattern string) (tmpFile, error)
+	rename     func(oldp, newp string) error
+	remove     func(p string) error
+	syncDir    func(dir string) error
+}
+
+func osOps() fsOps {
+	return fsOps{
+		createTemp: func(dir, pattern string) (tmpFile, error) { return os.CreateTemp(dir, pattern) },
+		rename:     os.Rename,
+		remove:     os.Remove,
+		syncDir: func(dir string) error {
+			d, err := os.Open(dir)
+			if err != nil {
+				return err
+			}
+			defer d.Close()
+			return d.Sync()
+		},
+	}
+}
+
+// FileVault keeps each secret in its own private file, sealed under the account's key, with an opaque name. It is the vault where no OS keychain exists. A Put writes a private temporary file, syncs it, renames it over the old one and syncs the directory, so a crash or an error at any step leaves either the old secret or the new one, never a mix; temporary files left by a crash are removed when the vault is opened.
 type FileVault struct {
 	Dir  string
 	Keys *secret.Keyring
+	fs   fsOps
 }
 
 func NewFileVault(dir string, keys *secret.Keyring) (*FileVault, error) {
@@ -28,7 +63,33 @@ func NewFileVault(dir string, keys *secret.Keyring) (*FileVault, error) {
 	if err := os.Chmod(dir, 0o700); err != nil {
 		return nil, err
 	}
-	return &FileVault{Dir: dir, Keys: keys}, nil
+	v := &FileVault{Dir: dir, Keys: keys, fs: osOps()}
+	_, _ = v.Recover()
+	return v, nil
+}
+
+// Recover removes temporary files an interrupted Put left behind and returns how many.
+func (v *FileVault) Recover() (int, error) {
+	n := 0
+	dirs, err := os.ReadDir(v.Dir)
+	if err != nil {
+		return 0, err
+	}
+	for _, d := range dirs {
+		if !d.IsDir() {
+			continue
+		}
+		files, err := os.ReadDir(filepath.Join(v.Dir, d.Name()))
+		if err != nil {
+			continue
+		}
+		for _, f := range files {
+			if strings.HasPrefix(f.Name(), ".put-") && v.fs.remove(filepath.Join(v.Dir, d.Name(), f.Name())) == nil {
+				n++
+			}
+		}
+	}
+	return n, nil
 }
 
 func (v *FileVault) box(account string) *secret.Box {
@@ -50,30 +111,59 @@ func (v *FileVault) Put(account, name string, value []byte) error {
 		return err
 	}
 	p := v.path(account, name)
-	if err := os.MkdirAll(filepath.Dir(p), 0o700); err != nil {
-		return err
+	dir := filepath.Dir(p)
+	if err := os.MkdirAll(dir, 0o700); err != nil {
+		return fmt.Errorf("vault: %w", scrub(err))
 	}
-	tmp, err := os.CreateTemp(filepath.Dir(p), ".put-*")
+	tmp, err := v.fs.createTemp(dir, ".put-*")
 	if err != nil {
-		return err
+		return fmt.Errorf("vault: %w", scrub(err))
 	}
-	defer os.Remove(tmp.Name())
+	committed := false
+	defer func() {
+		if !committed {
+			_ = v.fs.remove(tmp.Name())
+		}
+	}()
 	if err := tmp.Chmod(0o600); err != nil {
 		tmp.Close()
-		return err
+		return fmt.Errorf("vault: %w", scrub(err))
 	}
-	if _, err := tmp.Write(sealed); err != nil {
+	if n, err := tmp.Write(sealed); err != nil || n != len(sealed) {
 		tmp.Close()
-		return err
+		return fmt.Errorf("vault: write failed: %w", scrub(err))
 	}
 	if err := tmp.Sync(); err != nil {
 		tmp.Close()
-		return err
+		return fmt.Errorf("vault: %w", scrub(err))
 	}
 	if err := tmp.Close(); err != nil {
-		return err
+		return fmt.Errorf("vault: %w", scrub(err))
 	}
-	return os.Rename(tmp.Name(), p)
+	if err := v.fs.rename(tmp.Name(), p); err != nil {
+		return fmt.Errorf("vault: %w", scrub(err))
+	}
+	committed = true
+	if err := v.fs.syncDir(dir); err != nil {
+		return fmt.Errorf("vault: replaced but not synced: %w", scrub(err))
+	}
+	return nil
+}
+
+// scrub keeps the operation and the error class of a file error and drops its path, which names an opaque file but is still not for logs.
+func scrub(err error) error {
+	if err == nil {
+		return errors.New("short write")
+	}
+	var pe *fs.PathError
+	if errors.As(err, &pe) {
+		return pe.Err
+	}
+	var le *os.LinkError
+	if errors.As(err, &le) {
+		return le.Err
+	}
+	return err
 }
 
 func (v *FileVault) Get(account, name string) ([]byte, error) {
@@ -98,9 +188,13 @@ func (v *FileVault) Delete(account, name string) error {
 	if !idRe.MatchString(account) || !nameRe.MatchString(name) {
 		return ErrInvalid
 	}
-	err := os.Remove(v.path(account, name))
+	p := v.path(account, name)
+	err := v.fs.remove(p)
 	if errors.Is(err, os.ErrNotExist) {
 		return nil
 	}
-	return err
+	if err != nil {
+		return fmt.Errorf("vault: delete: %w", scrub(err))
+	}
+	return v.fs.syncDir(filepath.Dir(p))
 }

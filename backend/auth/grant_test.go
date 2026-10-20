@@ -79,14 +79,16 @@ func TestExpiryRevocationAndPauseAreEnforcedAtUse(t *testing.T) {
 	}
 	cl.t = epoch
 	g2, _ := b.Issue(grant("alice"))
-	g2.State = StateRevoked
-	_ = b.Store.Put(g2)
+	if err := b.Revoke(g2.ID, "alice"); err != nil {
+		t.Fatal(err)
+	}
 	if _, err := b.Authorize(use(g2, "alice")); !errors.Is(err, ErrDenied) {
 		t.Fatalf("%v", err)
 	}
 	g3, _ := b.Issue(grant("alice"))
-	g3.State = StatePaused
-	_ = b.Store.Put(g3)
+	if _, err := b.Pause(g3.ID, "alice", ChallengeMFA); err != nil {
+		t.Fatal(err)
+	}
 	if _, err := b.Authorize(use(g3, "alice")); !errors.Is(err, ErrReauth) {
 		t.Fatalf("%v", err)
 	}

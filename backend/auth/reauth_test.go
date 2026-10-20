@@ -10,33 +10,14 @@ import (
 	"github.com/insightlabs38-pixel/vsf/backend/execution"
 )
 
-func signedIn(t *testing.T) (*Browser, *Broker, *clock, Grant) {
-	t.Helper()
-	b, cl, _ := newBroker(t)
-	b.Vault = NewMemVault()
-	br := NewBrowser(b)
-	_ = br.Expect("alice", "acme", mail, []string{"mail.read"})
-	g, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_one", Authenticated: true, Scopes: []string{"mail.read"}})
-	if err != nil {
-		t.Fatal(err)
-	}
-	return br, b, cl, g
-}
-
-func fresh(cl *clock, mut func(*Observation)) Observation {
-	o := Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_one", Authenticated: true, ObservedAt: cl.t.Add(time.Second)}
-	if mut != nil {
-		mut(&o)
-	}
-	return o
-}
-
 func TestAChallengeAtTheSourcePausesTheGrantAndOnlyAFreshCleanObservationResumesIt(t *testing.T) {
-	br, b, cl, g := signedIn(t)
+	r := newSig(t)
+	g := r.signIn()
+	b := r.b
 	cancelled := 0
 	b.Track(g.ID, "run-1", func() { cancelled++ })
-	cl.t = cl.t.Add(time.Minute)
-	if _, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_one", Authenticated: true, Challenge: ChallengeMFA}); err != nil {
+	r.tick(time.Minute)
+	if _, err := r.br.Accept(r.ev("bs_alice1", func(e *Evidence) { e.Challenge = ChallengeMFA })); err != nil {
 		t.Fatal(err)
 	}
 	if !b.Paused(g.ID) {
@@ -48,51 +29,71 @@ func TestAChallengeAtTheSourcePausesTheGrantAndOnlyAFreshCleanObservationResumes
 	if cancelled != 0 {
 		t.Fatal("a pause waits for the person; it does not cancel work")
 	}
-	// A heartbeat that says "still signed in" while the prompt is open must not resume anything.
-	if got, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_one", Authenticated: true}); err != nil || got.State != StatePaused {
-		t.Fatalf("%+v %v", got, err)
+	r.tick(time.Second)
+	// A heartbeat that says "still signed in" at the very instant of the pause must not resume anything.
+	pausedAt := r.cl.t
+	if got, err := r.br.Accept(r.ev("bs_alice1", func(e *Evidence) { e.ObservedAt = pausedAt.Add(-time.Second) })); err == nil || got.State == StateActive {
+		t.Fatalf("an observation from before the pause: %+v %v", got, err)
 	}
+	r.tick(time.Second)
 	cases := map[string]struct {
 		owner string
-		obs   Observation
+		mut   func(*Observation)
 		want  error
 	}{
-		"another caller":                    {"mallory", fresh(cl, func(o *Observation) { o.Owner = "mallory" }), ErrDenied},
-		"observation names another source":  {"alice", fresh(cl, func(o *Observation) { o.Source = Source{AppID: "app.mail", Origin: "https://evil.example.com"} }), ErrDenied},
-		"observation from before the pause": {"alice", fresh(cl, func(o *Observation) { o.ObservedAt = cl.t.Add(-time.Hour) }), ErrReauth},
-		"no observation time":               {"alice", fresh(cl, func(o *Observation) { o.ObservedAt = time.Time{} }), ErrReauth},
-		"challenge still showing":           {"alice", fresh(cl, func(o *Observation) { o.Challenge = ChallengeMFA }), ErrReauth},
-		"signed out":                        {"alice", fresh(cl, func(o *Observation) { o.Authenticated = false }), ErrReauth},
+		"another caller":          {"mallory", nil, ErrDenied},
+		"another source":          {"alice", func(o *Observation) { o.Source = Source{AppID: "app.mail", Origin: "https://evil.example.com"} }, ErrDenied},
+		"before the pause":        {"alice", func(o *Observation) { o.ObservedAt = g.ObservedAt }, ErrReauth},
+		"no observation time":     {"alice", func(o *Observation) { o.ObservedAt = time.Time{} }, ErrReauth},
+		"challenge still showing": {"alice", func(o *Observation) { o.Challenge = ChallengeMFA }, ErrReauth},
+		"signed out":              {"alice", func(o *Observation) { o.Authenticated = false }, ErrReauth},
+		"not from the authority":  {"alice", func(o *Observation) { o.verified = false }, ErrDenied},
 	}
 	for name, c := range cases {
-		if _, err := b.Resume(g.ID, c.owner, c.obs); !errors.Is(err, c.want) {
+		o := r.obs("bs_alice1", nil)
+		if c.mut != nil {
+			c.mut(&o)
+		}
+		if _, err := b.Resume(g.ID, c.owner, o); !errors.Is(err, c.want) {
 			t.Fatalf("%s: %v", name, err)
 		}
 		if !b.Paused(g.ID) {
 			t.Fatalf("%s lifted the pause", name)
 		}
+		r.tick(time.Millisecond)
 	}
-	got, err := b.Resume(g.ID, "alice", fresh(cl, nil))
+	good := r.obs("bs_alice1", nil)
+	got, err := b.Resume(g.ID, "alice", good)
 	if err != nil || got.State != StateActive || got.Epoch != 2 || b.Paused(g.ID) {
 		t.Fatalf("%+v %v", got, err)
+	}
+	if cancelled != 1 {
+		t.Fatal("work started before the challenge belongs to the earlier epoch and is cancelled")
 	}
 	if _, err := b.Authorize(Check{GrantID: g.ID, Owner: "alice", Origin: mail.Origin, Audience: g.Audience}); err != nil {
 		t.Fatalf("%v", err)
 	}
-	if _, err := b.Resume(g.ID, "alice", fresh(cl, nil)); !errors.Is(err, ErrDenied) {
+	if _, err := b.Authorize(Check{GrantID: g.ID, Owner: "alice", Origin: mail.Origin, Audience: g.Audience, Generation: g.Generation()}); !errors.Is(err, ErrReauth) {
+		t.Fatalf("work bound to the earlier sign-in generation is refused: %v", err)
+	}
+	if _, err := b.Resume(g.ID, "alice", good); !errors.Is(err, ErrDenied) {
 		t.Fatalf("a spent pause cannot be resumed again: %v", err)
 	}
 }
 
 func TestADifferentPersonCompletingTheChallengeEndsTheGrantAndItsWork(t *testing.T) {
-	_, b, cl, g := signedIn(t)
+	r := newSig(t)
+	g := r.signIn()
+	b := r.b
 	cancelled := 0
 	b.Track(g.ID, "run-1", func() { cancelled++ })
 	if _, err := b.Pause(g.ID, "alice", ChallengePasskey); err != nil {
 		t.Fatal(err)
 	}
-	cl.t = cl.t.Add(time.Minute)
-	if _, err := b.Resume(g.ID, "alice", fresh(cl, func(o *Observation) { o.PrincipalRef = "pr_two" })); !errors.Is(err, ErrDenied) {
+	r.tick(time.Minute)
+	o := r.obs("bs_alice1", nil)
+	o.PrincipalRef = "pr_two"
+	if _, err := b.Resume(g.ID, "alice", o); !errors.Is(err, ErrDenied) {
 		t.Fatalf("%v", err)
 	}
 	if cur, _ := b.Store.Get(g.ID); cur.State != StateRevoked || cancelled != 1 {
@@ -101,7 +102,9 @@ func TestADifferentPersonCompletingTheChallengeEndsTheGrantAndItsWork(t *testing
 }
 
 func TestAPauseNobodyAnswersEndsTheGrantAndSweepCancelsWhatDependedOnIt(t *testing.T) {
-	_, b, cl, g := signedIn(t)
+	r := newSig(t)
+	g := r.signIn()
+	b, cl := r.b, r.cl
 	var calls []string
 	b.Track(g.ID, "run-1", func() { calls = append(calls, "run-1") })
 	b.Track(g.ID, "run-2", func() { calls = append(calls, "run-2") })
@@ -130,23 +133,29 @@ func TestAPauseNobodyAnswersEndsTheGrantAndSweepCancelsWhatDependedOnIt(t *testi
 }
 
 func TestResumeAfterThePauseExpiredIsRefusedAndEndsTheGrant(t *testing.T) {
-	_, b, cl, g := signedIn(t)
-	_, _ = b.Pause(g.ID, "alice", ChallengeReauth)
-	cl.t = cl.t.Add(pauseTTL)
-	if _, err := b.Resume(g.ID, "alice", fresh(cl, nil)); !errors.Is(err, ErrExpired) {
+	r := newSig(t)
+	g := r.signIn()
+	_, _ = r.b.Pause(g.ID, "alice", ChallengeReauth)
+	r.tick(pauseTTL - time.Second)
+	o := r.obs("bs_alice1", nil)
+	r.tick(time.Second)
+	if _, err := r.b.Resume(g.ID, "alice", o); !errors.Is(err, ErrExpired) {
 		t.Fatalf("%v", err)
 	}
-	if cur, _ := b.Store.Get(g.ID); cur.State != StateRevoked {
+	if cur, _ := r.b.Store.Get(g.ID); cur.State != StateRevoked {
 		t.Fatal("a stale pause is not left open")
 	}
 }
 
 func TestSigningOutRevokingAndCancellingInvalidateWhatDependsOnTheSignIn(t *testing.T) {
-	br, b, _, g := signedIn(t)
+	r := newSig(t)
+	g := r.signIn()
+	b := r.b
 	n := 0
 	b.Track(g.ID, "a", func() { n++ })
 	b.Track(g.ID, "b", func() { n++ })
-	if _, err := br.Observe(Observation{Owner: "alice", Source: mail, Authenticated: false}); err != nil || n != 2 {
+	r.tick(time.Second)
+	if _, err := r.br.Accept(r.ev("bs_alice1", func(e *Evidence) { e.Authenticated = false })); err != nil || n != 2 {
 		t.Fatalf("%v %d", err, n)
 	}
 	if err := b.Revoke(g.ID, "mallory"); !errors.Is(err, ErrDenied) {
@@ -158,18 +167,22 @@ func TestSigningOutRevokingAndCancellingInvalidateWhatDependsOnTheSignIn(t *test
 	if _, err := b.Pause(g.ID, "alice", ChallengeMFA); !errors.Is(err, ErrDenied) {
 		t.Fatalf("a revoked grant cannot be paused back to life: %v", err)
 	}
+	if b.Track(g.ID, "late", func() { n++ }) || n != 3 {
+		t.Fatal("work that starts after the grant ended is cancelled at once")
+	}
 
 	o := NewOAuth(b)
-	r := newRig(t)
-	u, _ := o.Begin("alice", "acme", r.idp.provider())
-	state, code := r.idp.authorize(u)
+	rg := newRig(t)
+	u, _ := o.Begin("alice", "acme", rg.idp.provider())
+	state, code := rg.idp.authorize(u)
 	o.Cancel("mallory", state)
 	o.Cancel("alice", state)
 	if _, err := o.Complete("alice", state, code, ""); !errors.Is(err, ErrDenied) {
 		t.Fatalf("a cancelled sign-in cannot be completed: %v", err)
 	}
-	br.Cancel("alice", mail)
-	if _, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_one", Authenticated: true}); !errors.Is(err, ErrDenied) {
+	r.br.Cancel("alice", mail)
+	r.tick(time.Second)
+	if _, err := r.br.Accept(r.ev("bs_alice1", nil)); !errors.Is(err, ErrDenied) {
 		t.Fatalf("%v", err)
 	}
 }
@@ -194,13 +207,15 @@ type fixedSessions map[string]execution.Session
 func (f fixedSessions) Lookup(id string) (execution.Session, bool) { s, ok := f[id]; return s, ok }
 
 func TestTheRuntimeSeesPausedExpiredAndEndedSignInsAsSuch(t *testing.T) {
-	br, b, cl, g := signedIn(t)
-	inner := fixedSessions{"s1": {ID: "s1", Owner: "alice", AppID: "app.mail", RuntimeID: "rt1", PrincipalRef: "pr_one", Authenticated: true},
-		"s3": {ID: "s3", Owner: "alice", AppID: "app.mail", PrincipalRef: "pr_someone_else", Authenticated: true},
-		"s2": {ID: "s2", Owner: "bob", AppID: "app.mail", Authenticated: true}}
+	r := newSig(t)
+	g := r.signIn()
+	b, cl := r.b, r.cl
+	inner := fixedSessions{"s1": {ID: "s1", Owner: "alice", AppID: "app.mail", Origin: mail.Origin, RuntimeID: "rt_1", PrincipalRef: "pr_one", Authenticated: true},
+		"s3": {ID: "s3", Owner: "alice", AppID: "app.mail", Origin: mail.Origin, RuntimeID: "rt_1", PrincipalRef: "pr_someone_else", Authenticated: true},
+		"s2": {ID: "s2", Owner: "bob", AppID: "app.mail", Origin: mail.Origin, Authenticated: true}}
 	s := Sessions{Broker: b, Inner: inner}
 	got, ok := s.Lookup("s1")
-	if !ok || !got.Authenticated || got.Revoked || got.PrincipalRef != "pr_one" || !got.ExpiresAt.Equal(g.ExpiresAt) || len(got.SourceScopes) != 1 || got.RuntimeID != "rt1" {
+	if !ok || !got.Authenticated || got.Revoked || got.PrincipalRef != "pr_one" || !got.ExpiresAt.Equal(g.ExpiresAt) || len(got.SourceScopes) != 1 || got.RuntimeID != "rt_1" || got.Generation != g.Generation() {
 		t.Fatalf("%+v", got)
 	}
 	if wrong, _ := s.Lookup("s3"); wrong.Authenticated {
@@ -214,13 +229,13 @@ func TestTheRuntimeSeesPausedExpiredAndEndedSignInsAsSuch(t *testing.T) {
 		t.Fatalf("a paused sign-in is unauthenticated, not revoked: %+v", got)
 	}
 	cl.t = cl.t.Add(time.Second)
-	_, _ = b.Resume(g.ID, "alice", fresh(cl, nil))
+	_, _ = b.Resume(g.ID, "alice", r.obs("bs_alice1", nil))
 	cl.t = g.ExpiresAt
 	if got, _ := s.Lookup("s1"); got.Authenticated {
 		t.Fatalf("an expired sign-in no longer authenticates: %+v", got)
 	}
-	cl.t = epoch
-	_, _ = br.Observe(Observation{Owner: "alice", Source: mail, Authenticated: false})
+	cl.t = epoch.Add(2 * time.Second)
+	_, _ = r.br.Accept(r.ev("bs_alice1", func(e *Evidence) { e.Authenticated = false }))
 	if got, _ := s.Lookup("s1"); got.Authenticated || !got.Revoked {
 		t.Fatalf("signing out revokes the session: %+v", got)
 	}

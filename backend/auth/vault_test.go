@@ -121,7 +121,7 @@ func (f *fakeRunner) Run(_ context.Context, stdin []byte, name string, args ...s
 	k := strings.Join(rest, " ")
 	switch args[0] {
 	case "store":
-		f.store[k] = stdin
+		f.store[k] = append([]byte(nil), stdin...)
 	case "lookup":
 		if v, ok := f.store[k]; ok {
 			return append(v, '\n'), 0, nil

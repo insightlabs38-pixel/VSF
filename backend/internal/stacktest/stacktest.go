@@ -120,7 +120,7 @@ func (d *Directory) SetScopes(id string, scopes ...string) {
 func GoodSession(id, owner string) execution.Session {
 	return execution.Session{
 		ID: id, Owner: owner, AppID: TestApp, AppVersion: "2.0.0", VariantClass: "sales-rep", VariantID: variantID,
-		PrincipalRef: principalRef, RuntimeID: runtimeID, SourceState: sourceState, CapabilityDigest: capability,
+		PrincipalRef: principalRef, RuntimeID: runtimeID, Origin: "https://app.example.com", SourceState: sourceState, CapabilityDigest: capability,
 		SourceScopes: []string{"records.read", "records.write"}, Authenticated: true,
 	}
 }

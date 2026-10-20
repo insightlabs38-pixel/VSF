@@ -57,8 +57,8 @@ func TestNoCredentialEverReachesTheArtifactStoreItsCacheOrAnythingPersistedWithA
 
 	// What a caller would naturally persist about a sign-in: the grant, a plan note, a profile and the audit record.
 	ps := NewProfiles(r.b)
-	_, _ = ps.Observe("alice", Profile{GrantID: g.ID, Roles: []string{"member"}, ObservedAt: epoch})
-	ref, _ := ps.Bind("plan-1", "alice", g.ID)
+	ref := PlanRef{PlanID: "plan-1", Owner: "alice", Grant: g.ID, Epoch: g.Epoch, Digest: strings.Repeat("a", 64), Content: strings.Repeat("b", 64)}
+	_ = ps
 	gj, _ := json.Marshal(g)
 	rj, _ := json.Marshal(ref)
 	d, err := store.PutArtifact(ctx, "acme", append(gj, rj...), artifact.ArtifactInput{Class: meta.Private})

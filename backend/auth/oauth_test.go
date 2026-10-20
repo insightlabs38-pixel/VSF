@@ -357,81 +357,81 @@ func TestRefreshRenewsAGrantAndAServerRefusalEndsIt(t *testing.T) {
 	}
 }
 
-func browserRig(t *testing.T) (*Browser, *Broker, *clock) {
-	b, cl, _ := newBroker(t)
-	b.Vault = NewMemVault()
-	return NewBrowser(b), b, cl
-}
-
 var mail = Source{AppID: "app.mail", Origin: "https://mail.example.com"}
 
 func TestSourceManagedSignInRecordsAGrantWithNoSecret(t *testing.T) {
-	br, b, _ := browserRig(t)
-	if err := br.Expect("alice", "acme", mail, []string{"mail.read", "mail.send"}); err != nil {
+	r := newSig(t)
+	if err := r.br.Expect("alice", "acme", mail, []string{"mail.read", "mail.send"}); err != nil {
 		t.Fatal(err)
 	}
-	g, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_abc", Authenticated: true, Scopes: []string{"mail.read"}})
+	g, err := r.br.Accept(r.ev("bs_alice1", func(e *Evidence) { e.Scopes = []string{"mail.read"} }))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if g.Method != MethodSourceBrowser || g.Audience != mail.Origin || len(g.Scopes) != 1 || g.Scopes[0] != "mail.read" || !br.Authenticated("alice", mail) {
+	if g.Method != MethodSourceBrowser || g.Audience != mail.Origin || len(g.Scopes) != 1 || g.Scopes[0] != "mail.read" || !r.br.Authenticated("alice", mail) {
 		t.Fatalf("%+v", g)
+	}
+	if !g.IdentityVerified || g.RuntimeID != "rt_1" || g.SessionID != "bs_alice1" || g.PrincipalRef != "pr_one" {
+		t.Fatalf("the grant records who, through which runtime session: %+v", g)
 	}
 	if !g.ExpiresAt.Equal(epoch.Add(maxSourceLife)) {
 		t.Fatalf("%v", g.ExpiresAt)
 	}
+	r.tick(time.Second)
 	short := epoch.Add(time.Hour)
-	g2, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_abc", Authenticated: true, Expires: short, Scopes: []string{"mail.read"}})
-	if err != nil || g2.ID != g.ID || !g2.ExpiresAt.Equal(short) {
+	g2, err := r.br.Accept(r.ev("bs_alice1", func(e *Evidence) { e.Expires = short }))
+	if err != nil || g2.ID != g.ID || !g2.ExpiresAt.Equal(short) || g2.Epoch != g.Epoch {
 		t.Fatalf("a repeat observation of the same person renews the same grant to the source's own expiry: %+v %v", g2, err)
 	}
-	if len(b.List("alice")) != 1 {
+	if len(r.b.List("alice")) != 1 {
 		t.Fatal("no duplicate grants")
 	}
 }
 
 func TestAnUnexpectedSignInOrAnotherCallersObservationChangesNothing(t *testing.T) {
-	br, b, _ := browserRig(t)
-	if _, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_abc", Authenticated: true}); !errors.Is(err, ErrDenied) {
+	r := newSig(t)
+	if _, err := r.br.Accept(r.ev("bs_alice1", nil)); !errors.Is(err, ErrDenied) {
 		t.Fatalf("a sign-in nobody asked for creates no grant: %v", err)
 	}
-	_ = br.Expect("alice", "acme", mail, []string{"mail.read"})
-	if _, err := br.Observe(Observation{Owner: "bob", Source: mail, PrincipalRef: "pr_abc", Authenticated: true}); !errors.Is(err, ErrDenied) {
+	_ = r.br.Expect("alice", "acme", mail, []string{"mail.read"})
+	if _, err := r.br.Accept(r.ev("bs_bob1", nil)); !errors.Is(err, ErrDenied) {
 		t.Fatalf("%v", err)
 	}
-	if br.Authenticated("alice", mail) || len(b.List("alice")) != 0 || len(b.List("bob")) != 0 {
+	if r.br.Authenticated("alice", mail) || len(r.b.List("alice")) != 0 || len(r.b.List("bob")) != 0 {
 		t.Fatal("nothing was recorded")
 	}
-	if _, err := br.Observe(Observation{Owner: "alice", Source: mail, Authenticated: true}); !errors.Is(err, ErrInvalid) {
-		t.Fatalf("an authenticated observation names a principal: %v", err)
+	if _, err := r.br.Accept(r.ev("bs_alice1", func(e *Evidence) { e.PrincipalRef = "" })); !errors.Is(err, ErrDenied) {
+		t.Fatalf("an authenticated observation must name the principal the runtime was registered with: %v", err)
 	}
 }
 
 func TestSigningOutOrSwitchingPersonEndsTheEarlierGrant(t *testing.T) {
-	br, b, _ := browserRig(t)
-	_ = br.Expect("alice", "acme", mail, []string{"mail.read"})
-	g, _ := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_one", Authenticated: true, Scopes: []string{"mail.read"}})
+	r := newSig(t)
+	g := r.signIn()
 	cancelled := 0
-	b.Track(g.ID, "run-1", func() { cancelled++ })
-	_ = br.Expect("alice", "acme", mail, []string{"mail.read"})
-	g2, err := br.Observe(Observation{Owner: "alice", Source: mail, PrincipalRef: "pr_two", Authenticated: true, Scopes: []string{"mail.read"}})
+	r.b.Track(g.ID, "run-1", func() { cancelled++ })
+	r.tick(time.Second)
+	r.session("bs_alice2", "alice", "pr_two", "rt_2", mail)
+	_ = r.br.Expect("alice", "acme", mail, []string{"mail.read"})
+	g2, err := r.br.Accept(r.ev("bs_alice2", nil))
 	if err != nil || g2.ID == g.ID {
 		t.Fatalf("%+v %v", g2, err)
 	}
-	if old, _ := b.Store.Get(g.ID); old.State != StateRevoked || cancelled != 1 {
+	if old, _ := r.b.Store.Get(g.ID); old.State != StateRevoked || cancelled != 1 {
 		t.Fatalf("a different person on the same page ends the earlier sign-in and what depended on it: %v %d", old.State, cancelled)
 	}
-	if _, err := br.Observe(Observation{Owner: "alice", Source: mail, Authenticated: false}); err != nil {
+	r.tick(time.Second)
+	if _, err := r.br.Accept(r.ev("bs_alice2", func(e *Evidence) { e.Authenticated = false })); err != nil {
 		t.Fatal(err)
 	}
-	if cur, _ := b.Store.Get(g2.ID); cur.State != StateRevoked || br.Authenticated("alice", mail) {
+	if cur, _ := r.b.Store.Get(g2.ID); cur.State != StateRevoked || r.br.Authenticated("alice", mail) {
 		t.Fatal("signing out ends the grant")
 	}
 }
 
 func TestAnOAuthGrantDoesNotMakeTheSourceSessionAuthenticated(t *testing.T) {
 	r := newRig(t)
-	br := NewBrowser(r.b)
+	br := NewBrowser(r.b, &fakeRuntimes{m: map[string]RuntimeSession{}})
 	if _, err := r.run(t, "alice"); err != nil {
 		t.Fatal(err)
 	}

@@ -14,13 +14,22 @@ import (
 	"slices"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 const (
 	maxTokenBytes = 16 << 10
 	clockSkew     = 60 * time.Second
 	minRSABits    = 2048
+	maxKeys       = 32
+	maxSubject    = 255
 )
+
+func samePublicKey(a, b crypto.PublicKey) bool {
+	type eq interface{ Equal(crypto.PublicKey) bool }
+	x, ok := a.(eq)
+	return ok && x.Equal(b)
+}
 
 // KeySet holds the public keys a token issuer publishes, by key id.
 type KeySet struct{ keys map[string]crypto.PublicKey }
@@ -42,7 +51,10 @@ func (k *KeySet) Add(kid string, pub crypto.PublicKey) error {
 	default:
 		return ErrInvalid
 	}
-	if kid == "" {
+	if kid == "" || len(k.keys) >= maxKeys {
+		return ErrInvalid
+	}
+	if old, dup := k.keys[kid]; dup && !samePublicKey(old, pub) {
 		return ErrInvalid
 	}
 	k.keys[kid] = pub
@@ -70,7 +82,12 @@ func ParseJWKS(raw []byte) (*KeySet, error) {
 		return nil, ErrInvalid
 	}
 	ks := NewKeySet()
+	seen := map[string]bool{}
 	for _, k := range doc.Keys {
+		if k.Kid != "" && seen[k.Kid] {
+			return nil, ErrInvalid
+		}
+		seen[k.Kid] = true
 		switch k.Kty {
 		case "RSA":
 			n, e := new(big.Int), new(big.Int)
@@ -232,6 +249,8 @@ func VerifyToken(raw string, keys *KeySet, want Expect) (Claims, error) {
 	now := want.Now
 	switch {
 	case c.Issuer == "" || c.Issuer != want.Issuer:
+		return Claims{}, ErrUntrusted
+	case c.Subject == "" || len(c.Subject) > maxSubject || !utf8.ValidString(c.Subject):
 		return Claims{}, ErrUntrusted
 	case !slices.Contains(c.Audience, want.Audience) || (len(c.Audience) > 1 && c.Authorized != want.Audience):
 		return Claims{}, ErrUntrusted

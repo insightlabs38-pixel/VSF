@@ -245,6 +245,15 @@ func freshID() string {
 	return "rd_" + hex.EncodeToString(b[:])
 }
 
+// sessionGeneration is sessionFor that also returns the sign-in generation the session runs under.
+func (s *Service) sessionGeneration(caller, id string) (string, *Error) {
+	sess, ok := s.cfg.Sessions.Lookup(id)
+	if !ok || sess.Owner != caller {
+		return "", newError(CodeSessionInvalid, "session_unavailable")
+	}
+	return sess.Generation, nil
+}
+
 // sessionFor gives one answer whether a session is missing or belongs to someone else.
 func (s *Service) sessionFor(p Principal, id string) *Error {
 	sess, ok := s.cfg.Sessions.Lookup(id)
@@ -515,13 +524,14 @@ func (s *Service) Confirm(_ context.Context, p Principal, raw []byte, route Rout
 	if err != nil {
 		return ConfirmationIn{}, err
 	}
-	if err := s.sessionFor(Principal{Caller: executor}, inv.SessionID); err != nil {
+	gen, err := s.sessionGeneration(executor, inv.SessionID)
+	if err != nil {
 		return ConfirmationIn{}, err
 	}
 	if !spec.Effect.Write {
 		return ConfirmationIn{}, errWith(CodeInvalidRequest, "nothing_to_confirm", nil)
 	}
-	digest := execution.ConfirmationDigest(spec.ContractDigest, inv.Record, inv.Params, executor, inv.SessionID)
+	digest := execution.ConfirmationDigestAt(gen, spec.ContractDigest, inv.Record, inv.Params, executor, inv.SessionID)
 	c := s.cfg.Confirmer.Issue(digest, p.Caller, s.cfg.Now().Add(ConfirmationTTL))
 	return ConfirmationIn{Token: c.Token, By: c.By, Digest: c.Digest, ExpiresAt: c.ExpiresAt.UnixMilli()}, nil
 }

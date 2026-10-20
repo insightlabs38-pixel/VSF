@@ -9,6 +9,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
+	"path/filepath"
 	"regexp"
 	"sync"
 	"time"
@@ -32,15 +34,18 @@ const (
 	EventPlanStale   Event = "plan_invalidated"
 	EventDelegated   Event = "delegation_given"
 	EventUndelegated Event = "delegation_withdrawn"
+	EventWipeFailed  Event = "secret_delete_failed"
+	EventRotated     Event = "audit_rotated"
+	EventRefreshed   Event = "token_refreshed"
 )
 
 var events = map[Event]bool{EventIssued: true, EventRefused: true, EventRevoked: true, EventPaused: true, EventResumed: true, EventSignedIn: true,
-	EventSignedOut: true, EventLease: true, EventRevealed: true, EventCancelled: true, EventProfile: true, EventPlanStale: true, EventDelegated: true, EventUndelegated: true}
+	EventSignedOut: true, EventLease: true, EventRevealed: true, EventCancelled: true, EventProfile: true, EventPlanStale: true, EventDelegated: true, EventUndelegated: true, EventWipeFailed: true, EventRotated: true, EventRefreshed: true}
 
 var reasons = map[Reason]bool{}
 
 func init() {
-	for _, r := range []Reason{ReasonUnknownGrant, ReasonOwner, ReasonSource, ReasonAudience, ReasonScope, ReasonExpired, ReasonRevoked, ReasonPaused, ReasonOK} {
+	for _, r := range []Reason{ReasonUnknownGrant, ReasonOwner, ReasonSource, ReasonAudience, ReasonScope, ReasonExpired, ReasonRevoked, ReasonPaused, ReasonOK, ReasonEpoch, ReasonIdentity, ReasonRuntime, ReasonReplay, ReasonWipe, ReasonProvider, ReasonAmbiguous} {
 		reasons[r] = true
 	}
 }
@@ -81,12 +86,15 @@ type auditLine struct {
 
 var ErrAuditTampered = errors.New("auth.audit_tampered")
 
-// Audit is an append-only, hash-chained log: removing, reordering or editing any line breaks the chain from there on.
+// Audit is an append-only, hash-chained log: removing, reordering or editing any line breaks the chain from there on. Durability: when the writer can Sync (a file), every record is synced before Append returns, so a nil error means the line reached stable storage. A write that fails before any byte is written can be retried; a partial write leaves the log needing recovery (OpenAuditFile truncates the torn tail), and until then every Append fails. Dropping the tail of a valid log is undetectable without an external anchor, such as the last hash kept elsewhere.
 type Audit struct {
-	mu   sync.Mutex
-	w    io.Writer
-	seq  uint64
-	prev string
+	mu     sync.Mutex
+	w      io.Writer
+	seq    uint64
+	prev   string
+	broken bool
+	file   *os.File
+	path   string
 }
 
 const genesis = "0000000000000000000000000000000000000000000000000000000000000000"
@@ -114,35 +122,165 @@ func (a *Audit) Append(r AuditRecord) error {
 	}
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	a.seq++
-	l := auditLine{Seq: a.seq, At: r.At.UnixMilli(), Event: r.Event, Grant: r.Grant, Account: r.Account, Actor: r.Actor, Origin: r.Origin, Reason: r.Reason, Ref: r.Ref, Prev: a.prev}
+	return a.appendLocked(r)
+}
+
+func (a *Audit) appendLocked(r AuditRecord) error {
+	if a.broken {
+		return ErrAudit
+	}
+	l := auditLine{Seq: a.seq + 1, At: r.At.UnixMilli(), Event: r.Event, Grant: r.Grant, Account: r.Account, Actor: r.Actor, Origin: r.Origin, Reason: r.Reason, Ref: r.Ref, Prev: a.prev}
 	l.Hash = hashLine(l)
 	b, _ := json.Marshal(l)
-	if _, err := a.w.Write(append(b, '\n')); err != nil {
-		a.seq--
+	b = append(b, '\n')
+	n, err := a.w.Write(b)
+	if err != nil || n != len(b) {
+		if n > 0 {
+			a.broken = true
+		}
+		return errors.Join(ErrAudit, err)
+	}
+	a.seq, a.prev = l.Seq, l.Hash
+	if s, ok := a.w.(interface{ Sync() error }); ok {
+		if err := s.Sync(); err != nil {
+			a.broken = true
+			return errors.Join(ErrAudit, err)
+		}
+	}
+	return nil
+}
+
+// Head returns the sequence number and hash of the last record, for anchoring outside the log.
+func (a *Audit) Head() (uint64, string) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	return a.seq, a.prev
+}
+
+// Recovery says what opening an audit file found.
+type Recovery struct {
+	Records        int
+	TruncatedBytes int64
+}
+
+// OpenAuditFile opens or creates a private audit file, verifies its chain and continues it. A torn final line (a crash or a partial write) is cut off and reported; damage anywhere else is tampering and the file is not opened.
+func OpenAuditFile(path string) (*Audit, Recovery, error) {
+	return openAuditFile(path, genesis, 0)
+}
+
+func openAuditFile(path, prev string, seq uint64) (*Audit, Recovery, error) {
+	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+		return nil, Recovery{}, err
+	}
+	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0o600)
+	if err != nil {
+		return nil, Recovery{}, err
+	}
+	data, err := io.ReadAll(f)
+	if err != nil {
+		f.Close()
+		return nil, Recovery{}, err
+	}
+	good, n, lastHash, lastSeq := 0, 0, prev, seq
+	for good < len(data) {
+		end := bytes.IndexByte(data[good:], '\n')
+		if end < 0 {
+			break
+		}
+		var l auditLine
+		dec := json.NewDecoder(bytes.NewReader(data[good : good+end]))
+		dec.DisallowUnknownFields()
+		if dec.Decode(&l) != nil || l.Seq != lastSeq+1 || l.Prev != lastHash || l.Hash != hashLine(l) {
+			if good+end+1 < len(data) {
+				f.Close()
+				return nil, Recovery{}, fmt.Errorf("%w: line %d", ErrAuditTampered, n+1)
+			}
+			break
+		}
+		lastHash, lastSeq = l.Hash, l.Seq
+		good += end + 1
+		n++
+	}
+	rec := Recovery{Records: n, TruncatedBytes: int64(len(data) - good)}
+	if rec.TruncatedBytes > 0 {
+		if err := f.Truncate(int64(good)); err != nil {
+			f.Close()
+			return nil, rec, err
+		}
+		if err := f.Sync(); err != nil {
+			f.Close()
+			return nil, rec, err
+		}
+	}
+	if _, err := f.Seek(int64(good), io.SeekStart); err != nil {
+		f.Close()
+		return nil, rec, err
+	}
+	return &Audit{w: f, file: f, path: path, seq: lastSeq, prev: lastHash}, rec, nil
+}
+
+// Rotate seals the current file with a closing record, moves it to archive and continues the same chain in a fresh file at the original path, so the segments verify end to end (VerifyAuditFrom).
+func (a *Audit) Rotate(archive string) error {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	if a.file == nil || a.broken {
+		return ErrAudit
+	}
+	if err := a.appendLocked(AuditRecord{At: time.Now(), Event: EventRotated, Reason: ReasonOK}); err != nil {
 		return err
 	}
-	a.prev = l.Hash
+	if err := a.file.Close(); err != nil {
+		a.broken = true
+		return err
+	}
+	if err := os.Rename(a.path, archive); err != nil {
+		a.broken = true
+		return err
+	}
+	next, _, err := openAuditFile(a.path, a.prev, a.seq)
+	if err != nil {
+		a.broken = true
+		return err
+	}
+	a.w, a.file = next.w, next.file
 	return nil
+}
+
+// Close flushes and closes a file-backed log.
+func (a *Audit) Close() error {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	if a.file == nil {
+		return nil
+	}
+	a.broken = true
+	err := a.file.Sync()
+	return errors.Join(err, a.file.Close())
 }
 
 // VerifyAudit checks the chain of a log from its start and returns how many records it holds.
 func VerifyAudit(r io.Reader) (int, error) {
+	n, _, _, err := VerifyAuditFrom(r, genesis, 0)
+	return n, err
+}
+
+// VerifyAuditFrom checks a log segment that continues a chain, starting after the record with the given hash and sequence number, and returns the count and the last hash and sequence.
+func VerifyAuditFrom(r io.Reader, prev string, seq uint64) (int, string, uint64, error) {
 	sc := bufio.NewScanner(r)
 	sc.Buffer(make([]byte, 0, 64*1024), 1<<20)
-	prev, n := genesis, 0
+	n := 0
 	for sc.Scan() {
 		var l auditLine
 		dec := json.NewDecoder(bytes.NewReader(sc.Bytes()))
 		dec.DisallowUnknownFields()
 		if err := dec.Decode(&l); err != nil {
-			return n, fmt.Errorf("%w: line %d", ErrAuditTampered, n+1)
+			return n, prev, seq, fmt.Errorf("%w: line %d", ErrAuditTampered, n+1)
 		}
-		if l.Seq != uint64(n+1) || l.Prev != prev || l.Hash != hashLine(l) {
-			return n, fmt.Errorf("%w: line %d", ErrAuditTampered, n+1)
+		if l.Seq != seq+1 || l.Prev != prev || l.Hash != hashLine(l) {
+			return n, prev, seq, fmt.Errorf("%w: line %d", ErrAuditTampered, n+1)
 		}
-		prev = l.Hash
+		prev, seq = l.Hash, l.Seq
 		n++
 	}
-	return n, sc.Err()
+	return n, prev, seq, sc.Err()
 }

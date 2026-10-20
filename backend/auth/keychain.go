@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"os/exec"
 	"time"
 )
@@ -70,7 +71,15 @@ func (k *SecretService) Put(account, name string, value []byte) error {
 	defer cancel()
 	enc := []byte(base64.StdEncoding.EncodeToString(value))
 	_, exit, err := k.runner().Run(ctx, enc, "secret-tool", append([]string{"store", "--label=VSF"}, k.attrs(account, name)...)...)
+	zero(enc)
 	if err != nil || exit != 0 {
+		return ErrUnavailable
+	}
+	got, gerr := k.Get(account, name)
+	ok := gerr == nil && bytes.Equal(got, value)
+	zero(got)
+	if !ok {
+		_ = k.Delete(account, name)
 		return ErrUnavailable
 	}
 	return nil
@@ -102,11 +111,17 @@ func (k *SecretService) Delete(account, name string) error {
 	}
 	ctx, cancel := k.ctx()
 	defer cancel()
-	_, exit, err := k.runner().Run(ctx, nil, "secret-tool", append([]string{"clear"}, k.attrs(account, name)...)...)
+	_, _, err := k.runner().Run(ctx, nil, "secret-tool", append([]string{"clear"}, k.attrs(account, name)...)...)
 	if err != nil {
 		return ErrUnavailable
 	}
-	_ = exit
+	if left, gerr := k.Get(account, name); !errors.Is(gerr, ErrNotFound) {
+		zero(left)
+		if gerr == nil {
+			return fmt.Errorf("%w: secret still present after delete", ErrUnavailable)
+		}
+		return gerr
+	}
 	return nil
 }
 
@@ -118,6 +133,9 @@ type Chain struct {
 
 func (c *Chain) Put(account, name string, v []byte) error {
 	err := c.Primary.Put(account, name, v)
+	if err == nil && c.Fallback != nil {
+		_ = c.Fallback.Delete(account, name)
+	}
 	if !errors.Is(err, ErrUnavailable) {
 		return err
 	}

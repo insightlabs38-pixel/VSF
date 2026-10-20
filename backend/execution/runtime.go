@@ -152,12 +152,17 @@ func (r *Runtime) needsConfirmation(c ir.OperationContract) bool {
 	return c.Effect.Confirmation == ir.ConfirmationPolicyAlwaysPrompt || c.Effect.Confirmation == ir.ConfirmationPolicyNeverAutomatic
 }
 
-func confirmDigestOf(req Request, digest string) string {
-	return ConfirmationDigest(digest, req.Record, req.Params, req.Caller, req.SessionID)
+// confirmDigestOf is read at each use, so a sign-in that changed since the confirmation was given makes it fail.
+func (r *Runtime) confirmDigestOf(req Request, digest string) string {
+	gen := ""
+	if s, ok := r.cfg.Sessions.Lookup(req.SessionID); ok {
+		gen = s.Generation
+	}
+	return ConfirmationDigestAt(gen, digest, req.Record, req.Params, req.Caller, req.SessionID)
 }
 
 func (r *Runtime) confirmed(req Request, digest string) bool {
-	return req.Confirmation != nil && r.cfg.Confirmer != nil && r.cfg.Confirmer.Valid(*req.Confirmation, digest, r.clock.Now())
+	return req.Confirmation != nil && r.cfg.Confirmer != nil && r.cfg.Confirmer.Valid(*req.Confirmation, r.confirmDigestOf(req, digest), r.clock.Now())
 }
 
 func (r *Runtime) refusedOp(key string, h *Handle, err error) (*Handle, error) {
@@ -252,7 +257,7 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 	if err != nil {
 		return r.refusedOp(key, h, err)
 	}
-	if isWrite(c) && r.needsConfirmation(c) && !r.confirmed(req, confirmDigestOf(req, digest)) {
+	if isWrite(c) && r.needsConfirmation(c) && !r.confirmed(req, digest) {
 		return r.refusedOp(key, h, refuse("confirmation_required"))
 	}
 	auth, err := r.cfg.Authorizer.Authorize(req.Contract, env)
@@ -450,7 +455,7 @@ func (r *Runtime) preconditions(ctx context.Context, c ir.OperationContract, req
 		ifMatch = req.Seen.Version
 	}
 	if c.Effect.Confirmation == ir.ConfirmationPolicyInheritSourceRequirement && snap.ConfirmationRequired &&
-		!r.confirmed(req, confirmDigestOf(req, digest)) {
+		!r.confirmed(req, digest) {
 		return snap, "", "confirmation_required"
 	}
 	return snap, ifMatch, ""
@@ -461,7 +466,7 @@ func (r *Runtime) apply(ctx context.Context, h *Handle, req Request, c ir.Operat
 	needs := r.needsConfirmation(c) || (c.Effect.Confirmation == ir.ConfirmationPolicyInheritSourceRequirement && req.Confirmation != nil)
 	if needs {
 		if req.Confirmation == nil || r.cfg.Confirmer == nil ||
-			!r.cfg.Confirmer.Use(*req.Confirmation, confirmDigestOf(req, digest), r.clock.Now()) {
+			!r.cfg.Confirmer.Use(*req.Confirmation, r.confirmDigestOf(req, digest), r.clock.Now()) {
 			r.finishWith(h, Failed, "confirmation_spent", "", CancelBeforeEffect)
 			return
 		}

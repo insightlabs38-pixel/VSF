@@ -23,6 +23,8 @@ type Credentials struct {
 type Lease struct {
 	c       *Credentials
 	grant   Grant
+	gen     string
+	secrets int
 	mu      sync.Mutex
 	value   []byte
 	origin  string
@@ -30,19 +32,34 @@ type Lease struct {
 	uses    int
 }
 
-// Lease checks the request like any other use of a grant, then loads the secret named name ("access" or "refresh") from the vault.
+// Lease checks the request like any other use of a grant, then loads the secret named name ("access" or "refresh") from the vault. A lease is a snapshot: it dies with the grant, with a pause, with a new sign-in epoch and with a token refresh, after which a new lease is needed. Issuing one is a mandatory audit event; if it cannot be recorded no lease is given.
 func (c *Credentials) Lease(chk Check, name string, ttl time.Duration, uses int) (*Lease, error) {
 	if (name != "access" && name != "refresh") || ttl <= 0 || ttl > maxLeaseTTL || uses < 1 || uses > maxLeaseUses || c.Broker.Vault == nil {
 		return nil, ErrInvalid
 	}
-	g, err := c.Broker.Authorize(chk)
-	if err != nil {
-		return nil, err
+	var g Grant
+	var val []byte
+	for range 3 {
+		var err error
+		if g, err = c.Broker.Authorize(chk); err != nil {
+			return nil, err
+		}
+		if val, err = c.Broker.Vault.Get(g.Account, g.ID+"/"+name); err != nil {
+			c.Broker.note(EventRefused, g, g.Owner, ReasonPaused)
+			return nil, ErrReauth
+		}
+		if after, ok := c.Broker.Store.Get(g.ID); ok && after.State == StateActive && after.Epoch == g.Epoch && after.SecretGen == g.SecretGen {
+			break
+		}
+		zero(val)
+		val = nil
 	}
-	val, err := c.Broker.Vault.Get(g.Account, g.ID+"/"+name)
-	if err != nil {
-		c.Broker.note(EventRefused, g, g.Owner, ReasonPaused)
+	if val == nil {
 		return nil, ErrReauth
+	}
+	if err := c.Broker.mustNote(EventLease, g, g.Owner, ReasonOK); err != nil {
+		zero(val)
+		return nil, err
 	}
 	if c.Redact != nil {
 		_ = c.Redact.Add(val)
@@ -51,8 +68,7 @@ func (c *Credentials) Lease(chk Check, name string, ttl time.Duration, uses int)
 	if g.ExpiresAt.Before(exp) {
 		exp = g.ExpiresAt
 	}
-	c.Broker.note(EventLease, g, g.Owner, ReasonOK)
-	return &Lease{c: c, grant: g, value: val, origin: g.Source.Origin, expires: exp, uses: uses}, nil
+	return &Lease{c: c, grant: g, gen: g.Generation(), secrets: g.SecretGen, value: val, origin: g.Source.Origin, expires: exp, uses: uses}, nil
 }
 
 func zero(b []byte) {
@@ -71,9 +87,12 @@ func (l *Lease) Inject(origin string, fn func(val []byte) error) error {
 	now := l.c.Broker.Now()
 	g, ok := l.c.Broker.Store.Get(l.grant.ID)
 	switch {
-	case !ok || g.State != StateActive || !now.Before(g.ExpiresAt):
+	case !ok || g.State != StateActive || !now.Before(g.ExpiresAt) || g.Generation() != l.gen:
 		l.wipeLocked()
 		return ErrDenied
+	case g.SecretGen != l.secrets:
+		l.wipeLocked()
+		return ErrReauth
 	case !now.Before(l.expires) || l.uses < 1:
 		l.wipeLocked()
 		return ErrExpired
@@ -81,8 +100,10 @@ func (l *Lease) Inject(origin string, fn func(val []byte) error) error {
 		l.c.Broker.note(EventRefused, g, g.Owner, ReasonSource)
 		return ErrDenied
 	}
+	if err := l.c.Broker.mustNote(EventRevealed, g, g.Owner, ReasonOK); err != nil {
+		return err
+	}
 	l.uses--
-	l.c.Broker.note(EventRevealed, g, g.Owner, ReasonOK)
 	cp := append([]byte(nil), l.value...)
 	defer zero(cp)
 	if err := fn(cp); err != nil {
