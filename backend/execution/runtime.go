@@ -394,6 +394,7 @@ func (r *Runtime) run(ctx context.Context, h *Handle, req Request, c ir.Operatio
 		return
 	}
 	if !write {
+		h.setObserved(snap.Version, snap.Fields)
 		r.finishWith(h, Verified, "read", snap.Version, CancelTooLate)
 		return
 	}
@@ -574,14 +575,14 @@ func (r *Runtime) verify(h *Handle, req Request, c ir.OperationContract, exec Ex
 	h.progress("verifying", 0, "")
 	vctx, cancel := context.WithTimeout(context.WithoutCancel(context.Background()), r.cfg.ApplyTimeout)
 	defer cancel()
-	got := res.Echo
+	got, version := res.Echo, ""
 	if c.Verification.Strategy != ir.VerificationStrategyResponseEcho {
 		snap, err := exec.Read(vctx, t)
 		if err != nil {
 			r.finishWith(h, Unknown, ReasonUnverified, "read_back_failed", CancelTooLate)
 			return
 		}
-		got = snap.Fields
+		got, version = snap.Fields, snap.Version
 	}
 	for k, want := range req.Expect {
 		if got[k] != want {
@@ -589,8 +590,21 @@ func (r *Runtime) verify(h *Handle, req Request, c ir.OperationContract, exec Ex
 			return
 		}
 	}
+	shown := make(map[string]string, len(req.Expect))
+	for k := range req.Expect {
+		shown[k] = got[k]
+	}
+	h.setObserved(version, shown)
 	r.finishWith(h, Verified, "verified", string(c.Verification.Strategy), CancelTooLate)
 }
 
 // Get returns the journal's view of an operation.
 func (r *Runtime) Get(key string) (Record, bool) { return r.j.Get(key) }
+
+// Handle returns the handle of a journaled operation, or false for a key the journal has never seen.
+func (r *Runtime) Handle(key string) (*Handle, bool) {
+	if _, ok := r.j.Get(key); !ok {
+		return nil, false
+	}
+	return r.handleFor(key), true
+}
