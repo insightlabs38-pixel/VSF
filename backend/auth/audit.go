@@ -18,22 +18,24 @@ import (
 type Event string
 
 const (
-	EventIssued    Event = "grant_issued"
-	EventRefused   Event = "use_refused"
-	EventRevoked   Event = "grant_revoked"
-	EventPaused    Event = "reauth_required"
-	EventResumed   Event = "reauth_completed"
-	EventSignedIn  Event = "signed_in"
-	EventSignedOut Event = "signed_out"
-	EventLease     Event = "credential_leased"
-	EventRevealed  Event = "credential_revealed"
-	EventCancelled Event = "dependent_cancelled"
-	EventProfile   Event = "profile_changed"
-	EventPlanStale Event = "plan_invalidated"
+	EventIssued      Event = "grant_issued"
+	EventRefused     Event = "use_refused"
+	EventRevoked     Event = "grant_revoked"
+	EventPaused      Event = "reauth_required"
+	EventResumed     Event = "reauth_completed"
+	EventSignedIn    Event = "signed_in"
+	EventSignedOut   Event = "signed_out"
+	EventLease       Event = "credential_leased"
+	EventRevealed    Event = "credential_revealed"
+	EventCancelled   Event = "dependent_cancelled"
+	EventProfile     Event = "profile_changed"
+	EventPlanStale   Event = "plan_invalidated"
+	EventDelegated   Event = "delegation_given"
+	EventUndelegated Event = "delegation_withdrawn"
 )
 
 var events = map[Event]bool{EventIssued: true, EventRefused: true, EventRevoked: true, EventPaused: true, EventResumed: true, EventSignedIn: true,
-	EventSignedOut: true, EventLease: true, EventRevealed: true, EventCancelled: true, EventProfile: true, EventPlanStale: true}
+	EventSignedOut: true, EventLease: true, EventRevealed: true, EventCancelled: true, EventProfile: true, EventPlanStale: true, EventDelegated: true, EventUndelegated: true}
 
 var reasons = map[Reason]bool{}
 

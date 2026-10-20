@@ -30,6 +30,8 @@ type Backend interface {
 type Route struct {
 	Operation string
 	Version   string
+	// Delegate names the caller a person's confirmation is for; only a confirmation request reads it.
+	Delegate string
 }
 
 // Discovery tells a client which interface versions and limits this service offers.
@@ -54,6 +56,13 @@ type ServiceConfig struct {
 	// Confirmer and Now are the runtime's own, so a confirmation expires by the clock that checks it.
 	Confirmer *execution.Confirmer
 	Now       func() time.Time
+	// Delegations says which person may confirm requests another caller will run; with none, a confirmation is only ever for its own caller.
+	Delegations Delegations
+}
+
+// Delegations is the standing permission a person gives to let one caller run what the person confirms.
+type Delegations interface {
+	Allows(person, executor string) bool
 }
 
 // Service is the single implementation of invocation semantics.
@@ -327,7 +336,7 @@ func (s *Service) invoke(ctx context.Context, p Principal, spec *Spec, inv Invoc
 	if inv.Seen != nil {
 		req.Seen = &execution.Seen{Version: inv.Seen.Version, ObservedAt: time.UnixMilli(inv.Seen.ObservedAt)}
 	}
-	if c := inv.Confirmation; c != nil {
+	if c := inv.Confirmation; c != nil && s.confirmedBy(c.By, p.Caller) {
 		req.Confirmation = &execution.Confirmation{Token: c.Token, By: c.By, Digest: c.Digest, ExpiresAt: time.UnixMilli(c.ExpiresAt)}
 	}
 	h, serr := s.cfg.Runtime.Submit(ctx, req)
@@ -465,13 +474,25 @@ type Reconciliation struct {
 // ConfirmationTTL is how long a person has to use a confirmation they gave.
 const ConfirmationTTL = 5 * time.Minute
 
-// Confirm records a person's yes to exactly this request, for this caller in this session, and to nothing else.
+// confirmedBy accepts a confirmation given by the caller itself, or by a person who still holds a delegation to this caller.
+func (s *Service) confirmedBy(by, executor string) bool {
+	return by == executor || (s.cfg.Delegations != nil && s.cfg.Delegations.Allows(by, executor))
+}
+
+// Confirm records a person's yes to exactly this request for the caller who runs it, who is another caller only under a delegation.
 func (s *Service) Confirm(_ context.Context, p Principal, raw []byte, route Route) (ConfirmationIn, *Error) {
 	if _, err := s.caller(p); err != nil {
 		return ConfirmationIn{}, err
 	}
 	if p.Surface != SurfaceUI || s.cfg.Confirmer == nil || s.cfg.Now == nil {
 		return ConfirmationIn{}, errWith(CodePermissionDenied, "confirmation_requires_a_person", nil)
+	}
+	executor := p.Caller
+	if route.Delegate != "" && route.Delegate != p.Caller {
+		executor = route.Delegate
+		if s.cfg.Delegations == nil || !s.cfg.Delegations.Allows(p.Caller, executor) {
+			return ConfirmationIn{}, errWith(CodePermissionDenied, "delegation_not_allowed", nil)
+		}
 	}
 	var head struct{ Version, Digest string }
 	if v, derr := DecodeStrict(raw); derr == nil {
@@ -484,17 +505,23 @@ func (s *Service) Confirm(_ context.Context, p Principal, raw []byte, route Rout
 	if err != nil {
 		return ConfirmationIn{}, err
 	}
+	if executor != p.Caller {
+		target, ok := s.cfg.Callers.Lookup(executor)
+		if !ok || target.ID != executor || !holds(target.Scopes, spec.Effect.RequiredScopes) {
+			return ConfirmationIn{}, errWith(CodePermissionDenied, "delegation_not_allowed", nil)
+		}
+	}
 	inv, err := DecodeInvocation(spec, raw)
 	if err != nil {
 		return ConfirmationIn{}, err
 	}
-	if err := s.sessionFor(p, inv.SessionID); err != nil {
+	if err := s.sessionFor(Principal{Caller: executor}, inv.SessionID); err != nil {
 		return ConfirmationIn{}, err
 	}
 	if !spec.Effect.Write {
 		return ConfirmationIn{}, errWith(CodeInvalidRequest, "nothing_to_confirm", nil)
 	}
-	digest := execution.ConfirmationDigest(spec.ContractDigest, inv.Record, inv.Params, p.Caller, inv.SessionID)
+	digest := execution.ConfirmationDigest(spec.ContractDigest, inv.Record, inv.Params, executor, inv.SessionID)
 	c := s.cfg.Confirmer.Issue(digest, p.Caller, s.cfg.Now().Add(ConfirmationTTL))
 	return ConfirmationIn{Token: c.Token, By: c.By, Digest: c.Digest, ExpiresAt: c.ExpiresAt.UnixMilli()}, nil
 }

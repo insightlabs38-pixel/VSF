@@ -249,6 +249,8 @@ type Opts struct {
 	Receipts bool
 	// WrapExecutor lets a test hold or observe the source calls of the one executor.
 	WrapExecutor func(execution.Executor) execution.Executor
+	// Delegations lets a person confirm for another caller.
+	Delegations api.Delegations
 }
 
 // New starts the worker and the source, and serves the fixture contract through the service.
@@ -317,7 +319,7 @@ func New(t *testing.T, o Opts) *Stack {
 		t.Fatal(err)
 	}
 	s.Svc, err = api.NewService(api.ServiceConfig{Catalog: s.Cat, Runtime: s.RT, Callers: s.Dir, Sessions: SessionView{s.Dir}, Limiter: o.Limiter,
-		Confirmer: s.Cfg.Confirmer, Now: s.Clock.Now})
+		Confirmer: s.Cfg.Confirmer, Now: s.Clock.Now, Delegations: o.Delegations})
 	if err != nil {
 		t.Fatal(err)
 	}

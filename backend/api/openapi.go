@@ -165,6 +165,8 @@ func OpenAPI(b Backend, p Principal, namespace string) (map[string]any, *Error) 
 				paths[strings.TrimSuffix(path, "/invocations")+"/confirmations"] = map[string]any{"post": map[string]any{
 					"operationId": s.Name + "@" + s.ContractVersion + ".confirm", "summary": "A person confirms exactly this request (user interface credentials only).",
 					"requestBody": jsonBody(ref(inKey)), "security": []any{map[string]any{"bearer": []any{}}},
+					"parameters": []any{map[string]any{"name": "for", "in": "query", "required": false, "schema": map[string]any{"type": "string"},
+						"description": "The caller who will run the request, when the person confirms for a caller they have delegated to."}},
 					"responses": map[string]any{"200": jsonResp("The confirmation to send with the invocation.", ref("Confirmation")),
 						"403": jsonResp("Only a person's interface credential may confirm.", ref("ErrorEnvelope"))},
 				}}
