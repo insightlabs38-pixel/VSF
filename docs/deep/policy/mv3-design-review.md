@@ -32,6 +32,7 @@ Anything that changes what the extension *does* must ship inside the reviewed pa
 
 ## Open items carried forward
 
-- The product build requests host access at runtime (`optional_host_permissions`). The panel authorizes via `permissions.request`, which needs a real user gesture; it is exercised manually in B09, not in automation.
+- The product build requests host access at runtime (`optional_host_permissions`). The panel authorizes via `permissions.request`, which needs a real user gesture and cannot be accepted by automation; the grant, refusal and revocation paths are tested, the prompt itself is checked by hand.
+- Resolved in B09: the product manifest also carries `activeTab` (needed to read the origin of the active tab); `tests/browser/specs/extension-install.spec.ts` shows that without a host grant the origin stays unobservable. The distribution checklist is `mv3-distribution-checklist.md`; worker restart, page fallbacks and the local bridge are in ADR-036.
 - Store policy interpretation of declarative remote configuration must be confirmed at submission (B24). Until then no remote configuration is consumed at all.
 - Firefox and Safari behavior (structured-clone messaging, different lifecycle) is out of scope until B21.
