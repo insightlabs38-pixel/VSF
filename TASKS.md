@@ -22,7 +22,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B13 | G13 | 5/5 | DONE | PROCEED |
 | B14 | G14 | 0/7 | READY | - |
 | B15 | G15 | 0/6 | TODO | - |
-| B16 | G16 | 0/7 | TODO | - |
+| B16 | G16 | 0/8 | TODO | - |
 | B17 | G17 | 0/5 | READY | - |
 | B18 | G18 | 0/7 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
@@ -224,6 +224,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B16-T05` Compose the authenticated loopback gateway from the interface service
 - [ ] `VSF-B16-T06` Dispatch the user interface actions through the interface service
 - [ ] `VSF-B16-T07` Add the MCP stdio transport, the Tasks extension and progress notifications
+- [ ] `VSF-B16-T08` Add native macOS Keychain and Windows credential-store adapters
 
 ### B17 · Ship user-visible version control features
 

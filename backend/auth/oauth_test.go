@@ -192,11 +192,13 @@ func TestTheFlowRefusesAnythingButPKCEAndSecureEndpoints(t *testing.T) {
 	}
 	for name, mut := range map[string]func(*Provider){
 		"plain http token endpoint": func(p *Provider) { p.TokenURL = "http://idp.example.com/token" },
-		"credentials in url":        func(p *Provider) { p.AuthorizeURL = "https://" + "user" + string(rune(58)) + "pw" + "@idp.example.com/authorize" },
-		"no audience":               func(p *Provider) { p.Audience = "" },
-		"no scopes":                 func(p *Provider) { p.Scopes = nil },
-		"bad redirect":              func(p *Provider) { p.RedirectURI = "javascript:alert(1)" },
-		"fragment":                  func(p *Provider) { p.AuthorizeURL = "https://idp.example.com/authorize#x" },
+		"credentials in url": func(p *Provider) {
+			p.AuthorizeURL = "https://" + "user" + string(rune(58)) + "pw" + "@idp.example.com/authorize"
+		},
+		"no audience":  func(p *Provider) { p.Audience = "" },
+		"no scopes":    func(p *Provider) { p.Scopes = nil },
+		"bad redirect": func(p *Provider) { p.RedirectURI = "javascript:alert(1)" },
+		"fragment":     func(p *Provider) { p.AuthorizeURL = "https://idp.example.com/authorize#x" },
 	} {
 		p := r.idp.provider()
 		mut(p)

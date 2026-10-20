@@ -3930,6 +3930,35 @@
       ]
     },
     {
+      "id": "VSF-B16-T08",
+      "batch": "B16",
+      "sequence": 8,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Add native macOS Keychain and Windows credential-store adapters",
+      "intent": "Add native macOS Keychain and Windows credential-store adapters.",
+      "acceptance": "The credential vault stores and reads secrets through the macOS Keychain and the Windows credential store without placing a secret on a command line, and an unavailable store fails closed.",
+      "dependencies": ["VSF-B16-T07"],
+      "planned_paths": "backend/auth/; apps/local/credentials/; tests/auth/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B14 integrates the Linux Secret Service and an encrypted file vault; macOS and Windows keychains need native APIs that cannot be driven safely through a command line, and none could be tested in the Linux build environment.",
+      "gate": "G16",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "browser-origin loopback attack",
+        "sleep/resume",
+        "installer rollback",
+        "keychain failure",
+        "expired license"
+      ]
+    },
+    {
       "id": "VSF-B17-T01",
       "batch": "B17",
       "sequence": 1,
