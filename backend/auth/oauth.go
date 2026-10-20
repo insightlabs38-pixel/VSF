@@ -191,6 +191,15 @@ func scopeSet(s string) []string {
 
 func secretNames(grant string) (access, refresh string) { return grant + "/access", grant + "/refresh" }
 
+// Cancel drops a flow the caller abandoned; its state can no longer be completed.
+func (o *OAuth) Cancel(owner, state string) {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	if pd, ok := o.pending[state]; ok && pd.owner == owner {
+		delete(o.pending, state)
+	}
+}
+
 // Complete finishes a flow. The state is spent whether or not it succeeds, so a code cannot be tried twice.
 func (o *OAuth) Complete(owner, state, code, iss string) (Grant, error) {
 	now := o.Broker.Now()

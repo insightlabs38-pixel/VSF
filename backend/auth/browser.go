@@ -19,8 +19,11 @@ type Observation struct {
 	Source        Source
 	PrincipalRef  string
 	Authenticated bool
-	Expires       time.Time
-	Scopes        []string
+	// Challenge is the step-up the source is asking for right now (multi-factor, passkey, password again), empty when none.
+	Challenge  Challenge
+	ObservedAt time.Time
+	Expires    time.Time
+	Scopes     []string
 }
 
 type intent struct {
@@ -40,6 +43,13 @@ type Browser struct {
 func NewBrowser(b *Broker) *Browser { return &Browser{Broker: b, intents: map[string]intent{}} }
 
 func ikey(owner string, s Source) string { return owner + "\x00" + s.AppID + "\x00" + s.Origin }
+
+// Cancel drops an expected sign-in the caller no longer wants.
+func (br *Browser) Cancel(owner string, src Source) {
+	br.mu.Lock()
+	defer br.mu.Unlock()
+	delete(br.intents, ikey(owner, src))
+}
 
 // Expect records that a caller is about to sign in to a source; an observation of a sign-in that was not expected creates nothing.
 func (br *Browser) Expect(owner, account string, src Source, scopes []string) error {
@@ -108,7 +118,13 @@ func (br *Browser) Observe(o Observation) (Grant, error) {
 	}
 	for _, g := range br.active(o.Owner, o.Source) {
 		if g.PrincipalRef == o.PrincipalRef {
-			g.ExpiresAt, g.State = expires, StateActive
+			if o.Challenge != "" {
+				return br.Broker.Pause(g.ID, o.Owner, o.Challenge)
+			}
+			if g.State == StatePaused {
+				return g, nil
+			}
+			g.ExpiresAt = expires
 			return g, br.Broker.Store.Put(g)
 		}
 		if err := br.Broker.end(g, o.Owner); err != nil {

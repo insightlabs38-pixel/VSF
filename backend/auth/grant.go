@@ -84,6 +84,7 @@ type Store interface {
 	Put(g Grant) error
 	Get(id string) (Grant, bool)
 	List(owner string) []Grant
+	All() []Grant
 }
 
 // MemStore is the in-memory store.
@@ -121,6 +122,17 @@ func (s *MemStore) List(owner string) []Grant {
 	return out
 }
 
+func (s *MemStore) All() []Grant {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	out := make([]Grant, 0, len(s.m))
+	for _, g := range s.m {
+		out = append(out, g)
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].ID < out[j].ID })
+	return out
+}
+
 // Broker issues, checks and revokes grants. Every decision it makes is audited.
 type Broker struct {
 	Store Store
@@ -131,6 +143,7 @@ type Broker struct {
 
 	mu         sync.Mutex
 	dependents map[string]map[string]func()
+	pauses     map[string]pause
 }
 
 func NewBroker(store Store, audit *Audit, now func() time.Time) *Broker {
@@ -140,7 +153,7 @@ func NewBroker(store Store, audit *Audit, now func() time.Time) *Broker {
 	if now == nil {
 		now = time.Now
 	}
-	return &Broker{Store: store, Audit: audit, Now: now, dependents: map[string]map[string]func(){}}
+	return &Broker{Store: store, Audit: audit, Now: now, dependents: map[string]map[string]func(){}, pauses: map[string]pause{}}
 }
 
 func (b *Broker) note(ev Event, g Grant, actor string, r Reason) {

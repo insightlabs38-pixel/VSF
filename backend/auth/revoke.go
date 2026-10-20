@@ -49,14 +49,21 @@ func (b *Broker) Revoke(id, actor string) error {
 }
 
 // end revokes without an owner check, for sign-out observed at the source and for administrative revocation.
-func (b *Broker) end(g Grant, actor string) error {
+func (b *Broker) end(g Grant, actor string, why ...Reason) error {
+	reason := ReasonRevoked
+	if len(why) > 0 {
+		reason = why[0]
+	}
 	if g.State != StateRevoked {
 		g.State = StateRevoked
 		if err := b.Store.Put(g); err != nil {
 			return err
 		}
-		b.note(EventRevoked, g, actor, ReasonRevoked)
+		b.note(EventRevoked, g, actor, reason)
 	}
+	b.mu.Lock()
+	delete(b.pauses, g.ID)
+	b.mu.Unlock()
 	b.wipe(g)
 	b.cancelDependents(g, actor)
 	return nil
