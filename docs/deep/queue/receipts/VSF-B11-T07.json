@@ -1,0 +1,63 @@
+{
+  "task_id": "VSF-B11-T07",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "91d6fe945ae6fbed0eccef9ab651ce5d5d3e026e",
+  "commit": "02bd074698c9bf38c794ccdca8ec12b797d5e0b9",
+  "paths": [
+    "tests/corpus/",
+    "fixtures/corpus/",
+    "docs/deep/evidence/VSF-B11/",
+    "docs/deep/adr/ADR-040-independent-corpus.md",
+    "ci/jobs.json"
+  ],
+  "acceptance": "At least eight independently developed applications are pinned, licensed and partitioned by shared template family; expected structure is annotated by a separate process that never saw recognizer output; the held-out partition is committed sealed; a reproducible harness measures structural recognition, semantic accuracy, false claims, missing composite capabilities and workflow coverage with explicit denominators on the unmodified recognizer, so B11-T01 can rank failure clusters.",
+  "positive": {
+    "fixture": "10 sources / 7 families / 55 page states captured with the production observer; 55 annotations; baseline on 32 development and validation pages and 23 held-out pages (aggregate only); 55/55 structure digests reproduce",
+    "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unpinned, unlicensed, contaminated and unannotated manifests refused; unpinned or traversing CDN addresses not mirrored; static server cannot leave its root; annotation claiming to have seen recognizer output or naming an unknown item rejected; contradicting recognition counted as a false claim",
+    "command": "node --conditions=source --test --test-name-pattern=refused|only pinned|stays inside|must declare|false claim tests/corpus/test/corpus.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/queue run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts secrets",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "new: vsf-corpus-v1, vsf-corpus-annotation-v1, vsf-corpus-result-v1; no IR change",
+    "primitive": "none; the recognizer is unmodified"
+  },
+  "security_and_source_permissions": "Only public, permissively licensed applications run locally; no private service, credential or CAPTCHA involved; the File Browser test account exists only in a disposable database; external requests are blocked except registry-verified pinned npm files.",
+  "performance_memory_storage": "Capture 0.6 to 3.5 s per page; recognizer p50 26.7 ms, max 36.5 ms, peak RSS 11.1 MB at up to 2716 nodes; cache under .corpus-cache is git-ignored.",
+  "known_limitations": [
+    "Ten applications from seven families are a small public sample",
+    "Annotators are model sessions, not humans; inter-annotator agreement was not measured",
+    "Executable-operation correctness is not measured yet (T05, T06)",
+    "The held-out seal is procedural; annotations are readable in the repository",
+    "AdminLTE calendar dropped; Choices remote-data selects are empty because external APIs are blocked"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/manifest.json",
+    "docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json",
+    "docs/deep/evidence/VSF-B11/corpus-baseline-heldout.json",
+    "docs/deep/evidence/VSF-B11/corpus-provenance.md"
+  ],
+  "review_result": "ACCEPTED"
+}
