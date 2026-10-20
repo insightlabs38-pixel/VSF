@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ext-audit
+ext-audit: ok
+[exit 0]

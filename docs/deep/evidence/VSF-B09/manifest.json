@@ -1,0 +1,439 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B09",
+  "gate": "G9",
+  "runs": [
+    {
+      "task_id": "VSF-B09-T01",
+      "name": "mv3-package-audit",
+      "command": "bash -c pnpm --filter @vsf/extension run package && node tools/checks/src/cli.ts ext-audit",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T01.mv3-package-audit.log",
+      "sha256": "92a8bb0af23a08f5f028e8ef651a3c615e20cbc2ee0e3d1a9e52e36aff35b100"
+    },
+    {
+      "task_id": "VSF-B09-T01",
+      "name": "mv3-audit-rules-and-defects",
+      "command": "pnpm --filter @vsf/checks run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T01.mv3-audit-rules-and-defects.log",
+      "sha256": "bafc2252c5885f1702a81356ec03acb809180d31e86ba4e075648f58e33c2d46"
+    },
+    {
+      "task_id": "VSF-B09-T01",
+      "name": "install-permissions-and-package",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-install.spec.ts specs/extension-permissions.spec.ts specs/extension-package.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T01.install-permissions-and-package.log",
+      "sha256": "fb0a775c6c85e41eb9311054001e77b81fdfb9acdd3577fe6204ca075d0d94a1"
+    },
+    {
+      "task_id": "VSF-B09-T02",
+      "name": "assemble-semantic-ir",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-assemble",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T02.assemble-semantic-ir.log",
+      "sha256": "47c38cd00b16aee848a3093f74e24a19e6d118604a6cc62245342a153eca0d89"
+    },
+    {
+      "task_id": "VSF-B09-T02",
+      "name": "wasm-host-assembly",
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T02.wasm-host-assembly.log",
+      "sha256": "36f16c00566c874afaec99f70d00b309b0aea6bd3a87c30c30a7f544992479a9"
+    },
+    {
+      "task_id": "VSF-B09-T02",
+      "name": "envelope-session-core-units",
+      "command": "pnpm --filter @vsf/extension run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T02.envelope-session-core-units.log",
+      "sha256": "d23833e79042001021bbb71c694fae010f817dbc8b1c1f8e171447480fc546d5"
+    },
+    {
+      "task_id": "VSF-B09-T02",
+      "name": "observe-assemble-render-in-chromium",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-observe.spec.ts specs/extension-transform.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T02.observe-assemble-render-in-chromium.log",
+      "sha256": "602f0f711d312c2041fa3c5f8d09fd138ed8f058a9d22934ecabb918594be88d"
+    },
+    {
+      "task_id": "VSF-B09-T03",
+      "name": "worker-death-and-idle",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-lifecycle.spec.ts specs/extension-idle.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T03.worker-death-and-idle.log",
+      "sha256": "56169a259fd10236be38c4491d52fdbefa2f3bbf8316283c5d797c4c3109e511"
+    },
+    {
+      "task_id": "VSF-B09-T03",
+      "name": "fallback-to-source-ui",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-fallback.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T03.fallback-to-source-ui.log",
+      "sha256": "f28aba2178becc1e21b4ee1ac0bfb65392c117202c41c2c25be0fbb1483aae11"
+    },
+    {
+      "task_id": "VSF-B09-T04",
+      "name": "pairing-protocol-and-store",
+      "command": "go -C backend test -tags integration -race -count=1 -run Pair|Offer|Access|Refresh|Revoke|Registry|Origins|StaticToken ./bridge/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T04.pairing-protocol-and-store.log",
+      "sha256": "7225e73e91e4a634c3d4f3852b7e79b39c92b14edd7268ff38cb191810d35cd5"
+    },
+    {
+      "task_id": "VSF-B09-T04",
+      "name": "pairing-cross-language",
+      "command": "pnpm --filter @vsf/cross-language-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T04.pairing-cross-language.log",
+      "sha256": "a1fe98d25a38f9aebaec929d42def01ce88388aeb8b2e470762b84dde48eccbd"
+    },
+    {
+      "task_id": "VSF-B09-T04",
+      "name": "extension-pairs-with-companion",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-bridge.spec.ts specs/bridge.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T04.extension-pairs-with-companion.log",
+      "sha256": "635b82a2a09c4ad2b1fd63ebe0ddbfb60cbad2b613e78d99e3ba79b5eddc661a"
+    },
+    {
+      "task_id": "VSF-B09-T05",
+      "name": "hostile-origin-and-rebinding-go",
+      "command": "go -C backend test -race -count=1 -run DNSRebinding|Foreign|CSRF|Malformed|Oversized|Host|SecFetch|Preflight|Stolen|Recorded|Loopback|Unauthenticated ./bridge/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T05.hostile-origin-and-rebinding-go.log",
+      "sha256": "ab168c1dd7790b8730adf77f1868d2960a00e42812c4836f8a949a570d4f15d4"
+    },
+    {
+      "task_id": "VSF-B09-T05",
+      "name": "hostile-web-page-in-chromium",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/bridge-attacks.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T05.hostile-web-page-in-chromium.log",
+      "sha256": "26ef43e6b4ff61edcd6fbf549c8f0ea5f0c8ef5279a19d1746552ff961793cb7"
+    },
+    {
+      "task_id": "VSF-B09-T06",
+      "name": "session-bindings",
+      "command": "go -C backend test -tags integration -race -count=1 -run Manifest|Registration|Principal|Binding|Revoking|Session|RustValidator ./bridge/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T06.session-bindings.log",
+      "sha256": "6e93d754376f94de15c7b13a3f3ab3fae203355a7168616f6dcf44b59baa2059"
+    },
+    {
+      "task_id": "VSF-B09-T06",
+      "name": "native-validator-chain",
+      "command": "go -C backend test -tags integration -race -count=1 ./bridge/...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T06.native-validator-chain.log",
+      "sha256": "ebd74111df74412ba4e425eaf160d392d583c2e31793ee22516251aa6e2eb628"
+    },
+    {
+      "task_id": "VSF-B09-T07",
+      "name": "sealed-prefs-and-vault",
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-settings.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T07.sealed-prefs-and-vault.log",
+      "sha256": "bec08b60f41f22d40cc48f4f6c55a8b1f194a490e42f54e0b64ecee71c62229e"
+    },
+    {
+      "task_id": "VSF-B09-T08",
+      "name": "distribution-checklist-rules",
+      "command": "node tools/checks/src/cli.ts ext-audit",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T08.distribution-checklist-rules.log",
+      "sha256": "a86dec5388c3c78157fe8cff1906efd2aa5747b32d9159dde591190c16c1e381"
+    },
+    {
+      "task_id": "VSF-B09-T09",
+      "name": "gallery-baselines-and-structure",
+      "command": "pnpm --filter @vsf/ui-tests exec playwright test specs/gallery.spec.ts specs/visual-defects.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T09.gallery-baselines-and-structure.log",
+      "sha256": "8d985b8dd8298f63d5973cc9b33865f47ef548b45f93717cdc96b2ac6213e7a8"
+    },
+    {
+      "task_id": "VSF-B09-T09",
+      "name": "renderer-regression-suite",
+      "command": "pnpm --filter @vsf/ui-tests run test:browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B09-T09.renderer-regression-suite.log",
+      "sha256": "eda029cb1a696d9fd4e118eed37d1abba6ff47fa3870ba942020628f632a5cb5"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-test-workspace",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-test-workspace.log",
+      "sha256": "da48e45c2aa16b493c47480e9b0f7a9054f1fc6c4906c2f95cfa851c45faa1d1"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-fmt",
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-fmt.log",
+      "sha256": "c4e39a37190232bfa5639c36f34c68e12e10e629056589120a38922c90608dee"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-clippy.log",
+      "sha256": "27bf49ec90bdd658130205ff1fe91ca727cd518642f1eb8bbce6914cdc2f9ebf"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-test-all",
+      "command": "go -C backend test -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-test-all.log",
+      "sha256": "303574095ae646c0d39b82056cb859474a454f0d1bf638bc551950216b0afcba"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-integration-all",
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-integration-all.log",
+      "sha256": "bb47776b108c800cb526ef1ba82b702bc06d164b05bdab17a9d225be3d54db99"
+    },
+    {
+      "task_id": "GATE",
+      "name": "gofmt",
+      "command": "scripts/gofmt-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.gofmt.log",
+      "sha256": "c0f28271d4d47306fac872605c06b1cc41b29e7602f82db35a4770b842a85b22"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-vet",
+      "command": "go -C backend vet -tags integration ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-vet.log",
+      "sha256": "fcfe5cf31ffc5fb18a3291ac5ea800f76090b35aadb4766f874bf01e5cc5dcda"
+    },
+    {
+      "task_id": "GATE",
+      "name": "build-ts",
+      "command": "pnpm build:ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.build-ts.log",
+      "sha256": "48fed7456fd486e8bae1d7764c2ba09b8aec1524ae0fa5b006b4085a11a1f341"
+    },
+    {
+      "task_id": "GATE",
+      "name": "typecheck",
+      "command": "pnpm typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.typecheck.log",
+      "sha256": "e037811ffe41779fc7dd34987ff616a20a19355d1626fa3748e4f5dcaf74b3ed"
+    },
+    {
+      "task_id": "GATE",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.biome.log",
+      "sha256": "72107290986f74c91dd498589fd00769676c71064f9f0578b855bac01fab114e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "comment-limit",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.comment-limit.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "secret-scan",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.secret-scan.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "GATE",
+      "name": "idl-drift",
+      "command": "node --conditions=source tools/idlgen/src/cli.ts --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.idl-drift.log",
+      "sha256": "c293e6edf4034144bbceb9a420289f4314a609a867b4aaf6acdcbdad9b6e4dae"
+    },
+    {
+      "task_id": "GATE",
+      "name": "registry-manifest",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify . --development",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.registry-manifest.log",
+      "sha256": "77de8fbc1b2f6881ff641749893df7565ad0c736f0490449599d6a7e25e9bd61"
+    },
+    {
+      "task_id": "GATE",
+      "name": "workflow-check",
+      "command": "node tools/checks/src/cli.ts workflow-check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.workflow-check.log",
+      "sha256": "142a17841862e19786f62736859804529f6d9ca0a83bd1bf25eb13b26b01c3b8"
+    },
+    {
+      "task_id": "GATE",
+      "name": "vuln-scan",
+      "command": "node tools/checks/src/cli.ts vuln-scan",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.vuln-scan.log",
+      "sha256": "3f33532c356ae81a0c81003c10fd8ea151de11bd299b027fab4c1d56afe206af"
+    },
+    {
+      "task_id": "GATE",
+      "name": "adversarial-b00",
+      "command": "pnpm --filter @vsf/adversarial-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.adversarial-b00.log",
+      "sha256": "387f87b5073610615f3fdad26d5c8160f33f20652afc5ea72e13ad7546c02184"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ir-ts",
+      "command": "pnpm --filter @vsf/ir run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ir-ts.log",
+      "sha256": "50c44ac3286b28ca524e35c3882d44be0ce52cb34f5368bcef3b4f98588d2bb9"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-native",
+      "command": "node tools/checks/src/cli.ts ci-run native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-native.log",
+      "sha256": "678b09b74ce2bb06b7644bd5a799829e55219e0f4174569edc8f1c164723376e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-go",
+      "command": "node tools/checks/src/cli.ts ci-run go",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-go.log",
+      "sha256": "cdd71958b2933294c6095125b05ad0c2cf7b202963632db2d3390639fae09a34"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-wasm-browser",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-wasm-browser.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-cross-language",
+      "command": "node tools/checks/src/cli.ts ci-run cross-language",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-cross-language.log",
+      "sha256": "a3557a3f5a8f25a6c7f9a3febf62640a81bc0d2318ef251723123556ebdab62a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-observation",
+      "command": "node tools/checks/src/cli.ts ci-run observation",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-observation.log",
+      "sha256": "67f27c33ddf5ca759fcbae22a734ad8a1b6169bda750a3ba431737f4f6dc42a5"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-ui",
+      "command": "node tools/checks/src/cli.ts ci-run ui",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-ui.log",
+      "sha256": "057f89d2320b09fa9e5e48eecff028bcbdec1e563b4ffb75280f98769419fdb2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-browser",
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-browser.log",
+      "sha256": "ae0f6c126047b744f0b5eefebd1d650ede1f8f3219617d1f48eec0b32a93a796"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-ts",
+      "command": "node tools/checks/src/cli.ts ci-run ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-ts.log",
+      "sha256": "99e415a0c572f57d83404f4dc99e19993a3cf7d0d0dc984ea210fad180864b99"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-hygiene",
+      "command": "node tools/checks/src/cli.ts ci-run hygiene",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-hygiene.log",
+      "sha256": "bba938f52666ed785a4a10f1b8e6cae61aede4159e7ac6d5a6226e234983adf3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-execution",
+      "command": "node tools/checks/src/cli.ts ci-run execution",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-execution.log",
+      "sha256": "b222d561c4a6473e27ea51f5ccc17ffa648ac5bf70dbc927d25761308d3bcf02"
+    }
+  ]
+}

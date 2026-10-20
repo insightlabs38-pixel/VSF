@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run observation
+ci-run observation: PASS
+[exit 0]

@@ -1,0 +1,16 @@
+$ pnpm --filter @vsf/browser-tests exec playwright test specs/extension-fallback.spec.ts
+
+Running 9 tests using 1 worker
+
+  ✓  1 specs/extension-fallback.spec.ts:31:1 › a crash in the extension's own code restores the source page (929ms)
+  ✓  2 specs/extension-fallback.spec.ts:48:1 › errors raised by the page itself do not take the interface away (1.7s)
+  ✓  3 specs/extension-fallback.spec.ts:60:1 › the escape chord restores the source page from the keyboard (812ms)
+  ✓  4 specs/extension-fallback.spec.ts:67:1 › a script cannot fake the escape chord or the buttons (1.3s)
+  ✓  5 specs/extension-fallback.spec.ts:80:1 › a page that removes the interface is noticed and the worker forgets the session (1.3s)
+  ✓  6 specs/extension-fallback.spec.ts:91:1 › a worker that lost the session restores the page at the next heartbeat (1.3s)
+  ✓  7 specs/extension-fallback.spec.ts:98:1 › a session record written by a newer version is not trusted and the page is restored (1.4s)
+  ✓  8 specs/extension-fallback.spec.ts:110:1 › the interface survives the worker being stopped and keeps working after it restarts (1.5s)
+  ✓  9 specs/extension-fallback.spec.ts:121:1 › reloading the extension orphans the page script, which restores the page by itself (1.3s)
+
+  9 passed (12.8s)
+[exit 0]

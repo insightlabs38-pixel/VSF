@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B09-T07",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "f8cbaed56cd3881566a7c6b9cb056c9f5f064b9b",
+  "paths": [
+    "apps/extension/src/vault.ts",
+    "apps/extension/src/prefs.ts",
+    "apps/extension/src/kv.ts",
+    "tests/browser/specs/extension-settings.spec.ts",
+    "tests/browser/specs/extension-fallback.spec.ts"
+  ],
+  "acceptance": "Encrypted settings exclude raw secrets from shared caches; emergency source-UI restoration works on crash and downgrade.",
+  "positive": {
+    "fixture": "sealed per-origin preferences round trip and drive the renderer; restore on crash and downgrade",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-settings.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "planted secret never appears in storage, impostor origin and foreign-version records are never read or deleted, unreadable settings render defaults",
+    "command": "pnpm --filter @vsf/extension run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-fallback.spec.ts",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "AES-GCM with a non-extractable key; record name is AAD; strict closed-vocabulary parser.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Key lives in the browser profile; a profile compromise exposes sealed values"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T07.sealed-prefs-and-vault.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T02.envelope-session-core-units.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T03.fallback-to-source-ui.log"
+  ],
+  "review_result": "ACCEPTED"
+}

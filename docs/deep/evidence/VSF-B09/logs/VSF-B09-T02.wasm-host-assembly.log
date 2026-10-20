@@ -1,0 +1,33 @@
+$ pnpm --filter @vsf/wasm-host run test
+
+> @vsf/wasm-host@0.0.0 test /home/user/VSF/frontend/packages/wasm-host
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ the orders table assembles through WASM into typed rows and unverified actions (87.176986ms)
+✔ a second assembly of the same observation is byte-identical (18.748663ms)
+✔ bad frames and snapshots surface stable codes and the module keeps working (22.382919ms)
+✔ a document that is not an assembly is refused by the host (0.536617ms)
+✔ a document the Rust validator accepts becomes Validated with the digest Rust computed (64.045277ms)
+✔ documents TypeScript decodes happily but Rust refuses never become Validated (22.261608ms)
+✔ a document that does not even decode is refused with the decoder's code (8.191414ms)
+✔ nothing but validate() can create a Validated value (16.694302ms)
+✔ a validator that disagrees with TypeScript about the document is not trusted (19.781094ms)
+✔ wasm output is byte-identical to native golden for every seed (93.286426ms)
+✔ injected incompatible ABI is rejected before any call (22.813794ms)
+✔ module without the ABI export is rejected (1.052503ms)
+✔ wasm surfaces stable error codes and recovers after errors (10.140321ms)
+✔ a truncated or corrupted module is rejected without partial initialization (9.777119ms)
+✔ pack analysis through WASM rejects truncated packs and keeps working afterwards (10.923607ms)
+✔ IR validation through WASM agrees with the pinned Rust digests for every valid fixture (47.211422ms)
+✔ IR decode failures surface the same code and path as native for every invalid case (60.263188ms)
+✔ semantic violations through WASM match the expected codes for every mutation case (113.04875ms)
+✔ non-canonical input is a call error, not a report (6.144032ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 729.882865
+[exit 0]

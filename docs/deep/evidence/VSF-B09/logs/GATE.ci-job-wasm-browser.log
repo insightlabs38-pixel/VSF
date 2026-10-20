@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run wasm-browser
+ci-run wasm-browser: PASS
+[exit 0]

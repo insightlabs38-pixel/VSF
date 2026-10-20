@@ -1,0 +1,44 @@
+{
+  "task_id": "VSF-B09-T05",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "d895976a3279f6d24ed21a34f8e5457c1c2cb7b6",
+  "paths": [
+    "backend/bridge/bridge.go",
+    "backend/bridge/hostile_test.go",
+    "tests/browser/specs/bridge-attacks.spec.ts"
+  ],
+  "acceptance": "CSRF, DNS rebinding, arbitrary website fetch and untrusted content script attempts cannot invoke privileged local actions.",
+  "positive": {
+    "fixture": "the extension's own authenticated call succeeds and the pairing offer survives hostile traffic",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/bridge-attacks.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "rebinding Host, foreign and null Origin, form and simple-request CSRF, Sec-Fetch-Site, preflight, stolen token from a page, content script in a hostile page",
+    "command": "go -C backend test -race -count=1 -run 'DNSRebinding|Foreign|CSRF|Malformed|Oversized|Host|SecFetch|Preflight|Stolen|Recorded|Loopback|Unauthenticated' ./bridge/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "Host and Origin allowlists, CSRF header, private-network preflight answered only to the extension.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Non-browser local processes are outside this boundary and rely on pairing"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T05.hostile-web-page-in-chromium.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T05.hostile-origin-and-rebinding-go.log",
+    "docs/deep/evidence/VSF-B09/logs/GATE.ci-job-browser.log"
+  ],
+  "review_result": "ACCEPTED"
+}

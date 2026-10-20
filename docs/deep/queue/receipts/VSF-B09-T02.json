@@ -1,0 +1,53 @@
+{
+  "task_id": "VSF-B09-T02",
+  "status": "DONE",
+  "branch": "vsf/b09-extension-bridge",
+  "base_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7",
+  "commit": "0446cc5365d9d1b61c7dfba26ac3558a98734ee8",
+  "paths": [
+    "compiler/crates/vsf-assemble",
+    "compiler/crates/vsf-wasm/src/lib.rs",
+    "frontend/packages/wasm-host/src",
+    "apps/extension/src/envelope.ts",
+    "apps/extension/src/core.ts",
+    "apps/extension/src/render.ts",
+    "tests/browser/specs/extension-transform.spec.ts"
+  ],
+  "acceptance": "Observation-to-compiler-to-renderer messaging uses versioned envelopes, bounded payloads and source identity validation.",
+  "positive": {
+    "fixture": "observation assembled by Rust, validated, rendered in a closed overlay on a fixture page, in-place row update on re-observation",
+    "command": "pnpm --filter @vsf/browser-tests exec playwright test specs/extension-observe.spec.ts specs/extension-transform.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "foreign version, unknown kind, oversized body, bad ids, replayed id and seq, wrong sender, tab, frame, document or origin",
+    "command": "pnpm --filter @vsf/extension run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-assemble",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/wasm-host run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "no primitive change; wasm ABI 4, protocol vsf-ext-v1, pairing and session endpoints v1"
+  },
+  "security_and_source_permissions": "Credentials and hidden controls are withheld; every action is unknown without a witness.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "Write operations stay unavailable: no witnesses and no companion executor for the user's tab"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T02.observe-assemble-render-in-chromium.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T02.envelope-session-core-units.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T02.assemble-semantic-ir.log",
+    "docs/deep/evidence/VSF-B09/logs/VSF-B09-T02.wasm-host-assembly.log"
+  ],
+  "review_result": "ACCEPTED"
+}

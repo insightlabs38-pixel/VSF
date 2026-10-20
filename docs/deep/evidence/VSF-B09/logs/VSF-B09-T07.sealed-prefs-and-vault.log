@@ -1,0 +1,10 @@
+$ pnpm --filter @vsf/browser-tests exec playwright test specs/extension-settings.spec.ts
+
+Running 3 tests using 1 worker
+
+  ✓  1 specs/extension-settings.spec.ts:39:1 › preferences are kept per origin, sealed at rest, and applied again after a restart of everything (1.8s)
+  ✓  2 specs/extension-settings.spec.ts:67:1 › a settings record that was altered is not trusted: defaults apply and the user is told (1.0s)
+  ✓  3 specs/extension-settings.spec.ts:86:1 › a page script cannot change preferences by sending the controls events (1.4s)
+
+  3 passed (5.3s)
+[exit 0]

@@ -1,0 +1,59 @@
+$ pnpm --filter @vsf/extension run test
+
+> @vsf/extension@0.0.0 test /home/user/VSF/apps/extension
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ a transform injects the renderer before calling it and records a rendered session bound to the document (5.666656ms)
+✔ a render failure restores the tab, removes the session and reports why (2.214353ms)
+✔ nothing recognized means nothing is rendered (0.879907ms)
+✔ only the packaged panel may issue commands and a granted origin is required (0.620796ms)
+✔ an operation is sent to the companion once, even when the same envelope arrives twice at the same time (10.93ms)
+✔ after a worker restart an operation that may have happened is reported unknown and never resent (24.808714ms)
+✔ a session left half-built by a dead worker is undone on restart and stale credentials are not reused (1.564448ms)
+✔ removing the browser permission drops the grant and restores every page of that origin (2.434562ms)
+✔ refresh updates rows in place when the shape is unchanged and re-renders when it changes (4.522235ms)
+✔ a session record from another version is never interpreted, never deleted, and its page is told to restore (1.710786ms)
+✔ a paired companion is given the document's capability manifest, bound to its origin and document (2.204804ms)
+✔ without a pairing, with a refusing or absent companion, or with an invalid manifest the page still works (8.984438ms)
+✔ ending the session, by any route, ends the binding; a lapsing binding is renewed by the heartbeat (2.366209ms)
+✔ stored preferences travel with the render request and are reported as restored (0.854531ms)
+✔ preferences nobody can vouch for are ignored, not applied, and the user is told (6.870294ms)
+✔ a preference change from the page is saved for that session's origin only (6.292797ms)
+✔ every kind round-trips with its own body (4.558802ms)
+✔ shape errors are classified, not guessed at (0.660516ms)
+✔ bodies are exact: no extra keys, no wrong types, no unbounded text (0.649787ms)
+✔ a body that cannot be serialized is refused instead of throwing (0.667665ms)
+✔ only loopback endpoints with unprivileged ports are accepted (1.33789ms)
+✔ codes normalize the way the companion does (0.200947ms)
+✔ malformed endpoints and codes never reach the network (2.205986ms)
+✔ an unreachable companion is reported as such (6.79619ms)
+✔ a companion that does not prove knowledge of the code is not trusted and stores nothing (104.95399ms)
+✔ a companion asking for fewer key-stretching rounds is refused (1.044592ms)
+✔ denials and rate limits map to stable codes (1.435016ms)
+✔ a valid access token is used as is; an expiring one is renewed once for concurrent callers (8.019563ms)
+✔ a refused renewal removes the credentials so the user must pair again (2.506846ms)
+✔ an expired refresh secret is dropped without contacting the companion (2.650484ms)
+✔ unpairing tells the companion and forgets locally even when it cannot (4.550905ms)
+✔ calls need a pairing and carry the bearer credential and the CSRF header (4.615715ms)
+✔ display preferences are accepted only from a closed vocabulary (2.749625ms)
+✔ anything outside that vocabulary is refused as a whole (0.431272ms)
+✔ parsing returns a copy that holds only what was accepted (0.264001ms)
+✔ origins must be exact http(s) origins (1.429296ms)
+✔ commands are validated strictly (1.806434ms)
+✔ only the packaged panel in the top frame may issue commands (0.218956ms)
+✔ browser permission patterns drop the port (0.153755ms)
+✔ removing a browser permission removes every grant it covered and nothing else (0.475458ms)
+✔ sealed values round-trip and the stored record holds no plaintext (14.826984ms)
+✔ the master key is non-extractable (2.268799ms)
+✔ tampering, swapping records between names and a different key are all detected (3.512883ms)
+✔ concurrent first use creates a single key (1.71019ms)
+✔ nonces are fresh for every seal (2.413599ms)
+ℹ tests 45
+ℹ suites 0
+ℹ pass 45
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 506.56387
+[exit 0]

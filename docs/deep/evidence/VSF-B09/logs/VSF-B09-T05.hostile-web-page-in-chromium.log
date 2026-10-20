@@ -1,0 +1,11 @@
+$ pnpm --filter @vsf/browser-tests exec playwright test specs/bridge-attacks.spec.ts
+
+Running 4 tests using 1 worker
+
+  ✓  1 specs/bridge-attacks.spec.ts:138:1 › a hostile web page cannot reach any privileged bridge action by fetch, form, element or socket (1.5s)
+  ✓  2 specs/bridge-attacks.spec.ts:172:1 › the pairing offer survives hostile traffic and still completes for the extension (1.0s)
+  ✓  3 specs/bridge-attacks.spec.ts:185:1 › a DNS-rebinding name that resolves to the bridge never gets past the Host check (1.1s)
+  ✓  4 specs/bridge-attacks.spec.ts:232:1 › a content script running inside a hostile page speaks with the page's origin and gets nowhere (794ms)
+
+  4 passed (5.4s)
+[exit 0]

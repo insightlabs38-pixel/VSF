@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B09-T01`
+**Next eligible:** close G9 (B09)
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -15,7 +15,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B06 | G6 | 18/18 | DONE | PROCEED |
 | B07 | G7 | 14/14 | DONE | PROCEED |
 | B08 | G8 | 10/10 | DONE | PROCEED |
-| B09 | G9 | 0/9 | READY | - |
+| B09 | G9 | 9/9 | GATE_PENDING | - |
 | B10 | G10 | 0/8 | TODO | - |
 | B11 | G11 | 0/6 | TODO | - |
 | B12 | G12 | 0/6 | TODO | - |
@@ -149,15 +149,15 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B09 · Integrate extension and secure local bridge
 
-- [ ] `VSF-B09-T01` Package MV3 executable logic, narrow origin permissions and user activation _(READY)_
-- [ ] `VSF-B09-T02` Connect browser observation and IR compiler/renderer behind stable message protocol
-- [ ] `VSF-B09-T03` Implement reconnect/restart after service worker death
-- [ ] `VSF-B09-T04` Prototype authenticated pairing with native companion
-- [ ] `VSF-B09-T05` Deny untrusted webpage access to native gateway and exercise DNS-rebinding/CSRF fixture
-- [ ] `VSF-B09-T06` Bind local worker capability manifest and source identity
-- [ ] `VSF-B09-T07` Add local encrypted settings and emergency fallback to source UI
-- [ ] `VSF-B09-T08` Create extension distribution policy checklist and reviewer-friendly architecture
-- [ ] `VSF-B09-T09` Integrated VSF shell and reference gallery with screenshot regression (UI checkpoint)
+- [x] `VSF-B09-T01` Package MV3 executable logic, narrow origin permissions and user activation
+- [x] `VSF-B09-T02` Connect browser observation and IR compiler/renderer behind stable message protocol
+- [x] `VSF-B09-T03` Implement reconnect/restart after service worker death
+- [x] `VSF-B09-T04` Prototype authenticated pairing with native companion
+- [x] `VSF-B09-T05` Deny untrusted webpage access to native gateway and exercise DNS-rebinding/CSRF fixture
+- [x] `VSF-B09-T06` Bind local worker capability manifest and source identity
+- [x] `VSF-B09-T07` Add local encrypted settings and emergency fallback to source UI
+- [x] `VSF-B09-T08` Create extension distribution policy checklist and reviewer-friendly architecture
+- [x] `VSF-B09-T09` Integrated VSF shell and reference gallery with screenshot regression (UI checkpoint)
 
 ### B10 · Expose API, CLI and MCP vertical slice
 
