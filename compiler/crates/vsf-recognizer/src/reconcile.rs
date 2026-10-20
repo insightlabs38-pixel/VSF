@@ -52,6 +52,7 @@ fn name_tokens(name: &str) -> Vec<String> {
 
 fn compatible(kind: FieldKind, ty: &str) -> Option<bool> {
     let ok: &[&str] = match kind {
+        FieldKind::File | FieldKind::Date => return None,
         FieldKind::Toggle => &["boolean"],
         FieldKind::Range => &["integer", "number"],
         FieldKind::Text => &["string", "integer", "number"],

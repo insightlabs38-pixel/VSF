@@ -81,6 +81,8 @@ export function summarize(rows: Row[]) {
     pages: g.pages,
     structural: { fields: t(g.fields), actions: t(g.actions), collections: t(g.collections) },
     falseClaims: g.falseClaims,
+    falseClaimsExcludingEffectHints: g.falseClaims - g.wrongEffectHints,
+    wrongEffectHints: g.wrongEffectHints,
     contradictions: {
       fields: g.fields.contradict,
       actions: g.actions.contradict,

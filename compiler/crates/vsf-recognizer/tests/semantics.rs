@@ -258,3 +258,81 @@ fn the_fixture_apps_bind_their_fields_as_authored() {
         ]
     );
 }
+
+#[test]
+fn rows_are_found_through_plain_wrappers_and_footers_and_hidden_rows_are_not_data() {
+    let mut b = B::new();
+    let grid = b.add(1, "div", Some("grid"), Some("People"), None, V);
+    let wrap = b.div(grid);
+    let head = b.add(wrap, "div", Some("rowgroup"), None, None, V);
+    let hwrap = b.div(head);
+    let hrow = b.add(hwrap, "div", Some("row"), None, None, V);
+    for h in ["Name", "Age"] {
+        b.add(hrow, "div", Some("columnheader"), None, Some(h), V);
+    }
+    let body = b.add(wrap, "div", Some("rowgroup"), None, None, V);
+    let inner = b.div(body);
+    for (n, a) in [("Ann", "30"), ("Bo", "41")] {
+        let row = b.add(inner, "div", Some("row"), None, None, V);
+        b.add(row, "div", Some("gridcell"), None, Some(n), V);
+        b.add(row, "div", Some("gridcell"), None, Some(a), V);
+    }
+    let hidden = b.add(inner, "div", Some("row"), None, None, 0);
+    b.add(hidden, "div", Some("gridcell"), None, Some("x"), 0);
+    let rec = recognize(&b.build(), Rules::V2);
+    let c = rec.collections().next().unwrap();
+    assert_eq!(c.rows, 2);
+    assert_eq!(c.columns.iter().flatten().count(), 2);
+
+    let mut t = B::new();
+    let table = t.add(1, "table", Some("table"), None, None, V);
+    let tbody = t.add(table, "tbody", None, None, None, V);
+    let row = t.add(tbody, "tr", Some("row"), None, None, V);
+    t.add(row, "td", Some("cell"), None, Some("a"), V);
+    let tfoot = t.add(table, "tfoot", None, None, None, V);
+    let total = t.add(tfoot, "tr", Some("row"), None, None, V);
+    t.add(total, "td", Some("cell"), None, Some("Total"), V);
+    let rec = recognize(&t.build(), Rules::V2);
+    assert_eq!(rec.collections().next().unwrap().rows, 1);
+}
+
+#[test]
+fn radios_without_a_label_take_their_name_from_content_and_file_inputs_have_a_kind() {
+    let mut b = B::new();
+    let group = b.add(1, "div", Some("radiogroup"), Some("Plan"), None, V);
+    let radio = b.add(group, "div", Some("radio"), None, Some("Monthly"), CTL);
+    let file = b.add(1, "input", None, Some("Attachment"), None, CTL);
+    b.state(file, "type=file");
+    let date = b.add(1, "input", None, Some("Due"), None, CTL);
+    b.state(date, "type=date");
+    let rec = recognize(&b.build(), Rules::V2);
+    assert_eq!(
+        label_of(&rec, radio),
+        Some(("Monthly".into(), LabelSource::Content))
+    );
+    assert_eq!(rec.field(file).unwrap().kind.as_str(), "file");
+    assert_eq!(rec.field(date).unwrap().kind.as_str(), "date");
+}
+
+#[test]
+fn states_hint_at_effects_only_when_the_name_says_nothing_and_separators_are_not_columns() {
+    let mut b = B::new();
+    let bold = b.add(1, "button", Some("button"), Some("Bold"), None, BTN);
+    b.state(bold, "pressed=false");
+    let more = b.add(1, "button", Some("button"), Some("Options"), None, BTN);
+    b.state(more, "haspopup=menu");
+    let save = b.add(1, "button", Some("button"), Some("Save"), None, BTN);
+    b.state(save, "pressed=true");
+    let grid = b.add(1, "div", Some("grid"), None, None, V);
+    let row = b.add(grid, "div", Some("row"), None, None, V);
+    for h in ["A", "B"] {
+        b.add(row, "div", Some("columnheader"), None, Some(h), V);
+        b.add(row, "span", None, None, None, V);
+    }
+    let rec = recognize(&b.build(), Rules::V2);
+    let verbs = |id| rec.action(id).unwrap().verbs.clone();
+    assert_eq!(verbs(bold), vec![Verb::Toggle]);
+    assert_eq!(verbs(more), vec![Verb::Reveal]);
+    assert_eq!(verbs(save), vec![Verb::Commit]);
+    assert_eq!(rec.collections().next().unwrap().columns.len(), 2);
+}

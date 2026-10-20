@@ -40,6 +40,8 @@ const VERB_EFFECT: Record<string, Effect> = {
   dismiss: "navigation",
   query: "read",
   export: "read",
+  toggle: "state_change",
+  reveal: "navigation",
 };
 
 export const effectsOf = (verbs: string[] | undefined): Effect[] => [
@@ -116,6 +118,8 @@ export interface PageResult {
   unsupportedDeclared: number;
   /** Recognized, usable claims that the annotation contradicts: wrong kind, wrong effect. */
   falseClaims: number;
+  /** The part of falseClaims that is a wrong effect hint on an action, which stays a candidate until a witness exists. */
+  wrongEffectHints: number;
 }
 
 export function matchPage(a: Annotation, rec: Recognition): PageResult {
@@ -134,6 +138,7 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     unannotated: { fields: 0, actions: 0, collections: 0 },
     unsupportedDeclared: a.unsupported.length,
     falseClaims: 0,
+    wrongEffectHints: 0,
   };
   for (const u of units)
     r.recognizedOnPage[u.type === "field" ? "fields" : u.type === "action" ? "actions" : "collections"]++;
@@ -180,7 +185,10 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     });
     r.actions[ag]++;
     status.set(`a:${n}`, ag);
-    if (ag === "contradict" && u.usable) r.falseClaims++;
+    if (ag === "contradict" && u.usable) {
+      r.falseClaims++;
+      r.wrongEffectHints++;
+    }
   }
   for (const c of a.collections) {
     r.collections.annotated++;
@@ -260,6 +268,7 @@ export interface Aggregate {
   recognizedOnPage: { fields: number; actions: number; collections: number };
   unannotated: { fields: number; actions: number; collections: number };
   falseClaims: number;
+  wrongEffectHints: number;
   unsupportedDeclared: number;
 }
 
@@ -278,6 +287,7 @@ export function aggregate(rs: PageResult[]): Aggregate {
     recognizedOnPage: { fields: 0, actions: 0, collections: 0 },
     unannotated: { fields: 0, actions: 0, collections: 0 },
     falseClaims: 0,
+    wrongEffectHints: 0,
     unsupportedDeclared: 0,
   };
   for (const r of rs) {
@@ -295,6 +305,7 @@ export function aggregate(rs: PageResult[]): Aggregate {
       g.unannotated[k] += r.unannotated[k];
     }
     g.falseClaims += r.falseClaims;
+    g.wrongEffectHints += r.wrongEffectHints;
     g.unsupportedDeclared += r.unsupportedDeclared;
   }
   return g;

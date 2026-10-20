@@ -92,6 +92,7 @@ impl Strength {
 pub enum LabelSource {
     Relation(RelKind),
     SelfName,
+    Content,
     Proximity,
     WrapperSibling,
     EnclosingText,
@@ -104,7 +105,9 @@ impl LabelSource {
             LabelSource::Relation(RelKind::Label) => "label_relation",
             LabelSource::Relation(RelKind::LabelledBy) => "labelledby_relation",
             LabelSource::Relation(RelKind::DescribedBy) => "describedby_relation",
+            LabelSource::Relation(RelKind::Controls) => "controls_relation",
             LabelSource::SelfName => "self_name",
+            LabelSource::Content => "content",
             LabelSource::Proximity => "proximity",
             LabelSource::WrapperSibling => "wrapper_sibling",
             LabelSource::EnclosingText => "enclosing_text",
@@ -114,7 +117,9 @@ impl LabelSource {
 
     pub fn strength(&self) -> Strength {
         match self {
-            LabelSource::Relation(_) | LabelSource::SelfName => Strength::Explicit,
+            LabelSource::Relation(_) | LabelSource::SelfName | LabelSource::Content => {
+                Strength::Explicit
+            }
             LabelSource::Proximity => Strength::Structural,
             _ => Strength::Delegated,
         }
@@ -142,6 +147,8 @@ pub enum FieldKind {
     Choice,
     Toggle,
     Range,
+    File,
+    Date,
 }
 
 impl FieldKind {
@@ -151,6 +158,8 @@ impl FieldKind {
             FieldKind::Choice => "choice",
             FieldKind::Toggle => "toggle",
             FieldKind::Range => "range",
+            FieldKind::File => "file",
+            FieldKind::Date => "date",
         }
     }
 }
@@ -177,6 +186,8 @@ pub enum Verb {
     Query,
     Export,
     Dismiss,
+    Toggle,
+    Reveal,
 }
 
 impl Verb {
@@ -189,15 +200,17 @@ impl Verb {
             Verb::Query => "query",
             Verb::Export => "export",
             Verb::Dismiss => "dismiss",
+            Verb::Toggle => "toggle",
+            Verb::Reveal => "reveal",
         }
     }
 
     /// A hint only: the effect class stays undemonstrated until a witness exists.
     pub fn effect_hint(self) -> &'static str {
         match self {
-            Verb::Commit | Verb::Create => "state_change_candidate",
+            Verb::Commit | Verb::Create | Verb::Toggle => "state_change_candidate",
             Verb::Destroy => "destructive_candidate",
-            Verb::Navigate | Verb::Dismiss => "navigation_candidate",
+            Verb::Navigate | Verb::Dismiss | Verb::Reveal => "navigation_candidate",
             Verb::Query | Verb::Export => "read_candidate",
         }
     }
@@ -238,6 +251,17 @@ pub fn verbs_of(name: &str) -> Vec<Verb> {
         .collect();
     out.sort();
     out
+}
+
+/// What the element's own attributes say it does when its name says nothing: a hint, like the lexicon.
+fn verbs_from_states(n: &Node) -> Vec<Verb> {
+    if n.state("pressed").is_some() {
+        vec![Verb::Toggle]
+    } else if n.state("expanded").is_some() || n.state("haspopup").is_some() {
+        vec![Verb::Reveal]
+    } else {
+        Vec::new()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -326,7 +350,13 @@ pub fn field_kind(n: &Node) -> Option<FieldKind> {
         ("checkbox" | "radio" | "switch", _) => FieldKind::Toggle,
         ("combobox" | "listbox", _) | (_, "select") => FieldKind::Choice,
         ("slider" | "spinbutton", _) => FieldKind::Range,
-        _ => FieldKind::Text,
+        _ => match n.state("type") {
+            Some("file") => FieldKind::File,
+            Some("date" | "datetime-local" | "month" | "week" | "time") => FieldKind::Date,
+            Some("range") => FieldKind::Range,
+            Some("checkbox" | "radio") => FieldKind::Toggle,
+            _ => FieldKind::Text,
+        },
     })
 }
 
@@ -488,14 +518,14 @@ fn column_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
         .take(4)
         .find(|&a| matches!(role_of(r.node(a)), "gridcell" | "cell") || r.node(a).tag == "td")?;
     let row = r.parent(cell)?;
-    let col = r.children(row).iter().position(|&c| c == cell)?;
+    let col = cells_of(r, row).iter().position(|&c| c == cell)?;
     let table = r.obs.ancestors(row).find(|&a| {
         matches!(role_of(r.node(a)), "grid" | "table" | "treegrid") || r.node(a).tag == "table"
     })?;
     let mut stack = vec![table];
     while let Some(n) = stack.pop() {
         if n != row && (role_of(r.node(n)) == "row" || r.node(n).tag == "tr") {
-            let cells = r.children(n);
+            let cells = cells_of(r, n);
             let headerish = !cells.is_empty()
                 && cells.iter().all(|&c| {
                     matches!(role_of(r.node(c)), "columnheader") || r.node(c).tag == "th"
@@ -559,6 +589,14 @@ fn delegated(r: &Reader, i: usize) -> Option<LabelCandidate> {
     None
 }
 
+/// ARIA roles whose accessible name is their own content when no label is given.
+fn names_from_content(n: &Node) -> bool {
+    matches!(
+        role_of(n),
+        "radio" | "checkbox" | "switch" | "tab" | "menuitem" | "option" | "button" | "link"
+    )
+}
+
 pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
     let n = r.node(i);
     let explicit = explicit_candidates(r, i);
@@ -576,6 +614,15 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
         return Binding::Bound(LabelCandidate {
             text: clip(name),
             source: LabelSource::SelfName,
+            from: vec![n.id],
+        });
+    }
+    if names_from_content(n)
+        && let Some(t) = text_of(r, i)
+    {
+        return Binding::Bound(LabelCandidate {
+            text: t,
+            source: LabelSource::Content,
             from: vec![n.id],
         });
     }
@@ -651,7 +698,10 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
         .or(n.text.as_deref())
         .map(collapse)
         .filter(|s| !s.is_empty());
-    let verbs = name.as_deref().map(verbs_of).unwrap_or_default();
+    let mut verbs = name.as_deref().map(verbs_of).unwrap_or_default();
+    if verbs.is_empty() {
+        verbs = verbs_from_states(n);
+    }
     let (usable, why) = if !n.visible() {
         (false, Some("not_visible"))
     } else if n.has(F_DISABLED) {
@@ -671,22 +721,59 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
     })
 }
 
+fn is_cell(n: &Node) -> bool {
+    matches!(
+        role_of(n),
+        "cell" | "gridcell" | "columnheader" | "rowheader"
+    ) || matches!(n.tag.as_str(), "td" | "th")
+}
+
+/// The cells of a row; plain separators and hidden filler between them do not count as columns.
+pub fn cells_of(r: &Reader, row: usize) -> Vec<usize> {
+    let all = r.children(row);
+    let cells: Vec<usize> = all
+        .iter()
+        .copied()
+        .filter(|&c| is_cell(r.node(c)))
+        .collect();
+    if cells.is_empty() {
+        all.to_vec()
+    } else {
+        cells
+    }
+}
+
+fn generic_wrapper(n: &Node) -> bool {
+    matches!(n.tag.as_str(), "div" | "span")
+        && matches!(role_of(n), "" | "none" | "presentation" | "generic")
+}
+
 /// The header row and the body rows of a table-like node, in document order.
+/// Rows are found through row groups and plain wrapper elements; footer and hidden rows are not data.
 pub fn table_rows(r: &Reader, i: usize) -> (Option<usize>, Vec<usize>) {
     let mut rows: Vec<usize> = Vec::new();
-    let mut stack: Vec<usize> = r.children(i).iter().rev().copied().collect();
-    while let Some(c) = stack.pop() {
+    let mut footer: Vec<usize> = Vec::new();
+    let mut stack: Vec<(usize, usize, bool)> =
+        r.children(i).iter().rev().map(|&c| (c, 1, false)).collect();
+    while let Some((c, depth, in_footer)) = stack.pop() {
         let cn = r.node(c);
         if cn.tag == "tr" || role_of(cn) == "row" {
-            rows.push(c);
-        } else if matches!(cn.tag.as_str(), "thead" | "tbody" | "tfoot")
-            || matches!(role_of(cn), "rowgroup")
+            if in_footer {
+                footer.push(c);
+            } else {
+                rows.push(c);
+            }
+        } else if depth < 6
+            && (matches!(cn.tag.as_str(), "thead" | "tbody" | "tfoot")
+                || matches!(role_of(cn), "rowgroup")
+                || generic_wrapper(cn))
         {
-            stack.extend(r.children(c).iter().rev().copied());
+            let f = in_footer || cn.tag == "tfoot";
+            stack.extend(r.children(c).iter().rev().map(|&k| (k, depth + 1, f)));
         }
     }
     let is_header = |row: usize| {
-        let cells = r.children(row);
+        let cells = cells_of(r, row);
         !cells.is_empty()
             && cells
                 .iter()
@@ -696,7 +783,7 @@ pub fn table_rows(r: &Reader, i: usize) -> (Option<usize>, Vec<usize>) {
     let body = rows
         .iter()
         .copied()
-        .filter(|&row| Some(row) != header && !r.children(row).is_empty())
+        .filter(|&row| Some(row) != header && r.node(row).visible() && !r.children(row).is_empty())
         .collect();
     (header, body)
 }
@@ -709,7 +796,7 @@ pub fn recognize_collection(r: &Reader, i: usize) -> Option<Collection> {
     }
     let (header, body) = table_rows(r, i);
     let columns: Vec<Option<String>> = header
-        .map(|h| r.children(h).iter().map(|&c| text_of(r, c)).collect())
+        .map(|h| cells_of(r, h).iter().map(|&c| text_of(r, c)).collect())
         .unwrap_or_default();
     if columns.is_empty() && body.is_empty() {
         return None;

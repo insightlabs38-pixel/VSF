@@ -44,6 +44,7 @@ fn random_observation(seed: u64, n: usize) -> Observation {
             text: (r.below(4) == 0).then(|| WORDS[r.below(WORDS.len())].to_string()),
             flags: (r.next() % 512) as u32,
             rels: Vec::new(),
+            states: Vec::new(),
             scope: (r.below(20) == 0).then(|| Scope {
                 kind: "shadow".into(),
                 origin: None,

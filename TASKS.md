@@ -173,7 +173,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 ### B11 · Expand common application coverage
 
 - [x] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding
-- [ ] `VSF-B11-T02` Grow real conformance implementations for critical catalog families _(READY)_
+- [ ] `VSF-B11-T02` Grow real conformance implementations for critical catalog families _(ACTIVE)_
 - [ ] `VSF-B11-T03` Evaluate custom combobox/select, virtualization and modal form dependencies
 - [ ] `VSF-B11-T04` Add upload/download and export with security policy
 - [ ] `VSF-B11-T05` Improve bulk operation and pagination semantics with source rate limits

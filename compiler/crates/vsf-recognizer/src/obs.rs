@@ -29,6 +29,19 @@ impl fmt::Display for Error {
     }
 }
 
+/// A state token is a short `key=value` of lowercase ascii, digits and dashes.
+fn state_token(t: &str) -> bool {
+    let Some((k, v)) = t.split_once('=') else {
+        return false;
+    };
+    t.len() <= 40
+        && !k.is_empty()
+        && !v.is_empty()
+        && t.bytes()
+            .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'-' || b == b'=')
+        && !v.contains('=')
+}
+
 pub fn err(code: &'static str, detail: impl Into<String>) -> Error {
     Error {
         code,
@@ -41,6 +54,7 @@ pub enum RelKind {
     Label,
     LabelledBy,
     DescribedBy,
+    Controls,
 }
 
 impl RelKind {
@@ -49,6 +63,7 @@ impl RelKind {
             "label" => Some(RelKind::Label),
             "labelledby" => Some(RelKind::LabelledBy),
             "describedby" => Some(RelKind::DescribedBy),
+            "controls" => Some(RelKind::Controls),
             _ => None,
         }
     }
@@ -72,10 +87,17 @@ pub struct Node {
     pub text: Option<String>,
     pub flags: u32,
     pub rels: Vec<(RelKind, usize)>,
+    /// Allow-listed `key=value` tokens the observer saw as attributes; never page content.
+    pub states: Vec<String>,
     pub scope: Option<Scope>,
 }
 
 impl Node {
+    pub fn state(&self, key: &str) -> Option<&str> {
+        self.states
+            .iter()
+            .find_map(|s| s.strip_prefix(key)?.strip_prefix('='))
+    }
     pub fn has(&self, flag: u32) -> bool {
         self.flags & flag != 0
     }
@@ -181,6 +203,19 @@ impl Observation {
                     }
                 }
             }
+            let mut states = Vec::new();
+            match it.get("states") {
+                None | Some(Value::Null) => {}
+                Some(Value::Array(list)) => {
+                    for x in list {
+                        let Some(tok) = x.as_str().filter(|t| state_token(t)) else {
+                            return Err(err("obs.bad_field", format!("{p}/states")));
+                        };
+                        states.push(tok.to_string());
+                    }
+                }
+                Some(_) => return Err(err("obs.bad_field", format!("{p}/states"))),
+            }
             let scope = match it.get("scope") {
                 None | Some(Value::Null) => None,
                 Some(s) => Some(Scope {
@@ -203,6 +238,7 @@ impl Observation {
                 text: opt_str(it, "text", &p)?,
                 flags,
                 rels,
+                states,
                 scope,
             });
         }

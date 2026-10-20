@@ -245,6 +245,105 @@
       "result": "PASS",
       "log": "logs/GATE.t08-queue-tests.log",
       "sha256": "a62e101e5cd3de3ec8cd863749c9c3acb06f1e9ff702d184a4ca35c0c18775a6"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-recognizer",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer --test semantics",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-recognizer.log",
+      "sha256": "ea61189776df2efe17880950a9c8332db1f945b84045d78d5c76fe18d0d672d3"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "negative-recognizer-all",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer -p vsf-assemble -p vsf-registry",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.negative-recognizer-all.log",
+      "sha256": "d48a14a76a8223870c25b56f05a3b1e576e404f67727765c9199e1de07012a96"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-observer-states",
+      "command": "pnpm --filter @vsf/observation-tests run test:unit",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-observer-states.log",
+      "sha256": "9bcc1846770cb56e7124d3d06cf5fd588f804a2ce94d8cd8a0ccb0ce2ca95a4e"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-observer-browser",
+      "command": "sh -c cd tests/observation && npx playwright test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-observer-browser.log",
+      "sha256": "4dbba264602e3ce9eb3dc2632b126288f24904f0397e0e620112b12bf538d7f2"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-corpus-reproducible",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-corpus-reproducible.log",
+      "sha256": "05364ff08c3c8c2601cda474629ad368e34fa7b690caa5dc298247930374a1aa"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-corpus-t02",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out /home/user/VSF/docs/deep/evidence/VSF-B11/corpus-t02-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-corpus-t02.log",
+      "sha256": "f28264fa7be9890690de87476936c1db3cfeb2576377be019241eab3a8b22f71"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-clippy.log",
+      "sha256": "92a6cc83d529696b6e34efae2e9b8619080e1508e4f1e39745a99af47d7867c5"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-corpus-tests",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-corpus-tests.log",
+      "sha256": "9c22a14bc678878dbf9024c440eb32c5c0ec6735ad6c57fba08ac488c12e48ea"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-biome.log",
+      "sha256": "bddd21f5178807cdfde23050560e2d236e44076c2840732e716225bebbb2d101"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-secrets",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-secrets.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-typecheck",
+      "command": "pnpm -r --if-present run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-typecheck.log",
+      "sha256": "d03369f62007c94550ecd724cf2d4a27deccb933c6a0f2dcb93af932894c2f6b"
     }
   ]
 }

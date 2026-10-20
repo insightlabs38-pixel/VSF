@@ -107,6 +107,10 @@ const RELEVANT_ATTRS = new Set([
   "aria-describedby",
   "aria-disabled",
   "disabled",
+  "required",
+  "readonly",
+  "aria-controls",
+  "aria-owns",
   "type",
   "title",
   "alt",
@@ -135,7 +139,15 @@ function sameRels(a: NodeFacts["rels"], b: NodeFacts["rels"]): boolean {
 }
 
 function sameFacts(a: NodeFacts, b: NodeFacts): boolean {
-  return a.role === b.role && a.name === b.name && a.text === b.text && a.flags === b.flags && sameRels(a.rels, b.rels);
+  return (
+    a.role === b.role &&
+    a.name === b.name &&
+    a.text === b.text &&
+    a.flags === b.flags &&
+    sameRels(a.rels, b.rels) &&
+    a.states.length === b.states.length &&
+    a.states.every((x, i) => x === b.states[i])
+  );
 }
 
 /** Indices (into `seq`) of one longest strictly increasing subsequence. */
@@ -285,7 +297,7 @@ export class Session {
   }
 
   private scopeFacts(tag: string, flags = 0): NodeFacts {
-    return { tag, role: null, name: null, text: null, flags, rels: [] };
+    return { tag, role: null, name: null, text: null, flags, rels: [], states: [] };
   }
 
   private setDeps(live: Live, deps: Element[]): void {
@@ -372,11 +384,28 @@ export class Session {
       return false;
     }
     this.sum = sumSub(this.sum, live.hash);
-    live.rec = { ...live.rec, role: f.role, name: f.name, text: f.text, flags: f.flags, rels: f.rels };
+    live.rec = {
+      ...live.rec,
+      role: f.role,
+      name: f.name,
+      text: f.text,
+      flags: f.flags,
+      rels: f.rels,
+      states: f.states,
+    };
     live.hash = nodeHash(live.rec);
     this.sum = sumAdd(this.sum, live.hash);
     this.setDeps(live, d.deps);
-    ops.push({ op: "set", id: live.id, role: f.role, name: f.name, text: f.text, flags: f.flags, rels: f.rels });
+    ops.push({
+      op: "set",
+      id: live.id,
+      role: f.role,
+      name: f.name,
+      text: f.text,
+      flags: f.flags,
+      rels: f.rels,
+      states: f.states,
+    });
     return true;
   }
 

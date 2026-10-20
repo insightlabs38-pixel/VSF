@@ -36,7 +36,7 @@ export interface ScopeMeta {
   opaque?: OpaqueReason;
 }
 
-export type RelKind = "labelledby" | "describedby" | "label";
+export type RelKind = "labelledby" | "describedby" | "label" | "controls";
 export type Rel = readonly [kind: RelKind, target: number];
 
 export interface NodeFacts {
@@ -46,6 +46,8 @@ export interface NodeFacts {
   text: string | null;
   flags: number;
   rels: Rel[];
+  /** Allow-listed, value-free states such as `expanded=true` or `type=file`, sorted. */
+  states: readonly string[];
 }
 
 export interface NodeRec extends NodeFacts {
@@ -100,7 +102,7 @@ function fnv(text: string, seed: number): number {
 
 /** 52-bit hash so sums of many nodes stay exact in a double. */
 export function nodeHash(r: NodeRec): number {
-  const key = `${r.id}|${r.parent}|${r.tag}|${r.role}|${r.name}|${r.text}|${r.flags}|${r.rels.map((x) => x.join(":")).join(",")}|${r.scope ? JSON.stringify(r.scope) : ""}`;
+  const key = `${r.id}|${r.parent}|${r.tag}|${r.role}|${r.name}|${r.text}|${r.flags}|${r.rels.map((x) => x.join(":")).join(",")}|${r.states.join(",")}|${r.scope ? JSON.stringify(r.scope) : ""}`;
   const hi = fnv(key, 2166136261) & 0xfffff;
   return hi * 2 ** 32 + fnv(key, 0x9e3779b1);
 }
@@ -117,6 +119,7 @@ export type CanonNode = [
   rels: [string, number][],
   scope: ScopeMeta | null,
   children: CanonNode[],
+  states: readonly string[],
 ];
 
 export interface RecognizerNode {
@@ -128,6 +131,7 @@ export interface RecognizerNode {
   text: string | null;
   flags: number;
   rels: [string, number][];
+  states: string[];
   scope: { kind: ScopeKind; origin: string | null; mode: "open" | "closed" | null; opaque: OpaqueReason | null } | null;
 }
 
@@ -224,6 +228,7 @@ export class Replica {
           text: op.text,
           flags: op.flags,
           rels: op.rels,
+          states: op.states ?? [],
           scope: op.scope ?? null,
         };
         this.nodes.set(op.id, rec);
@@ -252,6 +257,7 @@ export class Replica {
         rec.text = op.text;
         rec.flags = op.flags;
         rec.rels = op.rels;
+        rec.states = op.states ?? [];
         this.sum = sumAdd(this.sum, nodeHash(rec));
         undo.push(() => {
           this.sum = sumSub(this.sum, nodeHash(rec));
@@ -348,6 +354,7 @@ export class Replica {
         r.rels.map(([k, t]): [string, number] => [k, order.get(t) ?? -1]),
         r.scope ? { ...r.scope, generation: 0 } : null,
         (this.children.get(id) ?? []).map(build),
+        r.states,
       ];
     };
     return this.roots.map(build);
@@ -368,6 +375,7 @@ export class Replica {
           text: r.text,
           flags: r.flags,
           rels: r.rels.map(([k, t]): [string, number] => [k, t]),
+          states: [...r.states],
           scope: r.scope
             ? { kind: r.scope.kind, origin: r.scope.origin, mode: r.scope.mode ?? null, opaque: r.scope.opaque ?? null }
             : null,

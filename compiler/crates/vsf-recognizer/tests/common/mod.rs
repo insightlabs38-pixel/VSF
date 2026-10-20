@@ -23,6 +23,7 @@ impl B {
             text: None,
             flags: 0,
             rels: Vec::new(),
+            states: Vec::new(),
             scope: None,
         });
         b
@@ -48,6 +49,7 @@ impl B {
             text: text.map(String::from),
             flags,
             rels: Vec::new(),
+            states: Vec::new(),
             scope: None,
         });
         id
@@ -74,6 +76,11 @@ impl B {
             Some(name),
             BTN,
         )
+    }
+
+    pub fn state(&mut self, id: u32, token: &str) {
+        let i = self.nodes.iter().position(|n| n.id == id).unwrap();
+        self.nodes[i].states.push(token.into());
     }
 
     pub fn rel(&mut self, from: u32, kind: RelKind, to: u32) {
@@ -175,6 +182,7 @@ impl Edit {
                 text: text.map(String::from),
                 flags,
                 rels: Vec::new(),
+                states: Vec::new(),
                 scope: None,
             },
         );

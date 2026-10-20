@@ -48,6 +48,47 @@ export const NAME_FROM_CONTENT = new Set([
   "cell",
   "columnheader",
 ]);
+const BOOL = new Set(["true", "false"]);
+const TRI = new Set(["true", "false", "mixed"]);
+const POPUP = new Set(["true", "menu", "listbox", "tree", "grid", "dialog"]);
+const CURRENT = new Set(["true", "page", "step", "location", "date", "time"]);
+const SORT = new Set(["ascending", "descending", "none", "other"]);
+const INPUT_TYPES = new Set([
+  "text",
+  "search",
+  "email",
+  "tel",
+  "url",
+  "password",
+  "number",
+  "date",
+  "datetime-local",
+  "month",
+  "week",
+  "time",
+  "file",
+  "color",
+  "range",
+  "checkbox",
+  "radio",
+  "submit",
+  "reset",
+  "button",
+  "image",
+]);
+const STATE_ATTRS: [attr: string, key: string, allowed: ReadonlySet<string>][] = [
+  ["aria-expanded", "expanded", BOOL],
+  ["aria-pressed", "pressed", TRI],
+  ["aria-selected", "selected", BOOL],
+  ["aria-checked", "checked", TRI],
+  ["aria-current", "current", CURRENT],
+  ["aria-sort", "sort", SORT],
+  ["aria-haspopup", "haspopup", POPUP],
+  ["aria-modal", "modal", BOOL],
+  ["aria-required", "required", BOOL],
+  ["aria-readonly", "readonly", BOOL],
+  ["aria-multiselectable", "multiselectable", BOOL],
+];
 const BUTTON_INPUTS = new Set(["button", "submit", "reset"]);
 const NO_VALUE_INPUTS = new Set(["checkbox", "radio", "button", "submit", "reset", "hidden", "image", "file", "range"]);
 
@@ -261,6 +302,27 @@ function disabled(el: Element): boolean {
   }
 }
 
+/** Allow-listed attribute states: closed vocabularies only, so a state can never carry page content. Property state a script changes without an attribute (a native checkbox's checked) is not read. */
+export function statesOf(el: Element): string[] {
+  const out = new Set<string>();
+  for (const [attr, key, allowed] of STATE_ATTRS) {
+    const v = el.getAttribute(attr)?.trim().toLowerCase();
+    if (v && allowed.has(v)) out.add(`${key}=${v}`);
+  }
+  if (el.tagName === "INPUT") {
+    const t = inputType(el);
+    if (INPUT_TYPES.has(t)) out.add(`type=${t}`);
+    if (el.hasAttribute("multiple")) out.add("multiple=true");
+  }
+  if (el.hasAttribute("required")) out.add("required=true");
+  if (el.hasAttribute("readonly")) out.add("readonly=true");
+  if (el.tagName === "DETAILS") out.add(`expanded=${el.hasAttribute("open")}`);
+  else if (el.tagName === "SUMMARY" && el.parentElement?.tagName === "DETAILS")
+    out.add(`expanded=${el.parentElement.hasAttribute("open")}`);
+  if (el.tagName === "DIALOG") out.add(`open=${el.hasAttribute("open")}`);
+  return [...out].sort();
+}
+
 /** Facts for one element. Form-control values are never read; credential regions yield no text at all. */
 export function describeElement(el: Element, ctx: DescribeCtx): Described {
   const role = roleOf(el);
@@ -295,6 +357,16 @@ export function describeElement(el: Element, ctx: DescribeCtx): Described {
       flags |= FLAG_ACCOUNT;
     }
   }
+  const controlled = el.getAttribute("aria-controls") ?? el.getAttribute("aria-owns");
+  if (controlled) {
+    for (const id of controlled.split(/\s+/).filter(Boolean).slice(0, 8)) {
+      const t = rootLookup(el, id);
+      if (t) {
+        deps.push(t);
+        relTargets.push({ kind: "controls", el: t });
+      }
+    }
+  }
   const described = el.getAttribute("aria-describedby");
   if (described) {
     for (const id of described.split(/\s+/).filter(Boolean)) {
@@ -319,7 +391,7 @@ export function describeElement(el: Element, ctx: DescribeCtx): Described {
   if (disabled(el)) flags |= FLAG_DISABLED;
   if (rtl(el)) flags |= FLAG_RTL;
   const rels: Rel[] = relTargets.map((r) => [r.kind, ctx.idOf(r.el)] as const);
-  return { facts: { tag: tag.toLowerCase(), role, name, text, flags, rels }, deps, relTargets };
+  return { facts: { tag: tag.toLowerCase(), role, name, text, flags, rels, states: statesOf(el) }, deps, relTargets };
 }
 
 export interface GeometryProbe {

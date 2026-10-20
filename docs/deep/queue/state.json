@@ -790,10 +790,12 @@
       "receipt": "docs/deep/queue/receipts/VSF-B11-T01.json"
     },
     "VSF-B11-T02": {
-      "status": "READY",
-      "claimed_by": null,
+      "status": "ACTIVE",
+      "claimed_by": "insightlabs38-pixel",
       "commit": null,
-      "evidence": null
+      "evidence": null,
+      "branch": "vsf/b11-independent-corpus",
+      "base_commit": "d543def888284309caeffc6987f0f59fccfc070c"
     },
     "VSF-B11-T03": {
       "status": "TODO",
