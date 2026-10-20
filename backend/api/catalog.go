@@ -339,6 +339,16 @@ func (c *Catalog) unsupported(name, version string) *Error {
 	return errWith(CodeContractVersionUnsupported, "", map[string]any{"requested": version, "supported": served})
 }
 
+// ByDigest describes a stored contract whether or not it is still served, so an old invocation stays readable.
+func (c *Catalog) ByDigest(digest string) (*Spec, bool) {
+	e, ok := c.byDig[digest]
+	if !ok {
+		return nil, false
+	}
+	s, _ := c.emitted(e)
+	return s, s != nil
+}
+
 // Contract returns a stored document by digest, for reconciliation.
 func (c *Catalog) Contract(digest string) ([]byte, bool) { return c.src.Document(digest) }
 

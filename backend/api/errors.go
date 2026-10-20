@@ -38,6 +38,10 @@ const (
 	CodeUnverifiedEffect           Code = "unverified_effect"
 	CodeInvocationNotFound         Code = "invocation_not_found"
 	CodeNotReconcilable            Code = "not_reconcilable"
+	CodeReconcileInProgress        Code = "reconcile_in_progress"
+	CodeStillUnknown               Code = "still_unknown"
+	CodeReconciledNotCommitted     Code = "reconciled_not_committed"
+	CodeAbandoned                  Code = "abandoned"
 	CodeTooLarge                   Code = "request_too_large"
 	CodeRateLimited                Code = "rate_limited"
 	CodeInternal                   Code = "internal"
@@ -127,6 +131,10 @@ var taxonomy = map[Code]Info{
 	CodeUnverifiedEffect:           {502, ExitUnverified, CategoryUnverifiedEffect, EffectUnknown, RetryReconcile, "The source acknowledged the change but the result could not be verified."},
 	CodeInvocationNotFound:         {404, ExitRefused, CategoryRefused, EffectNone, RetryFixRequest, "No such invocation for this caller."},
 	CodeNotReconcilable:            {409, ExitRefused, CategoryRefused, EffectNone, RetryNever, "Only an invocation with an unknown outcome can be reconciled."},
+	CodeReconcileInProgress:        {409, ExitRefused, CategoryRefused, EffectUnknown, RetrySameRequest, "Another reconciliation of this invocation is running."},
+	CodeStillUnknown:               {409, ExitUnknown, CategoryUnknownCommit, EffectUnknown, RetryReconcile, "The source showed nothing that settles whether the change was applied."},
+	CodeReconciledNotCommitted:     {409, ExitFailed, CategoryFailed, EffectNone, RetryNewRequestID, "The source proved this request was never applied and never will be."},
+	CodeAbandoned:                  {409, ExitFailed, CategoryFailed, EffectNone, RetryNewRequestID, "The service restarted before the request reached the source."},
 	CodeTooLarge:                   {413, ExitUsage, CategoryRefused, EffectNone, RetryFixRequest, "The request is larger than the interface accepts."},
 	CodeRateLimited:                {429, ExitError, CategoryRefused, EffectNone, RetrySameRequest, "Too many requests from this caller."},
 	CodeInternal:                   {500, ExitError, CategoryRefused, EffectNone, RetryNever, "The interface failed before reaching a decision."},
@@ -213,7 +221,7 @@ func ClassifyReason(reason string) Code {
 		reason == "source_scope_missing", reason == "write_scope_insufficient", reason == "session_other_caller":
 		return CodePermissionDenied
 	case reason == "unknown_session", reason == "session_revoked", reason == "session_unauthenticated",
-		reason == "session_expired", reason == "session_other_source":
+		reason == "session_expired", reason == "session_other_source", reason == "other_source":
 		return CodeSessionInvalid
 	case reason == "source_version_out_of_range":
 		return CodeSourceVersionUnsupported
@@ -247,6 +255,16 @@ func ClassifyReason(reason string) Code {
 		return CodeSourceUnavailable
 	case reason == "not_unknown":
 		return CodeNotReconcilable
+	case reason == "reconciled_not_committed":
+		return CodeReconciledNotCommitted
+	case strings.HasPrefix(reason, "abandoned_"):
+		return CodeAbandoned
+	case reason == "reconcile_in_progress":
+		return CodeReconcileInProgress
+	case reason == "expect_mismatch":
+		return CodeInvalidArgument
+	case reason == "other_caller":
+		return CodeInvocationNotFound
 	}
 	return CodeInternal
 }

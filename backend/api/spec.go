@@ -310,6 +310,10 @@ func invocationSchema(d Disclosure, params map[string]any) map[string]any {
 			"description": "The source session this call runs in."},
 		"record": map[string]any{"type": "string", "minLength": 1, "maxLength": MaxReferenceChars,
 			"description": "The record the operation applies to, when it applies to one."},
+		"contract_version": map[string]any{"type": "string", "minLength": 1, "maxLength": 64,
+			"description": "The contract version to run; defaults to the newest served."},
+		"contract_digest": map[string]any{"type": "string", "minLength": 1, "maxLength": 128,
+			"description": "Pin the exact contract document; the call is refused if it differs."},
 		"params": params,
 		"expect": map[string]any{"type": "object", "additionalProperties": map[string]any{"type": "string", "maxLength": MaxTextChars},
 			"description": "Field values the source must show afterwards for the result to count as verified."},
@@ -326,9 +330,9 @@ func invocationSchema(d Disclosure, params map[string]any) map[string]any {
 				"expires_at": map[string]any{"type": "integer", "minimum": 0},
 			}, "description": "A person's confirmation of this exact request."},
 		"wait_ms": map[string]any{"type": "integer", "minimum": 0, "maximum": 120000,
-			"description": "How long to wait for a result before returning a handle; 0 returns at once."},
+			"description": "How long to wait for a result before returning a handle; 0 returns at once and omitting it waits up to 10000."},
 		"dry_run": map[string]any{"type": "boolean",
-			"description": "Validate the arguments and report availability without touching the source."},
+			"description": "Validate the arguments against the contract and stop; nothing is run and nothing is authorised."},
 	}
 	if len(strategies) > 0 {
 		props["strategy"] = map[string]any{"type": "string", "enum": strategies}
@@ -340,13 +344,82 @@ func invocationSchema(d Disclosure, params map[string]any) map[string]any {
 	return map[string]any{"type": "object", "properties": props, "required": req, "additionalProperties": false}
 }
 
-func resultSchema(outputs []Param) map[string]any {
+func codeEnum() []any {
+	var out []any
+	for _, c := range Codes() {
+		out = append(out, string(c))
+	}
+	return out
+}
+
+func enumOf(vals ...string) []any {
+	out := make([]any, len(vals))
+	for i, v := range vals {
+		out[i] = v
+	}
+	return out
+}
+
+func str(extra ...string) map[string]any {
+	s := map[string]any{"type": "string"}
+	if len(extra) > 0 {
+		s["description"] = extra[0]
+	}
+	return s
+}
+
+func constOrString(v string) map[string]any {
+	if v == "" {
+		return map[string]any{"type": "string"}
+	}
+	return map[string]any{"const": v}
+}
+
+// resultSchema describes Result for one operation; the declared outputs are listed, never invented as fields.
+func resultSchema(name, version, digest string, outputs []Param) map[string]any {
 	return map[string]any{
 		"type": "object", "additionalProperties": false,
+		"required": []any{"operation", "contract_version", "contract_digest", "category", "effect", "retry"},
 		"properties": map[string]any{
-			"declared": objectSchema(outputs),
+			"invocation":       str("The handle for status, cancellation and reconciliation."),
+			"operation":        constOrString(name),
+			"contract_version": constOrString(version),
+			"contract_digest":  constOrString(digest),
+			"category": map[string]any{"enum": enumOf(string(CategorySucceeded), string(CategoryRefused), string(CategoryFailed),
+				string(CategoryUnknownCommit), string(CategoryUnverifiedEffect), string(CategoryInProgress), string(CategoryValidated))},
+			"state":  str(),
+			"effect": map[string]any{"enum": enumOf(string(EffectNone), string(EffectApplied), string(EffectUnknown))},
+			"retry": map[string]any{"enum": enumOf(string(RetryNever), string(RetryFixRequest), string(RetrySameRequest),
+				string(RetryReconcile), string(RetryNewRequestID))},
+			"reason": str(),
+			"cancel": str(),
+			"observed": map[string]any{"type": "object", "additionalProperties": false, "properties": map[string]any{
+				"version":   str("The record version the source showed."),
+				"fields":    map[string]any{"type": "object", "additionalProperties": str()},
+				"truncated": map[string]any{"type": "boolean"},
+			}},
+			"error": map[string]any{"type": "object", "required": []any{"code", "message", "effect", "retry"}, "properties": map[string]any{
+				"code": map[string]any{"enum": codeEnum()}, "message": str(), "reason": str(),
+				"effect":         map[string]any{"enum": enumOf(string(EffectNone), string(EffectApplied), string(EffectUnknown))},
+				"retry":          map[string]any{"type": "string"},
+				"retry_after_ms": map[string]any{"type": "integer", "minimum": 0},
+				"details":        map[string]any{"type": "object"},
+			}},
+			"disclosure": map[string]any{"type": "object"},
+			"progress": map[string]any{"type": "array", "items": map[string]any{"type": "object", "properties": map[string]any{
+				"seq": map[string]any{"type": "integer"}, "stage": str(), "fraction": map[string]any{"type": "number"},
+			}}},
 		},
+		"x-vsf-declared-outputs": declaredOutputs(outputs),
 	}
+}
+
+func declaredOutputs(ps []Param) []any {
+	out := make([]any, len(ps))
+	for i, p := range ps {
+		out[i] = map[string]any{"name": p.Name, "type": p.Type, "required": p.Required}
+	}
+	return out
 }
 
 // BuildSpec derives the description of one operation; it refuses what cannot be described honestly.
@@ -390,7 +463,7 @@ func specOf(c ir.OperationContract, digest string) (Spec, error) {
 		},
 		ParamsSchema: ps,
 		InputSchema:  invocationSchema(d, ps),
-		OutputSchema: resultSchema(outs),
+		OutputSchema: resultSchema(name, string(c.ContractVersion), digest, outs),
 	}
 	s.Description = describe(s, c)
 	return s, nil
