@@ -33,7 +33,7 @@ export const DEFAULT_POLICY: AuditPolicy = {
   optionalHosts: ["http://*/*", "https://*/*"],
   csp: "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'",
   maxPackageBytes: 8 * 1024 * 1024,
-  networkSinks: {},
+  networkSinks: { "background.js": ["fetch"] },
 };
 
 const FORBIDDEN_MANIFEST_KEYS = [

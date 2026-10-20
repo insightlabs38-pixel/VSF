@@ -20,7 +20,7 @@ interface DomApi {
 }
 
 /** One live-session baseline: only this runtime can see closed shadow roots, and it says so. */
-function run(allowedOrigin: string) {
+function run(allowedOrigin: string, withSnapshot = false) {
   const dom = (globalThis as unknown as { chrome?: { dom?: DomApi } }).chrome?.dom;
   const caps: RuntimeCaps = {};
   if (dom?.openOrClosedShadowRoot) {
@@ -55,6 +55,7 @@ function run(allowedOrigin: string) {
     missing: missingSignals(replica, session.stats.scopes, caps),
     env: replica.env,
     b64: toBase64(bytes),
+    ...(withSnapshot ? { snapshot: JSON.stringify(replica.toRecognizerInput()) } : {}),
   };
   session.stop();
   return result;

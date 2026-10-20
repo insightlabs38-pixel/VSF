@@ -1,4 +1,7 @@
 import type { OpaqueReason, ScopeKind, ScopeMeta } from "./model.ts";
+import { ownUi } from "./own.ts";
+
+const own = ownUi();
 
 /** Runtime-specific abilities; absent members mean the runtime cannot do it and must say so. */
 export interface RuntimeCaps {
@@ -149,6 +152,7 @@ export function enumerateScopes(
     const cur = queue.shift() as (typeof queue)[number];
     const walker = (cur.root.ownerDocument ?? (cur.root as Document)).createTreeWalker(cur.root, 1);
     for (let n = walker.nextNode() as Element | null; n; n = walker.nextNode() as Element | null) {
+      if (own.has(n)) continue;
       for (const s of childScopes(n, cur.origin, caps, policy, generation, stats)) {
         const depth = out[cur.index]?.depth ?? 0;
         const entry: ScopeEntry = {

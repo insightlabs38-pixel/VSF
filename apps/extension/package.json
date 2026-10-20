@@ -5,7 +5,9 @@
   "type": "module",
   "license": "UNLICENSED",
   "dependencies": {
+    "@vsf/ir": "workspace:*",
     "@vsf/observer": "workspace:*",
+    "@vsf/renderer": "workspace:*",
     "@vsf/schema": "workspace:*",
     "@vsf/wasm-host": "workspace:*"
   },
@@ -15,6 +17,18 @@
     "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts"
   },
   "exports": {
-    "./build": "./build.ts"
+    "./build": "./build.ts",
+    "./link": {
+      "source": "./src/link.ts",
+      "default": "./src/link.ts"
+    },
+    "./vault": {
+      "source": "./src/vault.ts",
+      "default": "./src/vault.ts"
+    },
+    "./kv": {
+      "source": "./src/kv.ts",
+      "default": "./src/kv.ts"
+    }
   }
 }

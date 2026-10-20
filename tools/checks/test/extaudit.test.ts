@@ -136,6 +136,25 @@ test("html scanning refuses inline code and remote URLs", () => {
   assert.ok(scanHtml("a.html", '<link href="//cdn.test/a.css">').length > 0);
 });
 
+test("the only listed network sink is fetch in the worker", () => {
+  assert.deepEqual(DEFAULT_POLICY.networkSinks, { "background.js": ["fetch"] });
+  assert.ok(
+    scanScript(
+      "render.js",
+      "fetch(u)",
+      (DEFAULT_POLICY.networkSinks as Record<string, readonly string[]>)["render.js"] ?? [],
+    ).length > 0,
+  );
+  assert.deepEqual(
+    scanScript(
+      "background.js",
+      "fetch(u)",
+      (DEFAULT_POLICY.networkSinks as Record<string, readonly string[]>)["background.js"] ?? [],
+    ),
+    [],
+  );
+});
+
 test("the default policy names the reviewed CSP", () => {
   assert.equal(DEFAULT_POLICY.csp, "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'");
 });

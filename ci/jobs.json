@@ -337,7 +337,7 @@
       },
       {
         "name": "go-vet",
-        "cmd": ["go", "-C", "backend", "vet", "-tags", "integration", "./execution/...", "./versions/..."]
+        "cmd": ["go", "-C", "backend", "vet", "-tags", "integration", "./execution/...", "./versions/...", "./bridge/..."]
       },
       {
         "name": "execution-integration",
@@ -351,7 +351,8 @@
           "-race",
           "-count=1",
           "./execution/...",
-          "./versions/..."
+          "./versions/...",
+          "./bridge/..."
         ]
       }
     ],

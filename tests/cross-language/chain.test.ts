@@ -102,7 +102,7 @@ test("tampered digest and corrupted bytes are rejected by every binding", () => 
   }
 });
 
-test("native assemble, the native worker and WASM assemble agree byte for byte on every recognition fixture", async () => {
+test("native assemble and WASM assemble agree byte for byte on every recognition fixture", async () => {
   const fabric = await loadFabric(readFileSync(path("artifacts/wasm/vsf_wasm.wasm")));
   const names = [
     "table-orders",
@@ -147,4 +147,34 @@ test("native assemble, the native worker and WASM assemble agree byte for byte o
   );
   assert.equal(refused.status, 2);
   assert.match(refused.stderr, /assemble\.bad_origin/);
+});
+
+test("the native worker answers assemble frames like the command line and reports errors with stable codes", () => {
+  const params = {
+    origin: "http://127.0.0.1:8080",
+    variantId: "var_00112233445566778899aabbccddeeff",
+    observedAt: 1_792_368_200_000,
+    epoch: 7,
+  };
+  const frame = (op: string, payload: Uint8Array): Buffer => {
+    const head = Buffer.alloc(5);
+    head.writeUInt32LE(payload.length + 1, 0);
+    head.write(op, 4, "latin1");
+    return Buffer.concat([head, payload]);
+  };
+  const serve = spawnSync(native, ["serve"], {
+    input: Buffer.concat([
+      frame("S", assemblyFrame(params, readFileSync(path("fixtures/recognition/snapshots/plain-form.json")))),
+      frame("S", new Uint8Array(3)),
+    ]),
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  const out = serve.stdout;
+  assert.equal(out[0], 0);
+  const size = out.readUInt32LE(1);
+  const doc = JSON.parse(out.subarray(5, 5 + size).toString());
+  assert.equal(doc.schema, "vsf-assembly-v1");
+  const next = 5 + size;
+  assert.equal(out[next], 2);
+  assert.equal(out.subarray(next + 5, next + 5 + out.readUInt32LE(next + 1)).toString(), "assemble.bad_frame");
 });

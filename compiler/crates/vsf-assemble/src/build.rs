@@ -664,6 +664,27 @@ fn view_values(built: &Built) -> (Value, Value, Value, Value) {
     (views, Value::Object(rows), acts, withheld)
 }
 
+/// Identifies what a presentation depends on (entities, fields, actions), not when it was observed.
+fn shape_digest(sem: &SemanticIR) -> String {
+    let mut shaped = sem.clone();
+    shaped.evidence.clear();
+    shaped.observations.clear();
+    for e in &mut shaped.entities {
+        e.evidence.clear();
+        for f in &mut e.fields {
+            f.evidence.clear();
+        }
+    }
+    for a in &mut shaped.actions {
+        a.evidence.clear();
+        a.effect.asserted.clear();
+    }
+    format!(
+        "sha256:{}",
+        sha256_hex(&vsf_canon::to_canonical(&shaped.encode()))
+    )
+}
+
 pub fn run(
     p: &Params,
     obs: &Observation,
@@ -676,6 +697,7 @@ pub fn run(
     if !validate_semantic(&sem).is_empty() {
         return Err("assemble.invalid_semantic");
     }
+    let shape = shape_digest(&sem);
     let body = Body::Semantic(sem);
     let digest = document_digest(&body);
     let doc = vsf_canon::parse(&encode_document(&body)).map_err(|_| "assemble.invalid_semantic")?;
@@ -694,6 +716,7 @@ pub fn run(
         ("schema", s(SCHEMA)),
         ("semantic", doc),
         ("semantic_digest", s(&digest)),
+        ("shape_digest", s(&shape)),
         ("views", views),
         ("withheld", withheld),
     ]))

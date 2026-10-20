@@ -1,6 +1,9 @@
+import { ownUi } from "./own.ts";
 import { Builder, FLAG_EDITABLE, FLAG_INTERACTIVE, FLAG_REDACTED, FLAG_VISIBLE, NONE, type Snapshot } from "./pack.ts";
 import { redactThenClip } from "./redact.ts";
 import { intrinsicScope, looksAccountSpecific, markerScope, stricter } from "./sensitive.ts";
+
+const own = ownUi();
 
 export interface SnapshotOptions {
   maxNodes: number;
@@ -145,7 +148,10 @@ export function snapshotDocument(doc: Document, options: SnapshotOptions = DEFAU
     }
     const index = b.node(item.parent, el.tagName.toLowerCase(), role, name, text, flags);
     if (OPAQUE.has(el.tagName)) continue;
-    for (let i = el.children.length - 1; i >= 0; i--) stack.push({ el: el.children[i] as Element, parent: index });
+    for (let i = el.children.length - 1; i >= 0; i--) {
+      const k = el.children[i] as Element;
+      if (!own.has(k)) stack.push({ el: k, parent: index });
+    }
   }
   return { snapshot: b.snapshot, truncated };
 }

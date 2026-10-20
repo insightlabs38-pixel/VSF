@@ -18,6 +18,8 @@ export interface Assembly {
   observation: string;
   semantic: { schema: string; schema_digest: string; body: Record<string, unknown> };
   semantic_digest: string;
+  /** Changes only when entities, fields or actions change, not when the same page is observed again. */
+  shape_digest: string;
   views: { entity: string; layout: "grid" | "form" }[];
   rows: Record<string, { key: string; values: Record<string, string> }[]>;
   actions: Record<string, AssemblyAction>;
@@ -54,6 +56,7 @@ export function parseAssembly(bytes: Uint8Array): Assembly {
     doc?.schema === "vsf-assembly-v1" &&
     typeof doc.semantic_digest === "string" &&
     /^sha256:[0-9a-f]{64}$/.test(doc.semantic_digest) &&
+    /^sha256:[0-9a-f]{64}$/.test(doc.shape_digest) &&
     Array.isArray(doc.views) &&
     typeof doc.semantic === "object" &&
     Array.isArray((doc.semantic.body as { entities?: unknown }).entities) &&

@@ -32,9 +32,15 @@ importers:
 
   apps/extension:
     dependencies:
+      '@vsf/ir':
+        specifier: workspace:*
+        version: link:../../frontend/packages/ir
       '@vsf/observer':
         specifier: workspace:*
         version: link:../../frontend/packages/observer
+      '@vsf/renderer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/renderer
       '@vsf/schema':
         specifier: workspace:*
         version: link:../../frontend/packages/schema
@@ -114,6 +120,9 @@ importers:
 
   tests/cross-language:
     dependencies:
+      '@vsf/extension':
+        specifier: workspace:*
+        version: link:../../apps/extension
       '@vsf/observer':
         specifier: workspace:*
         version: link:../../frontend/packages/observer

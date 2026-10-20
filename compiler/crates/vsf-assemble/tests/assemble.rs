@@ -417,3 +417,34 @@ fn identifiers_stay_unique_when_names_collide() {
         "same-named actions in one scope are one action with three sources"
     );
 }
+
+fn digests(snapshot: &[u8], epoch: i64, at: i64) -> (String, String) {
+    let h = Value::Object(vec![
+        ("epoch".into(), Value::Int(epoch)),
+        ("observed_at".into(), Value::Int(at)),
+        ("origin".into(), Value::Str("http://127.0.0.1:8080".into())),
+        ("variant_id".into(), Value::Str(VARIANT.into())),
+    ]);
+    let out = vsf_canon::parse(&assemble(&make_frame(&h, snapshot)).unwrap()).unwrap();
+    let d = |k: &str| out.get(k).and_then(Value::as_str).unwrap().to_string();
+    (d("semantic_digest"), d("shape_digest"))
+}
+
+#[test]
+fn shape_digest_ignores_when_a_page_was_observed_but_not_what_was_observed() {
+    let snap = fixture("table-orders");
+    let (doc_a, shape_a) = digests(&snap, 7, 1_000);
+    let (doc_b, shape_b) = digests(&snap, 8, 2_000);
+    assert_ne!(doc_a, doc_b, "the document records the observation");
+    assert_eq!(shape_a, shape_b, "the shape does not");
+    let renamed = String::from_utf8(snap.clone())
+        .unwrap()
+        .replace("Customer", "Client");
+    let (_, shape_c) = digests(renamed.as_bytes(), 7, 1_000);
+    assert_ne!(shape_a, shape_c);
+    let more_rows = String::from_utf8(snap)
+        .unwrap()
+        .replace("\"Ana\"", "\"Anna\"");
+    let (_, shape_d) = digests(more_rows.as_bytes(), 7, 1_000);
+    assert_eq!(shape_a, shape_d, "changed cell values are data, not shape");
+}

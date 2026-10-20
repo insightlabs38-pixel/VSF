@@ -7,6 +7,7 @@ export { generatePackBytes } from "./fixtures.ts";
 export { REDACTION_PATTERNS } from "./generated.ts";
 export * from "./ir.ts";
 export * from "./model.ts";
+export { ownUi } from "./own.ts";
 export * from "./pack.ts";
 export * from "./protocol.ts";
 export { redactText, redactThenClip } from "./redact.ts";
