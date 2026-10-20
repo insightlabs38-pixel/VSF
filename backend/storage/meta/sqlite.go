@@ -375,6 +375,9 @@ func (s *SQLite) DeleteManifest(ctx context.Context, t Tenant, id string) error 
 				return err
 			}
 		}
+		if _, err := tx.ExecContext(ctx, `DELETE FROM leases WHERE tenant_id = ? AND manifest_id = ? AND expires_at <= ?`, string(t), id, s.now()); err != nil {
+			return err
+		}
 		res, err := tx.ExecContext(ctx, `DELETE FROM manifests WHERE tenant_id = ? AND id = ?`, string(t), id)
 		if err != nil {
 			if code(err) == sqlite3.SQLITE_CONSTRAINT_FOREIGNKEY {
@@ -726,4 +729,33 @@ func (s *SQLite) PendingIntents(ctx context.Context, t Tenant) ([]Intent, error)
 	return out, rows.Err()
 }
 
+func (s *SQLite) PruneRootHistory(ctx context.Context, t Tenant, channel string, keep int) (int, error) {
+	if err := checkTenant(t); err != nil {
+		return 0, err
+	}
+	if keep < 1 {
+		return 0, fmt.Errorf("%w: keep", ErrInvalid)
+	}
+	res, err := s.w.ExecContext(ctx, `DELETE FROM root_history WHERE tenant_id = ? AND channel = ? AND seq NOT IN
+		(SELECT seq FROM root_history WHERE tenant_id = ? AND channel = ? ORDER BY seq DESC LIMIT ?)`, string(t), channel, string(t), channel, keep)
+	if err != nil {
+		return 0, err
+	}
+	n, _ := res.RowsAffected()
+	return int(n), nil
+}
+
+func (s *SQLite) PublicDigestInUse(ctx context.Context, digest string) (bool, error) {
+	if !ValidDigest(digest) {
+		return false, fmt.Errorf("%w: digest", ErrInvalid)
+	}
+	var one int
+	err := s.r.QueryRowContext(ctx, `SELECT 1 FROM artifacts WHERE digest = ? AND class = 'public' LIMIT 1`, digest).Scan(&one)
+	if errors.Is(err, sql.ErrNoRows) {
+		return false, nil
+	}
+	return err == nil, err
+}
+
 var _ Store = (*SQLite)(nil)
+var _ Maintenance = (*SQLite)(nil)

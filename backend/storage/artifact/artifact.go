@@ -12,6 +12,8 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strings"
+	"sync"
 	"time"
 
 	"github.com/insightlabs38-pixel/vsf/backend/canon"
@@ -55,7 +57,32 @@ type Layout interface {
 	Key(t meta.Tenant, class meta.Class, digest string) string
 }
 
+// KeyParser is implemented by layouts whose keys can be read back, which is what lets a sweep tell its own objects from foreign ones.
+type KeyParser interface {
+	ParseKey(key string) (t meta.Tenant, class meta.Class, digest string, ok bool)
+}
+
 type DefaultLayout struct{}
+
+func (DefaultLayout) ParseKey(key string) (meta.Tenant, meta.Class, string, bool) {
+	parts := strings.Split(key, "/")
+	var t meta.Tenant
+	var class meta.Class
+	switch {
+	case len(parts) == 3 && parts[0] == "pub":
+		class = meta.Public
+	case len(parts) == 4 && parts[0] == "ten":
+		class, t = meta.Private, meta.Tenant(parts[1])
+	default:
+		return "", "", "", false
+	}
+	hexa := parts[len(parts)-1]
+	digest := "sha256:" + hexa
+	if !meta.ValidDigest(digest) || parts[len(parts)-2] != hexa[:2] || (class == meta.Private && !meta.ValidTenant(t)) {
+		return "", "", "", false
+	}
+	return t, class, digest, true
+}
 
 func (DefaultLayout) Key(t meta.Tenant, class meta.Class, digest string) string {
 	hexa := digest[len("sha256:"):]
@@ -80,7 +107,11 @@ type Config struct {
 	CrashAt func(point string) bool
 }
 
-type Store struct{ cfg Config }
+type Store struct {
+	cfg Config
+	// gate lets a sweep delete a record and its object without a publish landing between the two.
+	gate sync.RWMutex
+}
 
 func New(cfg Config) (*Store, error) {
 	if cfg.Meta == nil || cfg.Blobs == nil {
@@ -96,6 +127,13 @@ func New(cfg Config) (*Store, error) {
 		cfg.MaxArtifact = blob.MaxObject
 	}
 	return &Store{cfg: cfg}, nil
+}
+
+// Exclusive runs fn while no artifact is being stored or published; keep it short.
+func (s *Store) Exclusive(fn func() error) error {
+	s.gate.Lock()
+	defer s.gate.Unlock()
+	return fn()
 }
 
 func (s *Store) crash(point string) bool { return s.cfg.CrashAt != nil && s.cfg.CrashAt(point) }
@@ -141,6 +179,8 @@ func (s *Store) PutArtifact(ctx context.Context, t meta.Tenant, data []byte, in 
 	if err := s.cfg.Meta.EnsureTenant(ctx, t); err != nil {
 		return "", err
 	}
+	s.gate.RLock()
+	defer s.gate.RUnlock()
 	if s.crash("before-object") {
 		return "", ErrCrashed
 	}
@@ -243,6 +283,8 @@ func (s *Store) PublishManifest(ctx context.Context, t meta.Tenant, in ManifestI
 	if err != nil {
 		return "", err
 	}
+	s.gate.RLock()
+	defer s.gate.RUnlock()
 	class := meta.Public
 	seen := map[string]bool{}
 	refs := make([]ArtifactRef, 0, len(in.Artifacts))

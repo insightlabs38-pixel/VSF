@@ -29,6 +29,8 @@ func ValidKey(k string) bool {
 type Info struct {
 	Key  string
 	Size int64
+	// MTime is when the backend stored the object, in Unix milliseconds; a sweep never removes what is younger than its grace.
+	MTime int64
 }
 
 // Backend stores immutable objects. Put is idempotent for identical bytes and refuses different bytes under a held key.

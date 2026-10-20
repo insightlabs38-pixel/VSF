@@ -156,7 +156,7 @@ func (f *FS) Stat(ctx context.Context, key string) (Info, error) {
 	if err != nil {
 		return Info{}, err
 	}
-	return Info{Key: key, Size: st.Size()}, nil
+	return Info{Key: key, Size: st.Size(), MTime: st.ModTime().UnixMilli()}, nil
 }
 
 func (f *FS) Delete(ctx context.Context, key string) error {
@@ -210,7 +210,7 @@ func (f *FS) List(ctx context.Context, prefix, after string, limit int) ([]Info,
 			if err != nil {
 				return err
 			}
-			out = append(out, Info{Key: key, Size: st.Size()})
+			out = append(out, Info{Key: key, Size: st.Size(), MTime: st.ModTime().UnixMilli()})
 		}
 		return nil
 	}

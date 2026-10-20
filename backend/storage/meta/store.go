@@ -122,6 +122,8 @@ type Store interface {
 	Root(ctx context.Context, t Tenant, channel string) (RootRecord, error)
 	Roots(ctx context.Context, t Tenant) ([]RootRecord, error)
 	RootHistory(ctx context.Context, t Tenant, channel string) ([]RootRecord, error)
+	// PruneRootHistory drops all but the newest keep positions of a channel, which frees older manifests to be collected.
+	PruneRootHistory(ctx context.Context, t Tenant, channel string, keep int) (int, error)
 
 	Pin(ctx context.Context, t Tenant, p Pin) error
 	Unpin(ctx context.Context, t Tenant, manifestID, reason string) error
@@ -144,3 +146,9 @@ type Store interface {
 }
 
 func validName(s string) bool { return nameRe.MatchString(s) }
+
+// Maintenance is the cross-tenant view a sweep needs; only maintenance code may hold it, never a request handler.
+type Maintenance interface {
+	// PublicDigestInUse reports whether any tenant still records a public artifact with this digest.
+	PublicDigestInUse(ctx context.Context, digest string) (bool, error)
+}

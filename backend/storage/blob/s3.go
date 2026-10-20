@@ -208,7 +208,11 @@ func (s *S3) Stat(ctx context.Context, key string) (Info, error) {
 	defer r.Body.Close()
 	switch r.StatusCode {
 	case http.StatusOK:
-		return Info{Key: key, Size: r.ContentLength}, nil
+		var mt int64
+		if t, err := http.ParseTime(r.Header.Get("Last-Modified")); err == nil {
+			mt = t.UnixMilli()
+		}
+		return Info{Key: key, Size: r.ContentLength, MTime: mt}, nil
 	case http.StatusNotFound:
 		return Info{}, ErrNotFound
 	}
@@ -236,8 +240,9 @@ func (s *S3) Delete(ctx context.Context, key string) error {
 type listResult struct {
 	IsTruncated bool `xml:"IsTruncated"`
 	Contents    []struct {
-		Key  string `xml:"Key"`
-		Size int64  `xml:"Size"`
+		Key          string `xml:"Key"`
+		Size         int64  `xml:"Size"`
+		LastModified string `xml:"LastModified"`
 	} `xml:"Contents"`
 }
 
@@ -262,7 +267,11 @@ func (s *S3) List(ctx context.Context, prefix, after string, limit int) ([]Info,
 	}
 	out := make([]Info, 0, len(res.Contents))
 	for _, c := range res.Contents {
-		out = append(out, Info{Key: c.Key, Size: c.Size})
+		var mt int64
+		if t, err := time.Parse(time.RFC3339, c.LastModified); err == nil {
+			mt = t.UnixMilli()
+		}
+		out = append(out, Info{Key: c.Key, Size: c.Size, MTime: mt})
 	}
 	return out, nil
 }

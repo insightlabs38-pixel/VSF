@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+	"time"
 
 	_ "modernc.org/sqlite"
 )
@@ -17,7 +18,7 @@ type SQLite struct {
 	w, r *sql.DB
 }
 
-const sqliteSchema = `CREATE TABLE IF NOT EXISTS objects (key TEXT PRIMARY KEY, size INTEGER NOT NULL, data BLOB NOT NULL) WITHOUT ROWID`
+const sqliteSchema = `CREATE TABLE IF NOT EXISTS objects (key TEXT PRIMARY KEY, size INTEGER NOT NULL, at INTEGER NOT NULL, data BLOB NOT NULL) WITHOUT ROWID`
 
 // OpenSQLite opens or creates the object database; synchronous may be "FULL" (default) or "NORMAL".
 func OpenSQLite(path, synchronous string) (*SQLite, error) {
@@ -71,7 +72,7 @@ func (s *SQLite) Put(ctx context.Context, key string, data []byte) error {
 	if err != nil {
 		return err
 	}
-	res, err := tx.ExecContext(ctx, `INSERT INTO objects (key, size, data) VALUES (?, ?, ?) ON CONFLICT (key) DO NOTHING`, key, len(data), data)
+	res, err := tx.ExecContext(ctx, `INSERT INTO objects (key, size, at, data) VALUES (?, ?, ?, ?) ON CONFLICT (key) DO NOTHING`, key, len(data), time.Now().UnixMilli(), data)
 	if err != nil {
 		_ = tx.Rollback()
 		return err
@@ -107,12 +108,12 @@ func (s *SQLite) Stat(ctx context.Context, key string) (Info, error) {
 	if !ValidKey(key) {
 		return Info{}, ErrBadKey
 	}
-	var n int64
-	err := s.r.QueryRowContext(ctx, `SELECT size FROM objects WHERE key = ?`, key).Scan(&n)
+	var n, at int64
+	err := s.r.QueryRowContext(ctx, `SELECT size, at FROM objects WHERE key = ?`, key).Scan(&n, &at)
 	if errors.Is(err, sql.ErrNoRows) {
 		return Info{}, ErrNotFound
 	}
-	return Info{Key: key, Size: n}, err
+	return Info{Key: key, Size: n, MTime: at}, err
 }
 
 func (s *SQLite) Delete(ctx context.Context, key string) error {
@@ -134,7 +135,7 @@ func (s *SQLite) List(ctx context.Context, prefix, after string, limit int) ([]I
 		limit = 10000
 	}
 	hi := prefix + "\U0010FFFF"
-	rows, err := s.r.QueryContext(ctx, `SELECT key, size FROM objects WHERE key >= ? AND key < ? AND key > ? ORDER BY key LIMIT ?`, prefix, hi, after, limit)
+	rows, err := s.r.QueryContext(ctx, `SELECT key, size, at FROM objects WHERE key >= ? AND key < ? AND key > ? ORDER BY key LIMIT ?`, prefix, hi, after, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +143,7 @@ func (s *SQLite) List(ctx context.Context, prefix, after string, limit int) ([]I
 	var out []Info
 	for rows.Next() {
 		var i Info
-		if err := rows.Scan(&i.Key, &i.Size); err != nil {
+		if err := rows.Scan(&i.Key, &i.Size, &i.MTime); err != nil {
 			return nil, err
 		}
 		if strings.HasPrefix(i.Key, prefix) {
