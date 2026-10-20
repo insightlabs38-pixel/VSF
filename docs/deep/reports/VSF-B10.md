@@ -12,6 +12,6 @@ Source compatibility: fixture source only; no third-party application validated
 Version/pin/retention: exact pins honoured, revoked never revived, deprecated named with the served list; no retention change
 Known limitations: no gateway process composes the surfaces; shell does not call the UI surface; no delegated confirmation; MCP Tasks, stdio and progress deferred; no client or conformance suite exists for MCP 2026-07-28
 Follow-ups queued: VSF-B14-T06, VSF-B16-T05, VSF-B16-T06, VSF-B16-T07
-Deferred: remote CI on the PR head (evidence/remote-ci.md)
-Evidence: docs/deep/evidence/VSF-B10/ (manifest.json, logs/, overhead.txt, collect.sh)
+CI findings fixed: an attribution footer was appended to the PR text (removed); remote CI 13/13 on 2bf5ff0, merge aa45177 (evidence/remote-ci.md)
+Evidence: docs/deep/evidence/VSF-B10/ (manifest.json, logs/, overhead.txt, remote-ci.md, collect.sh)
 Next eligible: VSF-B11-T01 (B11 is provisional: review failure clusters and record an ADR first)
