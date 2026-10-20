@@ -40,7 +40,7 @@ type Discovery struct {
 	MaxPageSize     int      `json:"max_page_size"`
 	DefaultPageSize int      `json:"default_page_size"`
 	MaxWaitMs       int64    `json:"max_wait_ms"`
-	Operations      int      `json:"operations"`
+	Operations      int      `json:"operations,omitempty"`
 }
 
 // ServiceConfig wires the catalog and the execution runtime; nothing here decides what an operation may do.
@@ -287,6 +287,18 @@ func (s *Service) Invoke(ctx context.Context, p Principal, raw []byte, route Rou
 	if err != nil {
 		return RefusedResult(spec, err)
 	}
+	if inv.RequestID == "" {
+		inv.RequestID = freshID()
+	}
+	return withRequestID(s.invoke(ctx, p, spec, inv), inv.RequestID)
+}
+
+func withRequestID(r Result, id string) Result {
+	r.RequestID = id
+	return r
+}
+
+func (s *Service) invoke(ctx context.Context, p Principal, spec *Spec, inv Invocation) Result {
 	if err := s.sessionFor(p, inv.SessionID); err != nil {
 		return RefusedResult(spec, err)
 	}
@@ -298,9 +310,6 @@ func (s *Service) Invoke(ctx context.Context, p Principal, raw []byte, route Rou
 	doc, ok := s.cfg.Catalog.Contract(spec.ContractDigest)
 	if !ok {
 		return RefusedResult(spec, newError(CodeInternal, ""))
-	}
-	if inv.RequestID == "" {
-		inv.RequestID = freshID()
 	}
 	req := execution.Request{
 		RequestID: inv.RequestID, Caller: p.Caller, SessionID: inv.SessionID, Contract: doc,

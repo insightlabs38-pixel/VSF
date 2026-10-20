@@ -65,6 +65,7 @@ type Observed struct {
 // Result is the one outcome shape every surface returns for an invocation.
 type Result struct {
 	Invocation      string      `json:"invocation,omitempty"`
+	RequestID       string      `json:"request_id,omitempty"`
 	Operation       string      `json:"operation"`
 	ContractVersion string      `json:"contract_version"`
 	ContractDigest  string      `json:"contract_digest"`
@@ -206,4 +207,15 @@ func RefusedResult(spec *Spec, err *Error) Result {
 		r.Operation, r.ContractVersion, r.ContractDigest = spec.Name, spec.ContractVersion, spec.ContractDigest
 	}
 	return r
+}
+
+// ExitCodeOf is the process exit status of a result, fixed by the taxonomy and shared by every command-line client.
+func ExitCodeOf(r Result) int {
+	if r.Error != nil {
+		return InfoOf(r.Error.Code).Exit
+	}
+	if r.Category == CategoryInProgress {
+		return ExitInProgress
+	}
+	return ExitOK
 }

@@ -18,7 +18,7 @@ func TestEveryCodeHasOneFixedMeaning(t *testing.T) {
 		if i.Exit == ExitOK {
 			t.Fatalf("%s reuses the success exit code", c)
 		}
-		if (i.Effect == EffectUnknown) != (i.Category == CategoryUnknownCommit || i.Category == CategoryUnverifiedEffect || c == CodeReconcileInProgress) {
+		if (i.Effect == EffectUnknown) != (i.Category == CategoryUnknownCommit || i.Category == CategoryUnverifiedEffect || c == CodeReconcileInProgress || c == CodeServiceUnreachable) {
 			t.Fatalf("%s: effect %s does not fit category %s", c, i.Effect, i.Category)
 		}
 		if i.Effect == EffectUnknown && (i.Retry == RetryFixRequest || i.Retry == RetryNewRequestID) {

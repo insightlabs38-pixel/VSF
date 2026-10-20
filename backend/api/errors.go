@@ -44,6 +44,7 @@ const (
 	CodeAbandoned                  Code = "abandoned"
 	CodeTooLarge                   Code = "request_too_large"
 	CodeRateLimited                Code = "rate_limited"
+	CodeServiceUnreachable         Code = "service_unreachable"
 	CodeInternal                   Code = "internal"
 )
 
@@ -91,15 +92,16 @@ type Info struct {
 
 // Exit codes of the CLI; 0 is success and nothing else may reuse it.
 const (
-	ExitOK         = 0
-	ExitError      = 1
-	ExitUsage      = 2
-	ExitAuth       = 3
-	ExitRefused    = 4
-	ExitFailed     = 5
-	ExitUnknown    = 10
-	ExitUnverified = 11
-	ExitInProgress = 12
+	ExitOK          = 0
+	ExitError       = 1
+	ExitUsage       = 2
+	ExitAuth        = 3
+	ExitRefused     = 4
+	ExitFailed      = 5
+	ExitUnknown     = 10
+	ExitUnverified  = 11
+	ExitInProgress  = 12
+	ExitUnreachable = 6
 )
 
 var taxonomy = map[Code]Info{
@@ -137,6 +139,7 @@ var taxonomy = map[Code]Info{
 	CodeAbandoned:                  {409, ExitFailed, CategoryFailed, EffectNone, RetryNewRequestID, "The service restarted before the request reached the source."},
 	CodeTooLarge:                   {413, ExitUsage, CategoryRefused, EffectNone, RetryFixRequest, "The request is larger than the interface accepts."},
 	CodeRateLimited:                {429, ExitError, CategoryRefused, EffectNone, RetrySameRequest, "Too many requests from this caller."},
+	CodeServiceUnreachable:         {503, ExitUnreachable, CategoryFailed, EffectUnknown, RetrySameRequest, "The service did not answer; the request may have been received. Repeat it with the same request id."},
 	CodeInternal:                   {500, ExitError, CategoryRefused, EffectNone, RetryNever, "The interface failed before reaching a decision."},
 }
 

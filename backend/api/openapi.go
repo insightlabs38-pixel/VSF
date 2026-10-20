@@ -46,7 +46,8 @@ func jsonResp(desc string, schema map[string]any) map[string]any {
 	return map[string]any{"description": desc, "content": map[string]any{"application/json": map[string]any{"schema": schema}}}
 }
 
-func componentKey(s *Spec, kind string) string {
+// ComponentKey names the schema component generated for one operation version.
+func ComponentKey(s *Spec, kind string) string {
 	return s.Name + "." + kind + "." + strings.ReplaceAll(s.ContractVersion, ".", "-")
 }
 
@@ -154,7 +155,7 @@ func OpenAPI(b Backend, p Principal, namespace string) (map[string]any, *Error) 
 			if count > MaxOpenAPIOperations {
 				return nil, errWith(CodeInvalidRequest, "namespace_too_large", map[string]any{"max_operations": MaxOpenAPIOperations})
 			}
-			inKey, outKey := componentKey(s, "Invocation"), componentKey(s, "Result")
+			inKey, outKey := ComponentKey(s, "Invocation"), ComponentKey(s, "Result")
 			comps[inKey] = s.InputSchema
 			comps[outKey] = s.OutputSchema
 			path := fmt.Sprintf("/v1/operations/%s/versions/%s/invocations", s.Name, s.ContractVersion)

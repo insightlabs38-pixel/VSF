@@ -78,8 +78,13 @@ func (r *rest) guard(auth bool, h handler) http.HandlerFunc {
 				writeError(w, 0, newError(CodeUnauthenticated, ""))
 				return
 			}
+			surface, serr := surfaceOf(req)
+			if serr != nil {
+				writeError(w, 0, serr)
+				return
+			}
 			var err *Error
-			if p, err = r.cfg.Auth.Authenticate(SurfaceREST, tok); err != nil {
+			if p, err = r.cfg.Auth.Authenticate(surface, tok); err != nil {
 				if err.Code == CodeUnauthenticated {
 					hd.Set("WWW-Authenticate", `Bearer realm="vsf"`)
 				}
@@ -88,6 +93,20 @@ func (r *rest) guard(auth bool, h handler) http.HandlerFunc {
 			}
 		}
 		h(w, req, p)
+	}
+}
+
+// ClientHeader lets the CLI present its own credential over the same transport; the credential decides what is accepted.
+const ClientHeader = "X-VSF-Client"
+
+func surfaceOf(req *http.Request) (Surface, *Error) {
+	switch v := req.Header.Get(ClientHeader); v {
+	case "", string(SurfaceREST):
+		return SurfaceREST, nil
+	case string(SurfaceCLI):
+		return SurfaceCLI, nil
+	default:
+		return "", errWith(CodeInvalidRequest, "unknown_client", nil)
 	}
 }
 
@@ -142,8 +161,11 @@ func writeResult(w http.ResponseWriter, res Result) {
 	writeJSON(w, StatusOf(res), res)
 }
 
+// discover is unauthenticated metadata about the interface, so it never says how much the catalog holds.
 func (r *rest) discover(w http.ResponseWriter, _ *http.Request, _ Principal) {
-	writeJSON(w, http.StatusOK, r.cfg.Backend.Discovery())
+	d := r.cfg.Backend.Discovery()
+	d.Operations = 0
+	writeJSON(w, http.StatusOK, d)
 }
 
 func (r *rest) namespaces(w http.ResponseWriter, _ *http.Request, p Principal) {
