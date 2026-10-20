@@ -62,6 +62,15 @@ type KeyParser interface {
 	ParseKey(key string) (t meta.Tenant, class meta.Class, digest string, ok bool)
 }
 
+// Sealer makes private artifacts unreadable and unguessable outside their tenant: identifiers are keyed and stored bytes are encrypted.
+type Sealer interface {
+	Identify(t meta.Tenant, data []byte) string
+	Seal(t meta.Tenant, id string, data []byte) ([]byte, error)
+	Open(t meta.Tenant, id string, sealed []byte) ([]byte, error)
+	// Overhead is how many bytes sealing adds to the plaintext.
+	Overhead() int
+}
+
 type DefaultLayout struct{}
 
 func (DefaultLayout) ParseKey(key string) (meta.Tenant, meta.Class, string, bool) {
@@ -98,6 +107,8 @@ type Config struct {
 	Signer *Signer
 	Trust  Trust
 	Layout Layout
+	// Sealer, when set, seals every private artifact; public artifacts stay shareable and unsealed.
+	Sealer Sealer
 	Now    func() int64
 	// MaxArtifact bounds one artifact; the default is the backend's object limit.
 	MaxArtifact int
@@ -123,11 +134,35 @@ func New(cfg Config) (*Store, error) {
 	if cfg.Now == nil {
 		cfg.Now = func() int64 { return time.Now().UnixMilli() }
 	}
-	if cfg.MaxArtifact <= 0 || cfg.MaxArtifact > blob.MaxObject {
-		cfg.MaxArtifact = blob.MaxObject
+	room := blob.MaxObject
+	if cfg.Sealer != nil {
+		room -= cfg.Sealer.Overhead()
+	}
+	if cfg.MaxArtifact <= 0 || cfg.MaxArtifact > room {
+		cfg.MaxArtifact = room
 	}
 	return &Store{cfg: cfg}, nil
 }
+
+// Sealed reports whether private artifacts are sealed by this store.
+func (s *Store) Sealed() bool { return s.cfg.Sealer != nil }
+
+// SealOverhead is how many bytes a sealed private artifact is longer than its content.
+func (s *Store) SealOverhead() int {
+	if s.cfg.Sealer == nil {
+		return 0
+	}
+	return s.cfg.Sealer.Overhead()
+}
+
+func (s *Store) overheadFor(class meta.Class) int {
+	if s.sealing(class) {
+		return s.cfg.Sealer.Overhead()
+	}
+	return 0
+}
+
+func (s *Store) sealing(class meta.Class) bool { return class == meta.Private && s.cfg.Sealer != nil }
 
 // Exclusive runs fn while no artifact is being stored or published; keep it short.
 func (s *Store) Exclusive(fn func() error) error {
@@ -184,7 +219,14 @@ func (s *Store) PutArtifact(ctx context.Context, t meta.Tenant, data []byte, in 
 	if err != nil {
 		return "", err
 	}
-	digest := Digest(data)
+	digest, stored := Digest(data), data
+	if s.sealing(in.Class) {
+		digest = s.cfg.Sealer.Identify(t, data)
+		var err error
+		if stored, err = s.cfg.Sealer.Seal(t, digest, data); err != nil {
+			return "", err
+		}
+	}
 	if err := s.cfg.Meta.EnsureTenant(ctx, t); err != nil {
 		return "", err
 	}
@@ -193,7 +235,7 @@ func (s *Store) PutArtifact(ctx context.Context, t meta.Tenant, data []byte, in 
 	if s.crash("before-object") {
 		return "", ErrCrashed
 	}
-	if err := s.cfg.Blobs.Put(ctx, s.cfg.Layout.Key(t, in.Class, digest), data); err != nil {
+	if err := s.cfg.Blobs.Put(ctx, s.cfg.Layout.Key(t, in.Class, digest), stored); err != nil {
 		if errors.Is(err, blob.ErrOverwrite) {
 			return "", ErrCorrupt
 		}
@@ -223,6 +265,13 @@ func (s *Store) Artifact(ctx context.Context, t meta.Tenant, digest string) ([]b
 			return nil, ErrMissingObject
 		}
 		return nil, err
+	}
+	if s.sealing(rec.Class) {
+		plain, err := s.cfg.Sealer.Open(t, digest, b)
+		if err != nil || int64(len(plain)) != rec.Size {
+			return nil, ErrCorrupt
+		}
+		return plain, nil
 	}
 	if Digest(b) != digest || int64(len(b)) != rec.Size {
 		return nil, ErrCorrupt
@@ -310,7 +359,7 @@ func (s *Store) PublishManifest(ctx context.Context, t meta.Tenant, in ManifestI
 			return "", err
 		}
 		if s.cfg.SkipVerifyOnPublish {
-			if info, err := s.cfg.Blobs.Stat(ctx, s.cfg.Layout.Key(t, rec.Class, a.Digest)); err != nil || info.Size != rec.Size {
+			if info, err := s.cfg.Blobs.Stat(ctx, s.cfg.Layout.Key(t, rec.Class, a.Digest)); err != nil || info.Size != rec.Size+int64(s.overheadFor(rec.Class)) {
 				return "", fmt.Errorf("%w: %s", ErrMissingObject, a.Digest)
 			}
 		} else if _, err := s.Artifact(ctx, t, a.Digest); err != nil {
@@ -402,6 +451,67 @@ func (s *Store) verifyManifest(t meta.Tenant, rec meta.ManifestRecord) (Manifest
 	}
 	return Manifest{ID: rec.ID, Kind: doc.Kind, Version: doc.Version, Parent: doc.Parent, Classification: doc.Classification,
 		Artifacts: doc.Artifacts, Provenance: doc.Provenance, CreatedAt: doc.CreatedAt, KeyID: doc.KeyID}, nil
+}
+
+// SealedObject returns a private artifact exactly as stored, after proving it opens to the content its identifier names.
+func (s *Store) SealedObject(ctx context.Context, t meta.Tenant, digest string) (meta.ArtifactRecord, []byte, error) {
+	rec, err := s.cfg.Meta.Artifact(ctx, t, digest)
+	if err != nil {
+		if errors.Is(err, meta.ErrNotFound) {
+			return rec, nil, ErrNotFound
+		}
+		return rec, nil, err
+	}
+	if !s.sealing(rec.Class) {
+		return rec, nil, fmt.Errorf("%w: not sealed", ErrInvalid)
+	}
+	b, err := s.cfg.Blobs.Get(ctx, s.cfg.Layout.Key(t, rec.Class, digest))
+	if err != nil {
+		if errors.Is(err, blob.ErrNotFound) {
+			return rec, nil, ErrMissingObject
+		}
+		return rec, nil, err
+	}
+	if err := s.CheckSealed(t, digest, rec.Size, b); err != nil {
+		return rec, nil, err
+	}
+	return rec, b, nil
+}
+
+// CheckSealed proves stored bytes open under this store's keys to content of the given size that the identifier names.
+func (s *Store) CheckSealed(t meta.Tenant, digest string, size int64, stored []byte) error {
+	if s.cfg.Sealer == nil || !meta.ValidDigest(digest) {
+		return fmt.Errorf("%w: sealing", ErrInvalid)
+	}
+	plain, err := s.cfg.Sealer.Open(t, digest, stored)
+	if err != nil || int64(len(plain)) != size {
+		return ErrCorrupt
+	}
+	return nil
+}
+
+// AdoptSealed records a private artifact whose sealed bytes were checked with CheckSealed; repeating it is harmless.
+func (s *Store) AdoptSealed(ctx context.Context, t meta.Tenant, digest string, size int64, provenance json.RawMessage, stored []byte) error {
+	if err := s.CheckSealed(t, digest, size, stored); err != nil {
+		return err
+	}
+	prov, err := validProvenance(provenance)
+	if err != nil {
+		return err
+	}
+	if err := s.cfg.Meta.EnsureTenant(ctx, t); err != nil {
+		return err
+	}
+	s.gate.RLock()
+	defer s.gate.RUnlock()
+	if err := s.cfg.Blobs.Put(ctx, s.cfg.Layout.Key(t, meta.Private, digest), stored); err != nil {
+		if errors.Is(err, blob.ErrOverwrite) {
+			return ErrCorrupt
+		}
+		return err
+	}
+	_, err = s.cfg.Meta.PutArtifact(ctx, t, meta.ArtifactRecord{Digest: digest, Size: size, Class: meta.Private, Provenance: prov})
+	return err
 }
 
 // CheckManifest proves signed manifest bytes are intact, trusted and for this tenant without storing anything.

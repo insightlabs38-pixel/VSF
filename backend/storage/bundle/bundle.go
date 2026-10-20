@@ -56,6 +56,8 @@ type artifactMeta struct {
 	Size       int64           `json:"size"`
 	Class      meta.Class      `json:"class"`
 	Provenance json.RawMessage `json:"provenance"`
+	// Sealed marks a private artifact carried as stored, encrypted; it opens only where the tenant's keys are held.
+	Sealed bool `json:"sealed,omitempty"`
 }
 
 type manifestRec struct {
@@ -250,11 +252,17 @@ func Export(ctx context.Context, src Source, t meta.Tenant, sel Select, w io.Wri
 		if err != nil {
 			return sum, err
 		}
-		data, err := src.Store.Artifact(ctx, t, d)
+		var data []byte
+		sealed := rec.Class == meta.Private && src.Store.Sealed()
+		if sealed {
+			_, data, err = src.Store.SealedObject(ctx, t, d)
+		} else {
+			data, err = src.Store.Artifact(ctx, t, d)
+		}
 		if err != nil {
 			return sum, fmt.Errorf("%s: %w", d, err)
 		}
-		mj, err := json.Marshal(artifactMeta{Digest: d, Size: rec.Size, Class: rec.Class, Provenance: json.RawMessage(rec.Provenance)})
+		mj, err := json.Marshal(artifactMeta{Digest: d, Size: rec.Size, Class: rec.Class, Provenance: json.RawMessage(rec.Provenance), Sealed: sealed})
 		if err != nil {
 			return sum, err
 		}
@@ -407,15 +415,12 @@ func parse(ctx context.Context, dst Dest, t meta.Tenant, f *os.File, size int64)
 			return nil, bad("header must come first and once")
 		}
 		if tag == tagArtifact {
-			sp, err := readArtifact(rd, f, start, int64(n))
+			sp, err := readArtifact(rd, dst, t, start, int64(n))
 			if err != nil {
 				return nil, err
 			}
 			if _, dup := have[sp.meta.Digest]; dup {
 				return nil, bad("artifact repeated")
-			}
-			if sp.meta.Size > int64(dst.Store.MaxArtifact()) {
-				return nil, bad("artifact too large for this store")
 			}
 			p.artifacts = append(p.artifacts, *sp)
 			have[sp.meta.Digest] = sp.meta
@@ -450,7 +455,7 @@ func parse(ctx context.Context, dst Dest, t meta.Tenant, f *os.File, size int64)
 	return p, p.check(ctx, dst, t, have, byManifest)
 }
 
-func readArtifact(rd *io.SectionReader, f *os.File, start, n int64) (*spot, error) {
+func readArtifact(rd *io.SectionReader, dst Dest, t meta.Tenant, start, n int64) (*spot, error) {
 	if n < 4 {
 		return nil, bad("artifact record too short")
 	}
@@ -467,23 +472,54 @@ func readArtifact(rd *io.SectionReader, f *os.File, start, n int64) (*spot, erro
 		return nil, bad("truncated record")
 	}
 	sp := &spot{off: start + 4 + mlen, n: n - 4 - mlen}
-	if err := strictJSON(mj, &sp.meta); err != nil {
+	am := &sp.meta
+	if err := strictJSON(mj, am); err != nil {
 		return nil, bad("artifact header")
 	}
-	if !meta.ValidDigest(sp.meta.Digest) || sp.meta.Size != sp.n || (sp.meta.Class != meta.Public && sp.meta.Class != meta.Private) {
+	if !meta.ValidDigest(am.Digest) || (am.Class != meta.Public && am.Class != meta.Private) || am.Size < 0 {
 		return nil, bad("artifact header")
 	}
-	if err := artifact.ValidProvenance(sp.meta.Provenance); err != nil {
+	if err := artifact.ValidProvenance(am.Provenance); err != nil {
 		return nil, bad("artifact provenance")
+	}
+	if am.Size > int64(dst.Store.MaxArtifact()) {
+		return nil, bad("artifact too large for this store")
+	}
+	wantSealed := am.Class == meta.Private && dst.Store.Sealed()
+	if am.Sealed != wantSealed {
+		return nil, bad("artifact %s is %s but this store keeps it %s", am.Digest, sealedWord(am.Sealed), sealedWord(wantSealed))
+	}
+	if am.Sealed {
+		if sp.n != am.Size+int64(dst.Store.SealOverhead()) {
+			return nil, bad("artifact header")
+		}
+		data := make([]byte, sp.n)
+		if _, err := io.ReadFull(rd, data); err != nil {
+			return nil, bad("truncated record")
+		}
+		if err := dst.Store.CheckSealed(t, am.Digest, am.Size, data); err != nil {
+			return nil, bad("artifact %s does not open under this store's keys", am.Digest)
+		}
+		return sp, nil
+	}
+	if am.Size != sp.n {
+		return nil, bad("artifact header")
 	}
 	h := sha256.New()
 	if _, err := io.CopyN(h, rd, sp.n); err != nil {
 		return nil, bad("truncated record")
 	}
-	if "sha256:"+hex.EncodeToString(h.Sum(nil)) != sp.meta.Digest {
-		return nil, bad("artifact %s does not match its digest", sp.meta.Digest)
+	if "sha256:"+hex.EncodeToString(h.Sum(nil)) != am.Digest {
+		return nil, bad("artifact %s does not match its digest", am.Digest)
 	}
 	return sp, nil
+}
+
+func sealedWord(b bool) string {
+	if b {
+		return "sealed"
+	}
+	return "plain"
 }
 
 func strictJSON(b []byte, v any) error {
@@ -634,7 +670,12 @@ func commit(ctx context.Context, dst Dest, t meta.Tenant, f *os.File, p *parsed)
 		if _, err := f.ReadAt(data, sp.off); err != nil && !(errors.Is(err, io.EOF) && sp.n == 0) {
 			return res, err
 		}
-		if _, err := dst.Store.PutArtifact(ctx, t, data, artifact.ArtifactInput{Class: sp.meta.Class, Provenance: sp.meta.Provenance}); err != nil {
+		if sp.meta.Sealed {
+			err = dst.Store.AdoptSealed(ctx, t, sp.meta.Digest, sp.meta.Size, sp.meta.Provenance, data)
+		} else {
+			_, err = dst.Store.PutArtifact(ctx, t, data, artifact.ArtifactInput{Class: sp.meta.Class, Provenance: sp.meta.Provenance})
+		}
+		if err != nil {
 			return res, err
 		}
 		if present {
