@@ -457,3 +457,31 @@ func TestBackendKeysCannotClimbOutOrCollide(t *testing.T) {
 		t.Fatal("identical bytes are idempotent")
 	}
 }
+
+func TestAReplaceThatDiesLeavesTheOldBytesWhole(t *testing.T) {
+	for _, point := range []string{"torn", "before-rename"} {
+		t.Run(point, func(t *testing.T) {
+			dir := t.TempDir()
+			fsb, err := blob.NewFS(dir)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := fsb.Replace(ctx, "k/obj", []byte("old-bytes-old-bytes")); err != nil {
+				t.Fatal(err)
+			}
+			fsb.CrashAt = func(p string) bool { return p == point }
+			if err := fsb.Replace(ctx, "k/obj", bytes.Repeat([]byte("new"), 5000)); !errors.Is(err, blob.ErrCrashed) {
+				t.Fatal(err)
+			}
+			_ = fsb.Close()
+			reopened, err := blob.NewFS(dir)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer reopened.Close()
+			if got, err := reopened.Get(ctx, "k/obj"); err != nil || string(got) != "old-bytes-old-bytes" {
+				t.Fatalf("an interrupted replace must leave the earlier object intact: %q %v", got, err)
+			}
+		})
+	}
+}

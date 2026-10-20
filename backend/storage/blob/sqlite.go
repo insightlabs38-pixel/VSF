@@ -92,6 +92,18 @@ func (s *SQLite) Put(ctx context.Context, key string, data []byte) error {
 	return tx.Commit()
 }
 
+func (s *SQLite) Replace(ctx context.Context, key string, data []byte) error {
+	if !ValidKey(key) {
+		return ErrBadKey
+	}
+	if len(data) > MaxObject {
+		return ErrTooLarge
+	}
+	_, err := s.w.ExecContext(ctx, `INSERT INTO objects (key, size, at, data) VALUES (?, ?, ?, ?)
+		ON CONFLICT (key) DO UPDATE SET size = excluded.size, at = excluded.at, data = excluded.data`, key, len(data), time.Now().UnixMilli(), data)
+	return err
+}
+
 func (s *SQLite) Get(ctx context.Context, key string) ([]byte, error) {
 	if !ValidKey(key) {
 		return nil, ErrBadKey

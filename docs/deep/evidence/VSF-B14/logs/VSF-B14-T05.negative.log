@@ -1,0 +1,8 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAPlanIsInvalidWhileThePersonIsPaused|TestProfilesAreScopedToTheirOwner ./auth/
+=== RUN   TestAPlanIsInvalidWhileThePersonIsPausedAndAfterTheSignInEnds
+--- PASS: TestAPlanIsInvalidWhileThePersonIsPausedAndAfterTheSignInEnds (0.00s)
+=== RUN   TestProfilesAreScopedToTheirOwnerGrantAndAccount
+--- PASS: TestProfilesAreScopedToTheirOwnerGrantAndAccount (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.039s
+[exit 0]

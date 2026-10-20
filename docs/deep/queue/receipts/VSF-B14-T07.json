@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B14-T07",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "fccd396ba619e3cf2685ca0eb490ecf9f98938fb",
+  "commit": "ac59629e8d76d66b0f7e3bd9db246400e09049d7",
+  "paths": [
+    "backend/storage/secret/",
+    "backend/storage/artifact/artifact.go",
+    "backend/storage/blob/"
+  ],
+  "acceptance": "Sealed artifacts and caches can be re-encrypted under the newest data key without renaming them, and a tenant's key material can be exported wrapped and imported elsewhere so bundles of private versions open there.",
+  "positive": {
+    "fixture": "rewrap moves private artifacts to the newest key without renaming; a tenant export opens its bundles in another installation and nothing else",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestRewrapMovesPrivate|TestATenantsKeysTravel|TestRotationKeepsIdentifiers ./storage/secret/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a rewrap killed at three points leaves everything readable and the next run finishes; early retirement; identical content invisible across tenants",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestARewrapThatDies|TestRetiringAKeyTooEarly|TestTheSameContentIsInvisible ./storage/secret/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Exports are PBKDF2-wrapped; imports below the written iteration count are refused.",
+  "performance_memory_storage": "Rewrap reads and rewrites each private object once.",
+  "known_limitations": [
+    "Guarded retirement and merging adoption were added in VSF-B14-T15",
+    "Multi-process keyring sharing is not supported"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T07.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T07.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

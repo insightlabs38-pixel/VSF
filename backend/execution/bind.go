@@ -20,14 +20,17 @@ type Callers interface {
 }
 
 type Session struct {
-	ID               string
-	Owner            string
-	AppID            string
-	AppVersion       string
-	VariantClass     string
-	VariantID        string
-	PrincipalRef     string
-	RuntimeID        string
+	ID           string
+	Owner        string
+	AppID        string
+	AppVersion   string
+	VariantClass string
+	VariantID    string
+	PrincipalRef string
+	RuntimeID    string
+	// Origin is the exact source origin the session was registered for; Generation names the sign-in it runs under (empty when no broker is involved).
+	Origin           string
+	Generation       string
 	SourceState      string
 	CapabilityDigest string
 	SourceScopes     []string

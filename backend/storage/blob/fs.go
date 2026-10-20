@@ -86,6 +86,21 @@ func (f *FS) Put(ctx context.Context, key string, data []byte) error {
 		}
 		return ErrOverwrite
 	}
+	return f.install(final, data)
+}
+
+// Replace makes key hold data; a reader sees the old bytes or the new, never a mixture, and a crash leaves one of the two.
+func (f *FS) Replace(ctx context.Context, key string, data []byte) error {
+	if !ValidKey(key) {
+		return ErrBadKey
+	}
+	if len(data) > MaxObject {
+		return ErrTooLarge
+	}
+	return f.install(f.path(key), data)
+}
+
+func (f *FS) install(final string, data []byte) error {
 	if err := os.MkdirAll(filepath.Dir(final), 0o700); err != nil {
 		return err
 	}

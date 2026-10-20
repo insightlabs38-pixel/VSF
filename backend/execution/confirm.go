@@ -74,11 +74,17 @@ func requestDigest(contract, record string, params map[string]any) string {
 
 // ConfirmationDigest binds a confirmation to the request, the caller who will run it and the source session it runs in.
 func ConfirmationDigest(contract, record string, params map[string]any, caller, session string) string {
+	return ConfirmationDigestAt("", contract, record, params, caller, session)
+}
+
+// ConfirmationDigestAt also binds the sign-in generation the session runs under, so a confirmation given before a sign-in ended, was paused or began again is not honoured after. An empty generation is the digest ConfirmationDigest returns.
+func ConfirmationDigestAt(generation, contract, record string, params map[string]any, caller, session string) string {
 	b, _ := json.Marshal(struct {
 		D string `json:"d"`
 		C string `json:"c"`
 		S string `json:"s"`
-	}{requestDigest(contract, record, params), caller, session})
+		G string `json:"g,omitempty"`
+	}{requestDigest(contract, record, params), caller, session, generation})
 	sum := sha256.Sum256(b)
 	return "sha256:" + hex.EncodeToString(sum[:])
 }

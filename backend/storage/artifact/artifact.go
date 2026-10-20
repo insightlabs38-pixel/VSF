@@ -69,6 +69,9 @@ type Sealer interface {
 	Open(t meta.Tenant, id string, sealed []byte) ([]byte, error)
 	// Overhead is how many bytes sealing adds to the plaintext.
 	Overhead() int
+	// Version is the key version a sealed object was written under; Active is the version new writes for the tenant use.
+	Version(sealed []byte) byte
+	Active(t meta.Tenant) byte
 }
 
 type DefaultLayout struct{}
@@ -141,7 +144,48 @@ func New(cfg Config) (*Store, error) {
 	if cfg.MaxArtifact <= 0 || cfg.MaxArtifact > room {
 		cfg.MaxArtifact = room
 	}
-	return &Store{cfg: cfg}, nil
+	st := &Store{cfg: cfg}
+	if g, ok := cfg.Sealer.(interface {
+		GuardRetire(func(context.Context, byte) (int, error))
+	}); ok {
+		g.GuardRetire(st.sealedUnder)
+	}
+	return st, nil
+}
+
+// sealedUnder counts the private objects of every tenant still sealed under a key version; an unreadable or missing object fails the count, since it cannot be shown not to depend on the key.
+func (s *Store) sealedUnder(ctx context.Context, version byte) (int, error) {
+	tenants, err := s.cfg.Meta.Tenants(ctx)
+	if err != nil {
+		return 0, err
+	}
+	n := 0
+	for _, t := range tenants {
+		after := ""
+		for {
+			recs, err := s.cfg.Meta.Artifacts(ctx, t, after, 200)
+			if err != nil {
+				return 0, err
+			}
+			for _, rec := range recs {
+				after = rec.Digest
+				if rec.Class != meta.Private {
+					continue
+				}
+				stored, err := s.cfg.Blobs.Get(ctx, s.cfg.Layout.Key(t, meta.Private, rec.Digest))
+				if err != nil {
+					return 0, err
+				}
+				if s.cfg.Sealer.Version(stored) == version {
+					n++
+				}
+			}
+			if len(recs) < 200 {
+				break
+			}
+		}
+	}
+	return n, nil
 }
 
 // Sealed reports whether private artifacts are sealed by this store.
@@ -236,10 +280,12 @@ func (s *Store) PutArtifact(ctx context.Context, t meta.Tenant, data []byte, in 
 		return "", ErrCrashed
 	}
 	if err := s.cfg.Blobs.Put(ctx, s.cfg.Layout.Key(t, in.Class, digest), stored); err != nil {
-		if errors.Is(err, blob.ErrOverwrite) {
-			return "", ErrCorrupt
+		if !(errors.Is(err, blob.ErrOverwrite) && s.sealing(in.Class) && s.holdsSame(ctx, t, digest, data)) {
+			if errors.Is(err, blob.ErrOverwrite) {
+				return "", ErrCorrupt
+			}
+			return "", err
 		}
-		return "", err
 	}
 	if s.crash("after-object") {
 		return "", ErrCrashed
@@ -453,6 +499,16 @@ func (s *Store) verifyManifest(t meta.Tenant, rec meta.ManifestRecord) (Manifest
 		Artifacts: doc.Artifacts, Provenance: doc.Provenance, CreatedAt: doc.CreatedAt, KeyID: doc.KeyID}, nil
 }
 
+// holdsSame reports whether the object already stored under a private identifier opens, under whatever key version it was written, to the same content; a rotated key changes the bytes but not the content. With nil want it only checks that the stored object opens to what the identifier names.
+func (s *Store) holdsSame(ctx context.Context, t meta.Tenant, digest string, want []byte) bool {
+	old, err := s.cfg.Blobs.Get(ctx, s.cfg.Layout.Key(t, meta.Private, digest))
+	if err != nil {
+		return false
+	}
+	plain, err := s.cfg.Sealer.Open(t, digest, old)
+	return err == nil && (want == nil || bytes.Equal(plain, want))
+}
+
 // SealedObject returns a private artifact exactly as stored, after proving it opens to the content its identifier names.
 func (s *Store) SealedObject(ctx context.Context, t meta.Tenant, digest string) (meta.ArtifactRecord, []byte, error) {
 	rec, err := s.cfg.Meta.Artifact(ctx, t, digest)
@@ -505,10 +561,12 @@ func (s *Store) AdoptSealed(ctx context.Context, t meta.Tenant, digest string, s
 	s.gate.RLock()
 	defer s.gate.RUnlock()
 	if err := s.cfg.Blobs.Put(ctx, s.cfg.Layout.Key(t, meta.Private, digest), stored); err != nil {
-		if errors.Is(err, blob.ErrOverwrite) {
-			return ErrCorrupt
+		if !(errors.Is(err, blob.ErrOverwrite) && s.holdsSame(ctx, t, digest, nil)) {
+			if errors.Is(err, blob.ErrOverwrite) {
+				return ErrCorrupt
+			}
+			return err
 		}
-		return err
 	}
 	_, err = s.cfg.Meta.PutArtifact(ctx, t, meta.ArtifactRecord{Digest: digest, Size: size, Class: meta.Private, Provenance: prov})
 	return err
@@ -565,3 +623,80 @@ func (s *Store) VerifyManifest(ctx context.Context, t meta.Tenant, id string) er
 	}
 	return nil
 }
+
+// RewrapResult counts what a rewrap found.
+type RewrapResult struct {
+	Checked   int
+	Rewrapped int
+}
+
+// Rewrap re-encrypts a tenant's private artifacts under the newest data key without changing their identifiers. Each object is replaced atomically, so a crash leaves it under the old key or the new, both of which open; running it again continues.
+func (s *Store) Rewrap(ctx context.Context, t meta.Tenant) (RewrapResult, error) {
+	var res RewrapResult
+	if s.cfg.Sealer == nil || !meta.ValidTenant(t) {
+		return res, fmt.Errorf("%w: sealing", ErrInvalid)
+	}
+	active := s.cfg.Sealer.Active(t)
+	after := ""
+	for {
+		recs, err := s.cfg.Meta.Artifacts(ctx, t, after, 200)
+		if err != nil {
+			return res, err
+		}
+		for _, rec := range recs {
+			after = rec.Digest
+			if rec.Class != meta.Private {
+				continue
+			}
+			res.Checked++
+			done, err := s.rewrapOne(ctx, t, rec, active)
+			if err != nil {
+				return res, err
+			}
+			if done {
+				res.Rewrapped++
+			}
+			if s.crash("rewrap") {
+				return res, ErrCrashed
+			}
+		}
+		if len(recs) < 200 {
+			return res, nil
+		}
+	}
+}
+
+func (s *Store) rewrapOne(ctx context.Context, t meta.Tenant, rec meta.ArtifactRecord, active byte) (bool, error) {
+	key := s.cfg.Layout.Key(t, meta.Private, rec.Digest)
+	stored, err := s.cfg.Blobs.Get(ctx, key)
+	if err != nil {
+		if errors.Is(err, blob.ErrNotFound) {
+			return false, ErrMissingObject
+		}
+		return false, err
+	}
+	if s.cfg.Sealer.Version(stored) == active {
+		return false, nil
+	}
+	plain, err := s.cfg.Sealer.Open(t, rec.Digest, stored)
+	if err != nil {
+		return false, ErrCorrupt
+	}
+	fresh, err := s.cfg.Sealer.Seal(t, rec.Digest, plain)
+	if err != nil {
+		return false, err
+	}
+	err = s.Exclusive(func() error {
+		now, gerr := s.cfg.Blobs.Get(ctx, key)
+		if gerr != nil || !bytes.Equal(now, stored) {
+			return errRewrapRaced
+		}
+		return s.cfg.Blobs.Replace(ctx, key, fresh)
+	})
+	if errors.Is(err, errRewrapRaced) {
+		return false, nil
+	}
+	return err == nil, err
+}
+
+var errRewrapRaced = errors.New("object changed during rewrap")

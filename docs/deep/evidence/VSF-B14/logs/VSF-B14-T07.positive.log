@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestRewrapMovesPrivate|TestATenantsKeysTravel|TestRotationKeepsIdentifiers ./storage/secret/
+=== RUN   TestRotationKeepsIdentifiersAndOldDataReadable
+--- PASS: TestRotationKeepsIdentifiersAndOldDataReadable (0.00s)
+=== RUN   TestRewrapMovesPrivateArtifactsToTheNewestKeyWithoutRenamingThem
+--- PASS: TestRewrapMovesPrivateArtifactsToTheNewestKeyWithoutRenamingThem (0.13s)
+=== RUN   TestATenantsKeysTravelWrappedAndOpenItsBundlesElsewhereAndNothingElse
+--- PASS: TestATenantsKeysTravelWrappedAndOpenItsBundlesElsewhereAndNothingElse (5.38s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	6.534s
+[exit 0]

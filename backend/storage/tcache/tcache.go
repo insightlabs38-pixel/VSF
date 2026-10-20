@@ -238,3 +238,44 @@ func (c *Cache) Purge(ctx context.Context, t meta.Tenant) (int, error) {
 		}
 	}
 }
+
+// Rewrap re-encrypts a tenant's entries that were sealed under an older data key and returns how many it changed. Entries that no longer open are dropped, since a cache can always be rebuilt.
+func (c *Cache) Rewrap(ctx context.Context, t meta.Tenant) (int, error) {
+	if !meta.ValidTenant(t) || c.Blobs == nil || c.Keys == nil {
+		return 0, ErrInvalid
+	}
+	box := c.Keys.Box(t, purpose)
+	n := 0
+	for after := ""; ; {
+		page, err := c.Blobs.List(ctx, prefix(t), after, 500)
+		if err != nil {
+			return n, err
+		}
+		for _, o := range page {
+			after = o.Key
+			sealed, err := c.Blobs.Get(ctx, o.Key)
+			if err != nil {
+				continue
+			}
+			if box.Version(sealed) == box.Active() {
+				continue
+			}
+			plain, err := box.Open(c.aad(o.Key), sealed)
+			if err != nil {
+				_ = c.Blobs.Delete(ctx, o.Key)
+				continue
+			}
+			fresh, err := box.Seal(c.aad(o.Key), plain)
+			if err != nil {
+				return n, err
+			}
+			if err := c.Blobs.Replace(ctx, o.Key, fresh); err != nil {
+				return n, err
+			}
+			n++
+		}
+		if len(page) < 500 {
+			return n, nil
+		}
+	}
+}

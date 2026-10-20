@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestTwoLiveGrantsForOneSession|TestAnOAuthGrantAndAnUnverified|TestAPrincipalSwitchCancels ./auth/
+=== RUN   TestTwoLiveGrantsForOneSessionFailClosedWhateverTheStoreOrder
+--- PASS: TestTwoLiveGrantsForOneSessionFailClosedWhateverTheStoreOrder (0.00s)
+=== RUN   TestAnOAuthGrantAndAnUnverifiedIdentityNeverAuthenticateASourceSession
+--- PASS: TestAnOAuthGrantAndAnUnverifiedIdentityNeverAuthenticateASourceSession (0.00s)
+=== RUN   TestAPrincipalSwitchCancelsQueuedWorkAndRefusesItsGeneration
+--- PASS: TestAPrincipalSwitchCancelsQueuedWorkAndRefusesItsGeneration (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.043s
+[exit 0]

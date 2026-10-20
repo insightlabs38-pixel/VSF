@@ -1,0 +1,8 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAConfirmationDoesNotSurviveTheSignIn|TestAPersonCanConfirmForACaller ./interfaces/
+=== RUN   TestAPersonCanConfirmForACallerOnlyUnderADelegationAndOnlyForThatCallersExactRequest
+--- PASS: TestAPersonCanConfirmForACallerOnlyUnderADelegationAndOnlyForThatCallersExactRequest (0.04s)
+=== RUN   TestAConfirmationDoesNotSurviveTheSignInItWasGivenUnder
+--- PASS: TestAConfirmationDoesNotSurviveTheSignInItWasGivenUnder (0.02s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	1.093s
+[exit 0]

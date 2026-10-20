@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestANonOIDCGrantIsExplicitly|TestProviderKeysAreValidated|TestAFlowKeepsTheProvider ./auth/
+=== RUN   TestANonOIDCGrantIsExplicitlyIdentityUnknownAndSatisfiesNothingThatNeedsAPerson
+--- PASS: TestANonOIDCGrantIsExplicitlyIdentityUnknownAndSatisfiesNothingThatNeedsAPerson (0.01s)
+=== RUN   TestAFlowKeepsTheProviderItBeganWith
+--- PASS: TestAFlowKeepsTheProviderItBeganWith (0.00s)
+=== RUN   TestProviderKeysAreValidatedAndRotateWithoutChangingTheProvider
+--- PASS: TestProviderKeysAreValidatedAndRotateWithoutChangingTheProvider (0.01s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.052s
+[exit 0]

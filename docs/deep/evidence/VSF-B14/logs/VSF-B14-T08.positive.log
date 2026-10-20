@@ -1,0 +1,12 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestTheStoreContract|TestRefreshRacingRevoke|TestConcurrentRefreshesShare|TestConcurrentPausesResumes ./auth/
+=== RUN   TestTheStoreContractKeepsRevocationTerminalAndIdentityFixed
+--- PASS: TestTheStoreContractKeepsRevocationTerminalAndIdentityFixed (0.00s)
+=== RUN   TestRefreshRacingRevokeNeverResurrectsCredentials
+--- PASS: TestRefreshRacingRevokeNeverResurrectsCredentials (0.01s)
+=== RUN   TestConcurrentRefreshesShareOneRequestSoARotatingTokenIsSpentOnce
+--- PASS: TestConcurrentRefreshesShareOneRequestSoARotatingTokenIsSpentOnce (0.01s)
+=== RUN   TestConcurrentPausesResumesAndRevokesEndInAWellDefinedState
+--- PASS: TestConcurrentPausesResumesAndRevokesEndInAWellDefinedState (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.053s
+[exit 0]

@@ -273,7 +273,7 @@ func (r *rest) confirm(w http.ResponseWriter, req *http.Request, p Principal) {
 		writeError(w, 0, err)
 		return
 	}
-	c, cerr := r.cfg.Backend.Confirm(req.Context(), p, body, Route{Operation: req.PathValue("name"), Version: req.PathValue("version")})
+	c, cerr := r.cfg.Backend.Confirm(req.Context(), p, body, Route{Operation: req.PathValue("name"), Version: req.PathValue("version"), Delegate: req.URL.Query().Get("for")})
 	if cerr != nil {
 		writeError(w, 0, cerr)
 		return

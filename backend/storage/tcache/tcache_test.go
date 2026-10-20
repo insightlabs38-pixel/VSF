@@ -184,3 +184,32 @@ func TestPurgeRemovesOnlyThatTenantsEntriesAndRestartKeepsAccounting(t *testing.
 		t.Fatalf("%v", err)
 	}
 }
+
+func TestCacheEntriesRewrapUnderTheNewestKey(t *testing.T) {
+	keys := secret.Generate()
+	mem := blob.NewMem()
+	c := &Cache{Blobs: mem, Keys: keys, Quota: 1 << 20}
+	for i := 0; i < 3; i++ {
+		if err := c.Put(ctx, "acme", fmt.Sprintf("k%d", i), []byte(fmt.Sprintf("value-%d", i))); err != nil {
+			t.Fatal(err)
+		}
+	}
+	_, _ = keys.Rotate()
+	n, err := c.Rewrap(ctx, "acme")
+	if err != nil || n != 3 {
+		t.Fatalf("%d %v", n, err)
+	}
+	objs, _ := mem.List(ctx, "cache/acme/", "", 0)
+	for _, o := range objs {
+		b, _ := mem.Get(ctx, o.Key)
+		if b[0] != 2 {
+			t.Fatalf("%d", b[0])
+		}
+	}
+	if got, ok, err := c.Get(ctx, "acme", "k1"); err != nil || !ok || string(got) != "value-1" {
+		t.Fatalf("%q %v %v", got, ok, err)
+	}
+	if n, _ := c.Rewrap(ctx, "acme"); n != 0 {
+		t.Fatal("nothing left to rewrap")
+	}
+}

@@ -1,0 +1,56 @@
+{
+  "task_id": "VSF-B14-T06",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "2525995326eb5048c46cfa70e6ef9cf5d51f6da4",
+  "commit": "fccd396ba619e3cf2685ca0eb490ecf9f98938fb",
+  "paths": [
+    "backend/auth/delegation.go",
+    "backend/api/service.go",
+    "backend/interfaces/delegation_test.go"
+  ],
+  "acceptance": "Delegated confirmation binds the approving person, the executing caller, the source session and the exact request; an agent credential can neither confirm for itself nor replay or widen it.",
+  "positive": {
+    "fixture": "a person confirms through the interface for a delegated caller; the confirmation binds person, executor, session and exact request and works once",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPersonCanConfirmForACaller|TestADelegationNamesOnePerson ./auth/ ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "agent credentials cannot confirm for themselves or others; no delegation, self-delegation, withdrawn, expired, widened and extended-expiry confirmations fail",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAConfirmationBelongsTo|TestADelegationNamesOnePerson ./auth/ ./interfaces/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Delegation is one person, one caller, at most 30 days, withdrawable, and does not widen the executor scopes.",
+  "performance_memory_storage": "One map entry per delegation.",
+  "known_limitations": [
+    "Sign-in generation binding was added in VSF-B14-T14"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T06.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T06.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

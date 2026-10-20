@@ -43,3 +43,4 @@ Revisit when: trigger
 | [036](ADR-036-extension-integration-and-local-bridge.md) | Extension integration protocol and the authenticated local bridge | accepted |
 | [037](ADR-037-api-cli-mcp-interfaces.md) | One operation service behind the REST, CLI, MCP and interface surfaces | accepted |
 | [038](ADR-038-durable-storage.md) | Durable metadata and artifact storage | accepted |
+| [039](ADR-039-auth-broker.md) | Authentication broker and managed sessions | accepted |

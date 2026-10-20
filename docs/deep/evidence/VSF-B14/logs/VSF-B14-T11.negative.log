@@ -1,0 +1,14 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAnIdentityTokenWithoutAUsableSubject|TestRefreshCannotSubstitute|TestARefreshThatNamesAnotherPerson|TestStateIsSingleUse|TestARefusedRefreshToken ./auth/
+=== RUN   TestAnIdentityTokenWithoutAUsableSubjectMintsNoGrant
+--- PASS: TestAnIdentityTokenWithoutAUsableSubjectMintsNoGrant (0.01s)
+=== RUN   TestRefreshCannotSubstituteAProviderOrWidenWhatWasGranted
+--- PASS: TestRefreshCannotSubstituteAProviderOrWidenWhatWasGranted (0.00s)
+=== RUN   TestARefreshThatNamesAnotherPersonEndsTheGrant
+--- PASS: TestARefreshThatNamesAnotherPersonEndsTheGrant (0.01s)
+=== RUN   TestStateIsSingleUseAndBoundToItsCallerAndIssuer
+--- PASS: TestStateIsSingleUseAndBoundToItsCallerAndIssuer (0.00s)
+=== RUN   TestARefusedRefreshTokenEndsTheGrantAndAServerErrorDoesNot
+--- PASS: TestARefusedRefreshTokenEndsTheGrantAndAServerErrorDoesNot (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.077s
+[exit 0]

@@ -44,6 +44,7 @@ type Binding struct {
 	ID        string    `json:"session_id"`
 	Client    string    `json:"-"`
 	Origin    string    `json:"origin"`
+	AppID     string    `json:"app_id,omitempty"`
 	Document  string    `json:"document"`
 	Principal string    `json:"principal"`
 	Runtime   string    `json:"runtime_id"`
@@ -112,6 +113,10 @@ func (b *Bindings) Register(client, origin, document string, manifest []byte) (B
 		return Binding{}, ErrBindingDenied
 	}
 	id := identity{principal: string(m.PrincipalRef), runtime: string(m.RuntimeID)}
+	app := ""
+	if m.AppID != nil {
+		app = string(*m.AppID)
+	}
 	b.mu.Lock()
 	defer b.mu.Unlock()
 	if prior, ok := b.clients[client]; ok && prior != id {
@@ -137,7 +142,7 @@ func (b *Bindings) Register(client, origin, document string, manifest []byte) (B
 	}
 	raw := randBytes(12)
 	bd := &Binding{
-		ID: "bs_" + hex.EncodeToString(raw), Client: client, Origin: origin, Document: document,
+		ID: "bs_" + hex.EncodeToString(raw), Client: client, Origin: origin, AppID: app, Document: document,
 		Principal: id.principal, Runtime: id.runtime, Manifest: res.Digest, Scopes: scopes,
 		Created: now, Expires: now.Add(b.ttl),
 	}

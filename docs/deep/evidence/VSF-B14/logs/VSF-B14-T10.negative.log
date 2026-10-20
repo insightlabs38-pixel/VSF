@@ -1,0 +1,14 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestForgedMismatched|TestWithoutABridge|TestReplayedAndOutOfOrder|TestAStaleSignOutFromAnOlderEpoch|TestReplacingThePerson ./auth/
+=== RUN   TestForgedMismatchedOrUnprovenEvidenceMintsNothing
+--- PASS: TestForgedMismatchedOrUnprovenEvidenceMintsNothing (0.01s)
+=== RUN   TestWithoutABridgeOrAManifestAppIdentityNothingIsProven
+--- PASS: TestWithoutABridgeOrAManifestAppIdentityNothingIsProven (0.00s)
+=== RUN   TestReplayedAndOutOfOrderMessagesCannotMintRestoreOrEndAGrant
+--- PASS: TestReplayedAndOutOfOrderMessagesCannotMintRestoreOrEndAGrant (0.00s)
+=== RUN   TestAStaleSignOutFromAnOlderEpochCannotEndANewerSignIn
+--- PASS: TestAStaleSignOutFromAnOlderEpochCannotEndANewerSignIn (0.00s)
+=== RUN   TestReplacingThePersonWithoutAnExpectedSignInEndsTheOldGrantAndCreatesNone
+--- PASS: TestReplacingThePersonWithoutAnExpectedSignInEndsTheOldGrantAndCreatesNone (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.047s
+[exit 0]

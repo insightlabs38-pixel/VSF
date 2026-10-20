@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B14-T08",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/auth/grant.go",
+    "backend/auth/revoke.go",
+    "backend/auth/reauth.go",
+    "backend/auth/oauth.go"
+  ],
+  "acceptance": "Grants change only through compare-and-swap; revocation wins over refresh, pause, resume and expiry; revoked grants never revive; refresh is single-flight and cannot resurrect revoked credentials; failed deletion never leaves a credential authorized.",
+  "positive": {
+    "fixture": "store contract; refresh racing revoke discards its tokens; two concurrent refreshes spend a rotating token once; deterministic barriers",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestTheStoreContract|TestRefreshRacingRevoke|TestConcurrentRefreshesShare|TestConcurrentPausesResumes ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "stale writer cannot revive or widen; revoke between check and commit wins; stale resume against a newer pause; deletion failures; secret write failures at each step",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAStaleWriterCannot|TestARevocationBetweenTheCheck|TestAStaleResumeCannot|TestRevocationIsImmediateEvenWhen|TestRefreshStorageFailures|TestAFailedSecretWrite ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Revocation is effective before cleanup; a rotated credential that cannot be stored ends the grant.",
+  "performance_memory_storage": "Lock striping bounds locks; refresh holds no lock during network I/O.",
+  "known_limitations": [
+    "In-process atomicity only; a shared store must implement Swap atomically"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T08.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T08.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

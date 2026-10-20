@@ -1,0 +1,14 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAnAuditFileSurvives|TestAMandatoryAuditFailure|TestAKeychainWriteIsVerified|TestAFallbackIsUsedOnlyOnPurpose|TestALeaseDoesNotSurvive ./auth/
+=== RUN   TestAnAuditFileSurvivesATornTailRefusesTamperingAndRotatesAsOneChain
+--- PASS: TestAnAuditFileSurvivesATornTailRefusesTamperingAndRotatesAsOneChain (0.01s)
+=== RUN   TestAKeychainWriteIsVerifiedAndADeleteThatDidNotRemoveAnythingIsAnError
+--- PASS: TestAKeychainWriteIsVerifiedAndADeleteThatDidNotRemoveAnythingIsAnError (0.00s)
+=== RUN   TestAFallbackIsUsedOnlyOnPurposeAndNeverShadowsALaterPrimaryWrite
+--- PASS: TestAFallbackIsUsedOnlyOnPurposeAndNeverShadowsALaterPrimaryWrite (0.00s)
+=== RUN   TestALeaseDoesNotSurviveARefreshAnEpochChangeOrAPause
+--- PASS: TestALeaseDoesNotSurviveARefreshAnEpochChangeOrAPause (0.01s)
+=== RUN   TestAMandatoryAuditFailureFailsTheOperationInsteadOfPassingSilently
+--- PASS: TestAMandatoryAuditFailureFailsTheOperationInsteadOfPassingSilently (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.063s
+[exit 0]

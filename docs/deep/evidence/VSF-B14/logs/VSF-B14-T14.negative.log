@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestADelegationNamesOnePerson|TestAConfirmationBelongsTo ./interfaces/ ./auth/
+=== RUN   TestAConfirmationBelongsToTheCallerAndSessionItWasGivenFor
+--- PASS: TestAConfirmationBelongsToTheCallerAndSessionItWasGivenFor (0.04s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	1.066s
+=== RUN   TestADelegationNamesOnePersonAndOneCallerExpiresAndCanBeWithdrawn
+--- PASS: TestADelegationNamesOnePersonAndOneCallerExpiresAndCanBeWithdrawn (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.038s
+[exit 0]

@@ -6,6 +6,7 @@ import (
 	"crypto/ed25519"
 	crand "crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
@@ -382,5 +383,364 @@ func TestTheScanFindsPlaintextWhenSealingIsOff(t *testing.T) {
 	}
 	if !bytes.Contains(allBytes(t, r.dir), []byte("canary-control-3141")) {
 		t.Fatal("the scan must see plaintext when it is there, or its silence proves nothing")
+	}
+}
+
+func privateIDs(t *testing.T, r *rig, tn meta.Tenant) []string {
+	t.Helper()
+	as, err := r.meta.Artifacts(ctx, tn, "", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var ids []string
+	for _, a := range as {
+		if a.Class == meta.Private {
+			ids = append(ids, a.Digest)
+		}
+	}
+	return ids
+}
+
+func storedVersion(t *testing.T, r *rig, tn meta.Tenant, id string) byte {
+	t.Helper()
+	b, err := r.blobs.Get(ctx, artifact.DefaultLayout{}.Key(tn, meta.Private, id))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return b[0]
+}
+
+func TestRewrapMovesPrivateArtifactsToTheNewestKeyWithoutRenamingThem(t *testing.T) {
+	pub, priv := signer(t)
+	keys := Generate()
+	r := newRig(t, keys, pub, priv)
+	var manifests []string
+	for _, body := range []string{"plan one", "plan two", "plan three"} {
+		id, _ := r.version(t, "acme", body, meta.Private)
+		manifests = append(manifests, id)
+	}
+	r.version(t, "acme", "public runtime", meta.Public)
+	before := privateIDs(t, r, "acme")
+	if v, err := keys.Rotate(); err != nil || v != 2 {
+		t.Fatalf("%d %v", v, err)
+	}
+	if d, err := r.store.PutArtifact(ctx, "acme", []byte("plan one"), artifact.ArtifactInput{Class: meta.Private}); err != nil || !contains(before, d) {
+		t.Fatalf("storing known content again after a rotation is still idempotent: %v", err)
+	}
+	for _, id := range before {
+		if storedVersion(t, r, "acme", id) != 1 {
+			t.Fatal("rotation alone leaves existing objects under the old key")
+		}
+	}
+	res, err := r.store.Rewrap(ctx, "acme")
+	if err != nil || res.Checked != 3 || res.Rewrapped != 3 {
+		t.Fatalf("%+v %v", res, err)
+	}
+	for _, id := range before {
+		if storedVersion(t, r, "acme", id) != 2 {
+			t.Fatal("every private object now uses the newest key")
+		}
+	}
+	if after := privateIDs(t, r, "acme"); strings.Join(after, ",") != strings.Join(before, ",") {
+		t.Fatal("identifiers must not change")
+	}
+	for _, m := range manifests {
+		if err := r.store.VerifyManifest(ctx, "acme", m); err != nil {
+			t.Fatalf("manifests still verify: %v", err)
+		}
+	}
+	if res, err := r.store.Rewrap(ctx, "acme"); err != nil || res.Rewrapped != 0 {
+		t.Fatalf("a second pass finds nothing to do: %+v %v", res, err)
+	}
+	if err := keys.Retire(ctx, 2); err == nil {
+		t.Fatal("the active key cannot be retired")
+	}
+	if err := keys.Retire(ctx, 1); err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range before {
+		if got, err := r.store.Artifact(ctx, "acme", id); err != nil || len(got) == 0 {
+			t.Fatalf("after rewrap the old key is no longer needed: %v", err)
+		}
+	}
+	raw := allBytes(t, r.dir)
+	keys.mu.RLock()
+	for _, k := range keys.data {
+		if bytes.Contains(raw, k) {
+			t.Fatal("key material on disk")
+		}
+	}
+	keys.mu.RUnlock()
+}
+
+func contains(xs []string, x string) bool {
+	for _, y := range xs {
+		if y == x {
+			return true
+		}
+	}
+	return false
+}
+
+func TestRetiringAKeyTooEarlyMakesItsObjectsUnreadableWhichIsWhyRewrapComesFirst(t *testing.T) {
+	pub, priv := signer(t)
+	keys := Generate()
+	r := newRig(t, keys, pub, priv)
+	_, d := r.version(t, "acme", "needs the old key", meta.Private)
+	_, _ = keys.Rotate()
+	_ = keys.RetireUnchecked(1)
+	if _, err := r.store.Artifact(ctx, "acme", d); !errors.Is(err, artifact.ErrCorrupt) {
+		t.Fatalf("%v", err)
+	}
+	if res, err := r.store.Rewrap(ctx, "acme"); !errors.Is(err, artifact.ErrCorrupt) || res.Rewrapped != 0 {
+		t.Fatalf("rewrap reports what it cannot open instead of skipping it: %+v %v", res, err)
+	}
+}
+
+func TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun(t *testing.T) {
+	for _, point := range []string{"torn", "before-rename", "after-rename"} {
+		t.Run(point, func(t *testing.T) {
+			pub, priv := signer(t)
+			keys := Generate()
+			r := newRig(t, keys, pub, priv)
+			var ids []string
+			for _, body := range []string{"alpha payload", "beta payload", "gamma payload"} {
+				_, d := r.version(t, "acme", body, meta.Private)
+				ids = append(ids, d)
+			}
+			_, _ = keys.Rotate()
+			n := 0
+			r.blobs.CrashAt = func(p string) bool {
+				if p == point {
+					n++
+				}
+				return p == point && n == 2
+			}
+			if _, err := r.store.Rewrap(ctx, "acme"); err == nil {
+				t.Fatal("the simulated crash must surface")
+			}
+			r.blobs.CrashAt = nil
+			_ = r.blobs.Close()
+			fresh, err := blob.NewFS(filepath.Join(r.dir, "blobs"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Cleanup(func() { _ = fresh.Close() })
+			store, err := artifact.New(artifact.Config{Meta: r.meta, Blobs: fresh, Sealer: keys.Sealer(), Signer: &artifact.Signer{KeyID: "k1", Key: priv},
+				Trust: artifact.Trust{Keys: map[string]ed25519.PublicKey{"k1": pub}, Revoked: map[string]bool{}}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, d := range ids {
+				if _, err := store.Artifact(ctx, "acme", d); err != nil {
+					t.Fatalf("an interrupted rewrap must leave every object readable: %v", err)
+				}
+			}
+			if _, err := store.Rewrap(ctx, "acme"); err != nil {
+				t.Fatal(err)
+			}
+			for _, d := range ids {
+				b, _ := fresh.Get(ctx, artifact.DefaultLayout{}.Key("acme", meta.Private, d))
+				if b[0] != 2 {
+					t.Fatalf("the next run finishes the job: %d", b[0])
+				}
+			}
+		})
+	}
+}
+
+func TestATenantsKeysTravelWrappedAndOpenItsBundlesElsewhereAndNothingElse(t *testing.T) {
+	pub, priv := signer(t)
+	ka, kb := Generate(), Generate()
+	src, dst := newRig(t, ka, pub, priv), newRig(t, kb, pub, nil)
+	_, acme := src.version(t, "acme", "acme private plan", meta.Private)
+	_, globex := src.version(t, "globex", "globex private plan", meta.Private)
+	_, _ = ka.Rotate()
+	_, _ = src.version(t, "acme", "acme second plan", meta.Private)
+	var buf bytes.Buffer
+	if _, err := bundle.Export(ctx, bundle.Source{Store: src.store, Meta: src.meta}, "acme", bundle.Select{}, &buf); err != nil {
+		t.Fatal(err)
+	}
+	imp := func() error {
+		_, err := bundle.Import(ctx, bundle.Dest{Store: dst.store, Meta: dst.meta}, "acme", bytes.NewReader(buf.Bytes()), bundle.Limits{})
+		return err
+	}
+	if err := imp(); !errors.Is(err, bundle.ErrCorrupt) {
+		t.Fatalf("without the tenant's keys the bundle cannot open: %v", err)
+	}
+	if _, err := ka.ExportTenant("acme", "short"); err == nil {
+		t.Fatal("a short passphrase is refused")
+	}
+	pass := "correct horse battery staple"
+	wrap, err := ka.ExportTenant("acme", pass)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if bytes.Contains(wrap, []byte(hex.EncodeToString(ka.idKey))) || bytes.Contains(wrap, []byte("acme private")) {
+		t.Fatal("the export is encrypted")
+	}
+	if _, _, err := ImportTenant(wrap, "wrong passphrase here"); !errors.Is(err, ErrOpen) {
+		t.Fatalf("%v", err)
+	}
+	var doc map[string]any
+	_ = json.Unmarshal(wrap, &doc)
+	doc["iterations"] = 1000
+	cheap, _ := json.Marshal(doc)
+	if _, _, err := ImportTenant(cheap, pass); !errors.Is(err, ErrKeyFile) {
+		t.Fatalf("a file asking for cheap key stretching is refused: %v", err)
+	}
+	flipped := append([]byte(nil), wrap...)
+	flipped[len(flipped)-20] ^= 1
+	if _, _, err := ImportTenant(flipped, pass); err == nil {
+		t.Fatal("a damaged export must not open")
+	}
+	tn, tk, err := ImportTenant(wrap, pass)
+	if err != nil || tn != "acme" {
+		t.Fatalf("%v %v", tn, err)
+	}
+	if err := kb.Adopt(tn, tk); err != nil {
+		t.Fatal(err)
+	}
+	if err := imp(); err != nil {
+		t.Fatalf("with the tenant's keys the bundle opens: %v", err)
+	}
+	if got, err := dst.store.Artifact(ctx, "acme", acme); err != nil || string(got) != "acme private plan" {
+		t.Fatalf("%q %v", got, err)
+	}
+	if _, err := kb.Sealer().Open("globex", globex, mustGet(t, src, "globex", globex)); err == nil {
+		t.Fatal("one tenant's export must not open another tenant's data")
+	}
+	if _, err := ka.Sealer().Open("globex", globex, mustGet(t, src, "globex", globex)); err != nil {
+		t.Fatal(err)
+	}
+	if v := kb.ActiveFor("acme"); v != 2 {
+		t.Fatalf("the adopted tenant writes under its own newest key: %d", v)
+	}
+	if err := kb.Adopt("acme", tk); err != nil {
+		t.Fatalf("adopting the same keys again is harmless: %v", err)
+	}
+	other := Generate()
+	_, otherKeys, _ := func() (meta.Tenant, TenantKeys, error) {
+		w, _ := other.ExportTenant("acme", pass)
+		return ImportTenant(w, pass)
+	}()
+	if err := kb.Adopt("acme", otherKeys); !errors.Is(err, ErrKeyFile) {
+		t.Fatalf("different keys for a tenant already held are refused: %v", err)
+	}
+	next, err := kb.RotateTenant("acme")
+	if err != nil || next != 3 || kb.ActiveFor("acme") != 3 {
+		t.Fatalf("%d %v", next, err)
+	}
+	if _, err := dst.store.Rewrap(ctx, "acme"); err != nil {
+		t.Fatal(err)
+	}
+	if got, err := dst.store.Artifact(ctx, "acme", acme); err != nil || string(got) != "acme private plan" {
+		t.Fatalf("an adopted tenant rewraps under its own rotation: %q %v", got, err)
+	}
+	if v, _ := kb.Rotate(); kb.ActiveFor("acme") != 3 || v == 0 {
+		t.Fatal("a global rotation does not move an adopted tenant")
+	}
+	path := filepath.Join(t.TempDir(), "keys.json")
+	if err := kb.Save(path); err != nil {
+		t.Fatal(err)
+	}
+	back, err := Load(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	id := back.Sealer().Identify("acme", []byte("acme private plan"))
+	if id != acme {
+		t.Fatal("a reloaded keyring still names the adopted tenant's artifacts the same way")
+	}
+}
+
+func mustGet(t *testing.T, r *rig, tn meta.Tenant, id string) []byte {
+	t.Helper()
+	b, err := r.blobs.Get(ctx, artifact.DefaultLayout{}.Key(tn, meta.Private, id))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return b
+}
+
+func TestAKeyStillProtectingDataCannotBeRetiredAndOneNobodyVouchesForCannotEither(t *testing.T) {
+	pub, priv := signer(t)
+	keys := Generate()
+	if _, _ = keys.Rotate(); keys.Retire(ctx, 1) == nil {
+		t.Fatal("with no holder of sealed data registered, nothing vouches that the key is unused")
+	}
+	keys = Generate()
+	r := newRig(t, keys, pub, priv)
+	_, d := r.version(t, "acme", "needs key one", meta.Private)
+	_, _ = keys.Rotate()
+	if err := keys.Retire(ctx, 1); !errors.Is(err, ErrInUse) {
+		t.Fatalf("data sealed under the key blocks its retirement: %v", err)
+	}
+	if got, err := r.store.Artifact(ctx, "acme", d); err != nil || string(got) != "needs key one" {
+		t.Fatalf("and it stays readable: %q %v", got, err)
+	}
+	if _, err := keys.RotateTenant("acme"); err != nil {
+		t.Fatal(err)
+	}
+	_, _ = keys.Rotate()
+	_, _ = keys.Rotate()
+	if err := keys.Retire(ctx, 3); !errors.Is(err, ErrInUse) {
+		t.Fatalf("a version a tenant still writes under is in use even with no object under it: %v", err)
+	}
+	if _, err := r.store.Rewrap(ctx, "acme"); err != nil {
+		t.Fatal(err)
+	}
+	if err := keys.Retire(ctx, 1); err != nil {
+		t.Fatalf("after rewrap nothing depends on it: %v", err)
+	}
+	if got, err := r.store.Artifact(ctx, "acme", d); err != nil || string(got) != "needs key one" {
+		t.Fatalf("%q %v", got, err)
+	}
+	if _, ok := keys.tenants["acme"].Data[1]; ok {
+		t.Fatal("a tenant that carries its own copy of the version loses it too")
+	}
+	r.blobs.CrashAt = nil
+	failing := Generate()
+	failing.GuardRetire(func(context.Context, byte) (int, error) { return 0, errors.New("backend down") })
+	_, _ = failing.Rotate()
+	if err := failing.Retire(ctx, 1); !errors.Is(err, ErrInUse) {
+		t.Fatalf("a holder that cannot be scanned blocks retirement: %v", err)
+	}
+}
+
+func TestAdoptingNeverDropsAnImportedVersionAndIsAllOrNothing(t *testing.T) {
+	pass := "correct horse battery staple"
+	src := Generate()
+	_, _ = src.RotateTenant("acme")
+	_, _ = src.RotateTenant("acme")
+	w, _ := src.ExportTenant("acme", pass)
+	tn, tk, _ := ImportTenant(w, pass)
+	dst := &Keyring{idKey: src.idKey, active: src.active, tenants: map[meta.Tenant]*TenantKeys{}, data: map[byte][]byte{}}
+	for v, k := range src.data {
+		dst.data[v] = k
+	}
+	if err := dst.Adopt(tn, tk); err != nil {
+		t.Fatal(err)
+	}
+	if dst.ActiveFor("acme") != 3 || len(dst.tenants["acme"].Data) != len(tk.Data) {
+		t.Fatalf("a tenant rotated on its own keeps every version when it comes back to an installation sharing its roots: active %d, %d of %d versions", dst.ActiveFor("acme"), len(dst.tenants["acme"].Data), len(tk.Data))
+	}
+	conflict := tk.clone()
+	conflict.Data[1] = bytes.Repeat([]byte{7}, 32)
+	conflict.Data[9] = bytes.Repeat([]byte{8}, 32)
+	if err := dst.Adopt(tn, *conflict); !errors.Is(err, ErrKeyFile) {
+		t.Fatalf("a different key for a version already held is refused: %v", err)
+	}
+	if dst.tenants["acme"].Data[9] != nil {
+		t.Fatal("and nothing from the refused import was merged")
+	}
+	fresh := Generate()
+	if err := fresh.Adopt(tn, tk); err != nil {
+		t.Fatal(err)
+	}
+	other := tk.clone()
+	other.ID = bytes.Repeat([]byte{1}, 32)
+	if err := fresh.Adopt(tn, *other); !errors.Is(err, ErrKeyFile) {
+		t.Fatalf("keys of a different identity cannot be merged into a held tenant: %v", err)
 	}
 }

@@ -255,7 +255,14 @@ func (c *Client) Confirm(ctx context.Context, route Route, body []byte) (Confirm
 	if !pathSafe(route.Operation, route.Version) {
 		return ConfirmationIn{}, errBadSegment()
 	}
-	x, e := c.send(ctx, "POST", "/v1/operations/"+route.Operation+"/versions/"+route.Version+"/confirmations", nil, body)
+	var q url.Values
+	if route.Delegate != "" {
+		if !pathSafe(route.Delegate) {
+			return ConfirmationIn{}, errBadSegment()
+		}
+		q = url.Values{"for": {route.Delegate}}
+	}
+	x, e := c.send(ctx, "POST", "/v1/operations/"+route.Operation+"/versions/"+route.Version+"/confirmations", q, body)
 	return decode[ConfirmationIn](x, e)
 }
 

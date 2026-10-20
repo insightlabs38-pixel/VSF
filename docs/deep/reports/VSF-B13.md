@@ -1,6 +1,6 @@
 Batch: B13 | Gate: G13 | Decision: PROCEED
 Branch: vsf/b13-durable-storage | Base: 048661a | Commit: db356bb (evidence regenerated on the final PR head)
-PR: https://github.com/insightlabs38-pixel/VSF/pull/12 (stacked on the B11 blocker commits that carry the G10 merge record)
+PR: https://github.com/insightlabs38-pixel/VSF/pull/12 merged as becebe58c478; remote CI passed on 21195ac (evidence/remote-ci.md)
 Closed tasks: VSF-B13-T01 VSF-B13-T02 VSF-B13-T03 VSF-B13-T04 VSF-B13-T05
 Contracts/primitive IDs: metadata schema 2, manifest vsf.manifest v1, bundle v1; sealed private artifacts use keyed identifiers; no IR or primitive change
 Changed modules: backend/storage/{meta,blob,artifact,bench,gc,bundle,secret,tcache} (new), cmd/vsfstoragebench, go.mod (modernc.org/sqlite), supply-chain ignore GO-2026-5024, ADR-038
