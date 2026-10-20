@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B13-T05",
+  "status": "DONE",
+  "branch": "vsf/b13-durable-storage",
+  "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+  "commit": "f3b283559e3482a3fe3556e0df74a55b38855731",
+  "paths": [
+    "backend/storage/secret/",
+    "backend/storage/tcache/",
+    "backend/storage/artifact/artifact.go",
+    "backend/storage/bundle/bundle.go"
+  ],
+  "acceptance": "Private cache values cannot be read through shared manifests, artifact IDs or cross-tenant cache side channels.",
+  "positive": {
+    "fixture": "private artifacts sealed with tenant-keyed identifiers; raw scan of the database, its journal and every object finds no plaintext, no plaintext hash and no key bytes; private bundle records are sealed; cache values sealed under opaque names",
+    "command": "go -C backend test -race -count=1 ./storage/secret/ ./storage/tcache/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "same content has unrelated identifiers and bytes in two tenants; plaintext hash is not an identifier; an object moved to another tenant fails to open; a bundle opens only under the tenant's keys; a noisy tenant cannot evict another's entries; transplanted and altered cache entries are dropped",
+    "command": "go -C backend test -race -count=1 -run 'Invisible|Manifests|Sealed|Probe|Eviction|Tampered|Scan' ./storage/secret/ ./storage/tcache/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "Private artifact identifiers change from the plaintext SHA-256 to a keyed value when a sealer is configured; public artifacts unchanged."
+  },
+  "security_and_source_permissions": "Keys are derived per tenant; the key file is written 0600 and refused if group or world readable; no key material in any store.",
+  "performance_memory_storage": "Sealing adds 17 bytes per private artifact.",
+  "known_limitations": [
+    "The decoded-contract cache in backend/execution is process-wide and keyed by content (VSF-B15-T06)",
+    "Rewrap under a new key and moving a tenant's keys between installations are queued (VSF-B14-T07)",
+    "Lengths and provenance are not hidden"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T05.sealing-keys-and-disk-scans.log",
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T05.tenant-isolated-cache.log"
+  ],
+  "review_result": "ACCEPTED"
+}

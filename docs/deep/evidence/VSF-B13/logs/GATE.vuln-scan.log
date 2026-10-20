@@ -1,0 +1,4 @@
+$ node tools/checks/src/cli.ts vuln-scan
+vuln-scan: 78 packages checked against osv.dev, request sha256:d18b438164bd4ebc404c8adfd7560b4d4942683f720150a3193e5af860307212
+vuln-scan: ok
+[exit 0]

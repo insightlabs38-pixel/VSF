@@ -1,0 +1,27 @@
+$ go -C backend test -race -count=1 ./...
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	10.852s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api/jsonschema	1.056s
+ok  	github.com/insightlabs38-pixel/vsf/backend/bridge	23.269s
+ok  	github.com/insightlabs38-pixel/vsf/backend/canon	1.165s
+ok  	github.com/insightlabs38-pixel/vsf/backend/cli	1.047s
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfbench	[no test files]
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfbridge	[no test files]
+ok  	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfctl	1.041s
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfstoragebench	[no test files]
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	9.597s
+?   	github.com/insightlabs38-pixel/vsf/backend/internal/fixtureapp	[no test files]
+?   	github.com/insightlabs38-pixel/vsf/backend/internal/stacktest	[no test files]
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir	1.699s
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir/rt	1.025s
+ok  	github.com/insightlabs38-pixel/vsf/backend/mcp	5.639s
+ok  	github.com/insightlabs38-pixel/vsf/backend/schema	1.026s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/artifact	2.886s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bench	12.233s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/blob	2.578s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bundle	25.095s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/gc	20.283s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/meta	13.199s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	2.597s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/tcache	1.168s
+?   	github.com/insightlabs38-pixel/vsf/backend/versions	[no test files]
+[exit 0]

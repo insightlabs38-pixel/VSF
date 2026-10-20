@@ -1,0 +1,609 @@
+{
+  "environment": {
+    "go": "go1.24.7",
+    "cpus": 4,
+    "cpu_model": "Intel(R) Xeon(R) Processor @ 2.80GHz",
+    "kernel": "6.18.44-fc-v139",
+    "filesystem": "0xef53",
+    "minio": "github.com/minio/minio v0.0.0-20260212201848-7aac2a2c5b7c h1:/qdoYujxF5MBLDMVLeiYJ/7fBa1HikX39Dvzb9Ji8pA="
+  },
+  "reports": [
+    {
+      "target": "filesystem",
+      "config": {
+        "Seed": 7,
+        "Tiny": 200000,
+        "Versions": 200,
+        "VersionSize": 524288,
+        "ChangePct": 2,
+        "ReadSample": 50000,
+        "Workers": 8,
+        "MixedFor": 15000000000,
+        "DeleteShare": 0.5
+      },
+      "phases": [
+        {
+          "name": "write tiny objects",
+          "objects": 200000,
+          "logical_bytes": 209717086,
+          "seconds": 72.127429818,
+          "ops_per_sec": 2772.8701896721177,
+          "mb_per_sec": 2.772895126506347,
+          "latency": {
+            "n": 200000,
+            "p50_us": 2626,
+            "p95_us": 4790,
+            "p99_us": 7406,
+            "max_us": 80732,
+            "mean_us": 2884
+          },
+          "io": {
+            "write_bytes": 907935744,
+            "read_bytes": 331776,
+            "syscalls_write": 200000
+          },
+          "errors": 0
+        },
+        {
+          "name": "read tiny objects (random, warm)",
+          "objects": 50000,
+          "logical_bytes": 52350725,
+          "seconds": 0.542823926,
+          "ops_per_sec": 92110.8993268657,
+          "mb_per_sec": 91.97373123480668,
+          "latency": {
+            "n": 50000,
+            "p50_us": 30,
+            "p95_us": 86,
+            "p99_us": 178,
+            "max_us": 43055,
+            "mean_us": 81
+          },
+          "io": {
+            "write_bytes": 49582080,
+            "read_bytes": 0,
+            "syscalls_write": 0
+          },
+          "errors": 0
+        },
+        {
+          "name": "write similar large versions",
+          "objects": 200,
+          "logical_bytes": 104857600,
+          "seconds": 0.454402056,
+          "ops_per_sec": 440.1388535970885,
+          "mb_per_sec": 220.06942679854424,
+          "latency": {
+            "n": 200,
+            "p50_us": 3785,
+            "p95_us": 8455,
+            "p99_us": 10879,
+            "max_us": 10947,
+            "mean_us": 4532
+          },
+          "io": {
+            "write_bytes": 105553920,
+            "read_bytes": 0,
+            "syscalls_write": 200
+          },
+          "errors": 0
+        },
+        {
+          "name": "read large versions (random)",
+          "objects": 200,
+          "logical_bytes": 104857600,
+          "seconds": 0.03954487,
+          "ops_per_sec": 5057.546023036616,
+          "mb_per_sec": 2528.773011518308,
+          "latency": {
+            "n": 200,
+            "p50_us": 257,
+            "p95_us": 386,
+            "p99_us": 680,
+            "max_us": 2529,
+            "mean_us": 284
+          },
+          "io": {
+            "write_bytes": 0,
+            "read_bytes": 0,
+            "syscalls_write": 0
+          },
+          "errors": 0
+        },
+        {
+          "name": "mixed 70% read 30% write",
+          "objects": 134400,
+          "logical_bytes": 140895582,
+          "seconds": 15.002409668,
+          "ops_per_sec": 8958.560856171922,
+          "mb_per_sec": 8.956461050061677,
+          "latency": {
+            "n": 134400,
+            "p50_us": 47,
+            "p95_us": 3585,
+            "p99_us": 5136,
+            "max_us": 33224,
+            "mean_us": 892
+          },
+          "io": {
+            "write_bytes": 180465664,
+            "read_bytes": 4096,
+            "syscalls_write": 40021
+          },
+          "errors": 0
+        }
+      ],
+      "size_after_tiny_bytes": 819200000,
+      "size_after_versions_bytes": 924057600,
+      "tiny_logical_bytes": 209717086,
+      "versions_logical_bytes": 104857600,
+      "cold_start_ms": 0,
+      "peak_rss_kib": 846112,
+      "baseline_rss_kib": 509124,
+      "crash": [
+        {
+          "run": 0,
+          "acked": 1476,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 102,
+          "kill_after_ms": 908
+        },
+        {
+          "run": 1,
+          "acked": 1590,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 86,
+          "kill_after_ms": 1039
+        },
+        {
+          "run": 2,
+          "acked": 1892,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 115,
+          "kill_after_ms": 1070
+        },
+        {
+          "run": 3,
+          "acked": 2142,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 123,
+          "kill_after_ms": 1181
+        },
+        {
+          "run": 4,
+          "acked": 931,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 66,
+          "kill_after_ms": 624
+        }
+      ],
+      "compaction": {
+        "deleted": 100000,
+        "size_before_bytes": 1087983616,
+        "size_after_delete_bytes": 678383616,
+        "size_after_maintenance_bytes": 678383616,
+        "delete_seconds": 28.492399797,
+        "maintenance_seconds": 0
+      },
+      "chunk_dedup_potential": {
+        "avg_chunk_bytes": 16384,
+        "logical_bytes": 104857600,
+        "unique_bytes": 38622720,
+        "saved_fraction": 0.6316650390625
+      }
+    },
+    {
+      "target": "sqlite",
+      "config": {
+        "Seed": 7,
+        "Tiny": 200000,
+        "Versions": 200,
+        "VersionSize": 524288,
+        "ChangePct": 2,
+        "ReadSample": 50000,
+        "Workers": 8,
+        "MixedFor": 15000000000,
+        "DeleteShare": 0.5
+      },
+      "phases": [
+        {
+          "name": "write tiny objects",
+          "objects": 200000,
+          "logical_bytes": 209717086,
+          "seconds": 130.588414949,
+          "ops_per_sec": 1531.5294245520017,
+          "mb_per_sec": 1.5315431978240142,
+          "latency": {
+            "n": 200000,
+            "p50_us": 3259,
+            "p95_us": 16123,
+            "p99_us": 33479,
+            "max_us": 274530,
+            "mean_us": 5223
+          },
+          "io": {
+            "write_bytes": 6975537152,
+            "read_bytes": 8192,
+            "syscalls_write": 2327920
+          },
+          "errors": 0
+        },
+        {
+          "name": "read tiny objects (random, warm)",
+          "objects": 50000,
+          "logical_bytes": 52350725,
+          "seconds": 3.829381742,
+          "ops_per_sec": 13056.938004275888,
+          "mb_per_sec": 13.037494102552333,
+          "latency": {
+            "n": 50000,
+            "p50_us": 232,
+            "p95_us": 2335,
+            "p99_us": 4659,
+            "max_us": 16931,
+            "mean_us": 609
+          },
+          "io": {
+            "write_bytes": 0,
+            "read_bytes": 0,
+            "syscalls_write": 0
+          },
+          "errors": 0
+        },
+        {
+          "name": "write similar large versions",
+          "objects": 200,
+          "logical_bytes": 104857600,
+          "seconds": 3.018777072,
+          "ops_per_sec": 66.25199384712964,
+          "mb_per_sec": 33.12599692356482,
+          "latency": {
+            "n": 200,
+            "p50_us": 20097,
+            "p95_us": 73594,
+            "p99_us": 85466,
+            "max_us": 89508,
+            "mean_us": 29943
+          },
+          "io": {
+            "write_bytes": 216084480,
+            "read_bytes": 0,
+            "syscalls_write": 78795
+          },
+          "errors": 0
+        },
+        {
+          "name": "read large versions (random)",
+          "objects": 200,
+          "logical_bytes": 104857600,
+          "seconds": 1.295085225,
+          "ops_per_sec": 154.42999127721498,
+          "mb_per_sec": 77.21499563860749,
+          "latency": {
+            "n": 200,
+            "p50_us": 13472,
+            "p95_us": 21774,
+            "p99_us": 29916,
+            "max_us": 30384,
+            "mean_us": 12784
+          },
+          "io": {
+            "write_bytes": 0,
+            "read_bytes": 0,
+            "syscalls_write": 0
+          },
+          "errors": 0
+        },
+        {
+          "name": "mixed 70% read 30% write",
+          "objects": 53455,
+          "logical_bytes": 56035944,
+          "seconds": 15.003578562,
+          "ops_per_sec": 3562.816682640436,
+          "mb_per_sec": 3.561819626400868,
+          "latency": {
+            "n": 53455,
+            "p50_us": 156,
+            "p95_us": 10938,
+            "p99_us": 31484,
+            "max_us": 77104,
+            "mean_us": 2244
+          },
+          "io": {
+            "write_bytes": 558862336,
+            "read_bytes": 0,
+            "syscalls_write": 185813
+          },
+          "errors": 0
+        }
+      ],
+      "size_after_tiny_bytes": 603144192,
+      "size_after_versions_bytes": 708157440,
+      "tiny_logical_bytes": 209717086,
+      "versions_logical_bytes": 104857600,
+      "cold_start_ms": 8,
+      "peak_rss_kib": 860652,
+      "baseline_rss_kib": 525124,
+      "crash": [
+        {
+          "run": 0,
+          "acked": 661,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 90,
+          "kill_after_ms": 908
+        },
+        {
+          "run": 1,
+          "acked": 1349,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 149,
+          "kill_after_ms": 1039
+        },
+        {
+          "run": 2,
+          "acked": 1208,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 136,
+          "kill_after_ms": 1070
+        },
+        {
+          "run": 3,
+          "acked": 1724,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 140,
+          "kill_after_ms": 1181
+        },
+        {
+          "run": 4,
+          "acked": 865,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 84,
+          "kill_after_ms": 624
+        }
+      ],
+      "compaction": {
+        "deleted": 100000,
+        "size_before_bytes": 755666944,
+        "size_after_delete_bytes": 755666944,
+        "size_after_maintenance_bytes": 441581568,
+        "delete_seconds": 48.123588616,
+        "maintenance_seconds": 14.654997188
+      },
+      "chunk_dedup_potential": {
+        "avg_chunk_bytes": 16384,
+        "logical_bytes": 104857600,
+        "unique_bytes": 38622720,
+        "saved_fraction": 0.6316650390625
+      }
+    },
+    {
+      "target": "s3-minio",
+      "config": {
+        "Seed": 7,
+        "Tiny": 200000,
+        "Versions": 200,
+        "VersionSize": 524288,
+        "ChangePct": 2,
+        "ReadSample": 50000,
+        "Workers": 8,
+        "MixedFor": 15000000000,
+        "DeleteShare": 0.5
+      },
+      "phases": [
+        {
+          "name": "write tiny objects",
+          "objects": 200000,
+          "logical_bytes": 209717086,
+          "seconds": 184.866485187,
+          "ops_per_sec": 1081.8618626177256,
+          "mb_per_sec": 1.0818715919624413,
+          "latency": {
+            "n": 200000,
+            "p50_us": 6767,
+            "p95_us": 12558,
+            "p99_us": 17452,
+            "max_us": 493837,
+            "mean_us": 7393
+          },
+          "io": {
+            "write_bytes": 1824251904,
+            "read_bytes": 63197184,
+            "syscalls_write": 404829
+          },
+          "errors": 0
+        },
+        {
+          "name": "read tiny objects (random, warm)",
+          "objects": 50000,
+          "logical_bytes": 52350725,
+          "seconds": 13.642296383,
+          "ops_per_sec": 3665.072110755945,
+          "mb_per_sec": 3.6596142230101396,
+          "latency": {
+            "n": 50000,
+            "p50_us": 1858,
+            "p95_us": 4645,
+            "p99_us": 7563,
+            "max_us": 32009,
+            "mean_us": 2180
+          },
+          "io": {
+            "write_bytes": 61440,
+            "read_bytes": 0,
+            "syscalls_write": 50806
+          },
+          "errors": 0
+        },
+        {
+          "name": "write similar large versions",
+          "objects": 200,
+          "logical_bytes": 104857600,
+          "seconds": 2.412621818,
+          "ops_per_sec": 82.89736854232494,
+          "mb_per_sec": 41.44868427116247,
+          "latency": {
+            "n": 200,
+            "p50_us": 23309,
+            "p95_us": 34775,
+            "p99_us": 42375,
+            "max_us": 44188,
+            "mean_us": 24106
+          },
+          "io": {
+            "write_bytes": 108965888,
+            "read_bytes": 0,
+            "syscalls_write": 1227
+          },
+          "errors": 0
+        },
+        {
+          "name": "read large versions (random)",
+          "objects": 200,
+          "logical_bytes": 104857600,
+          "seconds": 0.294289535,
+          "ops_per_sec": 679.6028271953334,
+          "mb_per_sec": 339.8014135976667,
+          "latency": {
+            "n": 200,
+            "p50_us": 2571,
+            "p95_us": 4552,
+            "p99_us": 8698,
+            "max_us": 8764,
+            "mean_us": 2832
+          },
+          "io": {
+            "write_bytes": 0,
+            "read_bytes": 0,
+            "syscalls_write": 1039
+          },
+          "errors": 0
+        },
+        {
+          "name": "mixed 70% read 30% write",
+          "objects": 30428,
+          "logical_bytes": 31864165,
+          "seconds": 15.003145902,
+          "ops_per_sec": 2028.1079847356402,
+          "mb_per_sec": 2.0254442616718182,
+          "latency": {
+            "n": 30428,
+            "p50_us": 2821,
+            "p95_us": 10061,
+            "p99_us": 14482,
+            "max_us": 190258,
+            "mean_us": 3943
+          },
+          "io": {
+            "write_bytes": 99479552,
+            "read_bytes": 2125824,
+            "syscalls_write": 39877
+          },
+          "errors": 0
+        }
+      ],
+      "size_after_tiny_bytes": 819253248,
+      "size_after_versions_bytes": 925757440,
+      "tiny_logical_bytes": 209717086,
+      "versions_logical_bytes": 104857600,
+      "cold_start_ms": 516,
+      "peak_rss_kib": 438700,
+      "baseline_rss_kib": 121724,
+      "crash": [
+        {
+          "run": 0,
+          "acked": 862,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 2851,
+          "kill_after_ms": 908
+        },
+        {
+          "run": 1,
+          "acked": 912,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 3547,
+          "kill_after_ms": 1039
+        },
+        {
+          "run": 2,
+          "acked": 969,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 3227,
+          "kill_after_ms": 1070
+        },
+        {
+          "run": 3,
+          "acked": 1048,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 3601,
+          "kill_after_ms": 1181
+        },
+        {
+          "run": 4,
+          "acked": 381,
+          "acked_lost": 0,
+          "acked_corrupt": 0,
+          "present_but_torn": 0,
+          "present_unacked": 0,
+          "recovery_ms": 1585,
+          "kill_after_ms": 624
+        }
+      ],
+      "compaction": {
+        "deleted": 100000,
+        "size_before_bytes": 963100672,
+        "size_after_delete_bytes": 882802688,
+        "size_after_maintenance_bytes": 882802688,
+        "delete_seconds": 358.450498564,
+        "maintenance_seconds": 0
+      },
+      "chunk_dedup_potential": {
+        "avg_chunk_bytes": 16384,
+        "logical_bytes": 104857600,
+        "unique_bytes": 38622720,
+        "saved_fraction": 0.6316650390625
+      }
+    }
+  ]
+}

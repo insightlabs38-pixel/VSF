@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -run Pins|Pinned|Ancestors|Shared|Dies|Racing|DryRun|Orphan ./storage/gc/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/gc	13.892s
+[exit 0]

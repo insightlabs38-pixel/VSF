@@ -1,0 +1,49 @@
+{
+  "task_id": "VSF-B13-T01",
+  "status": "DONE",
+  "branch": "vsf/b13-durable-storage",
+  "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+  "commit": "3e9bf525a76b8229b5d638f1e0ad9031e039018b",
+  "paths": [
+    "backend/storage/meta/store.go",
+    "backend/storage/meta/sqlite.go",
+    "backend/storage/meta/migrate.go",
+    "backend/storage/meta/postgres.go",
+    "backend/storage/meta/migrations/"
+  ],
+  "acceptance": "Local and hosted metadata schemas support restart, schema upgrades, concurrent readers/writers and tenant isolation.",
+  "positive": {
+    "fixture": "restart after kill, v1 to v2 upgrade keeping data, concurrent readers and writers, tenant-scoped rows on SQLite; the same schema on a real temporary PostgreSQL cluster with row-level security",
+    "command": "go -C backend test -race -count=1 ./storage/meta/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "drifted and too-new migrations refused, cross-tenant artifact links and roots refused by composite keys, tenant RLS hides other tenants, concurrent root claims succeed exactly once, drift on the PostgreSQL schema refused",
+    "command": "go -C backend test -tags integration -race -count=1 -run Postgres ./storage/meta/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "metadata schema 2",
+    "primitive": "Schema 2 adds manifest parents and annotations; migrations are numbered, checksummed and immutable."
+  },
+  "security_and_source_permissions": "Row-level security trusts the data layer to set the tenant; it does not defend against a compromised application process.",
+  "performance_memory_storage": "Not measured at this task; see T03.",
+  "known_limitations": [
+    "The PostgreSQL leg is tested at the SQL level; no Go driver is added until the hosted service exists (B15)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T01.metadata-store-units.log",
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T01.postgres-schema-against-a-real-cluster.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,5 +1,11 @@
 {
   "schema": "vsf-vuln-ignores-v1",
   "note": "Each entry needs a reason and an expiry date; past its date it no longer suppresses anything.",
-  "ignores": []
+  "ignores": [
+    {
+      "id": "GO-2026-5024",
+      "reason": "golang.org/x/sys windows.NewNTUnicodeString integer overflow. The fix (0.44.0) requires Go 1.25 and the pinned toolchain is 1.24.7 (ADR-025). The function is only defined, never called, by modernc.org/sqlite, modernc.org/libc or VSF code (checked with grep and a windows dependency listing); linux builds do not link the package.",
+      "expires": "2027-01-15"
+    }
+  ]
 }

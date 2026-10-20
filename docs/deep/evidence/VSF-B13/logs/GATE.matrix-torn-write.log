@@ -1,0 +1,6 @@
+$ go -C backend test -race -count=1 -run Torn|Crash|Durable|BitRot|HalfBuilt|Restart|OnlyOneProcess ./storage/blob/ ./storage/artifact/ ./storage/meta/ ./storage/bench/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/blob	1.034s [no tests to run]
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/artifact	2.112s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/meta	6.236s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bench	1.036s [no tests to run]
+[exit 0]

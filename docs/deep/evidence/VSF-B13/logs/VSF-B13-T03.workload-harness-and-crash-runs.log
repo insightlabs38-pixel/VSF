@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 ./storage/bench/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bench	10.812s
+[exit 0]

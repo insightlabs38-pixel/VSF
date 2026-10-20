@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 ./storage/artifact/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/artifact	2.578s
+[exit 0]

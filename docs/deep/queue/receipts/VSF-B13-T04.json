@@ -1,0 +1,50 @@
+{
+  "task_id": "VSF-B13-T04",
+  "status": "DONE",
+  "branch": "vsf/b13-durable-storage",
+  "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+  "commit": "bda09d8ecdeaa84de02986c8eb86ac8899bd5153",
+  "paths": [
+    "backend/storage/gc/",
+    "backend/storage/bundle/",
+    "backend/storage/artifact/artifact.go",
+    "backend/storage/meta/sqlite.go",
+    "backend/storage/blob/"
+  ],
+  "acceptance": "Pinned versions survive garbage collection and restart; corrupted bundle fails import without half-committed state.",
+  "positive": {
+    "fixture": "pins, holds, unexpired leases, kept root history, young versions and ancestors survive; a pinned version survives collection and a store restart; export then import reproduces the same bytes",
+    "command": "go -C backend test -race -count=1 ./storage/gc/ ./storage/bundle/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "collector killed at every phase and finished by recovery; collection racing publishes leaves every visible manifest verifying; damaged byte or truncation at sampled offsets and re-sealed tampering refused with the store unchanged",
+    "command": "go -C backend test -race -count=1 -run 'Dies|Racing|Damaged|Tampering|Dropped' ./storage/gc/ ./storage/bundle/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "Bundle format v1; blob listings now carry the stored time; no contract change."
+  },
+  "security_and_source_permissions": "An import never moves a live channel and verifies every signature and digest before writing.",
+  "performance_memory_storage": "Not measured at this task.",
+  "known_limitations": [
+    "The publish gate is in process; a second process writing the same store must not run beside the collector",
+    "Roots, pins, holds and artifact provenance in a bundle are not signed"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T04.garbage-collection-and-recovery.log",
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T04.export-import-bundles.log"
+  ],
+  "review_result": "ACCEPTED"
+}

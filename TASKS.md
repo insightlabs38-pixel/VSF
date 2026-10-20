@@ -17,14 +17,14 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B08 | G8 | 10/10 | DONE | PROCEED |
 | B09 | G9 | 9/9 | DONE | PROCEED |
 | B10 | G10 | 8/8 | DONE | PROCEED |
-| B11 | G11 | 0/6 | READY | - |
+| B11 | G11 | 0/6 | BLOCKED | - |
 | B12 | G12 | 0/6 | TODO | - |
-| B13 | G13 | 0/5 | READY | - |
-| B14 | G14 | 0/6 | TODO | - |
-| B15 | G15 | 0/5 | TODO | - |
+| B13 | G13 | 5/5 | DONE | PROCEED |
+| B14 | G14 | 0/7 | READY | - |
+| B15 | G15 | 0/6 | TODO | - |
 | B16 | G16 | 0/7 | TODO | - |
-| B17 | G17 | 0/5 | TODO | - |
-| B18 | G18 | 0/5 | TODO | - |
+| B17 | G17 | 0/5 | READY | - |
+| B18 | G18 | 0/7 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
 | B20 | G20 | 0/4 | TODO | - |
 | B21 | G21 | 0/3 | TODO | - |
@@ -172,7 +172,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B11 · Expand common application coverage
 
-- [ ] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding _(READY)_
+- [ ] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding _(BLOCKED)_
 - [ ] `VSF-B11-T02` Grow real conformance implementations for critical catalog families
 - [ ] `VSF-B11-T03` Evaluate custom combobox/select, virtualization and modal form dependencies
 - [ ] `VSF-B11-T04` Add upload/download and export with security policy
@@ -190,20 +190,21 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B13 · Implement durable storage and ZEROS3 qualification
 
-- [ ] `VSF-B13-T01` Build SQLite hot store and PostgreSQL hosted metadata schema _(READY)_
-- [ ] `VSF-B13-T02` Implement content-addressed artifact abstraction and signed manifest writes
-- [ ] `VSF-B13-T03` Measure filesystem/SQLite/commodity S3 versus ZEROS3 under workload suite
-- [ ] `VSF-B13-T04` Add pin-aware GC, crash recovery and export/import bundles
-- [ ] `VSF-B13-T05` Encrypt/isolate account-derived caches and remove secrets from shared structures
+- [x] `VSF-B13-T01` Build SQLite hot store and PostgreSQL hosted metadata schema
+- [x] `VSF-B13-T02` Implement content-addressed artifact abstraction and signed manifest writes
+- [x] `VSF-B13-T03` Measure filesystem/SQLite/commodity S3 versus ZEROS3 under workload suite
+- [x] `VSF-B13-T04` Add pin-aware GC, crash recovery and export/import bundles
+- [x] `VSF-B13-T05` Encrypt/isolate account-derived caches and remove secrets from shared structures
 
 ### B14 · Harden authentication and managed sessions
 
-- [ ] `VSF-B14-T01` Implement explicit identity binding and token audience validation
+- [ ] `VSF-B14-T01` Implement explicit identity binding and token audience validation _(READY)_
 - [ ] `VSF-B14-T02` Test OAuth PKCE and source-managed browser sign-in lifecycle
 - [ ] `VSF-B14-T03` Integrate OS keychain or vault, redaction and scoped credential injection
 - [ ] `VSF-B14-T04` Handle MFA/reauth pause and revoke behavior
 - [ ] `VSF-B14-T05` Add per-account capability profile and session expiry
 - [ ] `VSF-B14-T06` Let a person confirm in the user interface a request an agent caller will run
+- [ ] `VSF-B14-T07` Rewrap sealed data under the newest key and move a tenant's keys between installations
 
 ### B15 · Build hosted and on-demand execution
 
@@ -212,6 +213,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B15-T03` Separate interactive and background queues and per-session locks
 - [ ] `VSF-B15-T04` Add task pause/resume for authentication and unknown commits
 - [ ] `VSF-B15-T05` Meter resource usage with stable event IDs
+- [ ] `VSF-B15-T06` Scope decoded-contract caches to the calling principal before multi-tenant hosting
 
 ### B16 · Build desktop and premium localhost service
 
@@ -225,7 +227,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B17 · Ship user-visible version control features
 
-- [ ] `VSF-B17-T01` Design version timeline/diff/compatibility status presentation
+- [ ] `VSF-B17-T01` Design version timeline/diff/compatibility status presentation _(READY)_
 - [ ] `VSF-B17-T02` Add contract pins and migration preview in UI/CLI/API
 - [ ] `VSF-B17-T03` Implement history quotas and pin retention by entitlement
 - [ ] `VSF-B17-T04` Add provenance/sanitized export and snapshot restore conditions
@@ -238,6 +240,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B18-T03` Evaluate warm plan specialization and lazy module loading
 - [ ] `VSF-B18-T04` Test persistent memory growth, cache eviction and GC churn
 - [ ] `VSF-B18-T05` Optimize source-app browsing without changing semantics
+- [ ] `VSF-B18-T06` Pack small artifacts to cut block and commit amplification
+- [ ] `VSF-B18-T07` Qualify ZEROS3 against the measured filesystem and S3 baselines
 
 ### B19 · Launch provider-agnostic billing and entitlements
 

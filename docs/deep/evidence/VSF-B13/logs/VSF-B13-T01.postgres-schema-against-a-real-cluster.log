@@ -1,0 +1,3 @@
+$ go -C backend test -tags integration -race -count=1 -run Postgres ./storage/meta/
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/meta	11.588s
+[exit 0]
