@@ -1,0 +1,35 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "combobox-select-only",
+  "dossierSha256": "d428f22282565a714e649f65618a13721da4551ef33428e7162d3d1339f58ad9",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "src/annotation.ts (shape)",
+      "dossier accessibility tree"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Favorite Fruit",
+      "kind": "choice"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Choose a favorite fruit",
+      "needs": [
+        "Favorite Fruit"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

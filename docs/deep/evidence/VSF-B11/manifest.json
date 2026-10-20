@@ -1,0 +1,106 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B11",
+  "gate": "G11",
+  "runs": [
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-unit",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-unit.log",
+      "sha256": "9f12a6befc7c1f0c7ccf7020d848916592cc43929794689dc3d87725f906f55e"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-validate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-validate.log",
+      "sha256": "4128357b2ba1e36384a30837582f153cd0c02503c932d35ddde1f8d94431f933"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-reproducible-capture",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-reproducible-capture.log",
+      "sha256": "914288b3a588d89097d34562d00b1009a964236a8eaaa722f9d1411012c5d0c9"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-baseline-dev-validation",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-baseline-dev-validation.log",
+      "sha256": "dd587afcbb5a1851209bbc075196db25433e4458fd90a2d71a204111a04b42b7"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-baseline-heldout-aggregate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition heldout --aggregate-only --out docs/deep/evidence/VSF-B11/corpus-baseline-heldout.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-baseline-heldout-aggregate.log",
+      "sha256": "5f012c1a514300886a68b47ebc92715e02a15a7b4355b286f2345d8e72326d48"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "negative-independence-rules",
+      "command": "node --conditions=source --test --test-name-pattern=refused|only pinned|stays inside|must declare|false claim tests/corpus/test/corpus.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.negative-independence-rules.log",
+      "sha256": "e3f54b9a868ebce28eed3480bd5cf3973fa54cc1dda0873f93e1b1cc5fb1f98a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "typecheck",
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.typecheck.log",
+      "sha256": "8a04b30c50502780fb29f8b249fca16f9c5736fc447846e1bebb7e306ca07c20"
+    },
+    {
+      "task_id": "GATE",
+      "name": "queue-tests",
+      "command": "pnpm --filter @vsf/queue run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.queue-tests.log",
+      "sha256": "c4cc31696d136fdb08814c3b377309e19a10707ee57df196d218128a1a25211b"
+    },
+    {
+      "task_id": "GATE",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.biome.log",
+      "sha256": "3199580a1c0022fe7d7b493a408c35218a3404291f238b3d7b2030d198b03a53"
+    },
+    {
+      "task_id": "GATE",
+      "name": "comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "secrets",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.secrets.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    }
+  ]
+}

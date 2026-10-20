@@ -1,0 +1,852 @@
+{
+  "schema": "vsf-corpus-v1",
+  "observedAt": "2026-10-20",
+  "environment": "Chromium (Playwright 1.56.1 build 1194), headless, linux x64, viewport 1280x800, en-US, UTC, reduced motion, external requests blocked except pinned npm CDN files",
+  "sources": [
+    {
+      "id": "apg",
+      "name": "W3C ARIA Authoring Practices Guide examples",
+      "upstream": "https://github.com/w3c/aria-practices",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/w3c/aria-practices",
+        "rev": "0f765e4dc33e966026114ac12a8380db1de3b787",
+        "sparse": ["content"]
+      },
+      "license": "W3C-Software-and-Document-License",
+      "licenseNote": "Examples are published for reuse in W3C documents and implementations; read-only local evaluation.",
+      "framework": "vanilla-js",
+      "family": "apg",
+      "partition": "dev",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": "content/"
+      },
+      "groundTruth": {
+        "basis": [
+          "APG pattern documentation: roles, states, properties and keyboard interaction tables",
+          "Chromium accessibility tree"
+        ],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "combobox-autocomplete-list",
+          "path": "/patterns/combobox/examples/combobox-autocomplete-list.html",
+          "workflows": ["choose a US state by typing into an editable combobox and picking from the suggestion list"]
+        },
+        {
+          "id": "combobox-select-only",
+          "path": "/patterns/combobox/examples/combobox-select-only.html",
+          "workflows": ["choose a fruit from a select-only combobox"]
+        },
+        {
+          "id": "combobox-datepicker",
+          "path": "/patterns/combobox/examples/combobox-datepicker.html",
+          "workflows": ["enter or pick a travel date through a date picker dialog"]
+        },
+        {
+          "id": "dialog-modal",
+          "path": "/patterns/dialog-modal/examples/dialog.html",
+          "workflows": ["open a modal dialog to add a delivery address"],
+          "state": "modal dialog opened",
+          "steps": [
+            {
+              "click": "button:has-text('Add Delivery Address')"
+            }
+          ]
+        },
+        {
+          "id": "menu-button-links",
+          "path": "/patterns/menu-button/examples/menu-button-links.html",
+          "workflows": ["open a menu of links from a menu button"],
+          "state": "menu opened",
+          "steps": [
+            {
+              "click": "#menubutton"
+            }
+          ]
+        },
+        {
+          "id": "data-grids",
+          "path": "/patterns/grid/examples/data-grids.html",
+          "workflows": ["browse and sort a data grid of records", "select rows with checkboxes"]
+        },
+        {
+          "id": "sortable-table",
+          "path": "/patterns/table/examples/sortable-table.html",
+          "workflows": ["sort a table of records by column"]
+        },
+        {
+          "id": "treegrid",
+          "path": "/patterns/treegrid/examples/treegrid-1.html",
+          "workflows": ["expand and collapse rows of a tree grid"]
+        },
+        {
+          "id": "listbox-scrollable",
+          "path": "/patterns/listbox/examples/listbox-scrollable.html",
+          "workflows": ["choose one item in a scrollable listbox"]
+        },
+        {
+          "id": "tabs-manual",
+          "path": "/patterns/tabs/examples/tabs-manual.html",
+          "workflows": ["switch between tabs of content"]
+        },
+        {
+          "id": "checkbox-mixed",
+          "path": "/patterns/checkbox/examples/checkbox-mixed.html",
+          "workflows": ["choose condiments with a select-all tri-state checkbox"]
+        },
+        {
+          "id": "radio",
+          "path": "/patterns/radio/examples/radio.html",
+          "workflows": ["choose a pizza crust with radio buttons"]
+        },
+        {
+          "id": "disclosure-faq",
+          "path": "/patterns/disclosure/examples/disclosure-faq.html",
+          "workflows": ["expand and collapse FAQ answers"]
+        },
+        {
+          "id": "toolbar",
+          "path": "/patterns/toolbar/examples/toolbar.html",
+          "workflows": ["apply text formatting from a toolbar"]
+        }
+      ]
+    },
+    {
+      "id": "jquery-ui",
+      "name": "jQuery UI demos",
+      "upstream": "https://github.com/jquery/jquery-ui",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/jquery/jquery-ui",
+        "rev": "dcf10556bbcfdf3e10e3ea30966482e201191411"
+      },
+      "license": "MIT",
+      "licenseNote": "Demos ship with the library under the MIT license.",
+      "framework": "jquery",
+      "family": "jquery-ui",
+      "partition": "dev",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": ""
+      },
+      "groundTruth": {
+        "basis": ["jQuery UI demo descriptions and API documentation", "Chromium accessibility tree"],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "autocomplete-combobox",
+          "path": "/demos/autocomplete/combobox.html",
+          "workflows": ["choose a programming language with a custom combobox"]
+        },
+        {
+          "id": "autocomplete-default",
+          "path": "/demos/autocomplete/default.html",
+          "workflows": ["type to get suggestions and pick one"]
+        },
+        {
+          "id": "datepicker-default",
+          "path": "/demos/datepicker/default.html",
+          "workflows": ["pick a date from a calendar popup"],
+          "state": "calendar popup opened",
+          "steps": [
+            {
+              "click": "#datepicker"
+            }
+          ]
+        },
+        {
+          "id": "dialog-modal-form",
+          "path": "/demos/dialog/modal-form.html",
+          "workflows": ["create a new user through a modal form dialog"],
+          "state": "modal form opened",
+          "steps": [
+            {
+              "click": "#create-user"
+            }
+          ]
+        },
+        {
+          "id": "dialog-modal-confirmation",
+          "path": "/demos/dialog/modal-confirmation.html",
+          "workflows": ["confirm a destructive action in a modal dialog"]
+        },
+        {
+          "id": "selectmenu-default",
+          "path": "/demos/selectmenu/default.html",
+          "workflows": ["choose values in styled select menus"]
+        },
+        {
+          "id": "spinner-default",
+          "path": "/demos/spinner/default.html",
+          "workflows": ["step a number with spinner controls"]
+        },
+        {
+          "id": "tabs-default",
+          "path": "/demos/tabs/default.html",
+          "workflows": ["switch between tabs of content"]
+        },
+        {
+          "id": "accordion-default",
+          "path": "/demos/accordion/default.html",
+          "workflows": ["open one section of an accordion"]
+        },
+        {
+          "id": "checkboxradio-default",
+          "path": "/demos/checkboxradio/default.html",
+          "workflows": ["choose a hotel rating and bed type with styled radios and checkboxes"]
+        },
+        {
+          "id": "menu-default",
+          "path": "/demos/menu/default.html",
+          "workflows": ["pick an item from a nested menu"]
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "name": "Choices.js demo page",
+      "upstream": "https://github.com/Choices-js/Choices",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/Choices-js/Choices",
+        "rev": "e132628ac74dd427a9a454caf042c65d3065d170"
+      },
+      "license": "MIT",
+      "licenseNote": "Demo page ships with the library under the MIT license.",
+      "framework": "vanilla-js",
+      "family": "choices",
+      "partition": "dev",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": "public/"
+      },
+      "groundTruth": {
+        "basis": ["Choices.js README and demo descriptions", "Chromium accessibility tree"],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "demo",
+          "path": "/index.html",
+          "workflows": ["choose values in custom single, multiple, searchable and grouped select controls"]
+        }
+      ]
+    },
+    {
+      "id": "datatables",
+      "name": "DataTables examples",
+      "upstream": "https://github.com/DataTables/DataTables",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/DataTables/DataTables",
+        "rev": "f60c41290255c3fcab38999161f9529226b655c9"
+      },
+      "license": "MIT",
+      "licenseNote": "Examples ship with the library under the MIT license.",
+      "framework": "jquery",
+      "family": "datatables",
+      "partition": "validation",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": ""
+      },
+      "groundTruth": {
+        "basis": ["DataTables example descriptions and reference documentation", "Chromium accessibility tree"],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "zero-configuration",
+          "path": "/examples/basic_init/zero_configuration.html",
+          "workflows": ["search, sort and page a table of employees"]
+        },
+        {
+          "id": "scroll-y",
+          "path": "/examples/basic_init/scroll_y.html",
+          "workflows": ["scroll a fixed-height table"]
+        },
+        {
+          "id": "multi-col-sort",
+          "path": "/examples/basic_init/multi_col_sort.html",
+          "workflows": ["sort a table by several columns"]
+        },
+        {
+          "id": "select-row",
+          "path": "/examples/api/select_row.html",
+          "workflows": ["select a row and delete it"]
+        },
+        {
+          "id": "multi-filter",
+          "path": "/examples/api/multi_filter.html",
+          "workflows": ["filter a table with per-column search"]
+        },
+        {
+          "id": "ajax-source",
+          "path": "/examples/data_sources/ajax.html",
+          "workflows": ["browse a table loaded from a JSON source"]
+        }
+      ]
+    },
+    {
+      "id": "adminlte",
+      "name": "AdminLTE 4 admin dashboard template",
+      "upstream": "https://github.com/ColorlibHQ/AdminLTE",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/ColorlibHQ/AdminLTE",
+        "rev": "e13df78a4d0c287e5fa57308e293f63e44e9dd0f"
+      },
+      "license": "MIT",
+      "licenseNote": "Template distributed under the MIT license.",
+      "framework": "bootstrap-5",
+      "family": "bootstrap-admin",
+      "partition": "heldout",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": "dist/"
+      },
+      "groundTruth": {
+        "basis": ["AdminLTE page descriptions", "Chromium accessibility tree"],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "settings",
+          "path": "/pages/settings.html",
+          "workflows": ["edit account settings and save"]
+        },
+        {
+          "id": "profile",
+          "path": "/pages/profile.html",
+          "workflows": ["view and edit a user profile"]
+        },
+        {
+          "id": "projects",
+          "path": "/pages/projects.html",
+          "workflows": ["browse a list of projects and open or delete one"]
+        },
+        {
+          "id": "file-manager",
+          "path": "/pages/file-manager.html",
+          "workflows": ["browse files and folders, upload and delete"]
+        },
+        {
+          "id": "kanban",
+          "path": "/pages/kanban.html",
+          "workflows": ["move cards between kanban columns"]
+        },
+        {
+          "id": "search-results",
+          "path": "/pages/search-results.html",
+          "workflows": ["search and page through results"]
+        },
+        {
+          "id": "invoice",
+          "path": "/pages/invoice.html",
+          "workflows": ["view an invoice and print it"]
+        },
+        {
+          "id": "login",
+          "path": "/examples/login.html",
+          "workflows": ["sign in with email and password"]
+        },
+        {
+          "id": "register",
+          "path": "/examples/register.html",
+          "workflows": ["register a new account"]
+        }
+      ],
+      "dropped": [
+        {
+          "page": "calendar",
+          "reason": "its calendar bundle is generated on demand by the CDN and cannot be pinned offline, so the captured state would be degraded"
+        }
+      ]
+    },
+    {
+      "id": "todomvc-react",
+      "name": "TodoMVC (react)",
+      "upstream": "https://github.com/tastejs/todomvc",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/tastejs/todomvc",
+        "rev": "ff43b02e59dfa604386bb382034b2cd07c2bcd8a",
+        "sparse": ["examples/react"]
+      },
+      "license": "MIT",
+      "licenseNote": "TodoMVC examples are MIT licensed.",
+      "framework": "react",
+      "family": "todomvc",
+      "partition": "heldout",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": "examples/"
+      },
+      "groundTruth": {
+        "basis": [
+          "TodoMVC application specification (behaviour of add, toggle, edit, delete, filter, clear)",
+          "Chromium accessibility tree"
+        ],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "empty",
+          "path": "/react/dist/index.html",
+          "workflows": ["add a todo"]
+        },
+        {
+          "id": "with-items",
+          "path": "/react/dist/index.html",
+          "workflows": ["complete, edit, delete and filter todos", "clear completed todos"],
+          "state": "three todos added",
+          "steps": [
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Buy milk"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Walk the dog"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Read a book"
+              }
+            },
+            {
+              "press": "Enter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "todomvc-lit",
+      "name": "TodoMVC (lit)",
+      "upstream": "https://github.com/tastejs/todomvc",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/tastejs/todomvc",
+        "rev": "ff43b02e59dfa604386bb382034b2cd07c2bcd8a",
+        "sparse": ["examples/lit"]
+      },
+      "license": "MIT",
+      "licenseNote": "TodoMVC examples are MIT licensed.",
+      "framework": "lit",
+      "family": "todomvc",
+      "partition": "heldout",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": "examples/"
+      },
+      "groundTruth": {
+        "basis": [
+          "TodoMVC application specification (behaviour of add, toggle, edit, delete, filter, clear)",
+          "Chromium accessibility tree"
+        ],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "empty",
+          "path": "/lit/dist/index.html",
+          "workflows": ["add a todo"]
+        },
+        {
+          "id": "with-items",
+          "path": "/lit/dist/index.html",
+          "workflows": ["complete, edit, delete and filter todos", "clear completed todos"],
+          "state": "three todos added",
+          "steps": [
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Buy milk"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Walk the dog"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Read a book"
+              }
+            },
+            {
+              "press": "Enter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "todomvc-jquery",
+      "name": "TodoMVC (jquery-handlebars)",
+      "upstream": "https://github.com/tastejs/todomvc",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/tastejs/todomvc",
+        "rev": "ff43b02e59dfa604386bb382034b2cd07c2bcd8a",
+        "sparse": ["examples/jquery"]
+      },
+      "license": "MIT",
+      "licenseNote": "TodoMVC examples are MIT licensed.",
+      "framework": "jquery-handlebars",
+      "family": "todomvc",
+      "partition": "heldout",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": "examples/"
+      },
+      "groundTruth": {
+        "basis": [
+          "TodoMVC application specification (behaviour of add, toggle, edit, delete, filter, clear)",
+          "Chromium accessibility tree"
+        ],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "empty",
+          "path": "/jquery/dist/index.html",
+          "workflows": ["add a todo"]
+        },
+        {
+          "id": "with-items",
+          "path": "/jquery/dist/index.html",
+          "workflows": ["complete, edit, delete and filter todos", "clear completed todos"],
+          "state": "three todos added",
+          "steps": [
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Buy milk"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Walk the dog"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Read a book"
+              }
+            },
+            {
+              "press": "Enter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "todomvc-svelte",
+      "name": "TodoMVC (svelte)",
+      "upstream": "https://github.com/tastejs/todomvc",
+      "fetch": {
+        "kind": "git",
+        "url": "https://github.com/tastejs/todomvc",
+        "rev": "ff43b02e59dfa604386bb382034b2cd07c2bcd8a",
+        "sparse": ["examples/svelte"]
+      },
+      "license": "MIT",
+      "licenseNote": "TodoMVC examples are MIT licensed.",
+      "framework": "svelte",
+      "family": "todomvc",
+      "partition": "heldout",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "static",
+        "root": "examples/"
+      },
+      "groundTruth": {
+        "basis": [
+          "TodoMVC application specification (behaviour of add, toggle, edit, delete, filter, clear)",
+          "Chromium accessibility tree"
+        ],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "empty",
+          "path": "/svelte/dist/index.html",
+          "workflows": ["add a todo"]
+        },
+        {
+          "id": "with-items",
+          "path": "/svelte/dist/index.html",
+          "workflows": ["complete, edit, delete and filter todos", "clear completed todos"],
+          "state": "three todos added",
+          "steps": [
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Buy milk"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Walk the dog"
+              }
+            },
+            {
+              "press": "Enter"
+            },
+            {
+              "fill": {
+                "selector": ".new-todo",
+                "value": "Read a book"
+              }
+            },
+            {
+              "press": "Enter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "filebrowser",
+      "name": "File Browser",
+      "upstream": "https://github.com/filebrowser/filebrowser",
+      "fetch": {
+        "kind": "release",
+        "url": "https://github.com/filebrowser/filebrowser/releases/download/v2.63.23/linux-amd64-filebrowser.tar.gz",
+        "sha256": "b14db2bb8033caa3f80205eb6578b2ed0744ebd9e716b790bc4a9703ce909e88"
+      },
+      "license": "Apache-2.0",
+      "licenseNote": "Released binary run locally with a disposable database and sample files; the test account is created by the harness and has no other use.",
+      "framework": "vue",
+      "family": "filebrowser",
+      "partition": "heldout",
+      "privacy": "public-no-personal-data",
+      "serve": {
+        "kind": "process",
+        "port": 0,
+        "health": "/login",
+        "setup": [
+          ["{src}/filebrowser", "config", "init", "-d", "{work}/fb.db"],
+          [
+            "{src}/filebrowser",
+            "users",
+            "add",
+            "admin",
+            "admin-local-test-pass-123",
+            "--perm.admin",
+            "-d",
+            "{work}/fb.db"
+          ],
+          [
+            "sh",
+            "-c",
+            "mkdir -p {work}/root/photos {work}/root/docs && printf 'hello\\n' > {work}/root/readme.txt && printf 'id,name\\n1,a\\n' > {work}/root/data.csv && printf 'x' > {work}/root/docs/notes.md"
+          ]
+        ],
+        "command": ["{src}/filebrowser", "-d", "{work}/fb.db", "-r", "{work}/root", "-a", "127.0.0.1", "-p", "{port}"]
+      },
+      "groundTruth": {
+        "basis": [
+          "File Browser documentation (users, sharing, uploads, downloads, commands)",
+          "Chromium accessibility tree"
+        ],
+        "method": "annotation by a separate agent session from a dossier of the browser accessibility tree and the page description only; the annotator never saw VSF recognizer code, output or this repository's tests",
+        "annotator": "separate-agent (fresh context per batch; id recorded in each annotation)"
+      },
+      "pages": [
+        {
+          "id": "login",
+          "path": "/login",
+          "workflows": ["sign in to the file manager"]
+        },
+        {
+          "id": "files",
+          "path": "/login",
+          "workflows": ["browse files and folders", "open a folder"],
+          "state": "signed in, file listing",
+          "steps": [
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Username\"]",
+                "value": "admin"
+              }
+            },
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Password\"]",
+                "value": "admin-local-test-pass-123"
+              }
+            },
+            {
+              "click": "role=button[name=\"Login\"]",
+              "waitMs": 1500
+            }
+          ]
+        },
+        {
+          "id": "new-folder",
+          "path": "/login",
+          "workflows": ["create a folder"],
+          "state": "new folder prompt opened",
+          "steps": [
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Username\"]",
+                "value": "admin"
+              }
+            },
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Password\"]",
+                "value": "admin-local-test-pass-123"
+              }
+            },
+            {
+              "click": "role=button[name=\"Login\"]",
+              "waitMs": 1500
+            },
+            {
+              "click": "role=button[name=\"New folder\"]"
+            }
+          ]
+        },
+        {
+          "id": "upload",
+          "path": "/login",
+          "workflows": ["upload a file or a folder"],
+          "state": "upload menu opened",
+          "steps": [
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Username\"]",
+                "value": "admin"
+              }
+            },
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Password\"]",
+                "value": "admin-local-test-pass-123"
+              }
+            },
+            {
+              "click": "role=button[name=\"Login\"]",
+              "waitMs": 1500
+            },
+            {
+              "click": "role=button[name=\"Upload\"]"
+            }
+          ]
+        },
+        {
+          "id": "selected",
+          "path": "/login",
+          "workflows": ["select a file and act on it", "download, rename, move, copy, delete or share the selection"],
+          "state": "one file selected",
+          "steps": [
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Username\"]",
+                "value": "admin"
+              }
+            },
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Password\"]",
+                "value": "admin-local-test-pass-123"
+              }
+            },
+            {
+              "click": "role=button[name=\"Login\"]",
+              "waitMs": 1500
+            },
+            {
+              "click": "role=button[name=\"readme.txt\"]"
+            }
+          ]
+        },
+        {
+          "id": "settings",
+          "path": "/login",
+          "workflows": ["change profile settings and preferences"],
+          "state": "settings opened",
+          "steps": [
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Username\"]",
+                "value": "admin"
+              }
+            },
+            {
+              "fill": {
+                "selector": "role=textbox[name=\"Password\"]",
+                "value": "admin-local-test-pass-123"
+              }
+            },
+            {
+              "click": "role=button[name=\"Login\"]",
+              "waitMs": 1500
+            },
+            {
+              "click": "role=button[name=\"Settings\"]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

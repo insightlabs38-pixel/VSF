@@ -1,0 +1,84 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "datatables",
+  "page": "ajax-source",
+  "dossierSha256": "f5f909bd5cc5fe5d31f514f392f6530cc1153b4fa67ab35fa4b11f71bdb73d23",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-datatables-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      "dossier datatables/ajax-source.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Show entries",
+      "kind": "choice"
+    },
+    {
+      "name": "Search:",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Previous",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Employees",
+      "columns": [
+        "Name",
+        "Position",
+        "Office",
+        "Extn.",
+        "Start date",
+        "Salary"
+      ],
+      "rows": 10
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "pagination",
+      "name": "Pagination"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Column sorting"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Browse employees",
+      "needs": [
+        "Employees",
+        "Pagination",
+        "Show entries"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Search employees",
+      "needs": [
+        "Search:",
+        "Employees"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

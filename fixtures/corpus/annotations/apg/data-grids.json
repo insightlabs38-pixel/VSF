@@ -1,0 +1,99 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "data-grids",
+  "dossierSha256": "376b7c6a226d972cf8a9adf00c75753d7fbabc44e0e27eed28cd36590eb94d55",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape only)",
+      "dossier accessibility tree and description"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Date",
+      "effect": "read"
+    },
+    {
+      "name": "Amount",
+      "effect": "read"
+    },
+    {
+      "name": "Hide Type and Category",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Transactions January 1 through January 6",
+      "columns": [
+        "Date",
+        "Type",
+        "Description",
+        "Amount",
+        "Balance"
+      ],
+      "rows": 6
+    },
+    {
+      "name": "Transactions January 1 through January 7",
+      "columns": [
+        "Date",
+        "Type",
+        "Description",
+        "Category",
+        "Amount",
+        "Balance"
+      ],
+      "rows": 7
+    },
+    {
+      "name": "Transactions for January 1 through January 15",
+      "columns": [
+        "Date",
+        "Type",
+        "Description",
+        "Category",
+        "Amount",
+        "Balance"
+      ],
+      "rows": 5
+    }
+  ],
+  "composites": [
+    {
+      "kind": "sortable_columns",
+      "name": "Transactions January 1 through January 7"
+    },
+    {
+      "kind": "editable_cell",
+      "name": "Transactions January 1 through January 7"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Sort transactions by date or amount",
+      "needs": [
+        "Date",
+        "Amount",
+        "Transactions January 1 through January 7",
+        "Transactions January 1 through January 7"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Hide type and category columns",
+      "needs": [
+        "Hide Type and Category",
+        "Transactions for January 1 through January 15"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

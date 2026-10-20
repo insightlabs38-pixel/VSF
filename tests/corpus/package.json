@@ -1,0 +1,15 @@
+{
+  "name": "@vsf/corpus-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vsf/observer": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts",
+    "corpus": "node --conditions=source src/cli.ts"
+  }
+}

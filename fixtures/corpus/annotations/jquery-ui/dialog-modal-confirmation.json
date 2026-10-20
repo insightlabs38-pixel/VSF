@@ -1,0 +1,57 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "dialog-modal-confirmation",
+  "dossierSha256": "a0674c6bdaed90a84b113d96ff69adb47bcb407b9152d4424485a638f7866724",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/dialog-modal-confirmation.md"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Close",
+      "effect": "navigation"
+    },
+    {
+      "name": "Delete all items",
+      "effect": "destructive"
+    },
+    {
+      "name": "Cancel",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "dialog",
+      "name": "Empty the recycle bin?"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Confirm emptying the recycle bin",
+      "needs": [
+        "Empty the recycle bin?",
+        "Delete all items"
+      ],
+      "effect": "destructive"
+    },
+    {
+      "name": "Dismiss the confirmation",
+      "needs": [
+        "Empty the recycle bin?",
+        "Cancel"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

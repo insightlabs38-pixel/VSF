@@ -1,0 +1,73 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "sortable-table",
+  "dossierSha256": "4aa6f041c24189fea2a6659a201685d8a2ac94b6d143b446c1706255ab82a1ef",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape only)",
+      "dossier accessibility tree and description"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Display sort icon in headers of sortable columns that are not sorted",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "First Name",
+      "effect": "read"
+    },
+    {
+      "name": "Last Name",
+      "effect": "read"
+    },
+    {
+      "name": "Company",
+      "effect": "read"
+    },
+    {
+      "name": "Favorite Number",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable).",
+      "columns": [
+        "First Name",
+        "Last Name",
+        "Company",
+        "Address",
+        "Favorite Number"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "sortable_columns",
+      "name": "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable)."
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Sort students by column",
+      "needs": [
+        "First Name",
+        "Last Name",
+        "Company",
+        "Favorite Number",
+        "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable)."
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

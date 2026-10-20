@@ -1,0 +1,65 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "menu-button-links",
+  "dossierSha256": "63f87fffc44110acaec2f857d128f93fb9448edd8e6e7132fc19c89b96e795b4",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "src/annotation.ts (shape)",
+      "dossier accessibility tree"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "WAI-ARIA Quick Links",
+      "effect": "navigation"
+    },
+    {
+      "name": "W3C Home Page",
+      "effect": "navigation"
+    },
+    {
+      "name": "W3C Web Accessibility Initiative",
+      "effect": "navigation"
+    },
+    {
+      "name": "Accessible Rich Internet Application Specification",
+      "effect": "navigation"
+    },
+    {
+      "name": "WAI-ARIA Authoring Practices",
+      "effect": "navigation"
+    },
+    {
+      "name": "WAI-ARIA Implementation Guide",
+      "effect": "navigation"
+    },
+    {
+      "name": "Accessible Name and Description",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "menu",
+      "name": "WAI-ARIA Quick Links"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Open a quick link from the menu",
+      "needs": [
+        "WAI-ARIA Quick Links",
+        "W3C Home Page"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

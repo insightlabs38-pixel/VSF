@@ -62,6 +62,14 @@
         "cmd": ["pnpm", "--filter", "@vsf/checks", "--filter", "@vsf/redact", "run", "test"]
       },
       {
+        "name": "corpus-validate",
+        "cmd": ["node", "--conditions=source", "tests/corpus/src/cli.ts", "validate"]
+      },
+      {
+        "name": "corpus-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/corpus-tests", "run", "test"]
+      },
+      {
         "name": "queue-validate",
         "cmd": ["node", "tools/queue/src/cli.ts", "validate"]
       },

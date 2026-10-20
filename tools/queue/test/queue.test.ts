@@ -146,3 +146,35 @@ test("a correction task must state scope, contract, tests and evidence", () => {
   const found = validateQueue(paths, plan, freshState(plan), { git: false });
   assert.ok(found.some((p) => p.id === "plan.correction-task" && p.message.includes("adversarial")));
 });
+
+test("a prerequisite appended with a later number runs first when an earlier task depends on it", () => {
+  const plan = structuredClone(miniPlan);
+  const first = plan.tasks.find((t) => t.id === "VSF-B00-T01");
+  if (!first) throw new Error("fixture");
+  first.dependencies = ["VSF-B00-T03"];
+  plan.tasks.push({
+    id: "VSF-B00-T03",
+    batch: "B00",
+    sequence: 3,
+    title: "Appended prerequisite",
+    acceptance: "d",
+    dependencies: [],
+    origin: "adaptive",
+    adr: "ADR-040",
+    lane: "correction",
+    scope: "x",
+    contract: "x",
+    positive: "x",
+    adversarial: "x",
+    evidence_required: "x",
+  });
+  const state = freshState(plan);
+  assert.deepEqual(nextTask(plan, state), { batch: "B00", task: "VSF-B00-T03" });
+  assert.equal(state.task_states["VSF-B00-T01"]?.status, "TODO");
+  assert.throws(() => setTask(plan, state, "VSF-B00-T01", "READY"), /not allowed|dependencies/);
+  setTask(plan, state, "VSF-B00-T03", "ACTIVE");
+  setTask(plan, state, "VSF-B00-T03", "REVIEW");
+  setTask(plan, state, "VSF-B00-T03", "DONE", { commit: SHA, receipt: "r.json" });
+  assert.equal(state.task_states["VSF-B00-T01"]?.status, "READY");
+  assert.deepEqual(nextTask(plan, state), { batch: "B00", task: "VSF-B00-T01" });
+});

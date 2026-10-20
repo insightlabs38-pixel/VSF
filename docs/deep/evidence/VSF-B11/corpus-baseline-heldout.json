@@ -1,0 +1,491 @@
+{
+ "schema": "vsf-corpus-result-v1",
+ "partitions": [
+  "heldout"
+ ],
+ "pages": 23,
+ "missing": [],
+ "summary": {
+  "pages": 23,
+  "structural": {
+   "fields": {
+    "annotated": 72,
+    "found": 56,
+    "recall": 0.778,
+    "semanticExact": 0.964,
+    "semanticExactOrCoarser": 0.964
+   },
+   "actions": {
+    "annotated": 137,
+    "found": 137,
+    "recall": 1,
+    "semanticExact": 0.241,
+    "semanticExactOrCoarser": 0.241
+   },
+   "collections": {
+    "annotated": 17,
+    "found": 2,
+    "recall": 0.118,
+    "semanticExact": 1,
+    "semanticExactOrCoarser": 1
+   }
+  },
+  "falseClaims": 10,
+  "contradictions": {
+   "fields": 2,
+   "actions": 8,
+   "collections": 0
+  },
+  "composites": {
+   "annotated": 32,
+   "recognized": 0,
+   "recall": 0,
+   "byKind": {
+    "tabs": 4,
+    "filter_bar": 10,
+    "pagination": 2,
+    "drag_drop": 1,
+    "bulk_selection": 8,
+    "sortable_columns": 4,
+    "dialog": 2,
+    "file_input": 1
+   }
+  },
+  "workflows": {
+   "annotated": 62,
+   "supported": 21,
+   "coverage": 0.339
+  },
+  "unannotatedRecognized": {
+   "fields": 57,
+   "actions": 1088,
+   "collections": 0
+  },
+  "recognizedOnPage": {
+   "fields": 116,
+   "actions": 1225,
+   "collections": 2
+  },
+  "declaredUnsupported": 1,
+  "executableOperationCorrectness": {
+   "measured": false,
+   "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+  },
+  "latency": {
+   "recognizeMsP50": 26.6,
+   "recognizeMsMax": 34.6,
+   "nodesMax": 866,
+   "rssKbMax": 11088
+  }
+ },
+ "perSource": {
+  "adminlte": {
+   "pages": 9,
+   "structural": {
+    "fields": {
+     "annotated": 20,
+     "found": 18,
+     "recall": 0.9,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 54,
+     "found": 54,
+     "recall": 1,
+     "semanticExact": 0.352,
+     "semanticExactOrCoarser": 0.352
+    },
+    "collections": {
+     "annotated": 9,
+     "found": 2,
+     "recall": 0.222,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    }
+   },
+   "falseClaims": 4,
+   "contradictions": {
+    "fields": 0,
+    "actions": 4,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 8,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "tabs": 3,
+     "filter_bar": 2,
+     "pagination": 2,
+     "drag_drop": 1
+    }
+   },
+   "workflows": {
+    "annotated": 27,
+    "supported": 8,
+    "coverage": 0.296
+   },
+   "unannotatedRecognized": {
+    "fields": 29,
+    "actions": 963,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 47,
+    "actions": 1017,
+    "collections": 2
+   },
+   "declaredUnsupported": 1,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 26.2,
+    "recognizeMsMax": 32.1,
+    "nodesMax": 866,
+    "rssKbMax": 11088
+   }
+  },
+  "todomvc-react": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 4,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 7,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 34.6,
+    "recognizeMsMax": 34.6,
+    "nodesMax": 42,
+    "rssKbMax": 11080
+   }
+  },
+  "todomvc-lit": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 3,
+    "actions": 7,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 6,
+    "actions": 10,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 33.1,
+    "recognizeMsMax": 33.1,
+    "nodesMax": 55,
+    "rssKbMax": 11084
+   }
+  },
+  "todomvc-jquery": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 7,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 10,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 34.1,
+    "recognizeMsMax": 34.1,
+    "nodesMax": 48,
+    "rssKbMax": 11084
+   }
+  },
+  "todomvc-svelte": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 4,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 7,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 25.8,
+    "recognizeMsMax": 25.8,
+    "nodesMax": 43,
+    "rssKbMax": 11080
+   }
+  },
+  "filebrowser": {
+   "pages": 6,
+   "structural": {
+    "fields": {
+     "annotated": 28,
+     "found": 26,
+     "recall": 0.929,
+     "semanticExact": 0.923,
+     "semanticExactOrCoarser": 0.923
+    },
+    "actions": {
+     "annotated": 71,
+     "found": 71,
+     "recall": 1,
+     "semanticExact": 0.197,
+     "semanticExactOrCoarser": 0.197
+    },
+    "collections": {
+     "annotated": 4,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 6,
+   "contradictions": {
+    "fields": 2,
+    "actions": 4,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 16,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "filter_bar": 4,
+     "sortable_columns": 4,
+     "bulk_selection": 4,
+     "dialog": 2,
+     "file_input": 1,
+     "tabs": 1
+    }
+   },
+   "workflows": {
+    "annotated": 15,
+    "supported": 1,
+    "coverage": 0.067
+   },
+   "unannotatedRecognized": {
+    "fields": 10,
+    "actions": 88,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 39,
+    "actions": 159,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 27,
+    "recognizeMsMax": 32,
+    "nodesMax": 206,
+    "rssKbMax": 11084
+   }
+  }
+ }
+}

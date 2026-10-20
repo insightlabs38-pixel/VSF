@@ -1,0 +1,35 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "tabs-manual",
+  "dossierSha256": "77ee58d74116882a4a62520c0fc79463c3ac9842b920ac074338e3cf700b5a43",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape only)",
+      "dossier accessibility tree and description"
+    ]
+  },
+  "fields": [],
+  "actions": [],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "tabs",
+      "name": "Danish Composers"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Switch between composer tabs",
+      "needs": [
+        "Danish Composers"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

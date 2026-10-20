@@ -1,0 +1,154 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "new-folder",
+  "dossierSha256": "b198772e1805d9a97026e518228489a52593a9fc6c1f621b2259b534413f48e1",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/filebrowser/new-folder.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search...",
+      "kind": "text"
+    },
+    {
+      "name": "New directory name",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Home",
+      "effect": "navigation"
+    },
+    {
+      "name": "Images",
+      "effect": "read"
+    },
+    {
+      "name": "Music",
+      "effect": "read"
+    },
+    {
+      "name": "Video",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Switch view",
+      "effect": "navigation"
+    },
+    {
+      "name": "Download",
+      "effect": "read"
+    },
+    {
+      "name": "Upload",
+      "effect": "state_change"
+    },
+    {
+      "name": "Info",
+      "effect": "read"
+    },
+    {
+      "name": "Select multiple",
+      "effect": "navigation"
+    },
+    {
+      "name": "Sort by name",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by size",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by last modified",
+      "effect": "read"
+    },
+    {
+      "name": "Clear",
+      "effect": "navigation"
+    },
+    {
+      "name": "Cancel",
+      "effect": "navigation"
+    },
+    {
+      "name": "Create",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [
+        "Name",
+        "Size",
+        "Last modified"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search and file types"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sort headers"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Multiple selection"
+    },
+    {
+      "kind": "dialog",
+      "name": "New directory"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Browse and open a folder",
+      "needs": [
+        "Files and folders",
+        "Home"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Search or filter files",
+      "needs": [
+        "Search...",
+        "Images",
+        "Music",
+        "Video",
+        "PDF",
+        "Search and file types"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Create a folder",
+      "needs": [
+        "New directory",
+        "New directory name",
+        "Create",
+        "Cancel"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

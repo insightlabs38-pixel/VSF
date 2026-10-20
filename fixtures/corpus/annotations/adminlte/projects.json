@@ -1,0 +1,119 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "projects",
+  "dossierSha256": "e5e1b554cc7f3e0475d4de0d22f2b5dda8265514c7ed2610e3874f1e85f26959",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/projects.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search projects",
+      "kind": "text"
+    },
+    {
+      "name": "Filter by status",
+      "kind": "choice"
+    }
+  ],
+  "actions": [
+    {
+      "name": "New project",
+      "effect": "state_change"
+    },
+    {
+      "name": "View",
+      "effect": "read"
+    },
+    {
+      "name": "Edit",
+      "effect": "state_change"
+    },
+    {
+      "name": "More",
+      "effect": "unknown"
+    },
+    {
+      "name": "Previous",
+      "effect": "navigation"
+    },
+    {
+      "name": "1",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "All projects",
+      "columns": [
+        "Project",
+        "Status",
+        "Progress",
+        "Team",
+        "Budget",
+        "Due",
+        "Priority",
+        "Actions"
+      ],
+      "rows": 6
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search projects and Filter by status"
+    },
+    {
+      "kind": "pagination",
+      "name": "Pagination"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Find a project",
+      "needs": [
+        "Search projects",
+        "Filter by status",
+        "All projects"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Create a project",
+      "needs": [
+        "New project"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Open or edit a project",
+      "needs": [
+        "All projects",
+        "View",
+        "Edit"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Page through projects",
+      "needs": [
+        "Pagination",
+        "Previous",
+        "Next"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

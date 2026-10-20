@@ -13,6 +13,8 @@
       "!fixtures/versions",
       "!fixtures/ui/compositions",
       "!registry",
+      "!.corpus-cache",
+      "!fixtures/corpus",
       "!artifacts",
       "!compiler/target",
       "!compiler/target-abi-inject",

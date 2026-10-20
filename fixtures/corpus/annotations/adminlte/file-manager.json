@@ -1,0 +1,111 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "file-manager",
+  "dossierSha256": "faab9b6669a0dc6915e36fcd37289a16d3d5eda755e64fc2b715b780b91e1564",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/file-manager.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search files",
+      "kind": "text"
+    },
+    {
+      "name": "View",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Upload files",
+      "effect": "state_change"
+    },
+    {
+      "name": "New folder",
+      "effect": "state_change"
+    },
+    {
+      "name": "My Drive 24",
+      "effect": "navigation"
+    },
+    {
+      "name": "Documents 12",
+      "effect": "navigation"
+    },
+    {
+      "name": "Design 8",
+      "effect": "navigation"
+    },
+    {
+      "name": "v2.4 candidates 4",
+      "effect": "navigation"
+    },
+    {
+      "name": "Archive 28",
+      "effect": "navigation"
+    },
+    {
+      "name": "Invoices 41",
+      "effect": "navigation"
+    },
+    {
+      "name": "Shared with me 9",
+      "effect": "navigation"
+    },
+    {
+      "name": "Starred 6",
+      "effect": "navigation"
+    },
+    {
+      "name": "Recent",
+      "effect": "navigation"
+    },
+    {
+      "name": "Trash 3",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [],
+      "rows": 9
+    }
+  ],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Upload files",
+      "needs": [
+        "Upload files"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Create a folder",
+      "needs": [
+        "New folder"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Browse folders and files",
+      "needs": [
+        "My Drive 24",
+        "Files and folders",
+        "Search files",
+        "View"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "todomvc-svelte",
+  "page": "empty",
+  "dossierSha256": "a16eac8767e0a36916ced75dc75d51822940e5a63d1a787946f87d36b0cb959e",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-todomvc",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md guide (revised scope)",
+      "annotation.ts type shapes",
+      "dossier todomvc-svelte/empty.md (Chromium accessibility tree)",
+      "TodoMVC specification behaviour: add, toggle, edit on double click, delete, filter All/Active/Completed, clear completed, toggle all"
+    ]
+  },
+  "fields": [
+    {
+      "name": "What needs to be done?",
+      "kind": "text"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Add a todo",
+      "needs": [
+        "What needs to be done?"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

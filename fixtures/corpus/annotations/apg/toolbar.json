@@ -1,0 +1,107 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "toolbar",
+  "dossierSha256": "120b0ddbb275ca743ac8d379b5efbf4fcb9d452f2a815c5b38b4df04cc8be404",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-c",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/apg/toolbar.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Text Align Left",
+      "kind": "toggle"
+    },
+    {
+      "name": "Text Align Center",
+      "kind": "toggle"
+    },
+    {
+      "name": "Text Align Right",
+      "kind": "toggle"
+    },
+    {
+      "name": "Night Mode",
+      "kind": "toggle"
+    },
+    {
+      "name": "Font size in points",
+      "kind": "range"
+    },
+    {
+      "name": "Text Sample",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Bold",
+      "effect": "state_change"
+    },
+    {
+      "name": "Italic",
+      "effect": "state_change"
+    },
+    {
+      "name": "Underline",
+      "effect": "state_change"
+    },
+    {
+      "name": "Copy",
+      "effect": "state_change"
+    },
+    {
+      "name": "Paste",
+      "effect": "state_change"
+    },
+    {
+      "name": "Cut",
+      "effect": "state_change"
+    },
+    {
+      "name": "Font: Sans-serif",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "other",
+      "name": "Text Formatting"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Format text",
+      "needs": [
+        "Text Formatting",
+        "Bold",
+        "Italic",
+        "Underline",
+        "Text Align Left",
+        "Text Align Center",
+        "Text Align Right",
+        "Font size in points",
+        "Text Sample"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Cut, copy and paste text",
+      "needs": [
+        "Copy",
+        "Paste",
+        "Cut",
+        "Text Sample"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

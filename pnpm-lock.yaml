@@ -127,6 +127,12 @@ importers:
         specifier: workspace:*
         version: link:../../frontend/packages/wasm-host
 
+  tests/corpus:
+    dependencies:
+      '@vsf/observer':
+        specifier: workspace:*
+        version: link:../../frontend/packages/observer
+
   tests/cross-language:
     dependencies:
       '@vsf/extension':

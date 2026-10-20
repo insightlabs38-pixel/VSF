@@ -1,0 +1,107 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "todomvc-svelte",
+  "page": "with-items",
+  "dossierSha256": "1941f2df35fa6f0e8cac50f47b82589ba543250e21b3931e9596a1a75741f8fc",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-todomvc",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md guide (revised scope)",
+      "annotation.ts type shapes",
+      "dossier todomvc-svelte/with-items.md (Chromium accessibility tree)",
+      "TodoMVC specification behaviour: add, toggle, edit on double click, delete, filter All/Active/Completed, clear completed, toggle all"
+    ]
+  },
+  "fields": [
+    {
+      "name": "What needs to be done?",
+      "kind": "text"
+    },
+    {
+      "name": "❯ Mark all as complete",
+      "kind": "toggle"
+    },
+    {
+      "name": "Buy milk",
+      "kind": "toggle"
+    },
+    {
+      "name": "Walk the dog",
+      "kind": "toggle"
+    },
+    {
+      "name": "Read a book",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Active",
+      "effect": "read"
+    },
+    {
+      "name": "Completed",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Todo list",
+      "columns": [],
+      "rows": 3
+    }
+  ],
+  "composites": [
+    {
+      "kind": "bulk_selection",
+      "name": "❯ Mark all as complete"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Filters"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Add a todo",
+      "needs": [
+        "What needs to be done?"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Mark all todos complete or active",
+      "needs": [
+        "❯ Mark all as complete"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Complete a todo",
+      "needs": [
+        "Todo list",
+        "Buy milk",
+        "Walk the dog",
+        "Read a book"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Filter todos by status",
+      "needs": [
+        "Filters",
+        "All",
+        "Active",
+        "Completed"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

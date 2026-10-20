@@ -1,0 +1,108 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "kanban",
+  "dossierSha256": "5a01e8f4eea32f5da378872b75aedf751a426efd7ae26b5bb53c827970726456",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/kanban.md"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Filter",
+      "effect": "read"
+    },
+    {
+      "name": "Sort",
+      "effect": "read"
+    },
+    {
+      "name": "Add lane",
+      "effect": "state_change"
+    },
+    {
+      "name": "Lane actions",
+      "effect": "unknown"
+    },
+    {
+      "name": "Add card",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Backlog",
+      "columns": [],
+      "rows": 3
+    },
+    {
+      "name": "To do",
+      "columns": [],
+      "rows": 2
+    },
+    {
+      "name": "In progress",
+      "columns": [],
+      "rows": 2
+    },
+    {
+      "name": "Done",
+      "columns": [],
+      "rows": 3
+    }
+  ],
+  "composites": [
+    {
+      "kind": "drag_drop",
+      "name": "Kanban board"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Move a card between lanes",
+      "needs": [
+        "Kanban board",
+        "Backlog",
+        "To do",
+        "In progress",
+        "Done"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Add a card to a lane",
+      "needs": [
+        "Add card"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Add a lane",
+      "needs": [
+        "Add lane"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Filter and sort cards",
+      "needs": [
+        "Filter",
+        "Sort"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": [
+    {
+      "what": "Moving cards between lanes",
+      "reason": "Interaction is only possible by dragging; no keyboard or button alternative appears in the tree"
+    }
+  ]
+}

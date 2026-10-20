@@ -1,0 +1,66 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "datatables",
+  "page": "scroll-y",
+  "dossierSha256": "a5e2cbe8d50e52d1716160e9da4a08b312869ddd614c2bc11f3d011634d48d03",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-datatables-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      "dossier datatables/scroll-y.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search:",
+      "kind": "text"
+    }
+  ],
+  "actions": [],
+  "collections": [
+    {
+      "name": "Employees",
+      "columns": [
+        "Name",
+        "Position",
+        "Office",
+        "Age",
+        "Start date",
+        "Salary"
+      ],
+      "rows": 57
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Column sorting"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Search employees",
+      "needs": [
+        "Search:",
+        "Employees"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Sort employees by column",
+      "needs": [
+        "Column sorting",
+        "Employees"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

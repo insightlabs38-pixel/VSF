@@ -1,0 +1,336 @@
+{
+ "schema": "vsf-corpus-captures-v1",
+ "environment": "Chromium (Playwright 1.56.1 build 1194), headless, linux x64, viewport 1280x800, en-US, UTC, reduced motion, external requests blocked except pinned npm CDN files",
+ "pages": {
+  "adminlte/file-manager": {
+   "structureSha256": "1f0e8fe2606e23df635b65effd14c596129439484b16c4d6c06a8ba5955651c8",
+   "nodes": 866,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "adminlte/invoice": {
+   "structureSha256": "703da99af50a7099e475b532d143001a9a51b232f8fa515631275751929d153e",
+   "nodes": 644,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "adminlte/kanban": {
+   "structureSha256": "2f3e8d05c858e94274b1e0738d1f96548511979a8378f955b2180748c453bbde",
+   "nodes": 689,
+   "blocked": 0,
+   "mirrored": 9
+  },
+  "adminlte/login": {
+   "structureSha256": "ec94c557f449f845d88e2b811a47f5e55632512cb2200c079575f0b3c4a94ad6",
+   "nodes": 43,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "adminlte/profile": {
+   "structureSha256": "a6d04c7b4e79c76a389c2e84740793828fc02c5832402f01da5cee5e08e25165",
+   "nodes": 692,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "adminlte/projects": {
+   "structureSha256": "870bf76ea39c7f8918064dadcc632b896887cb53f984c9d38f2b25109b6a4643",
+   "nodes": 794,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "adminlte/register": {
+   "structureSha256": "b36ae45e904d5a12da7679cd26063f886f634e12a86aa6cd0ea152054fb54251",
+   "nodes": 47,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "adminlte/search-results": {
+   "structureSha256": "76df751305caad9189e5ac755afb788919a345d421262adc250be2784ea24422",
+   "nodes": 715,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "adminlte/settings": {
+   "structureSha256": "02a8db762e540e11171524c3d3cb1612ef4da74123369132637cc38dd627463d",
+   "nodes": 705,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  "apg/checkbox-mixed": {
+   "structureSha256": "4f1ebdbe81df83389662d76390dd4b3038c8699cae245f6e6e3f89485887bcc3",
+   "nodes": 427,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  "apg/combobox-autocomplete-list": {
+   "structureSha256": "43b9b667d6ab1dfc814b71d037c2e95525c2742dc9b76dba798b2e7fc5bfa2dd",
+   "nodes": 1126,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  "apg/combobox-datepicker": {
+   "structureSha256": "66b9c63c7f8b85c86ee48b4f25a01e34f48df12fe5ae02a96c078a9081cdf071",
+   "nodes": 1375,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  "apg/combobox-select-only": {
+   "structureSha256": "5ba9ebc80dea265ac16a3fdafb49ca9b26b5f9d48150200a7e7ce88c2e4735c0",
+   "nodes": 536,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  "apg/data-grids": {
+   "structureSha256": "a4c14898645d922fc0f6b7392f11fac254da17c89fd684b5ce425818eb8cea16",
+   "nodes": 2716,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  "apg/dialog-modal": {
+   "structureSha256": "2f401f94e87a0885f39eab55d95da1685ba04b2943ae4c34f5f6f58a89906cdc",
+   "nodes": 883,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  "apg/disclosure-faq": {
+   "structureSha256": "3fae54c6511d3b0f755269682ea3f3fbf407a4245db178760931737bb7f297e4",
+   "nodes": 417,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  "apg/listbox-scrollable": {
+   "structureSha256": "b24aa8f792e79f6276388d02e7276cca5db045829338c764f5a4d6b776507b80",
+   "nodes": 846,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  "apg/menu-button-links": {
+   "structureSha256": "74dff4098851bd342aa9b76ff6fa1e315c2cb5c8222ca4ecfa1f53f69e4f9f14",
+   "nodes": 569,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  "apg/radio": {
+   "structureSha256": "26d4c5b2333da5e332b9581b2be051c9ab3ae63b1b116af2e6aa4829fddb6e6c",
+   "nodes": 488,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  "apg/sortable-table": {
+   "structureSha256": "6f974bfa982b82acca25d73816551b523b18f04f8cf6c9958c6d55000c3e5643",
+   "nodes": 493,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  "apg/tabs-manual": {
+   "structureSha256": "f456e4a81e76dd034cc9701909860f0f9a142ad7d50e28be0cd1d2642a88a6e4",
+   "nodes": 593,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  "apg/toolbar": {
+   "structureSha256": "6e13ea4a940c212b4abffc6593a4c895c7bc32a49ddef8fb2071acce53a052f2",
+   "nodes": 1401,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  "apg/treegrid": {
+   "structureSha256": "29bb76b4f88086823e47d8bc9dcf1729748018e85f78f0357c260a20fd573495",
+   "nodes": 879,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  "choices/demo": {
+   "structureSha256": "bd9d2ed23730b6823dcc4ff1b280fd3b2fbcabacedbd0cf8af92a39f74cb3b10",
+   "nodes": 640,
+   "blocked": 6,
+   "mirrored": 0
+  },
+  "datatables/ajax-source": {
+   "structureSha256": "bba7c2a43f1d5ed1c13a4ef06993a84ed4b6002ef72b0b07fbc973969c850f94",
+   "nodes": 2572,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  "datatables/multi-col-sort": {
+   "structureSha256": "a6ddf010b4c03e3c83f9cc5e7e6fc5a0e7818565591719411aafa40943a25931",
+   "nodes": 457,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  "datatables/multi-filter": {
+   "structureSha256": "54e23e7103d036a5ec206b529da7fba8073cf188b67f2e4ce7284b97633371c6",
+   "nodes": 582,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  "datatables/scroll-y": {
+   "structureSha256": "eba57114814889111313d2f1ca1a0fe76528e32285cbe6eb74bfad9f7c2037a5",
+   "nodes": 796,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  "datatables/select-row": {
+   "structureSha256": "4aeb6a7730437f5d3035a7cf7a4ac06bb9953d46c2062bc4c7b6283d683b0b8a",
+   "nodes": 470,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  "datatables/zero-configuration": {
+   "structureSha256": "5f490f32263580fbc17e681afc1bafea14d680b2fab49a92a995fd97e12ab50d",
+   "nodes": 418,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  "filebrowser/files": {
+   "structureSha256": "d75bb4de4ef223bc7ac3f57ece9de504fafb9f786251bdd7838ab8a6cf4d8634",
+   "nodes": 174,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "filebrowser/login": {
+   "structureSha256": "de043bb2a6d668ba620e78117d2ccab0333d4f0654bfdcc686374aa66eaf43f9",
+   "nodes": 26,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "filebrowser/new-folder": {
+   "structureSha256": "f432dd608e400194705267455a748a4c5d0f43cc8f6726728d028b037822c89c",
+   "nodes": 187,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "filebrowser/selected": {
+   "structureSha256": "05a9da66866e6183b02db4342b5a1e485c87545cb07cf8329ccdde673a6e4510",
+   "nodes": 206,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "filebrowser/settings": {
+   "structureSha256": "979643432e6dc44ea8a9e651b24fc6707069cafea2ffabb7a6ad09745ec2f4b9",
+   "nodes": 199,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "filebrowser/upload": {
+   "structureSha256": "36074768612b7eca2e0a9044de972939bc04ef682ec25f2b056648b706e8095c",
+   "nodes": 188,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/accordion-default": {
+   "structureSha256": "644dc83e33048dc92355ca65f9523d211efeeedbaa4f38a6c531a712a31cbf44",
+   "nodes": 28,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/autocomplete-combobox": {
+   "structureSha256": "35f02681cbc230d8bae505e7ee61c6acf761a4464e2a9671e75ad31749bd3dfc",
+   "nodes": 44,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/autocomplete-default": {
+   "structureSha256": "f150ea23732e20228ad5388028abe27853706b21950a4ed09728283e4f61264a",
+   "nodes": 11,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/checkboxradio-default": {
+   "structureSha256": "348e37a93679274452d6e6a592edefec3a94d9cd81d23679b5edf663f25792a2",
+   "nodes": 60,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/datepicker-default": {
+   "structureSha256": "5a2f84220c0fa382a2c8794be53fc9ccb795ae1e9465777b7c0f5d296143b0c7",
+   "nodes": 105,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/dialog-modal-confirmation": {
+   "structureSha256": "691d39ee56e9d68536e314feff3f12341497e048b8464d3a9fdee77592baaa96",
+   "nodes": 23,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/dialog-modal-form": {
+   "structureSha256": "9445dd92f1bc6f427472bcb7161042106387aeddbe33b6e8f1ae1bdc7926fb13",
+   "nodes": 51,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/menu-default": {
+   "structureSha256": "094a1df3c253a55c4c9c1c21d813e07e8f37b4815571e4dffc62ed7a9dc90a8f",
+   "nodes": 50,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/selectmenu-default": {
+   "structureSha256": "a1dc4bedee61522a7ae6b54c01ec1566a04171a62aa7ed1d8f1b3ee0df284d20",
+   "nodes": 73,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/spinner-default": {
+   "structureSha256": "b50a4fc594e8092211a5cc9f977b8ceb27f8944618e25773a413d3c3883f554a",
+   "nodes": 21,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "jquery-ui/tabs-default": {
+   "structureSha256": "e415f4e65126a07f3b02b31bfbfb81c9b6cc6a459cfea8a644bd38bd0f7e7df5",
+   "nodes": 20,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-jquery/empty": {
+   "structureSha256": "37809bfd7b9dd2c6b59d9f9116fd68bada16d17c2736e63f4eccf812a13470d5",
+   "nodes": 30,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-jquery/with-items": {
+   "structureSha256": "a9cec9bb4808b6d3259201032ed440829217a33d4b29d2494f1ab0e7ef089155",
+   "nodes": 48,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-lit/empty": {
+   "structureSha256": "914b0177daf6947476fa166678c9cddd4eb5fd1d445a8b5b6b165e1b7f37772d",
+   "nodes": 23,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-lit/with-items": {
+   "structureSha256": "469b1ed137f37ca1d39f4e865497bb0b1408d39a02a5af1c41caa2d01216aef1",
+   "nodes": 55,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-react/empty": {
+   "structureSha256": "d203069b3c6c1e97f23c7291d29aba301fc6a0f1f6d9d3a0317c416b3d406f22",
+   "nodes": 27,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-react/with-items": {
+   "structureSha256": "3763ac0e0864fe002e89518b37e6913c2d74ecec23d374f81d8783f4b4a1ddca",
+   "nodes": 42,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-svelte/empty": {
+   "structureSha256": "b53b6275d25e275f06affca2fddb5946a8f065ea05381ef678a03296eee78aec",
+   "nodes": 28,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "todomvc-svelte/with-items": {
+   "structureSha256": "cfca51b5458f9c567e9362b582b2f9e6aebdb67835ed33c797d01684ffa54a8d",
+   "nodes": 43,
+   "blocked": 0,
+   "mirrored": 0
+  }
+ }
+}

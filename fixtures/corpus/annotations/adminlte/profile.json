@@ -1,0 +1,71 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "profile",
+  "dossierSha256": "9767c5bd88e64fb6658ad12d972bfe04d7b57340c408108fe25d0d2321b842d2",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/profile.md"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Follow",
+      "effect": "state_change"
+    },
+    {
+      "name": "Like",
+      "effect": "state_change"
+    },
+    {
+      "name": "Comment",
+      "effect": "unknown"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Activity",
+      "columns": [],
+      "rows": 3
+    }
+  ],
+  "composites": [
+    {
+      "kind": "tabs",
+      "name": "Activity, Timeline, Settings"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Follow user",
+      "needs": [
+        "Follow"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Browse profile sections",
+      "needs": [
+        "Activity, Timeline, Settings",
+        "Activity"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "React to activity",
+      "needs": [
+        "Activity",
+        "Like",
+        "Comment"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

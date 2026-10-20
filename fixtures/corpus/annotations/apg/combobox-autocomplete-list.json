@@ -1,0 +1,41 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "combobox-autocomplete-list",
+  "dossierSha256": "ac7f7a599a0ef695e181c944b6c35e1f750646ac42f6612e748d50cbf7f84e49",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "src/annotation.ts (shape)",
+      "dossier accessibility tree"
+    ]
+  },
+  "fields": [
+    {
+      "name": "State",
+      "kind": "choice"
+    }
+  ],
+  "actions": [
+    {
+      "name": "States",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Choose a US state",
+      "needs": [
+        "State",
+        "States"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

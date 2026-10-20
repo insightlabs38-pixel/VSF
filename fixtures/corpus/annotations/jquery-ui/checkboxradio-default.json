@@ -1,0 +1,91 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "checkboxradio-default",
+  "dossierSha256": "ef24a7f95a5254adc25da31d1e9ec585433947d631ce574c3499b4941c360876",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/checkboxradio-default.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "New York",
+      "kind": "toggle"
+    },
+    {
+      "name": "Paris",
+      "kind": "toggle"
+    },
+    {
+      "name": "London",
+      "kind": "toggle"
+    },
+    {
+      "name": "2 Star",
+      "kind": "toggle"
+    },
+    {
+      "name": "3 Star",
+      "kind": "toggle"
+    },
+    {
+      "name": "4 Star",
+      "kind": "toggle"
+    },
+    {
+      "name": "5 Star",
+      "kind": "toggle"
+    },
+    {
+      "name": "2 Double",
+      "kind": "toggle"
+    },
+    {
+      "name": "2 Queen",
+      "kind": "toggle"
+    },
+    {
+      "name": "1 Queen",
+      "kind": "toggle"
+    },
+    {
+      "name": "1 King",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Choose a location",
+      "needs": [
+        "New York",
+        "Paris",
+        "London"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Choose hotel ratings and bed types",
+      "needs": [
+        "2 Star",
+        "3 Star",
+        "4 Star",
+        "5 Star",
+        "2 Double",
+        "2 Queen",
+        "1 Queen",
+        "1 King"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

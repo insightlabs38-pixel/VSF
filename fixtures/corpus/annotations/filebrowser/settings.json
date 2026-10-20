@@ -1,0 +1,178 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "settings",
+  "dossierSha256": "77386cb086dd74f0cadd43f31805758940fd52c198d0811b07a7dc4a7095e264",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/filebrowser/settings.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Allow users to signup",
+      "kind": "toggle"
+    },
+    {
+      "name": "Auto create user home dir while adding new user",
+      "kind": "toggle"
+    },
+    {
+      "name": "Hide the login button from public pages",
+      "kind": "toggle"
+    },
+    {
+      "name": "Base path for user home directories",
+      "kind": "text"
+    },
+    {
+      "name": "Minimum password length",
+      "kind": "range"
+    },
+    {
+      "name": "Disable external links (except documentation)",
+      "kind": "toggle"
+    },
+    {
+      "name": "Disable used disk percentage graph",
+      "kind": "toggle"
+    },
+    {
+      "name": "Theme",
+      "kind": "choice"
+    },
+    {
+      "name": "Instance name",
+      "kind": "text"
+    },
+    {
+      "name": "Branding directory path",
+      "kind": "text"
+    },
+    {
+      "name": "Indicates to maximum size of a request (direct uploads will be used for smaller uploads). You may input a plain integer denoting byte size input or a string like 10MB, 1GB etc.",
+      "kind": "text"
+    },
+    {
+      "name": "Number of retries to perform if a chunk fails to upload.",
+      "kind": "range"
+    },
+    {
+      "name": "Scope",
+      "kind": "text"
+    },
+    {
+      "name": "Language",
+      "kind": "choice"
+    },
+    {
+      "name": "Administrator",
+      "kind": "toggle"
+    },
+    {
+      "name": "Create files and directories",
+      "kind": "toggle"
+    },
+    {
+      "name": "Delete files and directories",
+      "kind": "toggle"
+    },
+    {
+      "name": "Download",
+      "kind": "toggle"
+    },
+    {
+      "name": "Edit files",
+      "kind": "toggle"
+    },
+    {
+      "name": "Rename or move files and directories",
+      "kind": "toggle"
+    },
+    {
+      "name": "Share files (require download permission)",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Profile Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "Share Management",
+      "effect": "navigation"
+    },
+    {
+      "name": "Global Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "User Management",
+      "effect": "navigation"
+    },
+    {
+      "name": "New",
+      "effect": "state_change"
+    },
+    {
+      "name": "Update",
+      "effect": "state_change"
+    },
+    {
+      "name": "Update",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "tabs",
+      "name": "Settings sections"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Change global settings",
+      "needs": [
+        "Allow users to signup",
+        "Base path for user home directories",
+        "Minimum password length",
+        "Theme",
+        "Instance name",
+        "Update"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Edit default settings for new users",
+      "needs": [
+        "Scope",
+        "Language",
+        "Administrator",
+        "Create files and directories",
+        "Delete files and directories",
+        "Edit files",
+        "Update"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Switch settings section",
+      "needs": [
+        "Settings sections",
+        "Profile Settings",
+        "Share Management",
+        "Global Settings",
+        "User Management"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

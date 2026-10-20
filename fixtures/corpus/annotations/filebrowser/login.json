@@ -1,0 +1,46 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "login",
+  "dossierSha256": "56fda0c29e0bf3d0e6ca3be60dfcced3835a05c3ea2ae8c2bbb49771ba44c905",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/filebrowser/login.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Username",
+      "kind": "text"
+    },
+    {
+      "name": "Password",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Login",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Sign in",
+      "needs": [
+        "Username",
+        "Password",
+        "Login"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

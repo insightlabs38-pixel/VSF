@@ -1,0 +1,2544 @@
+{
+ "schema": "vsf-corpus-result-v1",
+ "partitions": [
+  "dev",
+  "validation"
+ ],
+ "pages": 32,
+ "missing": [],
+ "summary": {
+  "pages": 32,
+  "structural": {
+   "fields": {
+    "annotated": 97,
+    "found": 84,
+    "recall": 0.866,
+    "semanticExact": 0.964,
+    "semanticExactOrCoarser": 0.988
+   },
+   "actions": {
+    "annotated": 67,
+    "found": 66,
+    "recall": 0.985,
+    "semanticExact": 0.485,
+    "semanticExactOrCoarser": 0.485
+   },
+   "collections": {
+    "annotated": 12,
+    "found": 12,
+    "recall": 1,
+    "semanticExact": 0.417,
+    "semanticExactOrCoarser": 0.417
+   }
+  },
+  "falseClaims": 12,
+  "contradictions": {
+   "fields": 1,
+   "actions": 4,
+   "collections": 7
+  },
+  "composites": {
+   "annotated": 56,
+   "recognized": 0,
+   "recall": 0,
+   "byKind": {
+    "dialog": 3,
+    "menu": 2,
+    "sortable_columns": 8,
+    "editable_cell": 1,
+    "tree": 1,
+    "tabs": 2,
+    "bulk_selection": 1,
+    "other": 3,
+    "combobox_popup": 22,
+    "date_picker": 1,
+    "filter_bar": 7,
+    "pagination": 5
+   }
+  },
+  "workflows": {
+   "annotated": 54,
+   "supported": 12,
+   "coverage": 0.222
+  },
+  "unannotatedRecognized": {
+   "fields": 168,
+   "actions": 1266,
+   "collections": 65
+  },
+  "recognizedOnPage": {
+   "fields": 252,
+   "actions": 1332,
+   "collections": 77
+  },
+  "declaredUnsupported": 0,
+  "executableOperationCorrectness": {
+   "measured": false,
+   "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+  },
+  "latency": {
+   "recognizeMsP50": 27.3,
+   "recognizeMsMax": 36.6,
+   "nodesMax": 2716,
+   "rssKbMax": 11088
+  }
+ },
+ "perSource": {
+  "apg": {
+   "pages": 14,
+   "structural": {
+    "fields": {
+     "annotated": 27,
+     "found": 17,
+     "recall": 0.63,
+     "semanticExact": 0.941,
+     "semanticExactOrCoarser": 0.941
+    },
+    "actions": {
+     "annotated": 31,
+     "found": 31,
+     "recall": 1,
+     "semanticExact": 0.065,
+     "semanticExactOrCoarser": 0.065
+    },
+    "collections": {
+     "annotated": 5,
+     "found": 5,
+     "recall": 1,
+     "semanticExact": 0.6,
+     "semanticExactOrCoarser": 0.6
+    }
+   },
+   "falseClaims": 5,
+   "contradictions": {
+    "fields": 1,
+    "actions": 2,
+    "collections": 2
+   },
+   "composites": {
+    "annotated": 10,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "dialog": 1,
+     "menu": 1,
+     "sortable_columns": 2,
+     "editable_cell": 1,
+     "tree": 1,
+     "tabs": 1,
+     "bulk_selection": 1,
+     "other": 2
+    }
+   },
+   "workflows": {
+    "annotated": 18,
+    "supported": 2,
+    "coverage": 0.111
+   },
+   "unannotatedRecognized": {
+    "fields": 51,
+    "actions": 501,
+    "collections": 56
+   },
+   "recognizedOnPage": {
+    "fields": 68,
+    "actions": 532,
+    "collections": 61
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 27.8,
+    "recognizeMsMax": 33.4,
+    "nodesMax": 2716,
+    "rssKbMax": 11080
+   }
+  },
+  "jquery-ui": {
+   "pages": 11,
+   "structural": {
+    "fields": {
+     "annotated": 22,
+     "found": 19,
+     "recall": 0.864,
+     "semanticExact": 0.947,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 19,
+     "found": 18,
+     "recall": 0.947,
+     "semanticExact": 0.778,
+     "semanticExactOrCoarser": 0.778
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "recall": 1,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    }
+   },
+   "falseClaims": 2,
+   "contradictions": {
+    "fields": 0,
+    "actions": 2,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 8,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "combobox_popup": 2,
+     "date_picker": 1,
+     "dialog": 2,
+     "tabs": 1,
+     "other": 1,
+     "menu": 1
+    }
+   },
+   "workflows": {
+    "annotated": 16,
+    "supported": 5,
+    "coverage": 0.313
+   },
+   "unannotatedRecognized": {
+    "fields": 13,
+    "actions": 54,
+    "collections": 1
+   },
+   "recognizedOnPage": {
+    "fields": 32,
+    "actions": 72,
+    "collections": 2
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 24.7,
+    "recognizeMsMax": 28.8,
+    "nodesMax": 105,
+    "rssKbMax": 11088
+   }
+  },
+  "choices": {
+   "pages": 1,
+   "structural": {
+    "fields": {
+     "annotated": 31,
+     "found": 31,
+     "recall": 1,
+     "semanticExact": 0.968,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 6,
+     "found": 6,
+     "recall": 1,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "recall": null,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 20,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "combobox_popup": 20
+    }
+   },
+   "workflows": {
+    "annotated": 4,
+    "supported": 4,
+    "coverage": 1
+   },
+   "unannotatedRecognized": {
+    "fields": 104,
+    "actions": 7,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 135,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 31.1,
+    "recognizeMsMax": 31.1,
+    "nodesMax": 640,
+    "rssKbMax": 11072
+   }
+  },
+  "datatables": {
+   "pages": 6,
+   "structural": {
+    "fields": {
+     "annotated": 17,
+     "found": 17,
+     "recall": 1,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 11,
+     "found": 11,
+     "recall": 1,
+     "semanticExact": 0.909,
+     "semanticExactOrCoarser": 0.909
+    },
+    "collections": {
+     "annotated": 6,
+     "found": 6,
+     "recall": 1,
+     "semanticExact": 0.167,
+     "semanticExactOrCoarser": 0.167
+    }
+   },
+   "falseClaims": 5,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 5
+   },
+   "composites": {
+    "annotated": 18,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "filter_bar": 7,
+     "pagination": 5,
+     "sortable_columns": 6
+    }
+   },
+   "workflows": {
+    "annotated": 16,
+    "supported": 1,
+    "coverage": 0.063
+   },
+   "unannotatedRecognized": {
+    "fields": 0,
+    "actions": 704,
+    "collections": 8
+   },
+   "recognizedOnPage": {
+    "fields": 17,
+    "actions": 715,
+    "collections": 14
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 30.3,
+    "recognizeMsMax": 36.6,
+    "nodesMax": 2572,
+    "rssKbMax": 11084
+   }
+  }
+ },
+ "rows": [
+  {
+   "source": "apg",
+   "page": "combobox-autocomplete-list",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "combobox-autocomplete-list",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose a US state"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 30,
+     "collections": 5
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 29,
+     "collections": 5
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 1126,
+   "recognizeMs": 32.7,
+   "rssKb": 11080,
+   "captureMs": 917,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "combobox-select-only",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "combobox-select-only",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": []
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 29,
+     "collections": 4
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 29,
+     "collections": 4
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 536,
+   "recognizeMs": 26.7,
+   "rssKb": 11068,
+   "captureMs": 736,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "combobox-datepicker",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "combobox-datepicker",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1
+    },
+    "actions": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Enter or pick a travel date"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 3,
+     "actions": 38,
+     "collections": 10
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 37,
+     "collections": 10
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 1375,
+   "recognizeMs": 31.7,
+   "rssKb": 11076,
+   "captureMs": 865,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "dialog-modal",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "dialog-modal",
+    "fields": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 5,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "dialog": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Add a delivery address",
+      "Verify an entered address"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 7,
+     "actions": 34,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 30,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 883,
+   "recognizeMs": 27.8,
+   "rssKb": 11080,
+   "captureMs": 1096,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "menu-button-links",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "menu-button-links",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 7,
+     "found": 7,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 7,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "menu": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Open a quick link from the menu"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 32,
+     "collections": 4
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 25,
+     "collections": 4
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 569,
+   "recognizeMs": 26.8,
+   "rssKb": 11076,
+   "captureMs": 1046,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "data-grids",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "data-grids",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 3,
+     "rowsExact": 2,
+     "rowsChecked": 3
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "byKind": {
+      "sortable_columns": 1,
+      "editable_cell": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Sort transactions by date or amount",
+      "Hide type and category columns"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 13,
+     "actions": 111,
+     "collections": 5
+    },
+    "unannotated": {
+     "fields": 13,
+     "actions": 108,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 2716,
+   "recognizeMs": 32.4,
+   "rssKb": 11064,
+   "captureMs": 1120,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "sortable-table",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "sortable-table",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 4,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Sort students by column"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 3,
+     "actions": 26,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 22,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 493,
+   "recognizeMs": 33.4,
+   "rssKb": 11060,
+   "captureMs": 737,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "treegrid",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "treegrid",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "tree": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Expand and collapse conversation rows"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 37,
+     "collections": 3
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 37,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 879,
+   "recognizeMs": 33.3,
+   "rssKb": 11052,
+   "captureMs": 774,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "listbox-scrollable",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "listbox-scrollable",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": []
+    },
+    "recognizedOnPage": {
+     "fields": 3,
+     "actions": 28,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 28,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 846,
+   "recognizeMs": 26.2,
+   "rssKb": 11032,
+   "captureMs": 784,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "tabs-manual",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "tabs-manual",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "tabs": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Switch between composer tabs"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 32,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 32,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 593,
+   "recognizeMs": 27.3,
+   "rssKb": 11036,
+   "captureMs": 746,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "checkbox-mixed",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "checkbox-mixed",
+    "fields": {
+     "annotated": 5,
+     "found": 4,
+     "exact": 4,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "bulk_selection": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose sandwich condiments"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 7,
+     "actions": 21,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 21,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 427,
+   "recognizeMs": 24.4,
+   "rssKb": 11072,
+   "captureMs": 704,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "radio",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "radio",
+    "fields": {
+     "annotated": 6,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Choose pizza crust",
+      "Choose pizza delivery"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 8,
+     "actions": 25,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 8,
+     "actions": 25,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 488,
+   "recognizeMs": 24.9,
+   "rssKb": 11032,
+   "captureMs": 743,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "disclosure-faq",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "disclosure-faq",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "other": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Show or hide a parking FAQ answer"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 29,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 25,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 417,
+   "recognizeMs": 24.1,
+   "rssKb": 11040,
+   "captureMs": 729,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "toolbar",
+   "partition": "dev",
+   "result": {
+    "source": "apg",
+    "page": "toolbar",
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 7,
+     "found": 7,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 7,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "other": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Format text",
+      "Cut, copy and paste text"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 8,
+     "actions": 60,
+     "collections": 16
+    },
+    "unannotated": {
+     "fields": 5,
+     "actions": 53,
+     "collections": 16
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 1401,
+   "recognizeMs": 28.5,
+   "rssKb": 11040,
+   "captureMs": 864,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "autocomplete-combobox",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "autocomplete-combobox",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "combobox_popup": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose a programming language"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 3,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 44,
+   "recognizeMs": 23.4,
+   "rssKb": 11000,
+   "captureMs": 687,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "autocomplete-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "autocomplete-default",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "combobox_popup": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": []
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 11,
+   "recognizeMs": 28.3,
+   "rssKb": 11080,
+   "captureMs": 680,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "datepicker-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "datepicker-default",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 1,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "date_picker": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": []
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 33,
+     "collections": 1
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 33,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 105,
+   "recognizeMs": 27.9,
+   "rssKb": 11072,
+   "captureMs": 1008,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-form",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "dialog-modal-form",
+    "fields": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 4,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "dialog": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Create a new user through the modal form",
+      "Cancel creating a user"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 5,
+     "collections": 1
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 51,
+   "recognizeMs": 28.8,
+   "rssKb": 11040,
+   "captureMs": 1017,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-confirmation",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "dialog-modal-confirmation",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "dialog": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Confirm emptying the recycle bin",
+      "Dismiss the confirmation"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 4,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 23,
+   "recognizeMs": 24,
+   "rssKb": 11080,
+   "captureMs": 716,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "selectmenu-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "selectmenu-default",
+    "fields": {
+     "annotated": 4,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose values in the select menus"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 12,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 11,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 73,
+   "recognizeMs": 24.7,
+   "rssKb": 11060,
+   "captureMs": 696,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "spinner-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "spinner-default",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 2,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 1,
+     "unsupported": [
+      "Set the value to 5",
+      "Read the current value"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 6,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 2,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 21,
+   "recognizeMs": 24.4,
+   "rssKb": 11068,
+   "captureMs": 692,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "tabs-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "tabs-default",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "tabs": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Switch between tabs of content"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 3,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 3,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 20,
+   "recognizeMs": 22.9,
+   "rssKb": 11060,
+   "captureMs": 672,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "accordion-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "accordion-default",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "other": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Open one section of the accordion"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 28,
+   "recognizeMs": 23.5,
+   "rssKb": 11088,
+   "captureMs": 689,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "checkboxradio-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "checkboxradio-default",
+    "fields": {
+     "annotated": 11,
+     "found": 11,
+     "exact": 11,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 2,
+     "unsupported": []
+    },
+    "recognizedOnPage": {
+     "fields": 11,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 60,
+   "recognizeMs": 25.8,
+   "rssKb": 11088,
+   "captureMs": 676,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "menu-default",
+   "partition": "dev",
+   "result": {
+    "source": "jquery-ui",
+    "page": "menu-default",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 5,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "menu": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Pick an item from the menu"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 18,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 13,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 50,
+   "recognizeMs": 26.6,
+   "rssKb": 11084,
+   "captureMs": 681,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "choices",
+   "page": "demo",
+   "partition": "dev",
+   "result": {
+    "source": "choices",
+    "page": "demo",
+    "fields": {
+     "annotated": 31,
+     "found": 31,
+     "exact": 30,
+     "coarser": 1,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 6,
+     "found": 6,
+     "exact": 6,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 20,
+     "recognized": 0,
+     "byKind": {
+      "combobox_popup": 20
+     }
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 4,
+     "unsupported": []
+    },
+    "recognizedOnPage": {
+     "fields": 135,
+     "actions": 13,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 104,
+     "actions": 7,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 640,
+   "recognizeMs": 31.1,
+   "rssKb": 11072,
+   "captureMs": 773,
+   "blocked": 6,
+   "mirrored": 0
+  },
+  {
+   "source": "datatables",
+   "page": "zero-configuration",
+   "partition": "validation",
+   "result": {
+    "source": "datatables",
+    "page": "zero-configuration",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Search employees",
+      "Sort employees by column",
+      "Page through employees"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 117,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 115,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 418,
+   "recognizeMs": 26.4,
+   "rssKb": 11084,
+   "captureMs": 780,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "scroll-y",
+   "partition": "validation",
+   "result": {
+    "source": "datatables",
+    "page": "scroll-y",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Search employees",
+      "Sort employees by column"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 112,
+     "collections": 4
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 112,
+     "collections": 3
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 796,
+   "recognizeMs": 30.3,
+   "rssKb": 11084,
+   "captureMs": 831,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "multi-col-sort",
+   "partition": "validation",
+   "result": {
+    "source": "datatables",
+    "page": "multi-col-sort",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 1,
+     "unsupported": [
+      "Sort employees by several columns",
+      "Page through employees"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 121,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 119,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 457,
+   "recognizeMs": 27.4,
+   "rssKb": 11072,
+   "captureMs": 783,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "select-row",
+   "partition": "validation",
+   "result": {
+    "source": "datatables",
+    "page": "select-row",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Count selected rows",
+      "Search employees",
+      "Page through employees"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 120,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 117,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 470,
+   "recognizeMs": 27.1,
+   "rssKb": 11068,
+   "captureMs": 803,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "multi-filter",
+   "partition": "validation",
+   "result": {
+    "source": "datatables",
+    "page": "multi-filter",
+    "fields": {
+     "annotated": 8,
+     "found": 8,
+     "exact": 8,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 4,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 2,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Filter employees by column",
+      "Search employees",
+      "Page through employees"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 8,
+     "actions": 122,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 120,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 582,
+   "recognizeMs": 32.4,
+   "rssKb": 11048,
+   "captureMs": 817,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "ajax-source",
+   "partition": "validation",
+   "result": {
+    "source": "datatables",
+    "page": "ajax-source",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Browse employees",
+      "Search employees"
+     ]
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 123,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 121,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 2572,
+   "recognizeMs": 36.6,
+   "rssKb": 11064,
+   "captureMs": 895,
+   "blocked": 1,
+   "mirrored": 1
+  }
+ ]
+}

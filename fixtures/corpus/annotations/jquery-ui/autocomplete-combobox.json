@@ -1,0 +1,50 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "autocomplete-combobox",
+  "dossierSha256": "ef9aa2ab6eb8ac680ae60c0133d5e9e08d30c9f9b08d682f9d379e6e476f0963",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/autocomplete-combobox.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Your preferred programming language:",
+      "kind": "choice"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Show All Items",
+      "effect": "read"
+    },
+    {
+      "name": "Show underlying select",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "combobox_popup",
+      "name": "Your preferred programming language:"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Choose a programming language",
+      "needs": [
+        "Your preferred programming language:",
+        "Show All Items"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

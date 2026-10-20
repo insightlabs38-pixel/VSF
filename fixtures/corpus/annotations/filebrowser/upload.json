@@ -1,0 +1,144 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "upload",
+  "dossierSha256": "f053dbbf7f4ca266670117b89cca18c2cdc7b61da3a7551d8223dd87eb83a82b",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/filebrowser/upload.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search...",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Home",
+      "effect": "navigation"
+    },
+    {
+      "name": "Images",
+      "effect": "read"
+    },
+    {
+      "name": "Music",
+      "effect": "read"
+    },
+    {
+      "name": "Video",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Switch view",
+      "effect": "navigation"
+    },
+    {
+      "name": "Download",
+      "effect": "read"
+    },
+    {
+      "name": "Upload",
+      "effect": "state_change"
+    },
+    {
+      "name": "Info",
+      "effect": "read"
+    },
+    {
+      "name": "Select multiple",
+      "effect": "navigation"
+    },
+    {
+      "name": "Sort by name",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by size",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by last modified",
+      "effect": "read"
+    },
+    {
+      "name": "Clear",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [
+        "Name",
+        "Size",
+        "Last modified"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search and file types"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sort headers"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Multiple selection"
+    },
+    {
+      "kind": "dialog",
+      "name": "Upload"
+    },
+    {
+      "kind": "file_input",
+      "name": "Upload"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Browse and open a folder",
+      "needs": [
+        "Files and folders",
+        "Home"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Search or filter files",
+      "needs": [
+        "Search...",
+        "Images",
+        "Music",
+        "Video",
+        "PDF",
+        "Search and file types"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Upload a file or folder",
+      "needs": [
+        "Upload",
+        "Upload"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

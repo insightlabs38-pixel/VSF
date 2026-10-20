@@ -1,0 +1,162 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "selected",
+  "dossierSha256": "ee63ad2294416f1ba27312553eb84775c5247a6ed4d7c0faaca80ffd7295ccad",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/filebrowser/selected.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search...",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Home",
+      "effect": "navigation"
+    },
+    {
+      "name": "Images",
+      "effect": "read"
+    },
+    {
+      "name": "Music",
+      "effect": "read"
+    },
+    {
+      "name": "Video",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Switch view",
+      "effect": "navigation"
+    },
+    {
+      "name": "Download",
+      "effect": "read"
+    },
+    {
+      "name": "Upload",
+      "effect": "state_change"
+    },
+    {
+      "name": "Info",
+      "effect": "read"
+    },
+    {
+      "name": "Select multiple",
+      "effect": "navigation"
+    },
+    {
+      "name": "Sort by name",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by size",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by last modified",
+      "effect": "read"
+    },
+    {
+      "name": "Clear",
+      "effect": "navigation"
+    },
+    {
+      "name": "Share",
+      "effect": "state_change"
+    },
+    {
+      "name": "Rename",
+      "effect": "state_change"
+    },
+    {
+      "name": "Copy file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Move file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Delete",
+      "effect": "destructive"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [
+        "Name",
+        "Size",
+        "Last modified"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search and file types"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sort headers"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Multiple selection"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Browse and open a folder",
+      "needs": [
+        "Files and folders",
+        "Home"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Search or filter files",
+      "needs": [
+        "Search...",
+        "Images",
+        "Music",
+        "Video",
+        "PDF",
+        "Search and file types"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Act on selected file",
+      "needs": [
+        "Files and folders",
+        "Multiple selection",
+        "Download",
+        "Rename",
+        "Copy file",
+        "Move file",
+        "Share",
+        "Delete"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

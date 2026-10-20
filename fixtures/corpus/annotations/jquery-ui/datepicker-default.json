@@ -1,0 +1,40 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "datepicker-default",
+  "dossierSha256": "b58fc1ccd81e9da12188348e343e0b5369ff2e4de106991e830c3d271fecf088",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/datepicker-default.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Date:",
+      "kind": "date"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "date_picker",
+      "name": "Date:"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Pick a date from the calendar",
+      "needs": [
+        "Date:"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

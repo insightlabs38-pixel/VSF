@@ -1,0 +1,66 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "radio",
+  "dossierSha256": "96d0c09d7409ee1c1e570e2bf4b5cde3067db7071644e3110d2191b7fd653b34",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-c",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/apg/radio.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Regular crust",
+      "kind": "toggle"
+    },
+    {
+      "name": "Deep dish",
+      "kind": "toggle"
+    },
+    {
+      "name": "Thin crust",
+      "kind": "toggle"
+    },
+    {
+      "name": "Pickup",
+      "kind": "toggle"
+    },
+    {
+      "name": "Home Delivery",
+      "kind": "toggle"
+    },
+    {
+      "name": "Dine in",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Choose pizza crust",
+      "needs": [
+        "Regular crust",
+        "Deep dish",
+        "Thin crust"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Choose pizza delivery",
+      "needs": [
+        "Pickup",
+        "Home Delivery",
+        "Dine in"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}
