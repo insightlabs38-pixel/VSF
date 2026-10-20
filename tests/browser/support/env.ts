@@ -25,6 +25,7 @@ export async function createEnv(
     hostPermissions?: string[];
     extraPermissions?: string[];
     shadow?: "open" | "closed";
+    heartbeatMs?: number;
     args?: string[];
     setupProfile?: (profileDir: string, extId: string) => void;
   } = {},
@@ -36,7 +37,7 @@ export async function createEnv(
       hostPermissions: options.hostPermissions ?? ["http://127.0.0.1/*"],
       extraPermissions: options.extraPermissions ?? [],
       shadow: options.shadow ?? "open",
-      heartbeatMs: 300,
+      heartbeatMs: options.heartbeatMs ?? 300,
     },
     join(dir, "ext"),
   );

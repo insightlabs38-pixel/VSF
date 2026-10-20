@@ -135,55 +135,63 @@ test("a repeated transform replaces the earlier one and revoking the origin rest
   expect(await env.send({ type: "transform", tabId })).toMatchObject({ ok: false, error: "origin_not_granted" });
 });
 
-test("page messages are validated against the session: shape, session, tab, sequence, document and origin", async ({
-  env,
-}) => {
-  const page = await env.context.newPage();
-  await page.goto(`${apps.origin}/apps/table-orders`);
-  await env.send({ type: "grant", origin: apps.origin });
-  const tabId = await env.tabIdOf(page);
-  await env.send({ type: "transform", tabId });
-  const session = (await status(env)).sessions[0]?.id as string;
-  const original = await sourceHtml(page);
-  const send = (m: unknown, tab = tabId) => sendFromTab(env, tab, m);
+// The page numbers its own heartbeats from the same counter, so a test that injects numbered messages silences them.
+test.describe("injected messages", () => {
+  test.use({ heartbeatMs: 600_000 });
 
-  const shapes: [unknown, string][] = [
-    [{ ...envelope("heartbeat", session, 1, { at: 1 }), proto: "vsf-ext-v2" }, "unsupported_version"],
-    [{ ...envelope("heartbeat", session, 1, { at: 1 }), extra: 1 }, "bad_envelope"],
-    [envelope("shell", session, 1), "unknown_kind"],
-    [{ ...envelope("hello", session, 1), id: "x" }, "bad_id"],
-    [{ ...envelope("hello", session, 1), session: "nope" }, "bad_session"],
-    [envelope("hello", session, -1), "bad_seq"],
-    [envelope("heartbeat", session, 1, { at: "now" }), "bad_body"],
-    [envelope("dispatch", session, 1, { action: "x".repeat(3000), entity: "e" }), "too_large"],
-    [envelope("dispatch", session, 1, { action: "A B", entity: "e" }), "bad_body"],
-    [envelope("restore", session, 1, { reason: "because" }), "bad_body"],
-    [envelope("hello", crypto.randomUUID(), 1), "session_unknown"],
-  ];
-  for (const [m, error] of shapes) expect(await send(m), error).toMatchObject({ ok: false, error });
+  test("page messages are validated against the session: shape, session, tab, sequence, document and origin", async ({
+    env,
+  }) => {
+    const page = await env.context.newPage();
+    await page.goto(`${apps.origin}/apps/table-orders`);
+    await env.send({ type: "grant", origin: apps.origin });
+    const tabId = await env.tabIdOf(page);
+    await env.send({ type: "transform", tabId });
+    const session = (await status(env)).sessions[0]?.id as string;
+    const original = await sourceHtml(page);
+    const send = (m: unknown, tab = tabId) => sendFromTab(env, tab, m);
 
-  const other = await env.context.newPage();
-  await other.goto(`${apps.origin}/apps/plain-form`);
-  const otherTab = await env.tabIdOf(other);
-  expect(await send(envelope("hello", session, 1), otherTab)).toMatchObject({ ok: false, error: "tab_mismatch" });
+    const shapes: [unknown, string][] = [
+      [{ ...envelope("heartbeat", session, 1, { at: 1 }), proto: "vsf-ext-v2" }, "unsupported_version"],
+      [{ ...envelope("heartbeat", session, 1, { at: 1 }), extra: 1 }, "bad_envelope"],
+      [envelope("shell", session, 1), "unknown_kind"],
+      [{ ...envelope("hello", session, 1), id: "x" }, "bad_id"],
+      [{ ...envelope("hello", session, 1), session: "nope" }, "bad_session"],
+      [envelope("hello", session, -1), "bad_seq"],
+      [envelope("heartbeat", session, 1, { at: "now" }), "bad_body"],
+      [envelope("dispatch", session, 1, { action: "x".repeat(3000), entity: "e" }), "too_large"],
+      [envelope("dispatch", session, 1, { action: "A B", entity: "e" }), "bad_body"],
+      [envelope("restore", session, 1, { reason: "because" }), "bad_body"],
+      [envelope("hello", crypto.randomUUID(), 1), "session_unknown"],
+    ];
+    for (const [m, error] of shapes) expect(await send(m), error).toMatchObject({ ok: false, error });
 
-  expect(await send(envelope("hello", session, 1))).toMatchObject({ ok: true });
-  expect(await send(envelope("hello", session, 1))).toMatchObject({ ok: false, error: "stale_seq" });
+    const other = await env.context.newPage();
+    await other.goto(`${apps.origin}/apps/plain-form`);
+    const otherTab = await env.tabIdOf(other);
+    expect(await send(envelope("hello", session, 1), otherTab)).toMatchObject({ ok: false, error: "tab_mismatch" });
 
-  const d = (id: string, action: string) => envelope("dispatch", session, 10, { action, entity: "t_open_orders" }, id);
-  const id = crypto.randomUUID();
-  const first = await send(d(id, "act_t_open_orders_delete"));
-  expect(first).toMatchObject({ ok: false, error: "action_unavailable" });
-  expect(await send(d(id, "act_t_open_orders_delete"))).toEqual(first);
-  expect(await send(envelope("dispatch", session, 11, { action: "act_nope", entity: "t_open_orders" }))).toMatchObject({
-    ok: false,
-    error: "unknown_action",
+    expect(await send(envelope("hello", session, 1))).toMatchObject({ ok: true });
+    expect(await send(envelope("hello", session, 1))).toMatchObject({ ok: false, error: "stale_seq" });
+
+    const d = (id: string, action: string) =>
+      envelope("dispatch", session, 10, { action, entity: "t_open_orders" }, id);
+    const id = crypto.randomUUID();
+    const first = await send(d(id, "act_t_open_orders_delete"));
+    expect(first).toMatchObject({ ok: false, error: "action_unavailable" });
+    expect(await send(d(id, "act_t_open_orders_delete"))).toEqual(first);
+    expect(
+      await send(envelope("dispatch", session, 11, { action: "act_nope", entity: "t_open_orders" })),
+    ).toMatchObject({
+      ok: false,
+      error: "unknown_action",
+    });
+    expect(await sourceHtml(page)).toBe(original);
+
+    const s = await status(env);
+    expect(s.sessions[0]?.ops.filter((o) => o.kind === "dispatch")).toHaveLength(2);
+    expect(s.sessions[0]?.ops.every((o) => o.state === "done")).toBe(true);
   });
-  expect(await sourceHtml(page)).toBe(original);
-
-  const s = await status(env);
-  expect(s.sessions[0]?.ops.filter((o) => o.kind === "dispatch")).toHaveLength(2);
-  expect(s.sessions[0]?.ops.every((o) => o.state === "done")).toBe(true);
 });
 
 test("a replaced document or origin in the same tab cannot use the old session", async ({ env }) => {

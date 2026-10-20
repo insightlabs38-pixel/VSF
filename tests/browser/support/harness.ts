@@ -10,7 +10,8 @@ interface Worlds {
   ports: { a: number; b: number };
 }
 
-export const test = base.extend<{ env: Env }, { worlds: Worlds }>({
+export const test = base.extend<{ env: Env; heartbeatMs: number }, { worlds: Worlds }>({
+  heartbeatMs: [300, { option: true }],
   worlds: [
     // biome-ignore lint/correctness/noEmptyPattern: Playwright requires a destructuring first argument
     async ({}, use) => {
@@ -23,8 +24,8 @@ export const test = base.extend<{ env: Env }, { worlds: Worlds }>({
     },
     { scope: "worker" },
   ],
-  env: async ({ worlds }, use) => {
-    const { env, dispose } = await createEnv(worlds.ports);
+  env: async ({ worlds, heartbeatMs }, use) => {
+    const { env, dispose } = await createEnv(worlds.ports, { heartbeatMs });
     await use(env);
     await dispose();
   },
