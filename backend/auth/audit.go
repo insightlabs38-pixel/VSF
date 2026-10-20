@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"regexp"
 	"sync"
 	"time"
 )
@@ -58,6 +59,8 @@ type AuditRecord struct {
 	Actor   string
 	Origin  string
 	Reason  Reason
+	// Ref is a short digest, such as the start of a profile digest; it identifies without describing.
+	Ref string
 }
 
 type auditLine struct {
@@ -69,6 +72,7 @@ type auditLine struct {
 	Actor   string `json:"actor,omitempty"`
 	Origin  string `json:"origin,omitempty"`
 	Reason  Reason `json:"reason,omitempty"`
+	Ref     string `json:"ref,omitempty"`
 	Prev    string `json:"prev"`
 	Hash    string `json:"hash"`
 }
@@ -96,8 +100,10 @@ func hashLine(l auditLine) string {
 
 func (r AuditRecord) valid() bool {
 	ok := func(s string) bool { return s == "" || idRe.MatchString(s) }
-	return events[r.Event] && ok(r.Grant) && ok(r.Account) && ok(r.Actor) && (r.Origin == "" || originRe.MatchString(r.Origin)) && (r.Reason == "" || reasons[r.Reason])
+	return events[r.Event] && ok(r.Grant) && ok(r.Account) && ok(r.Actor) && (r.Origin == "" || originRe.MatchString(r.Origin)) && (r.Reason == "" || reasons[r.Reason]) && (r.Ref == "" || refRe.MatchString(r.Ref))
 }
+
+var refRe = regexp.MustCompile(`^[a-f0-9]{8,64}$`)
 
 // Append writes one record; a record that does not fit the closed vocabulary is refused rather than written.
 func (a *Audit) Append(r AuditRecord) error {
@@ -107,7 +113,7 @@ func (a *Audit) Append(r AuditRecord) error {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	a.seq++
-	l := auditLine{Seq: a.seq, At: r.At.UnixMilli(), Event: r.Event, Grant: r.Grant, Account: r.Account, Actor: r.Actor, Origin: r.Origin, Reason: r.Reason, Prev: a.prev}
+	l := auditLine{Seq: a.seq, At: r.At.UnixMilli(), Event: r.Event, Grant: r.Grant, Account: r.Account, Actor: r.Actor, Origin: r.Origin, Reason: r.Reason, Ref: r.Ref, Prev: a.prev}
 	l.Hash = hashLine(l)
 	b, _ := json.Marshal(l)
 	if _, err := a.w.Write(append(b, '\n')); err != nil {
