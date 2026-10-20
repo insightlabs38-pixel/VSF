@@ -125,6 +125,8 @@ func (s *MemStore) List(owner string) []Grant {
 type Broker struct {
 	Store Store
 	Audit *Audit
+	// Vault, when set, is wiped of a grant's secrets whenever the grant ends.
+	Vault Vault
 	Now   func() time.Time
 
 	mu         sync.Mutex
