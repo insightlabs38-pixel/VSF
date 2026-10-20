@@ -1,0 +1,13 @@
+$ bash -c VSF_OVERHEAD_REPORT="$PWD/docs/deep/evidence/VSF-B10/overhead.txt" go -C backend test -tags integration -count=1 -v -run DispatchOverhead ./interfaces/
+=== RUN   TestDispatchOverheadPerLayerExcludesTheSourceAndStaysInBudget
+    overhead_test.go:221: http-floor n=400 p50=337.104µs p95=531.414µs p99=1.66473ms max=7.209778ms avg=388.042µs
+    overhead_test.go:221: runtime    n=400 p50=1.410838ms p95=2.798119ms p99=4.111334ms max=4.430337ms avg=1.532808ms
+    overhead_test.go:221: service    n=400 p50=1.494505ms p95=3.168371ms p99=4.998661ms max=11.596673ms avg=1.672696ms
+    overhead_test.go:221: rest       n=400 p50=2.235854ms p95=3.095364ms p99=4.470813ms max=5.276616ms avg=2.303889ms
+    overhead_test.go:221: ui-client  n=400 p50=2.253054ms p95=4.158886ms p99=8.076376ms max=20.545955ms avg=2.52667ms
+    overhead_test.go:221: mcp        n=400 p50=2.451723ms p95=4.103463ms p99=8.53408ms max=237.081029ms avg=3.219392ms
+    overhead_test.go:221: cli        n=400 p50=3.308993ms p95=5.761497ms p99=9.605358ms max=54.928464ms avg=3.714738ms
+--- PASS: TestDispatchOverheadPerLayerExcludesTheSourceAndStaysInBudget (6.58s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	6.595s
+[exit 0]

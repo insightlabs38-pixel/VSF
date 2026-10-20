@@ -1,0 +1,45 @@
+{
+  "task_id": "VSF-B10-T03",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "ee846fc95fe1d8736a933361aeda6be5b5f93e2b",
+  "paths": [
+    "backend/mcp/protocol.go",
+    "backend/mcp/server.go",
+    "backend/mcp/tools.go",
+    "backend/mcp/resources.go"
+  ],
+  "acceptance": "MCP client negotiation, JSON Schema and stable tool/resource names pass protocol conformance for supported clients.",
+  "positive": {
+    "fixture": "independent client written from the 2026-07-28 text: per-request metadata, mirrored headers, tools/list, schema-valid calls, structuredContent validated against outputSchema",
+    "command": "go -C backend test -tags integration -race -count=1 -run MCP ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "version mismatch and unsupported version, missing or mismatched headers, missing metadata, initialize, GET/DELETE, batch, duplicate keys, bad ids, foreign origin and host, wrong-surface credential",
+    "command": "go -C backend test -race -count=1 ./mcp/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./api/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "MCP 2026-07-28 only; tool names op.<app>.<operation>, fixed vsf.* tools"
+  },
+  "security_and_source_permissions": "Stateless: no session id is minted or honoured; the result schema is checked against every Result field.",
+  "performance_memory_storage": "See T08.",
+  "known_limitations": [
+    "No MCP client or conformance suite for this revision existed; the official SDK and conformance package were checked and target earlier revisions",
+    "Tasks extension, stdio and progress notifications deferred (VSF-B16-T07)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T03.mcp-protocol-and-conformance-units.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T03.mcp-against-the-real-service.log"
+  ],
+  "review_result": "ACCEPTED"
+}

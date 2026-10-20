@@ -1,0 +1,3 @@
+$ go -C backend test -tags integration -race -count=1 -run OlderClient|MCPAnOlderContract|CLIPins ./interfaces/
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	1.709s
+[exit 0]

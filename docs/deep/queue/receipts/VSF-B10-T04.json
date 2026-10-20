@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B10-T04",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "714842e8b9365531e6c763b1e8d0e2b0761c6729",
+  "paths": [
+    "backend/api/tokens.go",
+    "backend/api/service.go",
+    "backend/execution/confirm.go",
+    "backend/execution/runtime.go",
+    "backend/execution/doccache.go"
+  ],
+  "acceptance": "Independent API/CLI/MCP callers cannot borrow another principal, source account or secret.",
+  "positive": {
+    "fixture": "each surface accepts only its own credential; a caller runs in its own session; a confirmation works once for its caller and session",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'EverySurfaceAccepts|Borrow|UseAnother|Revocation|NoSurfaceEchoes|Confirmation' ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "3x3 credential matrix, another caller's session and invocation, revoked/expired/removed callers, lost scope, borrowed or altered confirmation, echo scan for tokens and source identity",
+    "command": "go -C backend test -race -count=1 -run 'Credential|Token|Expiry|Issuing|Store|Listing' ./api/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 -run 'Confirm|Precond|Memoized' ./execution/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "confirmation digest now binds caller and session (deliberate incompatibility; none were issued before)"
+  },
+  "security_and_source_permissions": "Credentials are 256-bit, stored as digests in a 0600 file, bound to one caller and surface; only a user-interface credential can issue a confirmation.",
+  "performance_memory_storage": "Not measured separately.",
+  "known_limitations": [
+    "A person cannot confirm for an agent caller yet (VSF-B14-T06)",
+    "Rate limiting is per process"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T04.credential-store-and-binding.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T04.callers-cannot-borrow-across-surfaces.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T04.caller-bound-confirmation-in-runtime.log"
+  ],
+  "review_result": "ACCEPTED"
+}

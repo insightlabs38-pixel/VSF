@@ -1,0 +1,10 @@
+$ go -C backend test -run xxx -bench CatalogIndex|FirstPage -benchmem -benchtime=20x ./api/
+goos: linux
+goarch: amd64
+pkg: github.com/insightlabs38-pixel/vsf/backend/api
+cpu: Intel(R) Xeon(R) Processor @ 2.80GHz
+BenchmarkCatalogIndex-4              	      20	  34404941 ns/op	 7675687 B/op	  100187 allocs/op
+BenchmarkFirstPageOfAHugeCatalog-4   	      20	  14652546 ns/op	 4705558 B/op	   70378 allocs/op
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	21.008s
+[exit 0]

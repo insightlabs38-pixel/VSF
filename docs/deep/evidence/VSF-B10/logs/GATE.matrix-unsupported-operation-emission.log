@@ -1,0 +1,4 @@
+$ go -C backend test -tags integration -race -count=1 -run NoSurfaceEmits|OnlyWhatMayBeEmitted ./interfaces/ ./api/
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	1.142s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	1.066s
+[exit 0]

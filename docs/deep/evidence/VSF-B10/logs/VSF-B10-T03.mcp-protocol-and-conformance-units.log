@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 ./mcp/
+ok  	github.com/insightlabs38-pixel/vsf/backend/mcp	5.294s
+[exit 0]

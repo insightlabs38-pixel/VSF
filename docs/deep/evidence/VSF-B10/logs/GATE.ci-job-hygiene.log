@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run hygiene
+ci-run hygiene: PASS
+[exit 0]

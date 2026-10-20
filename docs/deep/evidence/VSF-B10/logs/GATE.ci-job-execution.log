@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run execution
+ci-run execution: PASS
+[exit 0]
