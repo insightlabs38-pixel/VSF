@@ -709,7 +709,7 @@
       "receipt": "docs/deep/queue/receipts/VSF-B09-T08.json"
     },
     "VSF-B10-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1398,9 +1398,11 @@
       "merge_commit": "a86a667fb36af89254d4d5e1d36a9c5e8fd014a7"
     },
     "G9": {
-      "status": "PENDING",
-      "decision": null,
-      "evidence": null
+      "status": "ACCEPTED",
+      "decision": "PROCEED",
+      "evidence": "docs/deep/evidence/VSF-B09",
+      "report": "docs/deep/reports/VSF-B09.md",
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/10"
     },
     "G10": {
       "status": "PENDING",
@@ -1479,7 +1481,7 @@
     }
   },
   "cursor": {
-    "batch": "B09",
-    "task": "GATE"
+    "batch": "B10",
+    "task": "VSF-B10-T01"
   }
 }

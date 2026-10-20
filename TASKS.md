@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** close G9 (B09)
+**Next eligible:** `VSF-B10-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -15,8 +15,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B06 | G6 | 18/18 | DONE | PROCEED |
 | B07 | G7 | 14/14 | DONE | PROCEED |
 | B08 | G8 | 10/10 | DONE | PROCEED |
-| B09 | G9 | 9/9 | GATE_PENDING | - |
-| B10 | G10 | 0/8 | TODO | - |
+| B09 | G9 | 9/9 | DONE | PROCEED |
+| B10 | G10 | 0/8 | READY | - |
 | B11 | G11 | 0/6 | TODO | - |
 | B12 | G12 | 0/6 | TODO | - |
 | B13 | G13 | 0/5 | TODO | - |
@@ -161,7 +161,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B10 · Expose API, CLI and MCP vertical slice
 
-- [ ] `VSF-B10-T01` Define API error taxonomy, contract version routing, OpenAPI doc generation
+- [ ] `VSF-B10-T01` Define API error taxonomy, contract version routing, OpenAPI doc generation _(READY)_
 - [ ] `VSF-B10-T02` Implement Go CLI typed argument grammar, structured output and version pin flag
 - [ ] `VSF-B10-T03` Implement minimal MCP tools/resources with protocol version negotiation
 - [ ] `VSF-B10-T04` Authenticate each caller separately, enforce source context at runtime

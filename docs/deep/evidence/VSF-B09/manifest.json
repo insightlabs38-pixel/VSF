@@ -19,7 +19,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T01.mv3-audit-rules-and-defects.log",
-      "sha256": "bafc2252c5885f1702a81356ec03acb809180d31e86ba4e075648f58e33c2d46"
+      "sha256": "7da4021b41b6f6df6209e9115791a2199f92bdaf95b30cb76075f5fcd29be63c"
     },
     {
       "task_id": "VSF-B09-T01",
@@ -28,7 +28,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T01.install-permissions-and-package.log",
-      "sha256": "fb0a775c6c85e41eb9311054001e77b81fdfb9acdd3577fe6204ca075d0d94a1"
+      "sha256": "a4923cdd03c137aec9a54e268c2c1ce391cca841265d9822e5df1c2f3ff87022"
     },
     {
       "task_id": "VSF-B09-T02",
@@ -37,7 +37,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T02.assemble-semantic-ir.log",
-      "sha256": "47c38cd00b16aee848a3093f74e24a19e6d118604a6cc62245342a153eca0d89"
+      "sha256": "6db5684d512431c85503c45b05385f935212fe4248147da4b639552004ef1838"
     },
     {
       "task_id": "VSF-B09-T02",
@@ -46,7 +46,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T02.wasm-host-assembly.log",
-      "sha256": "36f16c00566c874afaec99f70d00b309b0aea6bd3a87c30c30a7f544992479a9"
+      "sha256": "505477e914f58811474c17fd6dd62d07a852229d03c9c83fffd3b315d34d1341"
     },
     {
       "task_id": "VSF-B09-T02",
@@ -55,7 +55,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T02.envelope-session-core-units.log",
-      "sha256": "d23833e79042001021bbb71c694fae010f817dbc8b1c1f8e171447480fc546d5"
+      "sha256": "6a40633f3f309e5976a7689829bb14fb8a2e93a089e32f655c412951ba283180"
     },
     {
       "task_id": "VSF-B09-T02",
@@ -64,7 +64,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T02.observe-assemble-render-in-chromium.log",
-      "sha256": "602f0f711d312c2041fa3c5f8d09fd138ed8f058a9d22934ecabb918594be88d"
+      "sha256": "475fb9aac53d2c996051ae5879cd850c0baa7c85aef6626fcbee8a1f60497a68"
     },
     {
       "task_id": "VSF-B09-T03",
@@ -73,7 +73,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T03.worker-death-and-idle.log",
-      "sha256": "56169a259fd10236be38c4491d52fdbefa2f3bbf8316283c5d797c4c3109e511"
+      "sha256": "34dd3679f5a57cd166688835894e9209a0395e3f82218ced8a8d20b61144ce5a"
     },
     {
       "task_id": "VSF-B09-T03",
@@ -82,7 +82,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T03.fallback-to-source-ui.log",
-      "sha256": "f28aba2178becc1e21b4ee1ac0bfb65392c117202c41c2c25be0fbb1483aae11"
+      "sha256": "0321360838bae96f65d4e8944e193f6708cf62b2c7459b4375cbedade08d987f"
     },
     {
       "task_id": "VSF-B09-T04",
@@ -91,7 +91,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T04.pairing-protocol-and-store.log",
-      "sha256": "7225e73e91e4a634c3d4f3852b7e79b39c92b14edd7268ff38cb191810d35cd5"
+      "sha256": "d2d213eb5dfb10a4900b333e186088330af7d2c57a4079edebc7e88426b2a5c7"
     },
     {
       "task_id": "VSF-B09-T04",
@@ -100,7 +100,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T04.pairing-cross-language.log",
-      "sha256": "a1fe98d25a38f9aebaec929d42def01ce88388aeb8b2e470762b84dde48eccbd"
+      "sha256": "71a1123c678d668483bd7e56a5c8bee6eebeaff3a4ec08af4876628c5530c023"
     },
     {
       "task_id": "VSF-B09-T04",
@@ -109,7 +109,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T04.extension-pairs-with-companion.log",
-      "sha256": "635b82a2a09c4ad2b1fd63ebe0ddbfb60cbad2b613e78d99e3ba79b5eddc661a"
+      "sha256": "89f39d86dad471719523836d940f6945ac39cdb4a46dc0ec95d7e50f084b3e39"
     },
     {
       "task_id": "VSF-B09-T05",
@@ -118,7 +118,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T05.hostile-origin-and-rebinding-go.log",
-      "sha256": "ab168c1dd7790b8730adf77f1868d2960a00e42812c4836f8a949a570d4f15d4"
+      "sha256": "0f7546b0100052cbed1540068ecd28b940a1a77a86989f07d248a0548f4dea5c"
     },
     {
       "task_id": "VSF-B09-T05",
@@ -127,7 +127,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T05.hostile-web-page-in-chromium.log",
-      "sha256": "26ef43e6b4ff61edcd6fbf549c8f0ea5f0c8ef5279a19d1746552ff961793cb7"
+      "sha256": "baa4fd1d4ca2ea81ceb999d396cd2c3fd65a9f0607703716a27f3d7b40029d19"
     },
     {
       "task_id": "VSF-B09-T06",
@@ -136,7 +136,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T06.session-bindings.log",
-      "sha256": "6e93d754376f94de15c7b13a3f3ab3fae203355a7168616f6dcf44b59baa2059"
+      "sha256": "8926fa757ef42c74ec057cfad3df9793b73af95fabdfbc0b7a24976f937f36f8"
     },
     {
       "task_id": "VSF-B09-T06",
@@ -145,7 +145,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T06.native-validator-chain.log",
-      "sha256": "ebd74111df74412ba4e425eaf160d392d583c2e31793ee22516251aa6e2eb628"
+      "sha256": "2c9b28b3b32623114b1b63305b4f8a9ca1cb1c4336e132d1970628f6cc14f602"
     },
     {
       "task_id": "VSF-B09-T07",
@@ -154,7 +154,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T07.sealed-prefs-and-vault.log",
-      "sha256": "bec08b60f41f22d40cc48f4f6c55a8b1f194a490e42f54e0b64ecee71c62229e"
+      "sha256": "5b0d18d2786ae7e718284ee686a42b14d937fa3619c4c29d97f881d4535955e7"
     },
     {
       "task_id": "VSF-B09-T08",
@@ -172,7 +172,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T09.gallery-baselines-and-structure.log",
-      "sha256": "8d985b8dd8298f63d5973cc9b33865f47ef548b45f93717cdc96b2ac6213e7a8"
+      "sha256": "71510792ea1e29989eba5e657f33d36cdecfb4c127719e549f45767fe6d67a6c"
     },
     {
       "task_id": "VSF-B09-T09",
@@ -181,7 +181,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/VSF-B09-T09.renderer-regression-suite.log",
-      "sha256": "eda029cb1a696d9fd4e118eed37d1abba6ff47fa3870ba942020628f632a5cb5"
+      "sha256": "f72df904cbb6ff0e907404532ca99a5f5378f975186aecec6959f4b54bfb24b4"
     },
     {
       "task_id": "GATE",
@@ -190,7 +190,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/GATE.cargo-test-workspace.log",
-      "sha256": "da48e45c2aa16b493c47480e9b0f7a9054f1fc6c4906c2f95cfa851c45faa1d1"
+      "sha256": "a73afbe1cb321d0c83c5d0f2ca18452716f626bedafebf11bb63c1adb3b79960"
     },
     {
       "task_id": "GATE",
@@ -208,7 +208,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/GATE.cargo-clippy.log",
-      "sha256": "27bf49ec90bdd658130205ff1fe91ca727cd518642f1eb8bbce6914cdc2f9ebf"
+      "sha256": "548e4c7a414de076fb2df5526b69c0ae3a59fa2cd9b39beed2644588bc3e277d"
     },
     {
       "task_id": "GATE",
@@ -217,7 +217,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/GATE.go-test-all.log",
-      "sha256": "303574095ae646c0d39b82056cb859474a454f0d1bf638bc551950216b0afcba"
+      "sha256": "bc45c13f34505158b033e2f2ae44492c233f88565155df2b758c79893673fd71"
     },
     {
       "task_id": "GATE",
@@ -226,7 +226,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/GATE.go-integration-all.log",
-      "sha256": "bb47776b108c800cb526ef1ba82b702bc06d164b05bdab17a9d225be3d54db99"
+      "sha256": "402599fb631341487d74424993de953ed71c4ea4539a8dce09a83a43fc1e686d"
     },
     {
       "task_id": "GATE",
@@ -271,7 +271,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/GATE.biome.log",
-      "sha256": "72107290986f74c91dd498589fd00769676c71064f9f0578b855bac01fab114e"
+      "sha256": "b000ff3c238e98c84ec1f4205c302d29eb03fa6f9a04561284775e86c3e7d3f2"
     },
     {
       "task_id": "GATE",
@@ -334,7 +334,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/GATE.adversarial-b00.log",
-      "sha256": "387f87b5073610615f3fdad26d5c8160f33f20652afc5ea72e13ad7546c02184"
+      "sha256": "6f6f4a2598915fc4958f48b93e4875c46c76f5c25d1c3127c1dfba4a45331c31"
     },
     {
       "task_id": "GATE",
@@ -343,7 +343,7 @@
       "exit_code": 0,
       "result": "PASS",
       "log": "logs/GATE.ir-ts.log",
-      "sha256": "50c44ac3286b28ca524e35c3882d44be0ce52cb34f5368bcef3b4f98588d2bb9"
+      "sha256": "8a0fac3fe4e8457b80e3648eace0440271e084c33b52c7a7e4127f5293ce21b3"
     },
     {
       "task_id": "GATE",

@@ -2,15 +2,15 @@ $ pnpm --filter @vsf/browser-tests exec playwright test specs/extension-observe.
 
 Running 9 tests using 1 worker
 
-  ✓  1 specs/extension-observe.spec.ts:3:1 › authorized origin is observed; ungranted and foreign origins stay unobserved (1.1s)
-  ✓  2 specs/extension-observe.spec.ts:31:1 › the extension runtime sees closed shadow roots and says which limits still apply (892ms)
-  ✓  3 specs/extension-transform.spec.ts:20:1 › the orders table is rendered as a grid, the source stays untouched and Show original restores it exactly (1.4s)
-  ✓  4 specs/extension-transform.spec.ts:90:1 › the profile form is rebuilt without reading any field value and the user's typing survives the round trip (946ms)
-  ✓  5 specs/extension-transform.spec.ts:121:1 › a repeated transform replaces the earlier one and revoking the origin restores the page (881ms)
-  ✓  6 specs/extension-transform.spec.ts:138:1 › page messages are validated against the session: shape, session, tab, sequence, document and origin (1.1s)
-  ✓  7 specs/extension-transform.spec.ts:189:1 › a replaced document or origin in the same tab cannot use the old session (855ms)
-  ✓  8 specs/extension-transform.spec.ts:215:1 › page content that imitates Varifold's own marker is still observed (831ms)
-  ✓  9 specs/extension-transform.spec.ts:230:1 › a page with nothing recognizable is left exactly as it was (807ms)
+  ✓  1 specs/extension-observe.spec.ts:3:1 › authorized origin is observed; ungranted and foreign origins stay unobserved (1.3s)
+  ✓  2 specs/extension-observe.spec.ts:31:1 › the extension runtime sees closed shadow roots and says which limits still apply (1.1s)
+  ✓  3 specs/extension-transform.spec.ts:20:1 › the orders table is rendered as a grid, the source stays untouched and Show original restores it exactly (1.5s)
+  ✓  4 specs/extension-transform.spec.ts:90:1 › the profile form is rebuilt without reading any field value and the user's typing survives the round trip (1.2s)
+  ✓  5 specs/extension-transform.spec.ts:121:1 › a repeated transform replaces the earlier one and revoking the origin restores the page (1.2s)
+  ✓  6 specs/extension-transform.spec.ts:142:3 › injected messages › page messages are validated against the session: shape, session, tab, sequence, document and origin (1.4s)
+  ✓  7 specs/extension-transform.spec.ts:197:1 › a replaced document or origin in the same tab cannot use the old session (1.2s)
+  ✓  8 specs/extension-transform.spec.ts:223:1 › page content that imitates Varifold's own marker is still observed (1.1s)
+  ✓  9 specs/extension-transform.spec.ts:238:1 › a page with nothing recognizable is left exactly as it was (1.1s)
 
-  9 passed (9.9s)
+  9 passed (12.6s)
 [exit 0]

@@ -2,14 +2,14 @@ $ pnpm --filter @vsf/browser-tests exec playwright test specs/extension-bridge.s
 
 Running 8 tests using 1 worker
 
-  ✓  1 specs/bridge.spec.ts:55:1 › the paired extension origin passes CORS preflight and reaches the bridge (665ms)
-  ✓  2 specs/bridge.spec.ts:77:1 › a hostile web origin holding the token still cannot read or write through the bridge (728ms)
+  ✓  1 specs/bridge.spec.ts:55:1 › the paired extension origin passes CORS preflight and reaches the bridge (905ms)
+  ✓  2 specs/bridge.spec.ts:77:1 › a hostile web origin holding the token still cannot read or write through the bridge (886ms)
   ✓  3 specs/extension-bridge.spec.ts:19:1 › a paired extension gets its session bound by the companion and ends it on restore (1.3s)
-  ✓  4 specs/extension-bridge.spec.ts:42:1 › without a pairing, or with the companion gone, the page is still transformed and the reason is recorded (1.1s)
-  ✓  5 specs/extension-bridge.spec.ts:61:1 › unpairing revokes the pairing on the companion and later pages are not bound (1.1s)
-  ✓  6 specs/extension-bridge.spec.ts:79:1 › the stored credentials are sealed: no secret appears in any extension storage area (788ms)
-  ✓  7 specs/extension-bridge.spec.ts:96:1 › a program pretending to be the companion cannot get the code or be believed (734ms)
-  ✓  8 specs/extension-bridge.spec.ts:146:1 › a local program that claims the extension's origin but does not know the code is turned away (832ms)
+  ✓  4 specs/extension-bridge.spec.ts:42:1 › without a pairing, or with the companion gone, the page is still transformed and the reason is recorded (1.3s)
+  ✓  5 specs/extension-bridge.spec.ts:61:1 › unpairing revokes the pairing on the companion and later pages are not bound (1.3s)
+  ✓  6 specs/extension-bridge.spec.ts:79:1 › the stored credentials are sealed: no secret appears in any extension storage area (998ms)
+  ✓  7 specs/extension-bridge.spec.ts:96:1 › a program pretending to be the companion cannot get the code or be believed (887ms)
+  ✓  8 specs/extension-bridge.spec.ts:146:1 › a local program that claims the extension's origin but does not know the code is turned away (851ms)
 
-  8 passed (9.2s)
+  8 passed (10.9s)
 [exit 0]
