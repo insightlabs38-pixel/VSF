@@ -1,0 +1,46 @@
+{
+  "task_id": "VSF-B13-T02",
+  "status": "DONE",
+  "branch": "vsf/b13-durable-storage",
+  "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+  "commit": "05bf46be7f5ab7ffcc28499cdf2c7fc8ec361aea",
+  "paths": [
+    "backend/storage/artifact/artifact.go",
+    "backend/storage/blob/"
+  ],
+  "acceptance": "Artifact writes bind content hash, provenance, version, tenant classification and atomic manifest visibility.",
+  "positive": {
+    "fixture": "round trip, signed manifest binding artifact digests, sizes, classes, provenance and tenant, whole-manifest visibility, public sharing and private separation",
+    "command": "go -C backend test -race -count=1 ./storage/artifact/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "tampered, forged, revoked-key and moved manifests refused; torn and half-built writes never visible; bit rot and lost objects detected not served; backends refuse overwrite with different bytes",
+    "command": "go -C backend test -race -count=1 ./storage/blob/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "Manifest schema vsf.manifest v1 (Ed25519 over canonical JSON); separate from the Rust-verified IR version promotion."
+  },
+  "security_and_source_permissions": "A manifest is readable only for the tenant named in its signed document.",
+  "performance_memory_storage": "Not measured at this task; see T03.",
+  "known_limitations": [
+    "Signing keys are supplied by the caller; key custody belongs to B14"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T02.artifact-store-and-signed-manifests.log",
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T02.object-backends-conformance.log"
+  ],
+  "review_result": "ACCEPTED"
+}

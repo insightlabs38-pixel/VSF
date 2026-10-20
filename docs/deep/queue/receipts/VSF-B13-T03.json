@@ -1,0 +1,49 @@
+{
+  "task_id": "VSF-B13-T03",
+  "status": "DONE",
+  "branch": "vsf/b13-durable-storage",
+  "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+  "commit": "15f619471b3d1705e213a15ac3952af4107bd98f",
+  "paths": [
+    "backend/storage/bench/",
+    "backend/cmd/vsfstoragebench/",
+    "backend/storage/blob/sqlite.go",
+    "backend/storage/blob/s3.go",
+    "docs/deep/evidence/VSF-B13/storage-benchmark.json"
+  ],
+  "acceptance": "Comparable fixture benchmark covers tiny objects, similar versions, recovery and GC across filesystem, SQLite and commodity S3; ZEROS3 is recorded as not measured until an endpoint exists (VSF-B18-T07); record actual numbers.",
+  "positive": {
+    "fixture": "seeded corpus and workload runner over all three backends, kill -9 child and server crash runs, chunk-dedup analysis",
+    "command": "go -C backend test -race -count=1 ./storage/bench/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "zero acknowledged writes lost, corrupt or torn across the crash runs; percentile summaries checked against known inputs; corpus deterministic and content addressed",
+    "command": "go -C backend test -race -count=1 -run 'Corpus|Versions|Chunk|Summarize|WholeRun' ./storage/bench/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "No contract change; one third-party dependency added (modernc.org/sqlite), see ADR-038."
+  },
+  "security_and_source_permissions": "Benchmark objects are synthetic; no account data.",
+  "performance_memory_storage": "200,000 tiny objects and 200 similar 512 KiB versions on one machine; recorded in docs/deep/evidence/VSF-B13/storage-benchmark.md (tiny read p50: fs 0.03 ms, sqlite 0.23, s3 1.9; device writes per logical byte: fs 4.3x, sqlite 33.3x, s3 8.7x; whole-object versions 1.00x).",
+  "known_limitations": [
+    "ZEROS3 not measured: no endpoint, credentials or client exist (VSF-B18-T07)",
+    "One machine and a synthetic corpus; real compiled artifacts may share more or less than the 37% chunk-dedup estimate"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B13/logs/VSF-B13-T03.workload-harness-and-crash-runs.log"
+  ],
+  "review_result": "ACCEPTED"
+}

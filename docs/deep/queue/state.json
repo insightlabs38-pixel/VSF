@@ -855,37 +855,52 @@
       "evidence": null
     },
     "VSF-B13-T01": {
-      "status": "READY",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "3e9bf525a76b8229b5d638f1e0ad9031e039018b",
+      "evidence": "docs/deep/evidence/VSF-B13",
+      "branch": "vsf/b13-durable-storage",
+      "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+      "receipt": "docs/deep/queue/receipts/VSF-B13-T01.json"
     },
     "VSF-B13-T02": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "05bf46be7f5ab7ffcc28499cdf2c7fc8ec361aea",
+      "evidence": "docs/deep/evidence/VSF-B13",
+      "branch": "vsf/b13-durable-storage",
+      "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+      "receipt": "docs/deep/queue/receipts/VSF-B13-T02.json"
     },
     "VSF-B13-T03": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "15f619471b3d1705e213a15ac3952af4107bd98f",
+      "evidence": "docs/deep/evidence/VSF-B13",
+      "branch": "vsf/b13-durable-storage",
+      "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+      "receipt": "docs/deep/queue/receipts/VSF-B13-T03.json"
     },
     "VSF-B13-T04": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "bda09d8ecdeaa84de02986c8eb86ac8899bd5153",
+      "evidence": "docs/deep/evidence/VSF-B13",
+      "branch": "vsf/b13-durable-storage",
+      "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+      "receipt": "docs/deep/queue/receipts/VSF-B13-T04.json"
     },
     "VSF-B13-T05": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "f3b283559e3482a3fe3556e0df74a55b38855731",
+      "evidence": "docs/deep/evidence/VSF-B13",
+      "branch": "vsf/b13-durable-storage",
+      "base_commit": "048661ab149c52d6b0aee0edb347565060142142",
+      "receipt": "docs/deep/queue/receipts/VSF-B13-T05.json"
     },
     "VSF-B14-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -975,7 +990,7 @@
       "evidence": null
     },
     "VSF-B17-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1498,9 +1513,11 @@
       "evidence": null
     },
     "G13": {
-      "status": "PENDING",
-      "decision": null,
-      "evidence": null
+      "status": "ACCEPTED",
+      "decision": "PROCEED",
+      "evidence": "docs/deep/evidence/VSF-B13",
+      "report": "docs/deep/reports/VSF-B13.md",
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/12"
     },
     "G14": {
       "status": "PENDING",

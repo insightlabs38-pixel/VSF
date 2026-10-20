@@ -19,11 +19,11 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B10 | G10 | 8/8 | DONE | PROCEED |
 | B11 | G11 | 0/6 | BLOCKED | - |
 | B12 | G12 | 0/6 | TODO | - |
-| B13 | G13 | 0/5 | READY | - |
-| B14 | G14 | 0/7 | TODO | - |
+| B13 | G13 | 5/5 | DONE | PROCEED |
+| B14 | G14 | 0/7 | READY | - |
 | B15 | G15 | 0/6 | TODO | - |
 | B16 | G16 | 0/7 | TODO | - |
-| B17 | G17 | 0/5 | TODO | - |
+| B17 | G17 | 0/5 | READY | - |
 | B18 | G18 | 0/7 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
 | B20 | G20 | 0/4 | TODO | - |
@@ -190,15 +190,15 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B13 · Implement durable storage and ZEROS3 qualification
 
-- [ ] `VSF-B13-T01` Build SQLite hot store and PostgreSQL hosted metadata schema _(READY)_
-- [ ] `VSF-B13-T02` Implement content-addressed artifact abstraction and signed manifest writes
-- [ ] `VSF-B13-T03` Measure filesystem/SQLite/commodity S3 versus ZEROS3 under workload suite
-- [ ] `VSF-B13-T04` Add pin-aware GC, crash recovery and export/import bundles
-- [ ] `VSF-B13-T05` Encrypt/isolate account-derived caches and remove secrets from shared structures
+- [x] `VSF-B13-T01` Build SQLite hot store and PostgreSQL hosted metadata schema
+- [x] `VSF-B13-T02` Implement content-addressed artifact abstraction and signed manifest writes
+- [x] `VSF-B13-T03` Measure filesystem/SQLite/commodity S3 versus ZEROS3 under workload suite
+- [x] `VSF-B13-T04` Add pin-aware GC, crash recovery and export/import bundles
+- [x] `VSF-B13-T05` Encrypt/isolate account-derived caches and remove secrets from shared structures
 
 ### B14 · Harden authentication and managed sessions
 
-- [ ] `VSF-B14-T01` Implement explicit identity binding and token audience validation
+- [ ] `VSF-B14-T01` Implement explicit identity binding and token audience validation _(READY)_
 - [ ] `VSF-B14-T02` Test OAuth PKCE and source-managed browser sign-in lifecycle
 - [ ] `VSF-B14-T03` Integrate OS keychain or vault, redaction and scoped credential injection
 - [ ] `VSF-B14-T04` Handle MFA/reauth pause and revoke behavior
@@ -227,7 +227,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B17 · Ship user-visible version control features
 
-- [ ] `VSF-B17-T01` Design version timeline/diff/compatibility status presentation
+- [ ] `VSF-B17-T01` Design version timeline/diff/compatibility status presentation _(READY)_
 - [ ] `VSF-B17-T02` Add contract pins and migration preview in UI/CLI/API
 - [ ] `VSF-B17-T03` Implement history quotas and pin retention by entitlement
 - [ ] `VSF-B17-T04` Add provenance/sanitized export and snapshot restore conditions
