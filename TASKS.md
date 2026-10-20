@@ -20,9 +20,9 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B11 | G11 | 0/6 | BLOCKED | - |
 | B12 | G12 | 0/6 | TODO | - |
 | B13 | G13 | 5/5 | DONE | PROCEED |
-| B14 | G14 | 15/15 | GATE_PENDING | - |
-| B15 | G15 | 0/6 | TODO | - |
-| B16 | G16 | 0/8 | TODO | - |
+| B14 | G14 | 15/15 | DONE | PROCEED |
+| B15 | G15 | 0/6 | READY | - |
+| B16 | G16 | 0/8 | READY | - |
 | B17 | G17 | 0/5 | READY | - |
 | B18 | G18 | 0/7 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
@@ -216,7 +216,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B15 · Build hosted and on-demand execution
 
-- [ ] `VSF-B15-T01` Implement worker lifecycle and memory/CPU/browser-hour limits
+- [ ] `VSF-B15-T01` Implement worker lifecycle and memory/CPU/browser-hour limits _(READY)_
 - [ ] `VSF-B15-T02` Enforce DNS/redirect/SSRF and cloud metadata defense
 - [ ] `VSF-B15-T03` Separate interactive and background queues and per-session locks
 - [ ] `VSF-B15-T04` Add task pause/resume for authentication and unknown commits
@@ -225,7 +225,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B16 · Build desktop and premium localhost service
 
-- [ ] `VSF-B16-T01` Evaluate lightweight desktop shell against browser+companion
+- [ ] `VSF-B16-T01` Evaluate lightweight desktop shell against browser+companion _(READY)_
 - [ ] `VSF-B16-T02` Build installers/updaters and credentials lifecycle for target OS
 - [ ] `VSF-B16-T03` Introduce persistent local API/MCP gated by product entitlement
 - [ ] `VSF-B16-T04` Test offline startup, keychain errors, OS suspend/resume and revoke

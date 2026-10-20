@@ -945,7 +945,7 @@
       "receipt": "docs/deep/queue/receipts/VSF-B14-T05.json"
     },
     "VSF-B15-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -981,7 +981,7 @@
       "evidence": null
     },
     "VSF-B16-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1620,9 +1620,11 @@
       "merge_commit": "becebe58c478cbe454d98736bc3970b7a530c29d"
     },
     "G14": {
-      "status": "PENDING",
-      "decision": null,
-      "evidence": null
+      "status": "ACCEPTED",
+      "decision": "PROCEED",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "report": "docs/deep/reports/VSF-B14.md",
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/13"
     },
     "G15": {
       "status": "PENDING",
