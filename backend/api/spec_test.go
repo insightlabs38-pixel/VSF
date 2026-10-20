@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -142,6 +143,41 @@ func TestNamesRoundTripAndCannotCollide(t *testing.T) {
 	for _, bad := range []string{"", "op.", "op.x", "x.y.z", "op._z.a", "op.a_.b", "op.a_x1.b"} {
 		if _, _, ok := SplitName(bad); ok {
 			t.Fatalf("%q must not split", bad)
+		}
+	}
+}
+
+func jsonTags(t reflect.Type) []string {
+	var out []string
+	for i := 0; i < t.NumField(); i++ {
+		tag, _, _ := strings.Cut(t.Field(i).Tag.Get("json"), ",")
+		if tag != "" && tag != "-" {
+			out = append(out, tag)
+		}
+	}
+	return out
+}
+
+// The published result schema must name every field Result can carry; additionalProperties is false.
+func TestResultSchemaDeclaresEveryResultField(t *testing.T) {
+	props := ResultSchemaFor("op.x", "1.0.0", "d", nil)["properties"].(map[string]any)
+	for _, tag := range jsonTags(reflect.TypeOf(Result{})) {
+		if _, ok := props[tag]; !ok {
+			t.Errorf("result field %q is missing from the schema", tag)
+		}
+	}
+	for tag, sub := range map[string]reflect.Type{"observed": reflect.TypeOf(Observed{}), "reconciliation": reflect.TypeOf(Reconciliation{}), "error": reflect.TypeOf(Error{})} {
+		inner := props[tag].(map[string]any)["properties"].(map[string]any)
+		for _, f := range jsonTags(sub) {
+			if _, ok := inner[f]; !ok {
+				t.Errorf("%s field %q is missing from the schema", tag, f)
+			}
+		}
+	}
+	item := props["progress"].(map[string]any)["items"].(map[string]any)["properties"].(map[string]any)
+	for _, f := range jsonTags(reflect.TypeOf(Progress{})) {
+		if _, ok := item[f]; !ok {
+			t.Errorf("progress field %q is missing from the schema", f)
 		}
 	}
 }

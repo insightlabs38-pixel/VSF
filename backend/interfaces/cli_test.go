@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/insightlabs38-pixel/vsf/backend/api"
 	"github.com/insightlabs38-pixel/vsf/backend/cli"
@@ -185,3 +186,5 @@ func TestCredentialsAreBoundToTheSurfaceThatIssuedThem(t *testing.T) {
 		t.Fatalf("a CLI credential must not work as a REST one: %d %s", r.Status, r.Body)
 	}
 }
+
+func waitMs(n int) { time.Sleep(time.Duration(n) * time.Millisecond) }

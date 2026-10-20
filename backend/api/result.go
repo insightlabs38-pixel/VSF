@@ -209,6 +209,15 @@ func RefusedResult(spec *Spec, err *Error) Result {
 	return r
 }
 
+// RefusedFor is RefusedResult for a request whose operation was named but not resolved.
+func RefusedFor(route Route, spec *Spec, err *Error) Result {
+	r := RefusedResult(spec, err)
+	if spec == nil {
+		r.Operation, r.ContractVersion = route.Operation, route.Version
+	}
+	return r
+}
+
 // ExitCodeOf is the process exit status of a result, fixed by the taxonomy and shared by every command-line client.
 func ExitCodeOf(r Result) int {
 	if r.Error != nil {

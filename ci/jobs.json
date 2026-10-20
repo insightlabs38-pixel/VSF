@@ -349,7 +349,8 @@
           "./bridge/...",
           "./api/...",
           "./cli/...",
-          "./interfaces/..."
+          "./interfaces/...",
+          "./mcp/..."
         ]
       },
       {
@@ -368,7 +369,8 @@
           "./bridge/...",
           "./api/...",
           "./cli/...",
-          "./interfaces/..."
+          "./interfaces/...",
+          "./mcp/..."
         ]
       }
     ],

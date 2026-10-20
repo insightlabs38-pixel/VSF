@@ -375,16 +375,26 @@ func constOrString(v string) map[string]any {
 	return map[string]any{"const": v}
 }
 
+// ResultSchemaFor is the result schema of one operation; empty identity fields describe any operation's result.
+func ResultSchemaFor(name, version, digest string, outputs []Param) map[string]any {
+	return resultSchema(name, version, digest, outputs)
+}
+
 // resultSchema describes Result for one operation; the declared outputs are listed, never invented as fields.
 func resultSchema(name, version, digest string, outputs []Param) map[string]any {
 	return map[string]any{
 		"type": "object", "additionalProperties": false,
-		"required": []any{"operation", "contract_version", "contract_digest", "category", "effect", "retry"},
+		"required": []any{"operation", "category", "effect", "retry"},
 		"properties": map[string]any{
-			"invocation":       str("The handle for status, cancellation and reconciliation."),
+			"invocation": str("The handle for status, cancellation and reconciliation."),
+			"request_id": str("The request id this result answers; repeat it only to repeat the same request."),
+			"reconciliation": map[string]any{"type": "object", "required": []any{"attempt", "settled"}, "properties": map[string]any{
+				"attempt": map[string]any{"type": "integer"}, "evidence_level": str(), "basis": str(), "version": str(),
+				"settled": map[string]any{"type": "boolean"},
+			}},
 			"operation":        constOrString(name),
-			"contract_version": constOrString(version),
-			"contract_digest":  constOrString(digest),
+			"contract_version": str("The contract version that ran, or that was asked for."),
+			"contract_digest":  str("The digest of the contract that ran; empty when none was resolved."),
 			"category": map[string]any{"enum": enumOf(string(CategorySucceeded), string(CategoryRefused), string(CategoryFailed),
 				string(CategoryUnknownCommit), string(CategoryUnverifiedEffect), string(CategoryInProgress), string(CategoryValidated))},
 			"state":  str(),
@@ -422,6 +432,19 @@ func declaredOutputs(ps []Param) []any {
 	return out
 }
 
+// ToolNameSafe is true for names every client accepts as a tool name and cannot fold into another name.
+func ToolNameSafe(n string) bool {
+	if n == "" || len(n) > MaxNameChars {
+		return false
+	}
+	for _, r := range n {
+		if !(r >= 'a' && r <= 'z' || r >= '0' && r <= '9' || r == '_' || r == '-' || r == '.') {
+			return false
+		}
+	}
+	return true
+}
+
 // BuildSpec derives the description of one operation; it refuses what cannot be described honestly.
 func BuildSpec(doc []byte) (Spec, error) {
 	un, err := ir.DecodeDocument(doc)
@@ -449,6 +472,9 @@ func specOf(c ir.OperationContract, digest string) (Spec, error) {
 	name := OperationName(app, string(c.OperationID))
 	if len(name) > MaxNameChars {
 		return Spec{}, fmt.Errorf("name_too_long")
+	}
+	if !ToolNameSafe(name) {
+		return Spec{}, fmt.Errorf("name_unsafe")
 	}
 	d := disclosure(c)
 	ps := objectSchema(ins)

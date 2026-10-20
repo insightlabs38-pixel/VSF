@@ -265,10 +265,10 @@ func (s *Service) resolve(p Principal, who execution.Caller, r Route, pinVersion
 func (s *Service) Invoke(ctx context.Context, p Principal, raw []byte, route Route) Result {
 	who, err := s.caller(p)
 	if err != nil {
-		return RefusedResult(nil, err)
+		return RefusedFor(route, nil, err)
 	}
 	if len(raw) > MaxRequestBytes {
-		return RefusedResult(nil, newError(CodeTooLarge, ""))
+		return RefusedFor(route, nil, newError(CodeTooLarge, ""))
 	}
 	var head struct {
 		Version string `json:"contract_version"`
@@ -281,7 +281,7 @@ func (s *Service) Invoke(ctx context.Context, p Principal, raw []byte, route Rou
 	}
 	spec, err := s.resolve(p, who, route, head.Version, head.Digest)
 	if err != nil {
-		return RefusedResult(nil, err)
+		return RefusedFor(route, nil, err)
 	}
 	inv, err := DecodeInvocation(spec, raw)
 	if err != nil {
