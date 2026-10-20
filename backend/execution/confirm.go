@@ -71,3 +71,14 @@ func requestDigest(contract, record string, params map[string]any) string {
 	sum := sha256.Sum256(b)
 	return "sha256:" + hex.EncodeToString(sum[:])
 }
+
+// ConfirmationDigest binds a confirmation to the request, the caller who will run it and the source session it runs in.
+func ConfirmationDigest(contract, record string, params map[string]any, caller, session string) string {
+	b, _ := json.Marshal(struct {
+		D string `json:"d"`
+		C string `json:"c"`
+		S string `json:"s"`
+	}{requestDigest(contract, record, params), caller, session})
+	sum := sha256.Sum256(b)
+	return "sha256:" + hex.EncodeToString(sum[:])
+}

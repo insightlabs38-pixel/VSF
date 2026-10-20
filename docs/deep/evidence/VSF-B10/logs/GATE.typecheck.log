@@ -1,0 +1,83 @@
+$ pnpm typecheck
+
+> vsf@0.0.0 typecheck /home/user/VSF
+> pnpm -r --workspace-concurrency=1 run typecheck
+
+Scope: 19 of 20 workspace projects
+
+> @vsf/design-system@0.0.0 typecheck /home/user/VSF/frontend/packages/design-system
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/schema@0.0.0 typecheck /home/user/VSF/frontend/packages/schema
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/adversarial-tests@0.0.0 typecheck /home/user/VSF/tests/adversarial
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/redact@0.0.0 typecheck /home/user/VSF/tools/redact
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/ir@0.0.0 typecheck /home/user/VSF/frontend/packages/ir
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/observer@0.0.0 typecheck /home/user/VSF/frontend/packages/observer
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/renderer@0.0.0 typecheck /home/user/VSF/frontend/packages/renderer
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/e2e@0.0.0 typecheck /home/user/VSF/tests/e2e
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/checks@0.0.0 typecheck /home/user/VSF/tools/checks
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/idlgen@0.0.0 typecheck /home/user/VSF/tools/idlgen
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/gallery@0.0.0 typecheck /home/user/VSF/apps/gallery
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/wasm-host@0.0.0 typecheck /home/user/VSF/frontend/packages/wasm-host
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/observation-tests@0.0.0 typecheck /home/user/VSF/tests/observation
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/queue@0.0.0 typecheck /home/user/VSF/tools/queue
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/extension@0.0.0 typecheck /home/user/VSF/apps/extension
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/fixture-apps@0.0.0 typecheck /home/user/VSF/fixtures/source-apps
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/ui-tests@0.0.0 typecheck /home/user/VSF/tests/ui
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/browser-tests@0.0.0 typecheck /home/user/VSF/tests/browser
+> tsc -p tsconfig.json --noEmit
+
+
+> @vsf/cross-language-tests@0.0.0 typecheck /home/user/VSF/tests/cross-language
+> tsc -p tsconfig.json --noEmit
+
+[exit 0]

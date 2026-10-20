@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 -run Listing|PageSize|Namespace|OnePage|Adversarial|Scopes|Cursors|Emitted|Pins|SpecCache|Clamped ./api/
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	8.910s
+[exit 0]

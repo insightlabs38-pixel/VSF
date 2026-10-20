@@ -1,0 +1,43 @@
+{
+  "task_id": "VSF-B10-T05",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "714842e8b9365531e6c763b1e8d0e2b0761c6729",
+  "paths": [
+    "backend/api/catalog.go",
+    "backend/mcp/tools.go",
+    "backend/mcp/resources.go"
+  ],
+  "acceptance": "Tool discovery is namespaced, deterministic, bounded and does not load entire catalogs unnecessarily.",
+  "positive": {
+    "fixture": "stable order under shuffled insertion; page size does not change the listing; a namespace listing decodes only its own contracts; construction decodes nothing",
+    "command": "go -C backend test -race -count=1 -run 'Listing|PageSize|Namespace|OnePage|Adversarial|Scopes|Cursors|Emitted|Pins|SpecCache|Clamped' ./api/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "an all-withheld or all-unscoped catalog cannot make a page scan more than 4x its size; hostile cursors; unverified, deprecated, proposed and unwitnessed contracts are never emitted on any surface",
+    "command": "go -C backend test -tags integration -race -count=1 -run NoSurfaceEmits ./interfaces/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 -run 'Tools|Listing|Namespaces|Fixed|Resources' ./mcp/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "cursor format c1; MCP list cursor t1"
+  },
+  "security_and_source_permissions": "Hidden operations are indistinguishable from unknown ones to a caller lacking the scope.",
+  "performance_memory_storage": "10000-entry catalog: index 34.4 ms and 7.7 MB; one cold page of 50 evaluated 14.7 ms and 4.7 MB (stub validator).",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T05.catalog-discovery-units.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T05.mcp-discovery-tools.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T05.unverified-operations-are-not-emitted.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T05.catalog-benchmarks.log"
+  ],
+  "review_result": "ACCEPTED"
+}

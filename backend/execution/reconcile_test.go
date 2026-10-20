@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/insightlabs38-pixel/vsf/backend/execution/internal/fixtureapp"
+	"github.com/insightlabs38-pixel/vsf/backend/internal/fixtureapp"
 )
 
 func attempts(t *testing.T, rt *Runtime, key string) int {

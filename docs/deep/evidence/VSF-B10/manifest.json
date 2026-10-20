@@ -1,0 +1,457 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B10",
+  "gate": "G10",
+  "runs": [
+    {
+      "task_id": "VSF-B10-T01",
+      "name": "taxonomy-spec-envelope-units",
+      "command": "go -C backend test -race -count=1 -run Code|Reason|Spec|Envelope|Violations|Strict|Large|Names|ResultSchema|ToolNames|Errors ./api/ ./api/jsonschema/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T01.taxonomy-spec-envelope-units.log",
+      "sha256": "e22b20dfc475eb83cc0cf44aad6b946e15e0e2bc6877263537cc97dfc2d72dec"
+    },
+    {
+      "task_id": "VSF-B10-T01",
+      "name": "rest-routes-openapi-and-refusals",
+      "command": "go -C backend test -tags integration -race -count=1 -run REST|OpenAPI ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T01.rest-routes-openapi-and-refusals.log",
+      "sha256": "bce5a65446f7ca73a45d3e28cfd7a4c3dacd43c2910c3fa0f868bf485064777c"
+    },
+    {
+      "task_id": "VSF-B10-T02",
+      "name": "cli-grammar-and-exit-semantics",
+      "command": "go -C backend test -race -count=1 ./cli/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T02.cli-grammar-and-exit-semantics.log",
+      "sha256": "78cd970dec47d32d11a599a94cce3fd8d8c18e6efd1bbc21573f20392abd2418"
+    },
+    {
+      "task_id": "VSF-B10-T02",
+      "name": "cli-over-the-wire",
+      "command": "go -C backend test -tags integration -race -count=1 -run CLI ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T02.cli-over-the-wire.log",
+      "sha256": "531aeb65f854d4ed75608a3e156dcbc5e941f6ae543c74401345be97b377383e"
+    },
+    {
+      "task_id": "VSF-B10-T03",
+      "name": "mcp-protocol-and-conformance-units",
+      "command": "go -C backend test -race -count=1 ./mcp/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T03.mcp-protocol-and-conformance-units.log",
+      "sha256": "cb4ad89ec1195d516f379ae266a4a37e41c824625321b3cf4b7267755206690e"
+    },
+    {
+      "task_id": "VSF-B10-T03",
+      "name": "mcp-against-the-real-service",
+      "command": "go -C backend test -tags integration -race -count=1 -run MCP ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T03.mcp-against-the-real-service.log",
+      "sha256": "9453154016be5807547abae9839e6fae99e8b68167089c39464a6257b98b4670"
+    },
+    {
+      "task_id": "VSF-B10-T04",
+      "name": "credential-store-and-binding",
+      "command": "go -C backend test -race -count=1 -run Credential|Token|Expiry|Issuing|Store|Listing ./api/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T04.credential-store-and-binding.log",
+      "sha256": "bb924412935526b3b859bd2994d2787e9cfdebc99dfdcd45657f634644822c37"
+    },
+    {
+      "task_id": "VSF-B10-T04",
+      "name": "callers-cannot-borrow-across-surfaces",
+      "command": "go -C backend test -tags integration -race -count=1 -run EverySurfaceAccepts|Borrow|UseAnother|Revocation|NoSurfaceEchoes|Confirmation ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T04.callers-cannot-borrow-across-surfaces.log",
+      "sha256": "8fa6dc34920a78d4c8a50f27ca3006152e743b60f85d44cae389b4e75bc84d04"
+    },
+    {
+      "task_id": "VSF-B10-T04",
+      "name": "caller-bound-confirmation-in-runtime",
+      "command": "go -C backend test -tags integration -race -count=1 -run Confirm|Precond|Memoized ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T04.caller-bound-confirmation-in-runtime.log",
+      "sha256": "84dfdbd9d7db055345770d01d686ff0da760611fa69034c65c6bcc733f08617c"
+    },
+    {
+      "task_id": "VSF-B10-T05",
+      "name": "catalog-discovery-units",
+      "command": "go -C backend test -race -count=1 -run Listing|PageSize|Namespace|OnePage|Adversarial|Scopes|Cursors|Emitted|Pins|SpecCache|Clamped ./api/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T05.catalog-discovery-units.log",
+      "sha256": "46759b02df73d7651d12761111818e4c9aca8ef1d4da85b0aee6b984afa485e0"
+    },
+    {
+      "task_id": "VSF-B10-T05",
+      "name": "mcp-discovery-tools",
+      "command": "go -C backend test -race -count=1 -run Tools|Listing|Namespaces|Fixed|Resources ./mcp/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T05.mcp-discovery-tools.log",
+      "sha256": "fd81e7d708dffb37f554f02d9fabac020bd02de6181a847177df152fd26639ec"
+    },
+    {
+      "task_id": "VSF-B10-T05",
+      "name": "unverified-operations-are-not-emitted",
+      "command": "go -C backend test -tags integration -race -count=1 -run NoSurfaceEmits ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T05.unverified-operations-are-not-emitted.log",
+      "sha256": "8c9f6b3fbc40e4993c10a3585506aa42cee4e1cee56f5dcf6d56be0566d8791f"
+    },
+    {
+      "task_id": "VSF-B10-T05",
+      "name": "catalog-benchmarks",
+      "command": "go -C backend test -run xxx -bench CatalogIndex|FirstPage -benchmem -benchtime=20x ./api/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T05.catalog-benchmarks.log",
+      "sha256": "49bb0addf79b534d74f9b38891d1bcf1043d867f89faa8aea9e7b60985f4b46d"
+    },
+    {
+      "task_id": "VSF-B10-T06",
+      "name": "same-outcome-on-every-surface",
+      "command": "go -C backend test -tags integration -race -count=1 -run VerifiedWriteHas|UnknownCommitMeans|UnverifiedEffect|Refusals|UnknownCommitOnOne|CancellingAQueued ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T06.same-outcome-on-every-surface.log",
+      "sha256": "88a12649ba66a1b5d378d19393309889badf8d607b7b0ac448479e58959d4bfa"
+    },
+    {
+      "task_id": "VSF-B10-T07",
+      "name": "old-pins-bad-arguments-revoked-roles-long-runs",
+      "command": "go -C backend test -tags integration -race -count=1 -run OlderClient|Malformed|RoleRevoked|LongRun|CancellingARun|EveryError ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T07.old-pins-bad-arguments-revoked-roles-long-runs.log",
+      "sha256": "3178989a97d15dbd527767d6765f3e22ebe015cb0a52d664dfb79c5c7c2376d8"
+    },
+    {
+      "task_id": "VSF-B10-T08",
+      "name": "dispatch-overhead-report",
+      "command": "bash -c VSF_OVERHEAD_REPORT=\"$PWD/docs/deep/evidence/VSF-B10/overhead.txt\" go -C backend test -tags integration -count=1 -v -run DispatchOverhead ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T08.dispatch-overhead-report.log",
+      "sha256": "540d337e46f4e273e7dd92040ed744f1a9206865ea24417c1dc4ca3a4710dad3"
+    },
+    {
+      "task_id": "VSF-B10-T08",
+      "name": "dispatch-overhead-under-race",
+      "command": "go -C backend test -tags integration -race -count=1 -run DispatchOverhead ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B10-T08.dispatch-overhead-under-race.log",
+      "sha256": "ab46de869c63c3359ece3378700f710c017e75c31747634704ad48fbcf72260d"
+    },
+    {
+      "task_id": "GATE",
+      "name": "matrix-mcp-schema-collision",
+      "command": "go -C backend test -tags integration -race -count=1 -run MCPDistinctApplications|MCPAnOlderContract|FixedToolsComeFirst|ToolsListConforms|NamesRoundTrip ./interfaces/ ./mcp/ ./api/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.matrix-mcp-schema-collision.log",
+      "sha256": "90af79636a095a93deb6c1f40fdb6b200643efa6a3a9117031e670c865eac7aa"
+    },
+    {
+      "task_id": "GATE",
+      "name": "matrix-old-client-pin",
+      "command": "go -C backend test -tags integration -race -count=1 -run OlderClient|MCPAnOlderContract|CLIPins ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.matrix-old-client-pin.log",
+      "sha256": "24d410166dd694b099c9a2f5230d9aa5235f530736e4c20f54d3e2391c412512"
+    },
+    {
+      "task_id": "GATE",
+      "name": "matrix-unauthorized-caller",
+      "command": "go -C backend test -tags integration -race -count=1 -run EverySurfaceAccepts|Borrow|UseAnother|Revocation|NoSurfaceEchoes|Confirmation|NeedsACredential ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.matrix-unauthorized-caller.log",
+      "sha256": "2d05023c1484ccc27eb55447a68f9bd0b530e011953da78f3207c590e90fab96"
+    },
+    {
+      "task_id": "GATE",
+      "name": "matrix-unknown-commit",
+      "command": "go -C backend test -tags integration -race -count=1 -run UnknownCommit ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.matrix-unknown-commit.log",
+      "sha256": "2b39fdcc542b3f1d6fde02ad7967c452848694c0ff48d7ca658ff6da752b83fd"
+    },
+    {
+      "task_id": "GATE",
+      "name": "matrix-unsupported-operation-emission",
+      "command": "go -C backend test -tags integration -race -count=1 -run NoSurfaceEmits|OnlyWhatMayBeEmitted ./interfaces/ ./api/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.matrix-unsupported-operation-emission.log",
+      "sha256": "7b415db75a372ebc013e49c4185c4a13f58701c59d4502d2f20713cfa5f096a9"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-test-workspace",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked --workspace",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-test-workspace.log",
+      "sha256": "a1141e90858c0a417d5871d0d605ce34bb522291124a854ddd569cfe146f34fb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-fmt",
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-fmt.log",
+      "sha256": "c4e39a37190232bfa5639c36f34c68e12e10e629056589120a38922c90608dee"
+    },
+    {
+      "task_id": "GATE",
+      "name": "cargo-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.cargo-clippy.log",
+      "sha256": "61884d0a7c54e432bfb9ba14e120c42906a8f9642ac5bacabaed1b51fe255eba"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-test-all",
+      "command": "go -C backend test -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-test-all.log",
+      "sha256": "ab97740c3db75585beabc3a57b8b75bcaa01da2c5adba69f90770a5ddfcb800f"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-integration-all",
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-integration-all.log",
+      "sha256": "b71ad0fc65cdae7a0d857eaf6f92bf8ab166afb1a49adfd9ae2d4ea9c7d1da17"
+    },
+    {
+      "task_id": "GATE",
+      "name": "gofmt",
+      "command": "scripts/gofmt-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.gofmt.log",
+      "sha256": "c0f28271d4d47306fac872605c06b1cc41b29e7602f82db35a4770b842a85b22"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-vet",
+      "command": "go -C backend vet -tags integration ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-vet.log",
+      "sha256": "fcfe5cf31ffc5fb18a3291ac5ea800f76090b35aadb4766f874bf01e5cc5dcda"
+    },
+    {
+      "task_id": "GATE",
+      "name": "build-ts",
+      "command": "pnpm build:ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.build-ts.log",
+      "sha256": "48fed7456fd486e8bae1d7764c2ba09b8aec1524ae0fa5b006b4085a11a1f341"
+    },
+    {
+      "task_id": "GATE",
+      "name": "typecheck",
+      "command": "pnpm typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.typecheck.log",
+      "sha256": "e037811ffe41779fc7dd34987ff616a20a19355d1626fa3748e4f5dcaf74b3ed"
+    },
+    {
+      "task_id": "GATE",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.biome.log",
+      "sha256": "b000ff3c238e98c84ec1f4205c302d29eb03fa6f9a04561284775e86c3e7d3f2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "comment-limit",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.comment-limit.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "secret-scan",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.secret-scan.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "GATE",
+      "name": "idl-drift",
+      "command": "node --conditions=source tools/idlgen/src/cli.ts --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.idl-drift.log",
+      "sha256": "c293e6edf4034144bbceb9a420289f4314a609a867b4aaf6acdcbdad9b6e4dae"
+    },
+    {
+      "task_id": "GATE",
+      "name": "registry-manifest",
+      "command": "cargo run --quiet --manifest-path compiler/Cargo.toml --locked -p vsf-registry -- manifest verify . --development",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.registry-manifest.log",
+      "sha256": "77de8fbc1b2f6881ff641749893df7565ad0c736f0490449599d6a7e25e9bd61"
+    },
+    {
+      "task_id": "GATE",
+      "name": "workflow-check",
+      "command": "node tools/checks/src/cli.ts workflow-check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.workflow-check.log",
+      "sha256": "142a17841862e19786f62736859804529f6d9ca0a83bd1bf25eb13b26b01c3b8"
+    },
+    {
+      "task_id": "GATE",
+      "name": "vuln-scan",
+      "command": "node tools/checks/src/cli.ts vuln-scan",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.vuln-scan.log",
+      "sha256": "3f33532c356ae81a0c81003c10fd8ea151de11bd299b027fab4c1d56afe206af"
+    },
+    {
+      "task_id": "GATE",
+      "name": "adversarial-b00",
+      "command": "pnpm --filter @vsf/adversarial-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.adversarial-b00.log",
+      "sha256": "f772618ed7fbc41c67581fed65ce6ea4787be611ae0dec619ee8a72a40334d26"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ir-ts",
+      "command": "pnpm --filter @vsf/ir run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ir-ts.log",
+      "sha256": "5ca1e4356a7032c39bd0cf5a156c5593e1c2296092860b1826addac6db21530b"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-native",
+      "command": "node tools/checks/src/cli.ts ci-run native",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-native.log",
+      "sha256": "678b09b74ce2bb06b7644bd5a799829e55219e0f4174569edc8f1c164723376e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-go",
+      "command": "node tools/checks/src/cli.ts ci-run go",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-go.log",
+      "sha256": "cdd71958b2933294c6095125b05ad0c2cf7b202963632db2d3390639fae09a34"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-wasm-browser",
+      "command": "node tools/checks/src/cli.ts ci-run wasm-browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-wasm-browser.log",
+      "sha256": "7822f3e7459ac6461c8c8aeb898bb3d62a2fff75d519c8078e1a054b6aeb42eb"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-cross-language",
+      "command": "node tools/checks/src/cli.ts ci-run cross-language",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-cross-language.log",
+      "sha256": "a3557a3f5a8f25a6c7f9a3febf62640a81bc0d2318ef251723123556ebdab62a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-observation",
+      "command": "node tools/checks/src/cli.ts ci-run observation",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-observation.log",
+      "sha256": "67f27c33ddf5ca759fcbae22a734ad8a1b6169bda750a3ba431737f4f6dc42a5"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-ui",
+      "command": "node tools/checks/src/cli.ts ci-run ui",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-ui.log",
+      "sha256": "057f89d2320b09fa9e5e48eecff028bcbdec1e563b4ffb75280f98769419fdb2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-browser",
+      "command": "node tools/checks/src/cli.ts ci-run browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-browser.log",
+      "sha256": "ae0f6c126047b744f0b5eefebd1d650ede1f8f3219617d1f48eec0b32a93a796"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-ts",
+      "command": "node tools/checks/src/cli.ts ci-run ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-ts.log",
+      "sha256": "99e415a0c572f57d83404f4dc99e19993a3cf7d0d0dc984ea210fad180864b99"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-hygiene",
+      "command": "node tools/checks/src/cli.ts ci-run hygiene",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-hygiene.log",
+      "sha256": "bba938f52666ed785a4a10f1b8e6cae61aede4159e7ac6d5a6226e234983adf3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "ci-job-execution",
+      "command": "node tools/checks/src/cli.ts ci-run execution",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.ci-job-execution.log",
+      "sha256": "b222d561c4a6473e27ea51f5ccc17ffa648ac5bf70dbc927d25761308d3bcf02"
+    }
+  ]
+}

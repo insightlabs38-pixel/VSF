@@ -50,6 +50,7 @@ type Handle struct {
 	stage  string
 	status CancelStatus
 	err    error
+	obs    *Observation
 }
 
 func newHandle(rt *Runtime, key string) *Handle {
@@ -57,6 +58,36 @@ func newHandle(rt *Runtime, key string) *Handle {
 }
 
 func (h *Handle) Key() string { return h.key }
+
+// Observation is what the source itself showed for this run; it is held in memory only and never journaled.
+type Observation struct {
+	Version string
+	Fields  map[string]string
+}
+
+// Observed returns the values the source showed while this process ran the operation.
+func (h *Handle) Observed() (Observation, bool) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	if h.obs == nil {
+		return Observation{}, false
+	}
+	fields := make(map[string]string, len(h.obs.Fields))
+	for k, v := range h.obs.Fields {
+		fields[k] = v
+	}
+	return Observation{Version: h.obs.Version, Fields: fields}, true
+}
+
+func (h *Handle) setObserved(version string, fields map[string]string) {
+	kept := make(map[string]string, len(fields))
+	for k, v := range fields {
+		kept[k] = v
+	}
+	h.mu.Lock()
+	h.obs = &Observation{Version: version, Fields: kept}
+	h.mu.Unlock()
+}
 
 func (h *Handle) Record() Record {
 	r, _ := h.rt.j.Get(h.key)

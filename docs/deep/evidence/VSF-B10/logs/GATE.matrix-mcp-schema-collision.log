@@ -1,0 +1,5 @@
+$ go -C backend test -tags integration -race -count=1 -run MCPDistinctApplications|MCPAnOlderContract|FixedToolsComeFirst|ToolsListConforms|NamesRoundTrip ./interfaces/ ./mcp/ ./api/
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	1.184s
+ok  	github.com/insightlabs38-pixel/vsf/backend/mcp	1.166s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	1.039s
+[exit 0]

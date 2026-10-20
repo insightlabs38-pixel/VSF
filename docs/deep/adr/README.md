@@ -41,3 +41,4 @@ Revisit when: trigger
 | [034](ADR-034-version-registry-and-pins.md) | Version registry, semantic diff, pins and promotion | accepted |
 | [035](ADR-035-ui-architecture-and-layout.md) | UI architecture checkpoint and region layout | accepted |
 | [036](ADR-036-extension-integration-and-local-bridge.md) | Extension integration protocol and the authenticated local bridge | accepted |
+| [037](ADR-037-api-cli-mcp-interfaces.md) | One operation service behind the REST, CLI, MCP and interface surfaces | accepted |

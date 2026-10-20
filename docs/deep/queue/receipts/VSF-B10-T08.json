@@ -1,0 +1,42 @@
+{
+  "task_id": "VSF-B10-T08",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "a466437052c5a6c973661abd708385ca608b02c4",
+  "paths": [
+    "backend/interfaces/overhead_test.go",
+    "backend/execution/doccache.go",
+    "docs/deep/policy/dispatch-budget.md"
+  ],
+  "acceptance": "Per-interface overhead excludes original app/network time and remains within documented dispatch budget.",
+  "positive": {
+    "fixture": "400 calls per layer against a zero-latency source; every layer and every per-layer increment within its documented ceiling",
+    "command": "bash -c VSF_OVERHEAD_REPORT=... go -C backend test -tags integration -race - -tags integration -run DispatchOverhead ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "the same assertions under the race detector with ceilings multiplied by ten",
+    "command": "go -C backend test -tags integration -race -count=1 -run DispatchOverhead ./interfaces/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/ ./bridge/ ./versions/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "unchanged"
+  },
+  "security_and_source_permissions": "Decoded-document memoization is keyed by content hash; the Rust authorizer still runs twice per write.",
+  "performance_memory_storage": "p50 per layer without race: runtime 1.41 ms, service 1.49 ms, REST 2.24 ms, interface client 2.25 ms, MCP 2.45 ms, CLI 3.31 ms (two round trips), HTTP floor 0.34 ms; memoization cut runtime p50 from 2.54 ms to about 1.2 ms in the first measurement.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T08.dispatch-overhead-report.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T08.dispatch-overhead-under-race.log",
+    "docs/deep/evidence/VSF-B10/overhead.txt"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,44 @@
+{
+  "task_id": "VSF-B10-T02",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "558287dc1387f008a047437824235b8bbdfc9761",
+  "paths": [
+    "backend/cli/cli.go",
+    "backend/cli/args.go",
+    "backend/api/client.go",
+    "backend/cmd/vsfctl/main.go"
+  ],
+  "acceptance": "CLI validates typed args, handles stdout/stderr exit semantics, pins versions and emits parseable structured results.",
+  "positive": {
+    "fixture": "typed run over the wire pinning the described digest; one JSON document on stdout, human line on stderr, exit 0",
+    "command": "go -C backend test -tags integration -race -count=1 -run CLI ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "28 malformed argument forms refused locally before anything is sent; exit codes follow the taxonomy and are unique per outcome",
+    "command": "go -C backend test -race -count=1 ./cli/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./cmd/vsfctl/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "CLI grammar v1; legacy vsfctl verify/digest/version unchanged"
+  },
+  "security_and_source_permissions": "Tokens only from the environment or a 0600 file, never a flag; plain http only on loopback; no redirects followed; a lost answer reports effect unknown with the request id to repeat.",
+  "performance_memory_storage": "See T08 (two round trips).",
+  "known_limitations": [
+    "No standalone daemon to point the CLI at yet (VSF-B16-T05)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T02.cli-grammar-and-exit-semantics.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T02.cli-over-the-wire.log"
+  ],
+  "review_result": "ACCEPTED"
+}

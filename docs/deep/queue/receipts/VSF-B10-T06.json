@@ -1,0 +1,42 @@
+{
+  "task_id": "VSF-B10-T06",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "adf4d3815c9a8e4e868ebc8bc8b1401ff6add64c",
+  "paths": [
+    "backend/api/service.go",
+    "backend/interfaces/cross_test.go",
+    "backend/interfaces/surfaces_test.go"
+  ],
+  "acceptance": "One verified operation yields equivalent observable effects and UNKNOWN_COMMIT semantics in UI, REST, CLI, MCP.",
+  "positive": {
+    "fixture": "the same write on REST, interface client, CLI and MCP: identical category, effect, retry, state, digest and observed values; status agrees",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'VerifiedWriteHas|UnknownCommitMeans|UnverifiedEffect|Refusals|UnknownCommitOnOne|CancellingAQueued' ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unknown commit and unverified effect equal on all four with one source attempt and a blocked follow-up; seven refusal and failure scenarios equal; an unknown commit on one surface blocks the others and any may reconcile it",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'UnknownCommit' ./interfaces/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "unchanged"
+  },
+  "security_and_source_permissions": "Reconciliation settles only on source evidence; a matching state alone never does.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [
+    "The browser shell does not call the interface service yet; the user-interface surface is the REST transport with a UI credential (VSF-B16-T06)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T06.same-outcome-on-every-surface.log"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -1,0 +1,4 @@
+$ go -C backend test -race -count=1 -run Code|Reason|Spec|Envelope|Violations|Strict|Large|Names|ResultSchema|ToolNames|Errors ./api/ ./api/jsonschema/
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	1.707s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api/jsonschema	1.025s
+[exit 0]

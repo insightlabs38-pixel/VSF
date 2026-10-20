@@ -1,0 +1,47 @@
+{
+  "task_id": "VSF-B10-T01",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "34f74aaee4fb1052c1c37ff6f05ad545ee9736fa",
+  "paths": [
+    "backend/api/errors.go",
+    "backend/api/spec.go",
+    "backend/api/service.go",
+    "backend/api/rest.go",
+    "backend/api/openapi.go",
+    "backend/api/result.go",
+    "backend/api/strictjson.go"
+  ],
+  "acceptance": "OpenAPI specifies stable argument and error contracts with explicit contract-version routes and effect disclosures.",
+  "positive": {
+    "fixture": "verified update_stage on its explicit contract route; generated OpenAPI carries the enforced argument schema, every taxonomy status and the effect disclosure",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'REST|OpenAPI' ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "unserved and older versions, wrong digest, body/route version conflict, bad arguments, duplicate keys, form body, oversize body, missing credential, foreign origin; every runtime reason is classified",
+    "command": "go -C backend test -race -count=1 -run 'Code|Reason|Spec|Envelope|Violations|Strict|Large|Names|ResultSchema|ToolNames|Errors' ./api/ ./api/jsonschema/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "contract schema unchanged; REST interface v1; error taxonomy 37 codes"
+  },
+  "security_and_source_permissions": "Messages are fixed text per code and never carry caller or source values; discover is unauthenticated and states no catalog size.",
+  "performance_memory_storage": "Not measured at this task; see T08.",
+  "known_limitations": [
+    "OpenAPI for a catalog above 200 operations must be requested per namespace"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T01.taxonomy-spec-envelope-units.log",
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T01.rest-routes-openapi-and-refusals.log"
+  ],
+  "review_result": "ACCEPTED"
+}

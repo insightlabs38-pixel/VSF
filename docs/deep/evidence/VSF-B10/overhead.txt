@@ -1,0 +1,10 @@
+Dispatch overhead per layer, source answering instantly (n=400 after 30 warm-up), race detector: false
+layer             p50       p95       p99       max       avg
+http-floor  337.104µs 531.414µs 1.66473ms 7.209778ms 388.042µs
+runtime     1.410838ms 2.798119ms 4.111334ms 4.430337ms 1.532808ms
+service     1.494505ms 3.168371ms 4.998661ms 11.596673ms 1.672696ms
+rest        2.235854ms 3.095364ms 4.470813ms 5.276616ms 2.303889ms
+ui-client   2.253054ms 4.158886ms 8.076376ms 20.545955ms 2.52667ms
+mcp         2.451723ms 4.103463ms 8.53408ms 237.081029ms 3.219392ms
+cli         3.308993ms 5.761497ms 9.605358ms 54.928464ms 3.714738ms
+per-layer cost = layer p50 minus the layer below: service over runtime; rest, ui-client, mcp over service; cli is two round trips (describe, run) over service.

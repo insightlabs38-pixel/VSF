@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run ui
+ci-run ui: PASS
+[exit 0]

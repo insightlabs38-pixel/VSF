@@ -346,7 +346,11 @@
           "integration",
           "./execution/...",
           "./versions/...",
-          "./bridge/..."
+          "./bridge/...",
+          "./api/...",
+          "./cli/...",
+          "./interfaces/...",
+          "./mcp/..."
         ]
       },
       {
@@ -362,7 +366,11 @@
           "-count=1",
           "./execution/...",
           "./versions/...",
-          "./bridge/..."
+          "./bridge/...",
+          "./api/...",
+          "./cli/...",
+          "./interfaces/...",
+          "./mcp/..."
         ]
       }
     ],

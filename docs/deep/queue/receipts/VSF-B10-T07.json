@@ -1,0 +1,41 @@
+{
+  "task_id": "VSF-B10-T07",
+  "status": "DONE",
+  "branch": "vsf/b10-api-cli-mcp",
+  "base_commit": "bf7e8794e894505f88a13472735829f9f99594c9",
+  "commit": "adf4d3815c9a8e4e868ebc8bc8b1401ff6add64c",
+  "paths": [
+    "backend/api/catalog.go",
+    "backend/api/service.go",
+    "backend/cli/cli.go",
+    "backend/interfaces/compat_test.go"
+  ],
+  "acceptance": "Old pins, malformed args, role revocation, and long-running operations produce compatible typed errors.",
+  "positive": {
+    "fixture": "older served version runs that version; long run returns a handle all surfaces follow to the same final outcome",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'OlderClient|LongRun' ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "revoked, deprecated, future and mismatched pins; five malformed-argument forms; source session, source role, caller role and caller revoked while a write waits stop it before the source is touched; every error is in the taxonomy",
+    "command": "go -C backend test -tags integration -race -count=1 -run 'Malformed|RoleRevoked|CancellingARun|EveryError' ./interfaces/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./execution/",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "deprecated exact pin now answers contract_version_unsupported with the served list"
+  },
+  "security_and_source_permissions": "Authority is rechecked immediately before the effect; a cancelled in-flight write ends unknown or provably unapplied, never claimed untouched.",
+  "performance_memory_storage": "Not measured.",
+  "known_limitations": [],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B10/logs/VSF-B10-T07.old-pins-bad-arguments-revoked-roles-long-runs.log"
+  ],
+  "review_result": "ACCEPTED"
+}

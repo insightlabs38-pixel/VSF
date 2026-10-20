@@ -1,0 +1,3 @@
+$ go -C backend test -tags integration -race -count=1 -run OlderClient|Malformed|RoleRevoked|LongRun|CancellingARun|EveryError ./interfaces/
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	3.810s
+[exit 0]

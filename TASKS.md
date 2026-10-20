@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B10-T01`
+**Next eligible:** `VSF-B11-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -16,13 +16,13 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B07 | G7 | 14/14 | DONE | PROCEED |
 | B08 | G8 | 10/10 | DONE | PROCEED |
 | B09 | G9 | 9/9 | DONE | PROCEED |
-| B10 | G10 | 0/8 | READY | - |
-| B11 | G11 | 0/6 | TODO | - |
+| B10 | G10 | 8/8 | DONE | PROCEED |
+| B11 | G11 | 0/6 | READY | - |
 | B12 | G12 | 0/6 | TODO | - |
-| B13 | G13 | 0/5 | TODO | - |
-| B14 | G14 | 0/5 | TODO | - |
+| B13 | G13 | 0/5 | READY | - |
+| B14 | G14 | 0/6 | TODO | - |
 | B15 | G15 | 0/5 | TODO | - |
-| B16 | G16 | 0/4 | TODO | - |
+| B16 | G16 | 0/7 | TODO | - |
 | B17 | G17 | 0/5 | TODO | - |
 | B18 | G18 | 0/5 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
@@ -161,18 +161,18 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B10 · Expose API, CLI and MCP vertical slice
 
-- [ ] `VSF-B10-T01` Define API error taxonomy, contract version routing, OpenAPI doc generation _(READY)_
-- [ ] `VSF-B10-T02` Implement Go CLI typed argument grammar, structured output and version pin flag
-- [ ] `VSF-B10-T03` Implement minimal MCP tools/resources with protocol version negotiation
-- [ ] `VSF-B10-T04` Authenticate each caller separately, enforce source context at runtime
-- [ ] `VSF-B10-T05` Add lazy namespaced tool discoverability and stable ordering
-- [ ] `VSF-B10-T06` Cross-check effect results/unknown status across UI/REST/CLI/MCP
-- [ ] `VSF-B10-T07` Test client older contract, bad arguments, revoked source role and long-running task fallback
-- [ ] `VSF-B10-T08` Measure per-layer dispatch overhead excluding source
+- [x] `VSF-B10-T01` Define API error taxonomy, contract version routing, OpenAPI doc generation
+- [x] `VSF-B10-T02` Implement Go CLI typed argument grammar, structured output and version pin flag
+- [x] `VSF-B10-T03` Implement minimal MCP tools/resources with protocol version negotiation
+- [x] `VSF-B10-T04` Authenticate each caller separately, enforce source context at runtime
+- [x] `VSF-B10-T05` Add lazy namespaced tool discoverability and stable ordering
+- [x] `VSF-B10-T06` Cross-check effect results/unknown status across UI/REST/CLI/MCP
+- [x] `VSF-B10-T07` Test client older contract, bad arguments, revoked source role and long-running task fallback
+- [x] `VSF-B10-T08` Measure per-layer dispatch overhead excluding source
 
 ### B11 · Expand common application coverage
 
-- [ ] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding
+- [ ] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding _(READY)_
 - [ ] `VSF-B11-T02` Grow real conformance implementations for critical catalog families
 - [ ] `VSF-B11-T03` Evaluate custom combobox/select, virtualization and modal form dependencies
 - [ ] `VSF-B11-T04` Add upload/download and export with security policy
@@ -190,7 +190,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B13 · Implement durable storage and ZEROS3 qualification
 
-- [ ] `VSF-B13-T01` Build SQLite hot store and PostgreSQL hosted metadata schema
+- [ ] `VSF-B13-T01` Build SQLite hot store and PostgreSQL hosted metadata schema _(READY)_
 - [ ] `VSF-B13-T02` Implement content-addressed artifact abstraction and signed manifest writes
 - [ ] `VSF-B13-T03` Measure filesystem/SQLite/commodity S3 versus ZEROS3 under workload suite
 - [ ] `VSF-B13-T04` Add pin-aware GC, crash recovery and export/import bundles
@@ -203,6 +203,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B14-T03` Integrate OS keychain or vault, redaction and scoped credential injection
 - [ ] `VSF-B14-T04` Handle MFA/reauth pause and revoke behavior
 - [ ] `VSF-B14-T05` Add per-account capability profile and session expiry
+- [ ] `VSF-B14-T06` Let a person confirm in the user interface a request an agent caller will run
 
 ### B15 · Build hosted and on-demand execution
 
@@ -218,6 +219,9 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B16-T02` Build installers/updaters and credentials lifecycle for target OS
 - [ ] `VSF-B16-T03` Introduce persistent local API/MCP gated by product entitlement
 - [ ] `VSF-B16-T04` Test offline startup, keychain errors, OS suspend/resume and revoke
+- [ ] `VSF-B16-T05` Compose the authenticated loopback gateway from the interface service
+- [ ] `VSF-B16-T06` Dispatch the user interface actions through the interface service
+- [ ] `VSF-B16-T07` Add the MCP stdio transport, the Tasks extension and progress notifications
 
 ### B17 · Ship user-visible version control features
 
