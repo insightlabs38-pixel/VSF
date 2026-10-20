@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B14-T15",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/storage/secret/secret.go",
+    "backend/storage/artifact/artifact.go",
+    "backend/auth/filevault.go"
+  ],
+  "acceptance": "A key version is retired only when every registered holder of sealed data is clear of it and no tenant writes under it; adopting a tenant's keys merges every imported version or none; multi-process limits are recorded.",
+  "positive": {
+    "fixture": "retirement after rewrap; adoption keeps tenant-rotated versions; vault secrets keep their key alive",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAKeyStillProtectingData|TestAdoptingNeverDrops|TestAKeyStillSealingVault ./storage/secret/ ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "retire with data under the key, with no holder, with a failing holder, with a tenant writing under it; conflicting import merges nothing",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestRetiringAKeyTooEarly|TestARewrapThatDies ./storage/secret/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Retirement fails closed; no plaintext or plaintext hash crosses tenants.",
+  "performance_memory_storage": "Retirement scans every private object once.",
+  "known_limitations": [
+    "Keyring files are not safe to share between processes",
+    "Bundles and caches are not yet registered holders; caches are disposable"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T15.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T15.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

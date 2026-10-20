@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestARolesEnvironmentOrExpiry|TestProfileDigestsAreCanonical|TestProfileExpiryIsCapped ./auth/
+=== RUN   TestARolesEnvironmentOrExpiryChangeInvalidatesPlansBuiltEarlier
+--- PASS: TestARolesEnvironmentOrExpiryChangeInvalidatesPlansBuiltEarlier (0.00s)
+=== RUN   TestProfileExpiryIsCappedByTheGrantAndAuditRecordsDescribeNothing
+--- PASS: TestProfileExpiryIsCappedByTheGrantAndAuditRecordsDescribeNothing (0.00s)
+=== RUN   TestProfileDigestsAreCanonicalAndDeterministic
+--- PASS: TestProfileDigestsAreCanonicalAndDeterministic (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.040s
+[exit 0]

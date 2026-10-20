@@ -1,0 +1,12 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestFileVaultSeals|TestALeaseWorksForItsOrigin|TestSecretServiceKeepsTheSecret|TestACredentialReachesOnlyTheSource ./auth/
+=== RUN   TestFileVaultSealsSecretsUnderOpaqueNamesWithPrivatePermissions
+--- PASS: TestFileVaultSealsSecretsUnderOpaqueNamesWithPrivatePermissions (0.01s)
+=== RUN   TestSecretServiceKeepsTheSecretOffTheCommandLine
+--- PASS: TestSecretServiceKeepsTheSecretOffTheCommandLine (0.00s)
+=== RUN   TestALeaseWorksForItsOriginAndOnlyForItsLifetimeAndUses
+--- PASS: TestALeaseWorksForItsOriginAndOnlyForItsLifetimeAndUses (0.00s)
+=== RUN   TestACredentialReachesOnlyTheSourceAndNoLogAuditOrVaultFile
+--- PASS: TestACredentialReachesOnlyTheSourceAndNoLogAuditOrVaultFile (0.01s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.061s
+[exit 0]

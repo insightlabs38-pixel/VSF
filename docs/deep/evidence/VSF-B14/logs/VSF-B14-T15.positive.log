@@ -1,0 +1,12 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAKeyStillProtectingData|TestAdoptingNeverDrops|TestAKeyStillSealingVault ./storage/secret/ ./auth/
+=== RUN   TestAKeyStillProtectingDataCannotBeRetiredAndOneNobodyVouchesForCannotEither
+--- PASS: TestAKeyStillProtectingDataCannotBeRetiredAndOneNobodyVouchesForCannotEither (0.09s)
+=== RUN   TestAdoptingNeverDropsAnImportedVersionAndIsAllOrNothing
+--- PASS: TestAdoptingNeverDropsAnImportedVersionAndIsAllOrNothing (2.04s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	3.147s
+=== RUN   TestAKeyStillSealingVaultSecretsCannotBeRetired
+--- PASS: TestAKeyStillSealingVaultSecretsCannotBeRetired (0.01s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.040s
+[exit 0]

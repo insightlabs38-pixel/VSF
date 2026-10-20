@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B14-T01",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "2286158327d09a4f9760e1f778a747e0af03d77e",
+  "commit": "66e79b7a8ec43426443c8ec10d331f6eae0c7740",
+  "paths": [
+    "backend/auth/grant.go",
+    "backend/auth/jwt.go",
+    "backend/auth/audit.go",
+    "backend/auth/errors.go"
+  ],
+  "acceptance": "Auth contexts are explicitly source- and client-bound; wrong audience, expiry and revoked grant are rejected.",
+  "positive": {
+    "fixture": "grants bound to caller, exact source, exact audience and scopes; a table of 9 wrong-use cases; RS256, ES256 and EdDSA tokens verify",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAGrantIsUsableOnlyByItsOwner|TestTokensVerifyWithEachSupportedAlgorithm|TestKeySetRefusesWeakKeys ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "expired and revoked grants, audience, origin, scheme, prefix and suffix confusions, none/HS256/crit/duplicate-member token attacks, tampered audit chain, free-text audit records refused",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestExpiryRevocationAndPauseAreEnforcedAtUse|TestIssuingRefusesMalformedGrants|TestTokensForAnotherAudienceIssuerOrTimeAreRejected|TestTokenSignatureAndHeaderAttacksAreRejected|TestRefusalsAreAuditedWithTheirReason ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "A denial is generic to the caller; the audit log records the real reason from a closed vocabulary.",
+  "performance_memory_storage": "No measurable cost; checks are map lookups and string compares.",
+  "known_limitations": [
+    "Hardened by VSF-B14-T08 to T12: compare-and-swap store, identity flag, provider digest"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T01.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T01.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

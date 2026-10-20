@@ -1,0 +1,16 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestARewrapThatDies|TestRetiringAKeyTooEarly|TestTheSameContentIsInvisible ./storage/secret/
+=== RUN   TestTheSameContentIsInvisibleAcrossTenantsAndCannotBeReadWithAnotherTenantsRecord
+--- PASS: TestTheSameContentIsInvisibleAcrossTenantsAndCannotBeReadWithAnotherTenantsRecord (0.12s)
+=== RUN   TestRetiringAKeyTooEarlyMakesItsObjectsUnreadableWhichIsWhyRewrapComesFirst
+--- PASS: TestRetiringAKeyTooEarlyMakesItsObjectsUnreadableWhichIsWhyRewrapComesFirst (0.08s)
+=== RUN   TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun
+=== RUN   TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun/torn
+=== RUN   TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun/before-rename
+=== RUN   TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun/after-rename
+--- PASS: TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun (0.34s)
+    --- PASS: TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun/torn (0.11s)
+    --- PASS: TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun/before-rename (0.11s)
+    --- PASS: TestARewrapThatDiesLeavesEveryObjectOpenAndFinishesOnTheNextRun/after-rename (0.12s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	1.554s
+[exit 0]

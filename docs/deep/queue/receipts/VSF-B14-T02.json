@@ -1,0 +1,55 @@
+{
+  "task_id": "VSF-B14-T02",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "66e79b7a8ec43426443c8ec10d331f6eae0c7740",
+  "commit": "917d2b9433444e3ad58609abb95424777b948f3f",
+  "paths": [
+    "backend/auth/oauth.go",
+    "backend/auth/browser.go"
+  ],
+  "acceptance": "PKCE and normal source login operate without token passthrough or assuming OAuth login can create unrelated vendor sessions.",
+  "positive": {
+    "fixture": "authorization-code flow with S256 PKCE against a local identity provider; source-managed sign-in records a grant with no secret; refresh renews",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnAuthorizationCodeFlowWithPKCE|TestSourceManagedSignInRecordsAGrantWithNoSecret|TestRefreshRenewsAGrant ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "16 hostile or buggy server replies mint nothing; stolen code without verifier; mixed-up issuer; unexpected sign-in; OAuth grant never authenticates the source session",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestTheFlowRefusesAnythingButPKCE|TestStateIsBound|TestACodeStolen|TestMixUpAndIssuerChecks|TestAHostileOrBuggy|TestAnUnexpectedSignIn|TestAnOAuthGrantDoesNotMake ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "No token passthrough; OAuth never creates a source session; state is single use and bound to the caller.",
+  "performance_memory_storage": "Token replies capped at 1 MiB; at most 64 pending flows per caller.",
+  "known_limitations": [
+    "Runtime evidence was unauthenticated in this task; replaced by the observation authority in VSF-B14-T10"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T02.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T02.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

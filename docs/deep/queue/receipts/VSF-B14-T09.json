@@ -1,0 +1,55 @@
+{
+  "task_id": "VSF-B14-T09",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/auth/sessions.go",
+    "backend/execution/bind.go"
+  ],
+  "acceptance": "A source session is bound to exactly one verified grant by caller, application, exact origin, principal and runtime; absent, ambiguous, stale, revoked or inconsistent identity fails closed; scopes come from the one bound grant.",
+  "positive": {
+    "fixture": "a session bound to one verified grant; two origins and two people keep their own grants and scopes; concurrent sign-ins leave one live grant",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestASessionBindsToExactlyOneGrant|TestSameApplicationOnTwoOrigins|TestTheRuntimeSeesPausedExpired|TestConcurrentSignInsOfOnePerson ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "ten mismatching sessions, two live grants in 50 lookups, OAuth and unverified grants, principal switch cancels queued work",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestTwoLiveGrantsForOneSession|TestAnOAuthGrantAndAnUnverified|TestAPrincipalSwitchCancels ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged; execution.Session gains Origin and Generation (Go struct only)",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Ambiguity fails closed and is audited; scopes are never unioned.",
+  "performance_memory_storage": "Lookup is linear in the owner grants.",
+  "known_limitations": [
+    "Uniqueness of live grants per source is enforced by fail-closed lookup, not by the store"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T09.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T09.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

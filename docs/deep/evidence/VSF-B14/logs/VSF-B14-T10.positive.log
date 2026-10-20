@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestSourceManagedSignInRecordsAGrant|TestARuntimeRestartIsANewGeneration|TestVSFNeverAnswers ./auth/
+=== RUN   TestARuntimeRestartIsANewGenerationOfTheSameSignIn
+--- PASS: TestARuntimeRestartIsANewGenerationOfTheSameSignIn (0.00s)
+=== RUN   TestVSFNeverAnswersAChallengeItJustWaits
+--- PASS: TestVSFNeverAnswersAChallengeItJustWaits (0.00s)
+=== RUN   TestSourceManagedSignInRecordsAGrantWithNoSecret
+--- PASS: TestSourceManagedSignInRecordsAGrantWithNoSecret (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.038s
+[exit 0]

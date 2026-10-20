@@ -1,0 +1,12 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestASessionBindsToExactlyOneGrant|TestSameApplicationOnTwoOrigins|TestTheRuntimeSeesPausedExpired|TestConcurrentSignInsOfOnePerson ./auth/
+=== RUN   TestASessionBindsToExactlyOneGrantOrToNone
+--- PASS: TestASessionBindsToExactlyOneGrantOrToNone (0.00s)
+=== RUN   TestSameApplicationOnTwoOriginsAndTwoPeopleKeepTheirOwnGrants
+--- PASS: TestSameApplicationOnTwoOriginsAndTwoPeopleKeepTheirOwnGrants (0.00s)
+=== RUN   TestConcurrentSignInsOfOnePersonLeaveExactlyOneLiveGrant
+--- PASS: TestConcurrentSignInsOfOnePersonLeaveExactlyOneLiveGrant (0.00s)
+=== RUN   TestTheRuntimeSeesPausedExpiredAndEndedSignInsAsSuch
+--- PASS: TestTheRuntimeSeesPausedExpiredAndEndedSignInsAsSuch (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.049s
+[exit 0]

@@ -1,0 +1,56 @@
+{
+  "task_id": "VSF-B14-T11",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/auth/oauth.go",
+    "backend/auth/jwt.go",
+    "backend/auth/grant.go"
+  ],
+  "acceptance": "An identity token needs a valid subject; non-OIDC grants are explicitly identity-unverified; refresh is bound to the original provider configuration and cannot widen scopes or change the person; keys are validated and rotate without changing provider identity.",
+  "positive": {
+    "fixture": "non-OIDC grant is explicit and identity-unverified; key rotation keeps provider identity; a flow keeps its provider snapshot",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestANonOIDCGrantIsExplicitly|TestProviderKeysAreValidated|TestAFlowKeepsTheProvider ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "missing, empty, huge and numeric subjects; every provider field substituted; widened refresh scope; refresh naming another person; mixed-up issuer; reused state",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnIdentityTokenWithoutAUsableSubject|TestRefreshCannotSubstitute|TestARefreshThatNamesAnotherPerson|TestStateIsSingleUse|TestARefusedRefreshToken ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "A grant without a proven person fails any check that requires one.",
+  "performance_memory_storage": "Key sets bounded at 32 keys.",
+  "known_limitations": [
+    "Key material comes from configuration or a published key set; fetching and caching a JWKS is the caller concern"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T11.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T11.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

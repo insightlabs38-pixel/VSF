@@ -20,7 +20,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B11 | G11 | 0/6 | BLOCKED | - |
 | B12 | G12 | 0/6 | TODO | - |
 | B13 | G13 | 5/5 | DONE | PROCEED |
-| B14 | G14 | 0/7 | READY | - |
+| B14 | G14 | 15/15 | GATE_PENDING | - |
 | B15 | G15 | 0/6 | TODO | - |
 | B16 | G16 | 0/8 | TODO | - |
 | B17 | G17 | 0/5 | READY | - |
@@ -198,13 +198,21 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B14 · Harden authentication and managed sessions
 
-- [ ] `VSF-B14-T01` Implement explicit identity binding and token audience validation _(READY)_
-- [ ] `VSF-B14-T02` Test OAuth PKCE and source-managed browser sign-in lifecycle
-- [ ] `VSF-B14-T03` Integrate OS keychain or vault, redaction and scoped credential injection
-- [ ] `VSF-B14-T04` Handle MFA/reauth pause and revoke behavior
-- [ ] `VSF-B14-T05` Add per-account capability profile and session expiry
-- [ ] `VSF-B14-T06` Let a person confirm in the user interface a request an agent caller will run
-- [ ] `VSF-B14-T07` Rewrap sealed data under the newest key and move a tenant's keys between installations
+- [x] `VSF-B14-T01` Implement explicit identity binding and token audience validation
+- [x] `VSF-B14-T02` Test OAuth PKCE and source-managed browser sign-in lifecycle
+- [x] `VSF-B14-T03` Integrate OS keychain or vault, redaction and scoped credential injection
+- [x] `VSF-B14-T04` Handle MFA/reauth pause and revoke behavior
+- [x] `VSF-B14-T05` Add per-account capability profile and session expiry
+- [x] `VSF-B14-T06` Let a person confirm in the user interface a request an agent caller will run
+- [x] `VSF-B14-T07` Rewrap sealed data under the newest key and move a tenant's keys between installations
+- [x] `VSF-B14-T08` Atomic grant lifecycle: revisioned compare-and-swap store, terminal revocation, immediate revoke with retried cleanup
+- [x] `VSF-B14-T09` Exact session-to-grant binding
+- [x] `VSF-B14-T10` Validated observation authority for source-browser evidence
+- [x] `VSF-B14-T11` OAuth identity, provider and audience binding
+- [x] `VSF-B14-T12` Sign-in epoch and profile provenance for plans
+- [x] `VSF-B14-T13` Credential lease, vault and audit durability
+- [x] `VSF-B14-T14` Sign-in-bound delegated confirmation
+- [x] `VSF-B14-T15` Key custody: guarded retirement, merging tenant adoption
 
 ### B15 · Build hosted and on-demand execution
 

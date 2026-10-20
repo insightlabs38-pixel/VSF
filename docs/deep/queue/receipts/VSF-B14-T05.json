@@ -1,0 +1,54 @@
+{
+  "task_id": "VSF-B14-T05",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "37d0de2ee3bdb1c34e31f70888ace77e75994cc5",
+  "commit": "2525995326eb5048c46cfa70e6ef9cf5d51f6da4",
+  "paths": [
+    "backend/auth/profile.go"
+  ],
+  "acceptance": "Account roles, session expiry and environment differences invalidate plans safely, with audit-safe records.",
+  "positive": {
+    "fixture": "role, capability, environment and expiry changes invalidate plans built earlier; canonical digests ignore order, duplicates and observation time",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestARolesEnvironmentOrExpiry|TestProfileDigestsAreCanonical|TestProfileExpiryIsCapped ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "plan invalid while paused and after sign-out; profiles scoped to owner and grant; audit records describe nothing",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPlanIsInvalidWhileThePersonIsPaused|TestProfilesAreScopedToTheirOwner ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Audit holds only reasons and a 16-hex digest prefix.",
+  "performance_memory_storage": "At most 4096 profiles and 1024 digests retained.",
+  "known_limitations": [
+    "Provenance, epoch and rebinding were added in VSF-B14-T12"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T05.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T05.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

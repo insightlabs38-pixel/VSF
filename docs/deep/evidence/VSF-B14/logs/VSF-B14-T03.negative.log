@@ -1,0 +1,18 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestFileVaultRefusesTampered|TestLeaseRequestsAreChecked|TestRevokingTheGrantEndsEveryLease|TestALeaseCannotBePrinted|TestRedactionCovers|TestAnUnreachableKeychain|TestNoCredentialEver ./auth/
+=== RUN   TestNoCredentialEverReachesTheArtifactStoreItsCacheOrAnythingPersistedWithAGrant
+--- PASS: TestNoCredentialEverReachesTheArtifactStoreItsCacheOrAnythingPersistedWithAGrant (0.08s)
+=== RUN   TestFileVaultRefusesTamperedSwappedOrForeignFiles
+--- PASS: TestFileVaultRefusesTamperedSwappedOrForeignFiles (0.01s)
+=== RUN   TestAnUnreachableKeychainStoresNothingUnlessAFallbackWasAllowed
+--- PASS: TestAnUnreachableKeychainStoresNothingUnlessAFallbackWasAllowed (0.01s)
+=== RUN   TestLeaseRequestsAreCheckedLikeAnyUseOfTheGrant
+--- PASS: TestLeaseRequestsAreCheckedLikeAnyUseOfTheGrant (0.00s)
+=== RUN   TestRevokingTheGrantEndsEveryLeaseAndWipesTheVault
+--- PASS: TestRevokingTheGrantEndsEveryLeaseAndWipesTheVault (0.00s)
+=== RUN   TestALeaseCannotBePrintedMarshalledOrLoggedWithItsValue
+--- PASS: TestALeaseCannotBePrintedMarshalledOrLoggedWithItsValue (0.00s)
+=== RUN   TestRedactionCoversTheFormsASecretTakesInLogsAndErrors
+--- PASS: TestRedactionCoversTheFormsASecretTakesInLogsAndErrors (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.146s
+[exit 0]

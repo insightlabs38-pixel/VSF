@@ -1,0 +1,16 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAStaleWriterCannot|TestARevocationBetweenTheCheck|TestAStaleResumeCannot|TestRevocationIsImmediateEvenWhen|TestRefreshStorageFailures|TestAFailedSecretWrite ./auth/
+=== RUN   TestAStaleWriterCannotReviveARevokedGrant
+--- PASS: TestAStaleWriterCannotReviveARevokedGrant (0.00s)
+=== RUN   TestARevocationBetweenTheCheckAndTheCommitOfARefreshStillWins
+--- PASS: TestARevocationBetweenTheCheckAndTheCommitOfARefreshStillWins (0.01s)
+=== RUN   TestAStaleResumeCannotUnpauseANewerPause
+--- PASS: TestAStaleResumeCannotUnpauseANewerPause (0.00s)
+=== RUN   TestAFailedSecretWriteNeverLeavesAnActiveGrantWithoutCredentials
+--- PASS: TestAFailedSecretWriteNeverLeavesAnActiveGrantWithoutCredentials (0.01s)
+=== RUN   TestRefreshStorageFailuresEndOrKeepTheGrantHonestly
+--- PASS: TestRefreshStorageFailuresEndOrKeepTheGrantHonestly (0.00s)
+=== RUN   TestRevocationIsImmediateEvenWhenPhysicalDeletionFailsAndIsRetried
+--- PASS: TestRevocationIsImmediateEvenWhenPhysicalDeletionFailsAndIsRetried (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.067s
+[exit 0]

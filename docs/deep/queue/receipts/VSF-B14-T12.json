@@ -1,0 +1,54 @@
+{
+  "task_id": "VSF-B14-T12",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/auth/profile.go"
+  ],
+  "acceptance": "Profiles arrive only in verified evidence and are bound to grant, epoch and runtime; plans from an earlier epoch fail until rebound against unchanged authority; stale or out-of-order profiles cannot replace newer ones.",
+  "positive": {
+    "fixture": "reauthentication then rebind; environment, capability, tenant and version changes invalidate plans; digests are canonical",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPlanBuiltBeforeReauthentication|TestAPlanIsInvalidAfterAnyEnvironmentField ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "successor grant, older or replayed profile, hand-built or foreign-runtime profile",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPlanBuiltUnderAnEarlierGrant|TestAStaleReplayedOrOutOfOrderProfile|TestAProfileNeedsAProvenObservation ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Profiles exist only inside verified evidence.",
+  "performance_memory_storage": "Digest work is one SHA-256 per observation.",
+  "known_limitations": [
+    "Plans are bound by the caller through PlanRef; wiring into the planner is B15 onward"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T12.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T12.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

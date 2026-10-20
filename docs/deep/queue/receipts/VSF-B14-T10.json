@@ -1,0 +1,56 @@
+{
+  "task_id": "VSF-B14-T10",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/auth/browser.go",
+    "backend/auth/runtimes.go",
+    "backend/bridge/bindings.go"
+  ],
+  "acceptance": "Sign-in, sign-out and challenge evidence is accepted only from a bridge-vouched paired runtime session with fresh, ordered, non-replayed messages bound to application, origin, principal and epoch; anything unprovable mints nothing.",
+  "positive": {
+    "fixture": "evidence from a bridge-vouched session mints, renews, pauses and resumes; a restarted runtime continues the grant under a new epoch",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestSourceManagedSignInRecordsAGrant|TestARuntimeRestartIsANewGeneration|TestVSFNeverAnswers ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "sixteen forged or stale variants mint nothing; replay, out-of-order and older-epoch messages change nothing; no bridge or no application proof means no grant",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestForgedMismatched|TestWithoutABridge|TestReplayedAndOutOfOrder|TestAStaleSignOutFromAnOlderEpoch|TestReplacingThePerson ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "A page script or unpaired local caller cannot produce evidence; VSF never answers a challenge.",
+  "performance_memory_storage": "Ordering state is pruned after two freshness windows; at most 8192 marks.",
+  "known_limitations": [
+    "Needs the transport to set Evidence.Client from the authenticated pairing; the extension path to Evidence is not part of B14"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T10.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T10.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

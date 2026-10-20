@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B14-T04",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "5fb6b3e6d95a96963c08bddb3ccebdd0717b63e5",
+  "commit": "37d0de2ee3bdb1c34e31f70888ace77e75994cc5",
+  "paths": [
+    "backend/auth/reauth.go",
+    "backend/auth/revoke.go",
+    "backend/auth/sessions.go"
+  ],
+  "acceptance": "MFA/passkeys/reauth cannot be bypassed by VSF; cancellation and sign-out invalidate dependent operations.",
+  "positive": {
+    "fixture": "a challenge at the source pauses the grant and a fresh clean observation resumes it; sign-out, revoke and sweep cancel dependent work; the runtime refuses work for a paused, ended or other person",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAChallengeAtTheSourcePauses|TestAPauseNobodyAnswers|TestSigningOutRevokingAndCancelling|TestTheRuntimeRefusesWorkWhile ./auth/ ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a different person completing the challenge ends the grant; an unanswered pause expires; reflection check that no method answers a challenge",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestADifferentPersonCompleting|TestResumeAfterThePauseExpired|TestNothingInThePackageLetsVSF|TestTheRuntimeSeesPausedExpired ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "VSF waits for MFA, passkeys and reauthentication and never answers them.",
+  "performance_memory_storage": "Constant-time principal comparison; sweeps are linear in grants.",
+  "known_limitations": [
+    "Pause state, atomicity and epoch semantics were reworked in VSF-B14-T08",
+    "Observation provenance is VSF-B14-T10"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T04.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T04.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

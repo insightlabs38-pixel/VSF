@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAnAuthorizationCodeFlowWithPKCE|TestSourceManagedSignInRecordsAGrantWithNoSecret|TestRefreshRenewsAGrant ./auth/
+=== RUN   TestAnAuthorizationCodeFlowWithPKCEYieldsAGrantAndVaultedSecrets
+--- PASS: TestAnAuthorizationCodeFlowWithPKCEYieldsAGrantAndVaultedSecrets (0.01s)
+=== RUN   TestRefreshRenewsAGrantAndAServerRefusalEndsIt
+--- PASS: TestRefreshRenewsAGrantAndAServerRefusalEndsIt (0.01s)
+=== RUN   TestSourceManagedSignInRecordsAGrantWithNoSecret
+--- PASS: TestSourceManagedSignInRecordsAGrantWithNoSecret (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.061s
+[exit 0]

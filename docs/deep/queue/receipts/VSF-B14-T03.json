@@ -1,0 +1,59 @@
+{
+  "task_id": "VSF-B14-T03",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "917d2b9433444e3ad58609abb95424777b948f3f",
+  "commit": "5fb6b3e6d95a96963c08bddb3ccebdd0717b63e5",
+  "paths": [
+    "backend/auth/vault.go",
+    "backend/auth/filevault.go",
+    "backend/auth/keychain.go",
+    "backend/auth/lease.go",
+    "backend/auth/redact.go"
+  ],
+  "acceptance": "OS keychain/vault injection is origin-scoped, redacts all traces and restricts credential exposure duration.",
+  "positive": {
+    "fixture": "sealed file vault with opaque names and 0600 files; Secret Service adapter keeps the secret off the command line; leases work for one origin, a few uses, five minutes",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestFileVaultSeals|TestALeaseWorksForItsOrigin|TestSecretServiceKeepsTheSecret|TestACredentialReachesOnlyTheSource ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "tampered, swapped and foreign vault files; unreachable keychain stores nothing without an allowed fallback; lease checks like any use; redaction in logs, errors and streams; no credential in artifact store or cache",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestFileVaultRefusesTampered|TestLeaseRequestsAreChecked|TestRevokingTheGrantEndsEveryLease|TestALeaseCannotBePrinted|TestRedactionCovers|TestAnUnreachableKeychain|TestNoCredentialEver ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Secrets only through short-lived scoped leases; redaction of registered secrets in common encodings.",
+  "performance_memory_storage": "Lease copies are wiped on return; vault files hold one sealed secret each.",
+  "known_limitations": [
+    "Native macOS and Windows stores are queued as VSF-B16-T08",
+    "Durability and lifecycle hardening is VSF-B14-T13"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T03.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T03.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

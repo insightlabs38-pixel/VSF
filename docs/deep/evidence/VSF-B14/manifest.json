@@ -1,0 +1,358 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B14",
+  "gate": "G14",
+  "runs": [
+    {
+      "task_id": "VSF-B14-T01",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAGrantIsUsableOnlyByItsOwner|TestTokensVerifyWithEachSupportedAlgorithm|TestKeySetRefusesWeakKeys ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T01.positive.log",
+      "sha256": "2694ab1a107c64e92ce6f758dd7cf1065a6ac061e97f04946e9469dfac407ca2"
+    },
+    {
+      "task_id": "VSF-B14-T01",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestExpiryRevocationAndPauseAreEnforcedAtUse|TestIssuingRefusesMalformedGrants|TestTokensForAnotherAudienceIssuerOrTimeAreRejected|TestTokenSignatureAndHeaderAttacksAreRejected|TestRefusalsAreAuditedWithTheirReason ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T01.negative.log",
+      "sha256": "c6e10e332a0959d228e28f90efddd3e0fcf4cbe9b8b775d526104c94546eaf90"
+    },
+    {
+      "task_id": "VSF-B14-T02",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnAuthorizationCodeFlowWithPKCE|TestSourceManagedSignInRecordsAGrantWithNoSecret|TestRefreshRenewsAGrant ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T02.positive.log",
+      "sha256": "3d8f72203e4641663e2601e75613fa2042762bb885f574aea4eeed8d13822915"
+    },
+    {
+      "task_id": "VSF-B14-T02",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestTheFlowRefusesAnythingButPKCE|TestStateIsBound|TestACodeStolen|TestMixUpAndIssuerChecks|TestAHostileOrBuggy|TestAnUnexpectedSignIn|TestAnOAuthGrantDoesNotMake ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T02.negative.log",
+      "sha256": "33c8e9e0ec0ae8c9072a0e7c501a1e8bad0453b5cbf8ca2efa3e7fb35d90e411"
+    },
+    {
+      "task_id": "VSF-B14-T03",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestFileVaultSeals|TestALeaseWorksForItsOrigin|TestSecretServiceKeepsTheSecret|TestACredentialReachesOnlyTheSource ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T03.positive.log",
+      "sha256": "62eacdd786a2f8b3feced70c59efc299b01e4c69679361daeb9f6363d69cf863"
+    },
+    {
+      "task_id": "VSF-B14-T03",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestFileVaultRefusesTampered|TestLeaseRequestsAreChecked|TestRevokingTheGrantEndsEveryLease|TestALeaseCannotBePrinted|TestRedactionCovers|TestAnUnreachableKeychain|TestNoCredentialEver ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T03.negative.log",
+      "sha256": "2a7699a7d6753537ba1bec73a4c769749bc1699a993e956f08e1bf7dc12a70e3"
+    },
+    {
+      "task_id": "VSF-B14-T04",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAChallengeAtTheSourcePauses|TestAPauseNobodyAnswers|TestSigningOutRevokingAndCancelling|TestTheRuntimeRefusesWorkWhile ./auth/ ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T04.positive.log",
+      "sha256": "ca6d687a538c2380ad7725b50a1d4574d768ebba782b4c4a3e885434b0a7fa46"
+    },
+    {
+      "task_id": "VSF-B14-T04",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestADifferentPersonCompleting|TestResumeAfterThePauseExpired|TestNothingInThePackageLetsVSF|TestTheRuntimeSeesPausedExpired ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T04.negative.log",
+      "sha256": "87fdfd499eefd6fed4439aa4ae50dd6baccf0d3c41ea68ea55a1aab694f6efb5"
+    },
+    {
+      "task_id": "VSF-B14-T05",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestARolesEnvironmentOrExpiry|TestProfileDigestsAreCanonical|TestProfileExpiryIsCapped ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T05.positive.log",
+      "sha256": "ce5c826654db76e16b3de2fc49e99f4c313b3e28fabfc6d208ff6bd5ecf7f274"
+    },
+    {
+      "task_id": "VSF-B14-T05",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPlanIsInvalidWhileThePersonIsPaused|TestProfilesAreScopedToTheirOwner ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T05.negative.log",
+      "sha256": "c80e9e232a44f538d64cfd97ccae8bbc9c3c89cfe866d4444a25863061a79e0b"
+    },
+    {
+      "task_id": "VSF-B14-T06",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPersonCanConfirmForACaller|TestADelegationNamesOnePerson ./auth/ ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T06.positive.log",
+      "sha256": "c84c2a44d6e45b95a6c5b66c77a4d47dc44beb090edf191982a065fbc8eb0a2a"
+    },
+    {
+      "task_id": "VSF-B14-T06",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAConfirmationBelongsTo|TestADelegationNamesOnePerson ./auth/ ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T06.negative.log",
+      "sha256": "a285ea634a45c53851ecef02076c9ce1106d657abaa03fd60cb6f6e302e7892a"
+    },
+    {
+      "task_id": "VSF-B14-T07",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestRewrapMovesPrivate|TestATenantsKeysTravel|TestRotationKeepsIdentifiers ./storage/secret/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T07.positive.log",
+      "sha256": "4ee43e24860654a9a2135bd55abe45828bb7686ec48afd7ba459abdc1f78a805"
+    },
+    {
+      "task_id": "VSF-B14-T07",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestARewrapThatDies|TestRetiringAKeyTooEarly|TestTheSameContentIsInvisible ./storage/secret/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T07.negative.log",
+      "sha256": "fc459697334b2521ae3b271d2beaede365fdbf61b0dcc133d771cef91557d258"
+    },
+    {
+      "task_id": "VSF-B14-T08",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestTheStoreContract|TestRefreshRacingRevoke|TestConcurrentRefreshesShare|TestConcurrentPausesResumes ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T08.positive.log",
+      "sha256": "fbe2a719833b53a53f39d33985ac081f42a430a38715410a301e9a3807d0beec"
+    },
+    {
+      "task_id": "VSF-B14-T08",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAStaleWriterCannot|TestARevocationBetweenTheCheck|TestAStaleResumeCannot|TestRevocationIsImmediateEvenWhen|TestRefreshStorageFailures|TestAFailedSecretWrite ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T08.negative.log",
+      "sha256": "7a94790fe6dc2103d16e15329e6b010117a4c9e69542ff4f35934ce2d050f61c"
+    },
+    {
+      "task_id": "VSF-B14-T09",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestASessionBindsToExactlyOneGrant|TestSameApplicationOnTwoOrigins|TestTheRuntimeSeesPausedExpired|TestConcurrentSignInsOfOnePerson ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T09.positive.log",
+      "sha256": "ef396afaec7fbdd1713cd16cfd3d37ec19a299606e68555d11df52defa8f29ed"
+    },
+    {
+      "task_id": "VSF-B14-T09",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestTwoLiveGrantsForOneSession|TestAnOAuthGrantAndAnUnverified|TestAPrincipalSwitchCancels ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T09.negative.log",
+      "sha256": "5b43c293832fb3c6c243cd290fd340b62295349e9104667b7aa5121cbc0e5137"
+    },
+    {
+      "task_id": "VSF-B14-T10",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestSourceManagedSignInRecordsAGrant|TestARuntimeRestartIsANewGeneration|TestVSFNeverAnswers ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T10.positive.log",
+      "sha256": "54683b38c92da6be0ead4e406f6d40f90e36e157e4b34b36cc8f7020df510854"
+    },
+    {
+      "task_id": "VSF-B14-T10",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestForgedMismatched|TestWithoutABridge|TestReplayedAndOutOfOrder|TestAStaleSignOutFromAnOlderEpoch|TestReplacingThePerson ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T10.negative.log",
+      "sha256": "78e9833c5e07483b3f51b98030448a78f0e4310cbdaed248bca9a2d6c435b058"
+    },
+    {
+      "task_id": "VSF-B14-T11",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestANonOIDCGrantIsExplicitly|TestProviderKeysAreValidated|TestAFlowKeepsTheProvider ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T11.positive.log",
+      "sha256": "c386b686ff53bbe586aad53fb2b668f2c8a7e4d2c8d18c06684d7130b56416b8"
+    },
+    {
+      "task_id": "VSF-B14-T11",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnIdentityTokenWithoutAUsableSubject|TestRefreshCannotSubstitute|TestARefreshThatNamesAnotherPerson|TestStateIsSingleUse|TestARefusedRefreshToken ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T11.negative.log",
+      "sha256": "ddc4ee632b45d01ea91303eaa1de7290471120ec422797b376356b74ff25b1d2"
+    },
+    {
+      "task_id": "VSF-B14-T12",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPlanBuiltBeforeReauthentication|TestAPlanIsInvalidAfterAnyEnvironmentField ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T12.positive.log",
+      "sha256": "74bcbb9ba052a8fea7bf69b86e54378b31b83cb039c9be22d5901ea0430cdb98"
+    },
+    {
+      "task_id": "VSF-B14-T12",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAPlanBuiltUnderAnEarlierGrant|TestAStaleReplayedOrOutOfOrderProfile|TestAProfileNeedsAProvenObservation ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T12.negative.log",
+      "sha256": "fd529f61a0f3766511b67c7141672914233916d0eab851e3192b08233e0533d2"
+    },
+    {
+      "task_id": "VSF-B14-T13",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnAuditFileSurvives|TestAMandatoryAuditFailure|TestAKeychainWriteIsVerified|TestAFallbackIsUsedOnlyOnPurpose|TestALeaseDoesNotSurvive ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T13.positive.log",
+      "sha256": "c806b8f30ebd7cb29eb25e69c99356785416dfaf88fcc9596eb13f017eb960b4"
+    },
+    {
+      "task_id": "VSF-B14-T13",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnAuditLogThatWroteHalf|TestAFileVaultReplacementThatFails|TestAFileVaultWhoseDirectorySync|TestAFileVaultRecoversFromCrashes ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T13.negative.log",
+      "sha256": "82baaeb3539a9b4f8ad499f4bdb05c9be80b87296818f856ebd7cf29dff01ea4"
+    },
+    {
+      "task_id": "VSF-B14-T14",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAConfirmationDoesNotSurviveTheSignIn|TestAPersonCanConfirmForACaller ./interfaces/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T14.positive.log",
+      "sha256": "8f64fb267bde23abcdf0497ef010cf90da9971fe6b027051a798a1623e8b5042"
+    },
+    {
+      "task_id": "VSF-B14-T14",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestADelegationNamesOnePerson|TestAConfirmationBelongsTo ./interfaces/ ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T14.negative.log",
+      "sha256": "c5407840b122a4d7b86a24167f6a6dda3893d9a81ffeaf9aebcf32ccc526e579"
+    },
+    {
+      "task_id": "VSF-B14-T15",
+      "name": "positive",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestAKeyStillProtectingData|TestAdoptingNeverDrops|TestAKeyStillSealingVault ./storage/secret/ ./auth/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T15.positive.log",
+      "sha256": "b02437412d0e429d48761ad8d6e0ab67a03f1d0c0fc4f601b42e379fc3cd20a5"
+    },
+    {
+      "task_id": "VSF-B14-T15",
+      "name": "negative",
+      "command": "go -C backend test -tags integration -race -count=1 -v -run TestRetiringAKeyTooEarly|TestARewrapThatDies ./storage/secret/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B14-T15.negative.log",
+      "sha256": "6297e5c1f5e2dbf77ac4b961076314c5d54e696235efb446402fc733c0d22323"
+    },
+    {
+      "task_id": "GATE",
+      "name": "gofmt",
+      "command": "scripts/gofmt-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.gofmt.log",
+      "sha256": "c0f28271d4d47306fac872605c06b1cc41b29e7602f82db35a4770b842a85b22"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-vet",
+      "command": "go -C backend vet ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-vet.log",
+      "sha256": "378a357f3e99d0cbd361bb4cfc9d949b725af05e38bbcd5f2031dd9dcf765c94"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-vet-integration",
+      "command": "go -C backend vet -tags integration ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-vet-integration.log",
+      "sha256": "fcfe5cf31ffc5fb18a3291ac5ea800f76090b35aadb4766f874bf01e5cc5dcda"
+    },
+    {
+      "task_id": "GATE",
+      "name": "comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "secrets",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.secrets.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "GATE",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.biome.log",
+      "sha256": "314fed05992c870d675415bd8c59a0c3b76e88f7e34a4a42a4116830360f20ce"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-test",
+      "command": "go -C backend test -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-test.log",
+      "sha256": "f23ba7ec232dcfa0c4a3427c345bcdacec684d296e7be9992c6b498f1634d345"
+    },
+    {
+      "task_id": "GATE",
+      "name": "go-integration",
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.go-integration.log",
+      "sha256": "76f845cd930a4320d065a3e431ff29ea891f2b9b9490909dcd511b05e1a476ff"
+    },
+    {
+      "task_id": "GATE",
+      "name": "queue-tests",
+      "command": "pnpm --filter @vsf/queue run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.queue-tests.log",
+      "sha256": "1fa7ccc098c50e4cb214dd29fc5db2cb59c663fd8187a1423801230a34c15cf5"
+    }
+  ]
+}

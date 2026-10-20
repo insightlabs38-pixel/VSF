@@ -1,0 +1,59 @@
+{
+  "task_id": "VSF-B14-T13",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/auth/audit.go",
+    "backend/auth/filevault.go",
+    "backend/auth/keychain.go",
+    "backend/auth/lease.go",
+    "backend/auth/grant.go"
+  ],
+  "acceptance": "Leases die with refresh, epoch change, pause and revocation; mandatory security records fail or report instead of passing silently; file audit recovers a torn tail and rotates as one chain; vault replacement is crash-consistent; keychain writes and deletes are verified.",
+  "positive": {
+    "fixture": "audit file recovery and one-chain rotation; mandatory audit failure refuses or reports; keychain write and delete verified; fallback hygiene; lease superseded by refresh",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnAuditFileSurvives|TestAMandatoryAuditFailure|TestAKeychainWriteIsVerified|TestAFallbackIsUsedOnlyOnPurpose|TestALeaseDoesNotSurvive ./auth/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "disk full, torn write, sync failure, permission denied, interrupted rename, directory sync failure, corrupted vault file, failed delete, mid-file tampering",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAnAuditLogThatWroteHalf|TestAFileVaultReplacementThatFails|TestAFileVaultWhoseDirectorySync|TestAFileVaultRecoversFromCrashes ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Errors carry no secret or path; a torn audit tail is cut, damage elsewhere refuses to open.",
+  "performance_memory_storage": "One fsync per mandatory audit record.",
+  "known_limitations": [
+    "The audit tail needs an external head anchor to detect truncation",
+    "Disk-full is simulated with failing writers, not a full device"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T13.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T13.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

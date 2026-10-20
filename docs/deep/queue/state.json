@@ -3,7 +3,7 @@
   "initialized": "2026-10-18",
   "source_plan": "07_Development_Sequence/00_Master_Sequence.md",
   "status": "ACTIVE",
-  "task_count": 180,
+  "task_count": 188,
   "batch_count": 25,
   "task_states": {
     "VSF-B00-T01": {
@@ -900,34 +900,49 @@
       "receipt": "docs/deep/queue/receipts/VSF-B13-T05.json"
     },
     "VSF-B14-T01": {
-      "status": "READY",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "66e79b7a8ec43426443c8ec10d331f6eae0c7740",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "2286158327d09a4f9760e1f778a747e0af03d77e",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T01.json"
     },
     "VSF-B14-T02": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "917d2b9433444e3ad58609abb95424777b948f3f",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "66e79b7a8ec43426443c8ec10d331f6eae0c7740",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T02.json"
     },
     "VSF-B14-T03": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5fb6b3e6d95a96963c08bddb3ccebdd0717b63e5",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "917d2b9433444e3ad58609abb95424777b948f3f",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T03.json"
     },
     "VSF-B14-T04": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "37d0de2ee3bdb1c34e31f70888ace77e75994cc5",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "5fb6b3e6d95a96963c08bddb3ccebdd0717b63e5",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T04.json"
     },
     "VSF-B14-T05": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "2525995326eb5048c46cfa70e6ef9cf5d51f6da4",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "37d0de2ee3bdb1c34e31f70888ace77e75994cc5",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T05.json"
     },
     "VSF-B15-T01": {
       "status": "TODO",
@@ -1371,16 +1386,22 @@
       "receipt": "docs/deep/queue/receipts/VSF-B09-T09.json"
     },
     "VSF-B14-T06": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "fccd396ba619e3cf2685ca0eb490ecf9f98938fb",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "2525995326eb5048c46cfa70e6ef9cf5d51f6da4",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T06.json"
     },
     "VSF-B14-T07": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "ac59629e8d76d66b0f7e3bd9db246400e09049d7",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "fccd396ba619e3cf2685ca0eb490ecf9f98938fb",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T07.json"
     },
     "VSF-B16-T05": {
       "status": "TODO",
@@ -1417,6 +1438,78 @@
       "claimed_by": null,
       "commit": null,
       "evidence": null
+    },
+    "VSF-B14-T08": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T08.json"
+    },
+    "VSF-B14-T09": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T09.json"
+    },
+    "VSF-B14-T10": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T10.json"
+    },
+    "VSF-B14-T11": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T11.json"
+    },
+    "VSF-B14-T12": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T12.json"
+    },
+    "VSF-B14-T13": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T13.json"
+    },
+    "VSF-B14-T14": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T14.json"
+    },
+    "VSF-B14-T15": {
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+      "evidence": "docs/deep/evidence/VSF-B14",
+      "branch": "vsf/b14-auth-managed-sessions",
+      "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+      "receipt": "docs/deep/queue/receipts/VSF-B14-T15.json"
     }
   },
   "gate_states": {

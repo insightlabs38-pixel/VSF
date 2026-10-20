@@ -1,0 +1,12 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAnAuditLogThatWroteHalf|TestAFileVaultReplacementThatFails|TestAFileVaultWhoseDirectorySync|TestAFileVaultRecoversFromCrashes ./auth/
+=== RUN   TestAFileVaultReplacementThatFailsAtAnyStepKeepsTheOldSecretAndLeavesNothingBehind
+--- PASS: TestAFileVaultReplacementThatFailsAtAnyStepKeepsTheOldSecretAndLeavesNothingBehind (0.03s)
+=== RUN   TestAFileVaultWhoseDirectorySyncFailsReportsItButHoldsTheNewSecret
+--- PASS: TestAFileVaultWhoseDirectorySyncFailsReportsItButHoldsTheNewSecret (0.01s)
+=== RUN   TestAFileVaultRecoversFromCrashesAndReportsCorruptionAndFailedDeletes
+--- PASS: TestAFileVaultRecoversFromCrashesAndReportsCorruptionAndFailedDeletes (0.01s)
+=== RUN   TestAnAuditLogThatWroteHalfALineRefusesFurtherRecordsUntilRecovered
+--- PASS: TestAnAuditLogThatWroteHalfALineRefusesFurtherRecordsUntilRecovered (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.087s
+[exit 0]

@@ -1,0 +1,18 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestTheFlowRefusesAnythingButPKCE|TestStateIsBound|TestACodeStolen|TestMixUpAndIssuerChecks|TestAHostileOrBuggy|TestAnUnexpectedSignIn|TestAnOAuthGrantDoesNotMake ./auth/
+=== RUN   TestTheFlowRefusesAnythingButPKCEAndSecureEndpoints
+--- PASS: TestTheFlowRefusesAnythingButPKCEAndSecureEndpoints (0.00s)
+=== RUN   TestStateIsBoundSingleUseAndExpiring
+--- PASS: TestStateIsBoundSingleUseAndExpiring (0.00s)
+=== RUN   TestACodeStolenWithoutTheVerifierIsUseless
+--- PASS: TestACodeStolenWithoutTheVerifierIsUseless (0.00s)
+=== RUN   TestMixUpAndIssuerChecks
+--- PASS: TestMixUpAndIssuerChecks (0.01s)
+=== RUN   TestAHostileOrBuggyServerCannotMintAGrant
+--- PASS: TestAHostileOrBuggyServerCannotMintAGrant (0.05s)
+=== RUN   TestAnUnexpectedSignInOrAnotherCallersObservationChangesNothing
+--- PASS: TestAnUnexpectedSignInOrAnotherCallersObservationChangesNothing (0.00s)
+=== RUN   TestAnOAuthGrantDoesNotMakeTheSourceSessionAuthenticated
+--- PASS: TestAnOAuthGrantDoesNotMakeTheSourceSessionAuthenticated (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.117s
+[exit 0]

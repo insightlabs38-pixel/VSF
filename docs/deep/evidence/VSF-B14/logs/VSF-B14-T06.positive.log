@@ -1,0 +1,10 @@
+$ go -C backend test -tags integration -race -count=1 -v -run TestAPersonCanConfirmForACaller|TestADelegationNamesOnePerson ./auth/ ./interfaces/
+=== RUN   TestADelegationNamesOnePersonAndOneCallerExpiresAndCanBeWithdrawn
+--- PASS: TestADelegationNamesOnePersonAndOneCallerExpiresAndCanBeWithdrawn (0.00s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	1.033s
+=== RUN   TestAPersonCanConfirmForACallerOnlyUnderADelegationAndOnlyForThatCallersExactRequest
+--- PASS: TestAPersonCanConfirmForACallerOnlyUnderADelegationAndOnlyForThatCallersExactRequest (0.04s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	1.074s
+[exit 0]

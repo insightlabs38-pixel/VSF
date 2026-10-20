@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B14-T14",
+  "status": "DONE",
+  "branch": "vsf/b14-auth-managed-sessions",
+  "base_commit": "4bf5f15c5c4c61cf1eea89b922e07b4f0014d365",
+  "commit": "5c5e76bb6b2aba39d11f7bd7c9fb31db5dd3f94e",
+  "paths": [
+    "backend/execution/confirm.go",
+    "backend/execution/runtime.go",
+    "backend/api/service.go",
+    "backend/interfaces/signin_test.go"
+  ],
+  "acceptance": "A confirmation is bound to the executing session's sign-in generation as well as the person, executor, session and exact request, so it does not survive a pause, resume, runtime change or principal switch.",
+  "positive": {
+    "fixture": "a confirmation given under the current sign-in runs once",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestAConfirmationDoesNotSurviveTheSignIn|TestAPersonCanConfirmForACaller ./interfaces/",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a confirmation given before reauthentication is refused after it; delegation withdrawn, self-delegation, agent confirming, widened request",
+    "command": "go -C backend test -tags integration -race -count=1 -v -run TestADelegationNamesOnePerson|TestAConfirmationBelongsTo ./interfaces/ ./auth/",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -tags integration -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "unchanged",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Digest binds person, executor, session, request and sign-in generation; empty generation keeps the old digest.",
+  "performance_memory_storage": "No cost beyond one session lookup per check.",
+  "known_limitations": [
+    "Confirmer used-token set is in memory"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T14.positive.log",
+    "docs/deep/evidence/VSF-B14/logs/VSF-B14-T14.negative.log",
+    "docs/deep/evidence/VSF-B14/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}
