@@ -179,6 +179,24 @@ func (s *S3) Put(ctx context.Context, key string, data []byte) error {
 	return s.fail(r)
 }
 
+func (s *S3) Replace(ctx context.Context, key string, data []byte) error {
+	if !ValidKey(key) {
+		return ErrBadKey
+	}
+	if len(data) > MaxObject {
+		return ErrTooLarge
+	}
+	r, err := s.do(ctx, "PUT", key, nil, data, nil)
+	if err != nil {
+		return err
+	}
+	if r.StatusCode == http.StatusOK {
+		drain(r)
+		return nil
+	}
+	return s.fail(r)
+}
+
 func (s *S3) Get(ctx context.Context, key string) ([]byte, error) {
 	if !ValidKey(key) {
 		return nil, ErrBadKey

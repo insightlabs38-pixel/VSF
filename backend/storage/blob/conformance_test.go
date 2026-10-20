@@ -48,6 +48,81 @@ func Conformance(t *testing.T, mk func(t *testing.T) Backend) {
 			t.Fatalf("the first bytes must survive: %q", got)
 		}
 	})
+	t.Run("replace swaps the bytes whole and leaves the key usable", func(t *testing.T) {
+		b := mk(t)
+		if err := b.Replace(ctx, "r/new", []byte("first")); err != nil {
+			t.Fatalf("replacing a missing key creates it: %v", err)
+		}
+		if err := b.Replace(ctx, "r/new", []byte("second-longer")); err != nil {
+			t.Fatal(err)
+		}
+		if got, _ := b.Get(ctx, "r/new"); string(got) != "second-longer" {
+			t.Fatalf("%q", got)
+		}
+		if st, _ := b.Stat(ctx, "r/new"); st.Size != int64(len("second-longer")) {
+			t.Fatalf("%+v", st)
+		}
+		if err := b.Put(ctx, "r/new", []byte("second-longer")); err != nil {
+			t.Fatalf("storing the current bytes is still idempotent: %v", err)
+		}
+		if err := b.Put(ctx, "r/new", []byte("first")); !errors.Is(err, ErrOverwrite) {
+			t.Fatalf("the replaced bytes are now the held ones: %v", err)
+		}
+		if err := b.Replace(ctx, "../x", []byte("x")); !errors.Is(err, ErrBadKey) {
+			t.Fatal(err)
+		}
+		if err := b.Replace(ctx, "r/big", make([]byte, MaxObject+1)); !errors.Is(err, ErrTooLarge) {
+			t.Fatal(err)
+		}
+	})
+	t.Run("readers never see a mixture while an object is replaced", func(t *testing.T) {
+		b := mk(t)
+		a, c := bytes.Repeat([]byte("a"), 200000), bytes.Repeat([]byte("c"), 150000)
+		if err := b.Replace(ctx, "r/live", a); err != nil {
+			t.Fatal(err)
+		}
+		done := make(chan struct{})
+		var wg sync.WaitGroup
+		bad := make(chan string, 4)
+		for i := 0; i < 4; i++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				for {
+					select {
+					case <-done:
+						return
+					default:
+					}
+					got, err := b.Get(ctx, "r/live")
+					if err != nil {
+						bad <- err.Error()
+						return
+					}
+					if !bytes.Equal(got, a) && !bytes.Equal(got, c) {
+						bad <- fmt.Sprintf("a torn read of %d bytes", len(got))
+						return
+					}
+				}
+			}()
+		}
+		for i := 0; i < 30; i++ {
+			next := a
+			if i%2 == 0 {
+				next = c
+			}
+			if err := b.Replace(ctx, "r/live", next); err != nil {
+				t.Fatal(err)
+			}
+		}
+		close(done)
+		wg.Wait()
+		select {
+		case msg := <-bad:
+			t.Fatal(msg)
+		default:
+		}
+	})
 	t.Run("missing objects and invalid keys", func(t *testing.T) {
 		b := mk(t)
 		if _, err := b.Get(ctx, "nothing/here"); !errors.Is(err, ErrNotFound) {

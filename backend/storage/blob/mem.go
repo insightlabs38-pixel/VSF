@@ -44,6 +44,20 @@ func (m *Mem) Put(_ context.Context, key string, data []byte) error {
 	return nil
 }
 
+func (m *Mem) Replace(_ context.Context, key string, data []byte) error {
+	if !ValidKey(key) {
+		return ErrBadKey
+	}
+	if len(data) > MaxObject {
+		return ErrTooLarge
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.objs[key] = append([]byte(nil), data...)
+	m.at[key] = m.Now()
+	return nil
+}
+
 func (m *Mem) Get(_ context.Context, key string) ([]byte, error) {
 	if !ValidKey(key) {
 		return nil, ErrBadKey

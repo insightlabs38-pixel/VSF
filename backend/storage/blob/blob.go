@@ -37,6 +37,8 @@ type Info struct {
 type Backend interface {
 	Name() string
 	Put(ctx context.Context, key string, data []byte) error
+	// Replace atomically makes a key hold new bytes: readers see the old or the new, never a mixture, and a crash leaves one of them.
+	Replace(ctx context.Context, key string, data []byte) error
 	Get(ctx context.Context, key string) ([]byte, error)
 	Stat(ctx context.Context, key string) (Info, error)
 	Delete(ctx context.Context, key string) error
