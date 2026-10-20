@@ -1,7 +1,4 @@
-// Package jsonschema validates instances against the JSON Schema 2020-12 subset the generated contracts use.
-//
-// A schema that uses a keyword outside the subset, another dialect or a non-local reference is refused at
-// compile time, so nothing is ever validated by a schema this package only half understands.
+// Package jsonschema validates against the JSON Schema 2020-12 subset the contracts use; anything else is refused at compile time.
 package jsonschema
 
 import (

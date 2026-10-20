@@ -4,8 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-
-	"github.com/insightlabs38-pixel/vsf/backend/ir"
 )
 
 const maxReconcileNote = 512
@@ -75,11 +73,11 @@ func (r *Runtime) Reconcile(ctx context.Context, q ReconcileRequest) (Reconcilia
 	if rec.Caller != q.Caller {
 		return refused("other_caller")
 	}
-	un, err := ir.DecodeDocument(q.Contract)
+	un, digest, err := decodeDocument(q.Contract)
 	if err != nil || un.Unsafe().Operation == nil {
 		return refused("undecodable")
 	}
-	if un.Digest() != rec.ContractDigest {
+	if digest != rec.ContractDigest {
 		return refused("contract_mismatch")
 	}
 	c := *un.Unsafe().Operation
@@ -101,7 +99,7 @@ func (r *Runtime) Reconcile(ctx context.Context, q ReconcileRequest) (Reconcilia
 		err = refuse("environment_changed")
 	}
 	if err == nil {
-		err = r.authorize(req, c, un.Digest(), nil)
+		err = r.authorize(req, c, digest, nil)
 	}
 	if err != nil {
 		return refused(reasonOf(err))

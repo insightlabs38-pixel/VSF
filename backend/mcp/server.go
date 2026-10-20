@@ -16,12 +16,13 @@ type Config struct {
 	Backend        api.Backend
 	Auth           api.Authenticator
 	AllowedOrigins []string
-	ServerName     string
-	ServerVersion  string
+	// AllowedHosts, when set, must contain the request Host (guards a loopback server against DNS rebinding).
+	AllowedHosts  []string
+	ServerName    string
+	ServerVersion string
 	// ListTTLMs is how long clients may cache catalog lists; the lists vary by caller, so they are private.
 	ListTTLMs int64
-	// MaxListedOperations bounds how many operations tools/list advertises; every served operation stays callable by name
-	// and discoverable through vsf.operation.list. Zero lists them all.
+	// MaxListedOperations caps what tools/list advertises; the rest stays callable and listed by vsf.operation.list. Zero lists all.
 	MaxListedOperations int
 }
 
@@ -78,6 +79,10 @@ func fail(w http.ResponseWriter, status int, id json.RawMessage, code int, msg s
 func supported() []string { return []string{Version} }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if len(s.cfg.AllowedHosts) > 0 && !contains(s.cfg.AllowedHosts, r.Host) {
+		fail(w, http.StatusForbidden, nil, codeForbidden, "host not allowed", nil)
+		return
+	}
 	if o := r.Header.Get("Origin"); o != "" && !contains(s.cfg.AllowedOrigins, o) {
 		fail(w, http.StatusForbidden, nil, codeForbidden, "origin not allowed", nil)
 		return

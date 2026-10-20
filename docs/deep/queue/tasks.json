@@ -1,7 +1,7 @@
 {
   "schema": "vsf-task-queue-v1",
   "source": "original B00-B24 execution steps, expanded with task-specific acceptance",
-  "task_count": 171,
+  "task_count": 175,
   "batches": [
     {
       "id": "B00",
@@ -3531,6 +3531,35 @@
       ]
     },
     {
+      "id": "VSF-B14-T06",
+      "batch": "B14",
+      "sequence": 6,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Let a person confirm in the user interface a request an agent caller will run",
+      "intent": "Let a person confirm in the user interface a request an agent caller will run.",
+      "acceptance": "Delegated confirmation binds the approving person, the executing caller, the source session and the exact request; an agent credential can neither confirm for itself nor replay or widen it.",
+      "dependencies": ["VSF-B14-T05"],
+      "planned_paths": "backend/auth/; backend/sessions/; apps/local/credentials/; tests/auth/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B10 binds a confirmation to the caller and session that run the request and lets only a user-interface credential issue it, so an agent that needs a confirmed write cannot yet obtain one.",
+      "gate": "G14",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "token audience mismatch",
+        "stolen session",
+        "MFA interruption",
+        "keychain unavailable",
+        "revoked authorization"
+      ]
+    },
+    {
       "id": "VSF-B15-T01",
       "batch": "B15",
       "sequence": 1,
@@ -3742,6 +3771,96 @@
         "No mandatory LLM calls during normal compilation/execution",
         "Preserve contract versions and user isolation when changed"
       ],
+      "gate": "G16",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "browser-origin loopback attack",
+        "sleep/resume",
+        "installer rollback",
+        "keychain failure",
+        "expired license"
+      ]
+    },
+    {
+      "id": "VSF-B16-T05",
+      "batch": "B16",
+      "sequence": 5,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Compose the authenticated loopback gateway from the interface service",
+      "intent": "Compose the authenticated loopback gateway from the interface service.",
+      "acceptance": "One process serves the REST and MCP surfaces from the catalog, runtime, executors and credential store, binds loopback only, enforces host and origin checks, and refuses to start with an unreadable or world-readable credential store.",
+      "dependencies": ["VSF-B16-T04"],
+      "planned_paths": "apps/desktop/; apps/local/; backend/local-gateway/; tests/desktop/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B10 delivers the surfaces as libraries tested against a fixture source; nothing composes them into a service yet.",
+      "gate": "G16",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "browser-origin loopback attack",
+        "sleep/resume",
+        "installer rollback",
+        "keychain failure",
+        "expired license"
+      ]
+    },
+    {
+      "id": "VSF-B16-T06",
+      "batch": "B16",
+      "sequence": 6,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Dispatch the user interface actions through the interface service",
+      "intent": "Dispatch the user interface actions through the interface service.",
+      "acceptance": "An action in the browser or desktop shell runs through the interface service with a user-interface credential and shows the same category, effect and unknown-commit state as REST, CLI and MCP.",
+      "dependencies": ["VSF-B16-T05"],
+      "planned_paths": "apps/desktop/; apps/local/; backend/local-gateway/; tests/desktop/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B10 delivers the surfaces as libraries tested against a fixture source; nothing composes them into a service yet.",
+      "rationale": "B10 exercises the user-interface surface through the REST transport; the shell does not call it yet.",
+      "gate": "G16",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "browser-origin loopback attack",
+        "sleep/resume",
+        "installer rollback",
+        "keychain failure",
+        "expired license"
+      ]
+    },
+    {
+      "id": "VSF-B16-T07",
+      "batch": "B16",
+      "sequence": 7,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Add the MCP stdio transport, the Tasks extension and progress notifications",
+      "intent": "Add the MCP stdio transport, the Tasks extension and progress notifications.",
+      "acceptance": "A client that declares the Tasks extension receives a durable task handle for a long run; stdio and Streamable HTTP return identical results; progress is delivered on the request stream without leaking source content.",
+      "dependencies": ["VSF-B16-T06"],
+      "planned_paths": "apps/desktop/; apps/local/; backend/local-gateway/; tests/desktop/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B10 delivers the surfaces as libraries tested against a fixture source; nothing composes them into a service yet.",
+      "rationale": "B10 exercises the user-interface surface through the REST transport; the shell does not call it yet.",
+      "rationale": "B10 serves Streamable HTTP with a polled handle for long runs and nothing else.",
       "gate": "G16",
       "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
       "risk_tests": [

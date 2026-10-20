@@ -118,7 +118,7 @@ type authReport struct {
 
 // Authorize decodes the document here, has Rust validate and authorize the same bytes, and requires both to agree.
 func (w *Worker) Authorize(doc []byte, env Env) (Authorized, error) {
-	un, err := ir.DecodeDocument(doc)
+	un, digest, err := decodeDocument(doc)
 	if err != nil {
 		return Authorized{}, refuse("undecodable")
 	}
@@ -144,7 +144,7 @@ func (w *Worker) Authorize(doc []byte, env Env) (Authorized, error) {
 	if !rep.Authorized {
 		return Authorized{}, refuse(rep.Reason)
 	}
-	if rep.Digest == "" || rep.Digest != un.Digest() {
+	if rep.Digest == "" || rep.Digest != digest {
 		return Authorized{}, refuse("digest_disagreement")
 	}
 	return Authorized{digest: rep.Digest, contract: *body.Operation, env: env, minted: true}, nil

@@ -372,3 +372,8 @@ func (s *Stack) Token(caller string, surface api.Surface) string {
 
 // ResetOrder puts the source order back to its initial state.
 func (s *Stack) ResetOrder(id string) { s.App.Put(fixtureapp.Order{ID: id, Stage: "new", Version: 1}) }
+
+// Principal is the in-process principal of a caller on a surface, for measuring without the credential layer.
+func (s *Stack) Principal(caller string, surface api.Surface) api.Principal {
+	return api.Principal{Caller: caller, Surface: surface, Credential: "in-process"}
+}

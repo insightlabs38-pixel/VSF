@@ -182,7 +182,7 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 		(req.Record != "" && !validID(req.Record, 1024)) {
 		return nil, refuse("request_malformed")
 	}
-	un, err := ir.DecodeDocument(req.Contract)
+	un, digest, err := decodeDocument(req.Contract)
 	if err != nil {
 		return nil, refuse("undecodable")
 	}
@@ -191,7 +191,6 @@ func (r *Runtime) Submit(ctx context.Context, req Request) (*Handle, error) {
 		return nil, refuse("not_operation_contract")
 	}
 	c := *body.Operation
-	digest := un.Digest()
 	key := keyOf(req.Caller, req.SessionID, req.RequestID, digest)
 	pd := requestDigest(digest, req.Record, req.Params)
 	var fp Footprint

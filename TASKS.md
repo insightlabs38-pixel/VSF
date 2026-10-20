@@ -20,9 +20,9 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B11 | G11 | 0/6 | TODO | - |
 | B12 | G12 | 0/6 | TODO | - |
 | B13 | G13 | 0/5 | TODO | - |
-| B14 | G14 | 0/5 | TODO | - |
+| B14 | G14 | 0/6 | TODO | - |
 | B15 | G15 | 0/5 | TODO | - |
-| B16 | G16 | 0/4 | TODO | - |
+| B16 | G16 | 0/7 | TODO | - |
 | B17 | G17 | 0/5 | TODO | - |
 | B18 | G18 | 0/5 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
@@ -203,6 +203,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B14-T03` Integrate OS keychain or vault, redaction and scoped credential injection
 - [ ] `VSF-B14-T04` Handle MFA/reauth pause and revoke behavior
 - [ ] `VSF-B14-T05` Add per-account capability profile and session expiry
+- [ ] `VSF-B14-T06` Let a person confirm in the user interface a request an agent caller will run
 
 ### B15 · Build hosted and on-demand execution
 
@@ -218,6 +219,9 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B16-T02` Build installers/updaters and credentials lifecycle for target OS
 - [ ] `VSF-B16-T03` Introduce persistent local API/MCP gated by product entitlement
 - [ ] `VSF-B16-T04` Test offline startup, keychain errors, OS suspend/resume and revoke
+- [ ] `VSF-B16-T05` Compose the authenticated loopback gateway from the interface service
+- [ ] `VSF-B16-T06` Dispatch the user interface actions through the interface service
+- [ ] `VSF-B16-T07` Add the MCP stdio transport, the Tasks extension and progress notifications
 
 ### B17 · Ship user-visible version control features
 

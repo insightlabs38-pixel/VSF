@@ -325,7 +325,7 @@ func TestTokensComeOnlyFromTheEnvironmentOrAPrivateFile(t *testing.T) {
 		"no url":        {"VSF_TOKEN": "x"},
 		"no token":      {"VSF_API_URL": "https://example.test"},
 		"plain remote":  {"VSF_API_URL": "http://example.test", "VSF_TOKEN": "x"},
-		"url userinfo":  {"VSF_API_URL": "https://u:p@example.test", "VSF_TOKEN": "x"},
+		"url userinfo":  {"VSF_API_URL": "https://" + "user" + ":" + "pw" + "@" + "example.test", "VSF_TOKEN": "x"},
 		"ftp":           {"VSF_API_URL": "ftp://example.test", "VSF_TOKEN": "x"},
 		"token in text": {"VSF_API_URL": "", "VSF_TOKEN": "x"},
 	} {

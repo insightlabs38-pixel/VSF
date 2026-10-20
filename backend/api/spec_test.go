@@ -181,3 +181,16 @@ func TestResultSchemaDeclaresEveryResultField(t *testing.T) {
 		}
 	}
 }
+
+func TestToolNamesAreSafeForEveryClient(t *testing.T) {
+	for _, ok := range []string{"op.vendor-console_capp_dvendor_dtest.app.records.update_stage", "a", "x_y-z.0"} {
+		if !ToolNameSafe(ok) {
+			t.Errorf("%q must be safe", ok)
+		}
+	}
+	for _, bad := range []string{"", "Op.x", "op.x y", "op.x/y", "op.é", "op.x,y", strings.Repeat("a", MaxNameChars+1)} {
+		if ToolNameSafe(bad) {
+			t.Errorf("%q must not be safe", bad)
+		}
+	}
+}

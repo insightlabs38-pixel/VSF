@@ -681,3 +681,20 @@ func TestNamespacesAreAnsweredFromTheIndexAndScopeTheListing(t *testing.T) {
 		t.Fatalf("a bad cursor is an invocation-level error: %s", bad.Raw)
 	}
 }
+
+func TestAServerBoundToLoopbackRefusesAForeignHostHeader(t *testing.T) {
+	r := newRig(t, manyDocs(t, 1))
+	h := mcp.New(mcp.Config{Backend: r.be, Auth: st.Tokens{}, AllowedHosts: []string{"127.0.0.1:8765"}})
+	for host, want := range map[string]int{"127.0.0.1:8765": http.StatusOK, "evil.example:8765": http.StatusForbidden, "127.0.0.1:1": http.StatusForbidden} {
+		body := `{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"` + mcp.Version + `","io.modelcontextprotocol/clientCapabilities":{}}}}`
+		req := httptest.NewRequest("POST", "http://"+host+"/mcp", strings.NewReader(body))
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("MCP-Protocol-Version", mcp.Version)
+		req.Header.Set("Mcp-Method", "server/discover")
+		rec := httptest.NewRecorder()
+		h.ServeHTTP(rec, req)
+		if rec.Code != want {
+			t.Errorf("host %s: %d, want %d", host, rec.Code, want)
+		}
+	}
+}
