@@ -245,6 +245,7 @@ func (s *Service) sessionFor(p Principal, id string) *Error {
 	return nil
 }
 
+// resolve finds the served spec; it returns the spec with the error only when the caller may know it exists.
 func (s *Service) resolve(p Principal, who execution.Caller, r Route, pinVersion, digest string) (*Spec, *Error) {
 	version := r.Version
 	if version == "" {
@@ -260,7 +261,7 @@ func (s *Service) resolve(p Principal, who execution.Caller, r Route, pinVersion
 		return nil, newError(CodeOperationNotFound, "")
 	}
 	if digest != "" && digest != spec.ContractDigest {
-		return nil, errWith(CodeContractPinMismatch, "", map[string]any{"contract_version": spec.ContractVersion})
+		return spec, errWith(CodeContractPinMismatch, "", map[string]any{"contract_version": spec.ContractVersion})
 	}
 	return spec, nil
 }
@@ -283,9 +284,12 @@ func (s *Service) Invoke(ctx context.Context, p Principal, raw []byte, route Rou
 			head.Version, head.Digest = strOf(m["contract_version"]), strOf(m["contract_digest"])
 		}
 	}
+	if route.Version == "" {
+		route.Version = head.Version
+	}
 	spec, err := s.resolve(p, who, route, head.Version, head.Digest)
 	if err != nil {
-		return RefusedFor(route, nil, err)
+		return RefusedFor(route, spec, err)
 	}
 	inv, err := DecodeInvocation(spec, raw)
 	if err != nil {

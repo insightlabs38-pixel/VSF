@@ -247,6 +247,8 @@ type Opts struct {
 	Apply    time.Duration
 	NoDedup  bool
 	Receipts bool
+	// WrapExecutor lets a test hold or observe the source calls of the one executor.
+	WrapExecutor func(execution.Executor) execution.Executor
 }
 
 // New starts the worker and the source, and serves the fixture contract through the service.
@@ -297,9 +299,13 @@ func New(t *testing.T, o Opts) *Stack {
 	if o.Receipts {
 		cfg.ReceiptPath, cfg.Fenced = "/api/receipts/%s", true
 	}
+	var ex execution.Executor = execution.NewAPIExecutor(cfg)
+	if o.WrapExecutor != nil {
+		ex = o.WrapExecutor(ex)
+	}
 	s.Cfg = execution.Config{
 		Journal: j, Authorizer: w, Callers: s.Dir, Sessions: SessionView{s.Dir}, Revocations: s.Rev,
-		Executors: map[string]execution.Executor{"provider_api_authorized": execution.NewAPIExecutor(cfg)},
+		Executors: map[string]execution.Executor{"provider_api_authorized": ex},
 		Confirmer: execution.NewConfirmer([]byte("test-secret")), Clock: s.Clock, ApplyTimeout: apply,
 		Retry: execution.RetryPolicy{MaxAttempts: 3, Base: 10 * time.Millisecond, Max: 50 * time.Millisecond},
 	}

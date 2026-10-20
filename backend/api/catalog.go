@@ -324,6 +324,11 @@ func (c *Catalog) Resolve(name, version string) (*Spec, error) {
 		if version == "" {
 			return nil, newError(CodeOperationNotFound, "")
 		}
+		if strings.HasPrefix(why, "lifecycle_") {
+			u := c.unsupported(name, version)
+			u.Reason = why
+			return nil, u
+		}
 		return nil, errWith(CodeOperationUnverified, why, nil)
 	}
 	return s, nil

@@ -320,7 +320,7 @@ func (e Env) run(ctx context.Context, pr *printer, args []string) int {
 	}
 	spec, ferr := e.Remote.Describe(ctx, ps.pos[0], ps.one["version"])
 	if ferr != nil {
-		return pr.fail(ferr)
+		return pr.result(api.RefusedFor(api.Route{Operation: ps.pos[0], Version: ps.one["version"]}, nil, ferr))
 	}
 	body, err := e.invocationBody(spec, ps)
 	if err != nil {

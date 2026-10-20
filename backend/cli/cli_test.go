@@ -262,7 +262,7 @@ func TestExitStatusFollowsTheTaxonomyAndStdoutStaysParseable(t *testing.T) {
 func TestDescribeFailureIsReportedWithItsTypedError(t *testing.T) {
 	f := &fakeRemote{descErr: &api.Error{Code: api.CodeContractVersionUnsupported, Message: "m", Details: map[string]any{"supported": []any{"1.3.0"}}}}
 	o := run(t, f, "", goodArgs("--version", "0.1.0")...)
-	if o.code != api.ExitRefused || o.doc(t)["error"].(map[string]any)["code"] != "contract_version_unsupported" {
+	if o.code != api.ExitRefused || o.doc(t)["error"].(map[string]any)["code"] != "contract_version_unsupported" || o.doc(t)["category"] != "refused" {
 		t.Fatalf("%d %s", o.code, o.stdout)
 	}
 	if len(f.bodies) != 0 {

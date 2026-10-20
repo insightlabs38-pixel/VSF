@@ -260,7 +260,11 @@ func TestOnlyWhatMayBeEmittedIsServed(t *testing.T) {
 		if _, err := c.Resolve(name, ""); err == nil {
 			t.Fatalf("%s resolved", n)
 		}
-		if _, err := c.Resolve(name, "1.3.0"); AsError(err).Code != CodeOperationUnverified {
+		want := CodeOperationUnverified
+		if n != "bad_effect" {
+			want = CodeContractVersionUnsupported
+		}
+		if _, err := c.Resolve(name, "1.3.0"); AsError(err).Code != want {
 			t.Fatalf("%s: %v", n, err)
 		}
 	}
