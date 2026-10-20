@@ -24,7 +24,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B15 | G15 | 0/5 | TODO | - |
 | B16 | G16 | 0/7 | TODO | - |
 | B17 | G17 | 0/5 | TODO | - |
-| B18 | G18 | 0/5 | TODO | - |
+| B18 | G18 | 0/7 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
 | B20 | G20 | 0/4 | TODO | - |
 | B21 | G21 | 0/3 | TODO | - |
@@ -238,6 +238,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B18-T03` Evaluate warm plan specialization and lazy module loading
 - [ ] `VSF-B18-T04` Test persistent memory growth, cache eviction and GC churn
 - [ ] `VSF-B18-T05` Optimize source-app browsing without changing semantics
+- [ ] `VSF-B18-T06` Pack small artifacts to cut block and commit amplification
+- [ ] `VSF-B18-T07` Qualify ZEROS3 against the measured filesystem and S3 baselines
 
 ### B19 · Launch provider-agnostic billing and entitlements
 

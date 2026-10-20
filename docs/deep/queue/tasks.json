@@ -1,7 +1,7 @@
 {
   "schema": "vsf-task-queue-v1",
   "source": "original B00-B24 execution steps, expanded with task-specific acceptance",
-  "task_count": 175,
+  "task_count": 177,
   "batches": [
     {
       "id": "B00",
@@ -3314,7 +3314,7 @@
       "category": "conditional outcome batch",
       "title": "Measure filesystem/SQLite/commodity S3 versus ZEROS3 under workload suite",
       "intent": "Measure filesystem/SQLite/commodity S3 versus ZEROS3 under workload suite.",
-      "acceptance": "Comparable fixture benchmark covers tiny objects, similar versions, recovery and GC across four backends; record actual numbers.",
+      "acceptance": "Comparable fixture benchmark covers tiny objects, similar versions, recovery and GC across filesystem, SQLite and commodity S3; ZEROS3 is recorded as not measured until an endpoint exists (VSF-B18-T07); record actual numbers.",
       "dependencies": ["VSF-B13-T02"],
       "planned_paths": "backend/storage/; compiler/artifacts/; tests/storage/",
       "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
@@ -4149,6 +4149,65 @@
         "No mandatory LLM calls during normal compilation/execution",
         "Preserve contract versions and user isolation when changed"
       ],
+      "gate": "G18",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "large DOM",
+        "mutation storms",
+        "leaking listeners",
+        "cold/warm skew",
+        "parallel-source rate limits"
+      ]
+    },
+    {
+      "id": "VSF-B18-T06",
+      "batch": "B18",
+      "sequence": 6,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Pack small artifacts to cut block and commit amplification",
+      "intent": "Pack small artifacts to cut block and commit amplification.",
+      "acceptance": "Small objects (under 4 KiB) are stored with at most 1.5x bytes at rest and at most 2x device writes per logical byte without raising p99 read latency above the filesystem baseline, and a crash loses no acknowledged object.",
+      "dependencies": ["VSF-B18-T05"],
+      "planned_paths": "compiler/; backend/execution/; frontend/renderer/; benchmarks/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B13-T03 measured 3.9x bytes at rest on the filesystem and 33x device writes on SQLite for 100 to 2000 byte objects; whole-object storage also keeps similar versions at 1.00x where chunking would hold 37%.",
+      "gate": "G18",
+      "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
+      "risk_tests": [
+        "large DOM",
+        "mutation storms",
+        "leaking listeners",
+        "cold/warm skew",
+        "parallel-source rate limits"
+      ]
+    },
+    {
+      "id": "VSF-B18-T07",
+      "batch": "B18",
+      "sequence": 7,
+      "status": "TODO",
+      "category": "conditional outcome batch",
+      "title": "Qualify ZEROS3 against the measured filesystem and S3 baselines",
+      "intent": "Qualify ZEROS3 against the measured filesystem and S3 baselines.",
+      "acceptance": "ZEROS3 runs the B13 workloads (tiny objects, similar versions, recovery, GC) on the same hardware; it is selected for any role only if it beats the recorded filesystem or S3 numbers on tiny-object p99 and bytes at rest and survives kill -9 with no acknowledged loss.",
+      "dependencies": ["VSF-B18-T06"],
+      "planned_paths": "compiler/; backend/execution/; frontend/renderer/; benchmarks/",
+      "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "rationale": "B13-T03 measured 3.9x bytes at rest on the filesystem and 33x device writes on SQLite for 100 to 2000 byte objects; whole-object storage also keeps similar versions at 1.00x where chunking would hold 37%.",
+      "rationale": "B13 could not measure ZEROS3: no endpoint, credentials or client exist in the repository. blob.Backend and the S3 dialect client let it be tested without code changes if it speaks S3.",
       "gate": "G18",
       "evidence": "test/fixture IDs, command+exit, concise measured comparison where relevant, code/contract changes, unresolved limits",
       "risk_tests": [

@@ -1,0 +1,24 @@
+environment: {GoVersion:go1.24.7 CPUs:4 CPUModel:Intel(R) Xeon(R) Processor @ 2.80GHz Kernel:6.18.44-fc-v139 FSType:0xef53 MinIO:github.com/minio/minio v0.0.0-20260212201848-7aac2a2c5b7c h1:/qdoYujxF5MBLDMVLeiYJ/7fBa1HikX39Dvzb9Ji8pA=}
+
+                                         filesystem           sqlite         s3-minio
+write tiny ops/s                               2773             1532             1082
+write tiny p50/p95/p99 ms            2.63/4.79/7.41 3.26/16.12/33.48 6.77/12.56/17.45
+read tiny ops/s                               92111            13057             3665
+read tiny p50/p95/p99 ms             0.03/0.09/0.18   0.23/2.33/4.66   1.86/4.64/7.56
+write similar ops/s                             440               66               83
+write similar p50/p95/p99 ms        3.79/8.46/10.88 20.10/73.59/85.47 23.31/34.77/42.38
+read large ops/s                               5058              154              680
+read large p50/p95/p99 ms            0.26/0.39/0.68 13.47/21.77/29.92   2.57/4.55/8.70
+mixed ops/s                                    8959             3563             2028
+mixed p50/p95/p99 ms                 0.05/3.58/5.14 0.16/10.94/31.48 2.82/10.06/14.48
+tiny: bytes at rest / logical                 3.91x            2.88x            3.91x
+tiny: device writes / logical                 4.33x           33.26x            8.70x
+versions: bytes at rest / logical             1.00x            1.00x            1.02x
+peak RSS above start MiB                        329              327              309
+cold start ms                                     0                8              516
+delete half: s                                 28.5             48.1            358.5
+maintenance: s                                  0.0             14.7              0.0
+bytes after delete -> maintain MiB          646>646          720>421          841>841
+crash: acked lost/corrupt/torn        0/0/0 of 8031    0/0/0 of 5807    0/0/0 of 4172
+crash: recovery ms (max)                        123              149             3601
+errors                                            0                0                0
