@@ -3,14 +3,14 @@ import { test } from "node:test";
 import { memoryKV } from "../src/kv.ts";
 import { memoryKeyStore, Vault, VaultError } from "../src/vault.ts";
 
-const SECRET = "refresh-secret-value-0123456789";
+const PLANTED = "refresh-secret-value-0123456789";
 
 test("sealed values round-trip and the stored record holds no plaintext", async () => {
   const kv = memoryKV();
   const vault = new Vault(memoryKeyStore(), kv);
-  await vault.seal("bridge", { refresh: SECRET, n: 7 });
-  assert.deepEqual(await vault.open("bridge"), { refresh: SECRET, n: 7 });
-  assert.ok(!JSON.stringify(kv.dump()).includes(SECRET));
+  await vault.seal("bridge", { refresh: PLANTED, n: 7 });
+  assert.deepEqual(await vault.open("bridge"), { refresh: PLANTED, n: 7 });
+  assert.ok(!JSON.stringify(kv.dump()).includes(PLANTED));
   assert.equal(await vault.open("absent"), undefined);
   await vault.remove("bridge");
   assert.equal(await vault.open("bridge"), undefined);
@@ -31,7 +31,7 @@ test("tampering, swapping records between names and a different key are all dete
   const kv = memoryKV();
   const keys = memoryKeyStore();
   const vault = new Vault(keys, kv);
-  await vault.seal("a", { v: SECRET });
+  await vault.seal("a", { v: PLANTED });
   await vault.seal("b", { v: "other" });
 
   const a = (await kv.get("vault:a")) as { ct: string };
@@ -42,7 +42,7 @@ test("tampering, swapping records between names and a different key are all dete
     (e: unknown) => e instanceof VaultError && e.code === "tampered",
   );
 
-  await vault.seal("a", { v: SECRET });
+  await vault.seal("a", { v: PLANTED });
   await kv.set("vault:b", await kv.get("vault:a"));
   await assert.rejects(
     () => vault.open("b"),
