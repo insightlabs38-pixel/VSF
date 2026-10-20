@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -33,7 +35,12 @@ type idp struct {
 	redirect      bool
 	tokenSeq      int
 	rejectRefresh bool
-	now           func() time.Time
+	// gate, when set, runs inside a refresh request before it answers.
+	gate         func()
+	strict       bool
+	cur          int
+	refreshCalls int
+	now          func() time.Time
 }
 
 func newIdP(t *testing.T, cl *clock) *idp {
@@ -110,6 +117,27 @@ func (i *idp) token(w http.ResponseWriter, r *http.Request) {
 		reply["refresh_token"] = "rt-1"
 		reply["scope"] = "openid mail.read"
 	case "refresh_token":
+		if i.gate != nil {
+			i.gate()
+		}
+		i.mu.Lock()
+		i.refreshCalls++
+		if i.strict {
+			if i.cur == 0 {
+				i.cur = 1
+			}
+			if r.Form.Get("refresh_token") != "rt-"+strconv.Itoa(i.cur) {
+				i.mu.Unlock()
+				w.WriteHeader(http.StatusBadRequest)
+				_, _ = w.Write([]byte(`{"error":"invalid_grant"}`))
+				return
+			}
+			i.cur++
+			reply["refresh_token"] = "rt-" + strconv.Itoa(i.cur)
+			i.mu.Unlock()
+			break
+		}
+		i.mu.Unlock()
 		if i.rejectRefresh || r.Form.Get("refresh_token") != "rt-1" && r.Form.Get("refresh_token") != "rt-2" {
 			w.WriteHeader(http.StatusBadRequest)
 			_, _ = w.Write([]byte(`{"error":"invalid_grant"}`))
@@ -130,14 +158,14 @@ type rig struct {
 	vault *MemVault
 	o     *OAuth
 	idp   *idp
-	buf   *strings.Builder
+	buf   *bytes.Buffer
 }
 
 func newRig(t *testing.T) *rig {
-	b, cl, _ := newBroker(t)
+	b, cl, buf := newBroker(t)
 	v := NewMemVault()
 	b.Vault = v
-	return &rig{b: b, cl: cl, vault: v, o: NewOAuth(b), idp: newIdP(t, cl)}
+	return &rig{b: b, cl: cl, vault: v, o: NewOAuth(b), idp: newIdP(t, cl), buf: buf}
 }
 
 func (r *rig) run(t *testing.T, owner string) (Grant, error) {

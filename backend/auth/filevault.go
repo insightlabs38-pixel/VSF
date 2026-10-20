@@ -1,8 +1,10 @@
 package auth
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -65,6 +67,7 @@ func NewFileVault(dir string, keys *secret.Keyring) (*FileVault, error) {
 	}
 	v := &FileVault{Dir: dir, Keys: keys, fs: osOps()}
 	_, _ = v.Recover()
+	keys.GuardRetire(v.sealedUnder)
 	return v, nil
 }
 
@@ -197,4 +200,28 @@ func (v *FileVault) Delete(account, name string) error {
 		return fmt.Errorf("vault: delete: %w", scrub(err))
 	}
 	return v.fs.syncDir(filepath.Dir(p))
+}
+
+// sealedUnder counts the vault files sealed under a key version, so a key still protecting credentials is not retired.
+func (v *FileVault) sealedUnder(_ context.Context, version byte) (int, error) {
+	n := 0
+	err := filepath.WalkDir(v.Dir, func(p string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() || strings.HasPrefix(d.Name(), ".put-") {
+			return err
+		}
+		f, err := os.Open(p)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+		var b [1]byte
+		if _, err := io.ReadFull(f, b[:]); err != nil {
+			return err
+		}
+		if b[0] == version {
+			n++
+		}
+		return nil
+	})
+	return n, err
 }

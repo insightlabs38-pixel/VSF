@@ -182,6 +182,13 @@ func openAuditFile(path, prev string, seq uint64) (*Audit, Recovery, error) {
 		return nil, Recovery{}, err
 	}
 	good, n, lastHash, lastSeq := 0, 0, prev, seq
+	if end := bytes.IndexByte(data, '\n'); end > 0 && prev == genesis {
+		// a rotated segment starts mid-chain; its first line must still be internally sound
+		var first auditLine
+		if json.Unmarshal(data[:end], &first) == nil && first.Seq > 1 && first.Hash == hashLine(first) {
+			lastHash, lastSeq = first.Prev, first.Seq-1
+		}
+	}
 	for good < len(data) {
 		end := bytes.IndexByte(data[good:], '\n')
 		if end < 0 {

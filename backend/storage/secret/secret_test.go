@@ -452,10 +452,10 @@ func TestRewrapMovesPrivateArtifactsToTheNewestKeyWithoutRenamingThem(t *testing
 	if res, err := r.store.Rewrap(ctx, "acme"); err != nil || res.Rewrapped != 0 {
 		t.Fatalf("a second pass finds nothing to do: %+v %v", res, err)
 	}
-	if err := keys.Retire(2); err == nil {
+	if err := keys.Retire(ctx, 2); err == nil {
 		t.Fatal("the active key cannot be retired")
 	}
-	if err := keys.Retire(1); err != nil {
+	if err := keys.Retire(ctx, 1); err != nil {
 		t.Fatal(err)
 	}
 	for _, id := range before {
@@ -488,7 +488,7 @@ func TestRetiringAKeyTooEarlyMakesItsObjectsUnreadableWhichIsWhyRewrapComesFirst
 	r := newRig(t, keys, pub, priv)
 	_, d := r.version(t, "acme", "needs the old key", meta.Private)
 	_, _ = keys.Rotate()
-	_ = keys.Retire(1)
+	_ = keys.RetireUnchecked(1)
 	if _, err := r.store.Artifact(ctx, "acme", d); !errors.Is(err, artifact.ErrCorrupt) {
 		t.Fatalf("%v", err)
 	}
@@ -661,4 +661,86 @@ func mustGet(t *testing.T, r *rig, tn meta.Tenant, id string) []byte {
 		t.Fatal(err)
 	}
 	return b
+}
+
+func TestAKeyStillProtectingDataCannotBeRetiredAndOneNobodyVouchesForCannotEither(t *testing.T) {
+	pub, priv := signer(t)
+	keys := Generate()
+	if _, _ = keys.Rotate(); keys.Retire(ctx, 1) == nil {
+		t.Fatal("with no holder of sealed data registered, nothing vouches that the key is unused")
+	}
+	keys = Generate()
+	r := newRig(t, keys, pub, priv)
+	_, d := r.version(t, "acme", "needs key one", meta.Private)
+	_, _ = keys.Rotate()
+	if err := keys.Retire(ctx, 1); !errors.Is(err, ErrInUse) {
+		t.Fatalf("data sealed under the key blocks its retirement: %v", err)
+	}
+	if got, err := r.store.Artifact(ctx, "acme", d); err != nil || string(got) != "needs key one" {
+		t.Fatalf("and it stays readable: %q %v", got, err)
+	}
+	if _, err := keys.RotateTenant("acme"); err != nil {
+		t.Fatal(err)
+	}
+	_, _ = keys.Rotate()
+	_, _ = keys.Rotate()
+	if err := keys.Retire(ctx, 3); !errors.Is(err, ErrInUse) {
+		t.Fatalf("a version a tenant still writes under is in use even with no object under it: %v", err)
+	}
+	if _, err := r.store.Rewrap(ctx, "acme"); err != nil {
+		t.Fatal(err)
+	}
+	if err := keys.Retire(ctx, 1); err != nil {
+		t.Fatalf("after rewrap nothing depends on it: %v", err)
+	}
+	if got, err := r.store.Artifact(ctx, "acme", d); err != nil || string(got) != "needs key one" {
+		t.Fatalf("%q %v", got, err)
+	}
+	if _, ok := keys.tenants["acme"].Data[1]; ok {
+		t.Fatal("a tenant that carries its own copy of the version loses it too")
+	}
+	r.blobs.CrashAt = nil
+	failing := Generate()
+	failing.GuardRetire(func(context.Context, byte) (int, error) { return 0, errors.New("backend down") })
+	_, _ = failing.Rotate()
+	if err := failing.Retire(ctx, 1); !errors.Is(err, ErrInUse) {
+		t.Fatalf("a holder that cannot be scanned blocks retirement: %v", err)
+	}
+}
+
+func TestAdoptingNeverDropsAnImportedVersionAndIsAllOrNothing(t *testing.T) {
+	pass := "correct horse battery staple"
+	src := Generate()
+	_, _ = src.RotateTenant("acme")
+	_, _ = src.RotateTenant("acme")
+	w, _ := src.ExportTenant("acme", pass)
+	tn, tk, _ := ImportTenant(w, pass)
+	dst := &Keyring{idKey: src.idKey, active: src.active, tenants: map[meta.Tenant]*TenantKeys{}, data: map[byte][]byte{}}
+	for v, k := range src.data {
+		dst.data[v] = k
+	}
+	if err := dst.Adopt(tn, tk); err != nil {
+		t.Fatal(err)
+	}
+	if dst.ActiveFor("acme") != 3 || len(dst.tenants["acme"].Data) != len(tk.Data) {
+		t.Fatalf("a tenant rotated on its own keeps every version when it comes back to an installation sharing its roots: active %d, %d of %d versions", dst.ActiveFor("acme"), len(dst.tenants["acme"].Data), len(tk.Data))
+	}
+	conflict := tk.clone()
+	conflict.Data[1] = bytes.Repeat([]byte{7}, 32)
+	conflict.Data[9] = bytes.Repeat([]byte{8}, 32)
+	if err := dst.Adopt(tn, *conflict); !errors.Is(err, ErrKeyFile) {
+		t.Fatalf("a different key for a version already held is refused: %v", err)
+	}
+	if dst.tenants["acme"].Data[9] != nil {
+		t.Fatal("and nothing from the refused import was merged")
+	}
+	fresh := Generate()
+	if err := fresh.Adopt(tn, tk); err != nil {
+		t.Fatal(err)
+	}
+	other := tk.clone()
+	other.ID = bytes.Repeat([]byte{1}, 32)
+	if err := fresh.Adopt(tn, *other); !errors.Is(err, ErrKeyFile) {
+		t.Fatalf("keys of a different identity cannot be merged into a held tenant: %v", err)
+	}
 }

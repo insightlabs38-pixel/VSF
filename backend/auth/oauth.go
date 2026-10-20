@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net"
@@ -303,6 +304,7 @@ func (o *OAuth) Refresh(owner, grantID string, p *Provider) (Grant, error) {
 	b := o.Broker
 	b.mu.Lock()
 	if f, running := b.flights[g.ID]; running {
+		b.joins.Add(1)
 		b.mu.Unlock()
 		<-f.done
 		return f.g, f.err
@@ -320,7 +322,7 @@ func (o *OAuth) Refresh(owner, grantID string, p *Provider) (Grant, error) {
 
 func (o *OAuth) refreshOnce(owner string, g Grant, p *Provider) (Grant, error) {
 	b := o.Broker
-	an, rn := secretNames(g.ID)
+	_, rn := secretNames(g.ID)
 	rt, err := b.Vault.Get(g.Account, rn)
 	if err != nil {
 		return Grant{}, ErrReauth
@@ -358,25 +360,39 @@ func (o *OAuth) refreshOnce(owner string, g Grant, p *Provider) (Grant, error) {
 			return Grant{}, ErrDenied
 		}
 	}
+	next, lost, err := o.commitRefresh(owner, g, tr, scopes, life, p)
+	if lost {
+		_, _ = b.endGrant(g.ID, owner, ReasonRevoked)
+		return Grant{}, fmt.Errorf("%w: rotated credential could not be stored", ErrReauth)
+	}
+	if err != nil {
+		return Grant{}, err
+	}
+	b.note(EventRefreshed, next, owner, ReasonOK)
+	return next, nil
+}
+
+// commitRefresh stores a refreshed token pair and updates the grant while holding the grant's secret lock, which revocation's cleanup also takes. lost reports a rotated refresh token that could not be stored, which leaves the grant without a usable credential.
+func (o *OAuth) commitRefresh(owner string, g Grant, tr tokenReply, scopes []string, life time.Duration, p *Provider) (next Grant, lost bool, err error) {
+	b := o.Broker
+	an, rn := secretNames(g.ID)
 	mu := b.stripe(g.ID)
 	mu.Lock()
 	defer mu.Unlock()
 	cur, ok := b.Store.Get(g.ID)
 	if !ok || cur.State == StateRevoked || cur.Epoch != g.Epoch {
-		return Grant{}, ErrDenied
+		return Grant{}, false, ErrDenied
 	}
-	rotated := tr.RefreshToken != ""
-	if rotated {
+	if tr.RefreshToken != "" {
 		if err := b.Vault.Put(g.Account, rn, []byte(tr.RefreshToken)); err != nil {
-			_, _ = b.endGrant(g.ID, owner, ReasonRevoked)
-			return Grant{}, fmt.Errorf("%w: rotated credential could not be stored", ErrReauth)
+			return Grant{}, true, err
 		}
 	}
 	if err := b.Vault.Put(g.Account, an, []byte(tr.AccessToken)); err != nil {
-		return Grant{}, err
+		return Grant{}, false, err
 	}
 	exp := b.Now().Add(life)
-	next, _, err := b.update(g.ID, func(x *Grant) error {
+	next, _, err = b.update(g.ID, func(x *Grant) error {
 		if x.State == StateRevoked || x.Epoch != g.Epoch {
 			return ErrDenied
 		}
@@ -384,11 +400,9 @@ func (o *OAuth) refreshOnce(owner string, g Grant, p *Provider) (Grant, error) {
 		x.SecretGen++
 		return nil
 	})
-	if err != nil {
+	if err != nil && errors.Is(err, ErrDenied) {
 		_ = b.Vault.Delete(g.Account, an)
 		_ = b.Vault.Delete(g.Account, rn)
-		return Grant{}, err
 	}
-	b.note(EventRefreshed, next, owner, ReasonOK)
-	return next, nil
+	return next, false, err
 }

@@ -106,3 +106,74 @@ func TestTheRuntimeRefusesWorkWhileASignInIsPausedEndedOrSomeoneElses(t *testing
 		t.Fatalf("the audit chain holds: %d %v", n, err)
 	}
 }
+
+func TestAConfirmationDoesNotSurviveTheSignInItWasGivenUnder(t *testing.T) {
+	probe := st.GoodSession("probe", st.Ada)
+	now := time.Now()
+	broker := auth.NewBroker(nil, nil, func() time.Time { return now })
+	src := auth.Source{AppID: st.TestApp, Origin: "https://app.example.com"}
+	browser := auth.NewBrowser(broker, oneRuntime{auth.RuntimeSession{ID: "bs_ada", Client: "cl_ada", Owner: st.Ada, AppID: src.AppID, Origin: src.Origin,
+		Principal: probe.PrincipalRef, Runtime: probe.RuntimeID}})
+	deleg := auth.NewDelegations(nil, nil)
+	s := st.New(t, st.Opts{Delegations: deleg, WrapSessions: func(in execution.Sessions) execution.Sessions { return auth.Sessions{Broker: broker, Inner: in} }})
+	x := newSurfaces(t, s)
+	scopes := []string{"records.read", "records.write"}
+	seq := uint64(0)
+	ev := func(mut func(*auth.Evidence)) auth.Evidence {
+		seq++
+		e := auth.Evidence{Client: "cl_ada", SessionID: "bs_ada", Source: src, PrincipalRef: probe.PrincipalRef, Authenticated: true, Seq: seq, ObservedAt: now, Scopes: scopes}
+		if mut != nil {
+			mut(&e)
+		}
+		return e
+	}
+	_ = browser.Expect(st.Ada, "acme", src, scopes)
+	g, err := browser.Accept(ev(nil))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := deleg.Allow(st.Bob, st.Ada, time.Now().Add(time.Hour)); err != nil {
+		t.Fatal(err)
+	}
+	n := 0
+	request := func(conf any) []byte {
+		n++
+		return marshal(bodyMap(func(m map[string]any) {
+			m["request_id"] = "gen-" + string(rune('a'+n))
+			m["session_id"] = st.SessAda
+			m["record"] = "o2"
+			m["params"].(map[string]any)["record_id"] = "o2"
+			m["seen"] = map[string]any{"version": "v1", "observed_at": 1}
+			if conf != nil {
+				m["confirmation"] = conf
+			}
+		}))
+	}
+	bob, err := api.NewClient(x.rest.URL, s.Token(st.Bob, api.SurfaceUI), api.SurfaceUI, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	forAda := api.Route{Operation: s.Spec.Name, Version: s.Spec.ContractVersion, Delegate: st.Ada}
+	conf, e := bob.Confirm(t.Context(), forAda, request(nil))
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, err := broker.Pause(g.ID, st.Ada, auth.ChallengeMFA); err != nil {
+		t.Fatal(err)
+	}
+	now = now.Add(time.Second)
+	if _, err := browser.Accept(ev(nil)); err != nil {
+		t.Fatal(err)
+	}
+	before := s.App.Commits()
+	if _, r := x.restResult(s.Token(st.Ada, api.SurfaceREST), request(conf)); r.Error == nil || r.Error.Code != api.CodeConfirmationRequired || s.App.Commits() != before {
+		t.Fatalf("a confirmation given before reauthentication is not honoured after it: %+v", r)
+	}
+	fresh, e := bob.Confirm(t.Context(), forAda, request(nil))
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, r := x.restResult(s.Token(st.Ada, api.SurfaceREST), request(fresh)); r.Category != api.CategorySucceeded {
+		t.Fatalf("one given under the current sign-in is: %+v", r)
+	}
+}

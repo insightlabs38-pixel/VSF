@@ -2,6 +2,7 @@
 package secret
 
 import (
+	"context"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/hkdf"
@@ -15,6 +16,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strconv"
 	"sync"
@@ -49,6 +51,20 @@ type Keyring struct {
 	active byte
 	// tenants holds material that does not follow from the roots: a tenant adopted from another installation, or rotated on its own.
 	tenants map[meta.Tenant]*TenantKeys
+	guards  []RetireGuard
+}
+
+// ErrInUse means a key version cannot be retired because sealed data still depends on it, or because nothing vouches that none does.
+var ErrInUse = errors.New("sealed data still depends on this key version")
+
+// RetireGuard counts the sealed objects a holder still has under a key version; an error makes retirement fail closed.
+type RetireGuard func(ctx context.Context, version byte) (int, error)
+
+// GuardRetire registers a holder of sealed data (an artifact store, a vault) whose objects must be gone from a version before it is retired.
+func (k *Keyring) GuardRetire(g RetireGuard) {
+	k.mu.Lock()
+	defer k.mu.Unlock()
+	k.guards = append(k.guards, g)
 }
 
 // TenantKeys is everything needed to open and write one tenant's sealed data, and nothing about any other tenant.
@@ -340,15 +356,48 @@ func (k *Keyring) RotateTenant(t meta.Tenant) (byte, error) {
 	return m.Active, nil
 }
 
-// Retire forgets a data key version once nothing is left sealed under it; the active version cannot be retired.
-func (k *Keyring) Retire(v byte) error {
+// Retire forgets a data key version for every tenant once no registered holder of sealed data has an object under it. It fails closed: with no holder registered, with a holder that cannot be read, or while any tenant still writes under the version. Holders live in this process; a second process sharing the same keyring file must be stopped, or must itself have been scanned, before retiring.
+func (k *Keyring) Retire(ctx context.Context, v byte) error {
+	k.mu.RLock()
+	guards := slices.Clone(k.guards)
+	k.mu.RUnlock()
+	if len(guards) == 0 {
+		return fmt.Errorf("%w: no holder of sealed data is registered", ErrInUse)
+	}
+	for _, g := range guards {
+		n, err := g(ctx, v)
+		if err != nil {
+			return fmt.Errorf("%w: a holder could not be scanned", ErrInUse)
+		}
+		if n > 0 {
+			return ErrInUse
+		}
+	}
+	return k.RetireUnchecked(v)
+}
+
+// RetireUnchecked forgets the version without asking anyone. Whatever is still sealed under it becomes unreadable for good; Retire is the safe form.
+func (k *Keyring) RetireUnchecked(v byte) error {
 	k.mu.Lock()
 	defer k.mu.Unlock()
 	if v == k.active || k.data[v] == nil {
 		return ErrOpen
 	}
+	for _, m := range k.tenants {
+		if m.Active == v {
+			return ErrInUse
+		}
+	}
 	delete(k.data, v)
+	for _, m := range k.tenants {
+		delete(m.Data, v)
+	}
 	return nil
+}
+
+// GuardRetire lets a holder of sealed data register with the sealer's keyring.
+func (s *Sealer) GuardRetire(g func(ctx context.Context, version byte) (int, error)) {
+	s.k.GuardRetire(g)
 }
 
 func mac(key, a, b []byte) []byte {
@@ -584,31 +633,50 @@ func ImportTenant(raw []byte, passphrase string) (meta.Tenant, TenantKeys, error
 	return meta.Tenant(w.Tenant), tk, nil
 }
 
-// Adopt makes this keyring open and write a tenant with imported keys. It refuses to replace keys it already holds for the tenant with different ones.
+// Adopt makes this keyring open and write a tenant with imported keys. It refuses to replace any key it already holds with a different one, and it never drops an imported version: either every version is merged or none is.
 func (k *Keyring) Adopt(t meta.Tenant, keys TenantKeys) error {
 	if !meta.ValidTenant(t) || !keys.valid() {
 		return ErrKeyFile
 	}
 	k.mu.Lock()
 	defer k.mu.Unlock()
-	if have, ok := k.tenants[t]; ok {
-		if !hmac.Equal(have.ID, keys.ID) {
+	have, held := k.tenants[t]
+	rootID := kdf(k.idKey, tenantIDInfo+string(t))
+	if held && !hmac.Equal(have.ID, keys.ID) {
+		return ErrKeyFile
+	}
+	if !held && hmac.Equal(rootID, keys.ID) {
+		have = nil
+	} else if !held {
+		k.tenants[t] = keys.clone()
+		return nil
+	}
+	known := func(v byte) []byte {
+		if have != nil {
+			if cur, ok := have.Data[v]; ok {
+				return cur
+			}
+		}
+		if root, ok := k.data[v]; ok && !held {
+			return kdf(root, tenantDataInfo+string(t))
+		}
+		return nil
+	}
+	for v, key := range keys.Data {
+		if cur := known(v); cur != nil && !hmac.Equal(cur, key) {
 			return ErrKeyFile
 		}
-		for v, key := range keys.Data {
-			if cur, ok := have.Data[v]; ok && !hmac.Equal(cur, key) {
-				return ErrKeyFile
-			}
+	}
+	if have == nil {
+		have = k.materialize(t)
+	}
+	for v, key := range keys.Data {
+		if have.Data[v] == nil {
 			have.Data[v] = append([]byte(nil), key...)
 		}
-		if keys.Active > have.Active {
-			have.Active = keys.Active
-		}
-		return nil
 	}
-	if root := kdf(k.idKey, tenantIDInfo+string(t)); hmac.Equal(root, keys.ID) {
-		return nil
+	if keys.Active > have.Active {
+		have.Active = keys.Active
 	}
-	k.tenants[t] = keys.clone()
 	return nil
 }

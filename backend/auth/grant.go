@@ -219,6 +219,7 @@ type Broker struct {
 	unaudited  []AuditRecord
 	stripes    [64]sync.Mutex
 	dropped    atomic.Uint64
+	joins      atomic.Uint64
 	// requireAudit makes the mandatory security records a precondition or a reported failure instead of a best-effort note.
 	requireAudit bool
 }

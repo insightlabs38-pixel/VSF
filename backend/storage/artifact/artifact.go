@@ -144,7 +144,48 @@ func New(cfg Config) (*Store, error) {
 	if cfg.MaxArtifact <= 0 || cfg.MaxArtifact > room {
 		cfg.MaxArtifact = room
 	}
-	return &Store{cfg: cfg}, nil
+	st := &Store{cfg: cfg}
+	if g, ok := cfg.Sealer.(interface {
+		GuardRetire(func(context.Context, byte) (int, error))
+	}); ok {
+		g.GuardRetire(st.sealedUnder)
+	}
+	return st, nil
+}
+
+// sealedUnder counts the private objects of every tenant still sealed under a key version; an unreadable or missing object fails the count, since it cannot be shown not to depend on the key.
+func (s *Store) sealedUnder(ctx context.Context, version byte) (int, error) {
+	tenants, err := s.cfg.Meta.Tenants(ctx)
+	if err != nil {
+		return 0, err
+	}
+	n := 0
+	for _, t := range tenants {
+		after := ""
+		for {
+			recs, err := s.cfg.Meta.Artifacts(ctx, t, after, 200)
+			if err != nil {
+				return 0, err
+			}
+			for _, rec := range recs {
+				after = rec.Digest
+				if rec.Class != meta.Private {
+					continue
+				}
+				stored, err := s.cfg.Blobs.Get(ctx, s.cfg.Layout.Key(t, meta.Private, rec.Digest))
+				if err != nil {
+					return 0, err
+				}
+				if s.cfg.Sealer.Version(stored) == version {
+					n++
+				}
+			}
+			if len(recs) < 200 {
+				break
+			}
+		}
+	}
+	return n, nil
 }
 
 // Sealed reports whether private artifacts are sealed by this store.
