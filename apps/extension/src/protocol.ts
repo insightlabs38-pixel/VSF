@@ -9,6 +9,7 @@ export type DenyReason =
   | "sender_not_allowed"
   | "bad_request"
   | "origin_not_granted"
+  | "permission_not_held"
   | "origin_unobservable"
   | "origin_changed"
   | "inject_failed"
@@ -31,6 +32,22 @@ export function normalizeOrigin(value: unknown): string | null {
   if (!/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*|\[[0-9a-f:.]+\])$/.test(url.hostname))
     return null;
   return url.origin;
+}
+
+/** Browser host permissions carry no port, so the pattern for an origin is scheme and host only. */
+export function originPattern(origin: string): string {
+  const u = new URL(origin);
+  return `${u.protocol}//${u.hostname}/*`;
+}
+
+/** Drops every grant whose browser-level permission was removed, so VSF never outlives the browser's own decision. */
+export function pruneGrants<T>(grants: Record<string, T>, removedPatterns: readonly string[]): Record<string, T> {
+  const gone = new Set(removedPatterns);
+  const kept: Record<string, T> = {};
+  for (const [origin, v] of Object.entries(grants)) {
+    if (!gone.has(originPattern(origin)) && !gone.has("<all_urls>")) kept[origin] = v;
+  }
+  return kept;
 }
 
 export function parseCommand(raw: unknown): Command | null {

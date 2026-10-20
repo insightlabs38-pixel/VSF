@@ -1,4 +1,4 @@
-import type { Reply } from "./protocol.ts";
+import { originPattern, type Reply } from "./protocol.ts";
 
 const send = (message: unknown): Promise<Reply> => chrome.runtime.sendMessage(message);
 const result = document.getElementById("result") as HTMLOutputElement;
@@ -12,7 +12,8 @@ document.getElementById("authorize")?.addEventListener("click", async () => {
   const tab = await activeTab();
   if (!tab?.url) return;
   const origin = new URL(tab.url).origin;
-  const granted = await chrome.permissions.request({ origins: [`${origin}/*`] });
+  if (!navigator.userActivation.isActive) return;
+  const granted = await chrome.permissions.request({ origins: [originPattern(origin)] });
   result.textContent = granted ? JSON.stringify(await send({ type: "grant", origin })) : "permission denied";
 });
 

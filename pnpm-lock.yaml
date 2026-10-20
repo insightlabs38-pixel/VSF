@@ -166,6 +166,10 @@ importers:
       '@vsf/redact':
         specifier: workspace:*
         version: link:../redact
+    devDependencies:
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
   tools/idlgen:
     dependencies:

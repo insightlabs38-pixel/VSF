@@ -284,6 +284,18 @@
         "cmd": ["pnpm", "build:ts"]
       },
       {
+        "name": "package-extension",
+        "cmd": ["pnpm", "--filter", "@vsf/extension", "run", "package"]
+      },
+      {
+        "name": "extension-audit",
+        "cmd": ["node", "tools/checks/src/cli.ts", "ext-audit"]
+      },
+      {
+        "name": "extension-audit-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/checks", "run", "test"]
+      },
+      {
         "name": "browser-tests",
         "cmd": ["pnpm", "--filter", "@vsf/browser-tests", "run", "test"]
       }

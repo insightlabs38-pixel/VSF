@@ -1,5 +1,5 @@
 import { type Fabric, loadFabric } from "@vsf/wasm-host";
-import { isCommandSender, normalizeOrigin, parseCommand, type Reply } from "./protocol.ts";
+import { isCommandSender, normalizeOrigin, originPattern, parseCommand, pruneGrants, type Reply } from "./protocol.ts";
 
 interface Stats {
   captures: number;
@@ -188,6 +188,8 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
     case "status":
       return { ok: true, bootId, grants: Object.keys(await grants()), stats: await stats(), pending: await pending() };
     case "grant": {
+      if (!(await chrome.permissions.contains({ origins: [originPattern(cmd.origin)] })))
+        return deny("permission_not_held");
       const g = await grants();
       g[cmd.origin] = { at: Date.now() };
       await chrome.storage.local.set({ grants: g });
@@ -199,7 +201,7 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
       await chrome.storage.local.set({ grants: g });
       let removed = false;
       try {
-        removed = await chrome.permissions.remove({ origins: [`${cmd.origin}/*`] });
+        removed = await chrome.permissions.remove({ origins: [originPattern(cmd.origin)] });
       } catch {
         removed = false;
       }
@@ -211,6 +213,10 @@ async function handle(raw: unknown, sender: chrome.runtime.MessageSender): Promi
       return observe(cmd.tabId);
   }
 }
+
+chrome.permissions.onRemoved.addListener((removed) => {
+  void grants().then((g) => chrome.storage.local.set({ grants: pruneGrants(g, removed.origins ?? []) }));
+});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   handle(message, sender).then(sendResponse, () => sendResponse({ ok: false, error: "internal" }));

@@ -10,6 +10,7 @@ import { checkIdentity, checkMessage } from "./commitmsg.ts";
 import type { Locked } from "./depreview.ts";
 import { scan } from "./depscan.ts";
 import { digestTree, rollup } from "./digest.ts";
+import { auditPackage } from "./extaudit.ts";
 import { checkWorkflow, parseWorkflow } from "./gate.ts";
 import { type Ignore, scanVulnerabilities } from "./osv.ts";
 import { checkInstalled, checkPins } from "./toolchain.ts";
@@ -56,6 +57,23 @@ switch (cmd) {
         v.map((x) => ({ id: `${x.file.replace(`${root}/`, "")}:${x.line}`, message: x.message })),
       ),
     );
+    break;
+  }
+  case "ext-audit": {
+    const dirs = args.length
+      ? args
+      : [join(root, "artifacts/extension/product"), join(root, "artifacts/extension/test")];
+    const problems: { id: string; message: string }[] = [];
+    const reports = dirs.map((d) => {
+      const variant = d.replace(/\/$/, "").split("/").pop() ?? "";
+      const r = auditPackage(d, variant);
+      for (const f of r.findings) problems.push({ id: `${variant}:${f.file}:${f.rule}`, message: f.message });
+      return r;
+    });
+    const out = join(root, "artifacts/extension");
+    mkdirSync(out, { recursive: true });
+    writeFileSync(join(out, "audit.json"), `${JSON.stringify(reports, null, 1)}\n`);
+    process.exit(report("ext-audit", problems));
     break;
   }
   case "commit-msg": {
