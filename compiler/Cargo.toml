@@ -10,6 +10,7 @@ members = [
   "crates/vsf-registry",
   "crates/vsf-versioning",
   "crates/vsf-recognizer",
+  "crates/vsf-assemble",
   "crates/vsf-fabric",
   "crates/vsf-wasm",
   "crates/vsf-native",
@@ -35,6 +36,7 @@ vsf-ir = { path = "crates/vsf-ir" }
 vsf-registry = { path = "crates/vsf-registry" }
 vsf-versioning = { path = "crates/vsf-versioning" }
 vsf-recognizer = { path = "crates/vsf-recognizer" }
+vsf-assemble = { path = "crates/vsf-assemble" }
 vsf-fabric = { path = "crates/vsf-fabric" }
 
 [workspace.lints.rust]

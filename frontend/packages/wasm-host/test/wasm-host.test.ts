@@ -28,9 +28,9 @@ test("wasm output is byte-identical to native golden for every seed", async () =
 test("injected incompatible ABI is rejected before any call", async () => {
   await assert.rejects(
     () => loadFabric(injected),
-    (e: unknown) => e instanceof WasmAbiError && e.actual === 1000 && e.expected === 3,
+    (e: unknown) => e instanceof WasmAbiError && e.actual === 1000 && e.expected === EXPECTED_ABI_VERSION,
   );
-  await assert.rejects(() => loadFabric(wasm, 4), WasmAbiError);
+  await assert.rejects(() => loadFabric(wasm, EXPECTED_ABI_VERSION + 1), WasmAbiError);
 });
 
 test("module without the ABI export is rejected", async () => {

@@ -4,7 +4,7 @@
 use std::cell::RefCell;
 
 #[cfg(not(feature = "inject-incompatible-abi"))]
-pub const WASM_ABI_VERSION: u32 = 3;
+pub const WASM_ABI_VERSION: u32 = 4;
 #[cfg(feature = "inject-incompatible-abi")]
 pub const WASM_ABI_VERSION: u32 = 1000;
 
@@ -94,6 +94,17 @@ pub unsafe extern "C" fn vsf_ir_validate(ptr: *const u8, len: u32) -> u32 {
     store(vsf_ir::api::validate_bytes(input))
 }
 
+// ptr must point to len initialized bytes from vsf_alloc.
+#[allow(clippy::missing_safety_doc)]
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn vsf_assemble(ptr: *const u8, len: u32) -> u32 {
+    if ptr.is_null() {
+        return 1;
+    }
+    let input = unsafe { std::slice::from_raw_parts(ptr, len as usize) };
+    store(vsf_assemble::assemble(input))
+}
+
 #[unsafe(no_mangle)]
 pub extern "C" fn vsf_output_ptr() -> *const u8 {
     SLOT.with(|slot| slot.borrow().output.as_ptr())
@@ -135,7 +146,7 @@ mod tests {
 
     #[test]
     fn abi_matches_native_compile_exactly() {
-        assert_eq!(vsf_abi_version(), 3);
+        assert_eq!(vsf_abi_version(), 4);
         let input = vsf_fixtures::generate_envelope_bytes(42);
         let (status, out, _) = run(&input);
         assert_eq!(status, 0);
@@ -208,5 +219,36 @@ mod tests {
     fn alloc_rejects_oversized_requests() {
         assert!(vsf_alloc(u32::MAX).is_null());
         assert_eq!(unsafe { vsf_compile(std::ptr::null(), 0) }, 1);
+    }
+
+    #[test]
+    fn assemble_matches_native_and_reports_stable_codes() {
+        let header = vsf_canon::Value::Object(vec![
+            ("epoch".into(), vsf_canon::Value::Int(1)),
+            ("observed_at".into(), vsf_canon::Value::Int(2)),
+            (
+                "origin".into(),
+                vsf_canon::Value::Str("http://127.0.0.1:1".into()),
+            ),
+            (
+                "variant_id".into(),
+                vsf_canon::Value::Str("var_00112233445566778899aabbccddeeff".into()),
+            ),
+        ]);
+        let snapshot = br##"{"schema":"vsf-observation-snapshot-v1","nodes":[{"id":1,"parent":-1,"tag":"#document","role":null,"name":null,"text":null,"flags":1,"rels":[],"scope":null}]}"##;
+        let frame = vsf_assemble::make_frame(&header, snapshot);
+        let ptr = vsf_alloc(frame.len() as u32);
+        unsafe {
+            std::ptr::copy_nonoverlapping(frame.as_ptr(), ptr, frame.len());
+            assert_eq!(vsf_assemble(ptr, frame.len() as u32), 0);
+            let out =
+                std::slice::from_raw_parts(vsf_output_ptr(), vsf_output_len() as usize).to_vec();
+            assert_eq!(out, vsf_assemble::assemble(&frame).unwrap());
+            assert_eq!(vsf_assemble(ptr, 3), 2);
+            let err =
+                std::slice::from_raw_parts(vsf_error_ptr(), vsf_error_len() as usize).to_vec();
+            assert_eq!(err, b"assemble.bad_frame");
+            vsf_free(ptr, frame.len() as u32);
+        }
     }
 }

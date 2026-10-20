@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { GOLDEN_SEEDS, sha256Hex } from "@vsf/schema";
-import { loadFabric } from "@vsf/wasm-host";
+import { assemblyFrame, loadFabric } from "@vsf/wasm-host";
 
 const root = new URL("../../", import.meta.url);
 const path = (rel: string): string => fileURLToPath(new URL(rel, root));
@@ -100,4 +100,51 @@ test("tampered digest and corrupted bytes are rejected by every binding", () => 
       assert.equal(r.stderr.trim(), `error: ${code}`);
     }
   }
+});
+
+test("native assemble, the native worker and WASM assemble agree byte for byte on every recognition fixture", async () => {
+  const fabric = await loadFabric(readFileSync(path("artifacts/wasm/vsf_wasm.wasm")));
+  const names = [
+    "table-orders",
+    "plain-form",
+    "adversarial",
+    "aria-grid",
+    "heldout-datagrid-edit",
+    "heldout-shadow-ds",
+  ];
+  const params = {
+    origin: "http://127.0.0.1:8080",
+    variantId: "var_00112233445566778899aabbccddeeff",
+    observedAt: 1_792_368_200_000,
+    epoch: 7,
+  };
+  for (const name of names) {
+    const snapshot = readFileSync(path(`fixtures/recognition/snapshots/${name}.json`));
+    const viaWasm = fabric.assemble(assemblyFrame(params, snapshot));
+    const cli = exec(
+      native,
+      [
+        "assemble",
+        "-",
+        "--origin",
+        params.origin,
+        "--variant",
+        params.variantId,
+        "--epoch",
+        String(params.epoch),
+        "--observed-at",
+        String(params.observedAt),
+      ],
+      snapshot,
+    );
+    assert.equal(cli.status, 0, cli.stderr);
+    assert.deepEqual(new Uint8Array(cli.stdout), viaWasm, name);
+  }
+  const refused = exec(
+    native,
+    ["assemble", "-", "--origin", "ftp://x", "--variant", "var_x", "--epoch", "1", "--observed-at", "1"],
+    Buffer.from("{}"),
+  );
+  assert.equal(refused.status, 2);
+  assert.match(refused.stderr, /assemble\.bad_origin/);
 });
