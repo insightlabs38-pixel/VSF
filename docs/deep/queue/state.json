@@ -781,10 +781,12 @@
       "receipt": "docs/deep/queue/receipts/VSF-B10-T08.json"
     },
     "VSF-B11-T01": {
-      "status": "READY",
-      "claimed_by": null,
+      "status": "BLOCKED",
+      "claimed_by": "insightlabs38-pixel",
       "commit": null,
-      "evidence": null
+      "evidence": null,
+      "branch": "vsf/b11-common-coverage-triage",
+      "base_commit": "aa45177e8a1e9bdf4891a0cd4f36f04fc49af1ee"
     },
     "VSF-B11-T02": {
       "status": "TODO",
