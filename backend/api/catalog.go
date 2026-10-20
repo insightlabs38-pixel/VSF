@@ -384,7 +384,7 @@ func decodeCursor(cur string) (string, error) {
 		return "", newError(CodeInvalidRequest, "bad_cursor")
 	}
 	b, err := base64.RawURLEncoding.DecodeString(rest)
-	if err != nil {
+	if err != nil || !strings.HasPrefix(string(b), opPrefix) {
 		return "", newError(CodeInvalidRequest, "bad_cursor")
 	}
 	return string(b), nil

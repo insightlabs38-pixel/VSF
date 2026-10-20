@@ -40,6 +40,9 @@ func (f *fakeRemote) Invoke(_ context.Context, r api.Route, b []byte) api.Result
 	f.routes, f.bodies = append(f.routes, r), append(f.bodies, b)
 	return f.result
 }
+func (f *fakeRemote) Confirm(context.Context, api.Route, []byte) (api.ConfirmationIn, *api.Error) {
+	return api.ConfirmationIn{}, nil
+}
 func (f *fakeRemote) Status(context.Context, string) api.Result { return f.result }
 func (f *fakeRemote) Cancel(context.Context, string) api.Result { return f.result }
 func (f *fakeRemote) Reconcile(_ context.Context, _ string, b []byte) api.Result {

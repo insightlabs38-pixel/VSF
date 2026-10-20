@@ -23,6 +23,7 @@ type Remote interface {
 	Status(ctx context.Context, key string) Result
 	Cancel(ctx context.Context, key string) Result
 	Reconcile(ctx context.Context, key string, body []byte) Result
+	Confirm(ctx context.Context, route Route, body []byte) (ConfirmationIn, *Error)
 }
 
 // Client speaks the REST interface with one credential for one surface.
@@ -55,8 +56,8 @@ func NewClient(base, token string, surface Surface, hc *http.Client) (*Client, e
 	if token == "" {
 		return nil, errors.New("a credential is required")
 	}
-	if surface != SurfaceREST && surface != SurfaceCLI {
-		return nil, errors.New("the rest transport serves the rest and cli surfaces")
+	if surface != SurfaceREST && surface != SurfaceCLI && surface != SurfaceUI {
+		return nil, errors.New("the rest transport serves the rest, cli and ui surfaces")
 	}
 	c := http.Client{}
 	if hc != nil {
@@ -248,6 +249,14 @@ func (c *Client) Reconcile(ctx context.Context, key string, body []byte) Result 
 	}
 	x, e := c.send(ctx, "POST", "/v1/invocations/"+key+"/reconcile", nil, body)
 	return resultOf(x, e, true)
+}
+
+func (c *Client) Confirm(ctx context.Context, route Route, body []byte) (ConfirmationIn, *Error) {
+	if !pathSafe(route.Operation, route.Version) {
+		return ConfirmationIn{}, errBadSegment()
+	}
+	x, e := c.send(ctx, "POST", "/v1/operations/"+route.Operation+"/versions/"+route.Version+"/confirmations", nil, body)
+	return decode[ConfirmationIn](x, e)
 }
 
 var _ Remote = (*Client)(nil)

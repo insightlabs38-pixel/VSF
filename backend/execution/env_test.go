@@ -359,7 +359,7 @@ func (r *rig) run(req Request) (Record, error) {
 }
 
 func (r *rig) confirmation(req Request) Confirmation {
-	return r.conf.Issue(requestDigest(req.Pin.Digest, req.Record, req.Params), "ada", r.clock.Now().Add(time.Hour))
+	return r.conf.Issue(ConfirmationDigest(req.Pin.Digest, req.Record, req.Params, req.Caller, req.SessionID), "ada", r.clock.Now().Add(time.Hour))
 }
 
 func mustState(t *testing.T, rec Record, s State, reason string) {

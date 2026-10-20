@@ -3,6 +3,8 @@ package mcp
 import (
 	"context"
 	"encoding/json"
+	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/insightlabs38-pixel/vsf/backend/api"
@@ -13,6 +15,9 @@ const (
 	toolCancel    = "vsf.invocation.cancel"
 	toolReconcile = "vsf.invocation.reconcile"
 	toolVersions  = "vsf.operation.versions"
+	toolNamespace = "vsf.operation.namespaces"
+	toolList      = "vsf.operation.list"
+	toolDescribe  = "vsf.operation.describe"
 )
 
 func obj(props map[string]any, required ...string) map[string]any {
@@ -55,6 +60,20 @@ func metaTools() []map[string]any {
 		{"name": toolStatus, "title": "Invocation status",
 			"description": "The current outcome of an invocation, including progress. Use it to follow an in_progress result.",
 			"inputSchema": obj(map[string]any{"invocation": handleProp}, "invocation"), "outputSchema": resultOut(), "annotations": ann(true, false, true)},
+		{"name": toolNamespace, "title": "Applications with operations",
+			"description": "The applications that have operations, answered from the index alone. Use it first, then vsf.operation.list for one namespace.",
+			"inputSchema": obj(map[string]any{}), "outputSchema": obj(map[string]any{"namespaces": map[string]any{"type": "array", "items": map[string]any{"type": "object"}}}, "namespaces"),
+			"annotations": ann(true, false, true)},
+		{"name": toolList, "title": "List operations",
+			"description": "A bounded, deterministic page of operations, optionally for one namespace. Every listed operation can be called by name; describe it first to get its argument schema.",
+			"inputSchema": obj(map[string]any{"namespace": strProp("Limit to one namespace."), "cursor": strProp("Opaque cursor from the previous page."),
+				"limit": map[string]any{"type": "integer", "minimum": 1, "maximum": api.MaxPageSize}}),
+			"outputSchema": obj(map[string]any{"items": map[string]any{"type": "array", "items": map[string]any{"type": "object"}}, "next_cursor": map[string]any{"type": "string"}}, "items"),
+			"annotations":  ann(true, false, true)},
+		{"name": toolDescribe, "title": "Describe an operation",
+			"description":  "The argument schema, effect disclosure and contract identity of one operation, at the newest served contract version or an exact one.",
+			"inputSchema":  obj(map[string]any{"name": strProp("The operation tool name."), "version": strProp("An exact contract version.")}, "name"),
+			"outputSchema": obj(map[string]any{}), "annotations": ann(true, false, true)},
 		{"name": toolVersions, "title": "Contract versions of an operation",
 			"description":  "Every known contract version of an operation and whether it is served, revoked or withheld.",
 			"inputSchema":  obj(map[string]any{"name": strProp("The operation tool name.")}, "name"),
@@ -62,6 +81,12 @@ func metaTools() []map[string]any {
 			"annotations":  ann(true, false, true)},
 	}
 }
+
+func init() {
+	sort.SliceStable(metaToolList, func(i, j int) bool { return metaToolList[i]["name"].(string) < metaToolList[j]["name"].(string) })
+}
+
+var metaToolList = metaTools()
 
 func opTool(s *api.Spec) map[string]any {
 	return map[string]any{
@@ -72,6 +97,28 @@ func opTool(s *api.Spec) map[string]any {
 	}
 }
 
+// listCursor wraps the catalog cursor with how many operations were already sent, so a bounded listing stays bounded across pages.
+const listCursorPrefix = "t1."
+
+func splitListCursor(c string) (sent int, inner string, ok bool) {
+	if c == "" {
+		return 0, "", true
+	}
+	rest, found := strings.CutPrefix(c, listCursorPrefix)
+	if !found {
+		return 0, "", false
+	}
+	n, in, found := strings.Cut(rest, ".")
+	if !found {
+		return 0, "", false
+	}
+	v, err := strconv.Atoi(n)
+	if err != nil || v < 0 || v > 1<<20 {
+		return 0, "", false
+	}
+	return v, in, true
+}
+
 func (s *Server) toolsList(p api.Principal, pv paramsView) (map[string]any, *rpcError) {
 	if e := unusedParams(pv, "cursor"); e != nil {
 		return nil, e
@@ -80,20 +127,35 @@ func (s *Server) toolsList(p api.Principal, pv paramsView) (map[string]any, *rpc
 	if e != nil {
 		return nil, e
 	}
-	page, aerr := s.cfg.Backend.List(p, api.ListQuery{Cursor: cursor})
-	if aerr != nil {
-		return nil, apiProtocolError(aerr)
+	sent, inner, ok := splitListCursor(cursor)
+	if !ok {
+		return nil, &rpcError{Code: codeInvalidParams, Message: "invalid cursor"}
+	}
+	limit := api.DefaultPageSize
+	if max := s.cfg.MaxListedOperations; max > 0 && max-sent < limit {
+		limit = max - sent
 	}
 	tools := []map[string]any{}
 	if cursor == "" {
-		tools = append(tools, metaTools()...)
+		tools = append(tools, metaToolList...)
 	}
-	for _, sp := range page.Items {
-		tools = append(tools, opTool(sp))
+	var next string
+	if limit > 0 {
+		page, aerr := s.cfg.Backend.List(p, api.ListQuery{Cursor: inner, Limit: limit})
+		if aerr != nil {
+			return nil, apiProtocolError(aerr)
+		}
+		for _, sp := range page.Items {
+			tools = append(tools, opTool(sp))
+		}
+		sent += len(page.Items)
+		if page.NextCursor != "" && (s.cfg.MaxListedOperations == 0 || sent < s.cfg.MaxListedOperations) {
+			next = listCursorPrefix + strconv.Itoa(sent) + "." + page.NextCursor
+		}
 	}
 	res := complete(map[string]any{"tools": tools, "ttlMs": s.cfg.ListTTLMs, "cacheScope": "private"})
-	if page.NextCursor != "" {
-		res["nextCursor"] = page.NextCursor
+	if next != "" {
+		res["nextCursor"] = next
 	}
 	return res, nil
 }
@@ -128,6 +190,8 @@ func (s *Server) toolsCall(ctx context.Context, p api.Principal, pv paramsView) 
 		return s.invocationTool(ctx, p, name, args)
 	case toolVersions:
 		return s.versionsTool(p, args)
+	case toolNamespace, toolList, toolDescribe:
+		return s.discoveryTool(p, name, args)
 	}
 	if !strings.HasPrefix(name, "op.") {
 		return nil, unknownTool(name)
@@ -235,4 +299,70 @@ func toolResult(r api.Result) map[string]any {
 		isErr = true
 	}
 	return structured(r, isErr)
+}
+
+// compact is what a browsing client needs to choose an operation; the schema comes from describe.
+func compact(sp *api.Spec) map[string]any {
+	return map[string]any{
+		"name": sp.Name, "namespace": sp.Namespace, "operation_id": sp.OperationID, "contract_version": sp.ContractVersion,
+		"effect_class": sp.Effect.EffectClass, "write": sp.Effect.Write, "title": sp.Title,
+	}
+}
+
+func (s *Server) discoveryFailure(e *api.Error) (map[string]any, *rpcError) {
+	if e.Code == api.CodeUnauthenticated || e.Code == api.CodeRateLimited {
+		return nil, apiProtocolError(e)
+	}
+	return toolFailure(e), nil
+}
+
+func (s *Server) discoveryTool(p api.Principal, tool string, args json.RawMessage) (map[string]any, *rpcError) {
+	switch tool {
+	case toolNamespace:
+		if _, rerr := decodeArgs(args); rerr != nil {
+			return nil, rerr
+		}
+		return structured(map[string]any{"namespaces": s.cfg.Backend.Namespaces(p)}, false), nil
+	case toolList:
+		m, rerr := decodeArgs(args, "namespace", "cursor", "limit")
+		if rerr != nil {
+			return nil, rerr
+		}
+		q := api.ListQuery{}
+		q.Namespace, _ = m["namespace"].(string)
+		q.Cursor, _ = m["cursor"].(string)
+		if n, ok := m["limit"].(json.Number); ok {
+			v, err := n.Int64()
+			if err != nil || v < 1 || v > api.MaxPageSize {
+				return toolError(api.CodeInvalidArgument, "limit"), nil
+			}
+			q.Limit = int(v)
+		} else if _, present := m["limit"]; present {
+			return toolError(api.CodeInvalidArgument, "limit"), nil
+		}
+		page, aerr := s.cfg.Backend.List(p, q)
+		if aerr != nil {
+			return s.discoveryFailure(aerr)
+		}
+		items := make([]map[string]any, 0, len(page.Items))
+		for _, sp := range page.Items {
+			items = append(items, compact(sp))
+		}
+		out := map[string]any{"items": items}
+		if page.NextCursor != "" {
+			out["next_cursor"] = page.NextCursor
+		}
+		return structured(out, false), nil
+	}
+	m, rerr := decodeArgs(args, "name", "version")
+	if rerr != nil {
+		return nil, rerr
+	}
+	name, _ := m["name"].(string)
+	version, _ := m["version"].(string)
+	sp, aerr := s.cfg.Backend.Describe(p, name, version)
+	if aerr != nil {
+		return s.discoveryFailure(aerr)
+	}
+	return structured(sp, false), nil
 }

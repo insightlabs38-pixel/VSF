@@ -34,6 +34,7 @@ func NewREST(cfg RESTConfig) http.Handler {
 	mux.HandleFunc("GET /v1/operations/{name}", r.guard(true, r.describe))
 	mux.HandleFunc("GET /v1/operations/{name}/versions", r.guard(true, r.versions))
 	mux.HandleFunc("POST /v1/operations/{name}/versions/{version}/invocations", r.guard(true, r.invoke))
+	mux.HandleFunc("POST /v1/operations/{name}/versions/{version}/confirmations", r.guard(true, r.confirm))
 	mux.HandleFunc("GET /v1/invocations/{key}", r.guard(true, r.status))
 	mux.HandleFunc("POST /v1/invocations/{key}/cancel", r.guard(true, r.cancel))
 	mux.HandleFunc("POST /v1/invocations/{key}/reconcile", r.guard(true, r.reconcile))
@@ -105,6 +106,8 @@ func surfaceOf(req *http.Request) (Surface, *Error) {
 		return SurfaceREST, nil
 	case string(SurfaceCLI):
 		return SurfaceCLI, nil
+	case string(SurfaceUI):
+		return SurfaceUI, nil
 	default:
 		return "", errWith(CodeInvalidRequest, "unknown_client", nil)
 	}
@@ -262,4 +265,18 @@ func (r *rest) openapi(w http.ResponseWriter, req *http.Request, p Principal) {
 		return
 	}
 	writeJSON(w, http.StatusOK, doc)
+}
+
+func (r *rest) confirm(w http.ResponseWriter, req *http.Request, p Principal) {
+	body, err := readBody(w, req)
+	if err != nil {
+		writeError(w, 0, err)
+		return
+	}
+	c, cerr := r.cfg.Backend.Confirm(req.Context(), p, body, Route{Operation: req.PathValue("name"), Version: req.PathValue("version")})
+	if cerr != nil {
+		writeError(w, 0, cerr)
+		return
+	}
+	writeJSON(w, http.StatusOK, c)
 }

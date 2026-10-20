@@ -23,6 +23,7 @@ type Backend interface {
 	Status(p Principal, key string, withProgress bool) Result
 	Cancel(p Principal, key string) Result
 	Reconcile(ctx context.Context, p Principal, key string, raw []byte) Result
+	Confirm(ctx context.Context, p Principal, raw []byte, route Route) (ConfirmationIn, *Error)
 }
 
 // Route carries what a surface knows about the target before the body is read.
@@ -50,6 +51,9 @@ type ServiceConfig struct {
 	Callers  execution.Callers
 	Sessions execution.Sessions
 	Limiter  *CallLimiter
+	// Confirmer and Now are the runtime's own, so a confirmation expires by the clock that checks it.
+	Confirmer *execution.Confirmer
+	Now       func() time.Time
 }
 
 // Service is the single implementation of invocation semantics.
@@ -452,4 +456,41 @@ type Reconciliation struct {
 	Basis   string `json:"basis,omitempty"`
 	Version string `json:"version,omitempty"`
 	Settled bool   `json:"settled"`
+}
+
+// ConfirmationTTL is how long a person has to use a confirmation they gave.
+const ConfirmationTTL = 5 * time.Minute
+
+// Confirm records a person's yes to exactly this request, for this caller in this session, and to nothing else.
+func (s *Service) Confirm(_ context.Context, p Principal, raw []byte, route Route) (ConfirmationIn, *Error) {
+	if _, err := s.caller(p); err != nil {
+		return ConfirmationIn{}, err
+	}
+	if p.Surface != SurfaceUI || s.cfg.Confirmer == nil || s.cfg.Now == nil {
+		return ConfirmationIn{}, errWith(CodePermissionDenied, "confirmation_requires_a_person", nil)
+	}
+	var head struct{ Version, Digest string }
+	if v, derr := DecodeStrict(raw); derr == nil {
+		if m, ok := objectOf(v); ok {
+			head.Version, head.Digest = strOf(m["contract_version"]), strOf(m["contract_digest"])
+		}
+	}
+	who, _ := s.cfg.Callers.Lookup(p.Caller)
+	spec, err := s.resolve(p, who, route, head.Version, head.Digest)
+	if err != nil {
+		return ConfirmationIn{}, err
+	}
+	inv, err := DecodeInvocation(spec, raw)
+	if err != nil {
+		return ConfirmationIn{}, err
+	}
+	if err := s.sessionFor(p, inv.SessionID); err != nil {
+		return ConfirmationIn{}, err
+	}
+	if !spec.Effect.Write {
+		return ConfirmationIn{}, errWith(CodeInvalidRequest, "nothing_to_confirm", nil)
+	}
+	digest := execution.ConfirmationDigest(spec.ContractDigest, inv.Record, inv.Params, p.Caller, inv.SessionID)
+	c := s.cfg.Confirmer.Issue(digest, p.Caller, s.cfg.Now().Add(ConfirmationTTL))
+	return ConfirmationIn{Token: c.Token, By: c.By, Digest: c.Digest, ExpiresAt: c.ExpiresAt.UnixMilli()}, nil
 }

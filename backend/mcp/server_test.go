@@ -59,11 +59,16 @@ func (b *catalogBackend) Invoke(_ context.Context, _ api.Principal, raw []byte, 
 	}
 	return b.result
 }
+func (b *catalogBackend) Confirm(context.Context, api.Principal, []byte, api.Route) (api.ConfirmationIn, *api.Error) {
+	return api.ConfirmationIn{}, nil
+}
 func (b *catalogBackend) Status(api.Principal, string, bool) api.Result { return b.result }
 func (b *catalogBackend) Cancel(api.Principal, string) api.Result       { return b.result }
 func (b *catalogBackend) Reconcile(context.Context, api.Principal, string, []byte) api.Result {
 	return b.result
 }
+
+const nMeta = 7
 
 var tokenRe = regexp.MustCompile(`^[A-Za-z0-9_.\-]{1,128}$`)
 
@@ -83,7 +88,9 @@ func manyDocs(t testing.TB, n int) [][]byte {
 	return docs
 }
 
-func newRig(t *testing.T, docs [][]byte) *rig {
+func newRig(t *testing.T, docs [][]byte) *rig { return newRigWith(t, docs, nil) }
+
+func newRigWith(t *testing.T, docs [][]byte, mut func(*mcp.Config)) *rig {
 	t.Helper()
 	src, err := api.NewMemorySource(docs...)
 	if err != nil {
@@ -95,7 +102,11 @@ func newRig(t *testing.T, docs [][]byte) *rig {
 	}
 	p := st.PrincipalOf(st.Ada, api.SurfaceMCP)
 	be := &catalogBackend{cat: cat, result: api.Result{Operation: "x", Category: api.CategorySucceeded, Effect: api.EffectApplied, Retry: api.RetryNever}}
-	srv := httptest.NewServer(mcp.New(mcp.Config{Backend: be, Auth: st.Tokens{p.Credential: p, "rest-token": st.PrincipalOf(st.Ada, api.SurfaceREST)}}))
+	cfg := mcp.Config{Backend: be, Auth: st.Tokens{p.Credential: p, "rest-token": st.PrincipalOf(st.Ada, api.SurfaceREST)}}
+	if mut != nil {
+		mut(&cfg)
+	}
+	srv := httptest.NewServer(mcp.New(cfg))
 	t.Cleanup(srv.Close)
 	return &rig{t: t, be: be, srv: srv, tok: p.Credential}
 }
@@ -376,7 +387,7 @@ func TestToolsListConformsAndIsDeterministicAndCacheable(t *testing.T) {
 		t.Fatalf("a list that varies by caller must be private and cacheable: %v", res)
 	}
 	tools := res["tools"].([]any)
-	if len(tools) != 4+7 {
+	if len(tools) != nMeta+7 {
 		t.Fatalf("%d tools", len(tools))
 	}
 	seen := map[string]bool{}
@@ -388,7 +399,7 @@ func TestToolsListConformsAndIsDeterministicAndCacheable(t *testing.T) {
 			t.Fatalf("bad or colliding tool name %q", name)
 		}
 		seen[strings.ToLower(name)] = true
-		if i >= 4 {
+		if i >= nMeta {
 			if prev != "" && name <= prev {
 				t.Fatalf("operation tools out of order: %s after %s", name, prev)
 			}
@@ -413,7 +424,7 @@ func TestToolsListConformsAndIsDeterministicAndCacheable(t *testing.T) {
 			t.Fatalf("%s has no description", name)
 		}
 	}
-	for _, fixed := range []string{"vsf.invocation.status", "vsf.invocation.cancel", "vsf.invocation.reconcile", "vsf.operation.versions"} {
+	for _, fixed := range []string{"vsf.invocation.status", "vsf.invocation.cancel", "vsf.invocation.reconcile", "vsf.operation.versions", "vsf.operation.namespaces", "vsf.operation.list", "vsf.operation.describe"} {
 		if !seen[fixed] {
 			t.Fatalf("missing %s", fixed)
 		}
@@ -447,7 +458,7 @@ func TestToolsListPaginatesWithoutDuplicatesOrGaps(t *testing.T) {
 			t.Fatal("pagination does not terminate")
 		}
 	}
-	if pages < 2 || len(names) != n+4 {
+	if pages < 2 || len(names) != n+nMeta {
 		t.Fatalf("%d pages, %d tools", pages, len(names))
 	}
 	uniq := map[string]bool{}
@@ -471,7 +482,7 @@ func TestListingDoesNotDecodeTheWholeCatalog(t *testing.T) {
 	if d.Status != 200 {
 		t.Fatal(d.Status)
 	}
-	if got := len(d.Body.Result["tools"].([]any)); got > 4+api.DefaultPageSize {
+	if got := len(d.Body.Result["tools"].([]any)); got > nMeta+api.DefaultPageSize {
 		t.Fatalf("a page must be bounded: %d", got)
 	}
 	if ev := r.be.cat.Evaluations(); ev > api.DefaultPageSize*4 {
@@ -545,5 +556,128 @@ func TestResourcesExposeOperationContractsAndInvocationsByStableURI(t *testing.T
 	tl := r.do(call{method: "resources/templates/list"})
 	if tl.Status != 200 || len(tl.Body.Result["resourceTemplates"].([]any)) != 2 {
 		t.Fatalf("%s", tl.Raw)
+	}
+}
+
+func structuredOf(t *testing.T, d reply) map[string]any {
+	t.Helper()
+	if d.Status != 200 || d.Body.Result == nil {
+		t.Fatalf("%d %s", d.Status, d.Raw)
+	}
+	return d.Body.Result["structuredContent"].(map[string]any)
+}
+
+func TestFixedToolsComeFirstInAStableOrder(t *testing.T) {
+	r := newRig(t, manyDocs(t, 2))
+	tools := r.do(call{method: "tools/list"}).Body.Result["tools"].([]any)
+	var fixed []string
+	for _, raw := range tools[:nMeta] {
+		fixed = append(fixed, raw.(map[string]any)["name"].(string))
+	}
+	for i := 1; i < len(fixed); i++ {
+		if !strings.HasPrefix(fixed[i], "vsf.") || fixed[i-1] >= fixed[i] {
+			t.Fatalf("%v", fixed)
+		}
+	}
+	for _, raw := range tools[nMeta:] {
+		if !strings.HasPrefix(raw.(map[string]any)["name"].(string), "op.") {
+			t.Fatal("operation tools follow the fixed ones")
+		}
+	}
+}
+
+func TestListingCanBeBoundedWithoutHidingAnythingFromDiscoveryOrCalls(t *testing.T) {
+	const total, bound = 130, 20
+	r := newRigWith(t, manyDocs(t, total), func(c *mcp.Config) { c.MaxListedOperations = bound })
+	listed := 0
+	cursor := ""
+	for pages := 0; ; pages++ {
+		p := map[string]any{}
+		if cursor != "" {
+			p["cursor"] = cursor
+		}
+		d := r.do(call{method: "tools/list", params: p})
+		if d.Status != 200 {
+			t.Fatalf("%d %s", d.Status, d.Raw)
+		}
+		for _, raw := range d.Body.Result["tools"].([]any) {
+			if strings.HasPrefix(raw.(map[string]any)["name"].(string), "op.") {
+				listed++
+			}
+		}
+		next, _ := d.Body.Result["nextCursor"].(string)
+		if next == "" {
+			break
+		}
+		cursor = next
+		if pages > 5 {
+			t.Fatal("a bounded listing must end")
+		}
+	}
+	if listed != bound {
+		t.Fatalf("tools/list advertised %d operations, want %d", listed, bound)
+	}
+	var found []string
+	next := ""
+	for i := 0; i < 20; i++ {
+		args := map[string]any{"limit": 50}
+		if next != "" {
+			args["cursor"] = next
+		}
+		out := structuredOf(t, r.do(call{method: "tools/call", params: map[string]any{"name": "vsf.operation.list", "arguments": args}, headers: map[string]string{"Mcp-Name": "vsf.operation.list"}}))
+		for _, it := range out["items"].([]any) {
+			found = append(found, it.(map[string]any)["name"].(string))
+		}
+		next, _ = out["next_cursor"].(string)
+		if next == "" {
+			break
+		}
+	}
+	if len(found) != total {
+		t.Fatalf("discovery reached %d of %d", len(found), total)
+	}
+	last := found[total-1]
+	desc := structuredOf(t, r.do(call{method: "tools/call", params: map[string]any{"name": "vsf.operation.describe", "arguments": map[string]any{"name": last}}, headers: map[string]string{"Mcp-Name": "vsf.operation.describe"}}))
+	if desc["name"] != last || desc["input_schema"] == nil {
+		t.Fatalf("%v", desc)
+	}
+	r.be.result.Operation = last
+	d := r.do(call{method: "tools/call", params: map[string]any{"name": last, "arguments": map[string]any{}}, headers: map[string]string{"Mcp-Name": last}})
+	if d.Status != 200 || d.Body.Error != nil || len(r.be.calls) != 1 {
+		t.Fatalf("an operation beyond the listed ones must still be callable by name: %s", d.Raw)
+	}
+}
+
+func TestNamespacesAreAnsweredFromTheIndexAndScopeTheListing(t *testing.T) {
+	var docs [][]byte
+	for _, app := range []string{"vendor-console:app.a", "vendor-console:app.b"} {
+		for i := 0; i < 6; i++ {
+			id := fmt.Sprintf("app.records.op_%02d", i)
+			docs = append(docs, st.ContractDoc(t, func(b map[string]any) { b["operation_id"] = id; b["source"].(map[string]any)["app_id"] = app }))
+		}
+	}
+	r := newRig(t, docs)
+	ns := structuredOf(t, r.do(call{method: "tools/call", params: map[string]any{"name": "vsf.operation.namespaces", "arguments": map[string]any{}}, headers: map[string]string{"Mcp-Name": "vsf.operation.namespaces"}}))["namespaces"].([]any)
+	if len(ns) != 2 || r.be.cat.Evaluations() != 0 {
+		t.Fatalf("%d namespaces, %d contracts decoded", len(ns), r.be.cat.Evaluations())
+	}
+	first := ns[0].(map[string]any)["name"].(string)
+	out := structuredOf(t, r.do(call{method: "tools/call", params: map[string]any{"name": "vsf.operation.list", "arguments": map[string]any{"namespace": first}}, headers: map[string]string{"Mcp-Name": "vsf.operation.list"}}))
+	items := out["items"].([]any)
+	if len(items) != 6 {
+		t.Fatalf("%d", len(items))
+	}
+	for _, it := range items {
+		if it.(map[string]any)["namespace"] != first {
+			t.Fatalf("%v", it)
+		}
+	}
+	bad := r.do(call{method: "tools/call", params: map[string]any{"name": "vsf.operation.list", "arguments": map[string]any{"limit": 0}}, headers: map[string]string{"Mcp-Name": "vsf.operation.list"}})
+	if !bad.Body.Result["isError"].(bool) {
+		t.Fatalf("%s", bad.Raw)
+	}
+	bad = r.do(call{method: "tools/call", params: map[string]any{"name": "vsf.operation.list", "arguments": map[string]any{"cursor": "x"}}, headers: map[string]string{"Mcp-Name": "vsf.operation.list"}})
+	if !bad.Body.Result["isError"].(bool) {
+		t.Fatalf("a bad cursor is an invocation-level error: %s", bad.Raw)
 	}
 }

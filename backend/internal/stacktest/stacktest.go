@@ -234,6 +234,7 @@ type Stack struct {
 	Clock  *Clock
 	Rev    *Revocations
 	Worker *execution.Worker
+	Auth   *api.TokenAuth
 	Doc    []byte
 	Spec   *api.Spec
 	Cfg    execution.Config
@@ -306,7 +307,11 @@ func New(t *testing.T, o Opts) *Stack {
 	if err != nil {
 		t.Fatal(err)
 	}
-	s.Svc, err = api.NewService(api.ServiceConfig{Catalog: s.Cat, Runtime: s.RT, Callers: s.Dir, Sessions: SessionView{s.Dir}, Limiter: o.Limiter})
+	if s.Auth, err = api.NewTokenAuth(s.Dir, s.Clock.Now, nil); err != nil {
+		t.Fatal(err)
+	}
+	s.Svc, err = api.NewService(api.ServiceConfig{Catalog: s.Cat, Runtime: s.RT, Callers: s.Dir, Sessions: SessionView{s.Dir}, Limiter: o.Limiter,
+		Confirmer: s.Cfg.Confirmer, Now: s.Clock.Now})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -348,3 +353,16 @@ func (s *Stack) Stage(id string) string { return s.App.Order(id).Stage }
 func PrincipalOf(caller string, surface api.Surface) api.Principal {
 	return api.Principal{Caller: caller, Surface: surface, Credential: "cred-" + caller + "-" + string(surface)}
 }
+
+// Token issues a credential for one caller on one surface.
+func (s *Stack) Token(caller string, surface api.Surface) string {
+	s.T.Helper()
+	tok, _, err := s.Auth.Issue(caller, surface, time.Hour, "test")
+	if err != nil {
+		s.T.Fatal(err)
+	}
+	return tok
+}
+
+// ResetOrder puts the source order back to its initial state.
+func (s *Stack) ResetOrder(id string) { s.App.Put(fixtureapp.Order{ID: id, Stage: "new", Version: 1}) }

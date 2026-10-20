@@ -20,6 +20,9 @@ type Config struct {
 	ServerVersion  string
 	// ListTTLMs is how long clients may cache catalog lists; the lists vary by caller, so they are private.
 	ListTTLMs int64
+	// MaxListedOperations bounds how many operations tools/list advertises; every served operation stays callable by name
+	// and discoverable through vsf.operation.list. Zero lists them all.
+	MaxListedOperations int
 }
 
 // Server is the Streamable HTTP endpoint; every request stands alone and nothing is remembered between them.

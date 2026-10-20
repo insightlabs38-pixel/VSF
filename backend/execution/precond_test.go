@@ -94,7 +94,7 @@ func TestConfirmationIsBoundExpiringAndUsableOnce(t *testing.T) {
 
 	expired := q
 	expired.RequestID = "req-expired"
-	old := r.conf.Issue(requestDigest(q.Pin.Digest, q.Record, q.Params), "ada", r.clock.Now().Add(-time.Second))
+	old := r.conf.Issue(ConfirmationDigest(q.Pin.Digest, q.Record, q.Params, q.Caller, q.SessionID), "ada", r.clock.Now().Add(-time.Second))
 	expired.Confirmation = &old
 	rec, _ = r.run(expired)
 	mustState(t, rec, Failed, "confirmation_required")

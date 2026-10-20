@@ -125,7 +125,9 @@ func staticComponents() map[string]any {
 			"retry":          map[string]any{"type": "string"},
 			"retry_after_ms": map[string]any{"type": "integer"}, "details": map[string]any{"type": "object"},
 		}},
-		"Result":    resultSchema("", "", "", nil),
+		"Result": resultSchema("", "", "", nil),
+		"Confirmation": map[string]any{"type": "object", "additionalProperties": false, "required": []any{"token", "by", "digest", "expires_at"},
+			"properties": map[string]any{"token": str(), "by": str(), "digest": str(), "expires_at": map[string]any{"type": "integer"}}},
 		"Discovery": map[string]any{"type": "object"},
 		"ReconcileRequest": map[string]any{"type": "object", "additionalProperties": false, "required": []any{"session_id", "expect"},
 			"properties": map[string]any{"session_id": str(), "expect": map[string]any{"type": "object", "additionalProperties": str()}}},
@@ -159,6 +161,14 @@ func OpenAPI(b Backend, p Principal, namespace string) (map[string]any, *Error) 
 			comps[inKey] = s.InputSchema
 			comps[outKey] = s.OutputSchema
 			path := fmt.Sprintf("/v1/operations/%s/versions/%s/invocations", s.Name, s.ContractVersion)
+			if s.Effect.Write {
+				paths[strings.TrimSuffix(path, "/invocations")+"/confirmations"] = map[string]any{"post": map[string]any{
+					"operationId": s.Name + "@" + s.ContractVersion + ".confirm", "summary": "A person confirms exactly this request (user interface credentials only).",
+					"requestBody": jsonBody(ref(inKey)), "security": []any{map[string]any{"bearer": []any{}}},
+					"responses": map[string]any{"200": jsonResp("The confirmation to send with the invocation.", ref("Confirmation")),
+						"403": jsonResp("Only a person's interface credential may confirm.", ref("ErrorEnvelope"))},
+				}}
+			}
 			paths[path] = map[string]any{"post": map[string]any{
 				"operationId": s.Name + "@" + s.ContractVersion, "summary": s.Title, "description": disclosureText(s),
 				"requestBody": jsonBody(ref(inKey)), "responses": responsesFor(ref(outKey)),
