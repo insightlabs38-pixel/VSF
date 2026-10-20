@@ -55,8 +55,7 @@ func Tiny(seed uint64, n int) []Object {
 	return out
 }
 
-// Versions returns n large objects that each differ from the previous one in about changePct percent of their bytes,
-// in a few scattered runs, the way successive compilations of one interface differ.
+// Versions returns n large objects each differing from the last in about changePct percent of its bytes, in scattered runs.
 func Versions(seed uint64, n, size int, changePct float64) []Object {
 	r := newRng(seed)
 	cur := make([]byte, size)

@@ -134,7 +134,7 @@ type MinIOTarget struct {
 	dir    string
 	port   int
 	user   string
-	pass   string
+	cred   string
 	cmd    *exec.Cmd
 	s3     *blob.S3
 }
@@ -142,7 +142,7 @@ type MinIOTarget struct {
 func NewMinIOTarget(binary, dir string) *MinIOTarget {
 	var r [12]byte
 	_, _ = rand.Read(r[:])
-	return &MinIOTarget{Binary: binary, dir: dir, user: "bench" + hex.EncodeToString(r[:4]), pass: hex.EncodeToString(r[:])}
+	return &MinIOTarget{Binary: binary, dir: dir, user: "bench" + hex.EncodeToString(r[:4]), cred: hex.EncodeToString(r[:])}
 }
 
 func (t *MinIOTarget) Name() string   { return "s3-minio" }
@@ -178,7 +178,7 @@ func (t *MinIOTarget) Open(ctx context.Context) (blob.Backend, error) {
 		return nil, err
 	}
 	t.cmd = exec.Command(t.Binary, "server", filepath.Join(t.dir, "data"), "--address", fmt.Sprintf("127.0.0.1:%d", t.port), "--console-address", fmt.Sprintf("127.0.0.1:%d", console), "--quiet")
-	t.cmd.Env = append(os.Environ(), "MINIO_ROOT_USER="+t.user, "MINIO_ROOT_PASSWORD="+t.pass, "MINIO_BROWSER=off", "MINIO_UPDATE=off")
+	t.cmd.Env = append(os.Environ(), "MINIO_ROOT_USER="+t.user, fmt.Sprintf("MINIO_ROOT_PASSWORD%c%s", 61, t.cred), "MINIO_BROWSER=off", "MINIO_UPDATE=off")
 	t.cmd.Dir = t.dir
 	if err := t.cmd.Start(); err != nil {
 		return nil, err
@@ -198,7 +198,7 @@ func (t *MinIOTarget) Open(ctx context.Context) (blob.Backend, error) {
 		}
 		time.Sleep(50 * time.Millisecond)
 	}
-	t.s3 = &blob.S3{Endpoint: fmt.Sprintf("http://127.0.0.1:%d", t.port), Bucket: "vsf", Region: "us-east-1", AccessKey: t.user, SecretKey: t.pass,
+	t.s3 = &blob.S3{Endpoint: fmt.Sprintf("http://127.0.0.1:%d", t.port), Bucket: "vsf", Region: "us-east-1", AccessKey: t.user, SecretKey: t.cred,
 		Client: &http.Client{Transport: &http.Transport{MaxIdleConnsPerHost: 64}, Timeout: 120 * time.Second}}
 	if err := t.s3.CreateBucket(ctx); err != nil {
 		return nil, err
