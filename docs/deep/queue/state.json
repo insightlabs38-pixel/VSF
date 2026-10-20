@@ -1522,10 +1522,13 @@
       "receipt": "docs/deep/queue/receipts/VSF-B11-T07.json"
     },
     "VSF-B11-T08": {
-      "status": "READY",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "87b1463717088c5dc03dc3421dbc8dbdf35d1c19",
+      "evidence": "docs/deep/evidence/VSF-B11",
+      "branch": "vsf/b11-independent-corpus",
+      "base_commit": "bcf6e4aaed60458dc8877817f25481cc799b1168",
+      "receipt": "docs/deep/queue/receipts/VSF-B11-T08.json"
     }
   },
   "gate_states": {
@@ -1696,6 +1699,6 @@
   },
   "cursor": {
     "batch": "B11",
-    "task": "VSF-B11-T08"
+    "task": "VSF-B11-T02"
   }
 }
