@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B11-T01`
+**Next eligible:** `VSF-B11-T08`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -17,7 +17,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B08 | G8 | 10/10 | DONE | PROCEED |
 | B09 | G9 | 9/9 | DONE | PROCEED |
 | B10 | G10 | 8/8 | DONE | PROCEED |
-| B11 | G11 | 1/8 | IN_PROGRESS | - |
+| B11 | G11 | 2/8 | IN_PROGRESS | - |
 | B12 | G12 | 0/6 | TODO | - |
 | B13 | G13 | 5/5 | DONE | PROCEED |
 | B14 | G14 | 15/15 | DONE | PROCEED |
@@ -172,14 +172,14 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B11 · Expand common application coverage
 
-- [ ] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding _(READY)_
-- [ ] `VSF-B11-T02` Grow real conformance implementations for critical catalog families
+- [x] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding
+- [ ] `VSF-B11-T02` Grow real conformance implementations for critical catalog families _(READY)_
 - [ ] `VSF-B11-T03` Evaluate custom combobox/select, virtualization and modal form dependencies
 - [ ] `VSF-B11-T04` Add upload/download and export with security policy
 - [ ] `VSF-B11-T05` Improve bulk operation and pagination semantics with source rate limits
 - [ ] `VSF-B11-T06` Re-run independent app corpus and measure fix leverage
 - [x] `VSF-B11-T07` Bootstrap an independent application corpus and measured baseline
-- [ ] `VSF-B11-T08` Extend the development corpus with uploads, virtualized grids, pagination and bulk selection
+- [ ] `VSF-B11-T08` Extend the development corpus with uploads, virtualized grids, pagination and bulk selection _(READY)_
 
 ### B12 · Expand advanced UI and developer/research tools
 

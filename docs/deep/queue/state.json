@@ -781,15 +781,16 @@
       "receipt": "docs/deep/queue/receipts/VSF-B10-T08.json"
     },
     "VSF-B11-T01": {
-      "status": "READY",
+      "status": "DONE",
       "claimed_by": "insightlabs38-pixel",
-      "commit": null,
+      "commit": "1eb0a1d770d824695fbd6ab886341d63521a7db4",
       "evidence": "docs/deep/evidence/VSF-B11",
-      "branch": "vsf/b11-common-coverage-triage",
-      "base_commit": "aa45177e8a1e9bdf4891a0cd4f36f04fc49af1ee"
+      "branch": "vsf/b11-independent-corpus",
+      "base_commit": "851e31de7bb2156017ef47c1e60b6c522bfc922e",
+      "receipt": "docs/deep/queue/receipts/VSF-B11-T01.json"
     },
     "VSF-B11-T02": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1521,7 +1522,7 @@
       "receipt": "docs/deep/queue/receipts/VSF-B11-T07.json"
     },
     "VSF-B11-T08": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1695,6 +1696,6 @@
   },
   "cursor": {
     "batch": "B11",
-    "task": "VSF-B11-T01"
+    "task": "VSF-B11-T08"
   }
 }
