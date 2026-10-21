@@ -202,6 +202,26 @@ jobs:
             artifacts/logs
           if-no-files-found: error
 
+  corpus:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Rust toolchain from manifest
+        run: rustup toolchain install "$(jq -r .rust toolchain/versions.json)" --profile minimal
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: node tools/checks/src/cli.ts ci-run corpus
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-corpus
+          path: artifacts/ci/corpus
+          if-no-files-found: error
+
   execution:
     runs-on: ubuntu-24.04
     steps:
@@ -299,7 +319,7 @@ jobs:
 
   gate:
     if: always()
-    needs: [hygiene, native, go, ts, wasm-browser, cross-language, browser, observation, ui, execution, commit-policy, failure-canary]
+    needs: [hygiene, native, go, ts, wasm-browser, cross-language, browser, observation, corpus, ui, execution, commit-policy, failure-canary]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

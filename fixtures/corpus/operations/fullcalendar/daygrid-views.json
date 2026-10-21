@@ -1,0 +1,81 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "fullcalendar",
+ "page": "daygrid-views",
+ "dossierSha256": "2da146a084da63b4a3c73fcb6781afd7769c5b4ded861a8018c6d458b23cdf19",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-misc",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "dossier accessibility tree",
+   "FullCalendar public documentation (toolbar, navLinks, views)"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Go to next month",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Next Month"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "February 2023"
+    }
+   ]
+  },
+  {
+   "name": "Go to previous month",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Previous Month"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "December 2022"
+    }
+   ]
+  },
+  {
+   "name": "Go to next year",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Next Year"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "January 2024"
+    }
+   ]
+  },
+  {
+   "name": "Open a day from the grid",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Go to January 12, 2023"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "January 12, 2023"
+    }
+   ]
+  }
+ ]
+}

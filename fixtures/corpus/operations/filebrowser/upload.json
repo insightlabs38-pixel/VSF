@@ -1,0 +1,36 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "filebrowser",
+  "page": "upload",
+  "dossierSha256": "80e6cad97ea316af1ebf4ebff6c50a69d3599adb69c5e8ac4b83c17c037074dc",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "File Browser public documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Upload a file",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "upload",
+          "target": "File",
+          "value": "note.txt",
+          "text": "hello upload"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "note.txt"
+        }
+      ]
+    }
+  ]
+}

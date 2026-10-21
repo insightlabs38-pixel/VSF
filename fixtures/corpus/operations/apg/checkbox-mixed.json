@@ -1,0 +1,102 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "apg",
+ "page": "checkbox-mixed",
+ "dossierSha256": "92c5d7d648d4e3b2f585ef25f3bfec6e6792e02804a3b6e84ede57af36f3c980",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-apg",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "page dossier",
+   "page annotation",
+   "W3C ARIA Authoring Practices pattern documentation"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Check all condiments",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "toggle",
+     "target": "All condiments",
+     "checked": true
+    }
+   ],
+   "expect": [
+    {
+     "kind": "checked",
+     "target": "Lettuce",
+     "checked": true
+    },
+    {
+     "kind": "checked",
+     "target": "Tomato",
+     "checked": true
+    },
+    {
+     "kind": "checked",
+     "target": "Mustard",
+     "checked": true
+    },
+    {
+     "kind": "checked",
+     "target": "Sprouts",
+     "checked": true
+    },
+    {
+     "kind": "checked",
+     "target": "All condiments",
+     "checked": true
+    }
+   ]
+  },
+  {
+   "name": "Check every condiment individually",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "toggle",
+     "target": "Lettuce",
+     "checked": true
+    },
+    {
+     "do": "toggle",
+     "target": "Mustard",
+     "checked": true
+    },
+    {
+     "do": "toggle",
+     "target": "Sprouts",
+     "checked": true
+    }
+   ],
+   "expect": [
+    {
+     "kind": "checked",
+     "target": "All condiments",
+     "checked": true
+    }
+   ]
+  },
+  {
+   "name": "Uncheck tomato",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "toggle",
+     "target": "Tomato",
+     "checked": false
+    }
+   ],
+   "expect": [
+    {
+     "kind": "checked",
+     "target": "Tomato",
+     "checked": false
+    }
+   ]
+  }
+ ]
+}

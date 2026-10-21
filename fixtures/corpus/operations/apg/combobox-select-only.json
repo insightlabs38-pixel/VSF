@@ -1,0 +1,54 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "apg",
+ "page": "combobox-select-only",
+ "dossierSha256": "d428f22282565a714e649f65618a13721da4551ef33428e7162d3d1339f58ad9",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-apg",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "page dossier",
+   "page annotation",
+   "W3C ARIA Authoring Practices pattern documentation"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Choose banana",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "choose",
+     "target": "Favorite Fruit",
+     "value": "Banana"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "value",
+     "target": "Favorite Fruit",
+     "value": "Banana"
+    }
+   ]
+  },
+  {
+   "name": "Choose cherry",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "choose",
+     "target": "Favorite Fruit",
+     "value": "Cherry"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "value",
+     "target": "Favorite Fruit",
+     "value": "Cherry"
+    }
+   ]
+  }
+ ]
+}

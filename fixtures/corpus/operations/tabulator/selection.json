@@ -1,0 +1,54 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "tabulator",
+  "page": "selection",
+  "dossierSha256": "4cb88fef8e9d5e9eaa907079e2907c249bfae3acda9c46909da5b72ebcfbf2ea",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "Tabulator public documentation (tabulator.info)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Select all rows",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Select all"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "6 row(s)"
+        }
+      ]
+    },
+    {
+      "name": "Select all then deselect all",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Select all"
+        },
+        {
+          "do": "click",
+          "target": "Deselect all"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "0 row(s)"
+        }
+      ]
+    }
+  ]
+}

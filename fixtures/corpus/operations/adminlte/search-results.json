@@ -1,0 +1,90 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "adminlte",
+  "page": "search-results",
+  "dossierSha256": "5d23829aecc8c7c2d10ffd284583e134d709bab019ed93ce3e59a658f0d45e84",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier adminlte/search-results.md",
+      "page annotation item names",
+      "AdminLTE 4 public documentation and standard HTML form behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Change search term",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search",
+          "value": "quarterly forecast"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Search",
+          "value": "quarterly forecast"
+        }
+      ]
+    },
+    {
+      "name": "Choose date range",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Date range",
+          "value": "Past week"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Date range",
+          "value": "Past week"
+        }
+      ]
+    },
+    {
+      "name": "Choose owner",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Owner",
+          "value": "My team"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Owner",
+          "value": "My team"
+        }
+      ]
+    },
+    {
+      "name": "Include archived items",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Archived items",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Archived items",
+          "checked": true
+        }
+      ]
+    }
+  ]
+}

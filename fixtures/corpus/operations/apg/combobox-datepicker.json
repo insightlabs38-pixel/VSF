@@ -1,0 +1,56 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "apg",
+ "page": "combobox-datepicker",
+ "dossierSha256": "5da027d1aac9d7c77493d7bfd1eb7173839432bfe665562561ced524d8919e91",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-apg",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "page dossier",
+   "page annotation",
+   "W3C ARIA Authoring Practices pattern documentation"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Type a date",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "fill",
+     "target": "Date",
+     "value": "12/25/2026"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "value",
+     "target": "Date",
+     "value": "12/25/2026"
+    }
+   ]
+  },
+  {
+   "name": "Open date picker",
+   "effect": "read",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Choose Date"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "Cancel"
+    },
+    {
+     "kind": "text",
+     "contains": "OK"
+    }
+   ]
+  }
+ ]
+}

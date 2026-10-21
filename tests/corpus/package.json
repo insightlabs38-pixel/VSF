@@ -10,6 +10,7 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --conditions=source --test --test-reporter=spec test/*.test.ts",
-    "corpus": "node --conditions=source src/cli.ts"
+    "corpus": "node --conditions=source src/cli.ts",
+    "test:harness": "node --conditions=source --test --test-reporter=spec test/browser/*.test.ts"
   }
 }

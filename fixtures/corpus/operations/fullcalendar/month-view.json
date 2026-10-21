@@ -1,0 +1,65 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "fullcalendar",
+ "page": "month-view",
+ "dossierSha256": "a37c7b8aaf5eccb260dc7794cdce130b51030067e67536dad600860f6ab8200f",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-misc",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "dossier accessibility tree",
+   "FullCalendar public documentation (toolbar, navLinks, views)"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Go to next month",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Next Month"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "February 2023"
+    }
+   ]
+  },
+  {
+   "name": "Go to previous month",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Previous Month"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "December 2022"
+    }
+   ]
+  },
+  {
+   "name": "Reveal hidden events of a crowded day",
+   "effect": "read",
+   "steps": [
+    {
+     "do": "click",
+     "target": "+3 more"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "Happy Hour"
+    }
+   ]
+  }
+ ]
+}

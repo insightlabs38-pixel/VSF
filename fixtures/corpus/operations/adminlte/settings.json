@@ -1,0 +1,90 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "adminlte",
+  "page": "settings",
+  "dossierSha256": "acaca1d3de7af945eb360cb9722131be97cb103911ab70e2f5e37180b83ebae0",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier adminlte/settings.md",
+      "page annotation item names",
+      "AdminLTE 4 public documentation and standard HTML form behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Change full name",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Full name",
+          "value": "Janet Roe"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Full name",
+          "value": "Janet Roe"
+        }
+      ]
+    },
+    {
+      "name": "Change email",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Email",
+          "value": "janet@example.org"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Email",
+          "value": "janet@example.org"
+        }
+      ]
+    },
+    {
+      "name": "Choose time zone",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Time zone",
+          "value": "Europe/London"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Time zone",
+          "value": "Europe/London"
+        }
+      ]
+    },
+    {
+      "name": "Choose language",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Language",
+          "value": "Deutsch"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Language",
+          "value": "Deutsch"
+        }
+      ]
+    }
+  ]
+}

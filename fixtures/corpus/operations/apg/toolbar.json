@@ -1,0 +1,72 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "apg",
+ "page": "toolbar",
+ "dossierSha256": "120b0ddbb275ca743ac8d379b5efbf4fcb9d452f2a815c5b38b4df04cc8be404",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-apg",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "page dossier",
+   "page annotation",
+   "W3C ARIA Authoring Practices pattern documentation"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Center align",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "toggle",
+     "target": "Text Align Center",
+     "checked": true
+    }
+   ],
+   "expect": [
+    {
+     "kind": "checked",
+     "target": "Text Align Center",
+     "checked": true
+    }
+   ]
+  },
+  {
+   "name": "Night mode",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "toggle",
+     "target": "Night Mode",
+     "checked": true
+    }
+   ],
+   "expect": [
+    {
+     "kind": "checked",
+     "target": "Night Mode",
+     "checked": true
+    }
+   ]
+  },
+  {
+   "name": "Edit sample text",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "fill",
+     "target": "Text Sample",
+     "value": "Hello world"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "value",
+     "target": "Text Sample",
+     "value": "Hello world"
+    }
+   ]
+  }
+ ]
+}

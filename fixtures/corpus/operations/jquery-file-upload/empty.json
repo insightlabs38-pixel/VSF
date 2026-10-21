@@ -1,0 +1,35 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "jquery-file-upload",
+ "page": "empty",
+ "dossierSha256": "d4269b9a84aaabdda31d8fc9cd4c15a4a61cf7f7eb88037dfb543746de8b4afc",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-misc",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "dossier accessibility tree",
+   "jQuery File Upload public documentation and demo (queue, cancel)"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Queue a file",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "upload",
+     "target": "Choose File",
+     "value": "hello.txt",
+     "text": "hello world"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "hello.txt"
+    }
+   ]
+  }
+ ]
+}

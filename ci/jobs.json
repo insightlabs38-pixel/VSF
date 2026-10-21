@@ -308,6 +308,20 @@
         "cmd": ["pnpm", "--filter", "@vsf/browser-tests", "run", "test"]
       }
     ],
+    "corpus": [
+      {
+        "name": "pnpm-install",
+        "cmd": ["pnpm", "install", "--frozen-lockfile"]
+      },
+      {
+        "name": "build-recognizer",
+        "cmd": ["cargo", "build", "--manifest-path", "compiler/Cargo.toml", "--locked", "--release", "-p", "vsf-recognizer"]
+      },
+      {
+        "name": "harness-tests",
+        "cmd": ["pnpm", "--filter", "@vsf/corpus-tests", "run", "test:harness"]
+      }
+    ],
     "observation": [
       {
         "name": "pnpm-install",

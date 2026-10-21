@@ -1,0 +1,93 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "django-admin",
+  "page": "changelist-page2",
+  "dossierSha256": "b40398633e417924aaff4e133832b4487a16fc4b33d2dca4942392920a96d99f",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-django",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION-OPERATIONS.md guide",
+      "dossier fixtures/corpus/dossiers/django-admin/changelist-page2.md (accessibility tree and state)",
+      "annotation fixtures/corpus/annotations/django-admin/changelist-page2.json (item names)",
+      "general knowledge of the public Django administration documentation (changelist search, filters, pagination, actions, change forms, inlines)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Go to page 3",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "3"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "p=3"
+        },
+        {
+          "kind": "text",
+          "contains": "Product 27"
+        }
+      ]
+    },
+    {
+      "name": "Show all products on one page",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Show all"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "all="
+        },
+        {
+          "kind": "rows",
+          "target": "Products",
+          "count": 47
+        }
+      ]
+    },
+    {
+      "name": "Select all rows on the page",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Select all objects on this page for an action",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "10 of 10 selected"
+        }
+      ]
+    },
+    {
+      "name": "Filter by Draft status",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Draft"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "status__exact=draft"
+        }
+      ]
+    }
+  ]
+}

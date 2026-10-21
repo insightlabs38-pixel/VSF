@@ -1,0 +1,65 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "filebrowser",
+  "page": "new-folder",
+  "dossierSha256": "3c9b4d2cac248a5b0b3e3d5bda95744471f820714996e2f6f7efdd56228679a4",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "File Browser public documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Create a folder",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name your new directory",
+          "value": "reports"
+        },
+        {
+          "do": "click",
+          "target": "Create"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "reports"
+        },
+        {
+          "kind": "rows",
+          "target": "Files and folders",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "name": "Cancel folder creation",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name your new directory",
+          "value": "scratch"
+        },
+        {
+          "do": "click",
+          "target": "Cancel"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Name your new directory"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "filebrowser",
+  "page": "settings",
+  "dossierSha256": "77386cb086dd74f0cadd43f31805758940fd52c198d0811b07a7dc4a7095e264",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "File Browser public documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Set instance name",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Instance name",
+          "value": "Test Drive"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Instance name",
+          "value": "Test Drive"
+        }
+      ]
+    },
+    {
+      "name": "Enable signup toggle",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Allow users to signup",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Allow users to signup",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "name": "Choose dark theme",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Theme",
+          "value": "Dark"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Theme",
+          "value": "Dark"
+        }
+      ]
+    },
+    {
+      "name": "Change base path",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Base path for user home directories",
+          "value": "/homes"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Base path for user home directories",
+          "value": "/homes"
+        }
+      ]
+    }
+  ]
+}

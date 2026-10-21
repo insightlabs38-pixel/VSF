@@ -1,0 +1,83 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "checkboxradio-default",
+  "dossierSha256": "ef24a7f95a5254adc25da31d1e9ec585433947d631ce574c3499b4941c360876",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Pick a location",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Paris",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Paris",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "name": "Pick hotel ratings",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "3 Star",
+          "checked": true
+        },
+        {
+          "do": "toggle",
+          "target": "5 Star",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "3 Star",
+          "checked": true
+        },
+        {
+          "kind": "checked",
+          "target": "5 Star",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "name": "Pick a bed type",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "1 King",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "1 King",
+          "checked": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "todomvc-lit",
+  "page": "with-items",
+  "dossierSha256": "9d4519fd74e592a54a277d16817cea1b13d6be657779356d51cd453e87cf2996",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier todomvc-lit/with-items.md",
+      "page annotation item names",
+      "TodoMVC specification behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Add a todo",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "What needs to be done?",
+          "value": "Water plants"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Water plants"
+        },
+        {
+          "kind": "rows",
+          "target": "Todo list",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "name": "Complete a todo",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Buy milk",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Buy milk",
+          "checked": true
+        },
+        {
+          "kind": "text",
+          "contains": "2 items left"
+        }
+      ]
+    },
+    {
+      "name": "Complete all todos",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "❯ Mark all as complete",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Buy milk",
+          "checked": true
+        },
+        {
+          "kind": "checked",
+          "target": "Walk the dog",
+          "checked": true
+        },
+        {
+          "kind": "checked",
+          "target": "Read a book",
+          "checked": true
+        },
+        {
+          "kind": "text",
+          "contains": "0 items left"
+        }
+      ]
+    },
+    {
+      "name": "Show only active todos",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Buy milk",
+          "checked": true
+        },
+        {
+          "do": "click",
+          "target": "Active"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "#/active"
+        },
+        {
+          "kind": "absent",
+          "contains": "Buy milk"
+        },
+        {
+          "kind": "text",
+          "contains": "Walk the dog"
+        }
+      ]
+    }
+  ]
+}

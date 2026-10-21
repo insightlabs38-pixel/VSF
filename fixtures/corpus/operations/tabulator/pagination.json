@@ -1,0 +1,92 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "tabulator",
+  "page": "pagination",
+  "dossierSha256": "8ac7a0c64d071bff119f3c1717172b82c994856f644352477e42943cdade4eba",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "Tabulator public documentation (tabulator.info)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Show 25 rows per page",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Page Size",
+          "value": "25"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 1-25 of 200 rows"
+        },
+        {
+          "kind": "rows",
+          "target": "Pagination",
+          "count": 25
+        }
+      ]
+    },
+    {
+      "name": "Go to next page",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Next Page"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 11-20 of 200 rows"
+        },
+        {
+          "kind": "absent",
+          "contains": "Mary #1"
+        }
+      ]
+    },
+    {
+      "name": "Go to page 3",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Show Page 3"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 21-30 of 200 rows"
+        }
+      ]
+    },
+    {
+      "name": "Go to last page",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Last Page"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 191-200 of 200 rows"
+        }
+      ]
+    }
+  ]
+}

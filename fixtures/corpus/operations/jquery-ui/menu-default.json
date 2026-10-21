@@ -1,0 +1,51 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "menu-default",
+  "dossierSha256": "225730bb1b43c6f18e93c04faa27a2daaea8fc91f44559c3a6262e237aad3653",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Open Clothing submenu",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Clothing"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Accessories"
+        }
+      ]
+    },
+    {
+      "name": "Open Music submenu",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Music"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Rock"
+        }
+      ]
+    }
+  ]
+}

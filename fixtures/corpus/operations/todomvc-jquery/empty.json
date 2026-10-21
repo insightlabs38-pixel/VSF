@@ -1,0 +1,61 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "todomvc-jquery",
+  "page": "empty",
+  "dossierSha256": "0ab495c29bb4a1a06a60893d35d96f65be9ca7823bf673da81ef08207f168fbc",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier todomvc-jquery/empty.md",
+      "page annotation item names",
+      "TodoMVC specification behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Add a todo",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "What needs to be done?",
+          "value": "Buy milk"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Buy milk"
+        }
+      ]
+    },
+    {
+      "name": "Add a todo with empty text",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "What needs to be done?",
+          "value": ""
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "items left"
+        }
+      ],
+      "negative": true
+    }
+  ]
+}

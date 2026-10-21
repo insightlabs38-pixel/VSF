@@ -1,0 +1,82 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "adminlte",
+  "page": "projects",
+  "dossierSha256": "e5e1b554cc7f3e0475d4de0d22f2b5dda8265514c7ed2610e3874f1e85f26959",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier adminlte/projects.md",
+      "page annotation item names",
+      "AdminLTE 4 public documentation and standard HTML form behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Search projects",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search projects",
+          "value": "Mobile"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Search projects",
+          "value": "Mobile"
+        },
+        {
+          "kind": "rows",
+          "target": "All projects",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "Filter by completed",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Filter by status",
+          "value": "Completed"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Filter by status",
+          "value": "Completed"
+        },
+        {
+          "kind": "rows",
+          "target": "All projects",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "Search with no match",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search projects",
+          "value": "zzzz-nothing"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "rows",
+          "target": "All projects",
+          "count": 0
+        }
+      ]
+    }
+  ]
+}

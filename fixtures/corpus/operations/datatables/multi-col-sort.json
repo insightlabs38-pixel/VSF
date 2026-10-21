@@ -1,0 +1,99 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "datatables",
+  "page": "multi-col-sort",
+  "dossierSha256": "0614914c506b391c1597b0a770a7e1fc4011462e298969f510de98c45476c99a",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "DataTables public documentation (datatables.net examples)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Search for one employee",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search:",
+          "value": "Airi"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 1 to 1 of 1 entries"
+        },
+        {
+          "kind": "rows",
+          "target": "Employees",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "Show 25 entries",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Show entries",
+          "value": "25"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 1 to 25 of 57 entries"
+        },
+        {
+          "kind": "rows",
+          "target": "Employees",
+          "count": 25
+        }
+      ]
+    },
+    {
+      "name": "Go to next page",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Next"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 11 to 20 of 57 entries"
+        },
+        {
+          "kind": "absent",
+          "contains": "Airi Satou"
+        }
+      ]
+    },
+    {
+      "name": "Search with no matches",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search:",
+          "value": "zzzzqq"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "No matching records found"
+        }
+      ]
+    }
+  ]
+}

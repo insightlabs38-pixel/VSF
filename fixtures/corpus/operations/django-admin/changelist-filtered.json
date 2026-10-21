@@ -1,0 +1,93 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "django-admin",
+  "page": "changelist-filtered",
+  "dossierSha256": "32e7000b9d4eb0b97a49ae16bc375151665452acdfff529969e3ae366c336af1",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-django",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION-OPERATIONS.md guide",
+      "dossier fixtures/corpus/dossiers/django-admin/changelist-filtered.md (accessibility tree and state)",
+      "annotation fixtures/corpus/annotations/django-admin/changelist-filtered.json (item names)",
+      "general knowledge of the public Django administration documentation (changelist search, filters, pagination, actions, change forms, inlines)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Switch the status filter to Retired",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Retired"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "status__exact=retired"
+        }
+      ]
+    },
+    {
+      "name": "Go to page 2 of the filtered results",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "2"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "p=2"
+        }
+      ]
+    },
+    {
+      "name": "Search for something that matches nothing",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search",
+          "value": "zzzz-no-such-product"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "0 results"
+        },
+        {
+          "kind": "rows",
+          "target": "Products",
+          "count": 0
+        }
+      ]
+    },
+    {
+      "name": "Clear the search and filters via 47 total",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "47 total"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "47 products"
+        }
+      ]
+    }
+  ]
+}

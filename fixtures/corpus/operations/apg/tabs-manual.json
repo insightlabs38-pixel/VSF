@@ -1,0 +1,42 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "apg",
+ "page": "tabs-manual",
+ "dossierSha256": "77ee58d74116882a4a62520c0fc79463c3ac9842b920ac074338e3cf700b5a43",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-apg",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "page dossier",
+   "page annotation",
+   "W3C ARIA Authoring Practices pattern documentation"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Show second tab",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Danish Composers"
+    },
+    {
+     "do": "press",
+     "key": "ArrowRight"
+    },
+    {
+     "do": "press",
+     "key": "Enter"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "Carl Joachim Andersen"
+    }
+   ]
+  }
+ ]
+}

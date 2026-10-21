@@ -1,0 +1,119 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "tabulator",
+  "page": "sorting-filtering",
+  "dossierSha256": "d7576a47ac6c7729742d04dc8400823fba9eb2b1c41e29a4252e37805b214a2d",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "Tabulator public documentation (tabulator.info)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Filter by engineering department",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Dept = Engineering"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Mary May"
+        },
+        {
+          "kind": "text",
+          "contains": "Oli Bob"
+        },
+        {
+          "kind": "rows",
+          "target": "Sorting & Filtering",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "name": "Filter under age 30",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Age < 30"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Mary May"
+        },
+        {
+          "kind": "text",
+          "contains": "Margret M."
+        },
+        {
+          "kind": "rows",
+          "target": "Sorting & Filtering",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "name": "Type a name filter",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name",
+          "value": "Ng"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Van Ng"
+        },
+        {
+          "kind": "absent",
+          "contains": "Oli Bob"
+        },
+        {
+          "kind": "rows",
+          "target": "Sorting & Filtering",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "name": "Clear filters after filtering",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Dept = Engineering"
+        },
+        {
+          "do": "click",
+          "target": "Clear filters"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Mary May"
+        },
+        {
+          "kind": "rows",
+          "target": "Sorting & Filtering",
+          "count": 8
+        }
+      ]
+    }
+  ]
+}
