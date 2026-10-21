@@ -1,0 +1,30 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "slickgrid",
+  "page": "editing",
+  "dossierSha256": "0beb1fe6cd280ae890925189249a44722cd47d8656c885aedc3c8ebd6ae46bac",
+  "annotator": {"kind": "separate-agent", "id": "annotator-slickgrid", "sawRecognizerOutput": false, "basis": ["dossier accessibility tree","SlickGrid public documentation and example descriptions (github.com/6pac/SlickGrid)"]},
+  "fields": [],
+  "actions": [
+    {"name": "Auto-edit ON", "effect": "state_change"},
+    {"name": "Auto-edit OFF", "effect": "state_change"},
+    {"name": "Auto-edit by keyboard ON", "effect": "state_change"},
+    {"name": "Auto-edit by keyboard OFF", "effect": "state_change"},
+    {"name": "AutoCommitEdit ON", "effect": "state_change"},
+    {"name": "AutoCommitEdit OFF", "effect": "state_change"}
+  ],
+  "collections": [
+    {"name": "Example - Editing", "columns": ["Title", "Description", "Duration", "% Complete", "Start", "Finish", "Effort Driven"], "rows": null, "virtualized": true}
+  ],
+  "composites": [
+    {"kind": "virtual_list", "name": "Example - Editing"},
+    {"kind": "editable_cell", "name": "Editable grid cells"}
+  ],
+  "workflows": [
+    {"name": "Edit a cell in place", "needs": ["Example - Editing", "Editable grid cells"], "effect": "state_change"},
+    {"name": "Choose how editing starts", "needs": ["Auto-edit ON", "Auto-edit OFF", "Auto-edit by keyboard ON", "Auto-edit by keyboard OFF", "AutoCommitEdit ON", "AutoCommitEdit OFF"], "effect": "state_change"}
+  ],
+  "unsupported": [
+    {"what": "Cell editors (text, long text, percent complete, date picker, checkbox)", "reason": "Editors only exist while a cell is being edited and are not present in the tree of the loaded state"}
+  ]
+}

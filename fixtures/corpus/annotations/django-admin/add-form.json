@@ -1,0 +1,187 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "django-admin",
+  "page": "add-form",
+  "dossierSha256": "9973ef2ca316f087fe3407a7ca1783e7795fc07190e6428a3114612fabac3433",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-django-admin",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION.md guide",
+      "tests/corpus/src/annotation.ts type shapes (vsf-corpus-annotation-v1)",
+      "dossier fixtures/corpus/dossiers/django-admin/add-form.md (Chromium accessibility tree and state description)",
+      "general knowledge of the public Django administration documentation (ModelAdmin options, actions, list_filter, search_fields, pagination, change forms, inlines, delete confirmation); not fetched during this session"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Filter navigation items",
+      "kind": "text"
+    },
+    {
+      "name": "Name:",
+      "kind": "text"
+    },
+    {
+      "name": "Sku:",
+      "kind": "text"
+    },
+    {
+      "name": "Category:",
+      "kind": "choice"
+    },
+    {
+      "name": "Price:",
+      "kind": "range"
+    },
+    {
+      "name": "In stock",
+      "kind": "toggle"
+    },
+    {
+      "name": "Status:",
+      "kind": "choice"
+    },
+    {
+      "name": "Released:",
+      "kind": "date"
+    },
+    {
+      "name": "Manual:",
+      "kind": "file"
+    },
+    {
+      "name": "Label",
+      "kind": "text"
+    },
+    {
+      "name": "Extra price",
+      "kind": "range"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Log out",
+      "effect": "state_change"
+    },
+    {
+      "name": "Change password",
+      "effect": "navigation"
+    },
+    {
+      "name": "Home",
+      "effect": "navigation"
+    },
+    {
+      "name": "Shop",
+      "effect": "navigation"
+    },
+    {
+      "name": "Products",
+      "effect": "navigation"
+    },
+    {
+      "name": "Add another category",
+      "effect": "navigation"
+    },
+    {
+      "name": "Today",
+      "effect": "unknown"
+    },
+    {
+      "name": "Choose a Date",
+      "effect": "navigation"
+    },
+    {
+      "name": "Remove",
+      "effect": "destructive"
+    },
+    {
+      "name": "Add another Variant",
+      "effect": "state_change"
+    },
+    {
+      "name": "Save",
+      "effect": "state_change"
+    },
+    {
+      "name": "Save and add another",
+      "effect": "state_change"
+    },
+    {
+      "name": "Save and continue editing",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Variants",
+      "columns": [
+        "Label",
+        "Extra price",
+        "Delete?"
+      ],
+      "rows": 1
+    }
+  ],
+  "composites": [
+    {
+      "kind": "file_input",
+      "name": "Manual:"
+    },
+    {
+      "kind": "date_picker",
+      "name": "Choose a Date"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Category:"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Add a product",
+      "needs": [
+        "Name:",
+        "Sku:",
+        "Category:",
+        "Price:",
+        "In stock",
+        "Status:",
+        "Released:",
+        "Save"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Add a product and start another",
+      "needs": [
+        "Name:",
+        "Sku:",
+        "Save and add another"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Add product variants",
+      "needs": [
+        "Add another Variant",
+        "Variants",
+        "Label",
+        "Extra price",
+        "Save"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Attach a manual file to a new product",
+      "needs": [
+        "Manual:",
+        "Save and continue editing"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

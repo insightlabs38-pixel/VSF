@@ -6,7 +6,19 @@ import type { Capture } from "./capture.ts";
 import { ROOT } from "./manifest.ts";
 import { aggregate, matchPage, type PageResult, type Recognition, type SnapNode } from "./match.ts";
 
-export const RECOGNIZER = `${ROOT}compiler/target/release/vsf-recognizer`;
+/** VSF_RECOGNIZER selects another build, for measuring an older one on the same captures. */
+export const RECOGNIZER = process.env.VSF_RECOGNIZER ?? `${ROOT}compiler/target/release/vsf-recognizer`;
+
+/** The pre-states wire format, so a recognizer built before B11-T02 can be measured on the same captures. */
+function legacyWire(snapshot: Capture["snapshot"]): unknown {
+  return {
+    ...snapshot,
+    nodes: (snapshot.nodes as unknown as { states?: string[]; rels: [string, number][] }[]).map(({ states, ...n }) => ({
+      ...n,
+      rels: n.rels.filter(([k]) => k !== "controls" && k !== "owns"),
+    })),
+  };
+}
 
 export interface Timed {
   result: Recognition;
@@ -19,7 +31,7 @@ export function recognize(capture: Capture, tmp: string): Timed {
   if (!existsSync(RECOGNIZER))
     throw new Error(`build the recognizer first: cargo build --release -p vsf-recognizer (${RECOGNIZER})`);
   const file = `${tmp}/${capture.source}__${capture.page}.json`;
-  writeFileSync(file, JSON.stringify(capture.snapshot));
+  writeFileSync(file, JSON.stringify(process.env.VSF_LEGACY_WIRE ? legacyWire(capture.snapshot) : capture.snapshot));
   const t0 = performance.now();
   const probe =
     "import resource,subprocess,sys;p=subprocess.run(sys.argv[1:],capture_output=True);sys.stdout.buffer.write(p.stdout);sys.stderr.write(p.stderr.decode()+'\\n'+str(resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss));sys.exit(p.returncode)";

@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
-import type { Browser } from "@playwright/test";
+import type { Browser, Page as PwPage } from "@playwright/test";
 import type { RecognizerInput } from "@vsf/observer";
-import { attach } from "../../observation/support/world.ts";
+import { attach, type Harness } from "../../observation/support/world.ts";
 import { mirrorFile } from "./cdn.ts";
 import { dirOf } from "./fetch.ts";
 import type { Page, Source } from "./manifest.ts";
@@ -23,6 +23,9 @@ export interface Capture {
 }
 
 const sha = (s: string): string => createHash("sha256").update(s).digest("hex");
+
+/** Pages that fill themselves with random sample data must show the same data on every capture. */
+const SEEDED_RANDOM = `(() => { let a = 0x9e3779b9; Math.random = () => { a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; })();`;
 
 const VOLATILE = /\d+(?:\.\d+)? [KMGT]?i?B of \d+(?:\.\d+)? [KMGT]?i?B used/;
 
@@ -46,9 +49,23 @@ export function structureDigest(
   );
 }
 
-/** Captures one page state with the real observer, as the extension would, in a hermetic browser context. */
-export async function capturePage(browser: Browser, origin: string, s: Source, p: Page): Promise<Capture> {
-  const t0 = performance.now();
+export interface Opened {
+  page: PwPage;
+  /** Present when the observer is attached. */
+  h?: Harness | undefined;
+  blocked: string[];
+  mirrored: string[];
+  close(): Promise<void>;
+}
+
+/** Opens one page state in a hermetic context and replays the steps that reach it; the observer is attached on request. */
+export async function openState(
+  browser: Browser,
+  origin: string,
+  s: Source,
+  p: Page,
+  observe: boolean,
+): Promise<Opened> {
   const ctx = await browser.newContext({
     viewport: { width: 1280, height: 800 },
     locale: "en-US",
@@ -58,6 +75,7 @@ export async function capturePage(browser: Browser, origin: string, s: Source, p
   });
   const blocked: string[] = [];
   const mirrored: string[] = [];
+  await ctx.addInitScript(SEEDED_RANDOM);
   await ctx.route("**/*", async (route) => {
     const url = route.request().url();
     if (url.startsWith(origin) || url.startsWith("data:") || url.startsWith("blob:") || url.startsWith("about:"))
@@ -81,7 +99,7 @@ export async function capturePage(browser: Browser, origin: string, s: Source, p
   });
   try {
     const page = await ctx.newPage();
-    const h = await attach(page, { allow: [origin] });
+    const h = observe ? await attach(page, { allow: [origin] }) : undefined;
     await page.goto(`${origin}${p.path}`, { waitUntil: "load" });
     await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
     for (const step of p.steps ?? []) {
@@ -101,7 +119,21 @@ export async function capturePage(browser: Browser, origin: string, s: Source, p
           );
       await page.waitForTimeout(step.waitMs ?? 250);
     }
-    await h.settle();
+    if (h) await h.settle();
+    return { page, h, blocked, mirrored, close: () => ctx.close() };
+  } catch (err) {
+    await ctx.close();
+    throw err;
+  }
+}
+
+/** Captures one page state with the real observer, as the extension would, in a hermetic browser context. */
+export async function capturePage(browser: Browser, origin: string, s: Source, p: Page): Promise<Capture> {
+  const t0 = performance.now();
+  const opened = await openState(browser, origin, s, p, true);
+  const { page, blocked, mirrored } = opened;
+  const h = opened.h as Harness;
+  try {
     const snapshot = h.collector.replica.toRecognizerInput();
     const aria = await page
       .locator("body")
@@ -122,6 +154,6 @@ export async function capturePage(browser: Browser, origin: string, s: Source, p
       structureSha256: structureDigest(snapshot.nodes as never),
     };
   } finally {
-    await ctx.close();
+    await opened.close();
   }
 }

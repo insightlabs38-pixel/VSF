@@ -52,11 +52,17 @@ export interface ReleaseSource {
   sha256: string;
 }
 
+export interface PipSource {
+  kind: "pip";
+  /** Exact requirement lines, each pinned with == and at least one --hash=sha256 value. */
+  requirements: string[];
+}
+
 export interface Source {
   id: string;
   name: string;
   upstream: string;
-  fetch: GitSource | ReleaseSource;
+  fetch: GitSource | ReleaseSource | PipSource;
   license: string;
   licenseNote: string;
   framework: string;
@@ -111,6 +117,10 @@ export function validateManifest(m: Manifest): Problem[] {
     if (s.fetch.kind === "git" && !SHA1.test(s.fetch.rev)) add("source.unpinned", `${s.id}: ${s.fetch.rev}`);
     if (s.fetch.kind === "release" && !SHA256.test(s.fetch.sha256))
       add("source.unpinned", `${s.id}: release without sha256`);
+    if (s.fetch.kind === "pip")
+      for (const r of s.fetch.requirements)
+        if (!/^[A-Za-z0-9_.-]+==[0-9][^\s]*(?: --hash=sha256:[0-9a-f]{64})+$/.test(r))
+          add("source.unpinned", `${s.id}: requirement not pinned with a hash: ${r}`);
     for (const k of ["upstream", "license", "licenseNote", "framework", "family", "privacy"] as const)
       if (!s[k]) add("source.provenance", `${s.id}: missing ${k}`);
     if (!s.groundTruth?.basis?.length || !s.groundTruth.method || !s.groundTruth.annotator)

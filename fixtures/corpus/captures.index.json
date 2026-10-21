@@ -182,6 +182,60 @@
    "blocked": 1,
    "mirrored": 1
   },
+  "django-admin/add-form": {
+   "structureSha256": "f915784bf894ee1c4ad0179e07e5256eab7fb9fca28af22723dd85a182426b03",
+   "nodes": 284,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/change-form": {
+   "structureSha256": "f6f1dd7e4eb812513c7f515a99c43cfef64a8a511176ed468fac4366fc341c4b",
+   "nodes": 289,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/changelist": {
+   "structureSha256": "33af837cafb9a0a9195da7fccf223cf0ca7320157e555ec602a7b7345753cb24",
+   "nodes": 312,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/changelist-filtered": {
+   "structureSha256": "49f97fcb867136ccc7c2dc3eb1a4100105e07ddb9072b2e8d461cf381644207b",
+   "nodes": 314,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/changelist-page2": {
+   "structureSha256": "35ce1fe79fe08df41fb984cf70e9a5a7c78511c1f525bdd45baf04679f8d119d",
+   "nodes": 312,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/changelist-selected": {
+   "structureSha256": "77bbdb0450b498dc382b0ade124635c66607d7a3603b2e2342e3eee028dda144",
+   "nodes": 312,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/delete-confirmation": {
+   "structureSha256": "91ef4bd607885e62841d0c983bf413abfb0ea8814838b2402152b25226a00355",
+   "nodes": 93,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/index": {
+   "structureSha256": "2f0b0799b0634fbca3650c48e774f2b0e697ba27eee5e5957641f19865d37eff",
+   "nodes": 84,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "django-admin/login": {
+   "structureSha256": "7187f6b32c17244be6cce25fd703aa67a7565ebbf90fd3b20fb02517fb722771",
+   "nodes": 34,
+   "blocked": 0,
+   "mirrored": 0
+  },
   "filebrowser/files": {
    "structureSha256": "65ab71c675fdbd41ba23431c8b6c511a9175eca70b9ab921dc4b70d2e997644b",
    "nodes": 174,
@@ -215,6 +269,30 @@
   "filebrowser/upload": {
    "structureSha256": "6fbd9620e79ae2eacc2845efb57494d8e50aff34dd538bf62ab098199becde54",
    "nodes": 188,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "fullcalendar/daygrid-views": {
+   "structureSha256": "b3fed4c370d8b3eadc66d6487893f6171b46dbaad1fe28c8b423743b7e37a61f",
+   "nodes": 400,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "fullcalendar/list-views": {
+   "structureSha256": "8e570e6bc5c0bb9e1375901052346c28eaa28009238a4462d443044bc2e50032",
+   "nodes": 117,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "fullcalendar/month-view": {
+   "structureSha256": "59b3fc133db91a4b425609bf76598cc1b69ea50e354cb048a12c04c0952d5d76",
+   "nodes": 456,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  "fullcalendar/selectable": {
+   "structureSha256": "cdb7d54f1bb0ee469f7ec3da331ba8c62ea757508d75657659cc1a5ddcb3c058",
+   "nodes": 394,
    "blocked": 0,
    "mirrored": 0
   },
@@ -295,6 +373,30 @@
    "nodes": 20,
    "blocked": 0,
    "mirrored": 0
+  },
+  "slickgrid/checkbox-row-select": {
+   "structureSha256": "4317ef31941833344a0a0d342a0fa51499bc4437187d2ef7f3989bed0c2b22fb",
+   "nodes": 547,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  "slickgrid/editing": {
+   "structureSha256": "f4ab9c9f18f8073e04cc4ef8d30f71acc5e0b922adaa2964cfb39de4093acf32",
+   "nodes": 405,
+   "blocked": 0,
+   "mirrored": 3
+  },
+  "slickgrid/large-dataview": {
+   "structureSha256": "945bc54fcdcdae54067e471d50f35fcaa4acbe3a371836170efb1d9acf1a64bf",
+   "nodes": 311,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  "slickgrid/simple": {
+   "structureSha256": "b91b4c351ce936e58cd308fa88515961462e5bba748e6594abdd87253d1f3b3e",
+   "nodes": 340,
+   "blocked": 0,
+   "mirrored": 1
   },
   "tabulator/basic-table": {
    "structureSha256": "2457020d9dfec415b43f8fde6cb0141b717b0f4c65795765e009bc587ab02ca2",

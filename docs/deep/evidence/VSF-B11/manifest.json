@@ -389,6 +389,78 @@
       "result": "PASS",
       "log": "logs/VSF-B11-T02.positive-corpus-reproducible-all.log",
       "sha256": "7106722ee094ea7f3da6c8066f993bf8b96a5d73885ee320345f448cdcb80915"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-reproducible-capture-all",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-reproducible-capture-all.log",
+      "sha256": "f2a16e6e3c6ebdfa7b9b7c0fac3f2e6e9b6ae4fd5b60137ed1111f9b1c125308"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-validate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-validate.log",
+      "sha256": "fdb7ed80d9feea80499c6f89af1d4f07d2600967457ed9a3a4d33ce39a69fe2a"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-baseline-pre-b11",
+      "command": "sh -c VSF_LEGACY_WIRE=1 VSF_RECOGNIZER=/root/vsf-baseline/vsf-recognizer-pre-b11 node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-t09-pre-b11-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-baseline-pre-b11.log",
+      "sha256": "fb727d50d4b755342ac41bcf91014f5913f3f7a67ce80ddd4553d9d9849e717f"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-baseline-t02",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-t09-t02-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-baseline-t02.log",
+      "sha256": "d32ba609ee439ee2ba97a8b89b56e196a8b8839c0e0e423800f126d02daba74d"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "negative-manifest-rules",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.negative-manifest-rules.log",
+      "sha256": "de2d3b928f7efb123cc14ef94701d7da0f888f401156cfe3fe090ae27a29130c"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "regression-typecheck",
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.regression-typecheck.log",
+      "sha256": "8a04b30c50502780fb29f8b249fca16f9c5736fc447846e1bebb7e306ca07c20"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "regression-observer-element-map",
+      "command": "sh -c cd tests/observation && npx playwright test specs/element.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.regression-observer-element-map.log",
+      "sha256": "b2082df69982540e1aa6d255026df5e7cd3695d65fbc4c5186b49612db0f9040"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.regression-biome.log",
+      "sha256": "b09362b278cffd59409fbf77654754650a0d31191ad19d989359a52c6d526223"
     }
   ]
 }

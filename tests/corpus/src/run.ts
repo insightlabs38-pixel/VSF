@@ -53,7 +53,7 @@ export async function captureSources(sources: Source[], only?: string[], refresh
       const running = await start(s);
       try {
         for (const p of s.pages) {
-          if (only && !only.includes(`${s.id}/${p.id}`)) continue;
+          if (only && !only.some((o) => o === s.id || o === `${s.id}/${p.id}`)) continue;
           const c = await capturePage(browser, running.origin, s, p);
           mkdirSync(`${CACHE}captures/${s.id}`, { recursive: true });
           mkdirSync(`${ROOT}fixtures/corpus/dossiers/${s.id}`, { recursive: true });

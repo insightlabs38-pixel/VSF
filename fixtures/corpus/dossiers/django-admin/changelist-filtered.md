@@ -1,0 +1,330 @@
+# Django administration - changelist-filtered
+Upstream: https://github.com/django/django
+Framework: django-templates
+Ground truth basis: Django administration documentation (ModelAdmin options, actions, filters, pagination, change forms); Chromium accessibility tree
+Page title: Select product to change | Django site admin
+State: signed in, filtered change list
+What people do here (from the manifest):
+- narrow the list by filter and search
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Skip to main content":
+  - /url: "#content-start"
+- banner:
+  - link "Django administration":
+    - /url: /admin/
+  - text: Welcome,
+  - strong: admin
+  - text: .
+  - link "View site":
+    - /url: /
+  - text: /
+  - link "Change password":
+    - /url: /admin/password_change/
+  - text: /
+  - button "Log out"
+  - 'button "Toggle theme (current theme: auto)"'
+- navigation "Breadcrumbs":
+  - link "Home":
+    - /url: /admin/
+  - text: ›
+  - link "Shop":
+    - /url: /admin/shop/
+  - text: › Products
+- button "Toggle navigation": «
+- navigation "Sidebar":
+  - searchbox "Filter navigation items"
+  - table "Authentication and Authorization":
+    - caption:
+      - link "Authentication and Authorization":
+        - /url: /admin/auth/
+    - rowgroup:
+      - row "Model name Add link Change or view list link":
+        - columnheader "Model name"
+        - columnheader "Add link"
+        - columnheader "Change or view list link"
+    - rowgroup:
+      - row "Groups Add":
+        - rowheader "Groups":
+          - link "Groups":
+            - /url: /admin/auth/group/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/auth/group/add/
+      - row "Users Add":
+        - rowheader "Users":
+          - link "Users":
+            - /url: /admin/auth/user/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/auth/user/add/
+  - table "Shop":
+    - caption:
+      - link "Shop":
+        - /url: /admin/shop/
+    - rowgroup:
+      - row "Model name Add link Change or view list link":
+        - columnheader "Model name"
+        - columnheader "Add link"
+        - columnheader "Change or view list link"
+    - rowgroup:
+      - row "Categories Add":
+        - rowheader "Categories":
+          - link "Categories":
+            - /url: /admin/shop/category/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/shop/category/add/
+      - row "Products Add":
+        - rowheader "Products":
+          - link "Products":
+            - /url: /admin/shop/product/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/shop/product/add/
+- main:
+  - heading "Select product to change" [level=1]
+  - list:
+    - listitem:
+      - link "Add product":
+        - /url: /admin/shop/product/add/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+  - search:
+    - img "Search"
+    - textbox "Search": Product
+    - button "Search"
+    - text: 16 results (
+    - link "47 total":
+      - /url: "?"
+    - text: )
+  - navigation:
+    - link "2024":
+      - /url: "?q=Product&released__year=2024&status__exact=live"
+    - link "2025":
+      - /url: "?q=Product&released__year=2025&status__exact=live"
+  - text: "Action:"
+  - combobox "Action:":
+    - option "---------" [selected]
+    - option "Delete selected products"
+    - option "Mark selected products as live"
+  - button "Go"
+  - text: 0 of 10 selected
+  - table:
+    - rowgroup:
+      - row "Select all objects on this page for an action Name Sku Category Price In stock Status Released":
+        - columnheader "Select all objects on this page for an action":
+          - checkbox "Select all objects on this page for an action"
+        - columnheader "Name":
+          - link "Name":
+            - /url: "?o=1&q=Product&status__exact=live"
+        - columnheader "Sku":
+          - link "Sku":
+            - /url: "?o=2&q=Product&status__exact=live"
+        - columnheader "Category":
+          - link "Category":
+            - /url: "?o=3&q=Product&status__exact=live"
+        - columnheader "Price":
+          - link "Price":
+            - /url: "?o=4&q=Product&status__exact=live"
+        - columnheader "In stock":
+          - link "In stock":
+            - /url: "?o=5&q=Product&status__exact=live"
+        - columnheader "Status":
+          - link "Status":
+            - /url: "?o=6&q=Product&status__exact=live"
+        - columnheader "Released":
+          - link "Released":
+            - /url: "?o=7&q=Product&status__exact=live"
+    - rowgroup:
+      - row "Select this object for an action - Product 46 Product 46 SKU-0046 Displays 159.00 True Live Feb. 18, 2025":
+        - cell "Select this object for an action - Product 46":
+          - checkbox "Select this object for an action - Product 46"
+        - cell "Product 46":
+          - link "Product 46":
+            - /url: /admin/shop/product/46/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0046"
+        - cell "Displays"
+        - cell "159.00"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Feb. 18, 2025"
+      - row "Select this object for an action - Product 43 Product 43 SKU-0043 Storage 149.25 True Live Jan. 22, 2025":
+        - cell "Select this object for an action - Product 43":
+          - checkbox "Select this object for an action - Product 43"
+        - cell "Product 43":
+          - link "Product 43":
+            - /url: /admin/shop/product/43/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0043"
+        - cell "Storage"
+        - cell "149.25"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Jan. 22, 2025"
+      - row "Select this object for an action - Product 40 Product 40 SKU-0040 Audio 139.50 True Live Dec. 26, 2024":
+        - cell "Select this object for an action - Product 40":
+          - checkbox "Select this object for an action - Product 40"
+        - cell "Product 40":
+          - link "Product 40":
+            - /url: /admin/shop/product/40/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0040"
+        - cell "Audio"
+        - cell "139.50"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Dec. 26, 2024"
+      - row "Select this object for an action - Product 37 Product 37 SKU-0037 Cables 129.75 True Live Nov. 29, 2024":
+        - cell "Select this object for an action - Product 37":
+          - checkbox "Select this object for an action - Product 37"
+        - cell "Product 37":
+          - link "Product 37":
+            - /url: /admin/shop/product/37/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0037"
+        - cell "Cables"
+        - cell "129.75"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Nov. 29, 2024"
+      - row "Select this object for an action - Product 34 Product 34 SKU-0034 Displays 120.00 True Live Nov. 2, 2024":
+        - cell "Select this object for an action - Product 34":
+          - checkbox "Select this object for an action - Product 34"
+        - cell "Product 34":
+          - link "Product 34":
+            - /url: /admin/shop/product/34/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0034"
+        - cell "Displays"
+        - cell "120.00"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Nov. 2, 2024"
+      - row "Select this object for an action - Product 31 Product 31 SKU-0031 Storage 110.25 True Live Oct. 6, 2024":
+        - cell "Select this object for an action - Product 31":
+          - checkbox "Select this object for an action - Product 31"
+        - cell "Product 31":
+          - link "Product 31":
+            - /url: /admin/shop/product/31/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0031"
+        - cell "Storage"
+        - cell "110.25"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Oct. 6, 2024"
+      - row "Select this object for an action - Product 28 Product 28 SKU-0028 Audio 100.50 True Live Sept. 9, 2024":
+        - cell "Select this object for an action - Product 28":
+          - checkbox "Select this object for an action - Product 28"
+        - cell "Product 28":
+          - link "Product 28":
+            - /url: /admin/shop/product/28/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0028"
+        - cell "Audio"
+        - cell "100.50"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Sept. 9, 2024"
+      - row "Select this object for an action - Product 25 Product 25 SKU-0025 Cables 90.75 True Live Aug. 13, 2024":
+        - cell "Select this object for an action - Product 25":
+          - checkbox "Select this object for an action - Product 25"
+        - cell "Product 25":
+          - link "Product 25":
+            - /url: /admin/shop/product/25/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0025"
+        - cell "Cables"
+        - cell "90.75"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "Aug. 13, 2024"
+      - row "Select this object for an action - Product 22 Product 22 SKU-0022 Displays 81.00 True Live July 17, 2024":
+        - cell "Select this object for an action - Product 22":
+          - checkbox "Select this object for an action - Product 22"
+        - cell "Product 22":
+          - link "Product 22":
+            - /url: /admin/shop/product/22/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0022"
+        - cell "Displays"
+        - cell "81.00"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "July 17, 2024"
+      - row "Select this object for an action - Product 19 Product 19 SKU-0019 Storage 71.25 True Live June 20, 2024":
+        - cell "Select this object for an action - Product 19":
+          - checkbox "Select this object for an action - Product 19"
+        - cell "Product 19":
+          - link "Product 19":
+            - /url: /admin/shop/product/19/change/?_changelist_filters=status__exact%3Dlive%26q%3DProduct
+        - cell "SKU-0019"
+        - cell "Storage"
+        - cell "71.25"
+        - cell "True":
+          - img "True"
+        - cell "Live"
+        - cell "June 20, 2024"
+  - paragraph:
+    - text: "1"
+    - link "2":
+      - /url: "?p=2&q=Product&status__exact=live"
+    - text: 16 products
+    - link "Show all":
+      - /url: "?all=&q=Product&status__exact=live"
+  - navigation "Filter":
+    - heading "Filter" [level=2]
+    - heading "Show counts" [level=3]:
+      - link "Show counts":
+        - /url: "?_facets=True&q=Product&status__exact=live"
+    - heading "✖ Clear all filters" [level=3]:
+      - link "✖ Clear all filters":
+        - /url: "?q=Product"
+    - group:
+      - text: ↓ By status
+      - list:
+        - listitem:
+          - link "All":
+            - /url: "?q=Product"
+        - listitem:
+          - link "Draft":
+            - /url: "?q=Product&status__exact=draft"
+        - listitem:
+          - link "Live":
+            - /url: "?q=Product&status__exact=live"
+        - listitem:
+          - link "Retired":
+            - /url: "?q=Product&status__exact=retired"
+    - group:
+      - text: ↓ By in stock
+      - list:
+        - listitem:
+          - link "All":
+            - /url: "?q=Product&status__exact=live"
+        - listitem:
+          - link "Yes":
+            - /url: "?in_stock__exact=1&q=Product&status__exact=live"
+        - listitem:
+          - link "No":
+            - /url: "?in_stock__exact=0&q=Product&status__exact=live"
+    - group:
+      - text: ↓ By category
+      - list:
+        - listitem:
+          - link "All":
+            - /url: "?q=Product&status__exact=live"
+        - listitem:
+          - link "Audio":
+            - /url: "?category__id__exact=1&q=Product&status__exact=live"
+        - listitem:
+          - link "Cables":
+            - /url: "?category__id__exact=2&q=Product&status__exact=live"
+        - listitem:
+          - link "Displays":
+            - /url: "?category__id__exact=3&q=Product&status__exact=live"
+        - listitem:
+          - link "Storage":
+            - /url: "?category__id__exact=4&q=Product&status__exact=live"
+- contentinfo
+```

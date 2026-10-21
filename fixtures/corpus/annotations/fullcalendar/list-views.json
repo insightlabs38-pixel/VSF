@@ -1,0 +1,113 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "fullcalendar",
+  "page": "list-views",
+  "dossierSha256": "80b7932fbcd8067aac24d1725230d55a7657d55bb4e6204bc50e3e27e0cd1bab",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-fullcalendar",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier list-views.md (accessibility tree and description)",
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      "FullCalendar public documentation knowledge (toolbar, views, navLinks, selectable, events)"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Previous Week",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next Week",
+      "effect": "navigation"
+    },
+    {
+      "name": "This Week",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to Sunday",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 8, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to Monday",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 9, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to Wednesday",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 11, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to Thursday",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 12, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to Friday",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 13, 2023",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "January 8 \u2013 14, 2023",
+      "columns": [],
+      "rows": 5
+    }
+  ],
+  "composites": [
+    {
+      "kind": "tabs",
+      "name": "Change view"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Read the week's events as a list",
+      "needs": [
+        "January 8 \u2013 14, 2023"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Change the listed range",
+      "needs": [
+        "Previous Week",
+        "Next Week",
+        "This Week",
+        "Change view"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Open a day from the list",
+      "needs": [
+        "January 8 \u2013 14, 2023",
+        "Go to Sunday"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

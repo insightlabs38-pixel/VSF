@@ -1,0 +1,2 @@
+$ sh -c VSF_LEGACY_WIRE=1 VSF_RECOGNIZER=/root/vsf-baseline/vsf-recognizer-pre-b11 node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-t09-pre-b11-dev-validation.json
+[exit 0]

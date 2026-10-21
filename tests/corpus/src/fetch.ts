@@ -26,7 +26,12 @@ function runRetrying(cwd: string, cmd: string, args: string[]): string {
 export function fetchSource(s: Source): string {
   const dir = dirOf(s);
   const stamp = `${dir}.pinned`;
-  const want = s.fetch.kind === "git" ? s.fetch.rev : s.fetch.sha256;
+  const want =
+    s.fetch.kind === "git"
+      ? s.fetch.rev
+      : s.fetch.kind === "release"
+        ? s.fetch.sha256
+        : createHash("sha256").update(s.fetch.requirements.join("\n")).digest("hex");
   if (existsSync(stamp) && readFileSync(stamp, "utf8") === want) return dir;
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
@@ -38,6 +43,18 @@ export function fetchSource(s: Source): string {
     run(dir, "git", ["checkout", "-q", "FETCH_HEAD"]);
     const got = run(dir, "git", ["rev-parse", "HEAD"]);
     if (got !== s.fetch.rev) throw new Error(`${s.id}: fetched ${got}, pinned ${s.fetch.rev}`);
+  } else if (s.fetch.kind === "pip") {
+    writeFileSync(`${dir}requirements.txt`, `${s.fetch.requirements.join("\n")}\n`);
+    runRetrying(dir, "python3", ["-m", "venv", `${dir}venv`]);
+    runRetrying(dir, `${dir}venv/bin/pip`, [
+      "install",
+      "--quiet",
+      "--no-deps",
+      "--require-hashes",
+      "--disable-pip-version-check",
+      "-r",
+      `${dir}requirements.txt`,
+    ]);
   } else {
     const file = `${dir}download.bin`;
     runRetrying(dir, "curl", ["-sSL", "--fail", "-o", file, s.fetch.url]);

@@ -1,0 +1,47 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "django-admin",
+  "page": "login",
+  "dossierSha256": "96059eabcd3d01a7e71da58b53ea22531594abe5bde7c8c424152631eea75e67",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-django-admin",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION.md guide",
+      "tests/corpus/src/annotation.ts type shapes (vsf-corpus-annotation-v1)",
+      "dossier fixtures/corpus/dossiers/django-admin/login.md (Chromium accessibility tree and state description)",
+      "general knowledge of the public Django administration documentation (ModelAdmin options, actions, list_filter, search_fields, pagination, change forms, inlines, delete confirmation); not fetched during this session"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Username:",
+      "kind": "text"
+    },
+    {
+      "name": "Password:",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Log in",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Sign in to the administration site",
+      "needs": [
+        "Username:",
+        "Password:",
+        "Log in"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

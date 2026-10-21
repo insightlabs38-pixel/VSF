@@ -180,7 +180,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 - [ ] `VSF-B11-T06` Re-run independent app corpus and measure fix leverage
 - [x] `VSF-B11-T07` Bootstrap an independent application corpus and measured baseline
 - [x] `VSF-B11-T08` Extend the development corpus with uploads, virtualized grids, pagination and bulk selection
-- [ ] `VSF-B11-T09` Fill corpus gaps: a virtualized grid, a server-backed administrative site with bulk actions and pagination, and a calendar _(READY)_
+- [ ] `VSF-B11-T09` Fill corpus gaps: a virtualized grid, a server-backed administrative site with bulk actions and pagination, and a calendar _(ACTIVE)_
 - [ ] `VSF-B11-T10` Measure executable-operation correctness against disposable state, before and after
 
 ### B12 · Expand advanced UI and developer/research tools

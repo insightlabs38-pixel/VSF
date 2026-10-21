@@ -42,6 +42,14 @@ test("a manifest that is unpinned, unlicensed, contaminated or unannotated is re
       const r = m.sources.find((s) => s.fetch.kind === "release");
       if (r?.fetch.kind === "release") r.fetch.sha256 = "x";
     },
+    "package requirement without a hash": (m) => {
+      const r = m.sources.find((s) => s.fetch.kind === "pip");
+      if (r?.fetch.kind === "pip") r.fetch.requirements[0] = "Django==5.2.18";
+    },
+    "package requirement left unpinned": (m) => {
+      const r = m.sources.find((s) => s.fetch.kind === "pip");
+      if (r?.fetch.kind === "pip") r.fetch.requirements[0] = `Django>=5 --hash=sha256:${"a".repeat(64)}`;
+    },
     "unknown partition": (m) => {
       (m.sources[0] as { partition: string }).partition = "test";
     },

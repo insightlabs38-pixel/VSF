@@ -1,0 +1,275 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "fullcalendar",
+  "page": "daygrid-views",
+  "dossierSha256": "2da146a084da63b4a3c73fcb6781afd7769c5b4ded861a8018c6d458b23cdf19",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-fullcalendar",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier daygrid-views.md (accessibility tree and description)",
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      "FullCalendar public documentation knowledge (toolbar, views, navLinks, selectable, events)"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Previous Year",
+      "effect": "navigation"
+    },
+    {
+      "name": "Previous Month",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next Month",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next Year",
+      "effect": "navigation"
+    },
+    {
+      "name": "This Month",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 1, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 2, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 3, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 4, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 5, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 6, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 7, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 8, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 9, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 10, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 11, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 12, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 13, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 14, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 15, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 16, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 17, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 18, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 19, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 20, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 21, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 22, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 23, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 24, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 25, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 26, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 27, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 28, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 29, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 30, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to January 31, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 1, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 2, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 3, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 4, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 5, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 6, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 7, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 8, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 9, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 10, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "Go to February 11, 2023",
+      "effect": "navigation"
+    },
+    {
+      "name": "+3 more",
+      "effect": "navigation"
+    },
+    {
+      "name": "Click for Google",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "January 2023",
+      "columns": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "rows": 6
+    }
+  ],
+  "composites": [
+    {
+      "kind": "tabs",
+      "name": "Change view"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Browse months and years",
+      "needs": [
+        "Previous Year",
+        "Previous Month",
+        "Next Month",
+        "Next Year",
+        "This Month",
+        "January 2023"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Switch between month, week and day grid views",
+      "needs": [
+        "Change view",
+        "January 2023"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Open a day from the grid",
+      "needs": [
+        "January 2023",
+        "Go to January 12, 2023"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Reveal hidden events of a crowded day",
+      "needs": [
+        "+3 more"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

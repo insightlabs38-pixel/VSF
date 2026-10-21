@@ -87,7 +87,7 @@ async function main(): Promise<number> {
     case "provenance": {
       const rows = m.sources.map(
         (s) =>
-          `| ${s.id} | ${s.upstream.replace("https://github.com/", "")} | ${s.fetch.kind === "git" ? s.fetch.rev.slice(0, 12) : `release ${s.fetch.sha256.slice(0, 12)}`} | ${s.license} | ${s.framework} | ${s.family} | ${s.partition} | ${s.pages.length} |`,
+          `| ${s.id} | ${s.upstream.replace("https://github.com/", "")} | ${s.fetch.kind === "git" ? s.fetch.rev.slice(0, 12) : s.fetch.kind === "release" ? `release ${s.fetch.sha256.slice(0, 12)}` : `pip ${s.fetch.requirements[0]?.split(" ")[0]}`} | ${s.license} | ${s.framework} | ${s.family} | ${s.partition} | ${s.pages.length} |`,
       );
       const note = m.sources.flatMap((s) => (s.dropped ?? []).map((d) => `- ${s.id}/${d.page}: dropped, ${d.reason}`));
       console.log(

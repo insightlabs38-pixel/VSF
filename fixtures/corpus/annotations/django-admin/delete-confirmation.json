@@ -1,0 +1,76 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "django-admin",
+  "page": "delete-confirmation",
+  "dossierSha256": "38fda1408b759dd7e6a8bd78b65dea38a66d34969a85c009666ae1fcc6b9d074",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-django-admin",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION.md guide",
+      "tests/corpus/src/annotation.ts type shapes (vsf-corpus-annotation-v1)",
+      "dossier fixtures/corpus/dossiers/django-admin/delete-confirmation.md (Chromium accessibility tree and state description)",
+      "general knowledge of the public Django administration documentation (ModelAdmin options, actions, list_filter, search_fields, pagination, change forms, inlines, delete confirmation); not fetched during this session"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Filter navigation items",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Log out",
+      "effect": "state_change"
+    },
+    {
+      "name": "Change password",
+      "effect": "navigation"
+    },
+    {
+      "name": "Home",
+      "effect": "navigation"
+    },
+    {
+      "name": "Shop",
+      "effect": "navigation"
+    },
+    {
+      "name": "Products",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 01",
+      "effect": "navigation"
+    },
+    {
+      "name": "Yes, I’m sure",
+      "effect": "destructive"
+    },
+    {
+      "name": "No, take me back",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Confirm deleting the product",
+      "needs": [
+        "Yes, I’m sure"
+      ],
+      "effect": "destructive"
+    },
+    {
+      "name": "Cancel deleting the product",
+      "needs": [
+        "No, take me back"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

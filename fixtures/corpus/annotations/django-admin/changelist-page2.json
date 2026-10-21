@@ -1,0 +1,308 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "django-admin",
+  "page": "changelist-page2",
+  "dossierSha256": "b40398633e417924aaff4e133832b4487a16fc4b33d2dca4942392920a96d99f",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-django-admin",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION.md guide",
+      "tests/corpus/src/annotation.ts type shapes (vsf-corpus-annotation-v1)",
+      "dossier fixtures/corpus/dossiers/django-admin/changelist-page2.md (Chromium accessibility tree and state description)",
+      "general knowledge of the public Django administration documentation (ModelAdmin options, actions, list_filter, search_fields, pagination, change forms, inlines, delete confirmation); not fetched during this session"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Filter navigation items",
+      "kind": "text"
+    },
+    {
+      "name": "Search",
+      "kind": "text"
+    },
+    {
+      "name": "Action:",
+      "kind": "choice"
+    },
+    {
+      "name": "Select all objects on this page for an action",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 37",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 36",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 35",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 34",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 33",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 32",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 31",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 30",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 29",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 28",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Log out",
+      "effect": "state_change"
+    },
+    {
+      "name": "Change password",
+      "effect": "navigation"
+    },
+    {
+      "name": "Home",
+      "effect": "navigation"
+    },
+    {
+      "name": "Shop",
+      "effect": "navigation"
+    },
+    {
+      "name": "Add product",
+      "effect": "navigation"
+    },
+    {
+      "name": "Search",
+      "effect": "read"
+    },
+    {
+      "name": "Go",
+      "effect": "state_change"
+    },
+    {
+      "name": "2024",
+      "effect": "read"
+    },
+    {
+      "name": "2025",
+      "effect": "read"
+    },
+    {
+      "name": "Name",
+      "effect": "read"
+    },
+    {
+      "name": "Sku",
+      "effect": "read"
+    },
+    {
+      "name": "Category",
+      "effect": "read"
+    },
+    {
+      "name": "Price",
+      "effect": "read"
+    },
+    {
+      "name": "In stock",
+      "effect": "read"
+    },
+    {
+      "name": "Status",
+      "effect": "read"
+    },
+    {
+      "name": "Released",
+      "effect": "read"
+    },
+    {
+      "name": "Product 37",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 36",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 35",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 34",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 33",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 32",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 31",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 30",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 29",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 28",
+      "effect": "navigation"
+    },
+    {
+      "name": "1",
+      "effect": "navigation"
+    },
+    {
+      "name": "3",
+      "effect": "navigation"
+    },
+    {
+      "name": "4",
+      "effect": "navigation"
+    },
+    {
+      "name": "5",
+      "effect": "navigation"
+    },
+    {
+      "name": "Show all",
+      "effect": "navigation"
+    },
+    {
+      "name": "Show counts",
+      "effect": "read"
+    },
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Draft",
+      "effect": "read"
+    },
+    {
+      "name": "Live",
+      "effect": "read"
+    },
+    {
+      "name": "Retired",
+      "effect": "read"
+    },
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Yes",
+      "effect": "read"
+    },
+    {
+      "name": "No",
+      "effect": "read"
+    },
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Audio",
+      "effect": "read"
+    },
+    {
+      "name": "Cables",
+      "effect": "read"
+    },
+    {
+      "name": "Displays",
+      "effect": "read"
+    },
+    {
+      "name": "Storage",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Products",
+      "columns": [
+        "Name",
+        "Sku",
+        "Category",
+        "Price",
+        "In stock",
+        "Status",
+        "Released"
+      ],
+      "rows": 10
+    }
+  ],
+  "composites": [
+    {
+      "kind": "pagination",
+      "name": "Pagination"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Select all objects on this page for an action"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sortable columns"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Filter"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Page through products",
+      "needs": [
+        "Pagination",
+        "Products"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Open a product to edit it",
+      "needs": [
+        "Products"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

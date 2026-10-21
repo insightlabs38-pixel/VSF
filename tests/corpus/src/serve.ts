@@ -4,7 +4,7 @@ import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { extname, join, normalize, sep } from "node:path";
 import { dirOf } from "./fetch.ts";
-import type { Source } from "./manifest.ts";
+import { ROOT, type Source } from "./manifest.ts";
 
 const TYPES: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -92,16 +92,17 @@ export async function serveProcess(s: Source, work: string, port: number): Promi
   if (s.serve?.kind !== "process") throw new Error(`${s.id} is not a process`);
   const dir = dirOf(s);
   const sub = (a: string): string =>
-    a.replaceAll("{src}", dir).replaceAll("{work}", work).replaceAll("{port}", String(port));
+    a.replaceAll("{src}", dir).replaceAll("{work}", work).replaceAll("{port}", String(port)).replaceAll("{root}", ROOT);
+  const env = { ...process.env, CORPUS_WORK: work, PYTHONDONTWRITEBYTECODE: "1" };
   for (const step of s.serve.setup ?? []) {
     const [cmd = "", ...args] = step.map(sub);
     await new Promise<void>((resolve, reject) => {
-      const c = spawn(cmd, args, { cwd: work, stdio: "ignore" });
+      const c = spawn(cmd, args, { cwd: work, stdio: "ignore", env });
       c.on("exit", (code) => (code === 0 ? resolve() : reject(new Error(`${s.id}: setup ${cmd} exited ${code}`))));
     });
   }
   const [cmd = "", ...args] = s.serve.command.map(sub);
-  const child: ChildProcess = spawn(cmd, args, { cwd: work, stdio: "ignore" });
+  const child: ChildProcess = spawn(cmd, args, { cwd: work, stdio: "ignore", env });
   const origin = `http://127.0.0.1:${port}`;
   if (!(await healthy(`${origin}${s.serve.health}`, 20_000))) {
     child.kill("SIGKILL");

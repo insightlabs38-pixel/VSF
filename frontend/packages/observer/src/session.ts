@@ -244,6 +244,12 @@ export class Session {
     return this.epochNo;
   }
 
+  /** The live element behind an observed node id, for an executor that must act on exactly what was observed. */
+  elementOf(id: number): Element | null {
+    const n = this.live.get(id)?.node ?? null;
+    return n !== null && n.nodeType === 1 ? (n as Element) : null;
+  }
+
   get seq(): number {
     return this.seqNo;
   }

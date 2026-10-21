@@ -1,0 +1,19 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "slickgrid",
+  "page": "simple",
+  "dossierSha256": "72fd69c532e81c612dc181cad51b8b05ccf96d4653961f973ed59597277dfb5c",
+  "annotator": {"kind": "separate-agent", "id": "annotator-slickgrid", "sawRecognizerOutput": false, "basis": ["dossier accessibility tree","SlickGrid public documentation and example descriptions (github.com/6pac/SlickGrid)"]},
+  "fields": [],
+  "actions": [],
+  "collections": [
+    {"name": "Example 1 Simple Grid - ESM", "columns": ["Title", "Duration", "% Complete", "Start", "Finish", "Effort Driven"], "rows": null, "virtualized": true}
+  ],
+  "composites": [
+    {"kind": "virtual_list", "name": "Example 1 Simple Grid - ESM"}
+  ],
+  "workflows": [
+    {"name": "Read and scroll through the records of the grid", "needs": ["Example 1 Simple Grid - ESM"], "effect": "read"}
+  ],
+  "unsupported": []
+}

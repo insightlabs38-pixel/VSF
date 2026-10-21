@@ -9,6 +9,7 @@
       "!docs/deep",
       "!fixtures/golden",
       "!fixtures/recognition/snapshots",
+      "!fixtures/recognition/outputs",
       "!fixtures/primitives",
       "!fixtures/versions",
       "!fixtures/ui/compositions",
