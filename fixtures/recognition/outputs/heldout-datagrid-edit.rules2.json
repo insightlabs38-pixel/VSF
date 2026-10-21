@@ -1,0 +1,16 @@
+{
+  "rules": "2",
+  "schema": "vsf-recognition-v1",
+  "units": [
+    {"binding":{"source":"column_header","state":"bound","strength":"delegated","text":"Product"},"kind":"text","node":16,"scope":"Price list","type":"field","usable":true},
+    {"binding":{"source":"column_header","state":"bound","strength":"delegated","text":"Price"},"kind":"text","node":18,"scope":"Price list","type":"field","usable":true},
+    {"binding":{"source":"column_header","state":"bound","strength":"delegated","text":"Currency"},"kind":"text","node":20,"scope":"Price list","type":"field","usable":true},
+    {"binding":{"source":"column_header","state":"bound","strength":"delegated","text":"Product"},"kind":"text","node":23,"scope":"Price list","type":"field","usable":true},
+    {"binding":{"source":"column_header","state":"bound","strength":"delegated","text":"Price"},"kind":"text","node":25,"scope":"Price list","type":"field","usable":true},
+    {"binding":{"source":"column_header","state":"bound","strength":"delegated","text":"Currency"},"kind":"text","node":27,"scope":"Price list","type":"field","usable":true},
+    {"name":"Add row","node":6,"roles":["button"],"type":"action","usable":true,"verbs":["create"]},
+    {"name":"Save","node":7,"roles":["button"],"type":"action","usable":true,"verbs":["commit"]},
+    {"name":"Discard","node":8,"roles":["button"],"type":"action","usable":true,"verbs":["destroy"]},
+    {"columns":["Product","Price","Currency"],"label":"Price list","node":9,"rows":2,"type":"collection"}
+  ]
+}

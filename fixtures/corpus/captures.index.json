@@ -183,7 +183,7 @@
    "mirrored": 1
   },
   "filebrowser/files": {
-   "structureSha256": "75ebed5cf3a23ab409fa29e32995994e227943eba8e01c27005f34320bcbd82d",
+   "structureSha256": "65ab71c675fdbd41ba23431c8b6c511a9175eca70b9ab921dc4b70d2e997644b",
    "nodes": 174,
    "blocked": 0,
    "mirrored": 0
@@ -195,13 +195,13 @@
    "mirrored": 0
   },
   "filebrowser/new-folder": {
-   "structureSha256": "d0038b90c10b1fc9d34000c08fb82e63e3f36a359e970368ca8d48557b8c81a3",
+   "structureSha256": "8e6594301c6a4f807ded8d71e1fff0a0cdc5bc5b6cbffb6d00e0ff90b813fc8b",
    "nodes": 187,
    "blocked": 0,
    "mirrored": 0
   },
   "filebrowser/selected": {
-   "structureSha256": "a27376a7ff274ebe73d51d277e2934fe71a3e92dbb0451fda57a2602172f3b09",
+   "structureSha256": "0ba54669914487e9c13e12c0fc0233121569a420d6b141f57932097628fa6e0a",
    "nodes": 206,
    "blocked": 0,
    "mirrored": 0
@@ -213,7 +213,7 @@
    "mirrored": 0
   },
   "filebrowser/upload": {
-   "structureSha256": "d1a9c62fdde2b517e215152dbc4c5a1476fe67adf787e9cae848656d36460a20",
+   "structureSha256": "6fbd9620e79ae2eacc2845efb57494d8e50aff34dd538bf62ab098199becde54",
    "nodes": 188,
    "blocked": 0,
    "mirrored": 0

@@ -24,6 +24,11 @@ export interface Capture {
 
 const sha = (s: string): string => createHash("sha256").update(s).digest("hex");
 
+const VOLATILE = /\d+(?:\.\d+)? [KMGT]?i?B of \d+(?:\.\d+)? [KMGT]?i?B used/;
+
+/** Host disk usage shown by a page differs between machines and says nothing about structure. */
+const stable = (text: string | null): string | null => (text === null ? null : text.replace(VOLATILE, "<usage>"));
+
 export function structureDigest(
   nodes: {
     id: number;
@@ -36,7 +41,9 @@ export function structureDigest(
   }[],
 ): string {
   const at = new Map(nodes.map((n, i) => [n.id, i]));
-  return sha(JSON.stringify(nodes.map((n) => [at.get(n.parent) ?? -1, n.tag, n.role, n.name, n.text, n.flags])));
+  return sha(
+    JSON.stringify(nodes.map((n) => [at.get(n.parent) ?? -1, n.tag, n.role, n.name, stable(n.text), n.flags])),
+  );
 }
 
 /** Captures one page state with the real observer, as the extension would, in a hermetic browser context. */

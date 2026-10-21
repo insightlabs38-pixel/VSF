@@ -1,0 +1,9 @@
+{
+  "rules": "2",
+  "schema": "vsf-recognition-v1",
+  "units": [
+    {"name":"Edit","node":17,"roles":["button"],"type":"action","usable":true,"verbs":["navigate"]},
+    {"name":"Edit","node":23,"roles":["button"],"type":"action","usable":true,"verbs":["navigate"]},
+    {"columns":["SKU","Item","Stock","Actions"],"label":"Inventory items","node":6,"rows":2,"type":"collection"}
+  ]
+}

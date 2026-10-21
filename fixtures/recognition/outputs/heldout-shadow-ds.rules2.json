@@ -1,0 +1,11 @@
+{
+  "rules": "2",
+  "schema": "vsf-recognition-v1",
+  "units": [
+    {"binding":{"source":"wrapper_sibling","state":"bound","strength":"delegated","text":"Display name"},"kind":"text","node":12,"scope":null,"type":"field","usable":true},
+    {"binding":{"source":"wrapper_sibling","state":"bound","strength":"delegated","text":"Time zone"},"kind":"choice","node":17,"scope":null,"type":"field","usable":true},
+    {"binding":{"source":"enclosing_text","state":"bound","strength":"delegated","text":"Email me"},"kind":"toggle","node":24,"scope":"Notifications","type":"field","usable":true},
+    {"name":"Save","node":26,"roles":["button"],"type":"action","usable":true,"verbs":["commit"]},
+    {"name":"Reset","node":27,"roles":["button"],"type":"action","usable":true,"verbs":["destroy"]}
+  ]
+}

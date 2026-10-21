@@ -3,6 +3,7 @@ import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { test } from "node:test";
 import { type Annotation, validateAnnotation } from "../src/annotation.ts";
+import { structureDigest } from "../src/capture.ts";
 import { parseAlias, parseCdn } from "../src/cdn.ts";
 import { clusters } from "../src/evaluate.ts";
 import { loadManifest, type Manifest, validateManifest } from "../src/manifest.ts";
@@ -256,4 +257,11 @@ test("aliases and mounts only reach pinned packages and the served tree", async 
   } finally {
     await s.stop();
   }
+});
+
+test("host disk usage shown by a page does not change its structure digest, other text does", () => {
+  const node = (text: string) => [{ id: 1, parent: -1, tag: "p", role: null, name: null, text, flags: 1 }];
+  const a = structureDigest(node("18.5 GiB of 252 GiB used"));
+  assert.equal(a, structureDigest(node("3 MiB of 40 GiB used")));
+  assert.notEqual(a, structureDigest(node("18.5 GiB of 252 GiB free")));
 });

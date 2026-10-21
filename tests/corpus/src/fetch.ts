@@ -11,6 +11,17 @@ function run(cwd: string, cmd: string, args: string[]): string {
   return r.stdout.trim();
 }
 
+function runRetrying(cwd: string, cmd: string, args: string[]): string {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return run(cwd, cmd, args);
+    } catch (err) {
+      if (attempt >= 4) throw err;
+      spawnSync("sleep", [String(2 ** attempt)]);
+    }
+  }
+}
+
 /** Fetches exactly the pinned revision or release and refuses anything else. */
 export function fetchSource(s: Source): string {
   const dir = dirOf(s);
@@ -23,13 +34,13 @@ export function fetchSource(s: Source): string {
     run(dir, "git", ["init", "-q"]);
     run(dir, "git", ["remote", "add", "origin", s.fetch.url]);
     if (s.fetch.sparse) run(dir, "git", ["sparse-checkout", "set", ...s.fetch.sparse]);
-    run(dir, "git", ["fetch", "-q", "--depth", "1", "--filter=blob:none", "origin", s.fetch.rev]);
+    runRetrying(dir, "git", ["fetch", "-q", "--depth", "1", "--filter=blob:none", "origin", s.fetch.rev]);
     run(dir, "git", ["checkout", "-q", "FETCH_HEAD"]);
     const got = run(dir, "git", ["rev-parse", "HEAD"]);
     if (got !== s.fetch.rev) throw new Error(`${s.id}: fetched ${got}, pinned ${s.fetch.rev}`);
   } else {
     const file = `${dir}download.bin`;
-    run(dir, "curl", ["-sSL", "--fail", "-o", file, s.fetch.url]);
+    runRetrying(dir, "curl", ["-sSL", "--fail", "-o", file, s.fetch.url]);
     const got = createHash("sha256").update(readFileSync(file)).digest("hex");
     if (got !== s.fetch.sha256) {
       rmSync(file);
