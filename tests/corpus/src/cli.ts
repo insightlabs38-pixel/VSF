@@ -2,9 +2,11 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { validateAnnotation } from "./annotation.ts";
 import { clusters, summarize } from "./evaluate.ts";
+import { runOperations, summarizeOperations } from "./execute.ts";
 import { fetchSource } from "./fetch.ts";
 import { loadManifest, PARTITIONS, type Partition, ROOT, type Source, validateManifest } from "./manifest.ts";
-import { ANNOTATIONS, annotationPath, captureSources, dossierPath, evaluateSources } from "./run.ts";
+import { validateOperations } from "./operations.ts";
+import { ANNOTATIONS, annotationPath, captureSources, dossierPath, evaluateSources, operationsPath } from "./run.ts";
 
 const [, , cmd = "", ...args] = process.argv;
 const flag = (n: string): string | undefined => {
@@ -16,6 +18,10 @@ const partitions = (flag("partition") ?? "dev,validation").split(",") as Partiti
 const only = flag("only")?.split(",");
 const pick = (): Source[] =>
   m.sources.filter((s) => partitions.includes(s.partition) && (!only || only.some((o) => o.split("/")[0] === s.id)));
+function guardHeldout(): void {
+  if (partitions.includes("heldout") && !args.includes("--aggregate-only") && !args.includes("--unseal"))
+    throw new Error("held-out detail is sealed: pass --aggregate-only, or --unseal once the B11 changes are final");
+}
 const sha = (s: string | Buffer): string => createHash("sha256").update(s).digest("hex");
 
 async function main(): Promise<number> {
@@ -38,6 +44,21 @@ async function main(): Promise<number> {
               console.error(`annotation ${s.id}/${p.id}: ${e}`);
               probs.push({ id: "annotation", message: e });
             }
+          }
+        }
+      for (const s of m.sources)
+        for (const p of s.pages) {
+          const f = operationsPath(s.id, p.id);
+          if (!existsSync(f)) continue;
+          const ops = JSON.parse(readFileSync(f, "utf8")) as { dossierSha256: string };
+          const ap = annotationPath(s.id, p.id);
+          const errs = validateOperations(ops, existsSync(ap) ? JSON.parse(readFileSync(ap, "utf8")) : undefined);
+          const d = dossierPath(s.id, p.id);
+          if (existsSync(d) && sha(readFileSync(d)) !== ops.dossierSha256)
+            errs.push("dossierSha256 does not match the current dossier");
+          for (const e of errs) {
+            console.error(`operations ${s.id}/${p.id}: ${e}`);
+            probs.push({ id: "operations", message: e });
           }
         }
       if (probs.length === 0)
@@ -110,6 +131,7 @@ async function main(): Promise<number> {
       return 0;
     }
     case "evaluate": {
+      guardHeldout();
       const { rows, missing } = evaluateSources(pick(), partitions);
       const out = {
         schema: "vsf-corpus-result-v1",
@@ -134,6 +156,33 @@ async function main(): Promise<number> {
       } else console.log(JSON.stringify(out.summary, null, 1));
       return missing.length === 0 ? 0 : 3;
     }
+    case "reference":
+    case "operations": {
+      if (cmd === "operations") guardHeldout();
+      const rows = await runOperations({ sources: pick(), only, recognized: cmd === "operations" });
+      const aggregateOnly = args.includes("--aggregate-only");
+      const out = {
+        schema: "vsf-corpus-operations-result-v1",
+        partitions,
+        recognizer: process.env.VSF_RECOGNIZER ?? "current build",
+        summary: summarizeOperations(rows),
+        perSource: aggregateOnly
+          ? undefined
+          : Object.fromEntries(
+              [...new Set(rows.map((r) => r.source))].map((id) => [
+                id,
+                summarizeOperations(rows.filter((r) => r.source === id)),
+              ]),
+            ),
+        rows: aggregateOnly ? undefined : rows,
+      };
+      const to = flag("out");
+      if (to) {
+        mkdirSync(to.replace(/\/[^/]*$/, ""), { recursive: true });
+        writeFileSync(to, `${JSON.stringify(out, null, 1)}\n`);
+      } else console.log(JSON.stringify(aggregateOnly ? out.summary : out, null, 1));
+      return 0;
+    }
     case "seal": {
       const items = m.sources
         .filter((s) => s.partition === "heldout")
@@ -154,7 +203,7 @@ async function main(): Promise<number> {
     }
     default:
       console.error(
-        "usage: corpus <validate|fetch|capture|dossier-sha|evaluate|seal> [--partition dev,validation,heldout] [--only source/page,...] [--out file] [--aggregate-only]",
+        "usage: corpus <validate|fetch|capture|dossier-sha|evaluate|reference|operations|seal> [--unseal] [--partition dev,validation,heldout] [--only source/page,...] [--out file] [--aggregate-only]",
       );
       return 64;
   }

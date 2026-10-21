@@ -1543,10 +1543,12 @@
       "receipt": "docs/deep/queue/receipts/VSF-B11-T09.json"
     },
     "VSF-B11-T10": {
-      "status": "READY",
+      "status": "ACTIVE",
       "claimed_by": null,
       "commit": null,
-      "evidence": null
+      "evidence": null,
+      "branch": "vsf/b11-independent-corpus",
+      "base_commit": "f403badc6498f2fd50601da24d77fd1421cb56b8"
     }
   },
   "gate_states": {

@@ -14,6 +14,9 @@ import { type Running, serveProcess, serveStatic } from "./serve.ts";
 export const ANNOTATIONS = `${ROOT}fixtures/corpus/annotations/`;
 export const capturePath = (s: string, p: string): string => `${CACHE}captures/${s}/${p}.json`;
 export const dossierPath = (s: string, p: string): string => `${ROOT}fixtures/corpus/dossiers/${s}/${p}.md`;
+export const operationsPath = (s: string, p: string): string => `${ROOT}fixtures/corpus/operations/${s}/${p}.json`;
+export const readIf = <T>(path: string): T | null =>
+  existsSync(path) ? (JSON.parse(readFileSync(path, "utf8")) as T) : null;
 export const annotationPath = (s: string, p: string): string => `${ANNOTATIONS}${s}/${p}.json`;
 
 function freePort(): Promise<number> {

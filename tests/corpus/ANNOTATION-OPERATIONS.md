@@ -29,3 +29,21 @@ At least one per operation, all checked after the last step by reading the page,
 
 ## Rules
 Write only operations that the page state and the application's documented behaviour support. If unsure what happens afterwards, leave the operation out. Record `annotator.kind` as `separate-agent`, `annotator.id` as given, `sawRecognizerOutput` false, and `basis` listing what you used. Where an operation has an obvious variant that must change nothing (an empty entry, a disabled control), add it with `expect` describing no change and `negative: true`.
+
+## File shape
+```json
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "<source id>", "page": "<page id>", "dossierSha256": "<sha256 of the dossier file>",
+  "annotator": { "kind": "separate-agent", "id": "<given id>", "sawRecognizerOutput": false, "basis": ["what you used"] },
+  "operations": [
+    { "name": "Add a todo", "effect": "state_change",
+      "steps": [ { "do": "fill", "target": "New Todo Input", "value": "Buy milk" }, { "do": "press", "key": "Enter" } ],
+      "expect": [ { "kind": "text", "contains": "Buy milk" } ] }
+  ]
+}
+```
+`effect` is one of read, state_change, destructive, navigation, unknown. Step shapes: `{do:"fill",target,value}`, `{do:"choose",target,value}`, `{do:"toggle",target,checked}`, `{do:"click",target}`, `{do:"upload",target,value,text}`, `{do:"press",key}`. Expectation shapes: `{kind:"text"|"absent"|"fragment",contains}`, `{kind:"value",target,value}`, `{kind:"checked",target,checked}`, `{kind:"rows",target,count}`.
+
+## Checking your own work
+`node --conditions=source tests/corpus/src/cli.ts validate` checks shapes and that every target is an item named in the page annotation. `node --conditions=source tests/corpus/src/cli.ts reference --partition <dev|validation|heldout> --only <source>` runs each operation on the live application through Chromium's accessibility locators and prints, per operation, whether it was confirmed, was vacuous (its expectation already held) or was unconfirmed with the reason. Use it to repair or remove operations. It never runs the recognizer. Keep at most four operations per page, preferring distinct behaviours over variants; an unconfirmed operation is dropped from scoring and counted.

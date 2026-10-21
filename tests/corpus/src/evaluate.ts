@@ -28,10 +28,14 @@ export interface Timed {
 
 /** Runs the production recognizer binary on a capture and measures it. */
 export function recognize(capture: Capture, tmp: string): Timed {
+  return recognizeSnapshot(capture.snapshot, `${capture.source}__${capture.page}`, tmp);
+}
+
+export function recognizeSnapshot(snapshot: Capture["snapshot"], label: string, tmp: string): Timed {
   if (!existsSync(RECOGNIZER))
     throw new Error(`build the recognizer first: cargo build --release -p vsf-recognizer (${RECOGNIZER})`);
-  const file = `${tmp}/${capture.source}__${capture.page}.json`;
-  writeFileSync(file, JSON.stringify(process.env.VSF_LEGACY_WIRE ? legacyWire(capture.snapshot) : capture.snapshot));
+  const file = `${tmp}/${label}.json`;
+  writeFileSync(file, JSON.stringify(process.env.VSF_LEGACY_WIRE ? legacyWire(snapshot) : snapshot));
   const t0 = performance.now();
   const probe =
     "import resource,subprocess,sys;p=subprocess.run(sys.argv[1:],capture_output=True);sys.stdout.buffer.write(p.stdout);sys.stderr.write(p.stderr.decode()+'\\n'+str(resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss));sys.exit(p.returncode)";
@@ -40,10 +44,7 @@ export function recognize(capture: Capture, tmp: string): Timed {
     maxBuffer: 256 << 20,
   });
   const wallMs = performance.now() - t0;
-  if (r.status !== 0)
-    throw new Error(
-      `recognizer failed on ${capture.source}/${capture.page}: ${String(r.stderr ?? r.error).slice(0, 200)}`,
-    );
+  if (r.status !== 0) throw new Error(`recognizer failed on ${label}: ${String(r.stderr ?? r.error).slice(0, 200)}`);
   const rssKb = Number(r.stderr.trim().split("\n").pop()) || 0;
   return { result: JSON.parse(r.stdout) as Recognition, wallMs: Math.round(wallMs * 10) / 10, rssKb };
 }
