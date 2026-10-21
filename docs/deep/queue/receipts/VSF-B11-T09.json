@@ -1,0 +1,56 @@
+{
+  "task_id": "VSF-B11-T09",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "c7aff8c61a715932195127bebde59693ea7ee314",
+  "commit": "d88ce475e41bebc20fd0ef14b41af92f7d61d592",
+  "paths": [
+    "tests/corpus/",
+    "fixtures/corpus/",
+    "frontend/packages/observer/src/session.ts",
+    "tests/observation/specs/element.spec.ts",
+    "docs/deep/adr/ADR-040-independent-corpus.md"
+  ],
+  "acceptance": "SlickGrid and Django admin join development and FullCalendar joins validation, pinned, licensed, run on disposable state, captured reproducibly, annotated by separate sessions and measured; held-out untouched and no family shared across partitions.",
+  "positive": {
+    "fixture": "17 new page states (Django admin 9, SlickGrid 4, FullCalendar 4); 81 of 81 captures reproduce their recorded digest; 58 development and validation states measured on the pre-B11 and T02 recognizers",
+    "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "package requirement without a hash or without an exact version, family split across partitions, unpinned revision, missing license and ground truth are refused",
+    "command": "pnpm --filter @vsf/corpus-tests run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    },
+    {
+      "command": "cd tests/observation && npx playwright test specs/element.spec.ts",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "manifest gains the pip fetch kind; observer Session gains elementOf; no wire change",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Django admin runs on loopback with a disposable SQLite database and a test account created by the harness; nothing leaves the machine; hashes pin every package.",
+  "performance_memory_storage": "Capture 0.7 to 3.6 s per state; fixtures/corpus grows by about 0.2 MB of dossiers and annotations.",
+  "known_limitations": [
+    "Annotators are model sessions; the Django annotator consulted no documentation and said so in its basis",
+    "The corpus has fifteen applications, above the guideline of eight to twelve, because each addition closes a named gap",
+    "A host project of three models defines the Django admin content; the interface itself is Django's"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/corpus-t09-pre-b11-dev-validation.json",
+    "docs/deep/evidence/VSF-B11/corpus-t09-t02-dev-validation.json",
+    "docs/deep/evidence/VSF-B11/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

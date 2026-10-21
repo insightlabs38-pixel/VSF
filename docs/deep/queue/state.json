@@ -1534,15 +1534,16 @@
       "receipt": "docs/deep/queue/receipts/VSF-B11-T08.json"
     },
     "VSF-B11-T09": {
-      "status": "ACTIVE",
+      "status": "DONE",
       "claimed_by": null,
-      "commit": null,
-      "evidence": null,
+      "commit": "d88ce475e41bebc20fd0ef14b41af92f7d61d592",
+      "evidence": "docs/deep/evidence/VSF-B11",
       "branch": "vsf/b11-independent-corpus",
-      "base_commit": "66b348b81d5b326e4b337c1fa09ebea9432c025d"
+      "base_commit": "66b348b81d5b326e4b337c1fa09ebea9432c025d",
+      "receipt": "docs/deep/queue/receipts/VSF-B11-T09.json"
     },
     "VSF-B11-T10": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1716,6 +1717,6 @@
   },
   "cursor": {
     "batch": "B11",
-    "task": "VSF-B11-T09"
+    "task": "VSF-B11-T10"
   }
 }
