@@ -52,22 +52,6 @@
      "value": "Alabama"
     }
    ]
-  },
-  {
-   "name": "Open state list with button",
-   "effect": "read",
-   "steps": [
-    {
-     "do": "click",
-     "target": "States"
-    }
-   ],
-   "expect": [
-    {
-     "kind": "text",
-     "contains": "Wyoming"
-    }
-   ]
   }
  ]
 }

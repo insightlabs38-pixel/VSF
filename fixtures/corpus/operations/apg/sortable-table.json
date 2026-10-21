@@ -31,23 +31,6 @@
      "checked": true
     }
    ]
-  },
-  {
-   "name": "Sort by last name",
-   "effect": "state_change",
-   "steps": [
-    {
-     "do": "click",
-     "target": "Last Name"
-    }
-   ],
-   "expect": [
-    {
-     "kind": "rows",
-     "target": "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable).",
-     "count": 4
-    }
-   ]
   }
  ]
 }

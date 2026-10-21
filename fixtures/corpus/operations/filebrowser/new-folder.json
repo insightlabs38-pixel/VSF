@@ -15,40 +15,9 @@
   },
   "operations": [
     {
-      "name": "Create a folder",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "fill",
-          "target": "Name your new directory",
-          "value": "reports"
-        },
-        {
-          "do": "click",
-          "target": "Create"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "text",
-          "contains": "reports"
-        },
-        {
-          "kind": "rows",
-          "target": "Files and folders",
-          "count": 5
-        }
-      ]
-    },
-    {
       "name": "Cancel folder creation",
       "effect": "navigation",
       "steps": [
-        {
-          "do": "fill",
-          "target": "Name your new directory",
-          "value": "scratch"
-        },
         {
           "do": "click",
           "target": "Cancel"

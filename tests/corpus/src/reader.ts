@@ -98,11 +98,21 @@ async function rowCount(loc: Locator): Promise<number> {
   });
 }
 
+const escapeRe = (t: string): string => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** How many visible elements show the text, case-sensitively; content that is hidden from a person does not count. */
+async function shown(page: PwPage, text: string): Promise<number> {
+  return page
+    .getByText(new RegExp(escapeRe(text)))
+    .locator("visible=true")
+    .count();
+}
+
 /** Reads one expectation from the page. Retries briefly so asynchronous updates are not misjudged. */
 export async function holds(page: PwPage, a: Annotation, e: Expect): Promise<boolean> {
   const check = async (): Promise<boolean> => {
-    if (e.kind === "text") return (await page.locator("body").innerText()).includes(e.contains);
-    if (e.kind === "absent") return !(await page.locator("body").innerText()).includes(e.contains);
+    if (e.kind === "text") return (await shown(page, e.contains)) > 0;
+    if (e.kind === "absent") return (await shown(page, e.contains)) === 0;
     if (e.kind === "fragment") return page.url().includes(e.contains);
     const loc = locate(page, a, e.target);
     if (e.kind === "value") return (await loc.inputValue({ timeout: 1500 })) === e.value;

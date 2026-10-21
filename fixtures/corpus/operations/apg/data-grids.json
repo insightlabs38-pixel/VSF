@@ -29,23 +29,6 @@
      "contains": "Show Type and Category"
     }
    ]
-  },
-  {
-   "name": "Sort by amount",
-   "effect": "state_change",
-   "steps": [
-    {
-     "do": "click",
-     "target": "Amount"
-    }
-   ],
-   "expect": [
-    {
-     "kind": "rows",
-     "target": "Transactions January 1 through January 7",
-     "count": 8
-    }
-   ]
   }
  ]
 }

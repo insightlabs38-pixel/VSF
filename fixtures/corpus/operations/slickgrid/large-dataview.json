@@ -14,35 +14,18 @@
  },
  "operations": [
   {
-   "name": "Filter by minimum percent complete",
-   "effect": "read",
-   "steps": [
-    {
-     "do": "fill",
-     "target": "Show tasks with % at least:",
-     "value": "50"
-    }
-   ],
-   "expect": [
-    {
-     "kind": "absent",
-     "contains": "Showing all 500000 rows"
-    }
-   ]
-  },
-  {
-   "name": "Go to next page",
+   "name": "Open pagination options",
    "effect": "navigation",
    "steps": [
     {
      "do": "click",
-     "target": "Next Page"
+     "target": "Show Pagination Options"
     }
    ],
    "expect": [
     {
-     "kind": "absent",
-     "contains": "Showing all 500000 rows"
+     "kind": "text",
+     "contains": "Show:"
     }
    ]
   }

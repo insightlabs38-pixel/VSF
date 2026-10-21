@@ -31,18 +31,18 @@
       ]
     },
     {
-      "name": "Clear selection",
-      "effect": "navigation",
+      "name": "Show info",
+      "effect": "read",
       "steps": [
         {
           "do": "click",
-          "target": "Clear"
+          "target": "Info"
         }
       ],
       "expect": [
         {
-          "kind": "absent",
-          "contains": "Copy file"
+          "kind": "text",
+          "contains": "Display Name"
         }
       ]
     }

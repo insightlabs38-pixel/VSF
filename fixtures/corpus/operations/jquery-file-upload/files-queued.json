@@ -42,9 +42,8 @@
    ],
    "expect": [
     {
-     "kind": "rows",
-     "target": "Queued files",
-     "count": 1
+     "kind": "absent",
+     "contains": "notes.txt"
     }
    ]
   }

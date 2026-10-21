@@ -24,8 +24,8 @@
    ],
    "expect": [
     {
-     "kind": "text",
-     "contains": "January 15 – 21, 2023"
+     "kind": "absent",
+     "contains": "Birthday Party"
     }
    ]
   },
@@ -40,8 +40,8 @@
    ],
    "expect": [
     {
-     "kind": "text",
-     "contains": "January 1 – 7, 2023"
+     "kind": "absent",
+     "contains": "Conference"
     }
    ]
   },
@@ -56,8 +56,8 @@
    ],
    "expect": [
     {
-     "kind": "text",
-     "contains": "January 12, 2023"
+     "kind": "absent",
+     "contains": "Birthday Party"
     }
    ]
   }

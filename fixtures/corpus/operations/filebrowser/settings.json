@@ -33,20 +33,20 @@
       ]
     },
     {
-      "name": "Enable signup toggle",
+      "name": "Choose language",
       "effect": "state_change",
       "steps": [
         {
-          "do": "toggle",
-          "target": "Allow users to signup",
-          "checked": true
+          "do": "choose",
+          "target": "Language",
+          "value": "Fran\u00e7ais"
         }
       ],
       "expect": [
         {
-          "kind": "checked",
-          "target": "Allow users to signup",
-          "checked": true
+          "kind": "value",
+          "target": "Language",
+          "value": "fr"
         }
       ]
     },
@@ -64,25 +64,25 @@
         {
           "kind": "value",
           "target": "Theme",
-          "value": "Dark"
+          "value": "dark"
         }
       ]
     },
     {
-      "name": "Change base path",
+      "name": "Set branding directory",
       "effect": "state_change",
       "steps": [
         {
           "do": "fill",
-          "target": "Base path for user home directories",
-          "value": "/homes"
+          "target": "Branding directory path",
+          "value": "/branding"
         }
       ],
       "expect": [
         {
           "kind": "value",
-          "target": "Base path for user home directories",
-          "value": "/homes"
+          "target": "Branding directory path",
+          "value": "/branding"
         }
       ]
     }
