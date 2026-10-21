@@ -34,31 +34,8 @@
           "contains": "Water plants"
         },
         {
-          "kind": "rows",
-          "target": "Todo list",
-          "count": 4
-        }
-      ]
-    },
-    {
-      "name": "Complete a todo",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "toggle",
-          "target": "Buy milk",
-          "checked": true
-        }
-      ],
-      "expect": [
-        {
-          "kind": "checked",
-          "target": "Buy milk",
-          "checked": true
-        },
-        {
           "kind": "text",
-          "contains": "2 items left"
+          "contains": "4 items left"
         }
       ]
     },
@@ -75,17 +52,7 @@
       "expect": [
         {
           "kind": "checked",
-          "target": "Buy milk",
-          "checked": true
-        },
-        {
-          "kind": "checked",
-          "target": "Walk the dog",
-          "checked": true
-        },
-        {
-          "kind": "checked",
-          "target": "Read a book",
+          "target": "❯ Mark all as complete",
           "checked": true
         },
         {
@@ -99,11 +66,6 @@
       "effect": "read",
       "steps": [
         {
-          "do": "toggle",
-          "target": "Buy milk",
-          "checked": true
-        },
-        {
           "do": "click",
           "target": "Active"
         }
@@ -114,12 +76,33 @@
           "contains": "#/active"
         },
         {
-          "kind": "absent",
-          "contains": "Buy milk"
+          "kind": "text",
+          "contains": "Walk the dog"
+        }
+      ]
+    },
+    {
+      "name": "Show completed todos after completing all",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "❯ Mark all as complete",
+          "checked": true
+        },
+        {
+          "do": "click",
+          "target": "Completed"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "#/completed"
         },
         {
           "kind": "text",
-          "contains": "Walk the dog"
+          "contains": "Buy milk"
         }
       ]
     }

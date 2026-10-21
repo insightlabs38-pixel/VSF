@@ -32,6 +32,10 @@
         {
           "kind": "text",
           "contains": "Buy milk"
+        },
+        {
+          "kind": "text",
+          "contains": "1 item left"
         }
       ]
     },
@@ -52,7 +56,7 @@
       "expect": [
         {
           "kind": "absent",
-          "contains": "items left"
+          "contains": "item left"
         }
       ],
       "negative": true
