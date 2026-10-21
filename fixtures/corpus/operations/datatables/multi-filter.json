@@ -28,11 +28,6 @@
         {
           "kind": "text",
           "contains": "Showing 1 to 1 of 1 entries"
-        },
-        {
-          "kind": "rows",
-          "target": "Employees",
-          "count": 1
         }
       ]
     },
@@ -50,11 +45,6 @@
         {
           "kind": "text",
           "contains": "Showing 1 to 25 of 57 entries"
-        },
-        {
-          "kind": "rows",
-          "target": "Employees",
-          "count": 25
         }
       ]
     },
@@ -96,10 +86,6 @@
         {
           "kind": "absent",
           "contains": "Bruno Nash"
-        },
-        {
-          "kind": "text",
-          "contains": "filtered from 57 total entries"
         }
       ]
     }

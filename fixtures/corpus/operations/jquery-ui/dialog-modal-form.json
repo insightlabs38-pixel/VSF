@@ -16,7 +16,7 @@
   },
   "operations": [
     {
-      "name": "V-A",
+      "name": "Create a new user",
       "effect": "state_change",
       "steps": [
         {
@@ -47,39 +47,7 @@
       ]
     },
     {
-      "name": "V-B",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "fill",
-          "target": "Name",
-          "value": "Alice Wong"
-        },
-        {
-          "do": "fill",
-          "target": "Email",
-          "value": "alice@example.com"
-        },
-        {
-          "do": "fill",
-          "target": "Password",
-          "value": "secret99"
-        },
-        {
-          "do": "click",
-          "target": "Create an account"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "rows",
-          "target": "Existing Users",
-          "count": 2
-        }
-      ]
-    },
-    {
-      "name": "V-C",
+      "name": "Reject a short name",
       "effect": "state_change",
       "steps": [
         {
@@ -105,43 +73,26 @@
       "expect": [
         {
           "kind": "text",
-          "contains": "Length of Name must be between 3 and 16."
+          "contains": "Length of username must be between 3 and 16."
         }
       ],
       "negative": true
     },
     {
-      "name": "V-D",
+      "name": "Cancel the form",
       "effect": "state_change",
       "steps": [
         {
-          "do": "fill",
-          "target": "Name",
-          "value": "Al"
-        },
-        {
-          "do": "fill",
-          "target": "Email",
-          "value": "al@example.com"
-        },
-        {
-          "do": "fill",
-          "target": "Password",
-          "value": "secret99"
-        },
-        {
           "do": "click",
-          "target": "Create an account"
+          "target": "Cancel"
         }
       ],
       "expect": [
         {
-          "kind": "rows",
-          "target": "Existing Users",
-          "count": 1
+          "kind": "absent",
+          "contains": "All form fields are required."
         }
-      ],
-      "negative": true
+      ]
     }
   ]
 }

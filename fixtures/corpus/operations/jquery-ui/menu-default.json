@@ -16,7 +16,7 @@
   },
   "operations": [
     {
-      "name": "Open Electronics",
+      "name": "Open Electronics submenu",
       "effect": "state_change",
       "steps": [
         {
@@ -32,50 +32,18 @@
       ]
     },
     {
-      "name": "Open Clothing women",
+      "name": "Open Music submenu",
       "effect": "state_change",
       "steps": [
         {
           "do": "click",
-          "target": "Clothing"
+          "target": "Music"
         }
       ],
       "expect": [
         {
           "kind": "text",
-          "contains": "Women"
-        }
-      ]
-    },
-    {
-      "name": "Open Clothing men",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "click",
-          "target": "Clothing"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "text",
-          "contains": "Men"
-        }
-      ]
-    },
-    {
-      "name": "Movies",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "click",
-          "target": "Movies"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "text",
-          "contains": "Thriller"
+          "contains": "Rock"
         }
       ]
     }

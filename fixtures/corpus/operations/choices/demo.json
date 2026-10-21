@@ -16,88 +16,75 @@
   },
   "operations": [
     {
-      "name": "Tag1",
+      "name": "Choose a city",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Cities",
+          "value": "London"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Cities",
+          "value": "London"
+        }
+      ]
+    },
+    {
+      "name": "Choose a custom template option",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Custom templates",
+          "value": "Vue"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Custom templates",
+          "value": "Vue"
+        }
+      ]
+    },
+    {
+      "name": "Fill the limited tag input",
       "effect": "state_change",
       "steps": [
         {
           "do": "fill",
           "target": "Limited to 5 values with remove button",
           "value": "abc"
-        },
-        {
-          "do": "press",
-          "key": "Enter"
         }
       ],
       "expect": [
         {
-          "kind": "text",
-          "contains": "abc"
+          "kind": "value",
+          "target": "Limited to 5 values with remove button",
+          "value": "abc"
         }
       ]
     },
     {
-      "name": "Tag2",
+      "name": "Submit the empty form changes nothing",
       "effect": "state_change",
       "steps": [
         {
-          "do": "fill",
-          "target": "Unique values only, no pasting",
-          "value": "zzz"
-        },
-        {
-          "do": "press",
-          "key": "Enter"
+          "do": "click",
+          "target": "Submit"
         }
       ],
       "expect": [
         {
-          "kind": "text",
-          "contains": "zzz"
-        }
-      ]
-    },
-    {
-      "name": "Tag3",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "fill",
-          "target": "Email addresses only",
-          "value": "ann@example.com"
-        },
-        {
-          "do": "press",
-          "key": "Enter"
+          "kind": "absent",
+          "contains": "Thank you"
         }
       ],
-      "expect": [
-        {
-          "kind": "text",
-          "contains": "ann@example.com"
-        }
-      ]
-    },
-    {
-      "name": "Tag4",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "fill",
-          "target": "I18N labels",
-          "value": "qqq"
-        },
-        {
-          "do": "press",
-          "key": "Enter"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "text",
-          "contains": "qqq"
-        }
-      ]
+      "negative": true
     }
   ]
 }
