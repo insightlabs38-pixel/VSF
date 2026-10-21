@@ -1,7 +1,7 @@
 {
   "schema": "vsf-task-queue-v1",
   "source": "original B00-B24 execution steps, expanded with task-specific acceptance",
-  "task_count": 190,
+  "task_count": 192,
   "batches": [
     {
       "id": "B00",
@@ -2979,7 +2979,7 @@
       "title": "Evaluate custom combobox/select, virtualization and modal form dependencies",
       "intent": "Evaluate custom combobox/select, virtualization and modal form dependencies.",
       "acceptance": "Nested custom combo, grid virtualization and modal-form samples work without source-specific CSS selectors.",
-      "dependencies": ["VSF-B11-T02"],
+      "dependencies": ["VSF-B11-T02", "VSF-B11-T10"],
       "planned_paths": "frontend/primitives/; compiler/primitive-registry/; tests/compatibility/",
       "verification_strategy": "Implement a focused deterministic positive assertion and at least one related negative/edge assertion; record exact runnable commands and result in task receipt. Validate unchanged dependency contracts. Use current repo paths when they differ from planned paths.",
       "invariants": [
@@ -5937,6 +5937,78 @@
       "positive": "new applications captured reproducibly, annotated, and measured; manifest family rules still hold",
       "adversarial": "a new application sharing a family with a held-out one is refused; unpinned or unlicensed source refused",
       "evidence_required": "docs/deep/evidence/VSF-B11 run logs, updated baseline and a task receipt"
+    },
+    {
+      "id": "VSF-B11-T09",
+      "batch": "B11",
+      "sequence": 9,
+      "status": "TODO",
+      "category": "hardening correction",
+      "title": "Fill corpus gaps: a virtualized grid, a server-backed administrative site with bulk actions and pagination, and a calendar",
+      "intent": "Fill corpus gaps: a virtualized grid, a server-backed administrative site with bulk actions and pagination, and a calendar",
+      "acceptance": "Development gains an independently developed virtualized grid (SlickGrid) and a server-backed administrative site (Django admin) and validation gains a scheduling calendar (FullCalendar), each pinned, licensed, run on disposable local state, captured reproducibly, annotated by a separate session and measured on the current recognizer; held-out stays untouched and no family is shared across partitions.",
+      "dependencies": ["VSF-B11-T02"],
+      "planned_paths": "tests/corpus/; fixtures/corpus/; docs/deep/evidence/VSF-B11/",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G11",
+      "evidence": "docs/deep/evidence/VSF-B11 run logs, corpus baseline result and a task receipt",
+      "risk_tests": [
+        "virtualized rows",
+        "conditional forms",
+        "escaped filenames",
+        "stale pagination",
+        "bulk concurrent mutation"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-040",
+      "lane": "correction",
+      "scope": "tests/corpus/, fixtures/corpus/",
+      "contract": "corpus manifest vsf-corpus-v1; annotation vsf-corpus-annotation-v1",
+      "positive": "three new applications captured 100% reproducibly, annotated, measured; virtual_list, bulk_selection, pagination and calendar states exist as annotated evidence",
+      "adversarial": "unpinned source, unlicensed source, a new application sharing a family with a held-out one, and a capture that differs from its recorded digest are refused",
+      "evidence_required": "docs/deep/evidence/VSF-B11 run logs, updated baseline and a task receipt"
+    },
+    {
+      "id": "VSF-B11-T10",
+      "batch": "B11",
+      "sequence": 10,
+      "status": "TODO",
+      "category": "hardening correction",
+      "title": "Measure executable-operation correctness against disposable state, before and after",
+      "intent": "Measure executable-operation correctness against disposable state, before and after",
+      "acceptance": "Operations annotated by a separate session with page-observable expectations are first proven on the live application by an independent reference driver, then executed through recognized units only; results separate verified success, safe fallback (no unit, nothing done), wrong effect and misbound target; the pre-B11 and current recognizers are measured; held-out stays aggregate-only.",
+      "dependencies": ["VSF-B11-T09"],
+      "planned_paths": "tests/corpus/; fixtures/corpus/operations/; frontend/packages/observer/; docs/deep/evidence/VSF-B11/",
+      "verification_strategy": "Positive and adversarial tests as listed; record exact commands and results in the task receipt.",
+      "invariants": [
+        "Do not bypass source application permissions or approvals",
+        "Do not manufacture semantics or successful results unsupported by evidence",
+        "No mandatory LLM calls during normal compilation/execution",
+        "Preserve contract versions and user isolation when changed"
+      ],
+      "gate": "G11",
+      "evidence": "docs/deep/evidence/VSF-B11 run logs, corpus baseline result and a task receipt",
+      "risk_tests": [
+        "virtualized rows",
+        "conditional forms",
+        "escaped filenames",
+        "stale pagination",
+        "bulk concurrent mutation"
+      ],
+      "origin": "adaptive",
+      "adr": "ADR-040",
+      "lane": "correction",
+      "scope": "tests/corpus operations|execute, observer element map",
+      "contract": "vsf-corpus-operations-v1; result gains executableOperationCorrectness",
+      "positive": "reference driver validates every operation; recognized-unit execution reproduces; baseline recorded for the pre-B11 and T02 recognizers",
+      "adversarial": "an operation whose expectation the reference driver cannot confirm is dropped and counted; a recognizer that clicks the wrong element is scored as a false executable claim; a planted always-succeed recognizer cannot score",
+      "evidence_required": "docs/deep/evidence/VSF-B11 run logs, baseline result and a task receipt"
     }
   ]
 }
