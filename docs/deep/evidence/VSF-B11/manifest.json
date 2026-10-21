@@ -344,6 +344,51 @@
       "result": "PASS",
       "log": "logs/VSF-B11-T02.regression-typecheck.log",
       "sha256": "d03369f62007c94550ecd724cf2d4a27deccb933c6a0f2dcb93af932894c2f6b"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-snapshots-current",
+      "command": "pnpm --filter @vsf/observation-tests run check:fixtures",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-snapshots-current.log",
+      "sha256": "954fa7f6343b497c3bc4001a1ecad3af0546dabdc38abce1996daaea25a23a64"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "negative-frozen-rules-output",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer --test regression",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.negative-frozen-rules-output.log",
+      "sha256": "26baeee2151dc914d0ae7820c6976b2957e482b661f135bd450a9c62678665ed"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-recognizer-tests",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-recognizer-tests.log",
+      "sha256": "1cc83715af8f24a119f0843f30b7fa9f8b41c79042e536a9d62eb5af230a0a6e"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-corpus-reproducible-all",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-corpus-reproducible-all.log",
+      "sha256": "7106722ee094ea7f3da6c8066f993bf8b96a5d73885ee320345f448cdcb80915"
     }
   ]
 }

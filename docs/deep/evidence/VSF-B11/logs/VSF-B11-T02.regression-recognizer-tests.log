@@ -1,0 +1,171 @@
+$ cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test a_control_that_is_also_a_button_yields_two_candidates_and_a_conflict ... ok
+test wording_that_names_two_verbs_keeps_each_as_its_own_candidate ... ok
+test adversarial_page_has_separate_candidates_and_no_silent_pick ... ok
+test the_crate_has_no_model_or_network_dependency ... ok
+test recognition_is_deterministic_across_runs_and_threads ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+
+running 16 tests
+test a_human_decision_is_not_a_witness ... ok
+test a_view_button_that_mutates_is_a_write_and_a_delete_that_only_reads_is_a_read ... ok
+test a_witness_authorizes_only_its_own_operation_and_kind ... ok
+test a_declared_effect_never_authorizes_and_a_contradiction_with_a_witness_is_a_conflict ... ok
+test a_witness_dies_when_the_node_it_covered_changes_or_vanishes ... ok
+test harmless_looking_labels_are_not_read_only_until_a_witness_says_so ... ok
+test indeterminate_and_contradicting_witnesses_do_not_authorize ... ok
+test malformed_and_bare_id_witnesses_are_refused ... ok
+test a_witness_from_another_source_user_environment_or_version_is_refused ... ok
+test revocation_of_a_witness_operation_principal_or_authority_ends_it ... ok
+test contract_document_is_stable_and_versioned ... ok
+test synthetic_witnesses_exist_only_for_tests_and_never_reach_a_caller ... ok
+test stale_expired_future_failed_synthetic_and_untrusted_witnesses_are_refused ... ok
+test unknown_and_conflicted_reach_the_ui_state_and_never_the_emitted_set ... ok
+test credential_and_hidden_controls_stay_unusable_even_with_a_witness_for_every_node ... ok
+test nothing_source_backed_is_emitted_without_a_witness_on_any_fixture ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 4 tests
+test adversarial_page_has_no_false_confident_binding ... ok
+test one_delegation_rule_fixes_two_unrelated_held_out_apps ... ok
+test the_regression_corpus_is_unchanged_by_the_improvement ... ok
+test recognition_code_names_no_framework_or_vendor ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 7 tests
+test a_change_under_a_collection_recomputes_the_collection_and_not_the_page ... ok
+test changing_a_label_recomputes_only_the_control_it_names ... ok
+test an_unrelated_change_recomputes_nothing_and_keeps_every_claim ... ok
+test adding_and_removing_controls_creates_and_drops_units ... ok
+test the_diff_reports_exactly_what_changed ... ok
+test random_edit_sequences_always_agree_with_a_fresh_run ... ok
+test on_a_large_page_a_small_change_recomputes_a_small_fraction ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.42s
+
+
+running 5 tests
+test boundaries_empty_observation_unknown_features_and_negation_tails ... ok
+test real_snapshots_load_and_are_searchable ... ok
+test feature_extraction_and_direct_checks_agree_for_every_node ... ok
+test a_selective_query_examines_a_small_fraction_of_the_nodes_and_the_index_stays_small ... ok
+test the_index_returns_exactly_what_a_full_scan_returns_over_seeded_cases ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.83s
+
+
+running 15 tests
+test identity::a_recorded_source_cannot_be_overwritten ... ok
+test identity::confidence_unit_producer_and_sensitivity_are_part_of_identity ... ok
+test identity::equal_node_ids_digests_text_and_kinds_from_different_sources_keep_separate_claims ... ok
+test a_label_claim_names_the_label_node_the_control_and_their_digests ... ok
+test identity::rewriting_what_a_claim_cites_is_detected ... ok
+test identity::identical_pages_seen_by_different_principals_or_rules_are_different_evidence ... ok
+test identity::the_shared_export_carries_no_page_text_digests_or_private_claims ... ok
+test lexical_verb_claims_say_so_and_carry_heuristic_evidence ... ok
+test every_claim_on_every_fixture_traces_to_a_recorded_observation_with_evidence ... ok
+test identity::a_local_export_round_trips_and_any_tampering_is_refused ... ok
+test tampered_claims_fail_validation ... ok
+test stale_evidence_is_detected_for_exactly_the_claims_that_relied_on_the_changed_node ... ok
+test the_ledger_is_deterministic_and_content_addressed ... ok
+test what_cannot_be_demonstrated_is_an_unknown_claim_not_a_missing_one ... ok
+test recognition_never_claims_more_than_inferred ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+
+running 10 tests
+test a_supported_promoted_fresh_document_for_this_app_origin_and_principal_is_authoritative ... ok
+test a_self_promoted_observation_is_rejected ... ok
+test a_ledger_bound_to_a_context_refuses_evidence_when_the_observation_origin_differs ... ok
+test candidate_unsupported_user_supplied_unpromoted_unverified_and_stale_evidence_is_advisory_only ... ok
+test advisory_and_rejected_evidence_never_conflicts_and_never_changes_an_operation ... ok
+test malformed_documents_are_refused_whole ... ok
+test forged_promotion_wrong_origin_app_principal_revoked_or_future_evidence_is_rejected ... ok
+test revoked_grants_reviewers_documents_and_witnesses_end_authority ... ok
+test every_shared_valid_fixture_passes_and_every_invalid_one_fails_for_the_expected_reason ... ok
+test contradictory_authoritative_sources_both_survive_and_clash ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 9 tests
+test credential_fields_are_never_matched_to_protocol_names ... ok
+test disagreement_is_a_conflict_citing_both_sides_and_no_source_wins ... ok
+test malformed_protocol_documents_are_rejected ... ok
+test a_conflict_withholds_the_tool_until_a_recorded_decision_resolves_it ... ok
+test agreeing_evidence_is_recorded_as_inferred_with_both_sources ... ok
+test stale_protocol_evidence_is_not_compared ... ok
+test unsupported_evidence_can_only_raise_questions ... ok
+test only_real_open_conflicts_can_be_decided ... ok
+test duplicated_ui_labels_bind_to_protocol_names_only_through_their_region ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 1 test
+test rules_one_and_two_keep_their_output_on_the_frozen_pages ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 17 tests
+test action_names_map_to_verbs_by_lexicon_and_collisions_stay_separate ... ok
+test a_heading_above_a_label_does_not_compete_with_it ... ok
+test competing_nearby_text_is_ambiguous_and_never_silently_bound ... ok
+test delegation_never_borrows_the_label_of_a_neighbouring_control ... ok
+test a_css_grid_of_plain_divs_is_not_a_collection ... ok
+test explicit_relations_beat_nearby_text_even_when_the_wrong_label_sits_closest ... ok
+test labelledby_with_several_targets_joins_them_and_a_dangling_target_is_ignored ... ok
+test nesting_hides_the_label_from_the_baseline_and_delegation_recovers_it ... ok
+test one_label_over_several_controls_names_none_of_them ... ok
+test duplicated_labels_are_told_apart_by_the_region_they_sit_in ... ok
+test radios_without_a_label_take_their_name_from_content_and_file_inputs_have_a_kind ... ok
+test collections_expose_columns_rows_and_the_actions_in_each_row ... ok
+test states_hint_at_effects_only_when_the_name_says_nothing_and_separators_are_not_columns ... ok
+test rows_are_found_through_plain_wrappers_and_footers_and_hidden_rows_are_not_data ... ok
+test hidden_disabled_and_credential_controls_are_found_but_never_usable ... ok
+test overlapping_roles_keep_every_reading_instead_of_picking_one ... ok
+test the_fixture_apps_bind_their_fields_as_authored ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling vsf-recognizer v0.0.0 (/home/user/VSF/compiler/crates/vsf-recognizer)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.50s
+     Running unittests src/lib.rs (compiler/target/debug/deps/vsf_recognizer-5622c0af6950527d)
+     Running unittests src/main.rs (compiler/target/debug/deps/vsf_recognizer-c099d40cbc09618b)
+     Running tests/candidates.rs (compiler/target/debug/deps/candidates-e9bb70a640cb6e4f)
+     Running tests/contract.rs (compiler/target/debug/deps/contract-4b212e2935e7fc20)
+     Running tests/generalization.rs (compiler/target/debug/deps/generalization-29950d5cb0563d47)
+     Running tests/incremental.rs (compiler/target/debug/deps/incremental-f1606e6820435999)
+     Running tests/index.rs (compiler/target/debug/deps/index-60bde59a2a9ea3bd)
+     Running tests/ledger.rs (compiler/target/debug/deps/ledger-02b785fa0ad95417)
+     Running tests/protocol.rs (compiler/target/debug/deps/protocol-1787391c075d697d)
+     Running tests/reconcile.rs (compiler/target/debug/deps/reconcile-a1fb9bf5c6a1b5bd)
+     Running tests/regression.rs (compiler/target/debug/deps/regression-e3ebba4955dd7184)
+     Running tests/semantics.rs (compiler/target/debug/deps/semantics-b3f07c2f68ca1438)
+   Doc-tests vsf_recognizer
+[exit 0]

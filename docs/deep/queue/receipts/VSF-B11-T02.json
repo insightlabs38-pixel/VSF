@@ -1,0 +1,62 @@
+{
+  "task_id": "VSF-B11-T02",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "d543def888284309caeffc6987f0f59fccfc070c",
+  "commit": "c7aff8c61a715932195127bebde59693ea7ee314",
+  "paths": [
+    "frontend/packages/observer/src/",
+    "compiler/crates/vsf-recognizer/",
+    "fixtures/recognition/",
+    "tests/observation/",
+    "tests/corpus/",
+    "docs/deep/evidence/VSF-B11/failure-clusters-t02.md"
+  ],
+  "acceptance": "Row model, semantic states and name from content are implemented as general primitives in the observer and recognizer, measured on the independent corpus, with rules 1 and 2 output on the frozen regression pages unchanged and no registry maturity claimed.",
+  "positive": {
+    "fixture": "41 development and validation states: collections found 12/20 to 19/20, fields 93/109 to 103/109, workflows 13/71 to 22/71; captures reproduce 64/64",
+    "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "golden rules 1 and 2 output on six frozen pages must not change; a planted edit to a golden fails the test",
+    "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer --test regression",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/observation-tests run check:fixtures",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts comments",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-observation-snapshot-v1 gains an optional states array; recognition output for existing pages unchanged",
+    "primitive": "none; TABLE-001 and TABLE-002 stay implemented, validation awaits held-out evidence"
+  },
+  "security_and_source_permissions": "States are an allow-listed, value-free set; no field value, credential or password-like content is carried; recognition remains read-only.",
+  "performance_memory_storage": "Recognizer p50 25.9 ms, max 41.1 ms, 2716 nodes max, 11 MB peak RSS on the 41 states.",
+  "known_limitations": [
+    "Three Tabulator tables are found with wrong shape (nested rows, checkbox column with no header text)",
+    "Dialog openers named Add or Create are still read as create until a witness exists",
+    "Held-out partition not read for this task",
+    "The first T02 commit left recognition snapshots stale and one comment over the limit; both repaired in ab5cb5b"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/failure-clusters-t02.md",
+    "docs/deep/evidence/VSF-B11/corpus-t02-dev-validation.json",
+    "docs/deep/evidence/VSF-B11/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

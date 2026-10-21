@@ -3,7 +3,7 @@
  "environment": "Chromium (Playwright 1.56.1 build 1194), headless, linux x64, viewport 1280x800, en-US, UTC, reduced motion, external requests blocked except pinned npm CDN files",
  "pages": {
   "adminlte/file-manager": {
-   "structureSha256": "1f0e8fe2606e23df635b65effd14c596129439484b16c4d6c06a8ba5955651c8",
+   "structureSha256": "93daee0bb7bcdbc09bd31bdd33f338722efdd9e9cbeab5b16260309f1371c33f",
    "nodes": 866,
    "blocked": 0,
    "mirrored": 8
