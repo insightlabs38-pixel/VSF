@@ -10,6 +10,7 @@
    "text": null,
    "flags": 0,
    "rels": [],
+   "states": [],
    "scope": {
     "kind": "document",
     "origin": "http://fixture.invalid",
@@ -26,6 +27,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -37,6 +39,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -48,6 +51,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -59,6 +63,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -70,6 +75,7 @@
    "text": "Add row",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -81,6 +87,7 @@
    "text": "Save",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -92,6 +99,7 @@
    "text": "Discard",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -103,6 +111,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -114,6 +123,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -125,6 +135,7 @@
    "text": "Product",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -136,6 +147,7 @@
    "text": "Price",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -147,6 +159,7 @@
    "text": "Currency",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -158,6 +171,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -169,6 +183,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -180,6 +195,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -191,6 +209,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -202,6 +221,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -213,6 +235,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -224,6 +247,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -235,6 +261,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -246,6 +273,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -257,6 +285,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -268,6 +299,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -279,6 +311,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -290,6 +325,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -301,6 +337,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   }
  ]

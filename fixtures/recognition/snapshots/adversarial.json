@@ -10,6 +10,7 @@
    "text": null,
    "flags": 0,
    "rels": [],
+   "states": [],
    "scope": {
     "kind": "document",
     "origin": "http://fixture.invalid",
@@ -26,6 +27,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -37,6 +39,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -48,6 +51,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -59,6 +63,7 @@
    "text": "Checkout",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -75,6 +80,7 @@
      6
     ]
    ],
+   "states": [],
    "scope": null
   },
   {
@@ -86,6 +92,7 @@
    "text": "Billing",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -97,6 +104,7 @@
    "text": "Name",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -113,6 +121,9 @@
      8
     ]
    ],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -124,6 +135,7 @@
    "text": "Email",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -139,6 +151,9 @@
      "label",
      10
     ]
+   ],
+   "states": [
+    "type=email"
    ],
    "scope": null
   },
@@ -156,6 +171,7 @@
      12
     ]
    ],
+   "states": [],
    "scope": null
   },
   {
@@ -167,6 +183,7 @@
    "text": "Shipping",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -178,6 +195,7 @@
    "text": "Name",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -194,6 +212,9 @@
      14
     ]
    ],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -205,6 +226,7 @@
    "text": "Phone",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -216,6 +238,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -227,6 +252,9 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -238,6 +266,9 @@
    "text": null,
    "flags": 262,
    "rels": [],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -249,6 +280,7 @@
    "text": null,
    "flags": 0,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -260,6 +292,7 @@
    "text": "Coupon",
    "flags": 0,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -276,6 +309,9 @@
      21
     ]
    ],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -287,6 +323,7 @@
    "text": "Orphan label",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -298,6 +335,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -309,6 +347,7 @@
    "text": "Download invoice",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -320,6 +359,7 @@
    "text": "Apply discount",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -331,6 +371,7 @@
    "text": "Terms",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -342,6 +383,7 @@
    "text": "Place order",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -353,6 +395,7 @@
    "text": "Pay later",
    "flags": 19,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -364,6 +407,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -375,6 +419,7 @@
    "text": "Item",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -386,6 +431,7 @@
    "text": "Price",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -397,6 +443,7 @@
    "text": "Widget",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -408,6 +455,7 @@
    "text": "4.00",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   }
  ]

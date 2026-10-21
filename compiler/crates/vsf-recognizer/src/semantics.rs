@@ -748,8 +748,7 @@ fn generic_wrapper(n: &Node) -> bool {
         && matches!(role_of(n), "" | "none" | "presentation" | "generic")
 }
 
-/// The header row and the body rows of a table-like node, in document order.
-/// Rows are found through row groups and plain wrapper elements; footer and hidden rows are not data.
+/// Header row and body rows of a table-like node; footer and hidden rows are not data.
 pub fn table_rows(r: &Reader, i: usize) -> (Option<usize>, Vec<usize>) {
     let mut rows: Vec<usize> = Vec::new();
     let mut footer: Vec<usize> = Vec::new();

@@ -10,6 +10,7 @@
    "text": null,
    "flags": 0,
    "rels": [],
+   "states": [],
    "scope": {
     "kind": "document",
     "origin": "http://fixture.invalid",
@@ -26,6 +27,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -37,6 +39,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -48,6 +51,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -59,6 +63,7 @@
    "text": "Customer profile",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -70,6 +75,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -81,6 +87,7 @@
    "text": "First name",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -97,6 +104,10 @@
      7
     ]
    ],
+   "states": [
+    "required=true",
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -108,6 +119,7 @@
    "text": "Last name",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -124,6 +136,9 @@
      9
     ]
    ],
+   "states": [
+    "type=text"
+   ],
    "scope": null
   },
   {
@@ -135,6 +150,7 @@
    "text": "Email",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -151,6 +167,9 @@
      11
     ]
    ],
+   "states": [
+    "type=email"
+   ],
    "scope": null
   },
   {
@@ -162,6 +181,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -173,6 +193,7 @@
    "text": "Country",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -189,6 +210,7 @@
      14
     ]
    ],
+   "states": [],
    "scope": null
   },
   {
@@ -200,6 +222,7 @@
    "text": "Spain",
    "flags": 2,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -211,6 +234,7 @@
    "text": "France",
    "flags": 2,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -222,6 +246,7 @@
    "text": null,
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -233,6 +258,7 @@
    "text": "Newsletter",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -244,6 +270,7 @@
    "text": "Weekly digest",
    "flags": 1,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -260,6 +287,9 @@
      20
     ]
    ],
+   "states": [
+    "type=checkbox"
+   ],
    "scope": null
   },
   {
@@ -271,6 +301,7 @@
    "text": null,
    "flags": 7,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -282,6 +313,7 @@
    "text": "Save changes",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   },
   {
@@ -293,6 +325,7 @@
    "text": "Cancel",
    "flags": 3,
    "rels": [],
+   "states": [],
    "scope": null
   }
  ]
