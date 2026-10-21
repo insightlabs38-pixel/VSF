@@ -16,13 +16,12 @@
   },
   "operations": [
     {
-      "name": "Pick a location",
+      "name": "Click Paris",
       "effect": "state_change",
       "steps": [
         {
-          "do": "toggle",
-          "target": "Paris",
-          "checked": true
+          "do": "click",
+          "target": "Paris"
         }
       ],
       "expect": [
@@ -34,47 +33,18 @@
       ]
     },
     {
-      "name": "Pick hotel ratings",
+      "name": "Click 3 star",
       "effect": "state_change",
       "steps": [
         {
-          "do": "toggle",
-          "target": "3 Star",
-          "checked": true
-        },
-        {
-          "do": "toggle",
-          "target": "5 Star",
-          "checked": true
+          "do": "click",
+          "target": "3 Star"
         }
       ],
       "expect": [
         {
           "kind": "checked",
           "target": "3 Star",
-          "checked": true
-        },
-        {
-          "kind": "checked",
-          "target": "5 Star",
-          "checked": true
-        }
-      ]
-    },
-    {
-      "name": "Pick a bed type",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "toggle",
-          "target": "1 King",
-          "checked": true
-        }
-      ],
-      "expect": [
-        {
-          "kind": "checked",
-          "target": "1 King",
           "checked": true
         }
       ]

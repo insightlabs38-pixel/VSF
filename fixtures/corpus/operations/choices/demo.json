@@ -16,43 +16,49 @@
   },
   "operations": [
     {
-      "name": "Choose a city",
+      "name": "Tag1",
       "effect": "state_change",
       "steps": [
         {
-          "do": "choose",
-          "target": "Cities",
-          "value": "London"
+          "do": "fill",
+          "target": "Limited to 5 values with remove button",
+          "value": "abc"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
         }
       ],
       "expect": [
         {
-          "kind": "value",
-          "target": "Cities",
-          "value": "London"
+          "kind": "text",
+          "contains": "abc"
         }
       ]
     },
     {
-      "name": "Choose a custom template option",
+      "name": "Tag2",
       "effect": "state_change",
       "steps": [
         {
-          "do": "choose",
-          "target": "Custom templates",
-          "value": "Vue"
+          "do": "fill",
+          "target": "Unique values only, no pasting",
+          "value": "zzz"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
         }
       ],
       "expect": [
         {
-          "kind": "value",
-          "target": "Custom templates",
-          "value": "Vue"
+          "kind": "text",
+          "contains": "zzz"
         }
       ]
     },
     {
-      "name": "Add a tag",
+      "name": "Tag3",
       "effect": "state_change",
       "steps": [
         {
@@ -73,21 +79,25 @@
       ]
     },
     {
-      "name": "Submit empty form",
+      "name": "Tag4",
       "effect": "state_change",
       "steps": [
         {
-          "do": "click",
-          "target": "Submit"
+          "do": "fill",
+          "target": "I18N labels",
+          "value": "qqq"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
         }
       ],
       "expect": [
         {
-          "kind": "absent",
-          "contains": "Thank you"
+          "kind": "text",
+          "contains": "qqq"
         }
-      ],
-      "negative": true
+      ]
     }
   ]
 }

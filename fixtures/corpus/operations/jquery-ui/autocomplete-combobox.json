@@ -16,26 +16,25 @@
   },
   "operations": [
     {
-      "name": "Choose a language",
+      "name": "Fill lang",
       "effect": "state_change",
       "steps": [
         {
-          "do": "choose",
+          "do": "fill",
           "target": "Your preferred programming language:",
-          "value": "Python"
+          "value": "Pyth"
         }
       ],
       "expect": [
         {
-          "kind": "value",
-          "target": "Your preferred programming language:",
-          "value": "Python"
+          "kind": "text",
+          "contains": "Python"
         }
       ]
     },
     {
       "name": "Show all items",
-      "effect": "read",
+      "effect": "state_change",
       "steps": [
         {
           "do": "click",

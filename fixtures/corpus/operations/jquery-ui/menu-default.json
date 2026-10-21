@@ -16,7 +16,23 @@
   },
   "operations": [
     {
-      "name": "Open Clothing submenu",
+      "name": "Open Electronics",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Electronics"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Car Hifi"
+        }
+      ]
+    },
+    {
+      "name": "Open Clothing women",
       "effect": "state_change",
       "steps": [
         {
@@ -27,23 +43,39 @@
       "expect": [
         {
           "kind": "text",
-          "contains": "Accessories"
+          "contains": "Women"
         }
       ]
     },
     {
-      "name": "Open Music submenu",
+      "name": "Open Clothing men",
       "effect": "state_change",
       "steps": [
         {
           "do": "click",
-          "target": "Music"
+          "target": "Clothing"
         }
       ],
       "expect": [
         {
           "kind": "text",
-          "contains": "Rock"
+          "contains": "Men"
+        }
+      ]
+    },
+    {
+      "name": "Movies",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Movies"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Thriller"
         }
       ]
     }

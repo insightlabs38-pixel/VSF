@@ -16,7 +16,7 @@
   },
   "operations": [
     {
-      "name": "Create a new user",
+      "name": "V-A",
       "effect": "state_change",
       "steps": [
         {
@@ -43,7 +43,34 @@
         {
           "kind": "text",
           "contains": "alice@example.com"
+        }
+      ]
+    },
+    {
+      "name": "V-B",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name",
+          "value": "Alice Wong"
         },
+        {
+          "do": "fill",
+          "target": "Email",
+          "value": "alice@example.com"
+        },
+        {
+          "do": "fill",
+          "target": "Password",
+          "value": "secret99"
+        },
+        {
+          "do": "click",
+          "target": "Create an account"
+        }
+      ],
+      "expect": [
         {
           "kind": "rows",
           "target": "Existing Users",
@@ -52,7 +79,7 @@
       ]
     },
     {
-      "name": "Reject a short name",
+      "name": "V-C",
       "effect": "state_change",
       "steps": [
         {
@@ -79,7 +106,35 @@
         {
           "kind": "text",
           "contains": "Length of Name must be between 3 and 16."
+        }
+      ],
+      "negative": true
+    },
+    {
+      "name": "V-D",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name",
+          "value": "Al"
         },
+        {
+          "do": "fill",
+          "target": "Email",
+          "value": "al@example.com"
+        },
+        {
+          "do": "fill",
+          "target": "Password",
+          "value": "secret99"
+        },
+        {
+          "do": "click",
+          "target": "Create an account"
+        }
+      ],
+      "expect": [
         {
           "kind": "rows",
           "target": "Existing Users",
@@ -87,22 +142,6 @@
         }
       ],
       "negative": true
-    },
-    {
-      "name": "Cancel the form",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "click",
-          "target": "Cancel"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "absent",
-          "contains": "All form fields are required."
-        }
-      ]
     }
   ]
 }

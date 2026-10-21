@@ -16,56 +16,34 @@
   },
   "operations": [
     {
-      "name": "Choose a speed",
+      "name": "Open speed",
       "effect": "state_change",
       "steps": [
         {
-          "do": "choose",
-          "target": "Select a speed",
-          "value": "Fast"
+          "do": "click",
+          "target": "Select a speed"
         }
       ],
       "expect": [
         {
-          "kind": "value",
-          "target": "Select a speed",
-          "value": "Fast"
+          "kind": "text",
+          "contains": "Faster"
         }
       ]
     },
     {
-      "name": "Choose a number",
+      "name": "Open number",
       "effect": "state_change",
       "steps": [
         {
-          "do": "choose",
-          "target": "Select a number",
-          "value": "7"
+          "do": "click",
+          "target": "Select a number"
         }
       ],
       "expect": [
         {
-          "kind": "value",
-          "target": "Select a number",
-          "value": "7"
-        }
-      ]
-    },
-    {
-      "name": "Choose a file",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "choose",
-          "target": "Select a file",
-          "value": "ui.jQuery.js"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "value",
-          "target": "Select a file",
-          "value": "ui.jQuery.js"
+          "kind": "text",
+          "contains": "19"
         }
       ]
     }

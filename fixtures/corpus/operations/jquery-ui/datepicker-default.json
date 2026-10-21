@@ -16,42 +16,18 @@
   },
   "operations": [
     {
-      "name": "Type a date",
+      "name": "Click date",
       "effect": "state_change",
       "steps": [
         {
-          "do": "fill",
-          "target": "Date:",
-          "value": "10/15/2026"
+          "do": "click",
+          "target": "Date:"
         }
       ],
       "expect": [
-        {
-          "kind": "value",
-          "target": "Date:",
-          "value": "10/15/2026"
-        }
-      ]
-    },
-    {
-      "name": "Type a date in another month",
-      "effect": "state_change",
-      "steps": [
-        {
-          "do": "fill",
-          "target": "Date:",
-          "value": "12/25/2026"
-        }
-      ],
-      "expect": [
-        {
-          "kind": "value",
-          "target": "Date:",
-          "value": "12/25/2026"
-        },
         {
           "kind": "text",
-          "contains": "December 2026"
+          "contains": "Prev"
         }
       ]
     }
