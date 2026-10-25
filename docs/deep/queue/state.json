@@ -1684,7 +1684,8 @@
       "decision": "PROCEED",
       "evidence": "docs/deep/evidence/VSF-B12",
       "report": "docs/deep/reports/VSF-B12.md",
-      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/15"
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/15",
+      "merge_commit": "274c10b9b2eee42af2a5a0ec4aa6f044073ae902"
     },
     "G13": {
       "status": "ACCEPTED",
