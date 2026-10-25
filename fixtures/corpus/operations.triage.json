@@ -73,6 +73,26 @@
   "slickgrid/large-dataview/Go to next page": {
    "class": "reference_limit",
    "reason": "the status text the annotation expects to disappear persists under the reference driver; unresolved"
+  },
+  "django-admin/login/Fill in sign-in credentials without submitting": {
+   "class": "information_limit",
+   "reason": "the password field is a credential field and is withheld from execution by design"
+  },
+  "django-admin/login/Sign in with wrong credentials is rejected": {
+   "class": "information_limit",
+   "reason": "the password field is a credential field and is withheld from execution by design"
+  },
+  "jquery-ui/dialog-modal-form/Create a new user": {
+   "class": "information_limit",
+   "reason": "the form's password field is a credential field and is withheld from execution by design"
+  },
+  "jquery-ui/dialog-modal-form/Reject a short name": {
+   "class": "information_limit",
+   "reason": "the form's password field is a credential field and is withheld from execution by design"
+  },
+  "jquery-file-upload/files-queued/Cancel one queued file": {
+   "class": "annotation_defect",
+   "reason": "the target names one of several identical per-row Cancel buttons; refusing to guess is the correct behaviour"
   }
  }
 }

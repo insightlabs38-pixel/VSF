@@ -1,11 +1,13 @@
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { type Browser, chromium, type ElementHandle, type Page as PwPage } from "@playwright/test";
+import type { Harness } from "../../observation/support/world.ts";
+import { setToggle, typeInto } from "./actuate.ts";
 import type { Annotation } from "./annotation.ts";
 import { openState } from "./capture.ts";
 import { recognizeSnapshot } from "./evaluate.ts";
 import type { Page, Partition, Source } from "./manifest.ts";
-import { norm, type RecUnit } from "./match.ts";
+import { COMPOSITE_KINDS, norm, type RecComposite, type RecUnit } from "./match.ts";
 import {
   annotatedNames,
   loadFrozen,
@@ -16,7 +18,7 @@ import {
   type Triage,
   targetsOf,
 } from "./operations.ts";
-import { allHold, locateAll, referenceStep } from "./reader.ts";
+import { allHold, locate, locateAll, locateItem, referenceStep } from "./reader.ts";
 import { annotationPath, operationsPath, readIf, start } from "./run.ts";
 
 export type Reference = "confirmed" | "vacuous" | "unconfirmed" | "invalid";
@@ -78,30 +80,92 @@ export async function referenceRun(
   }
 }
 
+/** What the browser itself calls a file input, whatever the page labels it. */
+const BROWSER_FILE_NAMES = ["choose file", "choose files", "browse", "no file chosen"];
+
+/** The member of a recognized composite a step names, when exactly one composite of the annotated kind has it. */
+function resolveItem(
+  step: Extract<Step, { do: "click" }>,
+  composites: RecComposite[],
+  a: Annotation | undefined,
+): { unit?: RecUnit; why?: string } {
+  const kind = a?.composites.find((c) => norm(c.name) === norm(step.target))?.kind;
+  const kinds = kind ? (COMPOSITE_KINDS[kind] ?? []) : [];
+  const want = norm(step.item);
+  const hits = new Map<number, string>();
+  for (const c of composites)
+    if (kinds.includes(c.kind)) for (const m of c.members) if (norm(m.name) === want) hits.set(m.node, c.kind);
+  if (hits.size === 0) return { why: "no_unit" };
+  if (hits.size > 1) return { why: "ambiguous" };
+  const [node] = [...hits.keys()];
+  return { unit: { type: "action", node: node as number, name: step.item ?? "", usable: true } };
+}
+
 /** The one usable unit a step names, or why none can be used. Several matches are never guessed between. */
-export function resolve(step: Step, units: RecUnit[]): { unit?: RecUnit; why?: string } {
+export function resolve(
+  step: Step,
+  units: RecUnit[],
+  composites: RecComposite[] = [],
+  a?: Annotation,
+): { unit?: RecUnit; why?: string } {
   if (step.do === "press") return {};
+  if (step.do === "click" && step.item) return resolveItem(step, composites, a);
   const n = norm(step.target);
+  const hitNodes = new Set(
+    units
+      .filter((u) => u.type === "field" && u.binding?.state === "bound" && norm(u.binding.text) === n && u.usable)
+      .map((u) => u.node),
+  );
   const fieldKinds: Record<string, string[]> = {
     fill: ["text", "date", "other", "range"],
     choose: ["choice"],
     toggle: ["toggle"],
     upload: ["file"],
   };
-  const fieldHits = units.filter(
-    (u) => u.type === "field" && u.binding?.state === "bound" && norm(u.binding.text) === n && u.usable,
+  const nativeFileName = step.do === "upload" && BROWSER_FILE_NAMES.includes(n);
+  // A control that is only a part of another hit's widget (the select a combobox enhances) is not a second choice.
+  const covered = new Set(
+    composites.filter((c) => c.owner !== null && hitNodes.has(c.owner)).flatMap((c) => c.covers ?? []),
   );
+  const fieldHits = units.filter(
+    (u) =>
+      !covered.has(u.node) &&
+      (nativeFileName
+        ? u.type === "field" && u.kind === "file" && u.usable
+        : u.type === "field" && u.binding?.state === "bound" && norm(u.binding.text) === n && u.usable),
+  );
+  // Row checkboxes inherit their column's name; the one in the header of the same structure is the select-all.
+  const pickHeader = (hits: RecUnit[]): RecUnit[] => {
+    for (const c of composites) {
+      if (c.kind !== "bulk_selection") continue;
+      const part = new Map(c.members.map((m) => [m.node, m.part]));
+      if (hits.every((h) => part.has(h.node))) {
+        const head = hits.filter((h) => part.get(h.node) === "header");
+        if (head.length === 1 && hits.length > 1) return head;
+      }
+    }
+    return hits;
+  };
   if (step.do === "click") {
-    const actionHits = units.filter((u) => u.type === "action" && norm(u.name) === n && u.usable);
-    const hits =
-      actionHits.length > 0 ? actionHits : fieldHits.filter((u) => ["toggle", "choice"].includes(u.kind ?? ""));
+    const actionHits = units.filter(
+      (u) => u.type === "action" && (norm(u.name) === n || norm(u.shown) === n) && u.usable,
+    );
+    const hits = pickHeader(
+      actionHits.length > 0 ? actionHits : fieldHits.filter((u) => ["toggle", "choice"].includes(u.kind ?? "")),
+    );
     if (hits.length === 0) return { why: "no_unit" };
     return hits.length > 1 ? { why: "ambiguous" } : { unit: hits[0] as RecUnit };
   }
   if (fieldHits.length === 0) return { why: "no_unit" };
-  const ok = fieldHits.filter((u) => (fieldKinds[step.do] ?? []).includes(u.kind ?? ""));
+  const ok = fieldHits.filter(
+    (u) =>
+      (fieldKinds[step.do] ?? []).includes(u.kind ?? "") ||
+      (u.editable === true &&
+        ((step.do === "fill" && u.kind === "choice") || (step.do === "choose" && u.kind === "text"))),
+  );
   if (ok.length === 0) return { why: "kind_mismatch" };
-  return ok.length > 1 ? { why: "ambiguous" } : { unit: ok[0] as RecUnit };
+  const chosen = pickHeader(ok);
+  return chosen.length > 1 ? { why: "ambiguous" } : { unit: chosen[0] as RecUnit };
 }
 
 async function elementFor(page: PwPage, node: number): Promise<ElementHandle<Element> | null> {
@@ -115,32 +179,94 @@ async function elementFor(page: PwPage, node: number): Promise<ElementHandle<Ele
   return h.asElement() as ElementHandle<Element> | null;
 }
 
-async function sameElement(page: PwPage, a: Annotation, target: string, el: ElementHandle<Element>): Promise<boolean> {
-  const all = await locateAll(page, a, target).elementHandles();
-  for (const c of all) if (await el.evaluate((x, y) => x === y, c)) return true;
-  return all.length === 0;
+async function sameElement(
+  page: PwPage,
+  a: Annotation,
+  step: Extract<Step, { target: string }>,
+  el: ElementHandle<Element>,
+  widget: boolean,
+): Promise<boolean> {
+  const item = step.do === "click" ? step.item : undefined;
+  const found = item
+    ? [locateItem(page, item)]
+    : [
+        locateAll(page, a, step.target),
+        ...((await locateAll(page, a, step.target).count()) > 0 ? [] : [await locate(page, a, step.target)]),
+      ];
+  let any = false;
+  for (const loc of found) {
+    if ((await loc.count()) === 0) continue;
+    for (const c of await loc.elementHandles()) {
+      any = true;
+      if (await el.evaluate((x, a) => x === a.y || (a.w && x.contains(a.y)), { y: c, w: widget })) return true;
+    }
+  }
+  return !any;
 }
 
-async function perform(page: PwPage, step: Step, el: ElementHandle<Element>): Promise<void> {
+interface Context {
+  page: PwPage;
+  h: Harness;
+  a: Annotation;
+  tmp: string;
+  label: string;
+}
+
+const norms = (xs: (string | null)[]): string[] => xs.map(norm);
+
+/** Opens a combobox the way a person does and clicks the entry it lists, finding that entry among what is recognized after opening. */
+async function chooseFromPopup(cx: Context, unit: RecUnit, el: ElementHandle<Element>, value: string): Promise<void> {
+  const inside = await el.evaluateHandle(
+    (root, want) =>
+      root.getAttribute("role") === "listbox"
+        ? ([...root.querySelectorAll('[role="option"]')].find(
+            (o) => (o.textContent ?? "").replace(/\s+/g, " ").trim() === want,
+          ) ?? null)
+        : null,
+    value,
+  );
+  const listed = inside.asElement();
+  if (listed) return void (await listed.click({ timeout: 4000 }));
+  await el.click({ timeout: 2000 }).catch(() => el.focus());
+  for (let attempt = 0; attempt < 2; attempt++) {
+    await cx.page.waitForTimeout(250);
+    await cx.h.settle();
+    const rec = recognizeSnapshot(cx.h.collector.replica.toRecognizerInput(), cx.label, cx.tmp).result;
+    const hits = new Map<number, string>();
+    for (const c of rec.composites ?? [])
+      if (c.kind === "combobox_popup" && c.owner === unit.node)
+        for (const m of c.members) if (norms([m.name])[0] === norm(value)) hits.set(m.node, c.kind);
+    if (hits.size > 1) throw new Error("unsupported:ambiguous_option");
+    const [node] = [...hits.keys()];
+    if (node !== undefined) {
+      const option = await elementFor(cx.page, node);
+      if (!option) throw new Error("unsupported:option_gone");
+      await option.click({ timeout: 4000 });
+      return;
+    }
+    if (attempt === 0 && unit.editable) await typeInto(cx.page, el, value);
+  }
+  throw new Error("unsupported:no_option");
+}
+
+async function perform(cx: Context, step: Step, el: ElementHandle<Element> | null, unit?: RecUnit): Promise<void> {
+  const { page } = cx;
   const t = { timeout: 4000 };
-  if (step.do === "fill") await el.fill(step.value, t);
+  if (step.do === "press") await page.keyboard.press(step.key);
+  else if (!el) throw new Error("unsupported:element_gone");
+  else if (step.do === "fill") await typeInto(page, el, step.value);
   else if (step.do === "click") await el.click(t);
-  else if (step.do === "toggle") {
-    const role = await el.evaluate((e) => e.getAttribute("role"));
-    if (role === "switch" || role === "checkbox") {
-      const now = (await el.evaluate((e) => e.getAttribute("aria-checked"))) === "true";
-      if (now !== step.checked) await el.click(t);
-    } else await el.setChecked(step.checked, t);
-  } else if (step.do === "choose") {
+  else if (step.do === "toggle") await setToggle(el, step.checked);
+  else if (step.do === "choose") {
     const tag = await el.evaluate((e) => e.tagName);
-    if (tag !== "SELECT") throw new Error("unsupported:choice_popup");
-    await el.selectOption({ label: step.value }, t);
+    if (tag === "SELECT") await el.selectOption({ label: step.value }, t);
+    else await chooseFromPopup(cx, unit as RecUnit, el, step.value);
   } else if (step.do === "upload") {
     const file = { name: step.value, mimeType: "text/plain", buffer: Buffer.from(step.text) };
     const isInput = await el.evaluate((e) => e instanceof HTMLInputElement && e.type === "file");
     if (!isInput) throw new Error("unsupported:file_chooser");
     await el.setInputFiles(file, t);
-  } else await page.keyboard.press(step.key);
+  }
   await page.waitForTimeout(200);
 }
 
@@ -158,27 +284,34 @@ export async function recognizedRun(
   const { page, h } = opened;
   page.setDefaultTimeout(5000);
   let done = 0;
+  const stop = (i: number, why: string): { outcome: Outcome; detail: string; stepsDone: number } => ({
+    outcome: done === 0 ? "fallback" : "abandoned",
+    detail: `step ${i + 1}: ${why}`,
+    stepsDone: done,
+  });
   try {
     for (const [i, step] of op.steps.entries()) {
       if (!h) throw new Error("observer missing");
       await h.settle();
       let unit: RecUnit | undefined;
       let el: ElementHandle<Element> | null = null;
+      const cx: Context = { page, h, a, tmp, label: `${s.id}__${p.id}__op` };
       if (step.do !== "press") {
-        const snap = h.collector.replica.toRecognizerInput();
-        const rec = recognizeSnapshot(snap, `${s.id}__${p.id}__op`, tmp).result;
-        const r = resolve(step, rec.units);
-        if (!r.unit)
-          return { outcome: done === 0 ? "fallback" : "abandoned", detail: `step ${i + 1}: ${r.why}`, stepsDone: done };
+        const rec = recognizeSnapshot(h.collector.replica.toRecognizerInput(), cx.label, tmp).result;
+        const r = resolve(step, rec.units, rec.composites ?? [], a);
+        if (!r.unit) return stop(i, r.why ?? "no_unit");
         unit = r.unit;
         el = await elementFor(page, unit.node);
-        if (!el)
-          return {
-            outcome: done === 0 ? "fallback" : "abandoned",
-            detail: `step ${i + 1}: element_gone`,
-            stepsDone: done,
-          };
-        if (!(await sameElement(page, a, step.target, el)))
+        if (!el) return stop(i, "element_gone");
+        if (
+          !(await sameElement(
+            page,
+            a,
+            step,
+            el,
+            (rec.composites ?? []).some((c) => c.owner === unit?.node),
+          ))
+        )
           return {
             outcome: "misbound",
             detail: `step ${i + 1}: acted on an element other than "${step.target}"`,
@@ -186,20 +319,13 @@ export async function recognizedRun(
           };
       }
       try {
-        await perform(page, step, el as ElementHandle<Element>);
+        await perform(cx, step, el, unit);
       } catch (e) {
         const m = String((e as Error).message);
-        if (m.startsWith("unsupported:"))
-          return {
-            outcome: done === 0 ? "fallback" : "abandoned",
-            detail: `step ${i + 1}: ${m.slice(12)}`,
-            stepsDone: done,
-          };
-        return {
-          outcome: "wrong_effect",
-          detail: `step ${i + 1}: could not act (${m.split("\n")[0]?.slice(0, 100)})`,
-          stepsDone: done,
-        };
+        return stop(
+          i,
+          m.startsWith("unsupported:") ? m.slice(12) : `could not act (${m.split("\n")[0]?.slice(0, 100)})`,
+        );
       }
       done++;
     }

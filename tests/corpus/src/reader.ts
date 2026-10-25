@@ -1,4 +1,5 @@
-import type { Locator, Page as PwPage } from "@playwright/test";
+import type { ElementHandle, Locator, Page as PwPage } from "@playwright/test";
+import { setToggle, typeInto } from "./actuate.ts";
 import type { Annotation } from "./annotation.ts";
 import { norm } from "./match.ts";
 import type { Expect, Step } from "./operations.ts";
@@ -148,24 +149,6 @@ const choiceOption = (page: PwPage, value: string): Locator =>
     .locator("visible=true")
     .first();
 
-/** Types the way a person does, so key handlers fire; inputs that take no typing are filled. */
-async function typeInto(loc: Locator, value: string, t: { timeout: number }): Promise<void> {
-  const typable = await loc.evaluate(
-    (e) =>
-      (e instanceof HTMLElement && e.isContentEditable) ||
-      e instanceof HTMLTextAreaElement ||
-      (e instanceof HTMLInputElement &&
-        !["date", "datetime-local", "time", "month", "week", "color", "range", "file"].includes(e.type)),
-    undefined,
-    t,
-  );
-  if (!typable) return loc.fill(value, t);
-  await loc.click({ timeout: 2000 }).catch(() => loc.focus(t));
-  await loc.press("ControlOrMeta+a", t);
-  await loc.press("Delete", t);
-  if (value) await loc.pressSequentially(value, { delay: 15, timeout: 8000 });
-}
-
 /** Picks an option from a popup the way a person does: open it, or type to narrow it, then click the entry. */
 async function pickFromPopup(page: PwPage, loc: Locator, value: string, t: { timeout: number }): Promise<void> {
   await loc.click(t);
@@ -183,25 +166,6 @@ async function pickFromPopup(page: PwPage, loc: Locator, value: string, t: { tim
   await choiceOption(page, value).click(t);
 }
 
-/** Sets a toggle; when the input itself is covered (a styled replacement), a person clicks its visible label. */
-async function setToggle(loc: Locator, checked: boolean, t: { timeout: number }): Promise<void> {
-  try {
-    await loc.setChecked(checked, { timeout: 1500 });
-  } catch {
-    const now = await loc.evaluate((e) => (e as HTMLInputElement).checked === true);
-    if (now === checked) return;
-    const label = await loc.evaluateHandle(
-      (e) =>
-        (e as HTMLInputElement).labels?.[0] ??
-        e.closest("label") ??
-        (e.id ? document.querySelector(`label[for="${e.id}"]`) : null),
-    );
-    const el = label.asElement();
-    if (!el) throw new Error("no visible label to click");
-    await el.click(t);
-  }
-}
-
 /** Performs one annotated step through the page's accessibility surface alone. */
 export async function referenceStep(page: PwPage, a: Annotation, s: Step): Promise<void> {
   if (s.do === "press") {
@@ -211,9 +175,9 @@ export async function referenceStep(page: PwPage, a: Annotation, s: Step): Promi
   } else {
     const loc = await locate(page, a, s.target);
     const t = { timeout: 4000 };
-    if (s.do === "fill") await typeInto(loc, s.value, t);
+    if (s.do === "fill") await typeInto(page, (await loc.elementHandle(t)) as ElementHandle<Element>, s.value);
     else if (s.do === "click") await loc.click(t);
-    else if (s.do === "toggle") await setToggle(loc, s.checked, t);
+    else if (s.do === "toggle") await setToggle((await loc.elementHandle(t)) as ElementHandle<Element>, s.checked);
     else if (s.do === "choose") {
       const tag = await loc.evaluate((e) => e.tagName, undefined, t);
       if (tag === "SELECT") await loc.selectOption({ label: s.value }, t);

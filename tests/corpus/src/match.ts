@@ -6,14 +6,26 @@ export interface RecUnit {
   kind?: string;
   binding?: { state: string; text?: string };
   name?: string;
+  shown?: string | null;
   verbs?: string[];
   usable?: boolean;
+  editable?: boolean;
   columns?: (string | null)[];
   label?: string | null;
   rows?: number;
 }
+export interface RecComposite {
+  kind: string;
+  node: number;
+  label: string | null;
+  owner: number | null;
+  covers?: number[];
+  members: { node: number; name: string | null; part?: string | null }[];
+  evidence: string[];
+}
 export interface Recognition {
   units: RecUnit[];
+  composites?: RecComposite[];
 }
 export interface SnapNode {
   id: number;
@@ -104,6 +116,54 @@ export interface Item {
   cluster?: string | null;
 }
 
+export interface CompositeTally {
+  annotated: number;
+  /** Annotated composites paired with a recognized composite of a compatible kind (one-to-one). */
+  recognized: number;
+  /** The part of recognized whose label or member names also agree with the annotated name. */
+  named: number;
+  /** Recognized composites paired with nothing annotated; reported, never scored as claims. */
+  surplus: number;
+  byKind: Record<string, number>;
+  recognizedByKind: Record<string, number>;
+  surplusByKind: Record<string, number>;
+}
+const compTally = (): CompositeTally => ({
+  annotated: 0,
+  recognized: 0,
+  named: 0,
+  surplus: 0,
+  byKind: {},
+  recognizedByKind: {},
+  surplusByKind: {},
+});
+
+/** Which recognized kinds can stand for an annotated kind; `other` is only ever matched by name. */
+export const COMPOSITE_KINDS: Record<string, string[]> = {
+  tabs: ["tabs"],
+  other: ["disclosure", "tabs", "menu"],
+  menu: ["menu"],
+  dialog: ["dialog"],
+  combobox_popup: ["combobox_popup"],
+  tree: ["tree"],
+  pagination: ["pagination"],
+  bulk_selection: ["bulk_selection"],
+  sortable_columns: ["sortable_columns"],
+  filter_bar: ["filter_bar"],
+  file_input: ["file_input"],
+  date_picker: ["date_picker"],
+  editable_cell: ["editable_cell"],
+  virtual_list: ["virtual_list"],
+  drag_drop: [],
+};
+
+function namesAgree(annotated: string, c: RecComposite): boolean {
+  const n = norm(annotated);
+  if (!n) return false;
+  const seen = [c.label, ...c.members.slice(0, 40).map((m) => m.name)].map(norm).filter(Boolean);
+  return seen.some((t) => t === n || (n.length >= 4 && (t.includes(n) || (t.length >= 4 && n.includes(t)))));
+}
+
 export interface PageResult {
   items: Item[];
   source: string;
@@ -111,7 +171,7 @@ export interface PageResult {
   fields: Tally;
   actions: Tally;
   collections: Tally & { columnsExact: number; rowsExact: number; rowsChecked: number };
-  composites: { annotated: number; recognized: number; byKind: Record<string, number> };
+  composites: CompositeTally;
   workflows: { annotated: number; supported: number; unsupported: string[]; blockedBy: Record<string, number> };
   recognizedOnPage: { fields: number; actions: number; collections: number };
   unannotated: { fields: number; actions: number; collections: number };
@@ -132,7 +192,7 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     fields: tally(),
     actions: tally(),
     collections: { ...tally(), columnsExact: 0, rowsExact: 0, rowsChecked: 0 },
-    composites: { annotated: a.composites.length, recognized: 0, byKind: {} },
+    composites: { ...compTally(), annotated: a.composites.length },
     workflows: { annotated: a.workflows.length, supported: 0, unsupported: [], blockedBy: {} },
     recognizedOnPage: { fields: 0, actions: 0, collections: 0 },
     unannotated: { fields: 0, actions: 0, collections: 0 },
@@ -231,14 +291,41 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     const type = k === "fields" ? "field" : k === "actions" ? "action" : "collection";
     r.unannotated[k] = units.filter((x) => x.type === type && !used.has(x.node)).length;
   }
+  const recs = rec.composites ?? [];
+  const paired = new Set<RecComposite>();
+  const pair = (kinds: string[], pred: (c: RecComposite) => boolean): RecComposite | undefined => {
+    const c = recs.find((x) => !paired.has(x) && kinds.includes(x.kind) && pred(x));
+    if (c) paired.add(c);
+    return c;
+  };
   for (const c of a.composites) {
     r.composites.byKind[c.kind] = (r.composites.byKind[c.kind] ?? 0) + 1;
-    r.items.push({ k: "composite", name: c.name, want: c.kind, outcome: "missing" });
+    const kinds = COMPOSITE_KINDS[c.kind] ?? [];
+    const named = pair(kinds, (x) => namesAgree(c.name, x));
+    const hit = named ?? (c.kind === "other" ? undefined : pair(kinds, () => true));
+    if (hit) {
+      r.composites.recognized++;
+      r.composites.recognizedByKind[c.kind] = (r.composites.recognizedByKind[c.kind] ?? 0) + 1;
+      if (named) r.composites.named++;
+      status.set(`k:${norm(c.name)}`, "exact");
+    }
+    r.items.push({
+      k: "composite",
+      name: c.name,
+      want: c.kind,
+      ...(hit ? { got: hit.kind } : {}),
+      outcome: hit ? "exact" : "missing",
+    });
   }
+  for (const x of recs)
+    if (!paired.has(x)) {
+      r.composites.surplus++;
+      r.composites.surplusByKind[x.kind] = (r.composites.surplusByKind[x.kind] ?? 0) + 1;
+    }
   for (const w of a.workflows) {
     const ok = w.needs.every((need) => {
       const n = norm(need);
-      const hit = [`f:${n}`, `a:${n}`, `c:${n}`].map((k) => status.get(k)).find((v) => v !== undefined);
+      const hit = [`f:${n}`, `a:${n}`, `c:${n}`, `k:${n}`].map((k) => status.get(k)).find((v) => v !== undefined);
       return hit === "exact" || hit === "coarser";
     });
     if (ok) r.workflows.supported++;
@@ -263,7 +350,7 @@ export interface Aggregate {
   fields: Tally;
   actions: Tally;
   collections: Tally;
-  composites: { annotated: number; recognized: number; byKind: Record<string, number> };
+  composites: CompositeTally;
   workflows: { annotated: number; supported: number };
   recognizedOnPage: { fields: number; actions: number; collections: number };
   unannotated: { fields: number; actions: number; collections: number };
@@ -282,7 +369,7 @@ export function aggregate(rs: PageResult[]): Aggregate {
     fields: tally(),
     actions: tally(),
     collections: tally(),
-    composites: { annotated: 0, recognized: 0, byKind: {} },
+    composites: compTally(),
     workflows: { annotated: 0, supported: 0 },
     recognizedOnPage: { fields: 0, actions: 0, collections: 0 },
     unannotated: { fields: 0, actions: 0, collections: 0 },
@@ -296,8 +383,10 @@ export function aggregate(rs: PageResult[]): Aggregate {
     add(g.collections, r.collections);
     g.composites.annotated += r.composites.annotated;
     g.composites.recognized += r.composites.recognized;
-    for (const [k, v] of Object.entries(r.composites.byKind))
-      g.composites.byKind[k] = (g.composites.byKind[k] ?? 0) + v;
+    g.composites.named += r.composites.named;
+    g.composites.surplus += r.composites.surplus;
+    for (const f of ["byKind", "recognizedByKind", "surplusByKind"] as const)
+      for (const [k, v] of Object.entries(r.composites[f])) g.composites[f][k] = (g.composites[f][k] ?? 0) + v;
     g.workflows.annotated += r.workflows.annotated;
     g.workflows.supported += r.workflows.supported;
     for (const k of ["fields", "actions", "collections"] as const) {

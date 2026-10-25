@@ -105,7 +105,11 @@ export function summarize(rows: Row[]) {
       annotated: g.composites.annotated,
       recognized: g.composites.recognized,
       recall: ratio(g.composites.recognized, g.composites.annotated),
+      named: g.composites.named,
+      surplus: g.composites.surplus,
       byKind: g.composites.byKind,
+      recognizedByKind: g.composites.recognizedByKind,
+      surplusByKind: g.composites.surplusByKind,
     },
     workflows: {
       annotated: g.workflows.annotated,

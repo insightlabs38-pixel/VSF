@@ -1,4 +1,5 @@
 pub mod candidates;
+pub mod composites;
 pub mod contract;
 pub mod engine;
 pub mod incremental;

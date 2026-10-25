@@ -5,18 +5,34 @@ use crate::obs::{F_DISABLED, F_INTERACTIVE, F_OPAQUE, Node, Observation, RelKind
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 
-/// Which recognition rules are in force. The baseline binds only direct evidence; v2 adds delegated labels.
+/// Which recognition rules are in force. The baseline binds only direct evidence; v2 adds delegated labels;
+/// v3 stops a label that belongs to an earlier control from competing, and adds composites and editability.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Rules {
     pub delegation: bool,
+    pub scoped: bool,
 }
 
 impl Rules {
-    pub const V1: Rules = Rules { delegation: false };
-    pub const V2: Rules = Rules { delegation: true };
+    pub const V1: Rules = Rules {
+        delegation: false,
+        scoped: false,
+    };
+    pub const V2: Rules = Rules {
+        delegation: true,
+        scoped: false,
+    };
+    pub const V3: Rules = Rules {
+        delegation: true,
+        scoped: true,
+    };
 
     pub fn version(self) -> &'static str {
-        if self.delegation { "2" } else { "1" }
+        match (self.delegation, self.scoped) {
+            (_, true) => "3",
+            (true, false) => "2",
+            (false, false) => "1",
+        }
     }
 }
 
@@ -173,6 +189,8 @@ pub struct Field {
     pub scope: Option<String>,
     /// Roles the same element also satisfies as an action; non-empty means the kind is contested.
     pub action_roles: Vec<String>,
+    /// The element itself takes typed text, which a combobox's choice list does not exclude.
+    pub editable: bool,
     pub usable: bool,
     pub why_unusable: Option<&'static str>,
 }
@@ -268,6 +286,8 @@ fn verbs_from_states(n: &Node) -> Vec<Verb> {
 pub struct Action {
     pub node: u32,
     pub name: Option<String>,
+    /// The words the control shows, when its accessible name is different.
+    pub shown: Option<String>,
     /// Every role the element can be read as; more than one means the candidates stay separate.
     pub roles: Vec<String>,
     pub verbs: Vec<Verb>,
@@ -304,6 +324,11 @@ pub fn text_of(r: &Reader, i: usize) -> Option<String> {
             return Some(clip(t));
         }
     }
+    below_text(r, i)
+}
+
+/// The visible text beneath a node, ignoring its own name.
+fn below_text(r: &Reader, i: usize) -> Option<String> {
     let mut parts = Vec::new();
     let mut stack: Vec<usize> = r.children(i).iter().rev().copied().collect();
     while let Some(c) = stack.pop() {
@@ -460,7 +485,7 @@ fn preceding_label(r: &Reader, i: usize, budget: usize) -> Option<(usize, String
 }
 
 /// Labels next to a control, and whether picking one is unsafe (shared by several controls or competing).
-fn proximity(r: &Reader, i: usize) -> Option<(Vec<LabelCandidate>, bool)> {
+fn proximity(r: &Reader, i: usize, scoped: bool) -> Option<(Vec<LabelCandidate>, bool)> {
     let p = r.parent(i)?;
     let sibs = r.children(p);
     let pos = sibs.iter().position(|&s| s == i)?;
@@ -476,9 +501,11 @@ fn proximity(r: &Reader, i: usize) -> Option<(Vec<LabelCandidate>, bool)> {
             source: LabelSource::Proximity,
             from: vec![r.obs.nodes[s].id],
         }];
+        // A label on the far side of another visible control belongs to that control, so it does not compete.
         let competing = sibs[..k]
             .iter()
             .rev()
+            .take_while(|&&q| !(scoped && r.node(q).visible() && is_control(r.node(q))))
             .find(|&&q| r.node(q).visible() && !is_control(r.node(q)));
         if let Some(&q) = competing
             && !matches!(role_of(r.node(q)), "heading")
@@ -544,8 +571,32 @@ fn column_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
     None
 }
 
-fn delegated(r: &Reader, i: usize) -> Option<LabelCandidate> {
+/// A control inside a column header is named by that header.
+fn own_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
+    let h = r
+        .obs
+        .ancestors(i)
+        .take(3)
+        .find(|&a| role_of(r.node(a)) == "columnheader")?;
+    let t = r
+        .node(h)
+        .name
+        .as_deref()
+        .map(collapse)
+        .filter(|s| !s.is_empty())
+        .or_else(|| text_of(r, h))?;
+    Some(LabelCandidate {
+        text: clip(t),
+        source: LabelSource::ColumnHeader,
+        from: vec![r.obs.nodes[h].id],
+    })
+}
+
+fn delegated(r: &Reader, i: usize, scoped: bool) -> Option<LabelCandidate> {
     if let Some(c) = column_header(r, i) {
+        return Some(c);
+    }
+    if scoped && let Some(c) = own_header(r, i) {
         return Some(c);
     }
     let mut cur = i;
@@ -626,7 +677,7 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
             from: vec![n.id],
         });
     }
-    if let Some((mut cands, unsafe_pick)) = proximity(r, i) {
+    if let Some((mut cands, unsafe_pick)) = proximity(r, i, rules.scoped) {
         return if unsafe_pick {
             Binding::Ambiguous(cands)
         } else {
@@ -634,7 +685,7 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
         };
     }
     if rules.delegation
-        && let Some(c) = delegated(r, i)
+        && let Some(c) = delegated(r, i, rules.scoped)
     {
         return Binding::Bound(c);
     }
@@ -644,6 +695,14 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
 pub fn recognize_field(r: &Reader, i: usize, rules: Rules) -> Option<Field> {
     let n = r.node(i);
     let kind = field_kind(n)?;
+    if rules.scoped
+        && matches!(
+            n.state("type"),
+            Some("submit" | "button" | "reset" | "image")
+        )
+    {
+        return None;
+    }
     let (usable, why) = if n.has(crate::obs::F_CREDENTIAL) {
         (false, Some("credential_field"))
     } else if !n.visible() {
@@ -663,6 +722,7 @@ pub fn recognize_field(r: &Reader, i: usize, rules: Rules) -> Option<Field> {
         } else {
             Vec::new()
         },
+        editable: n.has(crate::obs::F_EDITABLE),
         usable,
         why_unusable: why,
     })
@@ -711,9 +771,17 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
     } else {
         (true, None)
     };
+    let shown = n
+        .text
+        .as_deref()
+        .map(collapse)
+        .filter(|t| !t.is_empty())
+        .or_else(|| below_text(r, i))
+        .filter(|t| Some(t) != name.as_ref());
     Some(Action {
         node: n.id,
         name,
+        shown,
         roles,
         verbs,
         usable,

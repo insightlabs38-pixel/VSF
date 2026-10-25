@@ -1,5 +1,6 @@
 //! Whole-observation recognition: index-driven discovery of unit roots, then one logged computation per unit.
 
+use crate::composites::{Composite, recognize_composites};
 use crate::index::{FeatureIndex, Query};
 use crate::obs::Observation;
 use crate::semantics::{
@@ -106,6 +107,7 @@ pub struct Recognition {
     pub rules: Rules,
     pub digest: String,
     pub units: BTreeMap<UnitKey, Unit>,
+    pub composites: Vec<Composite>,
     pub stats: RunStats,
 }
 
@@ -130,6 +132,11 @@ pub fn recognize(obs: &Observation, rules: Rules) -> Recognition {
         rules,
         digest: obs.digest.clone(),
         units,
+        composites: if rules.scoped {
+            recognize_composites(obs)
+        } else {
+            Vec::new()
+        },
         stats,
     }
 }
