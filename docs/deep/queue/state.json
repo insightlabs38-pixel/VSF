@@ -1683,7 +1683,8 @@
       "status": "ACCEPTED",
       "decision": "PROCEED",
       "evidence": "docs/deep/evidence/VSF-B12",
-      "report": "docs/deep/reports/VSF-B12.md"
+      "report": "docs/deep/reports/VSF-B12.md",
+      "pr": "https://github.com/insightlabs38-pixel/VSF/pull/15"
     },
     "G13": {
       "status": "ACCEPTED",

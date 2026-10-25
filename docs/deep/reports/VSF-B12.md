@@ -1,6 +1,6 @@
 Batch: B12 | Gate: G12 | Decision: PROCEED
 Branch: vsf/b12-specialized-interfaces | Base: 3594e8f | Commit: b944e5a (code and receipts; CI run on the PR head)
-PR: pending
+PR: https://github.com/insightlabs38-pixel/VSF/pull/15 ; merge commit recorded in state.json after merge
 Closed tasks: VSF-B12-T01 VSF-B12-T02 VSF-B12-T03 VSF-B12-T04 VSF-B12-T05 VSF-B12-T06
 Contracts/primitive IDs: no IR or primitive change; new package @vsf/specialized (TerminalAdapter, EditorAdapter, Notebook, ChartModel, TransportManifest), Go Hub/Process in backend/execution
 Changed modules: frontend/packages/specialized, tests/specialized, backend/execution/streams.go, CI job specialized, ADR-042
