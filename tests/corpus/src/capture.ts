@@ -157,3 +157,35 @@ export async function capturePage(browser: Browser, origin: string, s: Source, p
     await opened.close();
   }
 }
+
+export interface ScrollProbe {
+  before: RecognizerInput;
+  after: RecognizerInput;
+}
+
+/** Scrolls every table or grid region once in the disposable page and observes again; null when nothing could scroll. */
+export async function probeScrolled(browser: Browser, origin: string, s: Source, p: Page): Promise<ScrollProbe | null> {
+  const opened = await openState(browser, origin, s, p, true);
+  const h = opened.h as Harness;
+  const anon = (snap: unknown): RecognizerInput =>
+    JSON.parse(JSON.stringify(snap).replaceAll(origin, "http://corpus.invalid"));
+  try {
+    const ids = [...h.collector.replica.nodes.values()]
+      .filter((n) => ["grid", "table", "treegrid"].includes(n.role ?? "") || n.tag === "table")
+      .map((n) => n.id);
+    if (ids.length === 0) return null;
+    const before = anon(h.collector.replica.toRecognizerInput());
+    const moved = await opened.page.evaluate((list) => {
+      const session = (
+        window as unknown as { __vsf: { session: { scrollProbe(i: number): { moved: boolean } | null } } }
+      ).__vsf.session;
+      return list.filter((id) => session.scrollProbe(id)?.moved === true).length;
+    }, ids);
+    if (moved === 0) return null;
+    await opened.page.waitForTimeout(400);
+    await h.settle();
+    return { before, after: anon(h.collector.replica.toRecognizerInput()) };
+  } finally {
+    await opened.close();
+  }
+}

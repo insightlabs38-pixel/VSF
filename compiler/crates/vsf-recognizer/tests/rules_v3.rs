@@ -216,3 +216,46 @@ fn a_label_that_belongs_to_the_previous_control_does_not_compete() {
     );
     assert!(bound_text(&recognize(&obs, Rules::V2).field(second).unwrap().binding).is_none());
 }
+
+fn card(b: &mut B, parent: u32, title: &str) {
+    let c = b.div(parent);
+    b.text(c, "h3", title);
+    b.text(c, "p", "details");
+    b.button(c, "Open");
+}
+
+#[test]
+fn identical_sibling_blocks_that_hold_their_own_controls_are_a_record_collection() {
+    let mut b = B::new();
+    let board = b.div(1);
+    for t in ["A", "B", "C"] {
+        card(&mut b, board, t);
+    }
+    let obs = b.build();
+    let c: Vec<_> = recognize(&obs, Rules::V3)
+        .collections()
+        .map(|c| c.rows)
+        .collect();
+    assert_eq!(c, [3]);
+    assert_eq!(recognize(&obs, Rules::V2).collections().count(), 0);
+}
+
+#[test]
+fn blocks_of_different_shape_navigation_chrome_and_link_menus_are_not_record_collections() {
+    let mut b = B::new();
+    let mixed = b.div(1);
+    card(&mut b, mixed, "A");
+    b.text(mixed, "p", "A lone paragraph");
+    let nav = b.add(1, "nav", Some("navigation"), None, None, V);
+    let inside = b.div(nav);
+    for t in ["A", "B", "C"] {
+        card(&mut b, inside, t);
+    }
+    let links = b.div(1);
+    for t in ["One", "Two", "Three"] {
+        let item = b.div(links);
+        b.add(item, "a", Some("link"), Some(t), Some(t), BTN);
+    }
+    let obs = b.build();
+    assert_eq!(recognize(&obs, Rules::V3).collections().count(), 0);
+}

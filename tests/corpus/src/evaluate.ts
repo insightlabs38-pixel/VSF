@@ -9,6 +9,9 @@ import { aggregate, matchPage, type PageResult, type Recognition, type SnapNode 
 /** VSF_RECOGNIZER selects another build, for measuring an older one on the same captures. */
 export const RECOGNIZER = process.env.VSF_RECOGNIZER ?? `${ROOT}compiler/target/release/vsf-recognizer`;
 
+/** Recognition rules to request; a build chosen by VSF_RECOGNIZER gets its own default unless VSF_RULES says otherwise. */
+const RULES = process.env.VSF_RULES ?? (process.env.VSF_RECOGNIZER ? undefined : "3");
+
 /** The pre-states wire format, so a recognizer built before B11-T02 can be measured on the same captures. */
 function legacyWire(snapshot: Capture["snapshot"]): unknown {
   return {
@@ -27,11 +30,25 @@ export interface Timed {
 }
 
 /** Runs the production recognizer binary on a capture and measures it. */
-export function recognize(capture: Capture, tmp: string): Timed {
-  return recognizeSnapshot(capture.snapshot, `${capture.source}__${capture.page}`, tmp);
+export function recognize(capture: Capture, tmp: string, probeFile?: string): Timed {
+  const t = recognizeSnapshot(capture.snapshot, `${capture.source}__${capture.page}`, tmp);
+  if (probeFile && existsSync(probeFile)) {
+    const probe = JSON.parse(readFileSync(probeFile, "utf8")) as {
+      before: Capture["snapshot"];
+      after: Capture["snapshot"];
+    };
+    const label = `${capture.source}__${capture.page}__probe`;
+    writeFileSync(`${tmp}/${label}.after.json`, JSON.stringify(probe.after));
+    const later = recognizeSnapshot(probe.before, label, tmp, `${tmp}/${label}.after.json`).result;
+    t.result.composites = [
+      ...(t.result.composites ?? []),
+      ...(later.composites ?? []).filter((c) => c.kind === "virtual_list"),
+    ];
+  }
+  return t;
 }
 
-export function recognizeSnapshot(snapshot: Capture["snapshot"], label: string, tmp: string): Timed {
+export function recognizeSnapshot(snapshot: Capture["snapshot"], label: string, tmp: string, after?: string): Timed {
   if (!existsSync(RECOGNIZER))
     throw new Error(`build the recognizer first: cargo build --release -p vsf-recognizer (${RECOGNIZER})`);
   const file = `${tmp}/${label}.json`;
@@ -39,10 +56,23 @@ export function recognizeSnapshot(snapshot: Capture["snapshot"], label: string, 
   const t0 = performance.now();
   const probe =
     "import resource,subprocess,sys;p=subprocess.run(sys.argv[1:],capture_output=True);sys.stdout.buffer.write(p.stdout);sys.stderr.write(p.stderr.decode()+'\\n'+str(resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss));sys.exit(p.returncode)";
-  const r = spawnSync("python3", ["-I", "-c", probe, RECOGNIZER, "recognize", file], {
-    encoding: "utf8",
-    maxBuffer: 256 << 20,
-  });
+  const r = spawnSync(
+    "python3",
+    [
+      "-I",
+      "-c",
+      probe,
+      RECOGNIZER,
+      "recognize",
+      file,
+      ...(RULES ? ["--rules", RULES] : []),
+      ...(after ? ["--after", after] : []),
+    ],
+    {
+      encoding: "utf8",
+      maxBuffer: 256 << 20,
+    },
+  );
   const wallMs = performance.now() - t0;
   if (r.status !== 0) throw new Error(`recognizer failed on ${label}: ${String(r.stderr ?? r.error).slice(0, 200)}`);
   const rssKb = Number(r.stderr.trim().split("\n").pop()) || 0;
@@ -96,6 +126,9 @@ export function summarize(rows: Row[]) {
     falseClaims: g.falseClaims,
     falseClaimsExcludingEffectHints: g.falseClaims - g.wrongEffectHints,
     wrongEffectHints: g.wrongEffectHints,
+    /** Wrong hints that stay on one side of the read/write line (read taken for navigation or the reverse). */
+    softEffectHints: g.wrongEffectHints - g.writeLine.writeSeenAsReadOnly - g.writeLine.readSeenAsWrite,
+    writeLine: g.writeLine,
     contradictions: {
       fields: g.fields.contradict,
       actions: g.actions.contradict,

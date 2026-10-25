@@ -133,8 +133,13 @@ pub fn recognize(obs: &Observation, rules: Rules) -> Recognition {
             let n = &obs.nodes[i];
             let key = (UnitKind::Collection, n.id);
             if !units.contains_key(&key)
-                && (matches!(n.tag.as_str(), "ul" | "ol")
-                    || matches!(n.role.as_deref(), Some("list" | "feed")))
+                && (matches!(
+                    n.tag.as_str(),
+                    "ul" | "ol" | "div" | "section" | "article" | "main"
+                ) || matches!(
+                    n.role.as_deref(),
+                    Some("list" | "feed" | "region" | "group")
+                ))
                 && let Some(u) = compute_unit(obs, UnitKind::Collection, i, rules)
             {
                 stats.units_computed += 1;

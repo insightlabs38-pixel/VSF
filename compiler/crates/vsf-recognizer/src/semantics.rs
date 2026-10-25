@@ -1042,9 +1042,114 @@ fn recognize_list(r: &Reader, i: usize) -> Option<Collection> {
     })
 }
 
+/// Records laid out as repeated sibling blocks (cards, feed entries, board columns' tasks) rather than as a list or table.
+/// Each block must hold its own controls or text and the blocks must share one shape; navigation chrome is excluded.
+fn recognize_repeated(r: &Reader, i: usize) -> Option<Collection> {
+    let n = r.node(i);
+    if !n.visible()
+        || !matches!(n.tag.as_str(), "div" | "section" | "article" | "main")
+        || !(generic_wrapper(n) || matches!(role_of(n), "region" | "group" | "feed" | "main"))
+    {
+        return None;
+    }
+    let chrome = |a: usize| {
+        let an = r.node(a);
+        matches!(
+            role_of(an),
+            "navigation"
+                | "menu"
+                | "menubar"
+                | "tablist"
+                | "toolbar"
+                | "banner"
+                | "contentinfo"
+                | "complementary"
+                | "dialog"
+                | "form"
+                | "search"
+        ) || matches!(
+            an.tag.as_str(),
+            "nav" | "header" | "footer" | "aside" | "form" | "menu"
+        )
+    };
+    if chrome(i) || r.obs.ancestors(i).take(10).any(chrome) {
+        return None;
+    }
+    let kids: Vec<usize> = r
+        .children(i)
+        .iter()
+        .copied()
+        .filter(|&c| r.node(c).visible())
+        .collect();
+    if kids.len() < 2 {
+        return None;
+    }
+    let shape = |c: usize| {
+        let cn = r.node(c);
+        let below = r.obs.descendants(c);
+        let acts = below.iter().filter(|&&d| is_action(r.node(d))).count();
+        let ctrls = below.iter().filter(|&&d| is_control(r.node(d))).count();
+        let texts = below
+            .iter()
+            .filter(|&&d| {
+                r.node(d).visible()
+                    && r.node(d)
+                        .text
+                        .as_deref()
+                        .is_some_and(|t| !t.trim().is_empty())
+            })
+            .count();
+        (
+            cn.tag.clone(),
+            role_of(cn).to_string(),
+            acts > 0,
+            ctrls > 0,
+            texts >= 2 || acts + ctrls >= 2,
+        )
+    };
+    let first = shape(kids[0]);
+    if !first.4 || !kids.iter().all(|&c| shape(c) == first) {
+        return None;
+    }
+    // Blocks that hold only a single link each are menus of links, not records.
+    if !first.3
+        && kids.iter().all(|&c| {
+            r.obs
+                .descendants(c)
+                .iter()
+                .filter(|&&d| is_action(r.node(d)))
+                .count()
+                <= 1
+                && r.obs
+                    .descendants(c)
+                    .iter()
+                    .all(|&d| r.node(d).tag != "button")
+        })
+        && first.2
+    {
+        return None;
+    }
+    let mut row_actions = Vec::new();
+    for (k, &item) in kids.iter().enumerate() {
+        for d in r.obs.descendants(item) {
+            if is_action(r.node(d)) {
+                row_actions.push((k, r.node(d).id));
+            }
+        }
+    }
+    let label = n.name.as_deref().map(collapse).filter(|s| !s.is_empty());
+    Some(Collection {
+        node: n.id,
+        label,
+        columns: Vec::new(),
+        rows: kids.len(),
+        row_actions,
+    })
+}
+
 pub fn recognize_collection(r: &Reader, i: usize, rules: Rules) -> Option<Collection> {
     if rules.scoped
-        && let Some(list) = recognize_list(r, i)
+        && let Some(list) = recognize_list(r, i).or_else(|| recognize_repeated(r, i))
     {
         return Some(list);
     }

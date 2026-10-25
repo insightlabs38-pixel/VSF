@@ -7,6 +7,7 @@ export interface RecUnit {
   binding?: { state: string; text?: string };
   name?: string;
   shown?: string | null;
+  structural?: string | null;
   verbs?: string[];
   usable?: boolean;
   editable?: boolean;
@@ -68,8 +69,8 @@ export function fieldAgreement(annotated: FieldKind, recognized: string | undefi
   return "contradict";
 }
 
-export function actionAgreement(annotated: Effect, verbs: string[] | undefined): Agreement {
-  const e = effectsOf(verbs);
+export function actionAgreement(annotated: Effect, verbs: string[] | undefined, structural?: string | null): Agreement {
+  const e = structural ? [structural as Effect] : effectsOf(verbs);
   if (e.length === 0) return annotated === "unknown" ? "exact" : "unclassified";
   if (e.includes(annotated)) return "exact";
   return annotated === "unknown" ? "unclassified" : "contradict";
@@ -115,6 +116,17 @@ export interface Item {
   outcome: Agreement | "missing";
   cluster?: string | null;
 }
+
+export interface WriteLine {
+  comparable: number;
+  sameSide: number;
+  /** Annotated as changing data, recognized only as read or navigation: the dangerous direction. */
+  writeSeenAsReadOnly: number;
+  /** Annotated as read or navigation, recognized as changing data: a needless prompt, not a hazard. */
+  readSeenAsWrite: number;
+}
+const writeLine = (): WriteLine => ({ comparable: 0, sameSide: 0, writeSeenAsReadOnly: 0, readSeenAsWrite: 0 });
+const WRITES: Effect[] = ["state_change", "destructive"];
 
 export interface CompositeTally {
   annotated: number;
@@ -172,6 +184,8 @@ export interface PageResult {
   actions: Tally;
   collections: Tally & { columnsExact: number; rowsExact: number; rowsChecked: number };
   composites: CompositeTally;
+  /** Whether the recognized class is on the same side of the read/write line as the annotated one. */
+  writeLine: WriteLine;
   workflows: { annotated: number; supported: number; unsupported: string[]; blockedBy: Record<string, number> };
   recognizedOnPage: { fields: number; actions: number; collections: number };
   unannotated: { fields: number; actions: number; collections: number };
@@ -193,6 +207,7 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     actions: tally(),
     collections: { ...tally(), columnsExact: 0, rowsExact: 0, rowsChecked: 0 },
     composites: { ...compTally(), annotated: a.composites.length },
+    writeLine: writeLine(),
     workflows: { annotated: a.workflows.length, supported: 0, unsupported: [], blockedBy: {} },
     recognizedOnPage: { fields: 0, actions: 0, collections: 0 },
     unannotated: { fields: 0, actions: 0, collections: 0 },
@@ -235,15 +250,24 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
       continue;
     }
     r.actions.found++;
-    const ag = actionAgreement(act.effect, u.verbs);
+    const ag = actionAgreement(act.effect, u.verbs, u.structural);
     r.items.push({
       k: "action",
       name: act.name,
       want: act.effect,
-      got: (u.verbs ?? []).join("+") || "none",
+      got: u.structural ?? ((u.verbs ?? []).join("+") || "none"),
       outcome: ag,
     });
     r.actions[ag]++;
+    const seen = u.structural ? [u.structural as Effect] : effectsOf(u.verbs);
+    if (seen.length > 0 && act.effect !== "unknown") {
+      r.writeLine.comparable++;
+      const annotatedWrite = WRITES.includes(act.effect);
+      const seenWrite = seen.some((e) => WRITES.includes(e) || e === "unknown");
+      if (annotatedWrite === seenWrite) r.writeLine.sameSide++;
+      else if (annotatedWrite) r.writeLine.writeSeenAsReadOnly++;
+      else r.writeLine.readSeenAsWrite++;
+    }
     status.set(`a:${n}`, ag);
     if (ag === "contradict" && u.usable) {
       r.falseClaims++;
@@ -255,7 +279,12 @@ export function matchPage(a: Annotation, rec: Recognition): PageResult {
     const cols = c.columns.map(norm).filter(Boolean);
     const u = take(
       "collection",
-      (x) => norm(x.label) === norm(c.name) || jaccard((x.columns ?? []).map(norm).filter(Boolean), cols) >= 0.5,
+      (x) =>
+        norm(x.label) === norm(c.name) ||
+        (cols.length === 0
+          ? // Without columns a collection is told apart by its label or its row count, never by being empty-headed.
+            c.rows !== null && (x.columns ?? []).filter(Boolean).length === 0 && x.rows === c.rows
+          : jaccard((x.columns ?? []).map(norm).filter(Boolean), cols) >= 0.5),
     );
     if (!u) {
       status.set(`c:${norm(c.name)}`, "missing");
@@ -351,6 +380,7 @@ export interface Aggregate {
   actions: Tally;
   collections: Tally;
   composites: CompositeTally;
+  writeLine: WriteLine;
   workflows: { annotated: number; supported: number };
   recognizedOnPage: { fields: number; actions: number; collections: number };
   unannotated: { fields: number; actions: number; collections: number };
@@ -370,6 +400,7 @@ export function aggregate(rs: PageResult[]): Aggregate {
     actions: tally(),
     collections: tally(),
     composites: compTally(),
+    writeLine: writeLine(),
     workflows: { annotated: 0, supported: 0 },
     recognizedOnPage: { fields: 0, actions: 0, collections: 0 },
     unannotated: { fields: 0, actions: 0, collections: 0 },
@@ -387,6 +418,7 @@ export function aggregate(rs: PageResult[]): Aggregate {
     g.composites.surplus += r.composites.surplus;
     for (const f of ["byKind", "recognizedByKind", "surplusByKind"] as const)
       for (const [k, v] of Object.entries(r.composites[f])) g.composites[f][k] = (g.composites[f][k] ?? 0) + v;
+    for (const k of Object.keys(g.writeLine) as (keyof WriteLine)[]) g.writeLine[k] += r.writeLine[k];
     g.workflows.annotated += r.workflows.annotated;
     g.workflows.supported += r.workflows.supported;
     for (const k of ["fields", "actions", "collections"] as const) {

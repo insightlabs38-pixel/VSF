@@ -83,6 +83,17 @@ export const locate = async (page: PwPage, a: Annotation, name: string): Promise
   const byName = locateAll(page, a, name);
   if ((await byName.count()) > 0) return byName.first();
   const kind = itemOf(a, name).kind;
+  const fieldKind = itemOf(a, name).fieldKind;
+  if (kind === "field" && fieldKind === "toggle") {
+    // A checkbox is usually followed by its caption, so the control just before the caption is the one it names.
+    const before = page
+      .getByText(name, { exact: true })
+      .locator(
+        'xpath=preceding-sibling::*[self::input[@type="checkbox" or @type="radio"] or @role="checkbox" or @role="radio" or @role="switch"][1]',
+      )
+      .locator("visible=true");
+    if ((await before.count()) > 0) return before.first();
+  }
   if (kind === "field" || kind === "collection") {
     const cap = byCaption(
       page,

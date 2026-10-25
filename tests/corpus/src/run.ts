@@ -3,7 +3,7 @@ import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { chromium } from "@playwright/test";
 import type { Annotation } from "./annotation.ts";
-import { type Capture, capturePage } from "./capture.ts";
+import { type Capture, capturePage, probeScrolled } from "./capture.ts";
 import { ensurePackage, parseAlias } from "./cdn.ts";
 import { dossierOf } from "./dossier.ts";
 import { evaluateOne, type Row, readJson, recognize } from "./evaluate.ts";
@@ -13,6 +13,7 @@ import { type Running, serveProcess, serveStatic } from "./serve.ts";
 
 export const ANNOTATIONS = `${ROOT}fixtures/corpus/annotations/`;
 export const capturePath = (s: string, p: string): string => `${CACHE}captures/${s}/${p}.json`;
+export const probePath = (s: string, p: string): string => `${CACHE}captures/${s}/${p}.probe.json`;
 export const dossierPath = (s: string, p: string): string => `${ROOT}fixtures/corpus/dossiers/${s}/${p}.md`;
 export const operationsPath = (s: string, p: string): string => `${ROOT}fixtures/corpus/operations/${s}/${p}.json`;
 export const readIf = <T>(path: string): T | null =>
@@ -63,6 +64,8 @@ export async function captureSources(sources: Source[], only?: string[], refresh
           writeFileSync(capturePath(s.id, p.id), JSON.stringify(c));
           if (refreshDossiers || !existsSync(dossierPath(s.id, p.id)))
             writeFileSync(dossierPath(s.id, p.id), dossierOf(s, p, c).text);
+          const probe = await probeScrolled(browser, running.origin, s, p);
+          if (probe) writeFileSync(probePath(s.id, p.id), JSON.stringify(probe));
           out.push(c);
         }
       } finally {
@@ -90,7 +93,7 @@ export function evaluateSources(sources: Source[], partitions: Partition[]): { r
       }
       const a = readJson<Annotation>(ap);
       const c = readJson<Capture>(cp);
-      rows.push(evaluateOne(a, c, recognize(c, tmp), s.partition));
+      rows.push(evaluateOne(a, c, recognize(c, tmp, probePath(s.id, p.id)), s.partition));
     }
   }
   return { rows, missing };
