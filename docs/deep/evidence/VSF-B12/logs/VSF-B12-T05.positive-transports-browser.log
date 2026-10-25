@@ -1,0 +1,17 @@
+$ pnpm --filter @vsf/specialized-tests exec playwright test specs/transport.spec.ts
+
+Running 10 tests using 1 worker
+
+  ✓   1 specs/transport.spec.ts:54:1 › after a drop the client resumes after the last sequence it saw: nothing is repeated and nothing is missing (219ms)
+  ✓   2 specs/transport.spec.ts:78:1 › when the source cannot resume, the loss is reported as a gap and never filled in (173ms)
+  ✓   3 specs/transport.spec.ts:97:1 › an input that was sent but not acknowledged before a drop is unknown and is not sent again unless declared repeatable (263ms)
+  ✓   4 specs/transport.spec.ts:130:1 › reconnect attempts are finite, back off, and then the connection is reported as failed (221ms)
+  ✓   5 specs/transport.spec.ts:138:1 › input queued while the connection is down is discarded rather than replayed later (324ms)
+  ✓   6 specs/transport.spec.ts:161:1 › server-sent events resume from the last event id the browser saw, with no repeats (188ms)
+  ✓   7 specs/transport.spec.ts:210:1 › this browser has every transport, and capability negotiation honours what the source declares (100ms)
+  ✓   8 specs/transport.spec.ts:239:1 › a manifest that hides why a transport is missing is refused and the source keeps its own interface (91ms)
+  ✓   9 specs/transport.spec.ts:253:1 › a source that offers no transport this page can use keeps its own interface (112ms)
+  ✓  10 specs/transport.spec.ts:271:1 › a data channel really carries a message between two peers in this browser (129ms)
+
+  10 passed (3.2s)
+[exit 0]

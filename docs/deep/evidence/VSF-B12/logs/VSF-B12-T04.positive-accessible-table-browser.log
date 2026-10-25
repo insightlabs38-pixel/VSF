@@ -1,0 +1,11 @@
+$ pnpm --filter @vsf/specialized-tests exec playwright test specs/chart.spec.ts
+
+Running 4 tests using 1 worker
+
+  ✓  1 specs/chart.spec.ts:46:1 › the table alternative is a named table whose rows are exactly the chart's points, with exact values (213ms)
+  ✓  2 specs/chart.spec.ts:58:1 › a filter removes the same points from the table and says how many it removed (151ms)
+  ✓  3 specs/chart.spec.ts:66:1 › source text cannot inject markup into the table (161ms)
+  ✓  4 specs/chart.spec.ts:84:1 › a canvas chart is reported as unsupported with the reason and the source interface kept (103ms)
+
+  4 passed (1.9s)
+[exit 0]

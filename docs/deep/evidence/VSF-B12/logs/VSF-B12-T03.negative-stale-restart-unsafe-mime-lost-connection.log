@@ -1,0 +1,17 @@
+$ pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=restart|earlier epoch|losing the connection|embedded resources|never made|chatty|busy cell test/notebook.test.ts
+✔ a restart makes every earlier output stale and a late message from the old kernel changes nothing (2.564861ms)
+✔ a message delivered for an earlier epoch is ignored even in the right session (0.191395ms)
+✔ losing the connection leaves running cells unknown instead of failed or finished (0.299771ms)
+✔ embedded resources are checked, kept with their digest, and script-capable content is never passed on (7.159246ms)
+✔ a busy cell cannot be edited or run twice, markdown cannot run, and unknown cells are refused (1.044632ms)
+✔ messages for requests the notebook never made are ignored and counted (0.217724ms)
+✔ a very chatty cell is bounded (11.049121ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 141.364728
+[exit 0]

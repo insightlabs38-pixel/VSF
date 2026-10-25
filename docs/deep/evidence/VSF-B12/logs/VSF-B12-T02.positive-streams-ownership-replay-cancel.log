@@ -1,0 +1,18 @@
+$ go -C backend test -race -count=1 -v ./execution/ -run TestOutputIsOrdered|TestACompleted|TestOnlyTheExact|TestCancellingBeforeAnyInput|TestAProcessThatExits|TestHighVolume|TestIdleProcesses
+=== RUN   TestOutputIsOrderedAndAReconnectReplaysOnlyWhatWasMissed
+--- PASS: TestOutputIsOrderedAndAReconnectReplaysOnlyWhatWasMissed (0.02s)
+=== RUN   TestACompletedInputStaysAckedAcrossAReconnect
+--- PASS: TestACompletedInputStaysAckedAcrossAReconnect (0.01s)
+=== RUN   TestOnlyTheExactOwnerReachesAProcessAndOthersLearnNothing
+--- PASS: TestOnlyTheExactOwnerReachesAProcessAndOthersLearnNothing (0.00s)
+=== RUN   TestCancellingBeforeAnyInputIsCleanAndAfterInputLeavesTheEffectUnknown
+--- PASS: TestCancellingBeforeAnyInputIsCleanAndAfterInputLeavesTheEffectUnknown (0.01s)
+=== RUN   TestAProcessThatExitsKeepsItsCodeAndRefusesMoreInput
+--- PASS: TestAProcessThatExitsKeepsItsCodeAndRefusesMoreInput (0.00s)
+=== RUN   TestHighVolumeOutputKeepsMemoryWithinTheBufferAndOrderIntact
+--- PASS: TestHighVolumeOutputKeepsMemoryWithinTheBufferAndOrderIntact (0.43s)
+=== RUN   TestIdleProcessesAreSweptButActiveOnesAreNot
+--- PASS: TestIdleProcessesAreSweptButActiveOnesAreNot (0.01s)
+PASS
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	1.534s
+[exit 0]

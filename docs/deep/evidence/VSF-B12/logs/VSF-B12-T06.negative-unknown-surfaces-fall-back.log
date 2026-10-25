@@ -1,0 +1,14 @@
+$ pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=canvas and image|more marks than|nothing is usable|declares a transport unavailable test/chart.test.ts test/transport.test.ts
+✔ canvas and image charts are unsupported, with a reason and the source interface retained (1.328234ms)
+✔ a chart with more marks than the limit is not modelled and keeps the source interface (29.301245ms)
+✔ a source that declares a transport unavailable is never offered it, whatever the browser has (1.82893ms)
+✔ when nothing is usable the source interface is kept and nothing else is picked (0.291363ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 171.468143
+[exit 0]

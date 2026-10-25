@@ -1,0 +1,52 @@
+{
+  "task_id": "VSF-B12-T03",
+  "status": "DONE",
+  "branch": "vsf/b12-specialized-interfaces",
+  "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+  "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+  "paths": [
+    "frontend/packages/specialized/src/notebook.ts",
+    "frontend/packages/specialized/test/notebook.test.ts",
+    "docs/deep/adr/ADR-042-specialized-interfaces.md"
+  ],
+  "acceptance": "Notebook cell execution retains kernel/session identity and preserves output ordering, failure status and embedded resources.",
+  "positive": {
+    "fixture": "outputs attach to the request that produced them in the kernel's order, nothing is claimed to have run before the kernel answers, an error fails its cell and aborts the queue, an interrupt stops the queue, embedded resources keep a digest, editing after a run marks outputs as describing older code",
+    "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/notebook.test.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "a restart makes earlier outputs stale and a late message from the old kernel changes nothing, messages for another epoch or session are ignored, a lost connection leaves cells unknown not failed, script-capable MIME types are blocked, unknown requests are counted, a chatty cell is bounded, busy cells cannot be edited or run twice",
+    "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=restart|earlier epoch|losing the connection|embedded resources|never made|chatty|busy cell test/notebook.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/specialized run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/specialized run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts secrets",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "none",
+    "primitive": "none; new in-package model, no wire contract yet"
+  },
+  "security_and_source_permissions": "Embedded resources are digested and script-capable content (HTML, JavaScript, SVG) is recorded as blocked and never passed on; messages from other sessions are ignored and counted.",
+  "performance_memory_storage": "At most 2000 outputs per cell and 8 MiB per embedded resource; stream chunks of one request are merged.",
+  "known_limitations": [
+    "The model follows the Jupyter messaging shape but is not connected to a live kernel",
+    "Rich output rendering is not implemented; blocked content is only recorded",
+    "A single notebook-level undo or reorder model is not included"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B12/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

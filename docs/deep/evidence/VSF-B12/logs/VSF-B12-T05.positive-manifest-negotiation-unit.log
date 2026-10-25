@@ -1,0 +1,21 @@
+$ pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/transport.test.ts
+✔ a valid manifest has no problems and the first preference wins when the environment allows it (2.685874ms)
+✔ each reason a transport is skipped is recorded and the next preference is used (0.574856ms)
+✔ a source that declares a transport unavailable is never offered it, whatever the browser has (0.213426ms)
+✔ when nothing is usable the source interface is kept and nothing else is picked (0.151956ms)
+✔ a permission-gated transport needs the grant by name (0.80625ms)
+✔ manifests that would buffer without bound, hide why a transport is missing or break the one-way rule are refused (0.460347ms)
+✔ detection reads what a runtime has and what its policy allows (0.329599ms)
+✔ a credit pipe refuses what it cannot hold and a drop-oldest pipe counts what it loses (0.579012ms)
+✔ sustained pressure keeps memory inside the declared bound (31.941596ms)
+✔ messages in flight when the connection drops are unknown and are not resent unless declared repeatable (1.39945ms)
+✔ reconnect attempts are finite, back off, and carry the resume point only when the source supports it (0.689326ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 171.440882
+[exit 0]

@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts workflow-check
+workflow-check: ok
+[exit 0]

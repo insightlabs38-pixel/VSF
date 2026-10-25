@@ -1,0 +1,14 @@
+$ pnpm --filter @vsf/specialized-tests exec playwright test specs/terminal.spec.ts specs/editor.spec.ts specs/lazy.spec.ts -g refused|cannot retitle|failed library|disposing|read-only
+
+Running 7 tests using 1 worker
+
+  ✓  1 specs/editor.spec.ts:35:1 › read-only refuses typing and deleting but still takes the source's updates (523ms)
+  ✓  2 specs/editor.spec.ts:66:1 › selecting a range from the source selects exactly it, and bad ranges are refused (194ms)
+  ✓  3 specs/editor.spec.ts:114:1 › disposing releases the page, stops callbacks, and refuses further use (198ms)
+  ✓  4 specs/lazy.spec.ts:60:1 › a failed library load is reported, leaves the page usable, and works after a reload (320ms)
+  ✓  5 specs/terminal.spec.ts:113:1 › sizes that are not whole, too small or too large are refused and change nothing (179ms)
+  ✓  6 specs/terminal.spec.ts:158:1 › disposing releases the page, stops callbacks, and refuses further use (193ms)
+  ✓  7 specs/terminal.spec.ts:185:1 › escape sequences in output cannot retitle the page, navigate, or open windows (156ms)
+
+  7 passed (3.2s)
+[exit 0]

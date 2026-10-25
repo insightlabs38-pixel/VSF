@@ -1,0 +1,21 @@
+$ pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/chart.test.ts
+✔ marks become points with identity from the source and the exact text of every value (2.758864ms)
+✔ trailing zeros, long fractions and big numbers are never rounded or reformatted (0.26779ms)
+✔ decimal comparison is exact where floating point is not (0.667476ms)
+✔ filters keep the same points in the chart and in its table (1.39994ms)
+✔ a numeric filter never keeps a value it cannot read exactly (0.439049ms)
+✔ canvas and image charts are unsupported, with a reason and the source interface retained (0.180738ms)
+✔ data that cannot be read exactly is refused instead of guessed (0.282175ms)
+✔ a source-provided identity beats position and survives reordering (1.422332ms)
+✔ mark names are read narrowly (0.655258ms)
+✔ a chart with more marks than the limit is not modelled and keeps the source interface (35.011999ms)
+✔ a chart at the limit is modelled and its table matches its filtered points (225.204939ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 413.46752
+[exit 0]

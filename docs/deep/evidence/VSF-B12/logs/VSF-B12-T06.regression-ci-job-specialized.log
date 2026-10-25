@@ -1,0 +1,3 @@
+$ node tools/checks/src/cli.ts ci-run specialized
+ci-run specialized: PASS
+[exit 0]

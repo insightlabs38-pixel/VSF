@@ -1,0 +1,6 @@
+$ pnpm --filter @vsf/specialized run typecheck
+
+> @vsf/specialized@0.0.0 typecheck /home/user/VSF/frontend/packages/specialized
+> tsc -p tsconfig.json --noEmit
+
+[exit 0]

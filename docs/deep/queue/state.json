@@ -835,40 +835,58 @@
       "receipt": "docs/deep/queue/receipts/VSF-B11-T06.json"
     },
     "VSF-B12-T01": {
-      "status": "READY",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+      "evidence": "docs/deep/evidence/VSF-B12",
+      "branch": "vsf/b12-specialized-interfaces",
+      "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+      "receipt": "docs/deep/queue/receipts/VSF-B12-T01.json"
     },
     "VSF-B12-T02": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "b944e5a162f9145d08b05b2a8dde2dee09fcce8b",
+      "evidence": "docs/deep/evidence/VSF-B12",
+      "branch": "vsf/b12-specialized-interfaces",
+      "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+      "receipt": "docs/deep/queue/receipts/VSF-B12-T02.json"
     },
     "VSF-B12-T03": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+      "evidence": "docs/deep/evidence/VSF-B12",
+      "branch": "vsf/b12-specialized-interfaces",
+      "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+      "receipt": "docs/deep/queue/receipts/VSF-B12-T03.json"
     },
     "VSF-B12-T04": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+      "evidence": "docs/deep/evidence/VSF-B12",
+      "branch": "vsf/b12-specialized-interfaces",
+      "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+      "receipt": "docs/deep/queue/receipts/VSF-B12-T04.json"
     },
     "VSF-B12-T05": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+      "evidence": "docs/deep/evidence/VSF-B12",
+      "branch": "vsf/b12-specialized-interfaces",
+      "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+      "receipt": "docs/deep/queue/receipts/VSF-B12-T05.json"
     },
     "VSF-B12-T06": {
-      "status": "TODO",
-      "claimed_by": null,
-      "commit": null,
-      "evidence": null
+      "status": "DONE",
+      "claimed_by": "insightlabs38-pixel",
+      "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+      "evidence": "docs/deep/evidence/VSF-B12",
+      "branch": "vsf/b12-specialized-interfaces",
+      "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+      "receipt": "docs/deep/queue/receipts/VSF-B12-T06.json"
     },
     "VSF-B13-T01": {
       "status": "DONE",
@@ -1111,7 +1129,7 @@
       "evidence": null
     },
     "VSF-B20-T01": {
-      "status": "TODO",
+      "status": "READY",
       "claimed_by": null,
       "commit": null,
       "evidence": null
@@ -1662,9 +1680,10 @@
       "merge_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195"
     },
     "G12": {
-      "status": "PENDING",
-      "decision": null,
-      "evidence": null
+      "status": "ACCEPTED",
+      "decision": "PROCEED",
+      "evidence": "docs/deep/evidence/VSF-B12",
+      "report": "docs/deep/reports/VSF-B12.md"
     },
     "G13": {
       "status": "ACCEPTED",
@@ -1734,7 +1753,7 @@
     }
   },
   "cursor": {
-    "batch": "B12",
-    "task": "VSF-B12-T01"
+    "batch": "B15",
+    "task": "VSF-B15-T01"
   }
 }

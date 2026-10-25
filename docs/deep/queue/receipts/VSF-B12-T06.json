@@ -1,0 +1,60 @@
+{
+  "task_id": "VSF-B12-T06",
+  "status": "DONE",
+  "branch": "vsf/b12-specialized-interfaces",
+  "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+  "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+  "paths": [
+    "tests/specialized/specs/large.spec.ts",
+    "tests/specialized/support/page.ts",
+    "frontend/packages/specialized/src/chart.ts",
+    "ci/jobs.json",
+    ".github/workflows/ci.yml",
+    "docs/deep/adr/ADR-042-specialized-interfaces.md"
+  ],
+  "acceptance": "Large and unknown specialized surfaces fall back without false semantics, source corruption or unbounded memory.",
+  "positive": {
+    "fixture": "200000 lines of terminal output keep 1016 rows and about 1 MB of heap growth; 2 MB lines, 1 MB of invalid bytes, extreme cursor moves, 5000 alternate-screen toggles and 50000 titles leave the terminal responsive; 40 open and dispose cycles grow the heap under 1 MB; a 3.5 MB, 100000-line document draws 67 lines and edits stay exact; odd text round-trips unchanged",
+    "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/large.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "canvas and image charts, charts over 100000 marks and manifests with no usable transport are unsupported with a reason and keep the source interface; no surface is guessed",
+    "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=canvas and image|more marks than|nothing is usable|declares a transport unavailable test/chart.test.ts test/transport.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node tools/checks/src/cli.ts ci-run specialized",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -race -count=1 ./execution/",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts comments",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts secrets",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "none",
+    "primitive": "none; chart model gains MAX_MARKS"
+  },
+  "security_and_source_permissions": "Hostile output cannot retitle the page, navigate or open windows; text with bidirectional controls, NUL and stacked combining marks round-trips through the editor unchanged.",
+  "performance_memory_storage": "Heap budgets asserted: 16 MB (flood), 16 MB (hostile), 8 MB (40 cycles), 64 MB (3.5 MB document); measured about 1 MB, 0.6 MB, 0.9 MB and 23.5 MB.",
+  "known_limitations": [
+    "Budgets cover Chromium 141 on Linux only",
+    "A canvas-based terminal or editor surface in a source page is not recognized, so it keeps the source interface",
+    "Measured on a CI-class container; no phone or low-memory device was tested"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B12/manifest.json",
+    "docs/deep/evidence/VSF-B12/measurements.jsonl"
+  ],
+  "review_result": "ACCEPTED"
+}

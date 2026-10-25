@@ -1,0 +1,54 @@
+{
+  "task_id": "VSF-B12-T04",
+  "status": "DONE",
+  "branch": "vsf/b12-specialized-interfaces",
+  "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+  "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+  "paths": [
+    "frontend/packages/specialized/src/chart.ts",
+    "frontend/packages/specialized/src/chart-dom.ts",
+    "frontend/packages/specialized/test/chart.test.ts",
+    "tests/specialized/specs/chart.spec.ts",
+    "docs/deep/adr/ADR-042-specialized-interfaces.md"
+  ],
+  "acceptance": "Chart filters and accessible tabular alternatives represent the same source data and unsupported precision is disclosed.",
+  "positive": {
+    "fixture": "a chart modelled from labelled marks renders as a named table whose rows are exactly its points with the source's exact text; a filter removes the same points from the table and states how many; hidden series stay listed and marked",
+    "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/chart.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "canvas and image charts are unsupported with a reason and the source interface kept; values that cannot be read exactly are refused and numeric filters never keep an unreadable value; more than 100000 marks is unsupported; markup in source text stays text",
+    "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=never keeps a value|canvas and image|cannot be read exactly|more marks than|narrowly test/chart.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/chart.test.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/specialized --filter @vsf/specialized-tests run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-chart-v1 model in package; no wire contract yet",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Table cells are built with text content only; no source value is evaluated, converted to floating point or rounded.",
+  "performance_memory_storage": "Models up to 100000 marks; a chart at the limit builds and filters in the unit test.",
+  "known_limitations": [
+    "Only charts whose marks carry accessible labels are modelled; canvas and image charts are unsupported by design",
+    "Axis scales, units conversion and aggregation are not modelled",
+    "The alternative table is not yet mapped from a recognized chart in a page"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B12/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}
