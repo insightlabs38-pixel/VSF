@@ -1,0 +1,221 @@
+{
+ "n": 48,
+ "classes": {
+  "recognition_path": 20,
+  "preserved_source": 19,
+  "hybrid": 9
+ },
+ "recognition_path": {
+  "k": 20,
+  "n": 48,
+  "workflow_weighted": 0.417,
+  "wilson95": [
+   0.288,
+   0.557
+  ],
+  "app_weighted": 0.441,
+  "app_median": 0.5,
+  "app_min": 0.125,
+  "bootstrap95_over_apps": [
+   0.278,
+   0.568
+  ],
+  "per_app": {
+   "gitea": 0.375,
+   "pocketbase": 0.125,
+   "jupyterlab": 0.25,
+   "datasette": 0.667,
+   "swagger": 0.5,
+   "kanboard": 0.5,
+   "gradio": 0.667
+  }
+ },
+ "recognition_or_hybrid": {
+  "k": 29,
+  "n": 48,
+  "workflow_weighted": 0.604,
+  "wilson95": [
+   0.463,
+   0.73
+  ],
+  "app_weighted": 0.619,
+  "app_median": 0.667,
+  "app_min": 0.375,
+  "bootstrap95_over_apps": [
+   0.46,
+   0.771
+  ],
+  "per_app": {
+   "gitea": 0.75,
+   "pocketbase": 0.375,
+   "jupyterlab": 0.375,
+   "datasette": 0.667,
+   "swagger": 1.0,
+   "kanboard": 0.5,
+   "gradio": 0.667
+  }
+ },
+ "any_path_incl_preserved": {
+  "k": 48,
+  "n": 48,
+  "workflow_weighted": 1.0,
+  "wilson95": [
+   0.926,
+   1.0
+  ],
+  "app_weighted": 1.0,
+  "app_median": 1.0,
+  "app_min": 1.0,
+  "bootstrap95_over_apps": [
+   1.0,
+   1.0
+  ],
+  "per_app": {
+   "gitea": 1.0,
+   "pocketbase": 1.0,
+   "jupyterlab": 1.0,
+   "datasette": 1.0,
+   "swagger": 1.0,
+   "kanboard": 1.0,
+   "gradio": 1.0
+  }
+ },
+ "reference_confirmed": 48,
+ "recognition_path_over_confirmed": [
+  20,
+  48
+ ],
+ "by_effect": {
+  "write": {
+   "n": 24,
+   "recognition_path": 6
+  },
+  "read": {
+   "n": 19,
+   "recognition_path": 12
+  },
+  "destructive": {
+   "n": 5,
+   "recognition_path": 2
+  }
+ },
+ "by_difficulty": {
+  "2": {
+   "n": 24,
+   "recognition_path": 9
+  },
+  "1": {
+   "n": 11,
+   "recognition_path": 8
+  },
+  "3": {
+   "n": 13,
+   "recognition_path": 3
+  }
+ },
+ "by_category_min3": {
+  "form": {
+   "n": 17,
+   "recognition_path": 8,
+   "recognition_or_hybrid": 14
+  },
+  "read-only": {
+   "n": 12,
+   "recognition_path": 7,
+   "recognition_or_hybrid": 8
+  },
+  "dialog": {
+   "n": 12,
+   "recognition_path": 2,
+   "recognition_or_hybrid": 6
+  },
+  "crud": {
+   "n": 10,
+   "recognition_path": 4,
+   "recognition_or_hybrid": 6
+  },
+  "table": {
+   "n": 10,
+   "recognition_path": 5,
+   "recognition_or_hybrid": 5
+  },
+  "file": {
+   "n": 9,
+   "recognition_path": 2,
+   "recognition_or_hybrid": 3
+  },
+  "research": {
+   "n": 7,
+   "recognition_path": 4,
+   "recognition_or_hybrid": 4
+  },
+  "multi-step": {
+   "n": 6,
+   "recognition_path": 1,
+   "recognition_or_hybrid": 3
+  },
+  "specialist": {
+   "n": 6,
+   "recognition_path": 2,
+   "recognition_or_hybrid": 2
+  },
+  "developer": {
+   "n": 6,
+   "recognition_path": 3,
+   "recognition_or_hybrid": 6
+  },
+  "conditional": {
+   "n": 5,
+   "recognition_path": 2,
+   "recognition_or_hybrid": 4
+  },
+  "editor": {
+   "n": 5,
+   "recognition_path": 1,
+   "recognition_or_hybrid": 2
+  },
+  "destructive": {
+   "n": 5,
+   "recognition_path": 2,
+   "recognition_or_hybrid": 3
+  },
+  "filter": {
+   "n": 4,
+   "recognition_path": 1,
+   "recognition_or_hybrid": 1
+  },
+  "upload": {
+   "n": 4,
+   "recognition_path": 0,
+   "recognition_or_hybrid": 0
+  },
+  "state-transition": {
+   "n": 3,
+   "recognition_path": 2,
+   "recognition_or_hybrid": 2
+  },
+  "custom-select": {
+   "n": 3,
+   "recognition_path": 1,
+   "recognition_or_hybrid": 3
+  },
+  "menu": {
+   "n": 3,
+   "recognition_path": 1,
+   "recognition_or_hybrid": 2
+  }
+ },
+ "steps_finished_in_source_after_stop": 86,
+ "total_steps": 163,
+ "layerP": {
+  "transform_ok": 15,
+  "native_feasible": 2,
+  "diag_transform_ok": 48,
+  "diag_native_feasible": 5,
+  "diag_native_attempt_success": 0
+ },
+ "layerG": {
+  "workflows_with_an_emitted_operation": 0,
+  "available_actions_total": 0
+ }
+}

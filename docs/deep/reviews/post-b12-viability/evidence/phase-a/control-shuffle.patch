@@ -1,0 +1,17 @@
+diff --git a/tests/corpus/src/execute.ts b/tests/_audit_ctl_shuffle/src/execute.ts
+index 52da5d6..a44f171 100644
+--- a/tests/corpus/src/execute.ts
++++ b/tests/_audit_ctl_shuffle/src/execute.ts
+@@ -301,7 +301,11 @@ export async function recognizedRun(
+         const r = resolve(step, rec.units, rec.composites ?? [], a);
+         if (!r.unit) return stop(i, r.why ?? "no_unit");
+         unit = r.unit;
+-        el = await elementFor(page, unit.node);
++        {
++          const others = rec.units.filter((o) => o.type === unit?.type && o.usable && o.node !== unit?.node);
++          const pick = others.length ? others[(unit.node * 7) % others.length] : unit;
++          el = await elementFor(page, (pick as RecUnit).node);
++        }
+         if (!el) return stop(i, "element_gone");
+         if (
+           !(await sameElement(

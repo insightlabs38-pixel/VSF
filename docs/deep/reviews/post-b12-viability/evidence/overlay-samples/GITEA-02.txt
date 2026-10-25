@@ -1,0 +1,72 @@
+# GITEA-02 Open an issue
+# transform ok=true entities=2 rows=0; first 70 lines of the generated interface's accessibility tree
+- banner:
+  - strong: Varifold
+  - status: 0 rows from the source
+  - text: Theme
+  - combobox "Theme":
+    - option "system" [selected]
+    - option "light"
+    - option "dark"
+  - text: Density
+  - combobox "Density":
+    - option "compact"
+    - option "comfortable" [selected]
+    - option "spacious"
+  - button "Refresh from source"
+  - button "Show original"
+- link "Skip to content":
+  - /url: "#main"
+- status
+- alert
+- navigation "Views":
+  - list:
+    - listitem:
+      - link "Form":
+        - /url: "#form_form"
+    - listitem:
+      - link "Page actions":
+        - /url: "#page_actions"
+- main:
+  - form "Form":
+    - heading "Form" [level=2]
+    - text: Title
+    - textbox "Title"
+    - text: Leave a comment
+    - textbox "Leave a comment"
+    - text: Unlabeled field
+    - combobox "Unlabeled field":
+      - option [selected]
+    - text: Unlabeled field
+    - combobox "Unlabeled field":
+      - option [selected]
+    - text: Unlabeled field
+    - combobox "Unlabeled field":
+      - option [selected]
+    - paragraph: "dropzone hidden input:"
+    - group "Form actions":
+      - 'button "Unavailable, unknown: effect_unverified Watching" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add a bullet list" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add a link" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add a list of tasks" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add a numbered list" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add a table" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add bold text" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add code" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add heading" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add italic text" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Add strikethrough text" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Create Issue" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Actions" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Activity" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified auditor" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Code" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Dashboard" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Drop files here to upload" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Explore" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Issues" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Issues 5" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Mention a user or team" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Milestones" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Notifications" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Packages" [disabled]'

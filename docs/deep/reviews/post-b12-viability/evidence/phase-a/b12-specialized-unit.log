@@ -1,0 +1,47 @@
+
+> @vsf/specialized@0.0.0 test /home/user/VSF/frontend/packages/specialized
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ marks become points with identity from the source and the exact text of every value (3.108234ms)
+✔ trailing zeros, long fractions and big numbers are never rounded or reformatted (0.353844ms)
+✔ decimal comparison is exact where floating point is not (0.677337ms)
+✔ filters keep the same points in the chart and in its table (1.086298ms)
+✔ a numeric filter never keeps a value it cannot read exactly (0.370448ms)
+✔ canvas and image charts are unsupported, with a reason and the source interface retained (0.220053ms)
+✔ data that cannot be read exactly is refused instead of guessed (0.434023ms)
+✔ a source-provided identity beats position and survives reordering (0.267361ms)
+✔ mark names are read narrowly (0.535345ms)
+✔ a chart with more marks than the limit is not modelled and keeps the source interface (45.491953ms)
+✔ a chart at the limit is modelled and its table matches its filtered points (217.488654ms)
+✔ outputs attach to the cell whose request produced them and keep the kernel's order (2.753106ms)
+✔ nothing is claimed to have run before the kernel answers (0.318417ms)
+✔ an error is attached to its cell, fails it, and aborts what was queued behind it (0.287938ms)
+✔ a restart makes every earlier output stale and a late message from the old kernel changes nothing (0.411669ms)
+✔ a message delivered for an earlier epoch is ignored even in the right session (0.2517ms)
+✔ losing the connection leaves running cells unknown instead of failed or finished (0.248341ms)
+✔ an interrupt stops the queue at once and leaves the running cell to the kernel's reply (0.205888ms)
+✔ embedded resources are checked, kept with their digest, and script-capable content is never passed on (9.273643ms)
+✔ editing a cell after it ran marks its outputs as describing older code (0.530482ms)
+✔ a busy cell cannot be edited or run twice, markdown cannot run, and unknown cells are refused (1.160607ms)
+✔ messages for requests the notebook never made are ignored and counted (0.556458ms)
+✔ a very chatty cell is bounded (27.327824ms)
+✔ a valid manifest has no problems and the first preference wins when the environment allows it (3.458234ms)
+✔ each reason a transport is skipped is recorded and the next preference is used (0.629564ms)
+✔ a source that declares a transport unavailable is never offered it, whatever the browser has (0.177771ms)
+✔ when nothing is usable the source interface is kept and nothing else is picked (0.129016ms)
+✔ a permission-gated transport needs the grant by name (0.157557ms)
+✔ manifests that would buffer without bound, hide why a transport is missing or break the one-way rule are refused (0.443273ms)
+✔ detection reads what a runtime has and what its policy allows (0.240602ms)
+✔ a credit pipe refuses what it cannot hold and a drop-oldest pipe counts what it loses (0.832938ms)
+✔ sustained pressure keeps memory inside the declared bound (38.769496ms)
+✔ messages in flight when the connection drops are unknown and are not resent unless declared repeatable (1.07571ms)
+✔ reconnect attempts are finite, back off, and carry the resume point only when the source supports it (0.553315ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 444.526509
+exit 0

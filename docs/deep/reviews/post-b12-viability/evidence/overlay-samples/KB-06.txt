@@ -1,0 +1,67 @@
+# KB-06 Filter the board with a search expression
+# transform ok=true entities=2 rows=1; first 70 lines of the generated interface's accessibility tree
+- banner:
+  - strong: Varifold
+  - status: 1 rows from the source
+  - text: Theme
+  - combobox "Theme":
+    - option "system" [selected]
+    - option "light"
+    - option "dark"
+  - text: Density
+  - combobox "Density":
+    - option "compact"
+    - option "comfortable" [selected]
+    - option "spacious"
+  - button "Refresh from source"
+  - button "Show original"
+- link "Skip to content":
+  - /url: "#main"
+- status
+- alert
+- navigation "Views":
+  - list:
+    - listitem:
+      - link "Table 1":
+        - /url: "#t_table_1"
+    - listitem:
+      - link "Form":
+        - /url: "#form_form"
+- main:
+  - heading "Table 1" [level=2]
+  - text: Filter rows
+  - textbox "Filter rows"
+  - grid "Table 1":
+    - rowgroup:
+      - row "Task count 4 Backlog Task count 1 Ready Task count 1 Work in progress Actions":
+        - columnheader "Task count 4 Backlog":
+          - button "Task count 4 Backlog"
+        - columnheader "Task count 1 Ready":
+          - button "Task count 1 Ready"
+        - columnheader "Task count 1 Work in progress":
+          - button "Task count 1 Work in progress"
+        - columnheader "Actions"
+    - rowgroup:
+      - row:
+        - gridcell "~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h D
+        - gridcell "~1h Task age in days ~1h Days in this column P0 Task priority"
+        - gridcell "~1h Task age in days ~1h Days in this column P0 Task priority"
+        - gridcell:
+          - 'button "Add a new task: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task 
+          - 'button "Done: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in day
+          - 'button "Update docs: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age
+          - 'button "#1: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days 
+          - 'button "#2: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days 
+          - 'button "#3: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days 
+          - 'button "#4: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days 
+          - 'button "#5: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days 
+          - 'button "#6: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days 
+          - 'button "Backlog: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in 
+          - 'button "Deploy staging: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task 
+          - 'button "Fix login bug: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task a
+          - 'button "Plan release: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task ag
+          - 'button "Ready: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in da
+          - 'button "Review design: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task a
+          - 'button "Unnamed action: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task 
+          - 'button "Work in progress: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Tas
+          - 'button "Write spec: ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age in days ~1h Days in this column P0 Task priority ~1h Task age 

@@ -1,0 +1,13 @@
+diff --git a/tests/corpus/src/execute.ts b/tests/_audit_ctl_null/src/execute.ts
+index 52da5d6..0788609 100644
+--- a/tests/corpus/src/execute.ts
++++ b/tests/_audit_ctl_null/src/execute.ts
+@@ -319,7 +319,7 @@ export async function recognizedRun(
+           };
+       }
+       try {
+-        await perform(cx, step, el, unit);
++        await Promise.resolve(); // AUDIT CONTROL: report the step as done without acting
+       } catch (e) {
+         const m = String((e as Error).message);
+         return stop(

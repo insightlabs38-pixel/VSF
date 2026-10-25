@@ -1,0 +1,72 @@
+# DS-01 Filter a table with the filter form
+# transform ok=true entities=2 rows=20; first 70 lines of the generated interface's accessibility tree
+- banner:
+  - strong: Varifold
+  - status: 20 rows from the source
+  - text: Theme
+  - combobox "Theme":
+    - option "system" [selected]
+    - option "light"
+    - option "dark"
+  - text: Density
+  - combobox "Density":
+    - option "compact"
+    - option "comfortable" [selected]
+    - option "spacious"
+  - button "Refresh from source"
+  - button "Show original"
+- link "Skip to content":
+  - /url: "#main"
+- status
+- alert
+- navigation "Views":
+  - list:
+    - listitem:
+      - link "Table 1":
+        - /url: "#t_table_1"
+    - listitem:
+      - link "Form":
+        - /url: "#form_form"
+- main:
+  - heading "Table 1" [level=2]
+  - text: Filter rows
+  - textbox "Filter rows"
+  - grid "Table 1":
+    - rowgroup:
+      - row "title year genre rating country Actions":
+        - columnheader "title":
+          - button "title"
+        - columnheader "year":
+          - button "year"
+        - columnheader "genre":
+          - button "genre"
+        - columnheader "rating":
+          - button "rating"
+        - columnheader "country":
+          - button "country"
+        - columnheader "Actions"
+    - rowgroup:
+      - 'row "Golden Harbor 1 1967 Comedy 4.3 DE 1: Golden Harbor 1 10: Golden Harbor 1 11: Golden Harbor 1 12: Golden Harbor 1 13: Golden Harbor 1 14: Golden Harbor 1 15
+        - gridcell "Golden Harbor 1"
+        - gridcell "1967"
+        - gridcell "Comedy"
+        - gridcell "4.3"
+        - gridcell "DE"
+        - 'gridcell "1: Golden Harbor 1 10: Golden Harbor 1 11: Golden Harbor 1 12: Golden Harbor 1 13: Golden Harbor 1 14: Golden Harbor 1 15: Golden Harbor 1 16: Golden
+          - 'button "1: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 1"
+          - 'button "10: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 10"
+          - 'button "11: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 11"
+          - 'button "12: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 12"
+          - 'button "13: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 13"
+          - 'button "14: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 14"
+          - 'button "15: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 15"
+          - 'button "16: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 16"
+          - 'button "17: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 17"
+          - 'button "18: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 18"
+          - 'button "19: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 19"
+          - 'button "2: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 2"
+          - 'button "20: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 20"
+          - 'button "3: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 3"
+          - 'button "4: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 4"
+          - 'button "5: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 5"
+          - 'button "6: Golden Harbor 1" [disabled]': "Unavailable, unknown: effect_unverified 6"

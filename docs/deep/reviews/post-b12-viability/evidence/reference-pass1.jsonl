@@ -1,0 +1,48 @@
+{"id":"GITEA-01","app":"gitea","status":"confirmed","detail":"description=\"Created during the audit\" readme=200","ms":9834,"stepsMs":2127}
+{"id":"GITEA-02","app":"gitea","status":"confirmed","detail":"body=\"Audit issue body\"","ms":9260,"stepsMs":1369}
+{"id":"GITEA-03","app":"gitea","status":"confirmed","detail":"state=closed comments=1","ms":8691,"stepsMs":958}
+{"id":"GITEA-04","app":"gitea","status":"confirmed","detail":"api=[\"Crash on startup\"] shown=[\"Crash on startup\"]","ms":8195,"stepsMs":604}
+{"id":"GITEA-05","app":"gitea","status":"confirmed","detail":"description=\"Label from the audit\"","ms":9707,"stepsMs":1937}
+{"id":"GITEA-06","app":"gitea","status":"confirmed","detail":"user=200 login=200","ms":9655,"stepsMs":2137}
+{"id":"GITEA-07","app":"gitea","status":"confirmed","detail":"repo status 404","ms":8622,"stepsMs":1085}
+{"id":"GITEA-08","app":"gitea","status":"confirmed","detail":"content=\"uploaded by the audit\\n\"","ms":8971,"stepsMs":1154}
+{"id":"PB-01","app":"pocketbase","status":"confirmed","detail":"{\"collectionId\":\"pbc_1125843985\",\"collectionName\":\"posts\",\"cover\":\"\",\"id\":\"1js27hbqwyrt1rz\",\"published\":true,\"status\":\"review\",\"title\":\"Audit created post\",\"views\":7}","ms":4138,"stepsMs":2212}
+{"id":"PB-02","app":"pocketbase","status":"confirmed","detail":"edited=1 original=0","ms":3136,"stepsMs":1268}
+{"id":"PB-03","app":"pocketbase","status":"confirmed","detail":"original=0 total=84","ms":2995,"stepsMs":1106}
+{"id":"PB-04","app":"pocketbase","status":"confirmed","detail":"api=6 shown=6","ms":2951,"stepsMs":1034}
+{"id":"PB-05","app":"pocketbase","status":"confirmed","detail":"rows shown=85","ms":3515,"stepsMs":1583}
+{"id":"PB-06","app":"pocketbase","status":"confirmed","detail":"total=82 gone=true","ms":7732,"stepsMs":5812}
+{"id":"PB-07","app":"pocketbase","status":"confirmed","detail":"file=cover_duyd72o36c.txt","ms":2763,"stepsMs":867}
+{"id":"PB-08","app":"pocketbase","status":"confirmed","detail":"collections=8","ms":2975,"stepsMs":1042}
+{"id":"JUP-01","app":"jupyterlab","status":"confirmed","detail":"source=\"print(6*7)\" output=\"42\\n\"","ms":14754,"stepsMs":10455}
+{"id":"JUP-02","app":"jupyterlab","status":"confirmed","detail":"content=\"hello from the audit\"","ms":9420,"stepsMs":5077}
+{"id":"JUP-03","app":"jupyterlab","status":"confirmed","detail":"content=\"audit-terminal\\n\"","ms":12655,"stepsMs":7646}
+{"id":"JUP-04","app":"jupyterlab","status":"confirmed","detail":"content=\"a,b\\n1,2\\n\"","ms":6982,"stepsMs":294}
+{"id":"JUP-05","app":"jupyterlab","status":"confirmed","detail":"dir exists","ms":9542,"stepsMs":2511}
+{"id":"JUP-06","app":"jupyterlab","status":"confirmed","detail":"untitled.md exists","ms":9648,"stepsMs":2648}
+{"id":"JUP-07","app":"jupyterlab","status":"confirmed","detail":"renamed=true original=false","ms":10089,"stepsMs":3069}
+{"id":"JUP-08","app":"jupyterlab","status":"confirmed","detail":"cell1=\"21\" cell2=\"40\"","ms":14458,"stepsMs":5810}
+{"id":"DS-01","app":"datasette","status":"confirmed","detail":"heading=30 rows where genre = \"Drama\" sorted by id shown=20","ms":3113,"stepsMs":833}
+{"id":"DS-02","app":"datasette","status":"confirmed","detail":"heading=25 rows where country = \"JP\" shown=20","ms":2540,"stepsMs":287}
+{"id":"DS-03","app":"datasette","status":"confirmed","detail":"first=Hidden Lantern 43 want=Hidden Lantern 43","ms":2594,"stepsMs":613}
+{"id":"DS-04","app":"datasette","status":"confirmed","detail":"first=Golden Harbor 21 want=Golden Harbor 21","ms":2565,"stepsMs":306}
+{"id":"DS-05","app":"datasette","status":"confirmed","detail":"rows=5 want=5","ms":5357,"stepsMs":3145}
+{"id":"DS-06","app":"datasette","status":"confirmed","detail":"file=films.csv lines=151","ms":4257,"stepsMs":2300}
+{"id":"SW-01","app":"swagger","status":"confirmed","detail":"pet={\"id\":77,\"name\":\"audit-pet\",\"photoUrls\":[],\"status\":\"available\"} post=true","ms":7663,"stepsMs":4070}
+{"id":"SW-02","app":"swagger","status":"confirmed","detail":"request=true shown={\n  \"id\": 2,\n  \"name\": \"Tom\",\n  \"categor","ms":6947,"stepsMs":1792}
+{"id":"SW-03","app":"swagger","status":"confirmed","detail":"query={\"status\":\"sold\"} shown=[\n  {\n    \"id\": 3,\n    \"name\": \"Nemo\",\n ","ms":6695,"stepsMs":1678}
+{"id":"SW-04","app":"swagger","status":"confirmed","detail":"request=true pets=2","ms":5376,"stepsMs":1823}
+{"id":"SW-05","app":"swagger","status":"confirmed","detail":"key header audit-key","ms":6234,"stepsMs":2703}
+{"id":"SW-06","app":"swagger","status":"confirmed","detail":"shown={ \"available\": 1, \"pending\": 1, \"sold\": 1 }","ms":6547,"stepsMs":1472}
+{"id":"KB-01","app":"kanboard","status":"confirmed","detail":"[[\"Audit task\",\"1\"]]","ms":3916,"stepsMs":2161}
+{"id":"KB-02","app":"kanboard","status":"confirmed","detail":"[[\"2\",\"2\",\"2\",\"Written by the audit\"]]","ms":5433,"stepsMs":3565}
+{"id":"KB-03","app":"kanboard","status":"confirmed","detail":"[[\"1\",\"Looks good\"]]","ms":3936,"stepsMs":2153}
+{"id":"KB-04","app":"kanboard","status":"confirmed","detail":"[[\"0\"]]","ms":3464,"stepsMs":1720}
+{"id":"KB-05","app":"kanboard","status":"confirmed","detail":"[[\"2\"]]","ms":3266,"stepsMs":1465}
+{"id":"KB-06","app":"kanboard","status":"confirmed","detail":"want=[[\"Fix login bug\"]] shown=[\"Fix login bug\"]","ms":3427,"stepsMs":1571}
+{"id":"GR-01","app":"gradio","status":"confirmed","detail":"output=\"84\"","ms":7954,"stepsMs":2081}
+{"id":"GR-02","app":"gradio","status":"confirmed","detail":"output=\"0\" errorShown=true","ms":8232,"stepsMs":2393}
+{"id":"GR-03","app":"gradio","status":"confirmed","detail":"output=\"The 8 dogs from USA and Japan went to the zoo where they swam and slept and ran until the morning\"","ms":9893,"stepsMs":3953}
+{"id":"GR-04","app":"gradio","status":"unconfirmed","detail":"output=\"\"","ms":7683,"stepsMs":1843}
+{"id":"GR-05","app":"gradio","status":"confirmed","detail":"coefficientsFound=true plotElements=1 nums=12","ms":9736,"stepsMs":3088}
+{"id":"GR-06","app":"gradio","status":"confirmed","detail":"a.txt='alpha\\n';b.txt='beta\\n'","ms":17369,"stepsMs":5225}

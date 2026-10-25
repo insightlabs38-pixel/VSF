@@ -1,0 +1,19 @@
+{
+ "audited_commit": "829ce9fd6490851e2bf0966583dc7b473e377d99",
+ "review_base": "829ce9fd6490851e2bf0966583dc7b473e377d99",
+ "recognizer_sha256": "2c58a7ec6232a6f1ebd780945d167245a1e1428cbff7555f61648b1c2707c664",
+ "wasm_sha256": "2a56cdba51d69ba0200663cba766a1cdf674f6e92370c85514569428dec444ec",
+ "chromium": "Chromium 141.0.7390.37",
+ "node": "v22.22.0",
+ "apps": {
+  "gitea": "ea93cfa4a300564ac457d3903469fea49ec5a4da37d0cebaa435f8e329ea64d0",
+  "pocketbase_binary": "14ec215bc7aaceda356713cd4b29aa7fcfee854ff2ae1151c5ddba41b43aec8a",
+  "pocketbase_zip": "9042ec818570e79c3628dadcd0a756c1496d9e1173918ec409d133c02f82e5fa",
+  "kanboard_rev": "e4fb64e972b0ae255a92cf4b7b03489846ebbffc",
+  "gradio_demo_rev": "2cdd7727442fa2a8560992e1d8e164e18e1527aa",
+  "petstore_spec_rev": "53f1fe9259ca7e7830199d99d2f719aef2f5fae3",
+  "swagger_ui_dist": "5.32.15",
+  "python_packages": "0d780b53efe30ebbe54241c9a3e872ee48c410e4332368a25219c8eb11d64c72",
+  "python_packages_gradio": "05d446b7f9e9b52b57db164c3fe54c9dacf7c1978ff8987a7ea732bb11b01ebb"
+ }
+}

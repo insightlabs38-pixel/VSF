@@ -1,0 +1,151 @@
+{
+ "failed_workflows": 28,
+ "earliest_cluster": {
+  "C-WIDGET": 4,
+  "C-NAME": 6,
+  "C-CRED": 2,
+  "C-SCOPE": 6,
+  "C-HANDLER": 5,
+  "C-ROWCTX": 1,
+  "C-MENU": 1,
+  "C-UNNAMED": 1,
+  "C-SPECIAL": 1,
+  "C-DND": 1
+ },
+ "failing_steps_by_cluster": {
+  "C-WIDGET": 7,
+  "C-NAME": 6,
+  "C-CRED": 3,
+  "C-SCOPE": 7,
+  "C-HANDLER": 5,
+  "C-TEMPORAL": 1,
+  "C-ROWCTX": 3,
+  "C-SPECIAL": 4,
+  "C-MENU": 1,
+  "C-UNNAMED": 2,
+  "C-DND": 1
+ },
+ "applications_by_cluster": {
+  "C-WIDGET": [
+   "GITEA",
+   "GR",
+   "JUP",
+   "PB"
+  ],
+  "C-NAME": [
+   "GITEA",
+   "JUP",
+   "PB",
+   "SW"
+  ],
+  "C-CRED": [
+   "GITEA",
+   "SW"
+  ],
+  "C-SCOPE": [
+   "GITEA",
+   "GR",
+   "JUP",
+   "KB",
+   "PB",
+   "SW"
+  ],
+  "C-HANDLER": [
+   "GR",
+   "JUP",
+   "PB"
+  ],
+  "C-TEMPORAL": [
+   "PB"
+  ],
+  "C-ROWCTX": [
+   "PB"
+  ],
+  "C-SPECIAL": [
+   "DS",
+   "JUP"
+  ],
+  "C-MENU": [
+   "JUP"
+  ],
+  "C-UNNAMED": [
+   "DS"
+  ],
+  "C-DND": [
+   "KB"
+  ]
+ },
+ "workflows_fully_unblocked_by_single_cluster": {
+  "C-HANDLER": 3,
+  "C-NAME": 4,
+  "C-NAME+C-MENU": 5,
+  "C-SCOPE": 4,
+  "C-WIDGET": 4,
+  "C-SPECIAL": 1,
+  "C-UNNAMED": 1,
+  "C-ROWCTX": 1
+ },
+ "workflows_fully_unblocked_by_combination": {
+  "all category-1 clusters (C-NAME, C-MENU)": 5,
+  "category 1 + scope + widget": 14,
+  "all except category 4 (C-CRED, C-UNNAMED)": 25,
+  "everything": 28
+ },
+ "clusters": {
+  "C-HANDLER": {
+   "class": "Observation / inaccessible state",
+   "category": 2,
+   "mechanism": "clickable element with no role, tabindex or name evidence in the observation (table cell, list item, example cell); the handler is invisible to a DOM observer"
+  },
+  "C-NAME": {
+   "class": "Incorrect structural matching",
+   "category": 1,
+   "mechanism": "a unit exists at the control but its bound name is the title, placeholder, description or a column header, not the caption or text a person reads; exact name equality fails"
+  },
+  "C-UNNAMED": {
+   "class": "Genuine information limitation (naming)",
+   "category": 4,
+   "mechanism": "control has neither accessible name nor visible caption; any name is authored or positional"
+  },
+  "C-SCOPE": {
+   "class": "Missing composite relationships",
+   "category": 2,
+   "mechanism": "same name repeated across columns, dialogs or panels; needs scoping by the owning composite, otherwise ambiguity is correct"
+  },
+  "C-WIDGET": {
+   "class": "Incorrect operation semantics",
+   "category": 2,
+   "mechanism": "custom select, dropdown or file-chooser button is recognized as an action, a duplicated wrapper or an unbound field, not as a choice or upload"
+  },
+  "C-SPECIAL": {
+   "class": "Rendering or specialist adapter gap",
+   "category": 2,
+   "mechanism": "editor, terminal or notebook surface appears as a generic text field with a wrong label; no recognition maps it to the B12 adapters"
+  },
+  "C-CRED": {
+   "class": "Authorization or session limitation",
+   "category": 4,
+   "mechanism": "credential or secret-like field withheld by policy; the workflow needs a person-supplied secret"
+  },
+  "C-DND": {
+   "class": "Missing dependency / state-transition model",
+   "category": 2,
+   "mechanism": "drag and drop has no operation model"
+  },
+  "C-MENU": {
+   "class": "Incorrect structural matching",
+   "category": 1,
+   "mechanism": "submenu parent exposed as a list item with aria-haspopup but no actionable unit"
+  },
+  "C-ROWCTX": {
+   "class": "Missing composite relationships",
+   "category": 2,
+   "mechanism": "row checkboxes carry no name; the row they belong to is the only identity"
+  },
+  "C-TEMPORAL": {
+   "class": "Missing dependency / state-transition model",
+   "category": 2,
+   "mechanism": "a menu item that opened a moment earlier was still recorded as not visible when the observation was taken; the visibility hint lags the DOM, and usable becomes true after a longer wait"
+  }
+ }
+}

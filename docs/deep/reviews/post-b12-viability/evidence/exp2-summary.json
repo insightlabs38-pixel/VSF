@@ -1,0 +1,75 @@
+{
+ "workflows": 48,
+ "correct": 42,
+ "accuracy": 0.875,
+ "by_app": {
+  "gitea": "8/8",
+  "pocketbase": "8/8",
+  "jupyterlab": "8/8",
+  "datasette": "6/6",
+  "swagger": "6/6",
+  "kanboard": "5/6",
+  "gradio": "1/6"
+ },
+ "false_read": [
+  {
+   "id": "KB-04",
+   "kind": "false_read",
+   "changed": true,
+   "classified": "read",
+   "evidence": []
+  }
+ ],
+ "false_write": [
+  {
+   "id": "GR-01",
+   "kind": "false_write",
+   "changed": false,
+   "classified": "write",
+   "evidence": [
+    "POST /gradio_api/queue/join"
+   ]
+  },
+  {
+   "id": "GR-02",
+   "kind": "false_write",
+   "changed": false,
+   "classified": "write",
+   "evidence": [
+    "POST /gradio_api/queue/join"
+   ]
+  },
+  {
+   "id": "GR-03",
+   "kind": "false_write",
+   "changed": false,
+   "classified": "write",
+   "evidence": [
+    "POST /gradio_api/queue/join"
+   ]
+  },
+  {
+   "id": "GR-04",
+   "kind": "false_write",
+   "changed": false,
+   "classified": "write",
+   "evidence": [
+    "POST /gradio_api/run/predict",
+    "POST /gradio_api/queue/join"
+   ]
+  },
+  {
+   "id": "GR-05",
+   "kind": "false_write",
+   "changed": false,
+   "classified": "write",
+   "evidence": [
+    "POST /gradio_api/queue/join"
+   ]
+  }
+ ],
+ "changed_total": 29,
+ "changed_classified_write": 28,
+ "rest_style_families_correct": 28,
+ "rest_style_families_total": 28
+}
