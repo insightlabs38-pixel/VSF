@@ -1,0 +1,61 @@
+{
+ "intended": 199,
+ "verified": 164,
+ "verified_single_step": 144,
+ "verified_negative_controls_of_the_set": 5,
+ "ops_with_commit_like_click_or_enter": 27,
+ "ops_non_negative": 204,
+ "ops_destructive_effect": 1,
+ "expectation_kinds": {
+  "value": 49,
+  "checked": 35,
+  "absent": 33,
+  "text": 125,
+  "rows": 14,
+  "fragment": 17
+ },
+ "families": 12,
+ "family_weighted_mean": 0.777,
+ "family_median": 0.764,
+ "family_min": 0.5,
+ "per_family": {
+  "apg": "21/29",
+  "blueimp-upload": "2/3",
+  "bootstrap-admin": "14/18",
+  "choices": "3/4",
+  "datatables": "22/22",
+  "django-admin": "27/30",
+  "filebrowser": "8/15",
+  "fullcalendar": "13/13",
+  "jquery-ui": "19/23",
+  "slickgrid": "2/4",
+  "tabulator": "9/14",
+  "todomvc": "24/24"
+ },
+ "todomvc_verified_share": 0.146,
+ "controls": {
+  "null": {
+   "intended": 142,
+   "referenceConfirmed": 124,
+   "verified": 3,
+   "fallback": 1,
+   "abandoned": 4,
+   "wrongEffect": 116,
+   "misbound": 0
+  },
+  "shuffle": {
+   "intended": 142,
+   "referenceConfirmed": 124,
+   "verified": 18,
+   "fallback": 2,
+   "abandoned": 2,
+   "wrongEffect": 0,
+   "misbound": 102
+  },
+  "null_verified_ops": [
+   "apg/combobox-datepicker: Open date picker",
+   "choices/demo: Submit empty form (negative)",
+   "tabulator/sorting-filtering: Clear filters after filtering"
+  ]
+ }
+}

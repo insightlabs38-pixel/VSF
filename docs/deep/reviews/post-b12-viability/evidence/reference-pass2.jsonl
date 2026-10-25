@@ -1,0 +1,13 @@
+{"id":"GITEA-03","app":"gitea","status":"confirmed","detail":"state=closed comments=1","ms":8770,"stepsMs":965}
+{"id":"GITEA-08","app":"gitea","status":"confirmed","detail":"content=\"uploaded by the audit\\n\"","ms":8734,"stepsMs":1166}
+{"id":"PB-03","app":"pocketbase","status":"confirmed","detail":"original=0 total=84","ms":3035,"stepsMs":1132}
+{"id":"PB-06","app":"pocketbase","status":"confirmed","detail":"total=82 gone=true","ms":7653,"stepsMs":5826}
+{"id":"JUP-01","app":"jupyterlab","status":"confirmed","detail":"source=\"print(6*7)\" output=\"42\\n\"","ms":14913,"stepsMs":10448}
+{"id":"JUP-03","app":"jupyterlab","status":"confirmed","detail":"content=\"audit-terminal\\n\"","ms":11403,"stepsMs":7547}
+{"id":"JUP-08","app":"jupyterlab","status":"confirmed","detail":"cell1=\"21\" cell2=\"40\"","ms":14125,"stepsMs":5773}
+{"id":"DS-06","app":"datasette","status":"confirmed","detail":"file=films.csv lines=151","ms":4227,"stepsMs":2301}
+{"id":"SW-05","app":"swagger","status":"confirmed","detail":"api_key=audit-key","ms":6245,"stepsMs":2704}
+{"id":"KB-03","app":"kanboard","status":"confirmed","detail":"[[\"1\",\"Looks good\"]]","ms":3913,"stepsMs":2134}
+{"id":"KB-05","app":"kanboard","status":"confirmed","detail":"[[\"2\"]]","ms":3265,"stepsMs":1479}
+{"id":"GR-04","app":"gradio","status":"confirmed","detail":"output=\"360\"","ms":9015,"stepsMs":3147}
+{"id":"GR-06","app":"gradio","status":"confirmed","detail":"a.txt='alpha\\n';b.txt='beta\\n'","ms":17386,"stepsMs":5219}

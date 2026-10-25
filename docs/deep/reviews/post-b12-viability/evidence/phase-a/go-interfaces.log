@@ -1,0 +1,6 @@
+go: warning: "./interfaces/..." matched no packages
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	1.019s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api/jsonschema	0.016s
+ok  	github.com/insightlabs38-pixel/vsf/backend/mcp	0.995s
+ok  	github.com/insightlabs38-pixel/vsf/backend/cli	0.012s
+exit 0

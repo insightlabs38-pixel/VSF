@@ -1,0 +1,3 @@
+{"id":"CAL-01","app":"todomvc","status":"confirmed","detail":"Buy milk","ms":2335,"stepsMs":662}
+{"id":"CAL-02","app":"todomvc","status":"confirmed","detail":"Buy milk|Walk the dog done=Walk the dog","ms":3159,"stepsMs":1524}
+{"id":"CAL-03","app":"todomvc","status":"confirmed","detail":"Buy milk http://127.0.0.1:18870/react/dist/index.html#/active","ms":3387,"stepsMs":1774}

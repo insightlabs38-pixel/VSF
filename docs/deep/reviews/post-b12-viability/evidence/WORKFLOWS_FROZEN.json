@@ -1,0 +1,1087 @@
+{
+ "schema": "vsf-audit-workflows-frozen-v1",
+ "note": "Declarative specifications as registered before any VSF run on these applications; oracles are in harness/apps/*.ts.",
+ "workflows": [
+  {
+   "id": "GITEA-01",
+   "app": "gitea",
+   "variant": null,
+   "title": "Create an initialized repository",
+   "objective": "Create a repository named audit-new with a description and an initial README.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "form",
+    "conditional"
+   ],
+   "difficulty": 2,
+   "start": "/repo/create",
+   "steps": 4,
+   "targets": [
+    "Repository Name *",
+    "Description",
+    "Initialize Repository (Adds .gitignore, License and README)",
+    "Create Repository"
+   ],
+   "oracle": "gitea01"
+  },
+  {
+   "id": "GITEA-02",
+   "app": "gitea",
+   "variant": null,
+   "title": "Open an issue",
+   "objective": "Open an issue with a title and a body in the seeded repository.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "form",
+    "editor"
+   ],
+   "difficulty": 1,
+   "start": "/auditor/seed-repo/issues/new",
+   "steps": 3,
+   "targets": [
+    "Title",
+    "Leave a comment",
+    "Create Issue"
+   ],
+   "oracle": "gitea02"
+  },
+  {
+   "id": "GITEA-03",
+   "app": "gitea",
+   "variant": null,
+   "title": "Comment on an issue and close it",
+   "objective": "Add a comment to issue 3 and close the issue in the same action.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "conditional",
+    "state-transition"
+   ],
+   "difficulty": 2,
+   "start": "/auditor/seed-repo/issues/3",
+   "steps": 2,
+   "targets": [
+    "Leave a comment",
+    "Close with Comment"
+   ],
+   "oracle": "gitea03"
+  },
+  {
+   "id": "GITEA-04",
+   "app": "gitea",
+   "variant": null,
+   "title": "Filter issues by label",
+   "objective": "Show only the issues carrying the label bug.",
+   "effect": "read",
+   "categories": [
+    "table",
+    "filter",
+    "read-only"
+   ],
+   "difficulty": 1,
+   "start": "/auditor/seed-repo/issues",
+   "steps": 1,
+   "targets": [
+    "Label"
+   ],
+   "oracle": "gitea04"
+  },
+  {
+   "id": "GITEA-05",
+   "app": "gitea",
+   "variant": null,
+   "title": "Create a label in a dialog",
+   "objective": "Create the label audit-label with a description from the label dialog.",
+   "effect": "write",
+   "categories": [
+    "dialog",
+    "form",
+    "crud"
+   ],
+   "difficulty": 2,
+   "start": "/auditor/seed-repo/labels",
+   "steps": 5,
+   "targets": [
+    "New Label",
+    "Label name",
+    "Description",
+    "Color",
+    "Save"
+   ],
+   "oracle": "gitea05"
+  },
+  {
+   "id": "GITEA-06",
+   "app": "gitea",
+   "variant": null,
+   "title": "Create a user as site administrator",
+   "objective": "Create the account audituser with an email and a password without a forced password change.",
+   "effect": "write",
+   "categories": [
+    "enterprise-admin",
+    "form",
+    "conditional"
+   ],
+   "difficulty": 2,
+   "start": "/-/admin/users/new",
+   "steps": 5,
+   "targets": [
+    "Username *",
+    "Email Address *",
+    "Password *",
+    "Require user to change password (recommended)",
+    "Create User Account"
+   ],
+   "oracle": "gitea06"
+  },
+  {
+   "id": "GITEA-07",
+   "app": "gitea",
+   "variant": null,
+   "title": "Delete a repository through a confirmation dialog",
+   "objective": "Delete the seeded repository after confirming its name in the danger-zone dialog.",
+   "effect": "destructive",
+   "categories": [
+    "dialog",
+    "destructive",
+    "conditional"
+   ],
+   "difficulty": 3,
+   "start": "/auditor/seed-repo/settings",
+   "steps": 3,
+   "targets": [
+    "Delete This Repository",
+    "Repository Name *",
+    "Delete Repository"
+   ],
+   "oracle": "gitea07"
+  },
+  {
+   "id": "GITEA-08",
+   "app": "gitea",
+   "variant": null,
+   "title": "Upload a file to a repository",
+   "objective": "Upload audit-upload.txt through the repository upload page and commit it to main.",
+   "effect": "write",
+   "categories": [
+    "upload",
+    "file",
+    "multi-step"
+   ],
+   "difficulty": 3,
+   "start": "/auditor/seed-repo/_upload/main/",
+   "steps": 2,
+   "targets": [
+    "Drop files here to upload",
+    "Commit Changes"
+   ],
+   "oracle": "gitea08"
+  },
+  {
+   "id": "PB-01",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Create a record with a select and a toggle",
+   "objective": "Create a posts record with title, views, published and status review.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "form",
+    "custom-select"
+   ],
+   "difficulty": 2,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 6,
+   "targets": [
+    "New record",
+    "title *",
+    "views",
+    "published",
+    "status",
+    "Create"
+   ],
+   "oracle": "pb01"
+  },
+  {
+   "id": "PB-02",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Edit a record in a side panel",
+   "objective": "Open the record Foxtrot post 85 and rename its title.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "dialog",
+    "table"
+   ],
+   "difficulty": 2,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 3,
+   "targets": [
+    "Foxtrot post 85",
+    "title *",
+    "Save changes"
+   ],
+   "oracle": "pb02"
+  },
+  {
+   "id": "PB-03",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Delete a record through a confirmation",
+   "objective": "Delete the record Foxtrot post 85 from its options menu and confirm.",
+   "effect": "destructive",
+   "categories": [
+    "crud",
+    "destructive",
+    "dialog",
+    "menu"
+   ],
+   "difficulty": 3,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 4,
+   "targets": [
+    "Foxtrot post 85",
+    "More options",
+    "Delete",
+    "Delete record"
+   ],
+   "oracle": "pb03"
+  },
+  {
+   "id": "PB-04",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Filter records with a filter expression",
+   "objective": "Show only live posts with more than 400 views.",
+   "effect": "read",
+   "categories": [
+    "table",
+    "filter",
+    "read-only"
+   ],
+   "difficulty": 2,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 2,
+   "targets": [
+    "Search term or filter..."
+   ],
+   "oracle": "pb04"
+  },
+  {
+   "id": "PB-05",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Page through all records with load more",
+   "objective": "Load every record of the collection into the list.",
+   "effect": "read",
+   "categories": [
+    "table",
+    "pagination",
+    "infinite-scroll",
+    "read-only"
+   ],
+   "difficulty": 1,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 2,
+   "targets": [
+    "Load more",
+    "Load more"
+   ],
+   "oracle": "pb05"
+  },
+  {
+   "id": "PB-06",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Select several records and delete them in bulk",
+   "objective": "Select the first three records of the list and delete them with the bulk bar.",
+   "effect": "destructive",
+   "categories": [
+    "bulk",
+    "destructive",
+    "table",
+    "dialog"
+   ],
+   "difficulty": 3,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 5,
+   "targets": [
+    "Select row 1",
+    "Select row 2",
+    "Select row 3",
+    "Delete",
+    "Yes"
+   ],
+   "oracle": "pb06"
+  },
+  {
+   "id": "PB-07",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Attach a file to a record",
+   "objective": "Upload cover.txt into the cover file field of Foxtrot post 85 and save.",
+   "effect": "write",
+   "categories": [
+    "upload",
+    "file",
+    "dialog"
+   ],
+   "difficulty": 2,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 3,
+   "targets": [
+    "Foxtrot post 85",
+    "Upload or drop new file",
+    "Save changes"
+   ],
+   "oracle": "pb07"
+  },
+  {
+   "id": "PB-08",
+   "app": "pocketbase",
+   "variant": null,
+   "title": "Create a collection",
+   "objective": "Create a new base collection named audit_notes.",
+   "effect": "write",
+   "categories": [
+    "enterprise-admin",
+    "dialog",
+    "form"
+   ],
+   "difficulty": 2,
+   "start": "/_/#/collections?collection=pbc_1125843985",
+   "steps": 3,
+   "targets": [
+    "New collection",
+    "Name *",
+    "Create"
+   ],
+   "oracle": "pb08"
+  },
+  {
+   "id": "JUP-01",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Create a notebook, run a cell and save",
+   "objective": "Create a new notebook, run a cell that prints 6*7 and save so the output is stored in the file.",
+   "effect": "write",
+   "categories": [
+    "specialist",
+    "notebook",
+    "editor",
+    "multi-step"
+   ],
+   "difficulty": 3,
+   "start": "/lab",
+   "steps": 5,
+   "targets": [
+    "Python 3 (ipykernel) Python 3 (ipykernel)",
+    "Code cell input",
+    "Rename and Save"
+   ],
+   "oracle": "jup01"
+  },
+  {
+   "id": "JUP-02",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Create and save a text file in the editor",
+   "objective": "Create a new text file, type a line of text and save it.",
+   "effect": "write",
+   "categories": [
+    "specialist",
+    "editor",
+    "file"
+   ],
+   "difficulty": 2,
+   "start": "/lab",
+   "steps": 4,
+   "targets": [
+    "Text File",
+    "Text editor",
+    "Rename and Save"
+   ],
+   "oracle": "jup02"
+  },
+  {
+   "id": "JUP-03",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Run a command in the terminal",
+   "objective": "Open a terminal and run a command that writes proof.txt in the working directory.",
+   "effect": "write",
+   "categories": [
+    "specialist",
+    "terminal",
+    "multi-step"
+   ],
+   "difficulty": 3,
+   "start": "/lab",
+   "steps": 4,
+   "targets": [
+    "Terminal",
+    "Terminal screen"
+   ],
+   "oracle": "jup03"
+  },
+  {
+   "id": "JUP-04",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Upload a file with the file browser",
+   "objective": "Upload upload.csv into the working directory.",
+   "effect": "write",
+   "categories": [
+    "upload",
+    "file",
+    "toolbar"
+   ],
+   "difficulty": 1,
+   "start": "/lab",
+   "steps": 1,
+   "targets": [
+    "Upload Files"
+   ],
+   "oracle": "jup04"
+  },
+  {
+   "id": "JUP-05",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Create and name a folder",
+   "objective": "Create a folder named audit-dir with the New Folder button.",
+   "effect": "write",
+   "categories": [
+    "file",
+    "toolbar",
+    "inline-rename"
+   ],
+   "difficulty": 2,
+   "start": "/lab",
+   "steps": 3,
+   "targets": [
+    "New Folder"
+   ],
+   "oracle": "jup05"
+  },
+  {
+   "id": "JUP-06",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Create a Markdown file from the nested File menu",
+   "objective": "Create a new Markdown file with File, New, Markdown File.",
+   "effect": "write",
+   "categories": [
+    "menu",
+    "nested-menu",
+    "file"
+   ],
+   "difficulty": 2,
+   "start": "/lab",
+   "steps": 3,
+   "targets": [
+    "File",
+    "New",
+    "Markdown File"
+   ],
+   "oracle": "jup06"
+  },
+  {
+   "id": "JUP-07",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Rename a file from the keyboard",
+   "objective": "Rename notes.txt to renamed.txt in the file browser.",
+   "effect": "write",
+   "categories": [
+    "file",
+    "keyboard",
+    "inline-rename"
+   ],
+   "difficulty": 2,
+   "start": "/lab",
+   "steps": 5,
+   "targets": [
+    "notes.txt"
+   ],
+   "oracle": "jup07"
+  },
+  {
+   "id": "JUP-08",
+   "app": "jupyterlab",
+   "variant": null,
+   "title": "Run all cells of an existing notebook",
+   "objective": "Open seed.ipynb, run all cells from the Run menu and save the stored outputs.",
+   "effect": "write",
+   "categories": [
+    "specialist",
+    "notebook",
+    "menu",
+    "multi-step"
+   ],
+   "difficulty": 3,
+   "start": "/lab/tree/seed.ipynb",
+   "steps": 3,
+   "targets": [
+    "Run",
+    "Run All Cells"
+   ],
+   "oracle": "jup08"
+  },
+  {
+   "id": "DS-01",
+   "app": "datasette",
+   "variant": null,
+   "title": "Filter a table with the filter form",
+   "objective": "Show only the films whose genre equals Drama using the column, operator and value controls.",
+   "effect": "read",
+   "categories": [
+    "table",
+    "filter",
+    "form",
+    "read-only"
+   ],
+   "difficulty": 2,
+   "start": "/films/films",
+   "steps": 3,
+   "targets": [
+    "column",
+    "value",
+    "Apply"
+   ],
+   "oracle": "ds01"
+  },
+  {
+   "id": "DS-02",
+   "app": "datasette",
+   "variant": null,
+   "title": "Narrow a table with a facet",
+   "objective": "Show only the films from Japan by clicking the JP value in the country facet.",
+   "effect": "read",
+   "categories": [
+    "table",
+    "facet",
+    "navigation",
+    "read-only"
+   ],
+   "difficulty": 1,
+   "start": "/films/films",
+   "steps": 1,
+   "targets": [
+    "JP"
+   ],
+   "oracle": "ds02"
+  },
+  {
+   "id": "DS-03",
+   "app": "datasette",
+   "variant": null,
+   "title": "Sort a table in descending order",
+   "objective": "Order the films by rating from highest to lowest using the column header.",
+   "effect": "read",
+   "categories": [
+    "table",
+    "sort",
+    "read-only"
+   ],
+   "difficulty": 1,
+   "start": "/films/films",
+   "steps": 2,
+   "targets": [
+    "rating",
+    "rating ▼"
+   ],
+   "oracle": "ds03"
+  },
+  {
+   "id": "DS-04",
+   "app": "datasette",
+   "variant": null,
+   "title": "Go to the next page of results",
+   "objective": "Show the second page of twenty films with the next link.",
+   "effect": "read",
+   "categories": [
+    "table",
+    "pagination",
+    "read-only"
+   ],
+   "difficulty": 1,
+   "start": "/films/films",
+   "steps": 1,
+   "targets": [
+    "Next page"
+   ],
+   "oracle": "ds04"
+  },
+  {
+   "id": "DS-05",
+   "app": "datasette",
+   "variant": null,
+   "title": "Run a custom SQL query in the editor",
+   "objective": "Write a grouping query in the SQL editor and run it to list film counts per genre.",
+   "effect": "read",
+   "categories": [
+    "specialist",
+    "editor",
+    "research",
+    "read-only"
+   ],
+   "difficulty": 2,
+   "start": "/films",
+   "steps": 4,
+   "targets": [
+    "SQL editor",
+    "Run SQL"
+   ],
+   "oracle": "ds05"
+  },
+  {
+   "id": "DS-06",
+   "app": "datasette",
+   "variant": null,
+   "title": "Download a table as CSV",
+   "objective": "Export the whole films table as a CSV file using the export panel and save it.",
+   "effect": "read",
+   "categories": [
+    "download",
+    "file",
+    "export"
+   ],
+   "difficulty": 2,
+   "start": "/films/films",
+   "steps": 3,
+   "targets": [
+    "advanced",
+    "download file",
+    "Export CSV"
+   ],
+   "oracle": "ds06"
+  },
+  {
+   "id": "SW-01",
+   "app": "swagger",
+   "variant": null,
+   "title": "Add a pet with an edited request body",
+   "objective": "Expand POST /pet, enable Try it out, replace the request body with a new pet and execute it.",
+   "effect": "write",
+   "categories": [
+    "developer",
+    "form",
+    "editor",
+    "multi-step"
+   ],
+   "difficulty": 3,
+   "start": "/",
+   "steps": 4,
+   "targets": [
+    "POST /pet Add a new pet to the store.",
+    "Try it out",
+    "Request body",
+    "Execute"
+   ],
+   "oracle": "sw01"
+  },
+  {
+   "id": "SW-02",
+   "app": "swagger",
+   "variant": null,
+   "title": "Fetch a pet by id",
+   "objective": "Expand GET /pet/{petId}, enter id 2, execute and read the returned pet.",
+   "effect": "read",
+   "categories": [
+    "developer",
+    "form",
+    "read-only"
+   ],
+   "difficulty": 2,
+   "start": "/",
+   "steps": 4,
+   "targets": [
+    "GET /pet/{petId} Find pet by ID.",
+    "Try it out",
+    "petId",
+    "Execute"
+   ],
+   "oracle": "sw02"
+  },
+  {
+   "id": "SW-03",
+   "app": "swagger",
+   "variant": null,
+   "title": "Find pets by status with a select parameter",
+   "objective": "Run GET /pet/findByStatus for status sold and read the result.",
+   "effect": "read",
+   "categories": [
+    "developer",
+    "form",
+    "custom-select",
+    "read-only"
+   ],
+   "difficulty": 2,
+   "start": "/",
+   "steps": 4,
+   "targets": [
+    "GET /pet/findByStatus Finds Pets by status.",
+    "Try it out",
+    "Status values that need to be considered for filter",
+    "Execute"
+   ],
+   "oracle": "sw03"
+  },
+  {
+   "id": "SW-04",
+   "app": "swagger",
+   "variant": null,
+   "title": "Delete a pet",
+   "objective": "Run DELETE /pet/{petId} for id 3 so the pet is removed from the store.",
+   "effect": "destructive",
+   "categories": [
+    "developer",
+    "destructive",
+    "form"
+   ],
+   "difficulty": 2,
+   "start": "/",
+   "steps": 4,
+   "targets": [
+    "DELETE /pet/{petId} Deletes a pet.",
+    "Try it out",
+    "petId",
+    "Execute"
+   ],
+   "oracle": "sw04"
+  },
+  {
+   "id": "SW-05",
+   "app": "swagger",
+   "variant": null,
+   "title": "Authorize with an API key and call an operation",
+   "objective": "Store an API key in the Authorize dialog, then run GET /store/inventory so the key is sent.",
+   "effect": "read",
+   "categories": [
+    "developer",
+    "dialog",
+    "auth",
+    "multi-step"
+   ],
+   "difficulty": 3,
+   "start": "/",
+   "steps": 7,
+   "targets": [
+    "Authorize",
+    "Value:",
+    "Apply credentials",
+    "Close",
+    "GET /store/inventory Returns pet inventories by status.",
+    "Try it out",
+    "Execute"
+   ],
+   "oracle": "sw05"
+  },
+  {
+   "id": "SW-06",
+   "app": "swagger",
+   "variant": null,
+   "title": "Read the store inventory",
+   "objective": "Run GET /store/inventory and read the counts per status.",
+   "effect": "read",
+   "categories": [
+    "developer",
+    "read-only",
+    "disclosure"
+   ],
+   "difficulty": 1,
+   "start": "/",
+   "steps": 3,
+   "targets": [
+    "GET /store/inventory Returns pet inventories by status.",
+    "Try it out",
+    "Execute"
+   ],
+   "oracle": "sw06"
+  },
+  {
+   "id": "KB-01",
+   "app": "kanboard",
+   "variant": null,
+   "title": "Create a task in a popup form",
+   "objective": "Add a task titled Audit task to the Backlog column from the board.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "dialog",
+    "form"
+   ],
+   "difficulty": 1,
+   "start": "/?controller=BoardViewController&action=show&project_id=1",
+   "steps": 3,
+   "targets": [
+    "Add a new task",
+    "Title",
+    "Save"
+   ],
+   "oracle": "kb01"
+  },
+  {
+   "id": "KB-02",
+   "app": "kanboard",
+   "variant": null,
+   "title": "Create a task with assignee, column and priority",
+   "objective": "Create Audit detailed task assigned to Worker One in Ready with priority 2 and a description.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "dialog",
+    "form",
+    "native-select",
+    "conditional"
+   ],
+   "difficulty": 2,
+   "start": "/?controller=BoardViewController&action=show&project_id=1",
+   "steps": 7,
+   "targets": [
+    "Add a new task",
+    "Title",
+    "Description",
+    "Assignee",
+    "Column",
+    "Priority",
+    "Save"
+   ],
+   "oracle": "kb02"
+  },
+  {
+   "id": "KB-03",
+   "app": "kanboard",
+   "variant": null,
+   "title": "Comment on a task",
+   "objective": "Add the comment Looks good to task 1 from its detail page.",
+   "effect": "write",
+   "categories": [
+    "crud",
+    "dialog",
+    "form"
+   ],
+   "difficulty": 2,
+   "start": "/?controller=TaskViewController&action=show&task_id=1",
+   "steps": 3,
+   "targets": [
+    "Add a comment",
+    "New comment",
+    "Save"
+   ],
+   "oracle": "kb03"
+  },
+  {
+   "id": "KB-04",
+   "app": "kanboard",
+   "variant": null,
+   "title": "Close a task after confirming",
+   "objective": "Close task 3 from its detail page and confirm in the dialog.",
+   "effect": "destructive",
+   "categories": [
+    "state-transition",
+    "dialog",
+    "destructive"
+   ],
+   "difficulty": 2,
+   "start": "/?controller=TaskViewController&action=show&task_id=3",
+   "steps": 2,
+   "targets": [
+    "Close this task",
+    "Yes"
+   ],
+   "oracle": "kb04"
+  },
+  {
+   "id": "KB-05",
+   "app": "kanboard",
+   "variant": null,
+   "title": "Move a card to another column by dragging",
+   "objective": "Drag the card Write spec from Backlog to the Ready column.",
+   "effect": "write",
+   "categories": [
+    "drag-and-drop",
+    "state-transition",
+    "unconventional"
+   ],
+   "difficulty": 3,
+   "start": "/?controller=BoardViewController&action=show&project_id=1",
+   "steps": 1,
+   "targets": [
+    "Write spec"
+   ],
+   "oracle": "kb05"
+  },
+  {
+   "id": "KB-06",
+   "app": "kanboard",
+   "variant": null,
+   "title": "Filter the board with a search expression",
+   "objective": "Show only the cards whose title contains login.",
+   "effect": "read",
+   "categories": [
+    "filter",
+    "board",
+    "read-only"
+   ],
+   "difficulty": 1,
+   "start": "/?controller=BoardViewController&action=show&project_id=1",
+   "steps": 2,
+   "targets": [
+    "Filter"
+   ],
+   "oracle": "kb06"
+  },
+  {
+   "id": "GR-01",
+   "app": "gradio",
+   "variant": "gradio-calculator",
+   "title": "Compute with a number and radio form",
+   "objective": "Multiply 12 by 7 with the calculator form and read the output.",
+   "effect": "read",
+   "categories": [
+    "research",
+    "form",
+    "custom-components"
+   ],
+   "difficulty": 1,
+   "start": "/",
+   "steps": 4,
+   "targets": [
+    "num1",
+    "multiply",
+    "num2",
+    "Submit"
+   ],
+   "oracle": "gr01"
+  },
+  {
+   "id": "GR-02",
+   "app": "gradio",
+   "variant": "gradio-calculator",
+   "title": "Divide by zero shows an error and no result",
+   "objective": "Divide 5 by 0, see the application's error message and no computed output.",
+   "effect": "read",
+   "categories": [
+    "research",
+    "form",
+    "error-path"
+   ],
+   "difficulty": 2,
+   "start": "/",
+   "steps": 4,
+   "targets": [
+    "num1",
+    "divide",
+    "num2",
+    "Submit"
+   ],
+   "oracle": "gr02"
+  },
+  {
+   "id": "GR-03",
+   "app": "gradio",
+   "variant": "gradio-sentence_builder",
+   "title": "Fill a mixed-widget form and read the generated sentence",
+   "objective": "Set the slider, dropdown, checkbox group, radio, multi-select and checkbox, then read the sentence.",
+   "effect": "read",
+   "categories": [
+    "research",
+    "form",
+    "custom-select",
+    "slider",
+    "multi-widget"
+   ],
+   "difficulty": 3,
+   "start": "/",
+   "steps": 8,
+   "targets": [
+    "number input for Count",
+    "Animal",
+    "USA",
+    "Japan",
+    "zoo",
+    "Activity",
+    "Morning",
+    "Submit"
+   ],
+   "oracle": "gr03"
+  },
+  {
+   "id": "GR-04",
+   "app": "gradio",
+   "variant": "gradio-calculator",
+   "title": "Load an example row into the form and submit it",
+   "objective": "Click the example 144 multiply 2.5 to fill the form and submit it.",
+   "effect": "read",
+   "categories": [
+    "research",
+    "examples",
+    "composite"
+   ],
+   "difficulty": 2,
+   "start": "/",
+   "steps": 2,
+   "targets": [
+    "144",
+    "Submit"
+   ],
+   "oracle": "gr04"
+  },
+  {
+   "id": "GR-05",
+   "app": "gradio",
+   "variant": "gradio-sales_projections",
+   "title": "Run a projection on an editable table and read the regression table",
+   "objective": "Submit the prefilled sales table and read the fitted regression coefficients and the plot.",
+   "effect": "read",
+   "categories": [
+    "research",
+    "chart",
+    "table",
+    "specialist"
+   ],
+   "difficulty": 3,
+   "start": "/",
+   "steps": 1,
+   "targets": [
+    "Submit"
+   ],
+   "oracle": "gr05"
+  },
+  {
+   "id": "GR-06",
+   "app": "gradio",
+   "variant": "gradio-zip_files",
+   "title": "Upload two files and download the generated archive",
+   "objective": "Upload a.txt and b.txt, submit, and download the resulting zip with both files inside.",
+   "effect": "write",
+   "categories": [
+    "upload",
+    "download",
+    "file",
+    "research"
+   ],
+   "difficulty": 3,
+   "start": "/",
+   "steps": 5,
+   "targets": [
+    "Clear",
+    "Click to upload or drop files",
+    "Click to upload or drop files",
+    "Submit",
+    "205.0 B ⇣"
+   ],
+   "oracle": "gr06"
+  }
+ ],
+ "calibration": [
+  "CAL-01",
+  "CAL-02",
+  "CAL-03"
+ ]
+}
