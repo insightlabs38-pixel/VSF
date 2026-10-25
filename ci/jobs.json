@@ -314,6 +314,10 @@
         "cmd": ["pnpm", "install", "--frozen-lockfile"]
       },
       {
+        "name": "build-ts",
+        "cmd": ["pnpm", "build:ts"]
+      },
+      {
         "name": "build-recognizer",
         "cmd": [
           "cargo",
