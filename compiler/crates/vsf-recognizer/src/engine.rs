@@ -85,8 +85,8 @@ pub fn compute_unit(obs: &Observation, kind: UnitKind, i: usize, rules: Rules) -
     let r = Reader::new(obs);
     let output = match kind {
         UnitKind::Field => recognize_field(&r, i, rules).map(Output::Field),
-        UnitKind::Action => recognize_action(&r, i).map(Output::Action),
-        UnitKind::Collection => recognize_collection(&r, i).map(Output::Collection),
+        UnitKind::Action => recognize_action(&r, i, rules).map(Output::Action),
+        UnitKind::Collection => recognize_collection(&r, i, rules).map(Output::Collection),
     }?;
     Some(Unit {
         key: (kind, obs.nodes[i].id),
@@ -123,6 +123,20 @@ pub fn recognize(obs: &Observation, rules: Rules) -> Recognition {
         stats.candidates_examined += st.candidates;
         for i in ids {
             if let Some(u) = compute_unit(obs, kind, i as usize, rules) {
+                stats.units_computed += 1;
+                units.insert(u.key, u);
+            }
+        }
+    }
+    if rules.scoped {
+        for i in 0..obs.len() {
+            let n = &obs.nodes[i];
+            let key = (UnitKind::Collection, n.id);
+            if !units.contains_key(&key)
+                && (matches!(n.tag.as_str(), "ul" | "ol")
+                    || matches!(n.role.as_deref(), Some("list" | "feed")))
+                && let Some(u) = compute_unit(obs, UnitKind::Collection, i, rules)
+            {
                 stats.units_computed += 1;
                 units.insert(u.key, u);
             }

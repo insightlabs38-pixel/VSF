@@ -12,7 +12,7 @@ use vsf_recognizer::semantics::Rules;
 use vsf_recognizer::val::{count, list, n, obj, pretty, s};
 use vsf_recognizer::witness::{AcceptedWitnesses, WitnessPolicy};
 
-const USAGE: &str = "usage: vsf-recognizer <recognize|ledger|contract|bench-index> <snapshot.json> [--rules 1|2|3] [--captured-at N] [--protocol FILE]... [--witness FILE]... [--witness-policy FILE] [--policy FILE] [--shared]";
+const USAGE: &str = "usage: vsf-recognizer <recognize|ledger|contract|bench-index> <snapshot.json> [--rules 1|2|3] [--after SNAPSHOT] [--captured-at N] [--protocol FILE]... [--witness FILE]... [--witness-policy FILE] [--policy FILE] [--shared]";
 
 fn flag<'a>(args: &'a [String], name: &str) -> Option<&'a str> {
     let at = args.iter().position(|a| a == name)?;
@@ -34,15 +34,23 @@ fn run(args: &[String]) -> Result<String, String> {
     let bytes = std::fs::read(path).map_err(|e| format!("read {path}: {e}"))?;
     let obs = Observation::from_json(&bytes).map_err(|e| format!("{e:?}"))?;
     let rules = match flag(args, "--rules") {
-        None | Some("3") => Rules::V3,
-        Some("2") => Rules::V2,
+        None | Some("2") => Rules::V2,
+        Some("3") => Rules::V3,
         Some("1") => Rules::V1,
         Some(other) => return Err(format!("unknown rules version {other}")),
     };
     let captured_at: i64 = flag(args, "--captured-at")
         .map_or(Ok(0), str::parse)
         .map_err(|_| "bad --captured-at".to_string())?;
-    let rec = recognize(&obs, rules);
+    let mut rec = recognize(&obs, rules);
+    if rules.scoped
+        && let Some(f) = flag(args, "--after")
+    {
+        let raw = std::fs::read(f).map_err(|e| format!("read {f}: {e}"))?;
+        let later = Observation::from_json(&raw).map_err(|e| format!("{e:?}"))?;
+        rec.composites
+            .extend(vsf_recognizer::composites::virtual_lists(&obs, &later));
+    }
     match cmd {
         "recognize" => Ok(pretty(&recognition_value(&rec))),
         "ledger" => {

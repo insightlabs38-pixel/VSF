@@ -287,3 +287,31 @@ fn recognition_of_composites_is_deterministic() {
     let obs = b.build();
     assert_eq!(recognize_composites(&obs), recognize_composites(&obs));
 }
+
+fn grid_with_rows(rows: &[&str]) -> vsf_recognizer::obs::Observation {
+    let mut b = B::new();
+    let g = b.add(1, "div", Some("grid"), Some("Rows"), None, V);
+    for r in rows {
+        let row = b.add(g, "div", Some("row"), None, None, V);
+        b.add(row, "div", Some("gridcell"), None, Some(r), V);
+    }
+    b.build()
+}
+
+#[test]
+fn rows_replaced_by_a_scroll_probe_mark_a_virtual_list_and_unchanged_rows_do_not() {
+    use vsf_recognizer::composites::virtual_lists;
+    let first = grid_with_rows(&["Row 0", "Row 1", "Row 2"]);
+    let scrolled = grid_with_rows(&["Row 40", "Row 41", "Row 42"]);
+    let v = virtual_lists(&first, &scrolled);
+    assert_eq!(v.len(), 1);
+    assert_eq!(v[0].kind, CompositeKind::VirtualList);
+    assert!(v[0].evidence.contains(&"scroll:rows_replaced"));
+    assert!(virtual_lists(&first, &first).is_empty());
+    let appended = grid_with_rows(&["Row 0", "Row 1", "Row 2", "Row 3"]);
+    let w = virtual_lists(&first, &appended);
+    assert_eq!(w.len(), 1);
+    assert!(w[0].evidence.contains(&"scroll:rows_added"));
+    let emptied = grid_with_rows(&[]);
+    assert!(virtual_lists(&first, &emptied).is_empty());
+}

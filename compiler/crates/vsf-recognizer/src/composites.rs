@@ -11,6 +11,7 @@ pub enum CompositeKind {
     Menu,
     Dialog,
     ComboboxPopup,
+    VirtualList,
     Tree,
     Pagination,
     BulkSelection,
@@ -29,6 +30,7 @@ impl CompositeKind {
             CompositeKind::Menu => "menu",
             CompositeKind::Dialog => "dialog",
             CompositeKind::ComboboxPopup => "combobox_popup",
+            CompositeKind::VirtualList => "virtual_list",
             CompositeKind::Tree => "tree",
             CompositeKind::Pagination => "pagination",
             CompositeKind::BulkSelection => "bulk_selection",
@@ -59,6 +61,8 @@ pub struct Composite {
     pub members: Vec<Member>,
     /// Controls inside the owner that are parts of the same widget, such as the select it enhances.
     pub covers: Vec<u32>,
+    /// Actions whose effect class the structure settles: members of tabs and pages only change what is shown.
+    pub classifies: Vec<(u32, &'static str)>,
     pub evidence: Vec<&'static str>,
 }
 
@@ -158,7 +162,19 @@ fn mk(
         owner: owner.map(|o| v.n(o).id),
         members: members.iter().map(|&m| v.member(m)).collect(),
         covers: Vec::new(),
+        classifies: Vec::new(),
         evidence: evidence.to_vec(),
+    }
+}
+
+/// The actions at or under the given nodes, each tagged with the class the structure gives them.
+fn classify(v: &View, c: &mut Composite, roots: &[usize], class: &'static str) {
+    for &r in roots {
+        for d in std::iter::once(r).chain(v.obs.descendants(r)) {
+            if is_action(v.n(d)) || role(v.n(d)) == "tab" {
+                c.classifies.push((v.n(d).id, class));
+            }
+        }
     }
 }
 
@@ -210,14 +226,9 @@ fn tabs(v: &View, out: &mut Vec<Composite>) {
             .filter(|&d| role(v.n(d)) == "tab")
             .collect();
         if !tabs.is_empty() {
-            out.push(mk(
-                v,
-                CompositeKind::Tabs,
-                i,
-                None,
-                &tabs,
-                &["role:tablist"],
-            ));
+            let mut c = mk(v, CompositeKind::Tabs, i, None, &tabs, &["role:tablist"]);
+            classify(v, &mut c, &tabs, "navigation");
+            out.push(c);
         }
     }
 }
@@ -255,14 +266,16 @@ fn disclosures(v: &View, out: &mut Vec<Composite>) {
             .copied()
             .filter(|&b| v.within(b, r))
             .collect();
-        out.push(mk(
+        let mut c = mk(
             v,
             CompositeKind::Disclosure,
             r,
             None,
             &members,
             &["state:expanded", "relation:controls"],
-        ));
+        );
+        classify(v, &mut c, &members, "navigation");
+        out.push(c);
     }
 }
 
@@ -527,14 +540,16 @@ fn paginations(v: &View, out: &mut Vec<Composite>) {
             .filter(|(o, _)| v.within(*o, r))
             .map(|(o, _)| *o)
             .collect();
-        out.push(mk(
+        let mut c = mk(
             v,
             CompositeKind::Pagination,
             r,
             None,
             &members,
             &["lexical:page_controls"],
-        ));
+        );
+        classify(v, &mut c, &members, "navigation");
+        out.push(c);
     }
 }
 
@@ -580,6 +595,58 @@ fn bulk_selections(v: &View, out: &mut Vec<Composite>) {
             }
             out.push(c);
         }
+    }
+    // A list whose items each hold a checkbox is a selectable set; a lone checkbox beside it selects them all.
+    for i in 0..v.obs.len() {
+        let n = v.n(i);
+        if !(matches!(n.tag.as_str(), "ul" | "ol") || matches!(role(n), "list" | "feed"))
+            || !n.visible()
+        {
+            continue;
+        }
+        if v.obs.ancestors(i).take(8).any(|a| {
+            matches!(
+                role(v.n(a)),
+                "navigation" | "menu" | "menubar" | "tablist" | "toolbar"
+            ) || matches!(v.n(a).tag.as_str(), "nav" | "menu")
+        }) {
+            continue;
+        }
+        let items: Vec<usize> = v
+            .obs
+            .descendants(i)
+            .into_iter()
+            .filter(|&d| v.n(d).tag == "li" || role(v.n(d)) == "listitem")
+            .collect();
+        let rows: Vec<usize> = v
+            .obs
+            .descendants(i)
+            .into_iter()
+            .filter(|&d| is_checkbox(v.n(d)))
+            .collect();
+        if items.len() < 2 || rows.len() < items.len() {
+            continue;
+        }
+        let head: Vec<usize> = v.n(i).parent.map_or_else(Vec::new, |p| {
+            v.obs
+                .descendants(p)
+                .into_iter()
+                .filter(|&d| is_checkbox(v.n(d)) && !v.within(d, i))
+                .take(1)
+                .collect()
+        });
+        let mut m = head.clone();
+        m.extend(&rows);
+        let ev: &[&'static str] = if head.is_empty() {
+            &["row:checkbox"]
+        } else {
+            &["row:checkbox", "header:checkbox"]
+        };
+        let mut c = mk(v, CompositeKind::BulkSelection, i, Some(i), &m, ev);
+        for (k, member) in c.members.iter_mut().enumerate() {
+            member.part = Some(if k < head.len() { "header" } else { "row" });
+        }
+        out.push(c);
     }
     // A mixed-state checkbox that controls other checkboxes is a select-all over a group.
     for i in 0..v.obs.len() {
@@ -636,14 +703,16 @@ fn sortable_columns(v: &View, out: &mut Vec<Composite>) {
             Vec::new()
         };
         if !sortable.is_empty() {
-            out.push(mk(
+            let mut c = mk(
                 v,
                 CompositeKind::SortableColumns,
                 t,
                 Some(t),
                 &sortable,
                 &["header:sortable"],
-            ));
+            );
+            classify(v, &mut c, &sortable, "read");
+            out.push(c);
         }
     }
 }
@@ -710,7 +779,12 @@ fn filter_bars(v: &View, out: &mut Vec<Composite>) {
         } else {
             &["field:search", "landmark:search"]
         };
-        out.push(mk(v, CompositeKind::FilterBar, root, None, &members, ev));
+        let mut c = mk(v, CompositeKind::FilterBar, root, None, &members, ev);
+        // Only a search landmark settles that its buttons read; a plain form's submit may write.
+        if v.nearest_with_role(i, &["search"]).is_some() {
+            classify(v, &mut c, &members, "read");
+        }
+        out.push(c);
     }
     // A named group of options (links or choices) headed "Filter".
     for i in 0..v.obs.len() {
@@ -728,14 +802,16 @@ fn filter_bars(v: &View, out: &mut Vec<Composite>) {
             .filter(|&d| is_action(v.n(d)))
             .collect();
         if acts.len() >= 2 {
-            out.push(mk(
+            let mut c = mk(
                 v,
                 CompositeKind::FilterBar,
                 p,
                 None,
                 &acts,
                 &["heading:filter"],
-            ));
+            );
+            classify(v, &mut c, &acts, "read");
+            out.push(c);
         }
     }
 }
@@ -870,5 +946,49 @@ pub fn recognize_composites(obs: &Observation) -> Vec<Composite> {
     date_pickers(&v, &mut out);
     editable_cells(&v, &mut out);
     out.sort_by_key(|c| (c.node, c.kind));
+    out
+}
+
+fn row_signatures(v: &View, table: usize) -> BTreeSet<String> {
+    v.obs
+        .descendants(table)
+        .into_iter()
+        .filter(|&r| is_body_row(v, r))
+        .map(|r| {
+            let cells: Vec<String> = v
+                .obs
+                .descendants(r)
+                .into_iter()
+                .filter_map(|d| v.n(d).text.as_deref().and_then(clean))
+                .take(6)
+                .collect();
+            cells.join("|")
+        })
+        .filter(|s| !s.is_empty())
+        .collect()
+}
+
+/// Collections whose rows change when their region is scrolled hold more records than the page renders.
+/// Both observations must come from the same page state, the second after a scroll probe in disposable state.
+pub fn virtual_lists(before: &Observation, after: &Observation) -> Vec<Composite> {
+    let (b, a) = (View { obs: before }, View { obs: after });
+    let mut out = Vec::new();
+    for t in collections(&b) {
+        let id = b.n(t).id;
+        let Some(t2) = after.index_of(id) else {
+            continue;
+        };
+        let (sb, sa) = (row_signatures(&b, t), row_signatures(&a, t2));
+        if sb.is_empty() || sa.is_empty() || sb == sa {
+            continue;
+        }
+        let replaced = sb.difference(&sa).next().is_some();
+        let ev: &[&'static str] = if replaced {
+            &["scroll:rows_replaced"]
+        } else {
+            &["scroll:rows_added"]
+        };
+        out.push(mk(&b, CompositeKind::VirtualList, t, Some(t), &[], ev));
+    }
     out
 }

@@ -260,6 +260,55 @@ const LEXICON: [(Verb, &[&str]); 7] = [
     (Verb::Dismiss, &["cancel", "close", "dismiss"]),
 ];
 
+/// Wording rules v3 adds for actions that write but say it with a verb the base lexicon lacks; still hints only.
+const EXTENDED: [(Verb, &[&str]); 2] = [
+    (
+        Verb::Commit,
+        &[
+            "follow",
+            "unfollow",
+            "like",
+            "unlike",
+            "subscribe",
+            "unsubscribe",
+            "share",
+            "star",
+            "pin",
+            "bookmark",
+            "archive",
+            "restore",
+            "approve",
+            "reject",
+            "rename",
+            "duplicate",
+            "copy",
+            "cut",
+            "paste",
+            "move",
+            "reply",
+            "post",
+            "comment",
+            "invite",
+            "assign",
+            "block",
+            "mute",
+            "vote",
+        ],
+    ),
+    (Verb::Create, &["upload", "attach", "import", "compose"]),
+];
+
+fn extended_verbs_of(name: &str) -> Vec<Verb> {
+    let toks: Vec<String> = tokens(name).collect();
+    let mut out: Vec<Verb> = EXTENDED
+        .iter()
+        .filter(|(_, words)| toks.iter().any(|t| words.contains(&t.as_str())))
+        .map(|(v, _)| *v)
+        .collect();
+    out.sort();
+    out
+}
+
 pub fn verbs_of(name: &str) -> Vec<Verb> {
     let toks: Vec<String> = tokens(name).collect();
     let mut out: Vec<Verb> = LEXICON
@@ -269,6 +318,38 @@ pub fn verbs_of(name: &str) -> Vec<Verb> {
         .collect();
     out.sort();
     out
+}
+
+/// Rules v3: what the element is settles its effect class before its wording does. Something that opens a popup
+/// only reveals it, and a link only navigates, whatever its name contains ("Add ...", "Go to ...").
+fn structural_verbs(n: &Node, lexical: Vec<Verb>) -> Vec<Verb> {
+    let opens = matches!(n.state("haspopup"), Some(v) if v != "false");
+    if opens {
+        return vec![Verb::Reveal];
+    }
+    let link = n.role.as_deref() == Some("link") || (n.tag == "a" && n.role.is_none());
+    if link {
+        // A link whose handler is a script, or whose name says it writes, is not downgraded to navigation.
+        let writes = lexical
+            .iter()
+            .any(|v| matches!(v, Verb::Destroy | Verb::Commit | Verb::Create));
+        if n.state("href") == Some("script") || writes {
+            return if lexical.is_empty() {
+                verbs_from_states(n)
+            } else {
+                lexical
+            };
+        }
+        return if lexical.contains(&Verb::Export) {
+            vec![Verb::Export]
+        } else {
+            vec![Verb::Navigate]
+        };
+    }
+    if lexical.is_empty() {
+        return verbs_from_states(n);
+    }
+    lexical
 }
 
 /// What the element's own attributes say it does when its name says nothing: a hint, like the lexicon.
@@ -571,6 +652,25 @@ fn column_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
     None
 }
 
+/// A checkbox or radio is conventionally followed by its own text; it counts only when that text is not
+/// better claimed by a control that comes after it.
+fn following_label(r: &Reader, i: usize) -> Option<LabelCandidate> {
+    let p = r.parent(i)?;
+    let sibs = r.children(p);
+    let pos = sibs.iter().position(|&s| s == i)?;
+    let next = *sibs[pos + 1..].iter().find(|&&s| r.node(s).visible())?;
+    let nn = r.node(next);
+    if is_control(nn) || is_action(nn) {
+        return None;
+    }
+    let t = label_like(r, next)?;
+    Some(LabelCandidate {
+        text: t,
+        source: LabelSource::Proximity,
+        from: vec![r.obs.nodes[next].id],
+    })
+}
+
 /// A control inside a column header is named by that header.
 fn own_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
     let h = r
@@ -677,6 +777,12 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
             from: vec![n.id],
         });
     }
+    if rules.scoped
+        && matches!(field_kind(n), Some(FieldKind::Toggle))
+        && let Some(c) = following_label(r, i)
+    {
+        return Binding::Bound(c);
+    }
     if let Some((mut cands, unsafe_pick)) = proximity(r, i, rules.scoped) {
         return if unsafe_pick {
             Binding::Ambiguous(cands)
@@ -746,7 +852,7 @@ fn action_roles(n: &Node) -> Vec<String> {
     roles
 }
 
-pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
+pub fn recognize_action(r: &Reader, i: usize, rules: Rules) -> Option<Action> {
     let n = r.node(i);
     if !is_action(n) {
         return None;
@@ -759,7 +865,12 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
         .map(collapse)
         .filter(|s| !s.is_empty());
     let mut verbs = name.as_deref().map(verbs_of).unwrap_or_default();
-    if verbs.is_empty() {
+    if rules.scoped {
+        if verbs.is_empty() {
+            verbs = name.as_deref().map(extended_verbs_of).unwrap_or_default();
+        }
+        verbs = structural_verbs(n, verbs);
+    } else if verbs.is_empty() {
         verbs = verbs_from_states(n);
     }
     let (usable, why) = if !n.visible() {
@@ -855,7 +966,88 @@ pub fn table_rows(r: &Reader, i: usize) -> (Option<usize>, Vec<usize>) {
     (header, body)
 }
 
-pub fn recognize_collection(r: &Reader, i: usize) -> Option<Collection> {
+fn is_list_root(n: &Node) -> bool {
+    matches!(n.tag.as_str(), "ul" | "ol") || matches!(role_of(n), "list" | "feed")
+}
+
+/// A list of records: several items that each hold their own controls or text, as a to-do list or a feed does.
+/// Menus, tab strips and lists that are only links are navigation, not records.
+fn recognize_list(r: &Reader, i: usize) -> Option<Collection> {
+    let n = r.node(i);
+    if !is_list_root(n) || !n.visible() {
+        return None;
+    }
+    let chrome = |a: usize| {
+        let an = r.node(a);
+        matches!(
+            role_of(an),
+            "navigation"
+                | "menu"
+                | "menubar"
+                | "tablist"
+                | "toolbar"
+                | "tree"
+                | "banner"
+                | "radiogroup"
+        ) || matches!(an.tag.as_str(), "nav" | "header" | "menu")
+    };
+    if r.obs.ancestors(i).take(8).any(chrome) {
+        return None;
+    }
+    let items: Vec<usize> = r
+        .children(i)
+        .iter()
+        .copied()
+        .filter(|&c| {
+            let cn = r.node(c);
+            cn.visible() && (cn.tag == "li" || matches!(role_of(cn), "listitem" | "option"))
+        })
+        .collect();
+    if items.len() < 2 {
+        return None;
+    }
+    let only_a_link = |item: usize| {
+        let below: Vec<usize> = r.obs.descendants(item);
+        let acts = below.iter().filter(|&&d| is_action(r.node(d))).count();
+        let ctrls = below.iter().filter(|&&d| is_control(r.node(d))).count();
+        acts == 1
+            && ctrls == 0
+            && r.node(
+                below
+                    .iter()
+                    .copied()
+                    .find(|&d| is_action(r.node(d)))
+                    .unwrap_or(item),
+            )
+            .tag == "a"
+    };
+    if items.iter().all(|&it| only_a_link(it)) {
+        return None;
+    }
+    let mut row_actions = Vec::new();
+    for (k, &item) in items.iter().enumerate() {
+        for d in r.obs.descendants(item) {
+            if is_action(r.node(d)) {
+                row_actions.push((k, r.node(d).id));
+            }
+        }
+    }
+    let label = n.name.as_deref().map(collapse).filter(|s| !s.is_empty());
+    Some(Collection {
+        node: n.id,
+        label,
+        columns: Vec::new(),
+        rows: items.len(),
+        row_actions,
+    })
+}
+
+pub fn recognize_collection(r: &Reader, i: usize, rules: Rules) -> Option<Collection> {
+    if rules.scoped
+        && let Some(list) = recognize_list(r, i)
+    {
+        return Some(list);
+    }
     let n = r.node(i);
     let is_table = n.tag == "table" || matches!(role_of(n), "table" | "grid" | "treegrid");
     if !is_table || !n.visible() {

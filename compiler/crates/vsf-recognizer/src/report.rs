@@ -22,6 +22,11 @@ fn binding(b: &Binding) -> Value {
 }
 
 pub fn recognition_value(rec: &Recognition) -> Value {
+    let structural: std::collections::BTreeMap<u32, &str> = rec
+        .composites
+        .iter()
+        .flat_map(|c| c.classifies.iter().copied())
+        .collect();
     let units = rec
         .units
         .values()
@@ -58,6 +63,10 @@ pub fn recognition_value(rec: &Recognition) -> Value {
                     .scoped
                     .then_some(("shown", a.shown.as_deref().map_or(Value::Null, s))),
             )
+            .chain(rec.rules.scoped.then_some((
+                "structural",
+                structural.get(&a.node).map_or(Value::Null, |c| s(c)),
+            )))
             .collect()),
             Output::Collection(c) => obj(vec![
                 (

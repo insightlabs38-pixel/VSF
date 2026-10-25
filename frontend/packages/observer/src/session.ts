@@ -250,6 +250,33 @@ export class Session {
     return n !== null && n.nodeType === 1 ? (n as Element) : null;
   }
 
+  /**
+   * Scrolls the nearest scrollable region of an observed element by one viewport so a second observation can show
+   * whether its rows are replaced. Scrolling reads, never writes, application data; `restore` puts the region back.
+   */
+  scrollProbe(id: number): { moved: boolean; restore: () => void } | null {
+    const root = this.elementOf(id);
+    if (root === null) return null;
+    const scrollable = (e: Element): boolean => {
+      const css = getComputedStyle(e);
+      return (css.overflowY === "auto" || css.overflowY === "scroll") && e.scrollHeight > e.clientHeight + 1;
+    };
+    let region: Element | null = null;
+    for (const e of [root, ...root.querySelectorAll("*")])
+      if (scrollable(e) && (region === null || e.scrollHeight > region.scrollHeight)) region = e;
+    for (let a = root.parentElement; region === null && a !== null; a = a.parentElement) if (scrollable(a)) region = a;
+    if (region === null) return { moved: false, restore: () => undefined };
+    const target = region;
+    const before = target.scrollTop;
+    target.scrollTop = before + Math.max(1, target.clientHeight - 1);
+    return {
+      moved: target.scrollTop !== before,
+      restore: () => {
+        target.scrollTop = before;
+      },
+    };
+  }
+
   get seq(): number {
     return this.seqNo;
   }
