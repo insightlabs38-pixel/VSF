@@ -120,6 +120,10 @@ export async function runVsf(wf: Workflow, browser: Awaited<ReturnType<typeof la
         await refStep(ctx.page, s, ctx);
         continue;
       }
+      if (process.env.AUDIT_AMEND === "A1") {
+        await locate(ctx.page, s).elementHandle({ timeout: 6000 }).catch(() => null);
+        await ctx.page.waitForTimeout(300);
+      }
       await (h as Harness).settle();
       const t1 = performance.now();
       const snap = recognizeSnapshot((h as Harness).collector.replica.toRecognizerInput(), `${wf.id}-${i}`, TMP);
@@ -248,6 +252,10 @@ export async function runObserve(wf: Workflow, browser: Awaited<ReturnType<typeo
       const rec: ObserveStep = { i, do: s.do, target: s.target ?? s.key ?? s.text ?? "", resolution: "passthrough", unitAtControl: false, recMs: 0, wouldResolve: "none", committing: i === lastClick && s.do === "click" };
       steps.push(rec);
       if (s.do !== "press" && s.do !== "type") {
+        if (process.env.AUDIT_AMEND === "A1") {
+          await locate(ctx.page, s).elementHandle({ timeout: 6000 }).catch(() => null);
+          await ctx.page.waitForTimeout(300);
+        }
         await (h as Harness).settle();
         const t1 = performance.now();
         const snap = recognizeSnapshot((h as Harness).collector.replica.toRecognizerInput(), `${wf.id}-obs-${i}`, TMP);

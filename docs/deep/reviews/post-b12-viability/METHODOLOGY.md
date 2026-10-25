@@ -108,3 +108,19 @@ Expansion beyond seven applications is allowed only for a named unanswered quest
 ## 11. Reproduction
 
 `REPRODUCIBILITY.md` lists the commands. Dates in the evidence are the sandbox clock; the sandbox date is 2026-10-25.
+
+## Amendments
+
+### A1 (after the first VSF run): recognition ran before a late-rendered control existed
+
+Found while inspecting the first layer R results. In `harness/vsf.ts` (`runVsf` and `runObserve`) the observer was settled and the recognizer run **before** the reference locator waited for the step's control. On single-page applications that render a control late (JupyterLab launcher cards, file listings, Gradio example tables) the recognizer saw a snapshot from before the control existed, so the step was recorded as `no_unit_at_control`. That is a harness defect, not a VSF result. It was identified by `harness/inspect.ts`, which locates the control first, and by `JUP-01` and `JUP-02`, where the unit exists once the page has rendered.
+
+Handling, per the rule that an invalid test keeps its identity and denominator:
+
+- The original, uncorrected runs are retained unchanged: `evidence/vsf-layerR.jsonl`, `evidence/observe.jsonl`, `evidence/product.jsonl`.
+- With `AUDIT_AMEND=A1` the harness first waits (up to 6 s) for the control the reference driver acts on, then waits 300 ms, then settles the observer and recognizes. Nothing else changes. The corrected runs are `evidence/vsf-layerR-A1-*.jsonl` and `evidence/observe-A1-*.jsonl`, run in three parallel streams. Reported results state which version they use. The corrected run is the primary figure because the defect is demonstrated and is in the harness; the original is reported beside it.
+- No workflow, oracle, resolver rule or classification was changed.
+
+### A2: the product path and the inline SVG defect
+
+The first extension run (`evidence/product.jsonl`) failed to transform 33 of 48 start states with `inject_failed: no result`. The cause is a defect in the audited implementation, shown by the minimal reproduction in `evidence/svg-repro/`, not a harness defect: `apps/extension/src/observe.ts` passes every observed element to `chrome.dom.openOrClosedShadowRoot`, which throws for SVG elements. These runs are reported as measured. A separate **experimental** diagnostic with a one-line guard in an isolated worktree shows what the next barrier is; it is labelled experimental, never counted as a capability, and the production tree is not modified.

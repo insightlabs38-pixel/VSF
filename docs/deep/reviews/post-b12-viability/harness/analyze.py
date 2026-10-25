@@ -19,6 +19,7 @@ def jl(name):
 
 
 ref1, ref2 = jl("reference-pass1.jsonl"), jl("reference-pass2.jsonl")
+ref1.update(jl("reference-pass1b.jsonl"))
 prod, vsf = jl("product.jsonl"), jl("vsf-layerR.jsonl")
 
 
@@ -49,13 +50,15 @@ def classify(w):
     wid = w["id"]
     r1, r2 = ref1.get(wid, {}), ref2.get(wid, {})
     status = r1.get("status", "missing") if r1.get("status") == r2.get("status", r1.get("status")) else "unstable"
+    if wid in ref2 and ref2[wid].get("status") != r1.get("status"):
+        status = "unstable"
     v, p = vsf.get(wid, {}), prod.get(wid, {})
     emitted = (p.get("transform", {}).get("actions", {}) or {}).get("available", 0) if p else 0
     row = {"id": wid, "app": w["app"], "family": FAMILY[w["app"]], "title": w["title"], "effect": w["effect"], "difficulty": w["difficulty"], "categories": w["categories"],
            "reference": status, "reference_detail": r1.get("detail"),
            "layerP": {"transform_ok": p.get("transform", {}).get("ok"), "overlay": p.get("overlay"), "actions": p.get("transform", {}).get("actions"), "native_feasible": p.get("nativeFeasible"),
                       "targets_present": sum(1 for t in p.get("targets", []) if t["present"]), "targets_enabled": sum(1 for t in p.get("targets", []) if t["enabled"]), "targets_total": len(p.get("targets", []))},
-           "layerG": {"emitted_available_actions": emitted, "programmatic": emitted > 0 and False},
+           "layerG": {"emitted_available_actions": emitted, "programmatic": emitted > 0},
            "layerR": {"outcome": v.get("outcome"), "stopped_at": v.get("stoppedAt"), "cause": v.get("cause"), "steps": w["steps"]},
            "timing": {"reference_steps_ms": r1.get("stepsMs"), "vsf_steps_ms": v.get("stepsMs"), "recognizer_ms": v.get("recMsTotal"), "recognizer_calls": v.get("recCalls")}}
     if status != "confirmed":
