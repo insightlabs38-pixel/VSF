@@ -1,0 +1,24 @@
+$ pnpm --filter @vsf/corpus-tests run test:harness
+
+> @vsf/corpus-tests@0.0.0 test:harness /home/user/VSF/tests/corpus
+> node --conditions=source --test --test-reporter=spec test/browser/*.test.ts
+
+✔ a composite member, a custom popup choice and a header checkbox are executed through what was recognized (4471.7153ms)
+✔ a name that two structures share, a missing member and a missing option are refused and nothing is touched (6742.20905ms)
+✔ a header checkbox is chosen over identically named row checkboxes only because the structure says so (1396.512376ms)
+✔ a file with an awkward name reaches the page with its exact name, size and bytes (3849.998882ms)
+✔ two file inputs under the browser's own name are ambiguous and nothing is sent to either (2155.203025ms)
+✔ the reference driver confirms real operations and drops vacuous and unconfirmable ones (8408.495927ms)
+✔ an operation done only through recognized units is verified, and a missing control falls back untouched (3740.715734ms)
+✔ a step resolves only to one usable unit of a suitable kind, never a guess (0.916142ms)
+✔ a recognizer that does nothing scores no verified operation and no false claim (0.549049ms)
+✔ operations the reference cannot confirm stay in the denominator and never count as verified (1.074739ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13663.832412
+[exit 0]

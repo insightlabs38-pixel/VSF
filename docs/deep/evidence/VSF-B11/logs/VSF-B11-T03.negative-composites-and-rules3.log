@@ -1,0 +1,41 @@
+$ cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test composites --test rules_v3
+
+running 14 tests
+test a_native_select_is_a_choice_field_and_not_a_popup_composite ... ok
+test a_menu_button_owns_its_menu_and_a_combobox_does_not_claim_it ... ok
+test a_search_box_inside_a_combobox_is_not_a_filter_bar_but_a_standalone_one_is ... ok
+test a_combobox_lists_the_options_of_the_popup_it_controls_even_while_hidden ... ok
+test a_tablist_without_tabs_and_plain_links_are_not_tabs ... ok
+test dialogs_list_their_controls_and_record_modality ... ok
+test expandable_buttons_group_into_a_disclosure_but_a_single_one_does_not ... ok
+test file_and_date_inputs_are_recognized_by_input_type_only ... ok
+test a_tablist_lists_its_tabs_whether_or_not_their_panels_are_shown ... ok
+test recognition_of_composites_is_deterministic ... ok
+test rows_replaced_by_a_scroll_probe_mark_a_virtual_list_and_unchanged_rows_do_not ... ok
+test pagination_needs_step_and_number_controls_and_calendar_days_are_not_pages ... ok
+test sort_state_or_several_header_controls_mean_sortable_but_a_single_titled_link_does_not ... ok
+test row_checkboxes_make_a_bulk_selection_and_unchecked_tables_do_not ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 12 tests
+test a_control_in_a_column_header_takes_the_headers_name ... ok
+test a_label_that_belongs_to_the_previous_control_does_not_compete ... ok
+test an_action_reports_the_words_it_shows_when_its_name_differs ... ok
+test a_list_of_records_is_a_collection_under_rules_3_only ... ok
+test extra_write_verbs_are_hints_under_rules_3_and_nothing_before ... ok
+test blocks_of_different_shape_navigation_chrome_and_link_menus_are_not_record_collections ... ok
+test identical_sibling_blocks_that_hold_their_own_controls_are_a_record_collection ... ok
+test submit_buttons_are_actions_and_not_text_fields_under_rules_3 ... ok
+test navigation_lists_menus_and_single_items_are_not_record_lists ... ok
+test something_that_opens_a_popup_reveals_it_whatever_its_name_says ... ok
+test links_navigate_unless_their_name_writes_or_their_handler_is_a_script ... ok
+test text_after_a_checkbox_names_it_unless_a_control_comes_first ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running tests/composites.rs (compiler/target/debug/deps/composites-eedb3983e8576498)
+     Running tests/rules_v3.rs (compiler/target/debug/deps/rules_v3-60651b888188fbf4)
+[exit 0]

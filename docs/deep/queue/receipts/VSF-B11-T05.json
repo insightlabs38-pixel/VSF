@@ -1,0 +1,52 @@
+{
+  "task_id": "VSF-B11-T05",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "71e7b7c4a3ba86ba541fa466c1b181ac2170bd0d",
+  "commit": "5101cf198884c7736b3842c89b2c4b3bc42b8bb2",
+  "paths": [
+    "backend/execution/bulk.go",
+    "backend/execution/bulk_test.go"
+  ],
+  "acceptance": "Bulk selection, pagination and rate limits remain correct under hidden/virtualized records and concurrent updates.",
+  "positive": {
+    "fixture": "selected_ids, visible_page and all_matching plans re-resolved from a fresh listing; per-item dedup token; Retry-After honored",
+    "command": "go -C backend test -race -count=1 ./execution/ -run SelectedIds|VisiblePage|AllMatching|RecordsAdded|PlansAreBounded|Throttled|UnknownOutcome|Partial|WhenNothing|RetriesStop|LargeRuns",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "stale page token, changed filter, changed count, vanished ids and oversize plans refused with no effect; unknown outcome never repeated; partial runs are unknown with a per-record report",
+    "command": "go -C backend test -race -count=1 ./execution/ -run SelectedIds|VisiblePage|AllMatching|RecordsAdded|PlansAreBounded|Throttled|UnknownOutcome|Partial|WhenNothing|RetriesStop|LargeRuns",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet -tags integration ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...",
+      "result": "PASS"
+    },
+    {
+      "command": "env VSF_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome go -C backend test -tags integration -race -count=1 ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "Go-only: BulkPlan, BulkExecutor",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Only outcomes the source proved changed nothing are repeated; plans are bounded; no write is retried after a possible commit.",
+  "performance_memory_storage": "Items run sequentially; large runs are bounded by plan limits and the per-source limiter.",
+  "known_limitations": [
+    "Plans are re-resolved through a Lister the caller supplies; a source-specific listing adapter is the caller's",
+    "Concurrent mutation is detected by re-resolution before each run, not by locks"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/manifest.json",
+    "docs/deep/evidence/VSF-B11/g11/ops-tables.md",
+    "docs/deep/evidence/VSF-B11/g11/structural-tables.md"
+  ],
+  "review_result": "ACCEPTED"
+}

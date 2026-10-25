@@ -1,0 +1,307 @@
+{
+ "schema": "vsf-corpus-result-v1",
+ "partitions": [
+  "heldout"
+ ],
+ "pages": 6,
+ "missing": [],
+ "summary": {
+  "pages": 6,
+  "structural": {
+   "fields": {
+    "annotated": 28,
+    "found": 27,
+    "recall": 0.964,
+    "semanticExact": 0.926,
+    "semanticExactOrCoarser": 0.926
+   },
+   "actions": {
+    "annotated": 89,
+    "found": 87,
+    "recall": 0.978,
+    "semanticExact": 0.379,
+    "semanticExactOrCoarser": 0.379
+   },
+   "collections": {
+    "annotated": 4,
+    "found": 0,
+    "recall": 0,
+    "semanticExact": null,
+    "semanticExactOrCoarser": null
+   }
+  },
+  "falseClaims": 7,
+  "falseClaimsExcludingEffectHints": 2,
+  "wrongEffectHints": 5,
+  "softEffectHints": 0,
+  "writeLine": {
+   "comparable": 38,
+   "sameSide": 33,
+   "writeSeenAsReadOnly": 0,
+   "readSeenAsWrite": 5
+  },
+  "contradictions": {
+   "fields": 2,
+   "actions": 5,
+   "collections": 0
+  },
+  "composites": {
+   "annotated": 16,
+   "recognized": 5,
+   "recall": 0.313,
+   "named": 4,
+   "surplus": 7,
+   "byKind": {
+    "filter_bar": 4,
+    "sortable_columns": 4,
+    "bulk_selection": 4,
+    "dialog": 2,
+    "file_input": 1,
+    "tabs": 1
+   },
+   "recognizedByKind": {
+    "filter_bar": 4,
+    "file_input": 1
+   },
+   "surplusByKind": {
+    "file_input": 7
+   }
+  },
+  "workflows": {
+   "annotated": 14,
+   "supported": 2,
+   "coverage": 0.143
+  },
+  "unannotatedRecognized": {
+   "fields": 9,
+   "actions": 72,
+   "collections": 17
+  },
+  "recognizedOnPage": {
+   "fields": 36,
+   "actions": 159,
+   "collections": 17
+  },
+  "declaredUnsupported": 0,
+  "executableOperationCorrectness": {
+   "measured": false,
+   "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+  },
+  "latency": {
+   "recognizeMsP50": 50.8,
+   "recognizeMsMax": 55.7,
+   "nodesMax": 206,
+   "rssKbMax": 11224
+  }
+ },
+ "clusters": [
+  {
+   "key": "collection-missing",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 6,
+   "examples": []
+  },
+  {
+   "key": "composite:dialog",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 3,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:read",
+   "instances": 32,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-missing:state_change",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "field-kind:range-as-text",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:state_change",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-commit",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "composite:tabs",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:navigation",
+   "instances": 16,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-destroy",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:bulk_selection",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:sortable_columns",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "field-missing:toggle",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  }
+ ],
+ "perSource": {
+  "filebrowser": {
+   "pages": 6,
+   "structural": {
+    "fields": {
+     "annotated": 28,
+     "found": 27,
+     "recall": 0.964,
+     "semanticExact": 0.926,
+     "semanticExactOrCoarser": 0.926
+    },
+    "actions": {
+     "annotated": 89,
+     "found": 87,
+     "recall": 0.978,
+     "semanticExact": 0.379,
+     "semanticExactOrCoarser": 0.379
+    },
+    "collections": {
+     "annotated": 4,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 7,
+   "falseClaimsExcludingEffectHints": 2,
+   "wrongEffectHints": 5,
+   "softEffectHints": 0,
+   "writeLine": {
+    "comparable": 38,
+    "sameSide": 33,
+    "writeSeenAsReadOnly": 0,
+    "readSeenAsWrite": 5
+   },
+   "contradictions": {
+    "fields": 2,
+    "actions": 5,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 16,
+    "recognized": 5,
+    "recall": 0.313,
+    "named": 4,
+    "surplus": 7,
+    "byKind": {
+     "filter_bar": 4,
+     "sortable_columns": 4,
+     "bulk_selection": 4,
+     "dialog": 2,
+     "file_input": 1,
+     "tabs": 1
+    },
+    "recognizedByKind": {
+     "filter_bar": 4,
+     "file_input": 1
+    },
+    "surplusByKind": {
+     "file_input": 7
+    }
+   },
+   "workflows": {
+    "annotated": 14,
+    "supported": 2,
+    "coverage": 0.143
+   },
+   "unannotatedRecognized": {
+    "fields": 9,
+    "actions": 72,
+    "collections": 17
+   },
+   "recognizedOnPage": {
+    "fields": 36,
+    "actions": 159,
+    "collections": 17
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 50.8,
+    "recognizeMsMax": 55.7,
+    "nodesMax": 206,
+    "rssKbMax": 11224
+   }
+  }
+ }
+}

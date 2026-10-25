@@ -1,0 +1,13 @@
+$ node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/composites.test.ts
+✔ a composite member, a custom popup choice and a header checkbox are executed through what was recognized (3961.173331ms)
+✔ a name that two structures share, a missing member and a missing option are refused and nothing is touched (6582.4577ms)
+✔ a header checkbox is chosen over identically named row checkboxes only because the structure says so (1418.495074ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12765.164841
+[exit 0]

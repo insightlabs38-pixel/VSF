@@ -1,0 +1,40 @@
+$ pnpm build:ts
+
+> vsf@0.0.0 build:ts /home/user/VSF
+> pnpm -r --workspace-concurrency=1 run build
+
+Scope: 20 of 21 workspace projects
+
+> @vsf/design-system@0.0.0 build /home/user/VSF/frontend/packages/design-system
+> tsc -p tsconfig.build.json
+
+
+> @vsf/schema@0.0.0 build /home/user/VSF/frontend/packages/schema
+> tsc -p tsconfig.build.json
+
+
+> @vsf/ir@0.0.0 build /home/user/VSF/frontend/packages/ir
+> tsc -p tsconfig.build.json
+
+
+> @vsf/observer@0.0.0 build /home/user/VSF/frontend/packages/observer
+> tsc -p tsconfig.build.json
+
+
+> @vsf/renderer@0.0.0 build /home/user/VSF/frontend/packages/renderer
+> tsc -p tsconfig.build.json
+
+
+> @vsf/gallery@0.0.0 build /home/user/VSF/apps/gallery
+> node --conditions=source build.ts
+
+gallery built: /home/user/VSF/artifacts/gallery
+
+> @vsf/wasm-host@0.0.0 build /home/user/VSF/frontend/packages/wasm-host
+> tsc -p tsconfig.build.json
+
+
+> @vsf/fixture-apps@0.0.0 build /home/user/VSF/fixtures/source-apps
+> tsc -p tsconfig.build.json
+
+[exit 0]

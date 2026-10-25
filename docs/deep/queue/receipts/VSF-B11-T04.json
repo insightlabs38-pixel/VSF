@@ -1,0 +1,54 @@
+{
+  "task_id": "VSF-B11-T04",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "71e7b7c4a3ba86ba541fa466c1b181ac2170bd0d",
+  "commit": "5101cf198884c7736b3842c89b2c4b3bc42b8bb2",
+  "paths": [
+    "backend/execution/files.go",
+    "backend/execution/files_browser.go",
+    "backend/execution/files_test.go",
+    "tests/corpus/test/browser/files.test.ts"
+  ],
+  "acceptance": "Upload/download/export preserve original source authorization, file integrity and policy-denied outcomes.",
+  "positive": {
+    "fixture": "policy, sandbox, upload with size and sha256 check, download stored only when size and digest agree, real Chromium upload and download",
+    "command": "env VSF_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome go -C backend test -tags integration -race -count=1 ./execution/ -run RealBrowser|OutsideTheSandbox|ADownload",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "zero policy, oversize, wrong media type, bidi and reserved names, symlink escape, another session's reference, lost response after sending",
+    "command": "go -C backend test -race -count=1 ./execution/ -run SafeFileName|Disposition|Policy|Sandbox|Upload|Download|Acknowledged|ConnectionLost|DeclaredName|Throttled",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/files.test.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet -tags integration ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "Go-only: FileSpec, FilePolicy, FileSandbox, FileExecutor",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "The zero policy allows nothing; bytes live in a per-session 0600 content-addressed sandbox; a browser gets only paths resolving inside it; a lost upload response is unknown and never retried.",
+  "performance_memory_storage": "Digest recheck on every read; no measured regression of the Go suite.",
+  "known_limitations": [
+    "File-name handling tested in Chromium 141 on Linux only",
+    "Transfers go through a provider file API executor; browser-driven transfers use the sandbox paths only"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/manifest.json",
+    "docs/deep/evidence/VSF-B11/g11/ops-tables.md",
+    "docs/deep/evidence/VSF-B11/g11/structural-tables.md"
+  ],
+  "review_result": "ACCEPTED"
+}

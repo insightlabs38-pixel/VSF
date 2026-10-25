@@ -1,0 +1,3 @@
+$ env VSF_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome go -C backend test -tags integration -race -count=1 ./execution/ -run RealBrowser|OutsideTheSandbox|ADownload
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	2.362s
+[exit 0]

@@ -1,0 +1,126 @@
+$ pnpm --filter @vsf/schema --filter @vsf/observer --filter @vsf/ir --filter @vsf/fixture-apps --filter @vsf/extension run test
+Scope: 5 of 21 workspace projects
+frontend/packages/schema test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+frontend/packages/schema test: ✔ shared canon vectors match Rust and Go expectations (2.630834ms)
+frontend/packages/schema test: ✔ rejects invalid UTF-8 and oversized input (0.670245ms)
+frontend/packages/schema test: ✔ canonicalization is idempotent (0.637898ms)
+frontend/packages/schema test: ✔ sha256 known vector (8.624831ms)
+frontend/packages/schema test: ✔ __proto__ keys stay data and never touch prototypes (0.371397ms)
+frontend/packages/schema test: ✔ accepts current envelope and output is canonical (4.058669ms)
+frontend/packages/schema test: ✔ rejects incompatible schemas with specific codes (1.022929ms)
+frontend/packages/schema test: ✔ rejects missing, invalid and unknown fields (0.698238ms)
+frontend/packages/schema test: ℹ tests 8
+frontend/packages/schema test: ℹ suites 0
+frontend/packages/schema test: ℹ pass 8
+frontend/packages/schema test: ℹ fail 0
+frontend/packages/schema test: ℹ cancelled 0
+frontend/packages/schema test: ℹ skipped 0
+frontend/packages/schema test: ℹ todo 0
+frontend/packages/schema test: ℹ duration_ms 167.025703
+frontend/packages/schema test: Done
+frontend/packages/observer test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+frontend/packages/ir test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+frontend/packages/ir test: ✔ every valid fixture decodes and re-encodes to identical bytes (52.194633ms)
+frontend/packages/observer test: ✔ roundtrip is exact and canonical (6.327084ms)
+frontend/packages/observer test: ✔ empty snapshot is valid and empty input is not (1.568221ms)
+frontend/packages/observer test: ✔ rejects every malformed shape with the same codes as Rust (1.561507ms)
+frontend/packages/ir test: ✔ pinned digests written by the Rust authority match this implementation (33.512364ms)
+frontend/packages/ir test: ✔ NFC and NFD text are preserved and stay distinct (2.446061ms)
+frontend/packages/observer test: ✔ rejects invalid UTF-8 and non-canonical string tables (1.109086ms)
+frontend/packages/observer test: ✔ never throws anything but PackError on truncations and bit flips (43.367987ms)
+frontend/packages/ir test: ✔ typed digests are domain separated (3.516683ms)
+frontend/packages/ir test: ✔ every invalid case fails closed with the expected code and path (74.013354ms)
+frontend/packages/ir test: ✔ since gates fields by the declared document version (2.413965ms)
+frontend/packages/ir test: ℹ tests 6
+frontend/packages/ir test: ℹ suites 0
+frontend/packages/ir test: ℹ pass 6
+frontend/packages/ir test: ℹ fail 0
+frontend/packages/ir test: ℹ cancelled 0
+frontend/packages/ir test: ℹ skipped 0
+frontend/packages/ir test: ℹ todo 0
+frontend/packages/ir test: ℹ duration_ms 443.968364
+frontend/packages/ir test: Done
+frontend/packages/observer test: ✔ analysis summary has the canonical key order (18.04163ms)
+frontend/packages/observer test: ✔ generator is deterministic and scales (154.862287ms)
+frontend/packages/observer test: ℹ tests 7
+frontend/packages/observer test: ℹ suites 0
+frontend/packages/observer test: ℹ pass 7
+frontend/packages/observer test: ℹ fail 0
+frontend/packages/observer test: ℹ cancelled 0
+frontend/packages/observer test: ℹ skipped 0
+frontend/packages/observer test: ℹ todo 0
+frontend/packages/observer test: ℹ duration_ms 528.376799
+frontend/packages/observer test: Done
+fixtures/source-apps test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+apps/extension test$ node --conditions=source --test --test-reporter=spec test/*.test.ts
+fixtures/source-apps test: ✔ serves the form and accepts a valid submission (50.077662ms)
+fixtures/source-apps test: ✔ rejects invalid input with 422 and escapes reflected values (16.188863ms)
+fixtures/source-apps test: ✔ enforces body size limit, methods and path containment (53.238673ms)
+fixtures/source-apps test: ✔ sets security headers (10.284827ms)
+fixtures/source-apps test: ✔ validateForm and escapeHtml boundaries (1.032208ms)
+fixtures/source-apps test: ✔ inline import maps are allowed only by content hash (7.125341ms)
+apps/extension test: ✔ a transform injects the renderer before calling it and records a rendered session bound to the document (5.471206ms)
+apps/extension test: ✔ a render failure restores the tab, removes the session and reports why (7.554186ms)
+apps/extension test: ✔ nothing recognized means nothing is rendered (1.450979ms)
+apps/extension test: ✔ only the packaged panel may issue commands and a granted origin is required (5.378025ms)
+apps/extension test: ✔ an operation is sent to the companion once, even when the same envelope arrives twice at the same time (17.097837ms)
+apps/extension test: ✔ after a worker restart an operation that may have happened is reported unknown and never resent (24.719071ms)
+apps/extension test: ✔ a session left half-built by a dead worker is undone on restart and stale credentials are not reused (5.171379ms)
+apps/extension test: ✔ removing the browser permission drops the grant and restores every page of that origin (1.894745ms)
+apps/extension test: ✔ refresh updates rows in place when the shape is unchanged and re-renders when it changes (12.903277ms)
+apps/extension test: ✔ a session record from another version is never interpreted, never deleted, and its page is told to restore (5.501776ms)
+apps/extension test: ✔ a paired companion is given the document's capability manifest, bound to its origin and document (1.841825ms)
+apps/extension test: ✔ without a pairing, with a refusing or absent companion, or with an invalid manifest the page still works (21.799816ms)
+apps/extension test: ✔ ending the session, by any route, ends the binding; a lapsing binding is renewed by the heartbeat (2.286143ms)
+apps/extension test: ✔ stored preferences travel with the render request and are reported as restored (0.981649ms)
+apps/extension test: ✔ preferences nobody can vouch for are ignored, not applied, and the user is told (8.158505ms)
+apps/extension test: ✔ a preference change from the page is saved for that session's origin only (2.049116ms)
+apps/extension test: ✔ every kind round-trips with its own body (2.455182ms)
+apps/extension test: ✔ shape errors are classified, not guessed at (0.436453ms)
+apps/extension test: ✔ bodies are exact: no extra keys, no wrong types, no unbounded text (0.40335ms)
+apps/extension test: ✔ a body that cannot be serialized is refused instead of throwing (0.276475ms)
+apps/extension test: ✔ only loopback endpoints with unprivileged ports are accepted (1.972891ms)
+apps/extension test: ✔ codes normalize the way the companion does (0.325838ms)
+apps/extension test: ✔ malformed endpoints and codes never reach the network (2.202771ms)
+apps/extension test: ✔ an unreachable companion is reported as such (6.994905ms)
+apps/extension test: ✔ a companion that does not prove knowledge of the code is not trusted and stores nothing (142.760229ms)
+apps/extension test: ✔ a companion asking for fewer key-stretching rounds is refused (0.897239ms)
+apps/extension test: ✔ denials and rate limits map to stable codes (1.309099ms)
+apps/extension test: ✔ a valid access token is used as is; an expiring one is renewed once for concurrent callers (18.787325ms)
+apps/extension test: ✔ a refused renewal removes the credentials so the user must pair again (7.388089ms)
+apps/extension test: ✔ an expired refresh secret is dropped without contacting the companion (6.626768ms)
+apps/extension test: ✔ unpairing tells the companion and forgets locally even when it cannot (18.576027ms)
+apps/extension test: ✔ calls need a pairing and carry the bearer credential and the CSRF header (6.447611ms)
+apps/extension test: ✔ display preferences are accepted only from a closed vocabulary (5.350582ms)
+apps/extension test: ✔ anything outside that vocabulary is refused as a whole (0.876828ms)
+apps/extension test: ✔ parsing returns a copy that holds only what was accepted (0.255495ms)
+fixtures/source-apps test: ✔ every page's module graph resolves through its import map (229.991251ms)
+fixtures/source-apps test: ℹ tests 7
+fixtures/source-apps test: ℹ suites 0
+fixtures/source-apps test: ℹ pass 7
+fixtures/source-apps test: ℹ fail 0
+fixtures/source-apps test: ℹ cancelled 0
+fixtures/source-apps test: ℹ skipped 0
+fixtures/source-apps test: ℹ todo 0
+fixtures/source-apps test: ℹ duration_ms 578.423473
+fixtures/source-apps test: Done
+apps/extension test: ✔ origins must be exact http(s) origins (1.871305ms)
+apps/extension test: ✔ commands are validated strictly (1.60895ms)
+apps/extension test: ✔ only the packaged panel in the top frame may issue commands (0.374706ms)
+apps/extension test: ✔ browser permission patterns drop the port (0.283212ms)
+apps/extension test: ✔ removing a browser permission removes every grant it covered and nothing else (0.708251ms)
+apps/extension test: ✔ sealed values round-trip and the stored record holds no plaintext (14.061968ms)
+apps/extension test: ✔ the master key is non-extractable (3.359704ms)
+apps/extension test: ✔ tampering, swapping records between names and a different key are all detected (5.280966ms)
+apps/extension test: ✔ concurrent first use creates a single key (2.488444ms)
+apps/extension test: ✔ nonces are fresh for every seal (3.743301ms)
+apps/extension test: ℹ tests 45
+apps/extension test: ℹ suites 0
+apps/extension test: ℹ pass 45
+apps/extension test: ℹ fail 0
+apps/extension test: ℹ cancelled 0
+apps/extension test: ℹ skipped 0
+apps/extension test: ℹ todo 0
+apps/extension test: ℹ duration_ms 659.813207
+apps/extension test: Done
+[exit 0]

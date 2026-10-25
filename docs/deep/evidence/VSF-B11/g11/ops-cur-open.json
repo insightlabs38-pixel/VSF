@@ -1,0 +1,35 @@
+{
+ "schema": "vsf-corpus-operations-result-v1",
+ "partitions": [
+  "heldout"
+ ],
+ "recognizer": "current build",
+ "summary": {
+  "intended": 42,
+  "addedAfterFreeze": 5,
+  "referenceConfirmed": 41,
+  "referenceUnconfirmed": 1,
+  "annotationDefects": 0,
+  "executed": 41,
+  "verified": 38,
+  "fallback": 3,
+  "abandoned": 0,
+  "wrongEffect": 0,
+  "misbound": 0,
+  "falseExecutableClaims": 0,
+  "verifiedOfIntended": 0.905,
+  "verifiedOfReferenceConfirmed": 0.927,
+  "diagnostics": {
+   "verified": 38,
+   "recognition_limit": 3,
+   "incorrect_effect": 0,
+   "reference_limit": 1,
+   "annotation_defect": 0,
+   "information_limit": 0
+  },
+  "unconfirmedProbes": {
+   "run": 1,
+   "expectationsHeld": 0
+  }
+ }
+}

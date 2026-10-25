@@ -1,0 +1,35 @@
+{
+ "schema": "vsf-corpus-operations-result-v1",
+ "partitions": [
+  "heldout"
+ ],
+ "recognizer": "/tmp/claude-0/-home-user-VSF/56f626af-cfe5-58e6-bc38-e09b5f5512bd/scratchpad/vsf-recognizer-t02",
+ "summary": {
+  "intended": 15,
+  "addedAfterFreeze": 4,
+  "referenceConfirmed": 10,
+  "referenceUnconfirmed": 3,
+  "annotationDefects": 2,
+  "executed": 10,
+  "verified": 8,
+  "fallback": 1,
+  "abandoned": 1,
+  "wrongEffect": 0,
+  "misbound": 0,
+  "falseExecutableClaims": 0,
+  "verifiedOfIntended": 0.533,
+  "verifiedOfReferenceConfirmed": 0.8,
+  "diagnostics": {
+   "verified": 8,
+   "recognition_limit": 2,
+   "incorrect_effect": 0,
+   "reference_limit": 3,
+   "annotation_defect": 2,
+   "information_limit": 0
+  },
+  "unconfirmedProbes": {
+   "run": 3,
+   "expectationsHeld": 1
+  }
+ }
+}
