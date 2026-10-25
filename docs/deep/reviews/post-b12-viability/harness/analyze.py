@@ -20,7 +20,11 @@ def jl(name):
 
 ref1, ref2 = jl("reference-pass1.jsonl"), jl("reference-pass2.jsonl")
 ref1.update(jl("reference-pass1b.jsonl"))
-prod, vsf = jl("product.jsonl"), jl("vsf-layerR.jsonl")
+import os
+SUF = os.environ.get("AUDIT_SUFFIX", "")
+prod, vsf = jl("product-A3.jsonl"), jl(f"vsf-layerR{SUF}.jsonl")
+diag = jl("product-svgguard-A3.jsonl")
+native_try = jl("native-attempt-svgguard.jsonl")
 
 
 def wilson(k, n, z=1.96):
@@ -58,20 +62,19 @@ def classify(w):
            "reference": status, "reference_detail": r1.get("detail"),
            "layerP": {"transform_ok": p.get("transform", {}).get("ok"), "overlay": p.get("overlay"), "actions": p.get("transform", {}).get("actions"), "native_feasible": p.get("nativeFeasible"),
                       "targets_present": sum(1 for t in p.get("targets", []) if t["present"]), "targets_enabled": sum(1 for t in p.get("targets", []) if t["enabled"]), "targets_total": len(p.get("targets", []))},
+           "layerP_with_svg_guard_experimental": {"transform_ok": diag.get(wid, {}).get("transform", {}).get("ok"), "native_feasible": diag.get(wid, {}).get("nativeFeasible"), "native_attempt": native_try.get(wid, {}).get("native")},
            "layerG": {"emitted_available_actions": emitted, "programmatic": emitted > 0},
            "layerR": {"outcome": v.get("outcome"), "stopped_at": v.get("stoppedAt"), "cause": v.get("cause"), "steps": w["steps"]},
            "timing": {"reference_steps_ms": r1.get("stepsMs"), "vsf_steps_ms": v.get("stepsMs"), "recognizer_ms": v.get("recMsTotal"), "recognizer_calls": v.get("recCalls")}}
     if status != "confirmed":
         row["class"] = "reference_limitation" if status != "vacuous" else "annotation_defect"
-    elif p.get("nativeFeasible"):
-        row["class"] = "native_candidate"
     else:
         row["class"] = {"native_path": "recognition_path"}.get(v.get("outcome"), v.get("outcome") or "not_run")
     return row
 
 
 rows = [classify(w) for w in FROZEN]
-(EV / "WORKFLOW_RESULTS.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+(EV / f"WORKFLOW_RESULTS{SUF}.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
 
 
 def table(group_key):
@@ -98,5 +101,20 @@ out["reference_confirmed"] = len(conf)
 out["recognition_path_over_confirmed"] = [sum(1 for r in conf if r["class"] == "recognition_path"), len(conf)]
 for key in ("effect", "difficulty"):
     out[f"by_{key}"] = {str(k): {"n": len(v), "recognition_path": rate(v, {"recognition_path"})[0]} for k, v in table(lambda r: r[key]).items()}
-(EV / "summary.json").write_text(json.dumps(out, indent=1) + "\n")
+cats = collections.defaultdict(lambda: [0, 0, 0])
+for r in rows:
+    for c in r["categories"]:
+        cats[c][0] += 1
+        cats[c][1] += r["class"] == "recognition_path"
+        cats[c][2] += r["class"] in ("recognition_path", "hybrid")
+out["by_category_min3"] = {c: {"n": v[0], "recognition_path": v[1], "recognition_or_hybrid": v[2]} for c, v in sorted(cats.items(), key=lambda kv: -kv[1][0]) if v[0] >= 3}
+rem = 0
+for r in rows:
+    if r["class"] in ("hybrid", "preserved_source") and r["layerR"]["stopped_at"] is not None:
+        rem += r["layerR"]["steps"] - r["layerR"]["stopped_at"]
+out["steps_finished_in_source_after_stop"] = rem
+out["total_steps"] = sum(r["layerR"]["steps"] for r in rows)
+out["layerP"] = {"transform_ok": sum(1 for r in rows if r["layerP"]["transform_ok"]), "native_feasible": sum(1 for r in rows if r["layerP"]["native_feasible"]), "diag_transform_ok": sum(1 for r in rows if r["layerP_with_svg_guard_experimental"]["transform_ok"]), "diag_native_feasible": sum(1 for r in rows if r["layerP_with_svg_guard_experimental"]["native_feasible"]), "diag_native_attempt_success": sum(1 for r in rows if r["layerP_with_svg_guard_experimental"]["native_attempt"])}
+out["layerG"] = {"workflows_with_an_emitted_operation": sum(1 for r in rows if r["layerG"]["programmatic"]), "available_actions_total": sum(r["layerG"]["emitted_available_actions"] for r in rows)}
+(EV / f"summary{SUF}.json").write_text(json.dumps(out, indent=1) + "\n")
 print(json.dumps(out, indent=1))

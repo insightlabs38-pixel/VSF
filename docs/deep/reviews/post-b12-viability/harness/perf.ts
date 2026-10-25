@@ -22,8 +22,9 @@ function timed(bin: string, args: string[], n: number): { p50: number; p95: numb
 }
 
 const out = process.argv.find((a) => a.startsWith("--out="))?.slice(6);
+const only = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 const first = new Map<string, Workflow>();
-for (const w of WORKFLOWS) if (!first.has(w.variant ?? w.app)) first.set(w.variant ?? w.app, w);
+for (const w of WORKFLOWS) if (!first.has(w.variant ?? w.app) && (only.length === 0 || only.includes(w.app))) first.set(w.variant ?? w.app, w);
 const browser = await launch();
 for (const [name, wf] of first) {
   const row: Record<string, unknown> = { page: name, start: wf.start };
@@ -39,11 +40,11 @@ for (const [name, wf] of first) {
       }
       row[`${mode}LoadMs`] = Math.round(pct(loads, 50));
       if (mode === "observed") {
-        await live.ctx.page.waitForTimeout(wf.settle ?? 800);
+        await live.ctx.page.waitForTimeout(wf.app === "jupyterlab" ? 3500 : (wf.settle ?? 800));
         row.coldObserveMs = await live.ctx.page.evaluate(() => Math.round((window as unknown as { __vsfColdMs: number }).__vsfColdMs * 10) / 10);
         const h = await attach(await live.context.newPage(), { allow: [live.ctx.origin] });
         await h.page.goto(`${live.ctx.origin}${wf.start}`, { waitUntil: "load" });
-        await h.page.waitForTimeout(wf.settle ?? 800);
+        await h.page.waitForTimeout(wf.app === "jupyterlab" ? 3500 : (wf.settle ?? 800));
         await h.settle();
         const snap = h.collector.replica.toRecognizerInput();
         row.nodes = (snap.nodes as unknown[]).length;

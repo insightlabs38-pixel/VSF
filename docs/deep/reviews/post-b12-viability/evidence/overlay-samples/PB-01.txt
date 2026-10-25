@@ -1,0 +1,72 @@
+# PB-01 Create a record with a select and a toggle
+# transform ok=true entities=2 rows=41; first 70 lines of the generated interface's accessibility tree
+- banner:
+  - strong: Varifold
+  - status: 41 rows from the source
+  - text: Theme
+  - combobox "Theme":
+    - option "system" [selected]
+    - option "light"
+    - option "dark"
+  - text: Density
+  - combobox "Density":
+    - option "compact"
+    - option "comfortable" [selected]
+    - option "spacious"
+  - button "Refresh from source"
+  - button "Show original"
+- link "Skip to content":
+  - /url: "#main"
+- status
+- alert
+- navigation "Views":
+  - list:
+    - listitem:
+      - link "Table 1":
+        - /url: "#t_table_1"
+    - listitem:
+      - link "Form":
+        - /url: "#form_form"
+- main:
+  - heading "Table 1" [level=2]
+  - text: Filter rows
+  - textbox "Filter rows"
+  - grid "Table 1":
+    - rowgroup:
+      - row "id title views published status Actions":
+        - columnheader "id":
+          - button "id"
+        - columnheader "title":
+          - button "title"
+        - columnheader "views":
+          - button "views"
+        - columnheader "published":
+          - button "published"
+        - columnheader "status":
+          - button "status"
+        - columnheader "Actions"
+    - rowgroup:
+      - 'row "fce6s09xfgaaqiq Foxtrot post 85 145 False review Load more: fce6s09xfgaaqiq Copy: fce6s09xfgaaqiq Toggle columns: fce6s09xfgaaqiq"':
+        - gridcell "fce6s09xfgaaqiq"
+        - gridcell "Foxtrot post 85"
+        - gridcell "145"
+        - gridcell "False"
+        - gridcell "review"
+        - 'gridcell "Load more: fce6s09xfgaaqiq Copy: fce6s09xfgaaqiq Toggle columns: fce6s09xfgaaqiq"':
+          - 'button "Load more: fce6s09xfgaaqiq" [disabled]': "Unavailable, unknown: effect_unverified Load more"
+          - 'button "Copy: fce6s09xfgaaqiq" [disabled]': "Unavailable, unknown: effect_unverified Copy"
+          - 'button "Toggle columns: fce6s09xfgaaqiq" [disabled]': "Unavailable, unknown: effect_unverified Toggle columns"
+      - 'row "h9rqtd8tj01256p Echo post 84 108 True draft Load more: h9rqtd8tj01256p Copy: h9rqtd8tj01256p Toggle columns: h9rqtd8tj01256p"':
+        - gridcell "h9rqtd8tj01256p"
+        - gridcell "Echo post 84"
+        - gridcell "108"
+        - gridcell "True"
+        - gridcell "draft"
+        - 'gridcell "Load more: h9rqtd8tj01256p Copy: h9rqtd8tj01256p Toggle columns: h9rqtd8tj01256p"':
+          - 'button "Load more: h9rqtd8tj01256p" [disabled]': "Unavailable, unknown: effect_unverified Load more"
+          - 'button "Copy: h9rqtd8tj01256p" [disabled]': "Unavailable, unknown: effect_unverified Copy"
+          - 'button "Toggle columns: h9rqtd8tj01256p" [disabled]': "Unavailable, unknown: effect_unverified Toggle columns"
+      - 'row "gw2y47lr82kjrqi Delta post 83 71 False live Load more: gw2y47lr82kjrqi Copy: gw2y47lr82kjrqi Toggle columns: gw2y47lr82kjrqi"':
+        - gridcell "gw2y47lr82kjrqi"
+        - gridcell "Delta post 83"
+        - gridcell "71"

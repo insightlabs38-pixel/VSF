@@ -39,4 +39,51 @@ If the first holds, the recognition gap is engineering. If the second fails on o
 
 ## Results
 
-Written after the runs; see below.
+Both experiments ran on the machine and states of the frozen benchmark. Raw data: `evidence/exp1-results.json`, `evidence/exp2-results.jsonl`, `evidence/exp2-summary.json`. Code: `experiments/`. Neither changes any figure in the benchmark results.
+
+### Experiment 1: evidence-reconciled binding. Criterion not met; the hypothesis is refuted as stated
+
+147 target steps from 48 workflows, 141 of them with a recognized unit at the control. The frozen resolver (reimplemented offline; it agrees with the recorded layer R result on 146 of 147 steps) resolves 108. The 33 failures with a unit at the control were the population the claim was about.
+
+| resolver | correct | ambiguous | none | wrong |
+|---|---:|---:|---:|---:|
+| V0 frozen name equality | 108 | 6 | 33 | 0 |
+| V1 tiered exact match on all evidence strings | 111 | 6 | 29 | 1 |
+| V2 V1 plus token containment, unique best, kind constraint | 111 | 8 | 28 | 0 |
+
+V2 recovers **3 of the 33** failures (9 percent; the registered pass was 90 percent): `GITEA-05` "Color" (read from its caption, not its placeholder), `JUP-02` "Text File" and `JUP-03` "Terminal" (matched by the card text instead of its title). One workflow, `GITEA-05`, would complete as a result; the other two still stop at their editor and terminal. V2 has no wrong binding and no regression on V0's correct steps; V1 binds one control wrongly through the caption tier, which is why the tiering matters.
+
+The remaining 30 failures are not name-evidence problems, by cause:
+
+| cause of the 30 | steps | evidence in the snapshot |
+|---|---:|---|
+| custom select, dropdown, file-chooser button modelled as the wrong kind (`C-WIDGET`) | 7 | the control is recognized, as an action or an unbound duplicate; it needs an operation model, not a better name |
+| same name repeated across columns, panels, dialogs, tiles (`C-SCOPE`) | 7 | genuinely ambiguous without the owning composite; the correct resolver result is "ambiguous" |
+| credential or secret field withheld by policy (`C-CRED`, 3) and a popover item whose visibility had not yet updated (`C-TEMPORAL`, 1) | 4 | the policy is working as designed; the popover resolves after a longer wait |
+| editor, terminal, notebook surfaces (`C-SPECIAL`) | 4 | recognized as generic text fields with a wrong label |
+| row checkboxes with no name (`C-ROWCTX`) | 3 | identity is the row, not a string |
+| unnamed native controls (`C-UNNAMED`) | 2 | no name or caption exists in the observation |
+| placeholder, description or header not captured by the observer (`C-NAME`) | 3 | the observer snapshot has no placeholder field, so the evidence is not there |
+
+Six more steps have no recognized unit at the control at all (clickable table cells, a list item, a submenu parent): the handler is invisible to a DOM observer.
+
+Adversarial probes on V2: a name that appears nowhere bound 0 of 147 times; a near-miss name (the first token of the target, or the target with a word added) bound 22 of 147 times, 3 of them to a different control, so the fuzziness has a real misbinding cost. Self-resolution over every named usable unit on all 147 pages (7,675 queries) gave 5,272 correct, 2,403 ambiguous and 0 wrong for V0 and V2 alike.
+
+**Reading.** Name reconciliation is a real but small fix (one workflow here, two more steps). The largest part of the gap between structural recognition (96 percent of steps have a unit) and name resolution (73 percent) is unrecoverable from the same observation without modelling widgets, scoping by composites, or new observations such as placeholder text and event handlers. That moves most of the failure from Category 1 to Category 2 and, for naming and credentials, Category 4.
+
+### Experiment 2: effect evidence from browser-visible behaviour. Criterion not met; the safety criterion fails on ordinary applications
+
+Overall 42 of 48 workflows classified correctly (87.5 percent; registered pass 90 percent). Per application: Gitea 8/8, PocketBase 8/8, Datasette 6/6, Swagger UI 6/6, Kanboard 5/6, Gradio 1/6, JupyterLab 8/8. The four REST-shaped applications (28 of 28) are classified perfectly; that is the case where the method looks sound.
+
+| error | workflows | mechanism |
+|---|---|---|
+| write classified as read (the unsafe direction) | `KB-04` | Kanboard closes a task with a confirmed GET navigation; no non-GET request, no state-changing verb |
+| read classified as write | `GR-01` to `GR-05` | Gradio posts every call, including a pure calculator, to the queue endpoint |
+
+So one of the two ordinary non-REST applications defeats the classifier in the dangerous direction and the other in the needless-prompt direction. The criterion "no state change classified read" fails. JupyterLab scored 8/8 only because the set holds no read-only JupyterLab workflow: background `PUT` requests (workspace autosave, checkpoints) accompany every action, so it would label any action a write, and the terminal's actual effect is carried by WebSocket frames whose meaning is invisible. That success is uninformative and is not counted as evidence for the method.
+
+**Reading.** Request shape is evidence about transport, not about effect. Where an application follows REST verb semantics the classifier works and a witness could be produced mechanically; where it does not (GET mutations, POST-for-read RPC, WebSocket protocols), the only generic classifier gives wrong answers in both directions, including the unsafe one. Safe witnesses for such applications need the application's own read-back or documented schema, which is per-application or per-vendor information. This is the finding that most affects the verdict.
+
+### Not done
+
+No third experiment, no expansion beyond the seven applications, and no attempt to build a better classifier after seeing the errors; the registered criteria were applied as written.

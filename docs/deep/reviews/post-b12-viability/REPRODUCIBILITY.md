@@ -48,6 +48,14 @@ node $H/freeze.ts                                        # workflow listing, har
 python3 -I $H/analyze.py && python3 -I $H/analyze_steps.py
 ```
 
+Corrected runs (amendments A1 and A3 in `METHODOLOGY.md`): `AUDIT_AMEND=A1 node $H/vsfrun.ts` and `AUDIT_AMEND=A1 node $H/observerun.ts` for layer R and the observation pass, `AUDIT_AMEND=A3 node $H/product.ts` for the product probe. They were run as three parallel streams over `gitea datasette swagger`, `pocketbase kanboard` and `jupyterlab gradio` and merged in the frozen workflow order. The rules comparison is `VSF_RULES=2 AUDIT_AMEND=A1 node $H/vsfrun.ts`.
+
+Diagnostic with the SVG guard (experimental, not counted): `git worktree add ../vsf-exp-svg HEAD`, change `apps/extension/src/observe.ts` line 28 to `caps.openOrClosedShadowRoot = (el) => (el instanceof HTMLElement ? open(el) : null);`, `pnpm install --frozen-lockfile --offline`, copy `artifacts/wasm` and `artifacts/bin`, `pnpm build:ts`, then run `product.ts`, `native_attempt.ts` and `overlay_samples.ts` from that worktree with `AUDIT_CACHE` pointing at the main checkout's `.audit-cache/`. The main tree was never modified.
+
+Analysis: `AUDIT_SUFFIX=-A1 python3 -I $H/analyze.py` (and `analyze_steps.py`), `python3 -I $H/taxonomy.py`, `python3 -I $H/phase_a_stats.py`.
+
+Experiments: `node experiments/exp1_collect.ts --out=DIR` saves the 147 step snapshots (14 MB, not committed), then `python3 -I experiments/exp1_eval.py DIR`; `node experiments/exp2_effects.ts [--out=file]`.
+
 `--calib` selects the three TodoMVC calibration workflows. `AUDIT_CONTROL=null|shuffle` turns `vsfrun.ts` into the null or wrong-target control. Results land in `evidence/*.jsonl`; `evidence/harness.sha256` fixes the harness as it was before the VSF run.
 
 ## 3. What is not reproducible byte for byte

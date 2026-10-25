@@ -1,0 +1,72 @@
+# GR-03 Fill a mixed-widget form and read the generated sentence
+# transform ok=true entities=2 rows=4; first 70 lines of the generated interface's accessibility tree
+- banner:
+  - strong: Varifold
+  - status: 4 rows from the source
+  - text: Theme
+  - combobox "Theme":
+    - option "system" [selected]
+    - option "light"
+    - option "dark"
+  - text: Density
+  - combobox "Density":
+    - option "compact"
+    - option "comfortable" [selected]
+    - option "spacious"
+  - button "Refresh from source"
+  - button "Show original"
+- link "Skip to content":
+  - /url: "#main"
+- status
+- alert
+- navigation "Views":
+  - list:
+    - listitem:
+      - link "Table 1":
+        - /url: "#t_table_1"
+    - listitem:
+      - link "Form":
+        - /url: "#form_form"
+- main:
+  - heading "Table 1" [level=2]
+  - text: Filter rows
+  - textbox "Filter rows"
+  - grid "Table 1":
+    - rowgroup:
+      - row "Count Animal Countries Location Activity Morning":
+        - columnheader "Count":
+          - button "Count"
+        - columnheader "Animal":
+          - button "Animal"
+        - columnheader "Countries":
+          - button "Countries"
+        - columnheader "Location":
+          - button "Location"
+        - columnheader "Activity":
+          - button "Activity"
+        - columnheader "Morning":
+          - button "Morning"
+    - rowgroup:
+      - row "2 cat Japan, Pakistan park ate, swam true":
+        - gridcell "2"
+        - gridcell "cat"
+        - gridcell "Japan, Pakistan"
+        - gridcell "park"
+        - gridcell "ate, swam"
+        - gridcell "true"
+      - row "4 dog Japan zoo ate, swam false":
+        - gridcell "4"
+        - gridcell "dog"
+        - gridcell "Japan"
+        - gridcell "zoo"
+        - gridcell "ate, swam"
+        - gridcell "false"
+      - row "10 bird USA, Pakistan road ran false":
+        - gridcell "10"
+        - gridcell "bird"
+        - gridcell "USA, Pakistan"
+        - gridcell "road"
+        - gridcell "ran"
+        - gridcell "false"
+      - row "8 cat Pakistan zoo ate true":
+        - gridcell "8"

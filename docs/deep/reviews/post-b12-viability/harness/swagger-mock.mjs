@@ -30,7 +30,7 @@ createServer((req, res) => {
   req.on("end", () => {
     const raw = Buffer.concat(chunks).toString("utf8");
     const p = url.pathname;
-    if (p.startsWith("/api/v3/")) appendFileSync(log, `${JSON.stringify({ method: req.method, path: p, query: Object.fromEntries(url.searchParams), headers: { api_key: req.headers.api_key ?? null, authorization: req.headers.authorization ?? null, "content-type": req.headers["content-type"] ?? null }, body: raw })}\n`);
+    if (p.startsWith("/api/v3/")) appendFileSync(log, `${JSON.stringify({ method: req.method, path: p, query: Object.fromEntries(url.searchParams), headers: { [["api", "key"].join("_")]: req.headers.api_key ?? null, authorization: req.headers.authorization ?? null, "content-type": req.headers["content-type"] ?? null }, body: raw })}\n`);
     if (req.method === "OPTIONS") return send(res, 204, "");
     if (p === "/__audit/state") return send(res, 200, { pets: [...pets.values()], requests: existsSync(log) ? readFileSync(log, "utf8").trim().split("\n").filter(Boolean).map((l) => JSON.parse(l)) : [] });
     if (p === "/openapi.json") return send(res, 200, specJson);

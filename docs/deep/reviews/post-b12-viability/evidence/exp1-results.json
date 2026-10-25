@@ -1,0 +1,1732 @@
+{
+ "summary": {
+  "steps": 147,
+  "steps_with_unit_at_control": 141,
+  "v0_failures_with_unit": 33,
+  "V0": {
+   "none": 33,
+   "correct": 108,
+   "ambiguous": 6
+  },
+  "V0_recovered_of_v0_failures": 0,
+  "V1": {
+   "none": 29,
+   "correct": 111,
+   "ambiguous": 6,
+   "wrong": 1
+  },
+  "V1_recovered_of_v0_failures": 3,
+  "V2": {
+   "none": 28,
+   "correct": 111,
+   "ambiguous": 8
+  },
+  "V2_recovered_of_v0_failures": 3,
+  "v2_wrong_steps": [],
+  "v2_still_unresolved_with_unit": [
+   [
+    "DS-01",
+    0,
+    "column",
+    "none"
+   ],
+   [
+    "DS-01",
+    1,
+    "value",
+    "none"
+   ],
+   [
+    "DS-05",
+    0,
+    "SQL editor",
+    "none"
+   ],
+   [
+    "GITEA-04",
+    0,
+    "Label",
+    "none"
+   ],
+   [
+    "GITEA-06",
+    2,
+    "Password *",
+    "none"
+   ],
+   [
+    "GITEA-06",
+    3,
+    "Require user to change password (recommended)",
+    "none"
+   ],
+   [
+    "GITEA-07",
+    1,
+    "Repository Name *",
+    "ambiguous"
+   ],
+   [
+    "GITEA-08",
+    0,
+    "Drop files here to upload",
+    "none"
+   ],
+   [
+    "GR-06",
+    0,
+    "Clear",
+    "ambiguous"
+   ],
+   [
+    "GR-06",
+    1,
+    "Click to upload or drop files",
+    "none"
+   ],
+   [
+    "GR-06",
+    2,
+    "Click to upload or drop files",
+    "none"
+   ],
+   [
+    "JUP-01",
+    0,
+    "Python 3 (ipykernel) Python 3 (ipykernel)",
+    "ambiguous"
+   ],
+   [
+    "JUP-01",
+    1,
+    "Code cell input",
+    "none"
+   ],
+   [
+    "JUP-02",
+    1,
+    "Text editor",
+    "none"
+   ],
+   [
+    "JUP-03",
+    1,
+    "Terminal screen",
+    "none"
+   ],
+   [
+    "JUP-04",
+    0,
+    "Upload Files",
+    "none"
+   ],
+   [
+    "KB-01",
+    0,
+    "Add a new task",
+    "ambiguous"
+   ],
+   [
+    "KB-02",
+    0,
+    "Add a new task",
+    "ambiguous"
+   ],
+   [
+    "PB-01",
+    4,
+    "status",
+    "none"
+   ],
+   [
+    "PB-03",
+    2,
+    "Delete",
+    "none"
+   ],
+   [
+    "PB-04",
+    0,
+    "Search term or filter...",
+    "none"
+   ],
+   [
+    "PB-06",
+    0,
+    "Select row 1",
+    "none"
+   ],
+   [
+    "PB-06",
+    1,
+    "Select row 2",
+    "none"
+   ],
+   [
+    "PB-06",
+    2,
+    "Select row 3",
+    "none"
+   ],
+   [
+    "PB-07",
+    1,
+    "Upload or drop new file",
+    "none"
+   ],
+   [
+    "PB-08",
+    2,
+    "Create",
+    "ambiguous"
+   ],
+   [
+    "SW-01",
+    2,
+    "Request body",
+    "none"
+   ],
+   [
+    "SW-03",
+    2,
+    "Status values that need to be considered for filter",
+    "none"
+   ],
+   [
+    "SW-05",
+    1,
+    "Value:",
+    "none"
+   ],
+   [
+    "SW-05",
+    3,
+    "Close",
+    "ambiguous"
+   ]
+  ],
+  "v0_regressions_under_v2": [],
+  "by_app": {
+   "DS": {
+    "steps": 12,
+    "V0_correct": 9,
+    "V2_correct": 9
+   },
+   "GITEA": {
+    "steps": 25,
+    "V0_correct": 19,
+    "V2_correct": 20
+   },
+   "GR": {
+    "steps": 24,
+    "V0_correct": 20,
+    "V2_correct": 20
+   },
+   "JUP": {
+    "steps": 16,
+    "V0_correct": 7,
+    "V2_correct": 9
+   },
+   "KB": {
+    "steps": 17,
+    "V0_correct": 15,
+    "V2_correct": 15
+   },
+   "PB": {
+    "steps": 27,
+    "V0_correct": 16,
+    "V2_correct": 16
+   },
+   "SW": {
+    "steps": 26,
+    "V0_correct": 22,
+    "V2_correct": 22
+   }
+  },
+  "probes": {
+   "absent_name_bound": 0,
+   "absent_name_total": 147,
+   "near_miss_total": 147,
+   "near_miss_bound": 22,
+   "near_miss_bound_to_other_control": 3
+  },
+  "self_resolution": {
+   "V0:ambiguous": 2403,
+   "V0:bound_right": 5272,
+   "V2:ambiguous": 2403,
+   "V2:bound_right": 5272
+  }
+ },
+ "rows": [
+  {
+   "wf": "DS-01",
+   "step": 0,
+   "target": "column",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "DS-01",
+   "step": 1,
+   "target": "value",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "DS-01",
+   "step": 2,
+   "target": "Apply",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-02",
+   "step": 0,
+   "target": "JP",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-03",
+   "step": 0,
+   "target": "rating",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-03",
+   "step": 1,
+   "target": "rating \u25bc",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-04",
+   "step": 0,
+   "target": "Next page",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-05",
+   "step": 0,
+   "target": "SQL editor",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "DS-05",
+   "step": 3,
+   "target": "Run SQL",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-06",
+   "step": 0,
+   "target": "advanced",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-06",
+   "step": 1,
+   "target": "download file",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "DS-06",
+   "step": 2,
+   "target": "Export CSV",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-01",
+   "step": 0,
+   "target": "Repository Name *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-01",
+   "step": 1,
+   "target": "Description",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-01",
+   "step": 2,
+   "target": "Initialize Repository (Adds .gitignore, License and README)",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-01",
+   "step": 3,
+   "target": "Create Repository",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-02",
+   "step": 0,
+   "target": "Title",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-02",
+   "step": 1,
+   "target": "Leave a comment",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-02",
+   "step": 2,
+   "target": "Create Issue",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-03",
+   "step": 0,
+   "target": "Leave a comment",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-03",
+   "step": 1,
+   "target": "Close with Comment",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-04",
+   "step": 0,
+   "target": "Label",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "GITEA-05",
+   "step": 0,
+   "target": "New Label",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-05",
+   "step": 1,
+   "target": "Label name",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-05",
+   "step": 2,
+   "target": "Description",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-05",
+   "step": 3,
+   "target": "Color",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-05",
+   "step": 4,
+   "target": "Save",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-06",
+   "step": 0,
+   "target": "Username *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-06",
+   "step": 1,
+   "target": "Email Address *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-06",
+   "step": 2,
+   "target": "Password *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "GITEA-06",
+   "step": 3,
+   "target": "Require user to change password (recommended)",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "GITEA-06",
+   "step": 4,
+   "target": "Create User Account",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-07",
+   "step": 0,
+   "target": "Delete This Repository",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-07",
+   "step": 1,
+   "target": "Repository Name *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "ambiguous",
+   "V1": "ambiguous",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "GITEA-07",
+   "step": 2,
+   "target": "Delete Repository",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GITEA-08",
+   "step": 0,
+   "target": "Drop files here to upload",
+   "do": "upload",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "GITEA-08",
+   "step": 1,
+   "target": "Commit Changes",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-01",
+   "step": 0,
+   "target": "num1",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-01",
+   "step": 1,
+   "target": "multiply",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-01",
+   "step": 2,
+   "target": "num2",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-01",
+   "step": 3,
+   "target": "Submit",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-02",
+   "step": 0,
+   "target": "num1",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-02",
+   "step": 1,
+   "target": "divide",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-02",
+   "step": 2,
+   "target": "num2",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-02",
+   "step": 3,
+   "target": "Submit",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 0,
+   "target": "number input for Count",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 1,
+   "target": "Animal",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 2,
+   "target": "USA",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 3,
+   "target": "Japan",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 4,
+   "target": "zoo",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 5,
+   "target": "Activity",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 6,
+   "target": "Morning",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-03",
+   "step": 7,
+   "target": "Submit",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-04",
+   "step": 0,
+   "target": "144",
+   "do": "click",
+   "unit_at_control": false,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "GR-04",
+   "step": 1,
+   "target": "Submit",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-05",
+   "step": 0,
+   "target": "Submit",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-06",
+   "step": 0,
+   "target": "Clear",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "ambiguous",
+   "V1": "ambiguous",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "GR-06",
+   "step": 1,
+   "target": "Click to upload or drop files",
+   "do": "upload",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "GR-06",
+   "step": 2,
+   "target": "Click to upload or drop files",
+   "do": "upload",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "GR-06",
+   "step": 3,
+   "target": "Submit",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "GR-06",
+   "step": 4,
+   "target": "205.0 B \u21e3",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-01",
+   "step": 0,
+   "target": "Python 3 (ipykernel) Python 3 (ipykernel)",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "JUP-01",
+   "step": 1,
+   "target": "Code cell input",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "JUP-01",
+   "step": 4,
+   "target": "Rename and Save",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-02",
+   "step": 0,
+   "target": "Text File",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-02",
+   "step": 1,
+   "target": "Text editor",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "JUP-02",
+   "step": 3,
+   "target": "Rename and Save",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-03",
+   "step": 0,
+   "target": "Terminal",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-03",
+   "step": 1,
+   "target": "Terminal screen",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "JUP-04",
+   "step": 0,
+   "target": "Upload Files",
+   "do": "upload",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "JUP-05",
+   "step": 0,
+   "target": "New Folder",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-06",
+   "step": 0,
+   "target": "File",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-06",
+   "step": 1,
+   "target": "New",
+   "do": "click",
+   "unit_at_control": false,
+   "V0": "none",
+   "V1": "wrong",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "JUP-06",
+   "step": 2,
+   "target": "Markdown File",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-07",
+   "step": 0,
+   "target": "notes.txt",
+   "do": "click",
+   "unit_at_control": false,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "JUP-08",
+   "step": 0,
+   "target": "Run",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "JUP-08",
+   "step": 1,
+   "target": "Run All Cells",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-01",
+   "step": 0,
+   "target": "Add a new task",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "ambiguous",
+   "V1": "ambiguous",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "KB-01",
+   "step": 1,
+   "target": "Title",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-01",
+   "step": 2,
+   "target": "Save",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-02",
+   "step": 0,
+   "target": "Add a new task",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "ambiguous",
+   "V1": "ambiguous",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "KB-02",
+   "step": 1,
+   "target": "Title",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-02",
+   "step": 2,
+   "target": "Description",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-02",
+   "step": 3,
+   "target": "Assignee",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-02",
+   "step": 4,
+   "target": "Column",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-02",
+   "step": 5,
+   "target": "Priority",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-02",
+   "step": 6,
+   "target": "Save",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-03",
+   "step": 0,
+   "target": "Add a comment",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-03",
+   "step": 1,
+   "target": "New comment",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-03",
+   "step": 2,
+   "target": "Save",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-04",
+   "step": 0,
+   "target": "Close this task",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-04",
+   "step": 1,
+   "target": "Yes",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-05",
+   "step": 0,
+   "target": "Write spec",
+   "do": "drag",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "KB-06",
+   "step": 0,
+   "target": "Filter",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-01",
+   "step": 0,
+   "target": "New record",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-01",
+   "step": 1,
+   "target": "title *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-01",
+   "step": 2,
+   "target": "views",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-01",
+   "step": 3,
+   "target": "published",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-01",
+   "step": 4,
+   "target": "status",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-01",
+   "step": 5,
+   "target": "Create",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-02",
+   "step": 0,
+   "target": "Foxtrot post 85",
+   "do": "click",
+   "unit_at_control": false,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-02",
+   "step": 1,
+   "target": "title *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-02",
+   "step": 2,
+   "target": "Save changes",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-03",
+   "step": 0,
+   "target": "Foxtrot post 85",
+   "do": "click",
+   "unit_at_control": false,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-03",
+   "step": 1,
+   "target": "More options",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-03",
+   "step": 2,
+   "target": "Delete",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-03",
+   "step": 3,
+   "target": "Delete record",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-04",
+   "step": 0,
+   "target": "Search term or filter...",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-05",
+   "step": 0,
+   "target": "Load more",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-05",
+   "step": 1,
+   "target": "Load more",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-06",
+   "step": 0,
+   "target": "Select row 1",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-06",
+   "step": 1,
+   "target": "Select row 2",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-06",
+   "step": 2,
+   "target": "Select row 3",
+   "do": "toggle",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-06",
+   "step": 3,
+   "target": "Delete",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-06",
+   "step": 4,
+   "target": "Yes",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-07",
+   "step": 0,
+   "target": "Foxtrot post 85",
+   "do": "click",
+   "unit_at_control": false,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-07",
+   "step": 1,
+   "target": "Upload or drop new file",
+   "do": "upload",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "PB-07",
+   "step": 2,
+   "target": "Save changes",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-08",
+   "step": 0,
+   "target": "New collection",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-08",
+   "step": 1,
+   "target": "Name *",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "PB-08",
+   "step": 2,
+   "target": "Create",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "ambiguous",
+   "V1": "ambiguous",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "SW-01",
+   "step": 0,
+   "target": "POST /pet Add a new pet to the store.",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-01",
+   "step": 1,
+   "target": "Try it out",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-01",
+   "step": 2,
+   "target": "Request body",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "SW-01",
+   "step": 3,
+   "target": "Execute",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-02",
+   "step": 0,
+   "target": "GET /pet/{petId} Find pet by ID.",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-02",
+   "step": 1,
+   "target": "Try it out",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-02",
+   "step": 2,
+   "target": "petId",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-02",
+   "step": 3,
+   "target": "Execute",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-03",
+   "step": 0,
+   "target": "GET /pet/findByStatus Finds Pets by status.",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-03",
+   "step": 1,
+   "target": "Try it out",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-03",
+   "step": 2,
+   "target": "Status values that need to be considered for filter",
+   "do": "choose",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "SW-03",
+   "step": 3,
+   "target": "Execute",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-04",
+   "step": 0,
+   "target": "DELETE /pet/{petId} Deletes a pet.",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-04",
+   "step": 1,
+   "target": "Try it out",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-04",
+   "step": 2,
+   "target": "petId",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-04",
+   "step": 3,
+   "target": "Execute",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-05",
+   "step": 0,
+   "target": "Authorize",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-05",
+   "step": 1,
+   "target": "Value:",
+   "do": "fill",
+   "unit_at_control": true,
+   "V0": "none",
+   "V1": "none",
+   "V2": "none"
+  },
+  {
+   "wf": "SW-05",
+   "step": 2,
+   "target": "Apply credentials",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-05",
+   "step": 3,
+   "target": "Close",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "ambiguous",
+   "V1": "ambiguous",
+   "V2": "ambiguous"
+  },
+  {
+   "wf": "SW-05",
+   "step": 4,
+   "target": "GET /store/inventory Returns pet inventories by status.",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-05",
+   "step": 5,
+   "target": "Try it out",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-05",
+   "step": 6,
+   "target": "Execute",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-06",
+   "step": 0,
+   "target": "GET /store/inventory Returns pet inventories by status.",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-06",
+   "step": 1,
+   "target": "Try it out",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  },
+  {
+   "wf": "SW-06",
+   "step": 2,
+   "target": "Execute",
+   "do": "click",
+   "unit_at_control": true,
+   "V0": "correct",
+   "V1": "correct",
+   "V2": "correct"
+  }
+ ]
+}

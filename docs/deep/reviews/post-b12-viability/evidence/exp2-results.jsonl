@@ -1,0 +1,48 @@
+{"id": "GITEA-01", "app": "gitea", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /repo/create"], "wsFramesSent": 0, "requests": 20}
+{"id": "GITEA-02", "app": "gitea", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /auditor/seed-repo/issues/new"], "wsFramesSent": 0, "requests": 25}
+{"id": "GITEA-03", "app": "gitea", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /auditor/seed-repo/issues/3/comments", "POST /-/fetch-redirect"], "wsFramesSent": 0, "requests": 26}
+{"id": "GITEA-04", "app": "gitea", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 16}
+{"id": "GITEA-05", "app": "gitea", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /auditor/seed-repo/labels/new"], "wsFramesSent": 0, "requests": 19}
+{"id": "GITEA-06", "app": "gitea", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /-/admin/users/new"], "wsFramesSent": 0, "requests": 18}
+{"id": "GITEA-07", "app": "gitea", "declared": "destructive", "changed": true, "classified": "write", "nonGet": ["POST /auditor/seed-repo/settings"], "wsFramesSent": 0, "requests": 21}
+{"id": "GITEA-08", "app": "gitea", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /auditor/seed-repo/upload-file", "POST /auditor/seed-repo/_upload/main/"], "wsFramesSent": 0, "requests": 21}
+{"id": "PB-01", "app": "pocketbase", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/collections/posts/records"], "wsFramesSent": 0, "requests": 2}
+{"id": "PB-02", "app": "pocketbase", "declared": "write", "changed": true, "classified": "write", "nonGet": ["PATCH /api/collections/posts/records/fce6s09xfgaaqiq"], "wsFramesSent": 0, "requests": 4}
+{"id": "PB-03", "app": "pocketbase", "declared": "destructive", "changed": true, "classified": "write", "nonGet": ["DELETE /api/collections/posts/records/fce6s09xfgaaqiq"], "wsFramesSent": 0, "requests": 4}
+{"id": "PB-04", "app": "pocketbase", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 3}
+{"id": "PB-05", "app": "pocketbase", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 2}
+{"id": "PB-06", "app": "pocketbase", "declared": "destructive", "changed": true, "classified": "write", "nonGet": ["DELETE /api/collections/posts/records/fce6s09xfgaaqiq", "DELETE /api/collections/posts/records/h9rqtd8tj01256p", "DELETE /api/collections/posts/records/gw2y47lr82kjrqi"], "wsFramesSent": 0, "requests": 3}
+{"id": "PB-07", "app": "pocketbase", "declared": "write", "changed": true, "classified": "write", "nonGet": ["PATCH /api/collections/posts/records/fce6s09xfgaaqiq"], "wsFramesSent": 0, "requests": 4}
+{"id": "PB-08", "app": "pocketbase", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/collections"], "wsFramesSent": 0, "requests": 5}
+{"id": "JUP-01", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/contents", "POST /api/sessions", "PATCH /api/sessions/6caf34cc-fb89-457d-8a28-83c19e4b3b10", "PUT /lab/api/workspaces/default", "PUT /api/contents/Untitled.ipynb", "POST /api/contents/Untitled.ipynb/checkpoints"], "wsFramesSent": 14, "requests": 34}
+{"id": "JUP-02", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/contents", "POST /api/contents/untitled.txt/checkpoints", "PUT /lab/api/workspaces/default", "PUT /api/contents/untitled.txt"], "wsFramesSent": 0, "requests": 19}
+{"id": "JUP-03", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/terminals", "PUT /lab/api/workspaces/default"], "wsFramesSent": 34, "requests": 8}
+{"id": "JUP-04", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["PUT /api/contents/upload.csv", "POST /api/contents/upload.csv/checkpoints", "PUT /lab/api/workspaces/default"], "wsFramesSent": 0, "requests": 12}
+{"id": "JUP-05", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/contents", "PUT /lab/api/workspaces/default", "PATCH /api/contents/Untitled%20Folder"], "wsFramesSent": 0, "requests": 6}
+{"id": "JUP-06", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/contents", "POST /api/contents/untitled.md/checkpoints", "PUT /lab/api/workspaces/default"], "wsFramesSent": 0, "requests": 18}
+{"id": "JUP-07", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["PATCH /api/contents/notes.txt", "PUT /lab/api/workspaces/default"], "wsFramesSent": 0, "requests": 3}
+{"id": "JUP-08", "app": "jupyterlab", "declared": "write", "changed": true, "classified": "write", "nonGet": ["PUT /lab/api/workspaces/default", "PUT /api/contents/seed.ipynb", "POST /api/contents/seed.ipynb/checkpoints"], "wsFramesSent": 4, "requests": 12}
+{"id": "DS-01", "app": "datasette", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 4}
+{"id": "DS-02", "app": "datasette", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 3}
+{"id": "DS-03", "app": "datasette", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 6}
+{"id": "DS-04", "app": "datasette", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 3}
+{"id": "DS-05", "app": "datasette", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 7}
+{"id": "DS-06", "app": "datasette", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 1}
+{"id": "SW-01", "app": "swagger", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /api/v3/pet"], "wsFramesSent": 0, "requests": 1}
+{"id": "SW-02", "app": "swagger", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 1}
+{"id": "SW-03", "app": "swagger", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 1}
+{"id": "SW-04", "app": "swagger", "declared": "destructive", "changed": true, "classified": "write", "nonGet": ["DELETE /api/v3/pet/3"], "wsFramesSent": 0, "requests": 1}
+{"id": "SW-05", "app": "swagger", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 1}
+{"id": "SW-06", "app": "swagger", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 1}
+{"id": "KB-01", "app": "kanboard", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /"], "wsFramesSent": 0, "requests": 11}
+{"id": "KB-02", "app": "kanboard", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /"], "wsFramesSent": 0, "requests": 11}
+{"id": "KB-03", "app": "kanboard", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /"], "wsFramesSent": 0, "requests": 11}
+{"id": "KB-04", "app": "kanboard", "declared": "destructive", "changed": true, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 11}
+{"id": "KB-05", "app": "kanboard", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /"], "wsFramesSent": 0, "requests": 1}
+{"id": "KB-06", "app": "kanboard", "declared": "read", "changed": false, "classified": "read", "nonGet": [], "wsFramesSent": 0, "requests": 9}
+{"id": "GR-01", "app": "gradio", "declared": "read", "changed": false, "classified": "write", "nonGet": ["POST /gradio_api/queue/join"], "wsFramesSent": 0, "requests": 3}
+{"id": "GR-02", "app": "gradio", "declared": "read", "changed": false, "classified": "write", "nonGet": ["POST /gradio_api/queue/join"], "wsFramesSent": 0, "requests": 3}
+{"id": "GR-03", "app": "gradio", "declared": "read", "changed": false, "classified": "write", "nonGet": ["POST /gradio_api/queue/join"], "wsFramesSent": 0, "requests": 3}
+{"id": "GR-04", "app": "gradio", "declared": "read", "changed": false, "classified": "write", "nonGet": ["POST /gradio_api/run/predict", "POST /gradio_api/queue/join"], "wsFramesSent": 0, "requests": 4}
+{"id": "GR-05", "app": "gradio", "declared": "read", "changed": false, "classified": "write", "nonGet": ["POST /gradio_api/queue/join"], "wsFramesSent": 0, "requests": 4}
+{"id": "GR-06", "app": "gradio", "declared": "write", "changed": true, "classified": "write", "nonGet": ["POST /gradio_api/upload", "POST /gradio_api/queue/join"], "wsFramesSent": 0, "requests": 6}

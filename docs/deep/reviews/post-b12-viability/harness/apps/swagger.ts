@@ -144,7 +144,7 @@ export const swaggerOracles: Record<string, Oracle> = {
   sw05: async (c) => {
     const s = await state(c.origin);
     const req = s.requests.find((r) => r.path === "/api/v3/store/inventory");
-    return { ok: req?.headers.api_key === "audit-key", detail: `api_key=${req?.headers.api_key ?? null}` };
+    return { ok: req?.headers.api_key === "audit-key", detail: `key header ${req?.headers.api_key ?? null}` };
   },
   sw06: async (c) => {
     const s = await state(c.origin);

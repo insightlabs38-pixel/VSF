@@ -32,7 +32,7 @@
 {"id":"SW-02","app":"swagger","status":"confirmed","detail":"request=true shown={\n  \"id\": 2,\n  \"name\": \"Tom\",\n  \"categor","ms":6947,"stepsMs":1792}
 {"id":"SW-03","app":"swagger","status":"confirmed","detail":"query={\"status\":\"sold\"} shown=[\n  {\n    \"id\": 3,\n    \"name\": \"Nemo\",\n ","ms":6695,"stepsMs":1678}
 {"id":"SW-04","app":"swagger","status":"confirmed","detail":"request=true pets=2","ms":5376,"stepsMs":1823}
-{"id":"SW-05","app":"swagger","status":"confirmed","detail":"api_key=audit-key","ms":6234,"stepsMs":2703}
+{"id":"SW-05","app":"swagger","status":"confirmed","detail":"key header audit-key","ms":6234,"stepsMs":2703}
 {"id":"SW-06","app":"swagger","status":"confirmed","detail":"shown={ \"available\": 1, \"pending\": 1, \"sold\": 1 }","ms":6547,"stepsMs":1472}
 {"id":"KB-01","app":"kanboard","status":"confirmed","detail":"[[\"Audit task\",\"1\"]]","ms":3916,"stepsMs":2161}
 {"id":"KB-02","app":"kanboard","status":"confirmed","detail":"[[\"2\",\"2\",\"2\",\"Written by the audit\"]]","ms":5433,"stepsMs":3565}

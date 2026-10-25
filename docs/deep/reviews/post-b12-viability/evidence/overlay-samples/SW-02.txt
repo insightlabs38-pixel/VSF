@@ -1,0 +1,72 @@
+# SW-02 Fetch a pet by id
+# transform ok=true entities=1 rows=0; first 70 lines of the generated interface's accessibility tree
+- banner:
+  - strong: Varifold
+  - status: 0 rows from the source
+  - text: Theme
+  - combobox "Theme":
+    - option "system" [selected]
+    - option "light"
+    - option "dark"
+  - text: Density
+  - combobox "Density":
+    - option "compact"
+    - option "comfortable" [selected]
+    - option "spacious"
+  - button "Refresh from source"
+  - button "Show original"
+- link "Skip to content":
+  - /url: "#main"
+- status
+- alert
+- main:
+  - form "Form":
+    - heading "Form" [level=2]
+    - text: Unlabeled field
+    - textbox "Unlabeled field"
+    - text: "! Unverified http://127.0.0.1:18002/api/v3"
+    - combobox "http://127.0.0.1:18002/api/v3":
+      - option [selected]
+    - group "Form actions":
+      - 'button "Unavailable, unknown: effect_unverified ApiResponse" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Category" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Collapse operation" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /pet/findByStatus" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /pet /findByStatus Finds Pets by status." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /pet/findByTags" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /pet /findByTags Finds Pets by tags." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /pet/{petId}" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /pet /{petId} Find pet by ID." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /store/inventory" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /store /inventory Returns pet inventories by status." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /store/order/{orderId}" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /store /order /{orderId} Find purchase order by ID." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /user/login" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /user /login Logs user into the system." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /user/logout" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /user /logout Logs out current logged in user session." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified get /user/{username}" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified GET /user /{username} Get user by user name." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Order" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Pet" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified post /pet" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified post /pet/{petId}" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified POST /pet /{petId} Updates a pet in the store with form data." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified post /pet/{petId}/uploadImage" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified POST /pet /{petId} /uploadImage Uploads an image." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified post /store/order" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified post /user" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified post /user/createWithList" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified POST /user /createWithList Creates list of users with given input array." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified put /pet" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified put /user/{username}" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Schemas" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Tag" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Terms of service" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified User" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified POST /pet Add a new pet to the store." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified POST /store /order Place an order for a pet." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified POST /user Create user." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified PUT /pet Update an existing pet." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified PUT /user /{username} Update user resource." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Switch to dark mode" [disabled]'

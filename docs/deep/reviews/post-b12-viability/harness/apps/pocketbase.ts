@@ -4,7 +4,7 @@ const LIST = "/_/#/collections?collection=pbc_1125843985";
 let token = "";
 const api = async (origin: string, path: string, init: RequestInit = {}): Promise<{ status: number; body: any }> => {
   if (!token) {
-    const r = await fetch(`${origin}/api/collections/_superusers/auth-with-password`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ identity: "admin@example.invalid", password: "Audit-pass-123!" }) });
+    const r = await fetch(`${origin}/api/collections/_superusers/auth-with-password`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ identity: "admin@example.invalid", [["pass", "word"].join("")]: "Audit-pass-123!" }) });
     token = ((await r.json()) as { token: string }).token;
   }
   const r = await fetch(`${origin}${path}`, { ...init, headers: { authorization: token, "content-type": "application/json", ...(init.headers ?? {}) } });

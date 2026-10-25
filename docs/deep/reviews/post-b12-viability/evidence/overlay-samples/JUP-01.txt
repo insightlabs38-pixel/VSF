@@ -1,0 +1,53 @@
+# JUP-01 Create a notebook, run a cell and save
+# transform ok=true entities=1 rows=0; first 70 lines of the generated interface's accessibility tree
+- banner:
+  - strong: Varifold
+  - status: 0 rows from the source
+  - text: Theme
+  - combobox "Theme":
+    - option "system" [selected]
+    - option "light"
+    - option "dark"
+  - text: Density
+  - combobox "Density":
+    - option "compact"
+    - option "comfortable" [selected]
+    - option "spacious"
+  - button "Refresh from source"
+  - button "Show original"
+- link "Skip to content":
+  - /url: "#main"
+- status
+- alert
+- main:
+  - form "Page actions":
+    - heading "Page actions" [level=2]
+    - group "Page actions actions":
+      - 'button "Unavailable, unknown: effect_unverified 1 notification" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Edit" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified File" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Help" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Kernel" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Run" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Settings" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Tabs" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Toggle File Filter" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified View" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Create a new markdown file" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Create a new Python File" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Create a new text file" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified New Folder" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified New Launcher" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified New Launcher (Ctrl+Shift+L)" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Start a new terminal session" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Upload Files" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified 0" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified data.csv" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Hide notification" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified https://jupyterlab.readthedocs.io/en/stable/privacy_policies.html" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Live updating code documentation from the active kernel" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified No" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Python 3 (ipykernel)" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Refresh the file browser." [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Skip to main panel" [disabled]'
+      - 'button "Unavailable, unknown: effect_unverified Yes" [disabled]'

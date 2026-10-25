@@ -28,7 +28,9 @@ def norm_effect(h):
     return {"state_change": "write", "destructive_candidate": "destructive", "state_change_candidate": "write", "read_candidate": "read", "navigation_candidate": "navigation"}.get(h, h)
 
 
-obs = jl("observe.jsonl")
+import os
+SUF = os.environ.get("AUDIT_SUFFIX", "")
+obs = jl(f"observe{SUF}.jsonl")
 out = {"workflows": len(obs)}
 steps = [(o, s) for o in obs for s in o.get("steps", []) if s["do"] not in ("press", "type")]
 out["target_steps"] = len(steps)
@@ -66,5 +68,5 @@ out["destructive_marked_unusable"] = [c["id"] for c in commit if c["declared"] =
 lat = [o["recMsTotal"] / o["recCalls"] for o in obs if o.get("recCalls")]
 out["recognizer_call_ms_incl_python_spawn"] = {"median": sorted(lat)[len(lat) // 2] if lat else None, "max": max((o["recMsMax"] for o in obs if o.get("recMsMax")), default=None)}
 out["recognizer_rss_kb_max"] = max((o.get("recRssKb", 0) for o in obs), default=0)
-(EV / "step-summary.json").write_text(json.dumps(out, indent=1) + "\n")
+(EV / f"step-summary{SUF}.json").write_text(json.dumps(out, indent=1) + "\n")
 print(json.dumps({k: v for k, v in out.items() if not k.endswith("examples")}, indent=1))

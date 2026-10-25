@@ -1,0 +1,365 @@
+{
+ "workflows": 48,
+ "target_steps": 147,
+ "unit_at_control": 138,
+ "unit_usable": 131,
+ "resolved_correct": 107,
+ "resolved_misbound": 0,
+ "resolution_reasons": {
+  "ok": 107,
+  "no_unit": 34,
+  "ambiguous": 6
+ },
+ "by_app": {
+  "gitea": {
+   "steps": 25,
+   "unit": 25,
+   "correct": 19
+  },
+  "pocketbase": {
+   "steps": 27,
+   "unit": 24,
+   "correct": 16
+  },
+  "jupyterlab": {
+   "steps": 16,
+   "unit": 11,
+   "correct": 7
+  },
+  "datasette": {
+   "steps": 12,
+   "unit": 12,
+   "correct": 9
+  },
+  "swagger": {
+   "steps": 26,
+   "unit": 26,
+   "correct": 22
+  },
+  "kanboard": {
+   "steps": 17,
+   "unit": 17,
+   "correct": 14
+  },
+  "gradio": {
+   "steps": 24,
+   "unit": 23,
+   "correct": 20
+  }
+ },
+ "unit_but_not_resolved": 31,
+ "unit_but_not_resolved_examples": [
+  [
+   "GITEA-04",
+   "Label",
+   "Label",
+   "no_unit"
+  ],
+  [
+   "GITEA-05",
+   "Color",
+   "#c320f6",
+   "no_unit"
+  ],
+  [
+   "GITEA-06",
+   "Password *",
+   "Password",
+   "no_unit"
+  ],
+  [
+   "GITEA-06",
+   "Require user to change password (recommended)",
+   "Require user to change password (recommended)",
+   "no_unit"
+  ],
+  [
+   "GITEA-07",
+   "Repository Name *",
+   "Repository Name",
+   "ambiguous"
+  ],
+  [
+   "GITEA-08",
+   "Drop files here to upload",
+   "Drop files here to upload",
+   "no_unit"
+  ],
+  [
+   "PB-01",
+   "status",
+   "status",
+   "no_unit"
+  ],
+  [
+   "PB-03",
+   "Delete",
+   "Delete",
+   "no_unit"
+  ],
+  [
+   "PB-04",
+   "Search term or filter...",
+   null,
+   "no_unit"
+  ],
+  [
+   "PB-06",
+   "Select row 1",
+   null,
+   "no_unit"
+  ],
+  [
+   "PB-06",
+   "Select row 2",
+   null,
+   "no_unit"
+  ],
+  [
+   "PB-06",
+   "Select row 3",
+   null,
+   "no_unit"
+  ],
+  [
+   "PB-07",
+   "Upload or drop new file",
+   "Upload or drop new file",
+   "no_unit"
+  ],
+  [
+   "PB-08",
+   "Create",
+   "Create",
+   "ambiguous"
+  ],
+  [
+   "JUP-01",
+   "Code cell input",
+   "[ ]:",
+   "no_unit"
+  ],
+  [
+   "JUP-02",
+   "Text editor",
+   "9 1",
+   "no_unit"
+  ],
+  [
+   "JUP-03",
+   "Terminal screen",
+   "Terminal input",
+   "no_unit"
+  ],
+  [
+   "JUP-04",
+   "Upload Files",
+   "Upload Files",
+   "no_unit"
+  ],
+  [
+   "DS-01",
+   "column",
+   null,
+   "no_unit"
+  ],
+  [
+   "DS-01",
+   "value",
+   null,
+   "no_unit"
+  ],
+  [
+   "DS-05",
+   "SQL editor",
+   null,
+   "no_unit"
+  ],
+  [
+   "SW-01",
+   "Request body",
+   "Create a new pet in the store",
+   "no_unit"
+  ],
+  [
+   "SW-03",
+   "Status values that need to be considered for filter",
+   "Description",
+   "no_unit"
+  ],
+  [
+   "SW-05",
+   "Value:",
+   "Value:",
+   "no_unit"
+  ],
+  [
+   "SW-05",
+   "Close",
+   "Close",
+   "ambiguous"
+  ],
+  [
+   "KB-01",
+   "Add a new task",
+   "Add a new task",
+   "ambiguous"
+  ],
+  [
+   "KB-02",
+   "Add a new task",
+   "Add a new task",
+   "ambiguous"
+  ],
+  [
+   "KB-05",
+   "Write spec",
+   "#1",
+   "no_unit"
+  ],
+  [
+   "GR-06",
+   "Clear",
+   "Clear",
+   "ambiguous"
+  ],
+  [
+   "GR-06",
+   "Click to upload or drop files",
+   "File upload",
+   "no_unit"
+  ],
+  [
+   "GR-06",
+   "Click to upload or drop files",
+   "File upload",
+   "no_unit"
+  ]
+ ],
+ "no_unit_at_control": 9,
+ "no_unit_examples": [
+  [
+   "PB-02",
+   "Foxtrot post 85"
+  ],
+  [
+   "PB-03",
+   "Foxtrot post 85"
+  ],
+  [
+   "PB-07",
+   "Foxtrot post 85"
+  ],
+  [
+   "JUP-01",
+   "Python 3 (ipykernel) Python 3 (ipykernel)"
+  ],
+  [
+   "JUP-02",
+   "Text File"
+  ],
+  [
+   "JUP-03",
+   "Terminal"
+  ],
+  [
+   "JUP-06",
+   "New"
+  ],
+  [
+   "JUP-07",
+   "notes.txt"
+  ],
+  [
+   "GR-04",
+   "144"
+  ]
+ ],
+ "committing_steps": 43,
+ "committing_declared_vs_hint": {
+  "destructive->destructive": 2,
+  "destructive->none": 3,
+  "read->navigation": 3,
+  "read->none": 5,
+  "read->read": 2,
+  "read->write": 6,
+  "write->navigation": 2,
+  "write->no_unit": 1,
+  "write->none": 5,
+  "write->write": 14
+ },
+ "write_seen_as_read_or_navigation": [
+  {
+   "id": "GITEA-03",
+   "declared": "write",
+   "hint": "navigation",
+   "name": "Close with Comment",
+   "bound": "Close with Comment",
+   "usable": true
+  },
+  {
+   "id": "GR-06",
+   "declared": "write",
+   "hint": "navigation",
+   "name": "205.0 B \u21e3",
+   "bound": "205.0 B \u21e3",
+   "usable": true
+  }
+ ],
+ "read_seen_as_write": [
+  {
+   "id": "DS-01",
+   "declared": "read",
+   "hint": "write",
+   "name": "Apply",
+   "bound": "Apply",
+   "usable": true
+  },
+  {
+   "id": "GR-01",
+   "declared": "read",
+   "hint": "write",
+   "name": "Submit",
+   "bound": "Submit",
+   "usable": true
+  },
+  {
+   "id": "GR-02",
+   "declared": "read",
+   "hint": "write",
+   "name": "Submit",
+   "bound": "Submit",
+   "usable": true
+  },
+  {
+   "id": "GR-03",
+   "declared": "read",
+   "hint": "write",
+   "name": "Submit",
+   "bound": "Submit",
+   "usable": true
+  },
+  {
+   "id": "GR-04",
+   "declared": "read",
+   "hint": "write",
+   "name": "Submit",
+   "bound": "Submit",
+   "usable": true
+  },
+  {
+   "id": "GR-05",
+   "declared": "read",
+   "hint": "write",
+   "name": "Submit",
+   "bound": "Submit",
+   "usable": true
+  }
+ ],
+ "destructive_marked_unusable": [],
+ "recognizer_call_ms_incl_python_spawn": {
+  "median": 45.333333333333336,
+  "max": 65.3
+ },
+ "recognizer_rss_kb_max": 11248
+}

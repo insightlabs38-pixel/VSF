@@ -1,0 +1,36 @@
+go: downloading modernc.org/sqlite v1.44.3
+go: downloading modernc.org/libc v1.67.6
+go: downloading golang.org/x/sys v0.37.0
+go: downloading modernc.org/mathutil v1.7.1
+go: downloading github.com/google/uuid v1.6.0
+go: downloading github.com/dustin/go-humanize v1.0.1
+go: downloading golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546
+go: downloading modernc.org/memory v1.11.0
+go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	1.586s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api/jsonschema	0.025s
+ok  	github.com/insightlabs38-pixel/vsf/backend/auth	0.624s
+ok  	github.com/insightlabs38-pixel/vsf/backend/bridge	3.318s
+ok  	github.com/insightlabs38-pixel/vsf/backend/canon	0.078s
+ok  	github.com/insightlabs38-pixel/vsf/backend/cli	0.033s
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfbench	[no test files]
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfbridge	[no test files]
+ok  	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfctl	0.004s
+?   	github.com/insightlabs38-pixel/vsf/backend/cmd/vsfstoragebench	[no test files]
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	5.274s
+?   	github.com/insightlabs38-pixel/vsf/backend/internal/fixtureapp	[no test files]
+?   	github.com/insightlabs38-pixel/vsf/backend/internal/stacktest	[no test files]
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir	0.046s
+ok  	github.com/insightlabs38-pixel/vsf/backend/ir/rt	0.002s
+ok  	github.com/insightlabs38-pixel/vsf/backend/mcp	1.217s
+ok  	github.com/insightlabs38-pixel/vsf/backend/schema	0.005s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/artifact	0.211s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bench	5.945s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/blob	1.340s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bundle	1.283s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/gc	2.279s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/meta	2.662s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	1.714s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/tcache	0.014s
+?   	github.com/insightlabs38-pixel/vsf/backend/versions	[no test files]
+exit 0

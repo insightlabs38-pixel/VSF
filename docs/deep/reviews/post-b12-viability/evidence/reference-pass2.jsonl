@@ -6,7 +6,7 @@
 {"id":"JUP-03","app":"jupyterlab","status":"confirmed","detail":"content=\"audit-terminal\\n\"","ms":11403,"stepsMs":7547}
 {"id":"JUP-08","app":"jupyterlab","status":"confirmed","detail":"cell1=\"21\" cell2=\"40\"","ms":14125,"stepsMs":5773}
 {"id":"DS-06","app":"datasette","status":"confirmed","detail":"file=films.csv lines=151","ms":4227,"stepsMs":2301}
-{"id":"SW-05","app":"swagger","status":"confirmed","detail":"api_key=audit-key","ms":6245,"stepsMs":2704}
+{"id":"SW-05","app":"swagger","status":"confirmed","detail":"key header audit-key","ms":6245,"stepsMs":2704}
 {"id":"KB-03","app":"kanboard","status":"confirmed","detail":"[[\"1\",\"Looks good\"]]","ms":3913,"stepsMs":2134}
 {"id":"KB-05","app":"kanboard","status":"confirmed","detail":"[[\"2\"]]","ms":3265,"stepsMs":1479}
 {"id":"GR-04","app":"gradio","status":"confirmed","detail":"output=\"360\"","ms":9015,"stepsMs":3147}

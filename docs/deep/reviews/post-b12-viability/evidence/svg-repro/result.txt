@@ -1,0 +1,4 @@
+plain.html {"ok":true,"entities":1,"actions":{"unknown":1}} []
+svg.html {"ok":false,"error":"inject_failed","detail":"no result"} [
+  'TypeError: Error in invocation of dom.openOrClosedShadowRoot(HTMLElement element): '
+]

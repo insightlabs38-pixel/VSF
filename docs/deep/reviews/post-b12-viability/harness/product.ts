@@ -44,7 +44,16 @@ export async function runProduct(wf: Workflow): Promise<ProductResult> {
     const transform = (await env.send({ type: "transform", tabId })) as Record<string, unknown>;
     await page.waitForTimeout(600);
     const overlay = (await page.locator("[data-vsf-overlay]").count()) > 0;
-    const controls = overlay
+    const fromAria = async (): Promise<ProductResult["controls"]> => {
+      const snap = await page.locator("[data-vsf-overlay]").ariaSnapshot().catch(() => "");
+      const out: ProductResult["controls"] = [];
+      for (const line of snap.split("\n")) {
+        const m = /^\s*- '?(button|link|textbox|combobox|checkbox|radio|switch|spinbutton|searchbox|menuitem|tab|option|gridcell|slider)(?: "((?:[^"\\]|\\.)*)")?(.*)$/.exec(line);
+        if (m) out.push({ name: (m[2] ?? "").slice(0, 80), role: m[1] as string, disabled: /\[disabled\]/.test(m[3] ?? "") });
+      }
+      return out;
+    };
+    const shell = overlay
       ? await page.evaluate(() => {
           const host = document.querySelector("[data-vsf-overlay]") as HTMLElement | null;
           const root = host?.shadowRoot;
@@ -56,6 +65,7 @@ export async function runProduct(wf: Workflow): Promise<ProductResult> {
           }));
         })
       : [];
+    const controls = process.env.AUDIT_AMEND === "A3" && overlay ? await fromAria() : shell;
     const targets = wf.steps
       .filter((s) => s.do !== "press" && s.do !== "type" && s.target)
       .map((s) => {
