@@ -1,0 +1,12 @@
+$ pnpm --filter @vsf/specialized-tests exec playwright test specs/large.spec.ts
+
+Running 5 tests using 1 worker
+
+  ✓  1 specs/large.spec.ts:24:1 › a flood of output keeps the scrollback at its limit and memory within budget (1.8s)
+  ✓  2 specs/large.spec.ts:40:1 › hostile output cannot wedge the terminal, grow it without bound, or reach the page (797ms)
+  ✓  3 specs/large.spec.ts:63:1 › opening and disposing adapters over and over does not leak (739ms)
+  ✓  4 specs/large.spec.ts:85:1 › a very large document is shown without drawing every line, and edits stay exact (529ms)
+  ✓  5 specs/large.spec.ts:107:1 › odd text survives the editor unchanged: one huge line, stacked combining marks, bidirectional controls (314ms)
+
+  5 passed (5.5s)
+[exit 0]

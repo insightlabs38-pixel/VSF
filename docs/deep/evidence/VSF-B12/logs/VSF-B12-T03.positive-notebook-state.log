@@ -1,0 +1,22 @@
+$ pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/notebook.test.ts
+✔ outputs attach to the cell whose request produced them and keep the kernel's order (2.283717ms)
+✔ nothing is claimed to have run before the kernel answers (0.360452ms)
+✔ an error is attached to its cell, fails it, and aborts what was queued behind it (0.367524ms)
+✔ a restart makes every earlier output stale and a late message from the old kernel changes nothing (0.458299ms)
+✔ a message delivered for an earlier epoch is ignored even in the right session (0.15449ms)
+✔ losing the connection leaves running cells unknown instead of failed or finished (0.286166ms)
+✔ an interrupt stops the queue at once and leaves the running cell to the kernel's reply (0.306014ms)
+✔ embedded resources are checked, kept with their digest, and script-capable content is never passed on (7.357602ms)
+✔ editing a cell after it ran marks its outputs as describing older code (0.59555ms)
+✔ a busy cell cannot be edited or run twice, markdown cannot run, and unknown cells are refused (0.999261ms)
+✔ messages for requests the notebook never made are ignored and counted (0.237551ms)
+✔ a very chatty cell is bounded (9.578379ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 145.698343
+[exit 0]

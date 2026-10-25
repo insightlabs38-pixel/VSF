@@ -1,0 +1,13 @@
+$ pnpm --filter @vsf/specialized-tests exec playwright test specs/transport.spec.ts -g unknown|finite|cannot resume|discarded|hides why|offers no transport
+
+Running 6 tests using 1 worker
+
+  ✓  1 specs/transport.spec.ts:78:1 › when the source cannot resume, the loss is reported as a gap and never filled in (205ms)
+  ✓  2 specs/transport.spec.ts:97:1 › an input that was sent but not acknowledged before a drop is unknown and is not sent again unless declared repeatable (257ms)
+  ✓  3 specs/transport.spec.ts:130:1 › reconnect attempts are finite, back off, and then the connection is reported as failed (229ms)
+  ✓  4 specs/transport.spec.ts:138:1 › input queued while the connection is down is discarded rather than replayed later (326ms)
+  ✓  5 specs/transport.spec.ts:239:1 › a manifest that hides why a transport is missing is refused and the source keeps its own interface (120ms)
+  ✓  6 specs/transport.spec.ts:253:1 › a source that offers no transport this page can use keeps its own interface (120ms)
+
+  6 passed (2.6s)
+[exit 0]

@@ -1,0 +1,56 @@
+{
+  "task_id": "VSF-B12-T02",
+  "status": "DONE",
+  "branch": "vsf/b12-specialized-interfaces",
+  "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+  "commit": "b944e5a162f9145d08b05b2a8dde2dee09fcce8b",
+  "paths": [
+    "backend/execution/streams.go",
+    "backend/execution/streams_test.go",
+    "docs/deep/adr/ADR-042-specialized-interfaces.md"
+  ],
+  "acceptance": "Realtime streams handle interruption, reconnection, cancellation and process ownership without replaying unsafe writes.",
+  "positive": {
+    "fixture": "ordered output with replay of only what a reconnect missed, completed input stays acknowledged, only the exact owner reaches a process, clean cancel before input, exit code kept, high volume stays inside the buffer, idle processes swept",
+    "command": "go -C backend test -race -count=1 -v ./execution/ -run TestOutputIsOrdered|TestACompleted|TestOnlyTheExact|TestCancellingBeforeAnyInput|TestAProcessThatExits|TestHighVolume|TestIdleProcesses",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "input in flight at a drop is unknown and never sent again, a disconnect before any traffic leaves nothing unknown, a different source session fails closed, output older than the replay buffer is a gap, slow processes get backpressure, bad sequence numbers and oversize frames refused, per-owner limits",
+    "command": "go -C backend test -race -count=1 -v ./execution/ -run TestInputInFlight|TestADisconnectBefore|TestAReconnectToADifferent|TestOutputOlderThan|TestSlowProcesses|TestSequenceNumbers|TestOwnersAreLimited",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "go -C backend test -race -count=1 ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "go -C backend vet -tags integration ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...",
+      "result": "PASS"
+    },
+    {
+      "command": "scripts/gofmt-check.sh",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts comments",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "Go-only: Hub, Process, Owner, Conn, Dialer, StreamConfig, refusal reasons stream.*",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "A process is bound to tenant, caller and session; any other presenter gets a refusal that reveals nothing; a re-attach to another source session fails closed; input is at-most-once and an unknown fate is never retried.",
+  "performance_memory_storage": "Replay, queued input, frame size and processes per owner are bounded by configuration; a 300 ms high-volume test keeps memory within the replay buffer.",
+  "known_limitations": [
+    "Hub is tested with in-memory dialers and is not yet exposed through the HTTP or MCP interfaces",
+    "No real shell or Jupyter server was connected",
+    "Cancellation after input can only report unknown"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B12/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

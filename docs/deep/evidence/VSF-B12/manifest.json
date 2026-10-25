@@ -1,0 +1,295 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B12",
+  "gate": "G12",
+  "runs": [
+    {
+      "task_id": "VSF-B12-T01",
+      "name": "positive-adapters-browser",
+      "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/lazy.spec.ts specs/terminal.spec.ts specs/editor.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T01.positive-adapters-browser.log",
+      "sha256": "854a3508c8de84ccbc7c9f3049fefce324867d87aabe864cc2d0c7285c5251a8"
+    },
+    {
+      "task_id": "VSF-B12-T01",
+      "name": "negative-bad-input-hostile-output-load-failure",
+      "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/terminal.spec.ts specs/editor.spec.ts specs/lazy.spec.ts -g refused|cannot retitle|failed library|disposing|read-only",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T01.negative-bad-input-hostile-output-load-failure.log",
+      "sha256": "86fb44918bbda4013cbe4f295332f91e17b88e4939d6c3a72f4b38794e11f36a"
+    },
+    {
+      "task_id": "VSF-B12-T01",
+      "name": "regression-typecheck",
+      "command": "pnpm --filter @vsf/specialized --filter @vsf/specialized-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T01.regression-typecheck.log",
+      "sha256": "ffcbbd687e25f843f162fc42c6ce61420e00330bb0f3b73eb08ef69c29594f9d"
+    },
+    {
+      "task_id": "VSF-B12-T01",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T01.regression-biome.log",
+      "sha256": "a8c4e90d60f39e52bd6fb6426f0e91beb8e68dc0f245c8e9e7c37f1a74fe0c97"
+    },
+    {
+      "task_id": "VSF-B12-T01",
+      "name": "regression-workflow-check",
+      "command": "node tools/checks/src/cli.ts workflow-check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T01.regression-workflow-check.log",
+      "sha256": "142a17841862e19786f62736859804529f6d9ca0a83bd1bf25eb13b26b01c3b8"
+    },
+    {
+      "task_id": "VSF-B12-T02",
+      "name": "positive-streams-ownership-replay-cancel",
+      "command": "go -C backend test -race -count=1 -v ./execution/ -run TestOutputIsOrdered|TestACompleted|TestOnlyTheExact|TestCancellingBeforeAnyInput|TestAProcessThatExits|TestHighVolume|TestIdleProcesses",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T02.positive-streams-ownership-replay-cancel.log",
+      "sha256": "23eee5e37c210b8f8789186592db6bedbbf0436f99986c9b2c619c57c61c04a8"
+    },
+    {
+      "task_id": "VSF-B12-T02",
+      "name": "negative-unknown-input-gap-foreign-session-limits",
+      "command": "go -C backend test -race -count=1 -v ./execution/ -run TestInputInFlight|TestADisconnectBefore|TestAReconnectToADifferent|TestOutputOlderThan|TestSlowProcesses|TestSequenceNumbers|TestOwnersAreLimited",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T02.negative-unknown-input-gap-foreign-session-limits.log",
+      "sha256": "97ef0a488349a54452feef78c002c6abcec64edd9b5e202a5f2145ccb53f2699"
+    },
+    {
+      "task_id": "VSF-B12-T02",
+      "name": "regression-go-backend",
+      "command": "go -C backend test -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T02.regression-go-backend.log",
+      "sha256": "ad3180656ede3e3d3430d29e400f16b2df10fc857c6d0796b86f6b0ec7851840"
+    },
+    {
+      "task_id": "VSF-B12-T02",
+      "name": "regression-go-vet",
+      "command": "go -C backend vet -tags integration ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T02.regression-go-vet.log",
+      "sha256": "aba4eba9667601c736a4f6d552549ad37c6c4af7a79d881d682b1f637fec7107"
+    },
+    {
+      "task_id": "VSF-B12-T02",
+      "name": "regression-gofmt",
+      "command": "scripts/gofmt-check.sh",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T02.regression-gofmt.log",
+      "sha256": "c0f28271d4d47306fac872605c06b1cc41b29e7602f82db35a4770b842a85b22"
+    },
+    {
+      "task_id": "VSF-B12-T02",
+      "name": "regression-comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T02.regression-comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "VSF-B12-T03",
+      "name": "positive-notebook-state",
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/notebook.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T03.positive-notebook-state.log",
+      "sha256": "fa2a8969fa4d2f51dd5c475eb15874507715ef7e2d05d270817d9d2f17ff1fb1"
+    },
+    {
+      "task_id": "VSF-B12-T03",
+      "name": "negative-stale-restart-unsafe-mime-lost-connection",
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=restart|earlier epoch|losing the connection|embedded resources|never made|chatty|busy cell test/notebook.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T03.negative-stale-restart-unsafe-mime-lost-connection.log",
+      "sha256": "a079b124fc19d1896478185e7a121e4f82801b18a7ee122fc5ae60c35360133e"
+    },
+    {
+      "task_id": "VSF-B12-T03",
+      "name": "regression-package-unit-tests",
+      "command": "pnpm --filter @vsf/specialized run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T03.regression-package-unit-tests.log",
+      "sha256": "95fa998a19b58cefdb340c0c9799d2421a2169230cbe5b8ba2d5977dd34eca51"
+    },
+    {
+      "task_id": "VSF-B12-T03",
+      "name": "regression-typecheck",
+      "command": "pnpm --filter @vsf/specialized run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T03.regression-typecheck.log",
+      "sha256": "4d51fbbc4f9c359b1d4b1a3e5813e2b20648082802737b5fc06e090fcf9b2f82"
+    },
+    {
+      "task_id": "VSF-B12-T03",
+      "name": "regression-secret-scan",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T03.regression-secret-scan.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "VSF-B12-T04",
+      "name": "positive-chart-table-same-data",
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/chart.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T04.positive-chart-table-same-data.log",
+      "sha256": "9701557412ba4f819ec56c313fe34fa0d423b173a9ac269c0a2a6784616f3db7"
+    },
+    {
+      "task_id": "VSF-B12-T04",
+      "name": "positive-accessible-table-browser",
+      "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/chart.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T04.positive-accessible-table-browser.log",
+      "sha256": "eff15a8342c29beb48f87d4fed55449a4438e46dc3e2eda0793f61662dc6745e"
+    },
+    {
+      "task_id": "VSF-B12-T04",
+      "name": "negative-unsupported-precision-injection",
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=never keeps a value|canvas and image|cannot be read exactly|more marks than|narrowly test/chart.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T04.negative-unsupported-precision-injection.log",
+      "sha256": "742c5fd96a5f7bbe33719f1acd680d98901878821bf1523e62f7f093b1a43120"
+    },
+    {
+      "task_id": "VSF-B12-T04",
+      "name": "regression-typecheck",
+      "command": "pnpm --filter @vsf/specialized --filter @vsf/specialized-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T04.regression-typecheck.log",
+      "sha256": "ffcbbd687e25f843f162fc42c6ce61420e00330bb0f3b73eb08ef69c29594f9d"
+    },
+    {
+      "task_id": "VSF-B12-T04",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T04.regression-biome.log",
+      "sha256": "7d7e25e2b38849d140105610f63ed68d5eb352be9639793be9f415dd40d3f607"
+    },
+    {
+      "task_id": "VSF-B12-T05",
+      "name": "positive-transports-browser",
+      "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/transport.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T05.positive-transports-browser.log",
+      "sha256": "2fc433e895c6fb25b3e55cce877c84aa71b97638ffb7aa0fcb067873d172feaa"
+    },
+    {
+      "task_id": "VSF-B12-T05",
+      "name": "positive-manifest-negotiation-unit",
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/transport.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T05.positive-manifest-negotiation-unit.log",
+      "sha256": "a62ced05ecffd3e3f391506b71f961e7dc56236e2b74a42b9a78ee947b19d371"
+    },
+    {
+      "task_id": "VSF-B12-T05",
+      "name": "negative-reconnect-unknown-gap-unbounded-manifest",
+      "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/transport.spec.ts -g unknown|finite|cannot resume|discarded|hides why|offers no transport",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T05.negative-reconnect-unknown-gap-unbounded-manifest.log",
+      "sha256": "abd1626e23469e69be4538459cc73b2a3d12459490bafa4ef8d52f95ba3cf289"
+    },
+    {
+      "task_id": "VSF-B12-T05",
+      "name": "regression-typecheck",
+      "command": "pnpm --filter @vsf/specialized --filter @vsf/specialized-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T05.regression-typecheck.log",
+      "sha256": "ffcbbd687e25f843f162fc42c6ce61420e00330bb0f3b73eb08ef69c29594f9d"
+    },
+    {
+      "task_id": "VSF-B12-T05",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T05.regression-biome.log",
+      "sha256": "f23ba42d063232e8344f69f5975736d3ffc044cd6281370f115725b3fab62b2e"
+    },
+    {
+      "task_id": "VSF-B12-T06",
+      "name": "positive-large-and-hostile-fixtures",
+      "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/large.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T06.positive-large-and-hostile-fixtures.log",
+      "sha256": "c4b7c641420721df3535beaaa5ebfe503446852bd24c5fe7c96dbdb0574cea1c"
+    },
+    {
+      "task_id": "VSF-B12-T06",
+      "name": "negative-unknown-surfaces-fall-back",
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=canvas and image|more marks than|nothing is usable|declares a transport unavailable test/chart.test.ts test/transport.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T06.negative-unknown-surfaces-fall-back.log",
+      "sha256": "f162ab6207fe512498bae16956b1bf0a0c379c5de779558aa97ff77cbf891be0"
+    },
+    {
+      "task_id": "VSF-B12-T06",
+      "name": "regression-ci-job-specialized",
+      "command": "node tools/checks/src/cli.ts ci-run specialized",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T06.regression-ci-job-specialized.log",
+      "sha256": "8609c6720db8464a65f3eff6a541f0de341e29d6d27d96508ae844848ce75947"
+    },
+    {
+      "task_id": "VSF-B12-T06",
+      "name": "regression-go-race",
+      "command": "go -C backend test -race -count=1 ./execution/",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T06.regression-go-race.log",
+      "sha256": "d235bcb1bc1dcbf4cf1747e083b1efc578db84c134e3b48f762882a721ba637e"
+    },
+    {
+      "task_id": "VSF-B12-T06",
+      "name": "regression-comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T06.regression-comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "VSF-B12-T06",
+      "name": "regression-secret-scan",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B12-T06.regression-secret-scan.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    }
+  ]
+}

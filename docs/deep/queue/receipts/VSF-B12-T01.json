@@ -1,0 +1,57 @@
+{
+  "task_id": "VSF-B12-T01",
+  "status": "DONE",
+  "branch": "vsf/b12-specialized-interfaces",
+  "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+  "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+  "paths": [
+    "frontend/packages/specialized/src/adapters.ts",
+    "frontend/packages/specialized/src/terminal.ts",
+    "frontend/packages/specialized/src/editor.ts",
+    "tests/specialized/specs/lazy.spec.ts",
+    "tests/specialized/specs/terminal.spec.ts",
+    "tests/specialized/specs/editor.spec.ts",
+    "docs/deep/adr/ADR-042-specialized-interfaces.md"
+  ],
+  "acceptance": "Terminal/editor adapters pass input, resize, selection, unicode and lifecycle fixtures; lazy modules do not load on unrelated pages.",
+  "positive": {
+    "fixture": "lazy loading (plain page fetches no adapter chunk; each adapter fetches only its own), 14 terminal and 8 editor scenarios in Chromium: keys, paste, bracketed paste, IME composition, resize and fit, selection, focus, wide/combining/astral text, split and invalid UTF-8, dispose",
+    "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/lazy.spec.ts specs/terminal.spec.ts specs/editor.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "bad sizes and ranges refused, use after dispose refused, hostile escape sequences cannot retitle or navigate, read-only refuses edits, a failed chunk load rejects and recovers on reload",
+    "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/terminal.spec.ts specs/editor.spec.ts specs/lazy.spec.ts -g refused|cannot retitle|failed library|disposing|read-only",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/specialized --filter @vsf/specialized-tests run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts workflow-check",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "none",
+    "primitive": "none; new package @vsf/specialized and CI job specialized"
+  },
+  "security_and_source_permissions": "xterm and CodeMirror are exact-pinned MIT packages at least two weeks old; terminal output has no link, title or clipboard handler; the terminal's replies to status queries arrive through onInput and are not user typing.",
+  "performance_memory_storage": "Entry 9.5 KB; terminal chunk 437 KB and editor chunk 581 KB load only when used; 40 open and dispose cycles grow the heap about 0.9 MB.",
+  "known_limitations": [
+    "IME is exercised with synthetic composition events, not a platform input method",
+    "Only Chromium 141 on Linux was run",
+    "Grapheme clusters joined by zero-width joiners are measured per code point",
+    "A failed library fetch is recovered by reloading the page"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B12/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

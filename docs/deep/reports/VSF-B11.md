@@ -1,6 +1,6 @@
 Batch: B11 | Gate: G11 | Decision: PROCEED
 Branch: vsf/b11-independent-corpus | Base: 851e31d | Commit: 148498a (code and receipts; CI run on the PR head)
-PR: https://github.com/insightlabs38-pixel/VSF/pull/14 ; merge commit recorded in state.json after merge
+PR: https://github.com/insightlabs38-pixel/VSF/pull/14 ; merge commit 3594e8f
 Closed tasks: VSF-B11-T07 VSF-B11-T01 VSF-B11-T08 VSF-B11-T02 VSF-B11-T09 VSF-B11-T10 VSF-B11-T03 VSF-B11-T04 VSF-B11-T05 VSF-B11-T06
 Contracts/primitive IDs: no IR or primitive change; recognizer rules 3 (composites, list and repeated-block collections, structural effects); Go FileExecutor, FilePolicy, FileSandbox, BulkExecutor; observer scrollProbe
 Changed modules: compiler/crates/vsf-recognizer, frontend/packages/observer, backend/execution, tests/corpus, fixtures/corpus, ADR-040 and ADR-041

@@ -1,0 +1,55 @@
+{
+  "task_id": "VSF-B12-T05",
+  "status": "DONE",
+  "branch": "vsf/b12-specialized-interfaces",
+  "base_commit": "3594e8f170e8f1ed03f76976b5e36d8450c0d195",
+  "commit": "60aeea120f0d5d7619bdef04ceed095a1b97f184",
+  "paths": [
+    "frontend/packages/specialized/src/transport.ts",
+    "frontend/packages/specialized/test/transport.test.ts",
+    "tests/specialized/specs/transport.spec.ts",
+    "tests/specialized/page/client.ts",
+    "docs/deep/adr/ADR-042-specialized-interfaces.md"
+  ],
+  "acceptance": "WebSocket/SSE/WebRTC capability manifests express transport availability, backpressure and fallback requirements.",
+  "positive": {
+    "fixture": "a real WebSocket resumes after the last sequence with no repeats or holes, SSE resumes from Last-Event-ID, a WebRTC data channel carries a message, negotiation picks native or fallback transports and records why others were skipped",
+    "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/transport.spec.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "an unacknowledged input becomes unknown and is resent only if declared repeatable, a source that cannot resume reports a gap, reconnect attempts are finite with bounded backoff, input queued while down is discarded, a manifest that hides why a transport is missing is refused, no usable transport keeps the source interface",
+    "command": "pnpm --filter @vsf/specialized-tests exec playwright test specs/transport.spec.ts -g unknown|finite|cannot resume|discarded|hides why|offers no transport",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec test/transport.test.ts",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/specialized --filter @vsf/specialized-tests run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "vsf-transport-capabilities-v1 manifest in package; no wire contract yet",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Manifests record what the source offers, never what the browser has; permission-gated transports need the grant by name; unbounded buffering is refused; unknown writes are never resent.",
+  "performance_memory_storage": "Pipe and OutboundQueue are bounded; sustained pressure stays within the declared byte limit in the unit test.",
+  "known_limitations": [
+    "The reconnect client is test code, not a shipped client",
+    "WebRTC was exercised with a loopback data channel only; signalling, real peers and permissions are not covered",
+    "HTTP polling is declared and negotiated but has no client",
+    "Only Chromium 141 on Linux was run"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B12/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B12-T01`
+**Next eligible:** `VSF-B15-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -18,7 +18,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B09 | G9 | 9/9 | DONE | PROCEED |
 | B10 | G10 | 8/8 | DONE | PROCEED |
 | B11 | G11 | 10/10 | DONE | PROCEED |
-| B12 | G12 | 0/6 | READY | - |
+| B12 | G12 | 6/6 | DONE | PROCEED |
 | B13 | G13 | 5/5 | DONE | PROCEED |
 | B14 | G14 | 15/15 | DONE | PROCEED |
 | B15 | G15 | 0/6 | READY | - |
@@ -26,7 +26,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B17 | G17 | 0/5 | READY | - |
 | B18 | G18 | 0/7 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
-| B20 | G20 | 0/4 | TODO | - |
+| B20 | G20 | 0/4 | READY | - |
 | B21 | G21 | 0/3 | READY | - |
 | B22 | G22 | 0/4 | TODO | - |
 | B23 | G23 | 0/4 | TODO | - |
@@ -185,12 +185,12 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B12 · Expand advanced UI and developer/research tools
 
-- [ ] `VSF-B12-T01` Adopt conformance-tested terminal/editor adapters and lazy load them _(READY)_
-- [ ] `VSF-B12-T02` Model streaming, process ownership, cancel/reconnect and source session
-- [ ] `VSF-B12-T03` Build notebook document/cell state mapping and preserving kernel behavior
-- [ ] `VSF-B12-T04` Add charts with accessible alternate presentation and source filters
-- [ ] `VSF-B12-T05` Implement WebSocket/SSE/WebRTC capability declarations where useful
-- [ ] `VSF-B12-T06` Run large source fixtures and negative fallback scenarios
+- [x] `VSF-B12-T01` Adopt conformance-tested terminal/editor adapters and lazy load them
+- [x] `VSF-B12-T02` Model streaming, process ownership, cancel/reconnect and source session
+- [x] `VSF-B12-T03` Build notebook document/cell state mapping and preserving kernel behavior
+- [x] `VSF-B12-T04` Add charts with accessible alternate presentation and source filters
+- [x] `VSF-B12-T05` Implement WebSocket/SSE/WebRTC capability declarations where useful
+- [x] `VSF-B12-T06` Run large source fixtures and negative fallback scenarios
 
 ### B13 · Implement durable storage and ZEROS3 qualification
 
@@ -266,7 +266,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B20 · Specialized science, finance and legacy packs
 
-- [ ] `VSF-B20-T01` Choose packs by repeated failure class, not named flagship demos
+- [ ] `VSF-B20-T01` Choose packs by repeated failure class, not named flagship demos _(READY)_
 - [ ] `VSF-B20-T02` Build typed units/decimal/sequence fidelity fixtures
 - [ ] `VSF-B20-T03` Add semantic/preserved-mode behavior for scientific editors and remote desktops
 - [ ] `VSF-B20-T04` Run cross-domain generalization and independent negative examples

@@ -1,0 +1,15 @@
+$ pnpm --filter @vsf/specialized exec node --conditions=source --test --test-reporter=spec --test-name-pattern=never keeps a value|canvas and image|cannot be read exactly|more marks than|narrowly test/chart.test.ts
+✔ a numeric filter never keeps a value it cannot read exactly (2.322424ms)
+✔ canvas and image charts are unsupported, with a reason and the source interface retained (0.280377ms)
+✔ data that cannot be read exactly is refused instead of guessed (0.322242ms)
+✔ mark names are read narrowly (0.410796ms)
+✔ a chart with more marks than the limit is not modelled and keeps the source interface (29.6046ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 191.871334
+[exit 0]

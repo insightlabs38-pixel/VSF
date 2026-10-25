@@ -1,0 +1,7 @@
+$ pnpm --filter @vsf/specialized --filter @vsf/specialized-tests run typecheck
+Scope: 2 of 23 workspace projects
+frontend/packages/specialized typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/specialized typecheck: Done
+tests/specialized typecheck$ tsc -p tsconfig.json --noEmit
+tests/specialized typecheck: Done
+[exit 0]
