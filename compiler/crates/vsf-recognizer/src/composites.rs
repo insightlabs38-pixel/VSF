@@ -968,8 +968,7 @@ fn row_signatures(v: &View, table: usize) -> BTreeSet<String> {
         .collect()
 }
 
-/// Collections whose rows change when their region is scrolled hold more records than the page renders.
-/// Both observations must come from the same page state, the second after a scroll probe in disposable state.
+/// Collections whose rows change when scrolled hold more records than the page renders (a probe in disposable state).
 pub fn virtual_lists(before: &Observation, after: &Observation) -> Vec<Composite> {
     let (b, a) = (View { obs: before }, View { obs: after });
     let mut out = Vec::new();

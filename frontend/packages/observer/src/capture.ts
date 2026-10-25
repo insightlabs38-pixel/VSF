@@ -323,7 +323,9 @@ export function statesOf(el: Element): string[] {
   if (el.tagName === "A" && el.hasAttribute("href")) {
     const h = (el.getAttribute("href") ?? "").trim().toLowerCase();
     // Whether a link leads anywhere, never where: a script handler or a bare "#" says nothing about its effect.
-    out.add(`href=${h === "" || h === "#" || h.startsWith("javascript:") ? "script" : h.startsWith("#") ? "fragment" : "url"}`);
+    out.add(
+      `href=${h === "" || h === "#" || h.startsWith("javascript:") ? "script" : h.startsWith("#") ? "fragment" : "url"}`,
+    );
   }
   return [...out].sort();
 }

@@ -250,10 +250,7 @@ export class Session {
     return n !== null && n.nodeType === 1 ? (n as Element) : null;
   }
 
-  /**
-   * Scrolls the nearest scrollable region of an observed element by one viewport so a second observation can show
-   * whether its rows are replaced. Scrolling reads, never writes, application data; `restore` puts the region back.
-   */
+  /** Scrolls the nearest scrollable region by one viewport so a second observation shows whether rows are replaced. */
   scrollProbe(id: number): { moved: boolean; restore: () => void } | null {
     const root = this.elementOf(id);
     if (root === null) return null;

@@ -11,8 +11,7 @@ import (
 	"time"
 )
 
-// SetInputFiles gives a file input the staged files by path, the way a person's file chooser would. It refuses
-// anything that is not a visible-or-styled file input and never accepts a path outside the allowed directory.
+// SetInputFiles gives a file input staged files by path; it refuses non-file inputs and paths outside allowedDir.
 func (p *Page) SetInputFiles(ctx context.Context, selector string, allowedDir string, paths []string) error {
 	root, err := filepath.EvalSymlinks(allowedDir)
 	if err != nil {

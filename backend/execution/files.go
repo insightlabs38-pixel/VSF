@@ -40,9 +40,7 @@ var windowsReserved = map[string]bool{
 	"lpt1": true, "lpt2": true, "lpt3": true, "lpt4": true, "lpt5": true, "lpt6": true, "lpt7": true, "lpt8": true, "lpt9": true,
 }
 
-// SafeFileName turns a name a page or a person supplied into one that is safe to store, print and send.
-// It never silently drops the meaning of a name: anything it must change is reported as changed, and names
-// that cannot be made safe (empty, dots only, path escape that leaves nothing) are refused.
+// SafeFileName makes a supplied name safe to store and send, reports a change, and refuses names that reduce to nothing.
 func SafeFileName(raw string) (name string, changed bool, err error) {
 	if !utf8.ValidString(raw) || strings.ContainsRune(raw, 0) {
 		return "", false, errors.New(FileNameUnsafe)
@@ -83,8 +81,7 @@ func SafeFileName(raw string) (name string, changed bool, err error) {
 	return s, s != raw, nil
 }
 
-// DispositionFilename renders a name for a Content-Disposition header: an ASCII fallback and the RFC 5987 form,
-// with nothing that could end the header value or start another header.
+// DispositionFilename renders a name for a Content-Disposition header, with nothing that could start another header.
 func DispositionFilename(name string) string {
 	var ascii strings.Builder
 	for _, r := range name {
@@ -97,8 +94,7 @@ func DispositionFilename(name string) string {
 	return fmt.Sprintf(`attachment; filename="%s"; filename*=UTF-8''%s`, ascii.String(), url.PathEscape(name))
 }
 
-// NameFromDisposition reads the name a source declared for a download and makes it safe; the file system's name for
-// the saved file is never trusted, because a browser may replace what it cannot store.
+// NameFromDisposition reads the declared name of a download; the file system's name for it is never trusted.
 func NameFromDisposition(header string) (string, bool, error) {
 	_, params, err := mime.ParseMediaType(header)
 	if err != nil || params["filename"] == "" {
@@ -184,8 +180,7 @@ func Digest(b []byte) string {
 	return hex.EncodeToString(h[:])
 }
 
-// FileSandbox holds the bytes of files in flight, keyed by session, on disk with private permissions.
-// A file staged for one session cannot be read, sent or deleted by another.
+// FileSandbox holds files in flight per session with private permissions; another session cannot read or drop them.
 type FileSandbox struct {
 	mu   sync.Mutex
 	root string

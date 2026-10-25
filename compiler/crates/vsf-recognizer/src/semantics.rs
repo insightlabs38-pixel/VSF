@@ -5,8 +5,7 @@ use crate::obs::{F_DISABLED, F_INTERACTIVE, F_OPAQUE, Node, Observation, RelKind
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 
-/// Which recognition rules are in force. The baseline binds only direct evidence; v2 adds delegated labels;
-/// v3 stops a label that belongs to an earlier control from competing, and adds composites and editability.
+/// Which rules are in force: v1 binds direct evidence, v2 adds delegated labels, v3 adds composites and structural effects.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Rules {
     pub delegation: bool,
@@ -320,8 +319,7 @@ pub fn verbs_of(name: &str) -> Vec<Verb> {
     out
 }
 
-/// Rules v3: what the element is settles its effect class before its wording does. Something that opens a popup
-/// only reveals it, and a link only navigates, whatever its name contains ("Add ...", "Go to ...").
+/// Rules v3: what an element is settles its effect class before its wording does, but never downgrades a write word.
 fn structural_verbs(n: &Node, lexical: Vec<Verb>) -> Vec<Verb> {
     let opens = matches!(n.state("haspopup"), Some(v) if v != "false");
     if opens {
@@ -652,8 +650,7 @@ fn column_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
     None
 }
 
-/// A checkbox or radio is conventionally followed by its own text; it counts only when that text is not
-/// better claimed by a control that comes after it.
+/// A checkbox or radio is conventionally followed by its own text, unless a control comes first.
 fn following_label(r: &Reader, i: usize) -> Option<LabelCandidate> {
     let p = r.parent(i)?;
     let sibs = r.children(p);
@@ -970,8 +967,7 @@ fn is_list_root(n: &Node) -> bool {
     matches!(n.tag.as_str(), "ul" | "ol") || matches!(role_of(n), "list" | "feed")
 }
 
-/// A list of records: several items that each hold their own controls or text, as a to-do list or a feed does.
-/// Menus, tab strips and lists that are only links are navigation, not records.
+/// A list of records: items that each hold controls or text; menus, tab strips and link-only lists are navigation.
 fn recognize_list(r: &Reader, i: usize) -> Option<Collection> {
     let n = r.node(i);
     if !is_list_root(n) || !n.visible() {
@@ -1042,8 +1038,7 @@ fn recognize_list(r: &Reader, i: usize) -> Option<Collection> {
     })
 }
 
-/// Records laid out as repeated sibling blocks (cards, feed entries, board columns' tasks) rather than as a list or table.
-/// Each block must hold its own controls or text and the blocks must share one shape; navigation chrome is excluded.
+/// Records laid out as identical sibling blocks that each hold controls or text; navigation chrome is excluded.
 fn recognize_repeated(r: &Reader, i: usize) -> Option<Collection> {
     let n = r.node(i);
     if !n.visible()

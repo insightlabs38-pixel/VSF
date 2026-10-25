@@ -315,7 +315,16 @@
       },
       {
         "name": "build-recognizer",
-        "cmd": ["cargo", "build", "--manifest-path", "compiler/Cargo.toml", "--locked", "--release", "-p", "vsf-recognizer"]
+        "cmd": [
+          "cargo",
+          "build",
+          "--manifest-path",
+          "compiler/Cargo.toml",
+          "--locked",
+          "--release",
+          "-p",
+          "vsf-recognizer"
+        ]
       },
       {
         "name": "harness-tests",

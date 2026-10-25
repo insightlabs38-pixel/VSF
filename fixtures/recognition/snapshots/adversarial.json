@@ -347,7 +347,9 @@
    "text": "Download invoice",
    "flags": 3,
    "rels": [],
-   "states": [],
+   "states": [
+    "href=url"
+   ],
    "scope": null
   },
   {
