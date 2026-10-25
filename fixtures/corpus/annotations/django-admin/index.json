@@ -1,0 +1,124 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "django-admin",
+  "page": "index",
+  "dossierSha256": "ba892c5f893422e7c3db429e2528e2e0b2fcd25c87d270a4b5a073d987d774df",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-django-admin",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION.md guide",
+      "tests/corpus/src/annotation.ts type shapes (vsf-corpus-annotation-v1)",
+      "dossier fixtures/corpus/dossiers/django-admin/index.md (Chromium accessibility tree and state description)",
+      "general knowledge of the public Django administration documentation (ModelAdmin options, actions, list_filter, search_fields, pagination, change forms, inlines, delete confirmation); not fetched during this session"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Log out",
+      "effect": "state_change"
+    },
+    {
+      "name": "Change password",
+      "effect": "navigation"
+    },
+    {
+      "name": "Authentication and Authorization",
+      "effect": "navigation"
+    },
+    {
+      "name": "Shop",
+      "effect": "navigation"
+    },
+    {
+      "name": "Groups",
+      "effect": "navigation"
+    },
+    {
+      "name": "Users",
+      "effect": "navigation"
+    },
+    {
+      "name": "Categories",
+      "effect": "navigation"
+    },
+    {
+      "name": "Products",
+      "effect": "navigation"
+    },
+    {
+      "name": "Add",
+      "effect": "navigation"
+    },
+    {
+      "name": "Add",
+      "effect": "navigation"
+    },
+    {
+      "name": "Add",
+      "effect": "navigation"
+    },
+    {
+      "name": "Add",
+      "effect": "navigation"
+    },
+    {
+      "name": "Change",
+      "effect": "navigation"
+    },
+    {
+      "name": "Change",
+      "effect": "navigation"
+    },
+    {
+      "name": "Change",
+      "effect": "navigation"
+    },
+    {
+      "name": "Change",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Authentication and Authorization",
+      "columns": [
+        "Model name",
+        "Add link",
+        "Change or view list link"
+      ],
+      "rows": 2
+    },
+    {
+      "name": "Shop",
+      "columns": [
+        "Model name",
+        "Add link",
+        "Change or view list link"
+      ],
+      "rows": 2
+    }
+  ],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Open a model's list page",
+      "needs": [
+        "Products",
+        "Shop"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Open a model's add page",
+      "needs": [
+        "Add",
+        "Shop"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

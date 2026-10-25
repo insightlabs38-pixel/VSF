@@ -1,0 +1,149 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "files",
+  "dossierSha256": "0318259e19616845e3cb508d9547f7bd20bc02909f458f9ccae8c0a0ebb33d1b",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape)",
+      "dossier accessibility tree"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search...",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "My files",
+      "effect": "navigation"
+    },
+    {
+      "name": "New folder",
+      "effect": "state_change"
+    },
+    {
+      "name": "New file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "Logout",
+      "effect": "navigation"
+    },
+    {
+      "name": "Images",
+      "effect": "read"
+    },
+    {
+      "name": "Music",
+      "effect": "read"
+    },
+    {
+      "name": "Video",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Switch view",
+      "effect": "navigation"
+    },
+    {
+      "name": "Download",
+      "effect": "read"
+    },
+    {
+      "name": "Upload",
+      "effect": "state_change"
+    },
+    {
+      "name": "Info",
+      "effect": "read"
+    },
+    {
+      "name": "Select multiple",
+      "effect": "navigation"
+    },
+    {
+      "name": "Sort by name",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by size",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by last modified",
+      "effect": "read"
+    },
+    {
+      "name": "Clear",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [
+        "Name",
+        "Size",
+        "Last modified"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sort by name, size, last modified"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Select multiple"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Open a folder",
+      "needs": [
+        "Files and folders"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Search files",
+      "needs": [
+        "Search...",
+        "Search"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Sort the listing",
+      "needs": [
+        "Sort by name",
+        "Sort by size",
+        "Sort by last modified",
+        "Files and folders"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

@@ -1,0 +1,8 @@
+{"schema":"vsf-corpus-annotation-v1","source":"jquery-file-upload","page":"files-queued","dossierSha256":"9953502dc72f257058cdadd7513a5206ada6d25be951771c1a4b0d0f19eb6f87",
+"annotator":{"kind":"separate-agent","id":"annotator-jfu","sawRecognizerOutput":false,"basis":["ANNOTATION.md","annotation.ts shape","dossier files-queued.md accessibility tree","Unnamed controls named by visible label text: file chooser composite by '+ Add files...' text; select-all checkbox has no name or label, grouped with 'Delete selected' as bulk selection; queued-row column names taken from the task description (no header row in tree)"]},
+"fields":[{"name":"Choose File","kind":"file"}],
+"actions":[{"name":"Start upload","effect":"state_change"},{"name":"Cancel upload","effect":"destructive"},{"name":"Delete selected","effect":"destructive"},{"name":"Start","effect":"state_change"},{"name":"Cancel","effect":"destructive"}],
+"collections":[{"name":"Queued files","columns":["Name","Size"],"rows":2}],
+"composites":[{"kind":"file_input","name":"Add files..."},{"kind":"bulk_selection","name":"Delete selected files"}],
+"workflows":[{"name":"Choose files to upload","needs":["Choose File","Add files..."],"effect":"state_change"},{"name":"Review queue and start or cancel uploads","needs":["Queued files","Start","Cancel","Start upload","Cancel upload"],"effect":"state_change"},{"name":"Select files and delete them","needs":["Delete selected","Delete selected files"],"effect":"destructive"}],
+"unsupported":[{"what":"Drag and drop of files onto the page","reason":"Requires dragging files from the desktop; not drivable through the accessibility tree"}]}

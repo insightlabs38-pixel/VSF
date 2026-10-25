@@ -1,0 +1,327 @@
+# AdminLTE 4 admin dashboard template - file-manager
+Upstream: https://github.com/ColorlibHQ/AdminLTE
+Framework: bootstrap-5
+Ground truth basis: AdminLTE page descriptions; Chromium accessibility tree
+Page title: AdminLTE 4 | File Manager
+State: as loaded
+What people do here (from the manifest):
+- browse files and folders, upload and delete
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Skip to main content":
+  - /url: "#main"
+- link "Skip to navigation":
+  - /url: "#navigation"
+- navigation:
+  - list:
+    - listitem:
+      - button "Toggle sidebar": 
+    - listitem:
+      - link "Live preview":
+        - /url: ../index.html
+    - listitem:
+      - link "Documentation":
+        - /url: ../docs/introduction.html
+  - search:
+    - text: Search
+    - searchbox "Search"
+    - button "Submit search"
+  - list:
+    - listitem:
+      - 'link "Messages: 3 unread"':
+        - /url: "#"
+        - text:  3
+    - listitem:
+      - 'link "Notifications: 15 unread"':
+        - /url: "#"
+        - text:  15
+    - listitem:
+      - link "Change language, current language English":
+        - /url: "#"
+    - listitem:
+      - link "Toggle fullscreen":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Toggle color scheme":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Alexander Pierce Alexander Pierce":
+        - /url: "#"
+        - img "Alexander Pierce"
+        - text: Alexander Pierce
+- complementary:
+  - link "AdminLTE Logo AdminLTE 4":
+    - /url: ../index.html
+    - img "AdminLTE Logo"
+    - text: AdminLTE 4
+  - search:
+    - text: Filter menu
+    - searchbox "Filter menu"
+  - navigation "Main navigation":
+    - list:
+      - listitem:
+        - link " Dashboard ":
+          - /url: "#"
+          - text: 
+          - paragraph: Dashboard 
+      - listitem:
+        - link " Starter Page":
+          - /url: ../starter.html
+          - text: 
+          - paragraph: Starter Page
+      - listitem:
+        - link " Theme Generate":
+          - /url: ../generate/theme.html
+          - text: 
+          - paragraph: Theme Generate
+      - listitem:
+        - link " Widgets ":
+          - /url: "#"
+          - text: 
+          - paragraph: Widgets 
+      - listitem:
+        - link " Layout Options 12 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Layout Options 12 
+      - listitem:
+        - link " UI Elements ":
+          - /url: "#"
+          - text: 
+          - paragraph: UI Elements 
+      - listitem:
+        - link " Mailbox ":
+          - /url: "#"
+          - text: 
+          - paragraph: Mailbox 
+      - listitem:
+        - link " Forms ":
+          - /url: "#"
+          - text: 
+          - paragraph: Forms 
+      - listitem:
+        - link " Tables ":
+          - /url: "#"
+          - text: 
+          - paragraph: Tables 
+      - listitem:
+        - link " Charts ":
+          - /url: "#"
+          - text: 
+          - paragraph: Charts 
+      - listitem: PAGES
+      - listitem:
+        - link " Pages " [expanded]:
+          - /url: "#"
+          - text: 
+          - paragraph: Pages 
+        - list:
+          - listitem:
+            - link " Profile":
+              - /url: ../pages/profile.html
+              - text: 
+              - paragraph: Profile
+          - listitem:
+            - link " Settings":
+              - /url: ../pages/settings.html
+              - text: 
+              - paragraph: Settings
+          - listitem:
+            - link " Invoice":
+              - /url: ../pages/invoice.html
+              - text: 
+              - paragraph: Invoice
+          - listitem:
+            - link " Calendar":
+              - /url: ../pages/calendar.html
+              - text: 
+              - paragraph: Calendar
+          - listitem:
+            - link " Kanban":
+              - /url: ../pages/kanban.html
+              - text: 
+              - paragraph: Kanban
+          - listitem:
+            - link " Chat":
+              - /url: ../pages/chat.html
+              - text: 
+              - paragraph: Chat
+          - listitem:
+            - link " File Manager":
+              - /url: ../pages/file-manager.html
+              - text: 
+              - paragraph: File Manager
+          - listitem:
+            - link " Projects":
+              - /url: ../pages/projects.html
+              - text: 
+              - paragraph: Projects
+          - listitem:
+            - link " Gallery":
+              - /url: ../pages/gallery.html
+              - text: 
+              - paragraph: Gallery
+          - listitem:
+            - link " Search Results":
+              - /url: ../pages/search-results.html
+              - text: 
+              - paragraph: Search Results
+          - listitem:
+            - link " Pricing":
+              - /url: ../pages/pricing.html
+              - text: 
+              - paragraph: Pricing
+          - listitem:
+            - link " FAQ":
+              - /url: ../pages/faq.html
+              - text: 
+              - paragraph: FAQ
+          - listitem:
+            - link " Error ":
+              - /url: "#"
+              - text: 
+              - paragraph: Error 
+      - listitem:
+        - link " Users":
+          - /url: ../users.html
+          - text: 
+          - paragraph: Users
+      - listitem: EXAMPLES
+      - listitem:
+        - link " Auth ":
+          - /url: "#"
+          - text: 
+          - paragraph: Auth 
+      - listitem: MULTI LEVEL EXAMPLE
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem:
+        - link " Level 1 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1 
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem: LABELS
+      - listitem:
+        - link " Important":
+          - /url: "#"
+          - text: 
+          - paragraph: Important
+      - listitem:
+        - link " Warning":
+          - /url: "#"
+          - text: 
+          - paragraph: Warning
+      - listitem:
+        - link " Informational":
+          - /url: "#"
+          - text: 
+          - paragraph: Informational
+    - link "View documentation":
+      - /url: ../docs/introduction.html
+- main:
+  - heading "File Manager" [level=1]
+  - navigation "breadcrumb":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: "#"
+      - listitem: / Files
+  - button "Upload files"
+  - button "New folder"
+  - link "My Drive 24":
+    - /url: "#"
+  - link "Documents 12":
+    - /url: "#"
+  - link "Design 8":
+    - /url: "#"
+  - link "v2.4 candidates 4":
+    - /url: "#"
+  - link "Archive 28":
+    - /url: "#"
+  - link "Invoices 41":
+    - /url: "#"
+  - link "Shared with me 9":
+    - /url: "#"
+  - link "Starred 6":
+    - /url: "#"
+  - link "Recent":
+    - /url: "#"
+  - link "Trash 3":
+    - /url: "#"
+  - paragraph: Storage
+  - progressbar
+  - text: 6.2 GB of 10 GB used
+  - navigation "breadcrumb":
+    - list:
+      - listitem:
+        - link:
+          - /url: "#"
+      - listitem:
+        - text: /
+        - link "My Drive":
+          - /url: "#"
+      - listitem: / Design
+  - searchbox "Search files"
+  - group "View":
+    - radio [checked]
+    - radio
+  - link "Customer interviews Folder Today":
+    - /url: "#"
+    - paragraph: Customer interviews
+    - text: Folder Today
+  - link "Shared Q2 planning Folder Yesterday":
+    - /url: "#"
+    - text: Shared
+    - paragraph: Q2 planning
+    - text: Folder Yesterday
+  - link "design-review.pdf 1.4 MB 10:42 AM":
+    - /url: "#"
+    - paragraph: design-review.pdf
+    - text: 1.4 MB 10:42 AM
+  - link "focus-ring-dark.png 320 KB 10:38 AM":
+    - /url: "#"
+    - paragraph: focus-ring-dark.png
+    - text: 320 KB 10:38 AM
+  - link "INV-2026-00428.pdf 184 KB Yesterday":
+    - /url: "#"
+    - paragraph: INV-2026-00428.pdf
+    - text: 184 KB Yesterday
+  - link "Shared roadmap.docx 47 KB Yesterday":
+    - /url: "#"
+    - text: Shared
+    - paragraph: roadmap.docx
+    - text: 47 KB Yesterday
+  - link "analytics-may.xlsx 92 KB May 16":
+    - /url: "#"
+    - paragraph: analytics-may.xlsx
+    - text: 92 KB May 16
+  - link "site-export-2026-05.zip 12.3 MB May 14":
+    - /url: "#"
+    - paragraph: site-export-2026-05.zip
+    - text: 12.3 MB May 14
+  - link "main.tsx 8 KB May 12":
+    - /url: "#"
+    - paragraph: main.tsx
+    - text: 8 KB May 12
+  - text: 9 items
+- contentinfo:
+  - text: Anything you want
+  - strong:
+    - text: Copyright © 2014-2026
+    - link "AdminLTE.io":
+      - /url: https://adminlte.io
+    - text: .
+  - text: All rights reserved.
+- status
+```

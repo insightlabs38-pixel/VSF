@@ -1,0 +1,3 @@
+$ pnpm exec biome check .
+Checked 404 files in 251ms. No fixes applied.
+[exit 0]

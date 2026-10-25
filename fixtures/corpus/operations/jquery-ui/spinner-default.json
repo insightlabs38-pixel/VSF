@@ -1,0 +1,76 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "spinner-default",
+  "dossierSha256": "dbd1d1847824442b64d02ebc9cc851b301b746e7d6ac0c37a11e33c9900c9a91",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Type a value",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Select a value:",
+          "value": "7"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Select a value:",
+          "value": "7"
+        }
+      ]
+    },
+    {
+      "name": "Set value to 5",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Set value to 5"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Select a value:",
+          "value": "5"
+        }
+      ]
+    },
+    {
+      "name": "Step up",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Select a value:",
+          "value": "5"
+        },
+        {
+          "do": "press",
+          "key": "ArrowUp"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Select a value:",
+          "value": "6"
+        }
+      ]
+    }
+  ]
+}

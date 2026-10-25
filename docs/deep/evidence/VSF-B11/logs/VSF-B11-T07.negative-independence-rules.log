@@ -1,0 +1,42 @@
+$ node --conditions=source --test --test-name-pattern=refused|only pinned|stays inside|must declare|false claim tests/corpus/test/corpus.test.ts
+TAP version 13
+# Subtest: a manifest that is unpinned, unlicensed, contaminated or unannotated is refused
+ok 1 - a manifest that is unpinned, unlicensed, contaminated or unannotated is refused
+  ---
+  duration_ms: 3.713471
+  type: 'test'
+  ...
+# Subtest: only pinned-version npm CDN addresses are mirrored
+ok 2 - only pinned-version npm CDN addresses are mirrored
+  ---
+  duration_ms: 0.514556
+  type: 'test'
+  ...
+# Subtest: the static server stays inside its root
+ok 3 - the static server stays inside its root
+  ---
+  duration_ms: 26.13441
+  type: 'test'
+  ...
+# Subtest: a recognized unit that contradicts the annotation is a false claim
+ok 4 - a recognized unit that contradicts the annotation is a false claim
+  ---
+  duration_ms: 1.182374
+  type: 'test'
+  ...
+# Subtest: annotations must declare independence and use the closed vocabularies
+ok 5 - annotations must declare independence and use the closed vocabularies
+  ---
+  duration_ms: 0.68764
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 208.312759
+[exit 0]

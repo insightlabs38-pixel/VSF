@@ -1,0 +1,130 @@
+# jQuery UI demos - datepicker-default
+Upstream: https://github.com/jquery/jquery-ui
+Framework: jquery
+Ground truth basis: jQuery UI demo descriptions and API documentation; Chromium accessibility tree
+Page title: jQuery UI Datepicker - Default functionality
+State: calendar popup opened
+What people do here (from the manifest):
+- pick a date from a calendar popup
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- paragraph:
+  - text: "Date:"
+  - textbox
+- paragraph: The datepicker is tied to a standard form input field. Focus on the input (click, or use the tab key) to open an interactive calendar in a small overlay. Choose a date, click elsewhere on the page (blur the input), or hit the Esc key to close. If a date is chosen, feedback is shown as the input's value.
+- text: Prev Next October 2026
+- table:
+  - rowgroup:
+    - row "Su Mo Tu We Th Fr Sa":
+      - columnheader "Su"
+      - columnheader "Mo"
+      - columnheader "Tu"
+      - columnheader "We"
+      - columnheader "Th"
+      - columnheader "Fr"
+      - columnheader "Sa"
+  - rowgroup:
+    - row "1 2 3":
+      - cell
+      - cell
+      - cell
+      - cell
+      - cell "1":
+        - link "1":
+          - /url: "#"
+      - cell "2":
+        - link "2":
+          - /url: "#"
+      - cell "3":
+        - link "3":
+          - /url: "#"
+    - row "4 5 6 7 8 9 10":
+      - cell "4":
+        - link "4":
+          - /url: "#"
+      - cell "5":
+        - link "5":
+          - /url: "#"
+      - cell "6":
+        - link "6":
+          - /url: "#"
+      - cell "7":
+        - link "7":
+          - /url: "#"
+      - cell "8":
+        - link "8":
+          - /url: "#"
+      - cell "9":
+        - link "9":
+          - /url: "#"
+      - cell "10":
+        - link "10":
+          - /url: "#"
+    - row "11 12 13 14 15 16 17":
+      - cell "11":
+        - link "11":
+          - /url: "#"
+      - cell "12":
+        - link "12":
+          - /url: "#"
+      - cell "13":
+        - link "13":
+          - /url: "#"
+      - cell "14":
+        - link "14":
+          - /url: "#"
+      - cell "15":
+        - link "15":
+          - /url: "#"
+      - cell "16":
+        - link "16":
+          - /url: "#"
+      - cell "17":
+        - link "17":
+          - /url: "#"
+    - row "18 19 20 21 22 23 24":
+      - cell "18":
+        - link "18":
+          - /url: "#"
+      - cell "19":
+        - link "19":
+          - /url: "#"
+      - cell "20":
+        - link "20":
+          - /url: "#"
+      - cell "21":
+        - link "21":
+          - /url: "#"
+      - cell "22":
+        - link "22":
+          - /url: "#"
+      - cell "23":
+        - link "23":
+          - /url: "#"
+      - cell "24":
+        - link "24":
+          - /url: "#"
+    - row "25 26 27 28 29 30 31":
+      - cell "25":
+        - link "25":
+          - /url: "#"
+      - cell "26":
+        - link "26":
+          - /url: "#"
+      - cell "27":
+        - link "27":
+          - /url: "#"
+      - cell "28":
+        - link "28":
+          - /url: "#"
+      - cell "29":
+        - link "29":
+          - /url: "#"
+      - cell "30":
+        - link "30":
+          - /url: "#"
+      - cell "31":
+        - link "31":
+          - /url: "#"
+```

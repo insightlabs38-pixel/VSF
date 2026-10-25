@@ -9,6 +9,7 @@ const facts = (tag: string, name: string | null = null) => ({
   text: null,
   flags: 1,
   rels: [] as [],
+  states: [] as string[],
 });
 
 function rec(id: number, parent: number, tag: string, name: string | null = null): NodeRec {
@@ -120,7 +121,7 @@ test("removing a subtree drops every descendant and set rewrites only mutable fi
   assert.equal(r.apply(batch(1, 1, "delta", [{ op: "remove", id: 3 }], t)).status, "ok");
   assert.equal(r.size, 2);
   const t2 = [rec(1, NO_NODE, "html"), { ...rec(2, 1, "body"), name: "main" }];
-  const set: Op = { op: "set", id: 2, role: null, name: "main", text: null, flags: 1, rels: [] };
+  const set: Op = { op: "set", id: 2, role: null, name: "main", text: null, flags: 1, rels: [], states: [] };
   assert.equal(r.apply(batch(1, 2, "delta", [set], t2)).status, "ok");
   assert.equal(r.nodes.get(2)?.name, "main");
   assert.equal(r.nodes.get(2)?.tag, "body");

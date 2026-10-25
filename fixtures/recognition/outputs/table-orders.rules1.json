@@ -1,0 +1,14 @@
+{
+  "rules": "1",
+  "schema": "vsf-recognition-v1",
+  "units": [
+    {"name":"Open","node":20,"roles":["button"],"type":"action","usable":true,"verbs":["navigate"]},
+    {"name":"Delete","node":21,"roles":["button"],"type":"action","usable":true,"verbs":["destroy"]},
+    {"name":"Open","node":27,"roles":["button"],"type":"action","usable":true,"verbs":["navigate"]},
+    {"name":"Delete","node":28,"roles":["button"],"type":"action","usable":true,"verbs":["destroy"]},
+    {"name":"Open","node":34,"roles":["button"],"type":"action","usable":true,"verbs":["navigate"]},
+    {"name":"Delete","node":35,"roles":["button"],"type":"action","usable":true,"verbs":["destroy"]},
+    {"name":"Export CSV","node":36,"roles":["button"],"type":"action","usable":true,"verbs":["export"]},
+    {"columns":["Order","Customer","Total","Actions"],"label":"Open orders","node":6,"rows":3,"type":"collection"}
+  ]
+}

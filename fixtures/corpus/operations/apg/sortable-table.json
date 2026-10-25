@@ -1,0 +1,53 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "apg",
+  "page": "sortable-table",
+  "dossierSha256": "4aa6f041c24189fea2a6659a201685d8a2ac94b6d143b446c1706255ab82a1ef",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-apg",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "W3C ARIA Authoring Practices pattern documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Show sort icons",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Display sort icon in headers of sortable columns that are not sorted",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Display sort icon in headers of sortable columns that are not sorted",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "name": "Sort by last name",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Last Name"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "rows",
+          "target": "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable).",
+          "count": 4
+        }
+      ]
+    }
+  ]
+}

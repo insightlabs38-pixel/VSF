@@ -1,0 +1,96 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "datatables",
+  "page": "select-row",
+  "dossierSha256": "86cb09fbf1762016a68a7c6c2c1b25eb8303503cea7e85ea6eecd2a5876dbf3e",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-datatables-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      "dossier datatables/select-row.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Show entries",
+      "kind": "choice"
+    },
+    {
+      "name": "Search:",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Row count",
+      "effect": "read"
+    },
+    {
+      "name": "Previous",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Employees",
+      "columns": [
+        "Name",
+        "Position",
+        "Office",
+        "Age",
+        "Start date",
+        "Salary"
+      ],
+      "rows": 10
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "pagination",
+      "name": "Pagination"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Column sorting"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Count selected rows",
+      "needs": [
+        "Row count",
+        "Employees"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Search employees",
+      "needs": [
+        "Search:",
+        "Employees"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Page through employees",
+      "needs": [
+        "Show entries",
+        "Pagination",
+        "Employees"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

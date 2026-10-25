@@ -1,0 +1,50 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "selectmenu-default",
+  "dossierSha256": "a51bb3582575a6a67d5232213bb19c8238719fb69fd2d5dff85221feabfa67e5",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/selectmenu-default.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Select a speed",
+      "kind": "choice"
+    },
+    {
+      "name": "Select a file",
+      "kind": "choice"
+    },
+    {
+      "name": "Select a number",
+      "kind": "choice"
+    },
+    {
+      "name": "Select a title",
+      "kind": "choice"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Choose values in the select menus",
+      "needs": [
+        "Select a speed",
+        "Select a file",
+        "Select a number",
+        "Select a title"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

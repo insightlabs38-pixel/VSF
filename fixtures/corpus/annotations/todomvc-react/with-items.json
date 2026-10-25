@@ -1,0 +1,107 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "todomvc-react",
+  "page": "with-items",
+  "dossierSha256": "6d0ca5e763d4494737a157eca91ffd98f2b8d5e0c855869a157d3bad851a97c5",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-todomvc",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md guide (revised scope)",
+      "annotation.ts type shapes",
+      "dossier todomvc-react/with-items.md (Chromium accessibility tree)",
+      "TodoMVC specification behaviour: add, toggle, edit on double click, delete, filter All/Active/Completed, clear completed, toggle all"
+    ]
+  },
+  "fields": [
+    {
+      "name": "New Todo Input",
+      "kind": "text"
+    },
+    {
+      "name": "❯ Toggle All Input",
+      "kind": "toggle"
+    },
+    {
+      "name": "Buy milk",
+      "kind": "toggle"
+    },
+    {
+      "name": "Walk the dog",
+      "kind": "toggle"
+    },
+    {
+      "name": "Read a book",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Active",
+      "effect": "read"
+    },
+    {
+      "name": "Completed",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Todo list",
+      "columns": [],
+      "rows": 3
+    }
+  ],
+  "composites": [
+    {
+      "kind": "bulk_selection",
+      "name": "❯ Toggle All Input"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Filters"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Add a todo",
+      "needs": [
+        "New Todo Input"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Mark all todos complete or active",
+      "needs": [
+        "❯ Toggle All Input"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Complete a todo",
+      "needs": [
+        "Todo list",
+        "Buy milk",
+        "Walk the dog",
+        "Read a book"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Filter todos by status",
+      "needs": [
+        "Filters",
+        "All",
+        "Active",
+        "Completed"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

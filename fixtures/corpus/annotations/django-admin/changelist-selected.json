@@ -1,0 +1,311 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "django-admin",
+  "page": "changelist-selected",
+  "dossierSha256": "1fbe42e1489b63685401fbea48e64f3a52ec118e4c2071e76f4bebe9b01d44e4",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-django-admin",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION.md guide",
+      "tests/corpus/src/annotation.ts type shapes (vsf-corpus-annotation-v1)",
+      "dossier fixtures/corpus/dossiers/django-admin/changelist-selected.md (Chromium accessibility tree and state description)",
+      "general knowledge of the public Django administration documentation (ModelAdmin options, actions, list_filter, search_fields, pagination, change forms, inlines, delete confirmation); not fetched during this session"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Filter navigation items",
+      "kind": "text"
+    },
+    {
+      "name": "Search",
+      "kind": "text"
+    },
+    {
+      "name": "Action:",
+      "kind": "choice"
+    },
+    {
+      "name": "Select all objects on this page for an action",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 47",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 46",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 45",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 44",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 43",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 42",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 41",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 40",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 39",
+      "kind": "toggle"
+    },
+    {
+      "name": "Select this object for an action - Product 38",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Log out",
+      "effect": "state_change"
+    },
+    {
+      "name": "Change password",
+      "effect": "navigation"
+    },
+    {
+      "name": "Home",
+      "effect": "navigation"
+    },
+    {
+      "name": "Shop",
+      "effect": "navigation"
+    },
+    {
+      "name": "Add product",
+      "effect": "navigation"
+    },
+    {
+      "name": "Search",
+      "effect": "read"
+    },
+    {
+      "name": "Go",
+      "effect": "state_change"
+    },
+    {
+      "name": "2024",
+      "effect": "read"
+    },
+    {
+      "name": "2025",
+      "effect": "read"
+    },
+    {
+      "name": "Name",
+      "effect": "read"
+    },
+    {
+      "name": "Sku",
+      "effect": "read"
+    },
+    {
+      "name": "Category",
+      "effect": "read"
+    },
+    {
+      "name": "Price",
+      "effect": "read"
+    },
+    {
+      "name": "In stock",
+      "effect": "read"
+    },
+    {
+      "name": "Status",
+      "effect": "read"
+    },
+    {
+      "name": "Released",
+      "effect": "read"
+    },
+    {
+      "name": "Product 47",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 46",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 45",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 44",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 43",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 42",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 41",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 40",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 39",
+      "effect": "navigation"
+    },
+    {
+      "name": "Product 38",
+      "effect": "navigation"
+    },
+    {
+      "name": "2",
+      "effect": "navigation"
+    },
+    {
+      "name": "3",
+      "effect": "navigation"
+    },
+    {
+      "name": "4",
+      "effect": "navigation"
+    },
+    {
+      "name": "5",
+      "effect": "navigation"
+    },
+    {
+      "name": "Show all",
+      "effect": "navigation"
+    },
+    {
+      "name": "Show counts",
+      "effect": "read"
+    },
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Draft",
+      "effect": "read"
+    },
+    {
+      "name": "Live",
+      "effect": "read"
+    },
+    {
+      "name": "Retired",
+      "effect": "read"
+    },
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Yes",
+      "effect": "read"
+    },
+    {
+      "name": "No",
+      "effect": "read"
+    },
+    {
+      "name": "All",
+      "effect": "read"
+    },
+    {
+      "name": "Audio",
+      "effect": "read"
+    },
+    {
+      "name": "Cables",
+      "effect": "read"
+    },
+    {
+      "name": "Displays",
+      "effect": "read"
+    },
+    {
+      "name": "Storage",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Products",
+      "columns": [
+        "Name",
+        "Sku",
+        "Category",
+        "Price",
+        "In stock",
+        "Status",
+        "Released"
+      ],
+      "rows": 10
+    }
+  ],
+  "composites": [
+    {
+      "kind": "pagination",
+      "name": "Pagination"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Select all objects on this page for an action"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sortable columns"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Filter"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Run an action on selected products",
+      "needs": [
+        "Action:",
+        "Go",
+        "Select all objects on this page for an action",
+        "Products"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Select every product on the page",
+      "needs": [
+        "Select all objects on this page for an action",
+        "Products"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

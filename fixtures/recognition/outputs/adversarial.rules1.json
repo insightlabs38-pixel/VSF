@@ -1,0 +1,18 @@
+{
+  "rules": "1",
+  "schema": "vsf-recognition-v1",
+  "units": [
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Name"},"kind":"text","node":9,"scope":"Billing","type":"field","usable":true},
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Email"},"kind":"text","node":11,"scope":"Billing","type":"field","usable":true},
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Name"},"kind":"text","node":15,"scope":"Shipping","type":"field","usable":true},
+    {"binding":{"candidates":["Phone","Name"],"state":"ambiguous"},"kind":"text","node":17,"scope":"Shipping","type":"field","usable":true},
+    {"binding":{"candidates":["Phone","Name"],"state":"ambiguous"},"kind":"text","node":18,"scope":"Shipping","type":"field","usable":true},
+    {"binding":{"state":"unbound"},"kind":"text","node":19,"scope":null,"type":"field","usable":false},
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Coupon"},"kind":"text","node":22,"scope":null,"type":"field","usable":false},
+    {"name":"Download invoice","node":25,"roles":["button","link"],"type":"action","usable":true,"verbs":["export"]},
+    {"name":"Apply discount","node":26,"roles":["button"],"type":"action","usable":true,"verbs":["commit"]},
+    {"name":"Terms","node":27,"roles":["link","button"],"type":"action","usable":true,"verbs":["navigate"]},
+    {"name":"Place order","node":28,"roles":["button"],"type":"action","usable":true,"verbs":["commit"]},
+    {"name":"Pay later","node":29,"roles":["button"],"type":"action","usable":false,"verbs":["commit"]}
+  ]
+}

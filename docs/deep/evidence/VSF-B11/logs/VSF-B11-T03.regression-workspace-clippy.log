@@ -1,0 +1,16 @@
+$ cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings
+    Checking vsf-canon v0.0.0 (/home/user/VSF/compiler/crates/vsf-canon)
+    Checking vsf-ir v0.0.0 (/home/user/VSF/compiler/crates/vsf-ir)
+    Checking vsf-redact v0.0.0 (/home/user/VSF/compiler/crates/vsf-redact)
+    Checking vsf-schema v0.0.0 (/home/user/VSF/compiler/crates/vsf-schema)
+    Checking vsf-observation v0.0.0 (/home/user/VSF/compiler/crates/vsf-observation)
+    Checking vsf-recognizer v0.0.0 (/home/user/VSF/compiler/crates/vsf-recognizer)
+    Checking vsf-fabric v0.0.0 (/home/user/VSF/compiler/crates/vsf-fabric)
+    Checking vsf-fixtures v0.0.0 (/home/user/VSF/compiler/crates/vsf-fixtures)
+    Checking vsf-registry v0.0.0 (/home/user/VSF/compiler/crates/vsf-registry)
+    Checking vsf-assemble v0.0.0 (/home/user/VSF/compiler/crates/vsf-assemble)
+    Checking vsf-wasm v0.0.0 (/home/user/VSF/compiler/crates/vsf-wasm)
+    Checking vsf-versioning v0.0.0 (/home/user/VSF/compiler/crates/vsf-versioning)
+    Checking vsf-native v0.0.0 (/home/user/VSF/compiler/crates/vsf-native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.52s
+[exit 0]

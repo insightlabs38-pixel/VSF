@@ -1,0 +1,177 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "selected",
+  "dossierSha256": "2dfaa72bd308c569214dd81a6daf69c29e5c6113a97bb70c21ccad22ed20040e",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape)",
+      "dossier accessibility tree"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search...",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "My files",
+      "effect": "navigation"
+    },
+    {
+      "name": "New folder",
+      "effect": "state_change"
+    },
+    {
+      "name": "New file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "Logout",
+      "effect": "navigation"
+    },
+    {
+      "name": "Images",
+      "effect": "read"
+    },
+    {
+      "name": "Music",
+      "effect": "read"
+    },
+    {
+      "name": "Video",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Switch view",
+      "effect": "navigation"
+    },
+    {
+      "name": "Download",
+      "effect": "read"
+    },
+    {
+      "name": "Upload",
+      "effect": "state_change"
+    },
+    {
+      "name": "Info",
+      "effect": "read"
+    },
+    {
+      "name": "Select multiple",
+      "effect": "navigation"
+    },
+    {
+      "name": "Sort by name",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by size",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by last modified",
+      "effect": "read"
+    },
+    {
+      "name": "Clear",
+      "effect": "navigation"
+    },
+    {
+      "name": "Share",
+      "effect": "state_change"
+    },
+    {
+      "name": "Rename",
+      "effect": "state_change"
+    },
+    {
+      "name": "Copy file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Move file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Delete",
+      "effect": "destructive"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [
+        "Name",
+        "Size",
+        "Last modified"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sort by name, size, last modified"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Select multiple"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Download the selection",
+      "needs": [
+        "Download",
+        "Files and folders"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Rename the selection",
+      "needs": [
+        "Rename",
+        "Files and folders"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Copy or move the selection",
+      "needs": [
+        "Copy file",
+        "Move file",
+        "Files and folders"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Delete the selection",
+      "needs": [
+        "Delete",
+        "Files and folders"
+      ],
+      "effect": "destructive"
+    }
+  ],
+  "unsupported": []
+}

@@ -1,0 +1,8 @@
+$ sh -c cd tests/observation && npx playwright test specs/element.spec.ts
+
+Running 1 test using 1 worker
+
+  ✓  1 specs/element.spec.ts:10:1 › an observed node id leads back to its live element, and a stale id to nothing (344ms)
+
+  1 passed (1.7s)
+[exit 0]

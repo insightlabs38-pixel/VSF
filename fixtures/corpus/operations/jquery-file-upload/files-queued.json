@@ -1,0 +1,51 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "jquery-file-upload",
+ "page": "files-queued",
+ "dossierSha256": "9953502dc72f257058cdadd7513a5206ada6d25be951771c1a4b0d0f19eb6f87",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-misc",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "dossier accessibility tree",
+   "jQuery File Upload public documentation and demo (queue, cancel)"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Queue another file",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "upload",
+     "target": "Choose File",
+     "value": "extra.txt",
+     "text": "more text"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "extra.txt"
+    }
+   ]
+  },
+  {
+   "name": "Cancel one queued file",
+   "effect": "destructive",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Cancel"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "absent",
+     "contains": "notes.txt"
+    }
+   ]
+  }
+ ]
+}

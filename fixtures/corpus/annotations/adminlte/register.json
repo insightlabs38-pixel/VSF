@@ -1,0 +1,80 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "register",
+  "dossierSha256": "cce325eba3e73c8fbe7fa1faf18336088597436aa25bb1f9575265ec71c8f9e9",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/register.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Full Name",
+      "kind": "text"
+    },
+    {
+      "name": "Email",
+      "kind": "text"
+    },
+    {
+      "name": "Password",
+      "kind": "text"
+    },
+    {
+      "name": "I agree to the terms",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Register",
+      "effect": "state_change"
+    },
+    {
+      "name": "Sign up using Facebook",
+      "effect": "state_change"
+    },
+    {
+      "name": "Sign up using Google",
+      "effect": "state_change"
+    },
+    {
+      "name": "terms",
+      "effect": "navigation"
+    },
+    {
+      "name": "I already have a membership",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Register a new account",
+      "needs": [
+        "Full Name",
+        "Email",
+        "Password",
+        "I agree to the terms",
+        "Register"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Sign up with a social account",
+      "needs": [
+        "Sign up using Facebook",
+        "Sign up using Google"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

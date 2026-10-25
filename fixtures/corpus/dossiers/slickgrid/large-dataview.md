@@ -1,0 +1,243 @@
+# SlickGrid examples - large-dataview
+Upstream: https://github.com/6pac/SlickGrid
+Framework: vanilla-js
+Ground truth basis: SlickGrid documentation and example descriptions; Chromium accessibility tree
+Page title: SlickGrid example: Optimizing DataView
+State: as loaded
+What people do here (from the manifest):
+- scroll a very large grid
+- sort, filter and page the data view
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- heading "Example - Optimizing DataView" [level=2]
+- text: SlickGrid
+- grid:
+  - row "# Title Duration % Complete Start Finish Effort Driven":
+    - columnheader "#"
+    - columnheader "Title":
+      - text: Title
+      - separator
+    - columnheader "Duration":
+      - text: Duration
+      - separator
+    - columnheader "% Complete":
+      - text: "% Complete"
+      - separator
+    - columnheader "Start":
+      - text: Start
+      - separator
+    - columnheader "Finish":
+      - text: Finish
+      - separator
+    - columnheader "Effort Driven":
+      - text: Effort Driven
+      - separator
+  - row "0 Task 0 5 days 36% 01/01/2009 01/05/2009":
+    - gridcell "0"
+    - gridcell "Task 0"
+    - gridcell "5 days"
+    - gridcell "36%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "1 Task 1 5 days 11% 01/01/2009 01/05/2009":
+    - gridcell "1"
+    - gridcell "Task 1"
+    - gridcell "5 days"
+    - gridcell "11%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "2 Task 2 5 days 68% 01/01/2009 01/05/2009":
+    - gridcell "2"
+    - gridcell "Task 2"
+    - gridcell "5 days"
+    - gridcell "68%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "3 Task 3 5 days 92% 01/01/2009 01/05/2009":
+    - gridcell "3"
+    - gridcell "Task 3"
+    - gridcell "5 days"
+    - gridcell "92%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "4 Task 4 5 days 10% 01/01/2009 01/05/2009":
+    - gridcell "4"
+    - gridcell "Task 4"
+    - gridcell "5 days"
+    - gridcell "10%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "5 Task 5 5 days 30% 01/01/2009 01/05/2009":
+    - gridcell "5"
+    - gridcell "Task 5"
+    - gridcell "5 days"
+    - gridcell "30%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "6 Task 6 5 days 2% 01/01/2009 01/05/2009":
+    - gridcell "6"
+    - gridcell "Task 6"
+    - gridcell "5 days"
+    - gridcell "2%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "7 Task 7 5 days 47% 01/01/2009 01/05/2009":
+    - gridcell "7"
+    - gridcell "Task 7"
+    - gridcell "5 days"
+    - gridcell "47%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "8 Task 8 5 days 43% 01/01/2009 01/05/2009":
+    - gridcell "8"
+    - gridcell "Task 8"
+    - gridcell "5 days"
+    - gridcell "43%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "9 Task 9 5 days 55% 01/01/2009 01/05/2009":
+    - gridcell "9"
+    - gridcell "Task 9"
+    - gridcell "5 days"
+    - gridcell "55%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "10 Task 10 5 days 51% 01/01/2009 01/05/2009":
+    - gridcell "10"
+    - gridcell "Task 10"
+    - gridcell "5 days"
+    - gridcell "51%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "11 Task 11 5 days 31% 01/01/2009 01/05/2009":
+    - gridcell "11"
+    - gridcell "Task 11"
+    - gridcell "5 days"
+    - gridcell "31%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "12 Task 12 5 days 90% 01/01/2009 01/05/2009":
+    - gridcell "12"
+    - gridcell "Task 12"
+    - gridcell "5 days"
+    - gridcell "90%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "13 Task 13 5 days 34% 01/01/2009 01/05/2009":
+    - gridcell "13"
+    - gridcell "Task 13"
+    - gridcell "5 days"
+    - gridcell "34%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "14 Task 14 5 days 10% 01/01/2009 01/05/2009":
+    - gridcell "14"
+    - gridcell "Task 14"
+    - gridcell "5 days"
+    - gridcell "10%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "15 Task 15 5 days 25% 01/01/2009 01/05/2009":
+    - gridcell "15"
+    - gridcell "Task 15"
+    - gridcell "5 days"
+    - gridcell "25%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "16 Task 16 5 days 26% 01/01/2009 01/05/2009":
+    - gridcell "16"
+    - gridcell "Task 16"
+    - gridcell "5 days"
+    - gridcell "26%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "17 Task 17 5 days 85% 01/01/2009 01/05/2009":
+    - gridcell "17"
+    - gridcell "Task 17"
+    - gridcell "5 days"
+    - gridcell "85%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "18 Task 18 5 days 19% 01/01/2009 01/05/2009":
+    - gridcell "18"
+    - gridcell "Task 18"
+    - gridcell "5 days"
+    - gridcell "19%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "19 Task 19 5 days 66% 01/01/2009 01/05/2009":
+    - gridcell "19"
+    - gridcell "Task 19"
+    - gridcell "5 days"
+    - gridcell "66%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "20 Task 20 5 days 96% 01/01/2009 01/05/2009":
+    - gridcell "20"
+    - gridcell "Task 20"
+    - gridcell "5 days"
+    - gridcell "96%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "21 Task 21 5 days 76% 01/01/2009 01/05/2009":
+    - gridcell "21"
+    - gridcell "Task 21"
+    - gridcell "5 days"
+    - gridcell "76%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "22 Task 22 5 days 81% 01/01/2009 01/05/2009":
+    - gridcell "22"
+    - gridcell "Task 22"
+    - gridcell "5 days"
+    - gridcell "81%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+- button "First Page"
+- button "Previous Page"
+- button "Next Page"
+- button "Last Page"
+- text: Showing all 500000 rows
+- button "Show Pagination Options"
+- heading "⌂ Search:" [level=2]:
+  - link "⌂":
+    - /url: /examples/index.html
+  - text: "Search:"
+- text: "Show tasks with % at least:"
+- slider: "1"
+- paragraph: "This page demonstrates various techniques for optimizing DataView performance for large client-side datasets. This page displays an interactive grid with 500'000 rows with real-time filtering. This is achieved by:"
+- list:
+  - listitem: Inlining filter function to cut down on the cost of function calls.
+  - listitem: Providing hints to indicate whether a filtering operation will result in narrowing or expanding scope or whether the scope is unchanged.
+  - listitem: Providing a range of rows for which onRowsChanged even should be fired.
+- paragraph
+- heading "View Source:" [level=2]
+- list:
+  - listitem:
+    - link "View the source for this example on Github":
+      - /url: https://github.com/6pac/SlickGrid/blob/master/examples/example-optimizing-dataview.html
+```

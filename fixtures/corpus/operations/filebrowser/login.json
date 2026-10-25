@@ -1,0 +1,63 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "filebrowser",
+  "page": "login",
+  "dossierSha256": "56fda0c29e0bf3d0e6ca3be60dfcced3835a05c3ea2ae8c2bbb49771ba44c905",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "File Browser public documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Fill in a username",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Username",
+          "value": "alice"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Username",
+          "value": "alice"
+        }
+      ]
+    },
+    {
+      "name": "Sign in with wrong credentials",
+      "effect": "state_change",
+      "negative": true,
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Username",
+          "value": "nobody"
+        },
+        {
+          "do": "fill",
+          "target": "Password",
+          "value": "wrong-password-1"
+        },
+        {
+          "do": "click",
+          "target": "Login"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Wrong credentials"
+        }
+      ]
+    }
+  ]
+}

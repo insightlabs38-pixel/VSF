@@ -1,0 +1,6254 @@
+{
+ "schema": "vsf-corpus-result-v1",
+ "partitions": [
+  "dev",
+  "validation"
+ ],
+ "pages": 41,
+ "missing": [],
+ "summary": {
+  "pages": 41,
+  "structural": {
+   "fields": {
+    "annotated": 109,
+    "found": 93,
+    "recall": 0.853,
+    "semanticExact": 0.968,
+    "semanticExactOrCoarser": 0.989
+   },
+   "actions": {
+    "annotated": 100,
+    "found": 98,
+    "recall": 0.98,
+    "semanticExact": 0.469,
+    "semanticExactOrCoarser": 0.469
+   },
+   "collections": {
+    "annotated": 20,
+    "found": 12,
+    "recall": 0.6,
+    "semanticExact": 0.417,
+    "semanticExactOrCoarser": 0.417
+   }
+  },
+  "falseClaims": 16,
+  "contradictions": {
+   "fields": 1,
+   "actions": 8,
+   "collections": 7
+  },
+  "composites": {
+   "annotated": 71,
+   "recognized": 0,
+   "recall": 0,
+   "byKind": {
+    "dialog": 3,
+    "menu": 2,
+    "sortable_columns": 11,
+    "editable_cell": 3,
+    "tree": 2,
+    "tabs": 2,
+    "bulk_selection": 5,
+    "other": 3,
+    "combobox_popup": 22,
+    "date_picker": 1,
+    "filter_bar": 9,
+    "pagination": 6,
+    "file_input": 2
+   }
+  },
+  "workflows": {
+   "annotated": 71,
+   "supported": 13,
+   "coverage": 0.183
+  },
+  "unannotatedRecognized": {
+   "fields": 185,
+   "actions": 1301,
+   "collections": 66
+  },
+  "recognizedOnPage": {
+   "fields": 278,
+   "actions": 1399,
+   "collections": 78
+  },
+  "declaredUnsupported": 2,
+  "executableOperationCorrectness": {
+   "measured": false,
+   "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+  },
+  "latency": {
+   "recognizeMsP50": 26,
+   "recognizeMsMax": 43.4,
+   "nodesMax": 2716,
+   "rssKbMax": 11088
+  }
+ },
+ "clusters": [
+  {
+   "key": "action-effect-unknown:read",
+   "instances": 13,
+   "sources": 4,
+   "families": 4,
+   "pages": 7,
+   "workflowsBlocked": 7,
+   "examples": [
+    "apg/dialog-modal: Verify Address (wanted read, got none)",
+    "apg/data-grids: Date (wanted read, got none)",
+    "apg/data-grids: Amount (wanted read, got none)",
+    "apg/sortable-table: First Name (wanted read, got none)"
+   ]
+  },
+  {
+   "key": "action-effect-unknown:state_change",
+   "instances": 12,
+   "sources": 4,
+   "families": 4,
+   "pages": 5,
+   "workflowsBlocked": 5,
+   "examples": [
+    "apg/toolbar: Bold (wanted state_change, got none)",
+    "apg/toolbar: Italic (wanted state_change, got none)",
+    "apg/toolbar: Underline (wanted state_change, got none)",
+    "apg/toolbar: Copy (wanted state_change, got none)"
+   ]
+  },
+  {
+   "key": "composite:sortable_columns",
+   "instances": 11,
+   "sources": 3,
+   "families": 3,
+   "pages": 11,
+   "workflowsBlocked": 7,
+   "examples": [
+    "apg/data-grids: Transactions January 1 through January 7 (wanted sortable_columns)",
+    "apg/sortable-table: Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable). (wanted sortable_columns)",
+    "datatables/zero-configuration: Column sorting (wanted sortable_columns)",
+    "datatables/scroll-y: Column sorting (wanted sortable_columns)"
+   ]
+  },
+  {
+   "key": "composite:bulk_selection",
+   "instances": 5,
+   "sources": 3,
+   "families": 3,
+   "pages": 5,
+   "workflowsBlocked": 3,
+   "examples": [
+    "apg/checkbox-mixed: Sandwich Condiments (wanted bulk_selection)",
+    "jquery-file-upload/empty: Delete selected files (wanted bulk_selection)",
+    "jquery-file-upload/files-queued: Delete selected files (wanted bulk_selection)",
+    "tabulator/selection: Row selection (wanted bulk_selection)"
+   ]
+  },
+  {
+   "key": "collection-contradict",
+   "instances": 7,
+   "sources": 2,
+   "families": 2,
+   "pages": 7,
+   "workflowsBlocked": 15,
+   "examples": [
+    "apg/data-grids: Transactions for January 1 through January 15 (wanted 6 columns, 5 rows, got 6 columns, 15 rows)",
+    "apg/treegrid: Inbox (wanted 3 columns, 4 rows, got 3 columns, 8 rows)",
+    "datatables/zero-configuration: Employees (wanted 6 columns, 10 rows, got 6 columns, 11 rows)",
+    "datatables/scroll-y: Employees (wanted 6 columns, 57 rows, got 6 columns, 58 rows)"
+   ]
+  },
+  {
+   "key": "collection-missing",
+   "instances": 8,
+   "sources": 2,
+   "families": 2,
+   "pages": 8,
+   "workflowsBlocked": 13,
+   "examples": [
+    "jquery-file-upload/files-queued: Queued files (wanted 2 columns, 2 rows)",
+    "tabulator/basic-table: Basic Table (wanted 5 columns, 7 rows)",
+    "tabulator/sorting-filtering: Sorting & Filtering (wanted 4 columns, 8 rows)",
+    "tabulator/editing: Inline Editing & Validation (wanted 7 columns, 4 rows)"
+   ]
+  },
+  {
+   "key": "composite:filter_bar",
+   "instances": 9,
+   "sources": 2,
+   "families": 2,
+   "pages": 8,
+   "workflowsBlocked": 8,
+   "examples": [
+    "datatables/zero-configuration: Search (wanted filter_bar)",
+    "datatables/scroll-y: Search (wanted filter_bar)",
+    "datatables/multi-col-sort: Search (wanted filter_bar)",
+    "datatables/select-row: Search (wanted filter_bar)"
+   ]
+  },
+  {
+   "key": "action-effect-unknown:navigation",
+   "instances": 19,
+   "sources": 2,
+   "families": 2,
+   "pages": 8,
+   "workflowsBlocked": 7,
+   "examples": [
+    "apg/combobox-autocomplete-list: States (wanted navigation, got none)",
+    "apg/combobox-datepicker: Choose Date (wanted navigation, got none)",
+    "apg/menu-button-links: WAI-ARIA Quick Links (wanted navigation, got none)",
+    "apg/menu-button-links: W3C Home Page (wanted navigation, got none)"
+   ]
+  },
+  {
+   "key": "composite:pagination",
+   "instances": 6,
+   "sources": 2,
+   "families": 2,
+   "pages": 6,
+   "workflowsBlocked": 7,
+   "examples": [
+    "datatables/zero-configuration: Pagination (wanted pagination)",
+    "datatables/multi-col-sort: Pagination (wanted pagination)",
+    "datatables/select-row: Pagination (wanted pagination)",
+    "datatables/multi-filter: Pagination (wanted pagination)"
+   ]
+  },
+  {
+   "key": "composite:other",
+   "instances": 3,
+   "sources": 2,
+   "families": 2,
+   "pages": 3,
+   "workflowsBlocked": 3,
+   "examples": [
+    "apg/disclosure-faq: Parking FAQs (wanted other)",
+    "apg/toolbar: Text Formatting (wanted other)",
+    "jquery-ui/accordion-default: Accordion (wanted other)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-create",
+   "instances": 2,
+   "sources": 2,
+   "families": 2,
+   "pages": 2,
+   "workflowsBlocked": 3,
+   "examples": [
+    "apg/dialog-modal: Add Delivery Address (wanted navigation, got create)",
+    "jquery-ui/dialog-modal-form: Create new user (wanted navigation, got create)"
+   ]
+  },
+  {
+   "key": "composite:dialog",
+   "instances": 3,
+   "sources": 2,
+   "families": 2,
+   "pages": 3,
+   "workflowsBlocked": 2,
+   "examples": [
+    "apg/dialog-modal: Add Delivery Address (wanted dialog)",
+    "jquery-ui/dialog-modal-form: Create new user (wanted dialog)",
+    "jquery-ui/dialog-modal-confirmation: Empty the recycle bin? (wanted dialog)"
+   ]
+  },
+  {
+   "key": "composite:editable_cell",
+   "instances": 3,
+   "sources": 2,
+   "families": 2,
+   "pages": 3,
+   "workflowsBlocked": 2,
+   "examples": [
+    "apg/data-grids: Transactions January 1 through January 7 (wanted editable_cell)",
+    "tabulator/editing: Editable cells (wanted editable_cell)",
+    "tabulator/full-demo: Editable cells (wanted editable_cell)"
+   ]
+  },
+  {
+   "key": "composite:tabs",
+   "instances": 2,
+   "sources": 2,
+   "families": 2,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": [
+    "apg/tabs-manual: Danish Composers (wanted tabs)",
+    "jquery-ui/tabs-default: Tabs (wanted tabs)"
+   ]
+  },
+  {
+   "key": "composite:combobox_popup",
+   "instances": 22,
+   "sources": 2,
+   "families": 2,
+   "pages": 3,
+   "workflowsBlocked": 1,
+   "examples": [
+    "jquery-ui/autocomplete-combobox: Your preferred programming language: (wanted combobox_popup)",
+    "jquery-ui/autocomplete-default: Tags: (wanted combobox_popup)",
+    "choices/demo: Default (wanted combobox_popup)",
+    "choices/demo: With remove button (wanted combobox_popup)"
+   ]
+  },
+  {
+   "key": "composite:menu",
+   "instances": 2,
+   "sources": 2,
+   "families": 2,
+   "pages": 2,
+   "workflowsBlocked": 1,
+   "examples": [
+    "apg/menu-button-links: WAI-ARIA Quick Links (wanted menu)",
+    "jquery-ui/menu-default: Menu (wanted menu)"
+   ]
+  },
+  {
+   "key": "composite:tree",
+   "instances": 2,
+   "sources": 2,
+   "families": 2,
+   "pages": 2,
+   "workflowsBlocked": 1,
+   "examples": [
+    "apg/treegrid: Inbox (wanted tree)",
+    "tabulator/tree-data: Nested rows (wanted tree)"
+   ]
+  },
+  {
+   "key": "field-missing:toggle",
+   "instances": 10,
+   "sources": 1,
+   "families": 1,
+   "pages": 3,
+   "workflowsBlocked": 4,
+   "examples": [
+    "apg/checkbox-mixed: All condiments (wanted toggle)",
+    "apg/radio: Regular crust (wanted toggle)",
+    "apg/radio: Deep dish (wanted toggle)",
+    "apg/radio: Thin crust (wanted toggle)"
+   ]
+  },
+  {
+   "key": "composite:file_input",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": [
+    "jquery-file-upload/empty: Add files... (wanted file_input)",
+    "jquery-file-upload/files-queued: Add files... (wanted file_input)"
+   ]
+  },
+  {
+   "key": "field-missing:file",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": [
+    "jquery-file-upload/empty: Choose File (wanted file)",
+    "jquery-file-upload/files-queued: Choose File (wanted file)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:destructive-as-dismiss",
+   "instances": 3,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 1,
+   "examples": [
+    "jquery-file-upload/empty: Cancel upload (wanted destructive, got dismiss)",
+    "jquery-file-upload/files-queued: Cancel upload (wanted destructive, got dismiss)",
+    "jquery-file-upload/files-queued: Cancel (wanted destructive, got dismiss)"
+   ]
+  },
+  {
+   "key": "field-missing:choice",
+   "instances": 3,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "jquery-ui/selectmenu-default: Select a file (wanted choice)",
+    "jquery-ui/selectmenu-default: Select a number (wanted choice)",
+    "jquery-ui/selectmenu-default: Select a title (wanted choice)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-query",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "apg/disclosure-faq: What do I do if I have a permit for an assigned lot, but can't find a space there? (wanted navigation, got query)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:read-as-destroy",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "tabulator/sorting-filtering: Clear filters (wanted read, got destroy)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:read-as-navigate",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "jquery-ui/autocomplete-combobox: Show All Items (wanted read, got navigate)"
+   ]
+  },
+  {
+   "key": "field-kind:date-as-choice",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "apg/combobox-datepicker: Date (wanted date, got choice)"
+   ]
+  },
+  {
+   "key": "action-missing:destructive",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "tabulator/full-demo: 🗑 (wanted destructive)"
+   ]
+  },
+  {
+   "key": "action-missing:state_change",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "jquery-ui/dialog-modal-form: Submit (wanted state_change)"
+   ]
+  },
+  {
+   "key": "composite:date_picker",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "jquery-ui/datepicker-default: Date: (wanted date_picker)"
+   ]
+  },
+  {
+   "key": "field-kind:choice-as-text",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "choices/demo: Option searchable by custom properties via data-custom-properties attribute (wanted choice, got text)"
+   ]
+  },
+  {
+   "key": "field-kind:date-as-text",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "jquery-ui/datepicker-default: Date: (wanted date, got text)"
+   ]
+  },
+  {
+   "key": "field-missing:text",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "tabulator/sorting-filtering: Age (wanted text)"
+   ]
+  }
+ ],
+ "perSource": {
+  "apg": {
+   "pages": 14,
+   "structural": {
+    "fields": {
+     "annotated": 27,
+     "found": 17,
+     "recall": 0.63,
+     "semanticExact": 0.941,
+     "semanticExactOrCoarser": 0.941
+    },
+    "actions": {
+     "annotated": 31,
+     "found": 31,
+     "recall": 1,
+     "semanticExact": 0.065,
+     "semanticExactOrCoarser": 0.065
+    },
+    "collections": {
+     "annotated": 5,
+     "found": 5,
+     "recall": 1,
+     "semanticExact": 0.6,
+     "semanticExactOrCoarser": 0.6
+    }
+   },
+   "falseClaims": 5,
+   "contradictions": {
+    "fields": 1,
+    "actions": 2,
+    "collections": 2
+   },
+   "composites": {
+    "annotated": 10,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "dialog": 1,
+     "menu": 1,
+     "sortable_columns": 2,
+     "editable_cell": 1,
+     "tree": 1,
+     "tabs": 1,
+     "bulk_selection": 1,
+     "other": 2
+    }
+   },
+   "workflows": {
+    "annotated": 18,
+    "supported": 2,
+    "coverage": 0.111
+   },
+   "unannotatedRecognized": {
+    "fields": 51,
+    "actions": 501,
+    "collections": 56
+   },
+   "recognizedOnPage": {
+    "fields": 68,
+    "actions": 532,
+    "collections": 61
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 28,
+    "recognizeMsMax": 43.4,
+    "nodesMax": 2716,
+    "rssKbMax": 11088
+   }
+  },
+  "jquery-ui": {
+   "pages": 11,
+   "structural": {
+    "fields": {
+     "annotated": 22,
+     "found": 19,
+     "recall": 0.864,
+     "semanticExact": 0.947,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 19,
+     "found": 18,
+     "recall": 0.947,
+     "semanticExact": 0.778,
+     "semanticExactOrCoarser": 0.778
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "recall": 1,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    }
+   },
+   "falseClaims": 2,
+   "contradictions": {
+    "fields": 0,
+    "actions": 2,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 8,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "combobox_popup": 2,
+     "date_picker": 1,
+     "dialog": 2,
+     "tabs": 1,
+     "other": 1,
+     "menu": 1
+    }
+   },
+   "workflows": {
+    "annotated": 16,
+    "supported": 5,
+    "coverage": 0.313
+   },
+   "unannotatedRecognized": {
+    "fields": 13,
+    "actions": 54,
+    "collections": 1
+   },
+   "recognizedOnPage": {
+    "fields": 32,
+    "actions": 72,
+    "collections": 2
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 24.2,
+    "recognizeMsMax": 30.8,
+    "nodesMax": 105,
+    "rssKbMax": 11080
+   }
+  },
+  "choices": {
+   "pages": 1,
+   "structural": {
+    "fields": {
+     "annotated": 31,
+     "found": 31,
+     "recall": 1,
+     "semanticExact": 0.968,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 6,
+     "found": 6,
+     "recall": 1,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "recall": null,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 20,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "combobox_popup": 20
+    }
+   },
+   "workflows": {
+    "annotated": 4,
+    "supported": 4,
+    "coverage": 1
+   },
+   "unannotatedRecognized": {
+    "fields": 104,
+    "actions": 7,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 135,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 27.8,
+    "recognizeMsMax": 27.8,
+    "nodesMax": 640,
+    "rssKbMax": 11084
+   }
+  },
+  "datatables": {
+   "pages": 6,
+   "structural": {
+    "fields": {
+     "annotated": 17,
+     "found": 17,
+     "recall": 1,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 11,
+     "found": 11,
+     "recall": 1,
+     "semanticExact": 0.909,
+     "semanticExactOrCoarser": 0.909
+    },
+    "collections": {
+     "annotated": 6,
+     "found": 6,
+     "recall": 1,
+     "semanticExact": 0.167,
+     "semanticExactOrCoarser": 0.167
+    }
+   },
+   "falseClaims": 5,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 5
+   },
+   "composites": {
+    "annotated": 18,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "filter_bar": 7,
+     "pagination": 5,
+     "sortable_columns": 6
+    }
+   },
+   "workflows": {
+    "annotated": 16,
+    "supported": 1,
+    "coverage": 0.063
+   },
+   "unannotatedRecognized": {
+    "fields": 0,
+    "actions": 704,
+    "collections": 8
+   },
+   "recognizedOnPage": {
+    "fields": 17,
+    "actions": 715,
+    "collections": 14
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 28.9,
+    "recognizeMsMax": 32.4,
+    "nodesMax": 2572,
+    "rssKbMax": 11084
+   }
+  },
+  "jquery-file-upload": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 2,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    },
+    "actions": {
+     "annotated": 8,
+     "found": 8,
+     "recall": 1,
+     "semanticExact": 0.25,
+     "semanticExactOrCoarser": 0.25
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 3,
+   "contradictions": {
+    "fields": 0,
+    "actions": 3,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 4,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "file_input": 2,
+     "bulk_selection": 2
+    }
+   },
+   "workflows": {
+    "annotated": 4,
+    "supported": 0,
+    "coverage": 0
+   },
+   "unannotatedRecognized": {
+    "fields": 4,
+    "actions": 28,
+    "collections": 1
+   },
+   "recognizedOnPage": {
+    "fields": 4,
+    "actions": 36,
+    "collections": 1
+   },
+   "declaredUnsupported": 2,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 26.1,
+    "recognizeMsMax": 26.1,
+    "nodesMax": 104,
+    "rssKbMax": 11040
+   }
+  },
+  "tabulator": {
+   "pages": 7,
+   "structural": {
+    "fields": {
+     "annotated": 10,
+     "found": 9,
+     "recall": 0.9,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 25,
+     "found": 24,
+     "recall": 0.96,
+     "semanticExact": 0.5,
+     "semanticExactOrCoarser": 0.5
+    },
+    "collections": {
+     "annotated": 7,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 1,
+   "contradictions": {
+    "fields": 0,
+    "actions": 1,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 11,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "sortable_columns": 3,
+     "filter_bar": 2,
+     "editable_cell": 2,
+     "pagination": 1,
+     "bulk_selection": 2,
+     "tree": 1
+    }
+   },
+   "workflows": {
+    "annotated": 13,
+    "supported": 1,
+    "coverage": 0.077
+   },
+   "unannotatedRecognized": {
+    "fields": 13,
+    "actions": 7,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 22,
+    "actions": 31,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 24.6,
+    "recognizeMsMax": 25.7,
+    "nodesMax": 309,
+    "rssKbMax": 11076
+   }
+  }
+ },
+ "rows": [
+  {
+   "source": "apg",
+   "page": "combobox-autocomplete-list",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "State",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "States",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     }
+    ],
+    "source": "apg",
+    "page": "combobox-autocomplete-list",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose a US state"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:navigation": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 30,
+     "collections": 5
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 29,
+     "collections": 5
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 1126,
+   "recognizeMs": 34.5,
+   "rssKb": 11076,
+   "captureMs": 901,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "combobox-select-only",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Favorite Fruit",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "apg",
+    "page": "combobox-select-only",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 29,
+     "collections": 4
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 29,
+     "collections": 4
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 536,
+   "recognizeMs": 28,
+   "rssKb": 11088,
+   "captureMs": 726,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "combobox-datepicker",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Date",
+      "want": "date",
+      "got": "choice",
+      "outcome": "contradict",
+      "cluster": "field-kind:date-as-choice"
+     },
+     {
+      "k": "action",
+      "name": "Choose Date",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     }
+    ],
+    "source": "apg",
+    "page": "combobox-datepicker",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1
+    },
+    "actions": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Enter or pick a travel date"
+     ],
+     "blockedBy": {
+      "field-kind:date-as-choice": 1,
+      "action-effect-unknown:navigation": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 3,
+     "actions": 38,
+     "collections": 10
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 37,
+     "collections": 10
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 1375,
+   "recognizeMs": 43.4,
+   "rssKb": 11084,
+   "captureMs": 839,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "dialog-modal",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Street:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "City:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "State:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Zip:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Special instructions:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Add Delivery Address",
+      "want": "navigation",
+      "got": "create",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:navigation-as-create"
+     },
+     {
+      "k": "action",
+      "name": "Verify Address",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Add",
+      "want": "state_change",
+      "got": "create",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Cancel",
+      "want": "navigation",
+      "got": "dismiss",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Add Delivery Address",
+      "want": "dialog",
+      "outcome": "missing",
+      "cluster": "composite:dialog"
+     }
+    ],
+    "source": "apg",
+    "page": "dialog-modal",
+    "fields": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 5,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "dialog": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Add a delivery address",
+      "Verify an entered address"
+     ],
+     "blockedBy": {
+      "action-effect-wrong:navigation-as-create": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 7,
+     "actions": 34,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 30,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 883,
+   "recognizeMs": 31.4,
+   "rssKb": 11040,
+   "captureMs": 1083,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "menu-button-links",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "WAI-ARIA Quick Links",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "W3C Home Page",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "W3C Web Accessibility Initiative",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Accessible Rich Internet Application Specification",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "WAI-ARIA Authoring Practices",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "WAI-ARIA Implementation Guide",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Accessible Name and Description",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "composite",
+      "name": "WAI-ARIA Quick Links",
+      "want": "menu",
+      "outcome": "missing",
+      "cluster": "composite:menu"
+     }
+    ],
+    "source": "apg",
+    "page": "menu-button-links",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 7,
+     "found": 7,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 7,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "menu": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Open a quick link from the menu"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:navigation": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 32,
+     "collections": 4
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 25,
+     "collections": 4
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 569,
+   "recognizeMs": 27.1,
+   "rssKb": 11072,
+   "captureMs": 1029,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "data-grids",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "Date",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Amount",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Hide Type and Category",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "collection",
+      "name": "Transactions January 1 through January 6",
+      "want": "5 columns, 6 rows",
+      "got": "5 columns, 6 rows",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Transactions January 1 through January 7",
+      "want": "6 columns, 7 rows",
+      "got": "6 columns, 7 rows",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Transactions for January 1 through January 15",
+      "want": "6 columns, 5 rows",
+      "got": "6 columns, 15 rows",
+      "outcome": "contradict",
+      "cluster": "collection-contradict"
+     },
+     {
+      "k": "composite",
+      "name": "Transactions January 1 through January 7",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     },
+     {
+      "k": "composite",
+      "name": "Transactions January 1 through January 7",
+      "want": "editable_cell",
+      "outcome": "missing",
+      "cluster": "composite:editable_cell"
+     }
+    ],
+    "source": "apg",
+    "page": "data-grids",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 3,
+     "rowsExact": 2,
+     "rowsChecked": 3
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "byKind": {
+      "sortable_columns": 1,
+      "editable_cell": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Sort transactions by date or amount",
+      "Hide type and category columns"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:read": 1,
+      "composite:sortable_columns": 1,
+      "action-effect-unknown:navigation": 1,
+      "collection-contradict": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 13,
+     "actions": 111,
+     "collections": 5
+    },
+    "unannotated": {
+     "fields": 13,
+     "actions": 108,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 2716,
+   "recognizeMs": 35,
+   "rssKb": 11080,
+   "captureMs": 1155,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "sortable-table",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Display sort icon in headers of sortable columns that are not sorted",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "First Name",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Last Name",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Company",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Favorite Number",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "collection",
+      "name": "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable).",
+      "want": "5 columns, 4 rows",
+      "got": "5 columns, 4 rows",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable).",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "apg",
+    "page": "sortable-table",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 4,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Sort students by column"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:read": 1,
+      "composite:sortable_columns": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 3,
+     "actions": 26,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 22,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 493,
+   "recognizeMs": 33.9,
+   "rssKb": 10992,
+   "captureMs": 731,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "treegrid",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "collection",
+      "name": "Inbox",
+      "want": "3 columns, 4 rows",
+      "got": "3 columns, 8 rows",
+      "outcome": "contradict",
+      "cluster": "collection-contradict"
+     },
+     {
+      "k": "composite",
+      "name": "Inbox",
+      "want": "tree",
+      "outcome": "missing",
+      "cluster": "composite:tree"
+     }
+    ],
+    "source": "apg",
+    "page": "treegrid",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "tree": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Expand and collapse conversation rows"
+     ],
+     "blockedBy": {
+      "collection-contradict": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 37,
+     "collections": 3
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 37,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 879,
+   "recognizeMs": 27.4,
+   "rssKb": 11040,
+   "captureMs": 761,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "listbox-scrollable",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Transuranium elements:",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "apg",
+    "page": "listbox-scrollable",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 3,
+     "actions": 28,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 28,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 846,
+   "recognizeMs": 27.5,
+   "rssKb": 11048,
+   "captureMs": 789,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "tabs-manual",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "composite",
+      "name": "Danish Composers",
+      "want": "tabs",
+      "outcome": "missing",
+      "cluster": "composite:tabs"
+     }
+    ],
+    "source": "apg",
+    "page": "tabs-manual",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "tabs": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Switch between composer tabs"
+     ],
+     "blockedBy": {
+      "composite:tabs": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 32,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 32,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 593,
+   "recognizeMs": 26,
+   "rssKb": 11076,
+   "captureMs": 793,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "checkbox-mixed",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "All condiments",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Lettuce",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Tomato",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Mustard",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Sprouts",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Sandwich Condiments",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     }
+    ],
+    "source": "apg",
+    "page": "checkbox-mixed",
+    "fields": {
+     "annotated": 5,
+     "found": 4,
+     "exact": 4,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "bulk_selection": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose sandwich condiments"
+     ],
+     "blockedBy": {
+      "field-missing:toggle": 1,
+      "composite:bulk_selection": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 7,
+     "actions": 21,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 21,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 427,
+   "recognizeMs": 25.6,
+   "rssKb": 11032,
+   "captureMs": 723,
+   "blocked": 1,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "radio",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Regular crust",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Deep dish",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Thin crust",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Pickup",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Home Delivery",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Dine in",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     }
+    ],
+    "source": "apg",
+    "page": "radio",
+    "fields": {
+     "annotated": 6,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Choose pizza crust",
+      "Choose pizza delivery"
+     ],
+     "blockedBy": {
+      "field-missing:toggle": 2
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 8,
+     "actions": 25,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 8,
+     "actions": 25,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 488,
+   "recognizeMs": 26.3,
+   "rssKb": 11072,
+   "captureMs": 736,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "disclosure-faq",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "What do I do if I have a permit for an assigned lot, but can't find a space there?",
+      "want": "navigation",
+      "got": "query",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:navigation-as-query"
+     },
+     {
+      "k": "action",
+      "name": "What do I do if I lose my permit or if my permit is stolen?",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Is there free parking on holidays?",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Do all parking facilities have the same enforcement rules?",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "composite",
+      "name": "Parking FAQs",
+      "want": "other",
+      "outcome": "missing",
+      "cluster": "composite:other"
+     }
+    ],
+    "source": "apg",
+    "page": "disclosure-faq",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "other": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Show or hide a parking FAQ answer"
+     ],
+     "blockedBy": {
+      "action-effect-wrong:navigation-as-query": 1,
+      "action-effect-unknown:navigation": 1,
+      "composite:other": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 29,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 25,
+     "collections": 2
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 417,
+   "recognizeMs": 25.4,
+   "rssKb": 11084,
+   "captureMs": 725,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "apg",
+   "page": "toolbar",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Text Align Left",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Text Align Center",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Text Align Right",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Night Mode",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Font size in points",
+      "want": "range",
+      "got": "range",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Text Sample",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Bold",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Italic",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Underline",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Copy",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Paste",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Cut",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Font: Sans-serif",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "composite",
+      "name": "Text Formatting",
+      "want": "other",
+      "outcome": "missing",
+      "cluster": "composite:other"
+     }
+    ],
+    "source": "apg",
+    "page": "toolbar",
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 7,
+     "found": 7,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 7,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "other": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Format text",
+      "Cut, copy and paste text"
+     ],
+     "blockedBy": {
+      "composite:other": 1,
+      "action-effect-unknown:state_change": 2,
+      "field-missing:toggle": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 8,
+     "actions": 60,
+     "collections": 16
+    },
+    "unannotated": {
+     "fields": 5,
+     "actions": 53,
+     "collections": 16
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 1401,
+   "recognizeMs": 29,
+   "rssKb": 11076,
+   "captureMs": 851,
+   "blocked": 2,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "autocomplete-combobox",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Your preferred programming language:",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Show All Items",
+      "want": "read",
+      "got": "navigate",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:read-as-navigate"
+     },
+     {
+      "k": "action",
+      "name": "Show underlying select",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Your preferred programming language:",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "autocomplete-combobox",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "combobox_popup": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose a programming language"
+     ],
+     "blockedBy": {
+      "composite:combobox_popup": 1,
+      "action-effect-wrong:read-as-navigate": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 3,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 44,
+   "recognizeMs": 24.9,
+   "rssKb": 11056,
+   "captureMs": 694,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "autocomplete-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Tags:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Tags:",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "autocomplete-default",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "combobox_popup": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 11,
+   "recognizeMs": 24,
+   "rssKb": 11048,
+   "captureMs": 694,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "datepicker-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Date:",
+      "want": "date",
+      "got": "text",
+      "outcome": "coarser",
+      "cluster": "field-kind:date-as-text"
+     },
+     {
+      "k": "composite",
+      "name": "Date:",
+      "want": "date_picker",
+      "outcome": "missing",
+      "cluster": "composite:date_picker"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "datepicker-default",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 1,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "date_picker": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 33,
+     "collections": 1
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 33,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 105,
+   "recognizeMs": 24.1,
+   "rssKb": 11032,
+   "captureMs": 985,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-form",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Name",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Email",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Password",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Create new user",
+      "want": "navigation",
+      "got": "create",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:navigation-as-create"
+     },
+     {
+      "k": "action",
+      "name": "Close",
+      "want": "navigation",
+      "got": "dismiss",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Submit",
+      "want": "state_change",
+      "outcome": "missing",
+      "cluster": "action-missing:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Create an account",
+      "want": "state_change",
+      "got": "create",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Cancel",
+      "want": "navigation",
+      "got": "dismiss",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Existing Users",
+      "want": "3 columns, 1 rows",
+      "got": "3 columns, 1 rows",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Create new user",
+      "want": "dialog",
+      "outcome": "missing",
+      "cluster": "composite:dialog"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "dialog-modal-form",
+    "fields": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 4,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "dialog": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Create a new user through the modal form",
+      "Dismiss the new user form without saving"
+     ],
+     "blockedBy": {
+      "action-effect-wrong:navigation-as-create": 2
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 5,
+     "collections": 1
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 51,
+   "recognizeMs": 23.5,
+   "rssKb": 11032,
+   "captureMs": 1013,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-confirmation",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "Close",
+      "want": "navigation",
+      "got": "dismiss",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Delete all items",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Cancel",
+      "want": "navigation",
+      "got": "dismiss",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Empty the recycle bin?",
+      "want": "dialog",
+      "outcome": "missing",
+      "cluster": "composite:dialog"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "dialog-modal-confirmation",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "dialog": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Confirm emptying the recycle bin",
+      "Dismiss the confirmation"
+     ],
+     "blockedBy": {
+      "composite:dialog": 2
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 4,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 23,
+   "recognizeMs": 23.7,
+   "rssKb": 11076,
+   "captureMs": 719,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "selectmenu-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Select a speed",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Select a file",
+      "want": "choice",
+      "outcome": "missing",
+      "cluster": "field-missing:choice"
+     },
+     {
+      "k": "field",
+      "name": "Select a number",
+      "want": "choice",
+      "outcome": "missing",
+      "cluster": "field-missing:choice"
+     },
+     {
+      "k": "field",
+      "name": "Select a title",
+      "want": "choice",
+      "outcome": "missing",
+      "cluster": "field-missing:choice"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "selectmenu-default",
+    "fields": {
+     "annotated": 4,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose values in the select menus"
+     ],
+     "blockedBy": {
+      "field-missing:choice": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 12,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 11,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 73,
+   "recognizeMs": 24.6,
+   "rssKb": 11080,
+   "captureMs": 711,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "spinner-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Select a value:",
+      "want": "range",
+      "got": "range",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Toggle disable/enable",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Toggle widget",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Get value",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Set value to 5",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "spinner-default",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 2,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 1,
+     "unsupported": [
+      "Set the value to 5",
+      "Read the current value"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:state_change": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 6,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 2,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 21,
+   "recognizeMs": 23.6,
+   "rssKb": 11060,
+   "captureMs": 697,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "tabs-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "composite",
+      "name": "Tabs",
+      "want": "tabs",
+      "outcome": "missing",
+      "cluster": "composite:tabs"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "tabs-default",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "tabs": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Switch between tabs of content"
+     ],
+     "blockedBy": {
+      "composite:tabs": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 3,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 3,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 20,
+   "recognizeMs": 30.8,
+   "rssKb": 11080,
+   "captureMs": 688,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "accordion-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "composite",
+      "name": "Accordion",
+      "want": "other",
+      "outcome": "missing",
+      "cluster": "composite:other"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "accordion-default",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "other": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Open one section of the accordion"
+     ],
+     "blockedBy": {
+      "composite:other": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 28,
+   "recognizeMs": 24.4,
+   "rssKb": 11032,
+   "captureMs": 708,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "checkboxradio-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "New York",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Paris",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "London",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "2 Star",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "3 Star",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "4 Star",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "5 Star",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "2 Double",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "2 Queen",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "1 Queen",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "1 King",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "checkboxradio-default",
+    "fields": {
+     "annotated": 11,
+     "found": 11,
+     "exact": 11,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "byKind": {}
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 2,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 11,
+     "actions": 0,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 0,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 60,
+   "recognizeMs": 24.3,
+   "rssKb": 11040,
+   "captureMs": 682,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "jquery-ui",
+   "page": "menu-default",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "Books",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Clothing",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Electronics",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Movies",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Music",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Menu",
+      "want": "menu",
+      "outcome": "missing",
+      "cluster": "composite:menu"
+     }
+    ],
+    "source": "jquery-ui",
+    "page": "menu-default",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 5,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "menu": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Pick an item from the menu"
+     ],
+     "blockedBy": {
+      "composite:menu": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 18,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 13,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 50,
+   "recognizeMs": 24.2,
+   "rssKb": 11024,
+   "captureMs": 694,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "choices",
+   "page": "demo",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Limited to 5 values with remove button",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Unique values only, no pasting",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Email addresses only",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Disabled",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Prepends and appends a value to each items return value",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Preset values passed through options",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "I18N labels",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Right-to-left",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Default",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "With remove button",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Option groups",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Options from remote source (Fetch API) & limited to 5",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Right-to-left",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Use label in event (add/remove)",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Default",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Options from remote source (Fetch API)",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Options from remote source (Fetch API) & remove button",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Option groups",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Right-to-left",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Options added via config with no search",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Option and option groups added via config",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Option selected via config with custom properties",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Option searchable by custom properties via data-custom-properties attribute",
+      "want": "choice",
+      "got": "text",
+      "outcome": "coarser",
+      "cluster": "field-kind:choice-as-text"
+     },
+     {
+      "k": "field",
+      "name": "Options without sorting",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Custom templates",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Cities",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Tube stations",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Change me!",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "And me!",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Change me!",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "And me!",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Remove item: preset-1",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Remove item: preset-2",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Remove item: Choice 1",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Remove item: Label Six",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Reset",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Submit",
+      "want": "state_change",
+      "got": "commit",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Default",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "With remove button",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Option groups",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Options from remote source (Fetch API) & limited to 5",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Right-to-left",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Use label in event (add/remove)",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Default",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Options from remote source (Fetch API)",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Options from remote source (Fetch API) & remove button",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Option groups",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Right-to-left",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Option and option groups added via config",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Option selected via config with custom properties",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Option searchable by custom properties via data-custom-properties attribute",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Options without sorting",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Custom templates",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Cities",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Tube stations",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "Change me!",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     },
+     {
+      "k": "composite",
+      "name": "And me!",
+      "want": "combobox_popup",
+      "outcome": "missing",
+      "cluster": "composite:combobox_popup"
+     }
+    ],
+    "source": "choices",
+    "page": "demo",
+    "fields": {
+     "annotated": 31,
+     "found": 31,
+     "exact": 30,
+     "coarser": 1,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 6,
+     "found": 6,
+     "exact": 6,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 20,
+     "recognized": 0,
+     "byKind": {
+      "combobox_popup": 20
+     }
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 4,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 135,
+     "actions": 13,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 104,
+     "actions": 7,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 640,
+   "recognizeMs": 27.8,
+   "rssKb": 11084,
+   "captureMs": 778,
+   "blocked": 6,
+   "mirrored": 0
+  },
+  {
+   "source": "datatables",
+   "page": "zero-configuration",
+   "partition": "validation",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Show entries",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Previous",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Next",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Employees",
+      "want": "6 columns, 10 rows",
+      "got": "6 columns, 11 rows",
+      "outcome": "contradict",
+      "cluster": "collection-contradict"
+     },
+     {
+      "k": "composite",
+      "name": "Search",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Pagination",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     },
+     {
+      "k": "composite",
+      "name": "Column sorting",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "datatables",
+    "page": "zero-configuration",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Search employees",
+      "Sort employees by column",
+      "Page through employees"
+     ],
+     "blockedBy": {
+      "composite:filter_bar": 1,
+      "collection-contradict": 3,
+      "composite:sortable_columns": 1,
+      "composite:pagination": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 117,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 115,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 418,
+   "recognizeMs": 26.8,
+   "rssKb": 11068,
+   "captureMs": 804,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "scroll-y",
+   "partition": "validation",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Search:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Employees",
+      "want": "6 columns, 57 rows",
+      "got": "6 columns, 58 rows",
+      "outcome": "contradict",
+      "cluster": "collection-contradict"
+     },
+     {
+      "k": "composite",
+      "name": "Search",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Column sorting",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "datatables",
+    "page": "scroll-y",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Search employees",
+      "Sort employees by column"
+     ],
+     "blockedBy": {
+      "composite:filter_bar": 1,
+      "collection-contradict": 2,
+      "composite:sortable_columns": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 112,
+     "collections": 4
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 112,
+     "collections": 3
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 796,
+   "recognizeMs": 28.9,
+   "rssKb": 11076,
+   "captureMs": 834,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "multi-col-sort",
+   "partition": "validation",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Show entries",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Previous",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Next",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Employees",
+      "want": "5 columns, 10 rows",
+      "got": "5 columns, 10 rows",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Search",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Pagination",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     },
+     {
+      "k": "composite",
+      "name": "Column sorting",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "datatables",
+    "page": "multi-col-sort",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 1,
+     "unsupported": [
+      "Sort employees by several columns",
+      "Page through employees"
+     ],
+     "blockedBy": {
+      "composite:sortable_columns": 1,
+      "composite:pagination": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 121,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 119,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 457,
+   "recognizeMs": 30.2,
+   "rssKb": 11040,
+   "captureMs": 782,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "select-row",
+   "partition": "validation",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Show entries",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Row count",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Previous",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Next",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Employees",
+      "want": "6 columns, 10 rows",
+      "got": "6 columns, 11 rows",
+      "outcome": "contradict",
+      "cluster": "collection-contradict"
+     },
+     {
+      "k": "composite",
+      "name": "Search",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Pagination",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     },
+     {
+      "k": "composite",
+      "name": "Column sorting",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "datatables",
+    "page": "select-row",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Count selected rows",
+      "Search employees",
+      "Page through employees"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:read": 1,
+      "collection-contradict": 3,
+      "composite:filter_bar": 1,
+      "composite:pagination": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 120,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 117,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 470,
+   "recognizeMs": 26.6,
+   "rssKb": 11068,
+   "captureMs": 804,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "multi-filter",
+   "partition": "validation",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Show entries",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search Name",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search Position",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search Office",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search Age",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search Start date",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search Salary",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Previous",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Next",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Employees",
+      "want": "6 columns, 10 rows",
+      "got": "6 columns, 11 rows",
+      "outcome": "contradict",
+      "cluster": "collection-contradict"
+     },
+     {
+      "k": "composite",
+      "name": "Search",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Column search",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Pagination",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     },
+     {
+      "k": "composite",
+      "name": "Column sorting",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "datatables",
+    "page": "multi-filter",
+    "fields": {
+     "annotated": 8,
+     "found": 8,
+     "exact": 8,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 4,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 2,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Filter employees by column",
+      "Search employees",
+      "Page through employees"
+     ],
+     "blockedBy": {
+      "composite:filter_bar": 2,
+      "collection-contradict": 3,
+      "composite:pagination": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 8,
+     "actions": 122,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 120,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 582,
+   "recognizeMs": 27.2,
+   "rssKb": 11044,
+   "captureMs": 811,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "datatables",
+   "page": "ajax-source",
+   "partition": "validation",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Show entries",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Search:",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Previous",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Next",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Employees",
+      "want": "6 columns, 10 rows",
+      "got": "6 columns, 11 rows",
+      "outcome": "contradict",
+      "cluster": "collection-contradict"
+     },
+     {
+      "k": "composite",
+      "name": "Search",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Pagination",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     },
+     {
+      "k": "composite",
+      "name": "Column sorting",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "datatables",
+    "page": "ajax-source",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 1,
+     "columnsExact": 1,
+     "rowsExact": 0,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1,
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Browse employees",
+      "Search employees"
+     ],
+     "blockedBy": {
+      "collection-contradict": 2,
+      "composite:pagination": 1,
+      "composite:filter_bar": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 123,
+     "collections": 2
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 121,
+     "collections": 1
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 2572,
+   "recognizeMs": 32.4,
+   "rssKb": 11084,
+   "captureMs": 899,
+   "blocked": 1,
+   "mirrored": 1
+  },
+  {
+   "source": "jquery-file-upload",
+   "page": "empty",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Choose File",
+      "want": "file",
+      "outcome": "missing",
+      "cluster": "field-missing:file"
+     },
+     {
+      "k": "action",
+      "name": "Start upload",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Cancel upload",
+      "want": "destructive",
+      "got": "dismiss",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:destructive-as-dismiss"
+     },
+     {
+      "k": "action",
+      "name": "Delete selected",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Add files...",
+      "want": "file_input",
+      "outcome": "missing",
+      "cluster": "composite:file_input"
+     },
+     {
+      "k": "composite",
+      "name": "Delete selected files",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     }
+    ],
+    "source": "jquery-file-upload",
+    "page": "empty",
+    "fields": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "byKind": {
+      "file_input": 1,
+      "bulk_selection": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Choose files to upload"
+     ],
+     "blockedBy": {
+      "field-missing:file": 1,
+      "composite:file_input": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 16,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 13,
+     "collections": 0
+    },
+    "unsupportedDeclared": 1,
+    "falseClaims": 1
+   },
+   "nodes": 70,
+   "recognizeMs": 25.2,
+   "rssKb": 11040,
+   "captureMs": 676,
+   "blocked": 3,
+   "mirrored": 7
+  },
+  {
+   "source": "jquery-file-upload",
+   "page": "files-queued",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Choose File",
+      "want": "file",
+      "outcome": "missing",
+      "cluster": "field-missing:file"
+     },
+     {
+      "k": "action",
+      "name": "Start upload",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Cancel upload",
+      "want": "destructive",
+      "got": "dismiss",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:destructive-as-dismiss"
+     },
+     {
+      "k": "action",
+      "name": "Delete selected",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Start",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Cancel",
+      "want": "destructive",
+      "got": "dismiss",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:destructive-as-dismiss"
+     },
+     {
+      "k": "collection",
+      "name": "Queued files",
+      "want": "2 columns, 2 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Add files...",
+      "want": "file_input",
+      "outcome": "missing",
+      "cluster": "composite:file_input"
+     },
+     {
+      "k": "composite",
+      "name": "Delete selected files",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     }
+    ],
+    "source": "jquery-file-upload",
+    "page": "files-queued",
+    "fields": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 2,
+     "contradict": 2
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "byKind": {
+      "file_input": 1,
+      "bulk_selection": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Choose files to upload",
+      "Review queue and start or cancel uploads",
+      "Select files and delete them"
+     ],
+     "blockedBy": {
+      "field-missing:file": 1,
+      "composite:file_input": 1,
+      "collection-missing": 1,
+      "action-effect-unknown:state_change": 1,
+      "action-effect-wrong:destructive-as-dismiss": 1,
+      "composite:bulk_selection": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 20,
+     "collections": 1
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 15,
+     "collections": 1
+    },
+    "unsupportedDeclared": 1,
+    "falseClaims": 2
+   },
+   "nodes": 104,
+   "recognizeMs": 26.1,
+   "rssKb": 11036,
+   "captureMs": 1525,
+   "blocked": 3,
+   "mirrored": 7
+  },
+  {
+   "source": "tabulator",
+   "page": "basic-table",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "collection",
+      "name": "Basic Table",
+      "want": "5 columns, 7 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Sortable columns",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     }
+    ],
+    "source": "tabulator",
+    "page": "basic-table",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "sortable_columns": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Sort the records by a column"
+     ],
+     "blockedBy": {
+      "composite:sortable_columns": 1,
+      "collection-missing": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 127,
+   "recognizeMs": 25.4,
+   "rssKb": 11064,
+   "captureMs": 629,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  {
+   "source": "tabulator",
+   "page": "sorting-filtering",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Name",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Age",
+      "want": "text",
+      "outcome": "missing",
+      "cluster": "field-missing:text"
+     },
+     {
+      "k": "field",
+      "name": "Department",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Active",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Only active",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Age < 30",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Dept = Engineering",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Clear filters",
+      "want": "read",
+      "got": "destroy",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:read-as-destroy"
+     },
+     {
+      "k": "collection",
+      "name": "Sorting & Filtering",
+      "want": "4 columns, 8 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Sortable columns",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     },
+     {
+      "k": "composite",
+      "name": "Header filters",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     }
+    ],
+    "source": "tabulator",
+    "page": "sorting-filtering",
+    "fields": {
+     "annotated": 4,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "byKind": {
+      "sortable_columns": 1,
+      "filter_bar": 1
+     }
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Filter rows with header filters",
+      "Apply a preset filter",
+      "Sort by one or more columns"
+     ],
+     "blockedBy": {
+      "composite:filter_bar": 1,
+      "collection-missing": 3,
+      "action-effect-unknown:read": 1,
+      "action-effect-wrong:read-as-destroy": 1,
+      "composite:sortable_columns": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 5,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1
+   },
+   "nodes": 137,
+   "recognizeMs": 23.9,
+   "rssKb": 11076,
+   "captureMs": 635,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  {
+   "source": "tabulator",
+   "page": "editing",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "collection",
+      "name": "Inline Editing & Validation",
+      "want": "7 columns, 4 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Editable cells",
+      "want": "editable_cell",
+      "outcome": "missing",
+      "cluster": "composite:editable_cell"
+     }
+    ],
+    "source": "tabulator",
+    "page": "editing",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "editable_cell": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Edit a cell in place"
+     ],
+     "blockedBy": {
+      "composite:editable_cell": 1,
+      "collection-missing": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 168,
+   "recognizeMs": 25.4,
+   "rssKb": 11076,
+   "captureMs": 625,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  {
+   "source": "tabulator",
+   "page": "pagination",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Page Size",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "First Page",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Prev Page",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Show Page 1",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Show Page 2",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Show Page 3",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Show Page 4",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Show Page 5",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Next Page",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Last Page",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "collection",
+      "name": "Pagination",
+      "want": "5 columns, ? rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Page controls",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     }
+    ],
+    "source": "tabulator",
+    "page": "pagination",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 9,
+     "found": 9,
+     "exact": 6,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "pagination": 1
+     }
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Move through pages of records",
+      "Change the page size"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:navigation": 1,
+      "composite:pagination": 2,
+      "collection-missing": 2
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 10,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 206,
+   "recognizeMs": 25.7,
+   "rssKb": 11056,
+   "captureMs": 617,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  {
+   "source": "tabulator",
+   "page": "selection",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Select Row",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Select all",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Deselect all",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Log selected data",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "collection",
+      "name": "Row Selection",
+      "want": "4 columns, 6 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Row selection",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     }
+    ],
+    "source": "tabulator",
+    "page": "selection",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "bulk_selection": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Select rows and log the selection"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:state_change": 1,
+      "action-effect-unknown:read": 1,
+      "collection-missing": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 7,
+     "actions": 4,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 6,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 110,
+   "recognizeMs": 24.6,
+   "rssKb": 11024,
+   "captureMs": 625,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  {
+   "source": "tabulator",
+   "page": "tree-data",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "Expand all",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Collapse all",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "collection",
+      "name": "Nested Tree Data",
+      "want": "3 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Nested rows",
+      "want": "tree",
+      "outcome": "missing",
+      "cluster": "composite:tree"
+     }
+    ],
+    "source": "tabulator",
+    "page": "tree-data",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 2,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "byKind": {
+      "tree": 1
+     }
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 0,
+     "unsupported": [
+      "Expand and collapse nested rows"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:navigation": 1,
+      "composite:tree": 1,
+      "collection-missing": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 0,
+     "actions": 3,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 73,
+   "recognizeMs": 24.3,
+   "rssKb": 11076,
+   "captureMs": 624,
+   "blocked": 0,
+   "mirrored": 1
+  },
+  {
+   "source": "tabulator",
+   "page": "full-demo",
+   "partition": "dev",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Name",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Department",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Active",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Select Row",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Add row",
+      "want": "state_change",
+      "got": "create",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Delete selected",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Download CSV",
+      "want": "read",
+      "got": "export",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Download JSON",
+      "want": "read",
+      "got": "export",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Download HTML",
+      "want": "read",
+      "got": "export",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Reset saved layout",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "🗑",
+      "want": "destructive",
+      "outcome": "missing",
+      "cluster": "action-missing:destructive"
+     },
+     {
+      "k": "collection",
+      "name": "Full Demo",
+      "want": "8 columns, 6 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Row selection",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     },
+     {
+      "k": "composite",
+      "name": "Header filters",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Sortable columns",
+      "want": "sortable_columns",
+      "outcome": "missing",
+      "cluster": "composite:sortable_columns"
+     },
+     {
+      "k": "composite",
+      "name": "Editable cells",
+      "want": "editable_cell",
+      "outcome": "missing",
+      "cluster": "composite:editable_cell"
+     }
+    ],
+    "source": "tabulator",
+    "page": "full-demo",
+    "fields": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 4,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 7,
+     "found": 6,
+     "exact": 6,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 4,
+     "recognized": 0,
+     "byKind": {
+      "bulk_selection": 1,
+      "filter_bar": 1,
+      "sortable_columns": 1,
+      "editable_cell": 1
+     }
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 1,
+     "unsupported": [
+      "Add a row and edit it",
+      "Select rows and delete them",
+      "Filter the table by name or department"
+     ],
+     "blockedBy": {
+      "composite:editable_cell": 1,
+      "collection-missing": 3,
+      "composite:bulk_selection": 1,
+      "composite:filter_bar": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 10,
+     "actions": 7,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 6,
+     "actions": 1,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0
+   },
+   "nodes": 309,
+   "recognizeMs": 24.5,
+   "rssKb": 11072,
+   "captureMs": 625,
+   "blocked": 0,
+   "mirrored": 1
+  }
+ ]
+}

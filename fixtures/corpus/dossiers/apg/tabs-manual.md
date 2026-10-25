@@ -1,0 +1,268 @@
+# W3C ARIA Authoring Practices Guide examples - tabs-manual
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Example of Tabs with Manual Activation
+State: as loaded
+What people do here (from the manifest):
+- switch between tabs of content
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/130
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../tabs-pattern.html
+- main:
+  - heading "Example of Tabs with Manual Activation" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The below example section demonstrates a tabs widget that implements the
+    - link "Tabs Pattern":
+      - /url: ../tabs-pattern.html
+    - text: ". In this example, a panel is displayed when users activate its tab with either Space , Enter , or a mouse click. So, for keyboard users, activating a tab requires two steps: 1) focus the tab, and 2) activate the tab. This two-step process is referred to as manual activation. Manual activation of tabs is recommended unless panels can be displayed instantly, i.e., all the panel content is present in the DOM. For additional guidance, see"
+    - link "Deciding When to Make Selection Automatically Follow Focus":
+      - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_selection_follows_focus
+    - text: .
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Example of Tabs with Automatic Activation":
+        - /url: tabs-automatic.html
+      - text: ": A tabs widget where tabs are automatically activated and their panel is displayed when they receive focus."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - heading "Danish Composers" [level=3]
+  - tablist "Danish Composers":
+    - tab "Maria Ahlefeldt" [selected]
+    - tab "Carl Andersen"
+    - tab "Ida da Fonseca"
+    - tab "Peter Müller"
+  - tabpanel "Maria Ahlefeldt":
+    - paragraph:
+      - link "Maria Theresia Ahlefeldt":
+        - /url: https://en.wikipedia.org/wiki/Maria_Theresia_Ahlefeldt
+      - text: (16 January 1755 – 20 December 1810) was a Danish, (originally German), composer. She is known as the first female composer in Denmark. Maria Theresia composed music for several ballets, operas, and plays of the royal theatre. She was given good critic as a composer and described as a “virkelig Tonekunstnerinde” ('a True Artist of Music').
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem:
+      - text: "To ensure people who rely on browser or operating system high contrast settings can both distinguish the active (selected) tab from other tabs and perceive keyboard focus:"
+      - list:
+        - listitem: The active tab has a 2 pixel border on its left and right sides and a 4 pixel border on top, while the names of inactive tabs have 1 pixel borders. The active tab is also 4 pixels higher than the inactive tabs.
+        - listitem:
+          - text: The focus ring is drawn with a CSS border on a child
+          - code: span
+          - text: element of the tab element. This focus span is separated from the tab border by 2 pixels of space to ensure focus and selection are separately perceivable. Note that when a tab element is focused, the outline of the tab element itself is set to 0 so that only one focus ring is displayed.
+        - listitem:
+          - text: Because transparent borders are visible on some systems when high contrast settings are enabled, only the focused
+          - code: span
+          - text: element has a visible border. When
+          - code: span
+          - text: elements are not indicating focus, they have a 0-width border and additional padding equal in width to the border that is used to indicate focus.
+    - listitem:
+      - text: Note that since the first element in every
+      - code: tabpanel
+      - text: is a focusable element (i.e., a link), the
+      - code: tabpanel
+      - text: is
+      - strong: not
+      - text: included in the page Tab sequence. To make it easy for screen reader users to navigate from a tab to the beginning of content in the active
+      - code: tabpanel
+      - text: ", it is recommended that all"
+      - code: tabpanel
+      - text: elements in a tab set are focusable if there are any panels in the set that contain content where the first element in the panel is not focusable.
+    - listitem: To ensure the tab content remains visible when the screen is magnified, the width of the tabs and tab panels are defined using a percentage of the screen width. As the page is magnified the height of the tab increases and the tab content re-flows to the new dimensions of the tab.
+  - heading "Keyboard Support" [level=2]
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Tab When focus moves into the tab list, places focus on the active tab element. When the tab list contains the focus, moves focus to the next element in the tab sequence, which is the a element in tabpanel.":
+        - cell "Tab"
+        - cell "When focus moves into the tab list, places focus on the active tab element. When the tab list contains the focus, moves focus to the next element in the tab sequence, which is the a element in tabpanel.":
+          - list:
+            - listitem:
+              - text: When focus moves into the tab list, places focus on the active
+              - code: tab
+              - text: element.
+            - listitem:
+              - text: When the tab list contains the focus, moves focus to the next element in the tab sequence, which is the
+              - code: a
+              - text: element in
+              - code: tabpanel
+              - text: .
+      - row "Enter Space When a tab has focus, activates the tab, causing its associated panel to be displayed.":
+        - cell "Enter Space"
+        - cell "When a tab has focus, activates the tab, causing its associated panel to be displayed."
+      - 'row "Right Arrow When a tab has focus: Moves focus to the next tab. If focus is on the last tab, moves focus to the first tab."':
+        - cell "Right Arrow"
+        - 'cell "When a tab has focus: Moves focus to the next tab. If focus is on the last tab, moves focus to the first tab."':
+          - text: "When a tab has focus:"
+          - list:
+            - listitem: Moves focus to the next tab.
+            - listitem: If focus is on the last tab, moves focus to the first tab.
+      - 'row "Left Arrow When a tab has focus: Moves focus to the previous tab. If focus is on the first tab, moves focus to the last tab."':
+        - cell "Left Arrow"
+        - 'cell "When a tab has focus: Moves focus to the previous tab. If focus is on the first tab, moves focus to the last tab."':
+          - text: "When a tab has focus:"
+          - list:
+            - listitem: Moves focus to the previous tab.
+            - listitem: If focus is on the first tab, moves focus to the last tab.
+      - row "Home When a tab has focus, moves focus to the first tab.":
+        - cell "Home"
+        - cell "When a tab has focus, moves focus to the first tab."
+      - row "End When a tab has focus, moves focus to the last tab.":
+        - cell "End"
+        - cell "When a tab has focus, moves focus to the last tab."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "tablist div Indicates that the element serves as a container for a set of tabs.":
+        - rowheader "tablist":
+          - code: tablist
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Indicates that the element serves as a container for a set of tabs."
+      - row "aria-labelledby=\"ID_REFERENCE\" div Provides a label that describes the purpose of the set of tabs.":
+        - cell
+        - rowheader "aria-labelledby=\"ID_REFERENCE\"":
+          - code: aria-labelledby="ID_REFERENCE"
+        - cell "div":
+          - code: div
+        - cell "Provides a label that describes the purpose of the set of tabs."
+      - row "tab button Indicates the element serves as a tab control. Provides a title for its associated tabpanel.":
+        - rowheader "tab":
+          - code: tab
+        - cell
+        - cell "button":
+          - code: button
+        - cell "Indicates the element serves as a tab control. Provides a title for its associated tabpanel.":
+          - list:
+            - listitem: Indicates the element serves as a tab control.
+            - listitem:
+              - text: Provides a title for its associated
+              - code: tabpanel
+              - text: .
+      - row "aria-selected=\"true\" button Indicates the tab control is activated and its associated panel is displayed. Set when a user activates a tab. Does not change when focus moves in the tablist.":
+        - cell
+        - rowheader "aria-selected=\"true\"":
+          - code: aria-selected="true"
+        - cell "button":
+          - code: button
+        - cell "Indicates the tab control is activated and its associated panel is displayed. Set when a user activates a tab. Does not change when focus moves in the tablist.":
+          - list:
+            - listitem: Indicates the tab control is activated and its associated panel is displayed.
+            - listitem: Set when a user activates a tab.
+            - listitem:
+              - text: Does not change when focus moves in the
+              - code: tablist
+              - text: .
+      - row "aria-selected=\"false\" button Indicates the tab control is not active and its associated panel is NOT displayed. Set for all tab elements in the tab set except the active tab; the one associated with the currently displayed panel.":
+        - cell
+        - rowheader "aria-selected=\"false\"":
+          - code: aria-selected="false"
+        - cell "button":
+          - code: button
+        - cell "Indicates the tab control is not active and its associated panel is NOT displayed. Set for all tab elements in the tab set except the active tab; the one associated with the currently displayed panel.":
+          - list:
+            - listitem:
+              - text: Indicates the tab control is not active and its associated panel is
+              - strong: NOT
+              - text: displayed.
+            - listitem: Set for all tab elements in the tab set except the active tab; the one associated with the currently displayed panel.
+      - row "tabindex=\"-1\" button Removes the element from the page Tab sequence. Set when a tab is not selected so that only the selected (active) tab is in the page Tab sequence. Since an HTML button element is used for the tab, it is not necessary to set tabindex=\"0\" on the selected (active) tab element. This approach to managing focus is described in the section on Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "button":
+          - code: button
+        - cell "Removes the element from the page Tab sequence. Set when a tab is not selected so that only the selected (active) tab is in the page Tab sequence. Since an HTML button element is used for the tab, it is not necessary to set tabindex=\"0\" on the selected (active) tab element. This approach to managing focus is described in the section on Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Removes the element from the page Tab sequence.
+            - listitem: Set when a tab is not selected so that only the selected (active) tab is in the page Tab sequence.
+            - listitem:
+              - text: Since an HTML
+              - code: button
+              - text: element is used for the tab, it is not necessary to set
+              - code: tabindex="0"
+              - text: on the selected (active) tab element.
+            - listitem:
+              - text: This approach to managing focus is described in the section on
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "aria-controls=\"ID_REFERENCE\" button Refers to the tabpanel element associated with the tab.":
+        - cell
+        - rowheader "aria-controls=\"ID_REFERENCE\"":
+          - code: aria-controls="ID_REFERENCE"
+        - cell "button":
+          - code: button
+        - cell "Refers to the tabpanel element associated with the tab.":
+          - text: Refers to the
+          - code: tabpanel
+          - text: element associated with the tab.
+      - row "tabpanel div Indicates the element serves as a container for tab panel content. Is hidden unless its associated tab control is activated.":
+        - rowheader "tabpanel":
+          - code: tabpanel
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Indicates the element serves as a container for tab panel content. Is hidden unless its associated tab control is activated.":
+          - list:
+            - listitem: Indicates the element serves as a container for tab panel content.
+            - listitem:
+              - text: Is hidden unless its associated
+              - code: tab
+              - text: control is activated.
+      - row "aria-labelledby=\"ID_REFERENCE\" div Refers to the tab element that controls the panel. Provides an accessible name for the tab panel.":
+        - cell
+        - rowheader "aria-labelledby=\"ID_REFERENCE\"":
+          - code: aria-labelledby="ID_REFERENCE"
+        - cell "div":
+          - code: div
+        - cell "Refers to the tab element that controls the panel. Provides an accessible name for the tab panel.":
+          - list:
+            - listitem:
+              - text: Refers to the
+              - code: tab
+              - text: element that controls the panel.
+            - listitem: Provides an accessible name for the tab panel.
+  - heading "Assistive Technology Support" [level=2]
+  - paragraph:
+    - link "Learn how to interpret and use assistive technology support data":
+      - /url: ../../../about/at-support-tables/at-support-tables.html
+  - iframe
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "tabs.css":
+        - /url: css/tabs.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "tabs-manual.js":
+        - /url: js/tabs-manual.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: <div class="tabs"> <h3 id="tablist-1"> Danish Composers </h3> <div role="tablist" aria-labelledby="tablist-1" class="manual"> <button id="tab-1" type="button" role="tab" aria-selected="true" aria-controls="tabpanel-1"> <span class="focus"> Maria Ahlefeldt </span> </button> <button id="tab-2" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-2" tabindex="-1"> <span class="focus"> Carl Andersen </span> </button> <button id="tab-3" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-3" tabindex="-1"> <span class="focus"> Ida da Fonseca </span> </button> <button id="tab-4" type="button" role="tab" aria-selected="false" aria-controls="tabpanel-4" tabindex="-1"> <span class="focus"> Peter Müller </span> </button> </div> <div id="tabpanel-1" role="tabpanel" aria-labelledby="tab-1"> <p> <a href="https://en.wikipedia.org/wiki/Maria_Theresia_Ahlefeldt"> Maria Theresia Ahlefeldt </a> (16 January 1755 – 20 December 1810) was a Danish, (originally German), composer. She is known as the first female composer in Denmark. Maria Theresia composed music for several ballets, operas, and plays of the royal theatre. She was given good critic as a composer and described as a “ <span lang="da"> virkelig Tonekunstnerinde </span> ” ('a True Artist of Music'). </p> </div> <div id="tabpanel-2" role="tabpanel" aria-labelledby="tab-2" class="is-hidden"> <p> <a href="https://en.wikipedia.org/wiki/Joachim_Andersen_(composer)"> Carl Joachim Andersen </a> (29 April 1847 – 7 May 1909) was a Danish flutist, conductor and composer born in Copenhagen, son of the flutist Christian Joachim Andersen. Both as a virtuoso and as composer of flute music, he is considered one of the best of his time. He was considered to be a tough leader and teacher and demanded as such a lot from his orchestras but through that style he reached a high level. </p> </div> <div id="tabpanel-3" role="tabpanel" aria-labelledby="tab-3" class="is-hidden"> <p> <a href="https://en.wikipedia.org/wiki/Ida_Henriette_da_Fonseca"> Ida Henriette da Fonseca </a> (July 27, 1802 – July 6, 1858) was a Danish opera singer and composer. Ida Henriette da Fonseca was the daughter of Abraham da Fonseca (1776–1849) and Marie Sofie Kiærskou (1784–1863). She and her sister Emilie da Fonseca were students of Giuseppe Siboni, choir master of the Opera in Copenhagen. She was given a place at the royal Opera alongside her sister the same year she debuted in 1827. </p> </div> <div id="tabpanel-4" role="tabpanel" aria-labelledby="tab-4" class="is-hidden"> <p> <a href="https://en.wikipedia.org/wiki/Peter_Lange-M%C3%BCller"> Peter Erasmus Lange-Müller </a> (1 December 1850 – 26 February 1926) was a Danish composer and pianist. His compositional style was influenced by Danish folk music and by the work of Robert Schumann; Johannes Brahms; and his Danish countrymen, including J.P.E. Hartmann. </p> </div> </div>
+  - separator "End of HTML Source Code"
+```

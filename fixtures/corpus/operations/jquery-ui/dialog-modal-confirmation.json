@@ -1,0 +1,51 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "dialog-modal-confirmation",
+  "dossierSha256": "a0674c6bdaed90a84b113d96ff69adb47bcb407b9152d4424485a638f7866724",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Cancel the confirmation",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Cancel"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "These items will be permanently deleted"
+        }
+      ]
+    },
+    {
+      "name": "Close the confirmation",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Close"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "These items will be permanently deleted"
+        }
+      ]
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render`; do not edit by hand.
 
-**Next eligible:** `VSF-B11-T01`
+**Next eligible:** `VSF-B12-T01`
 
 | Batch | Gate | Tasks | Status | Decision |
 |---|---|---:|---|---|
@@ -17,8 +17,8 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B08 | G8 | 10/10 | DONE | PROCEED |
 | B09 | G9 | 9/9 | DONE | PROCEED |
 | B10 | G10 | 8/8 | DONE | PROCEED |
-| B11 | G11 | 0/6 | BLOCKED | - |
-| B12 | G12 | 0/6 | TODO | - |
+| B11 | G11 | 10/10 | DONE | PROCEED |
+| B12 | G12 | 0/6 | READY | - |
 | B13 | G13 | 5/5 | DONE | PROCEED |
 | B14 | G14 | 15/15 | DONE | PROCEED |
 | B15 | G15 | 0/6 | READY | - |
@@ -27,7 +27,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 | B18 | G18 | 0/7 | TODO | - |
 | B19 | G19 | 0/5 | TODO | - |
 | B20 | G20 | 0/4 | TODO | - |
-| B21 | G21 | 0/3 | TODO | - |
+| B21 | G21 | 0/3 | READY | - |
 | B22 | G22 | 0/4 | TODO | - |
 | B23 | G23 | 0/4 | TODO | - |
 | B24 | G24 | 0/5 | TODO | - |
@@ -172,16 +172,20 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B11 · Expand common application coverage
 
-- [ ] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding _(BLOCKED)_
-- [ ] `VSF-B11-T02` Grow real conformance implementations for critical catalog families
-- [ ] `VSF-B11-T03` Evaluate custom combobox/select, virtualization and modal form dependencies
-- [ ] `VSF-B11-T04` Add upload/download and export with security policy
-- [ ] `VSF-B11-T05` Improve bulk operation and pagination semantics with source rate limits
-- [ ] `VSF-B11-T06` Re-run independent app corpus and measure fix leverage
+- [x] `VSF-B11-T01` Prioritize top failure clusters from corpus rather than vendor branding
+- [x] `VSF-B11-T02` Grow real conformance implementations for critical catalog families
+- [x] `VSF-B11-T03` Evaluate custom combobox/select, virtualization and modal form dependencies
+- [x] `VSF-B11-T04` Add upload/download and export with security policy
+- [x] `VSF-B11-T05` Improve bulk operation and pagination semantics with source rate limits
+- [x] `VSF-B11-T06` Re-run independent app corpus and measure fix leverage
+- [x] `VSF-B11-T07` Bootstrap an independent application corpus and measured baseline
+- [x] `VSF-B11-T08` Extend the development corpus with uploads, virtualized grids, pagination and bulk selection
+- [x] `VSF-B11-T09` Fill corpus gaps: a virtualized grid, a server-backed administrative site with bulk actions and pagination, and a calendar
+- [x] `VSF-B11-T10` Measure executable-operation correctness against disposable state, before and after
 
 ### B12 · Expand advanced UI and developer/research tools
 
-- [ ] `VSF-B12-T01` Adopt conformance-tested terminal/editor adapters and lazy load them
+- [ ] `VSF-B12-T01` Adopt conformance-tested terminal/editor adapters and lazy load them _(READY)_
 - [ ] `VSF-B12-T02` Model streaming, process ownership, cancel/reconnect and source session
 - [ ] `VSF-B12-T03` Build notebook document/cell state mapping and preserving kernel behavior
 - [ ] `VSF-B12-T04` Add charts with accessible alternate presentation and source filters
@@ -269,7 +273,7 @@ Derived from `docs/deep/queue/state.json` by `node tools/queue/src/cli.ts render
 
 ### B21 · Cross-browser compatibility and transport evolution
 
-- [ ] `VSF-B21-T01` Build alternate observation adapter behind capability manifest
+- [ ] `VSF-B21-T01` Build alternate observation adapter behind capability manifest _(READY)_
 - [ ] `VSF-B21-T02` Run conformance matrix and isolate browser-specific behaviors
 - [ ] `VSF-B21-T03` Validate fallback when debugger/CDP permission unavailable
 

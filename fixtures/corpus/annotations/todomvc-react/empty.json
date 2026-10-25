@@ -1,0 +1,36 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "todomvc-react",
+  "page": "empty",
+  "dossierSha256": "5a2ceab28ee6bdeb5f303fbfcc7b0315189b375cdb27186a7fc1424ae5e382f7",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-todomvc",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md guide (revised scope)",
+      "annotation.ts type shapes",
+      "dossier todomvc-react/empty.md (Chromium accessibility tree)",
+      "TodoMVC specification behaviour: add, toggle, edit on double click, delete, filter All/Active/Completed, clear completed, toggle all"
+    ]
+  },
+  "fields": [
+    {
+      "name": "New Todo Input",
+      "kind": "text"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Add a todo",
+      "needs": [
+        "New Todo Input"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

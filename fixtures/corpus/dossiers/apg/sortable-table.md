@@ -1,0 +1,169 @@
+# W3C ARIA Authoring Practices Guide examples - sortable-table
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Sortable Table Example
+State: as loaded
+What people do here (from the manifest):
+- sort a table of records by column
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/134
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../table-pattern.html
+- main:
+  - heading "Sortable Table Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The example below illustrates an implementation of the
+    - link "Table Pattern":
+      - /url: ../table-pattern.html
+    - text: for a table with sortable rows. The example uses HTML table markup for all elements of the table structure, e.g., cells, rows, column headers, and caption. The
+    - code: aria-sort
+    - text: attribute is set on the column header of the currently sorted column, and the header text of sortable columns is wrapped in a
+    - code: button
+    - text: element. One column, the Address column is not sortable.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Data Grid Examples":
+        - /url: ../../grid/examples/data-grids.html
+      - text: ": Three example implementations of grid that include features relevant to presenting tabular information, such as content editing, sort, and column hiding."
+    - listitem:
+      - link "Table Example":
+        - /url: table.html
+      - text: ": ARIA table made using HTML"
+      - code: div
+      - text: and
+      - code: span
+      - text: elements.
+  - heading "Example Option" [level=2]
+  - checkbox "Display sort icon in headers of sortable columns that are not sorted"
+  - text: Display sort icon in headers of sortable columns that are not sorted
+  - paragraph:
+    - text: Adds a diamond shaped icon (e.g. ♢) to the header of each column that can be sorted but is not currently sorted. Some sortable tables add an icon to unsorted columns to help users distinguish sortable columns from columns that cannot be sorted. It is
+    - emphasis: important
+    - text: that the shape of the unsorted icon differ in more than just color and size from the icons that indicate sort direction (e.g. '▼' and '▲') so people with visual impairments can easily distinguish them.
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - table "Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable).":
+    - caption: Students currently enrolled in WAI-ARIA 101 (column headers with buttons are sortable).
+    - rowgroup:
+      - row "First Name Last Name Company Address Favorite Number":
+        - cell "First Name":
+          - button "First Name"
+        - cell "Last Name":
+          - button "Last Name"
+        - cell "Company":
+          - button "Company"
+        - cell "Address"
+        - cell "Favorite Number":
+          - button "Favorite Number"
+    - rowgroup:
+      - row "Fred Jackson Canary, Inc. 123 Broad St. 56":
+        - cell "Fred"
+        - cell "Jackson"
+        - cell "Canary, Inc."
+        - cell "123 Broad St."
+        - cell "56"
+      - row "Sara James Cardinal, Inc. 457 First St. 7":
+        - cell "Sara"
+        - cell "James"
+        - cell "Cardinal, Inc."
+        - cell "457 First St."
+        - cell "7"
+      - row "Ralph Jefferson Robin, Inc. 456 Main St. 513":
+        - cell "Ralph"
+        - cell "Jefferson"
+        - cell "Robin, Inc."
+        - cell "456 Main St."
+        - cell "513"
+      - row "Nancy Jensen Eagle, Inc. 2203 Logan Dr. 3.5":
+        - cell "Nancy"
+        - cell "Jensen"
+        - cell "Eagle, Inc."
+        - cell "2203 Logan Dr."
+        - cell "3.5"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem: To help screen reader users understand the purpose of the buttons in the column headers, an off-screen description of the sort functionality of the buttons is appended to the caption text. The description is added to the caption instead of to each button to prevent repetitious verbosity that could interfere with understanding of the column titles.
+    - listitem:
+      - text: To enhance perceivability when operating the sort buttons, visual keyboard focus and hover are styled using CSS
+      - code: :hover
+      - text: and
+      - code: :focus
+      - text: "pseudo-classes:"
+      - list:
+        - listitem: To make it easier to perceive when a button has focus, the focus indicator encompasses both the column label and sort direction icon.
+        - listitem: The cursor is changed to a pointer when hovering over the button to help people identify it as an interactive element.
+        - listitem: To make it easier to perceive that clicking either the column label or the sort direction icon will sort the table, hover styles the button and icon in the same way that focus does.
+        - listitem: To make activating sort easier for people with visual and movement impairments who are using a pointing device, the click target is maximized not only by making both the column label and sort icon clickable but also by using CSS positioning and sizing to make the button fill the entire header cell area.
+    - listitem: To ensure the sorting direction icons have sufficient contrast with the background when high contrast settings invert colors, character entities (e.g. '▼' and '▲') are used to indicate the sorting direction.
+  - heading "Keyboard Support" [level=2]
+  - paragraph: "Not applicable: The only interactive elements are HTML button elements, and all their keyboard functionality is provided by browsers."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "aria-sort=\"value\" th Set on the currently sorted column. When the sorted column is changed, the aria-sort attribute is removed and set on the newly sorted column. A value of \"ascending\" indicates the data cells in the column are sorted in ascending order. A value of \"descending\" indicates the data cells in the column are sorted in descending order.":
+        - cell
+        - rowheader "aria-sort=\"value\"":
+          - code:
+            - text: aria-sort="
+            - emphasis: value
+            - text: "\""
+        - cell "th":
+          - code: th
+        - cell "Set on the currently sorted column. When the sorted column is changed, the aria-sort attribute is removed and set on the newly sorted column. A value of \"ascending\" indicates the data cells in the column are sorted in ascending order. A value of \"descending\" indicates the data cells in the column are sorted in descending order.":
+          - list:
+            - listitem:
+              - text: Set on the currently sorted column. When the sorted column is changed, the
+              - code: aria-sort
+              - text: attribute is removed and set on the newly sorted column.
+            - listitem:
+              - text: A value of "
+              - code: ascending
+              - text: "\" indicates the data cells in the column are sorted in ascending order."
+            - listitem:
+              - text: A value of "
+              - code: descending
+              - text: "\" indicates the data cells in the column are sorted in descending order."
+      - row "aria-hidden=\"true\" span Removes the character entities used for sort icons from the accessibility tree to prevent them from being included in the accessible name of the sort buttons.":
+        - cell
+        - rowheader "aria-hidden=\"true\"":
+          - code: aria-hidden="true"
+        - cell "span":
+          - code: span
+        - cell "Removes the character entities used for sort icons from the accessibility tree to prevent them from being included in the accessible name of the sort buttons."
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "sortable-table.css":
+        - /url: css/sortable-table.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "sortable-table.js":
+        - /url: js/sortable-table.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: <table class="sortable"> <caption> Students currently enrolled in WAI-ARIA 101 <span class="sr-only"> (column headers with buttons are sortable). </span> </caption> <thead> <tr> <th> <button> First Name <span aria-hidden="true"></span> </button> </th> <th aria-sort="ascending"> <button> Last Name <span aria-hidden="true"></span> </button> </th> <th> <button> Company <span aria-hidden="true"></span> </button> </th> <th class="no-sort"> Address </th> <th class="num"> <button> Favorite Number <span aria-hidden="true"></span> </button> </th> </tr> </thead> <tbody> <tr> <td> Fred </td> <td> Jackson </td> <td> Canary, Inc. </td> <td> 123 Broad St. </td> <td class="num"> 56 </td> </tr> <tr> <td> Sara </td> <td> James </td> <td> Cardinal, Inc. </td> <td> 457 First St. </td> <td class="num"> 7 </td> </tr> <tr> <td> Ralph </td> <td> Jefferson </td> <td> Robin, Inc. </td> <td> 456 Main St. </td> <td class="num"> 513 </td> </tr> <tr> <td> Nancy </td> <td> Jensen </td> <td> Eagle, Inc. </td> <td> 2203 Logan Dr. </td> <td class="num"> 3.5 </td> </tr> </tbody> </table>
+  - separator "End of HTML Source Code"
+```

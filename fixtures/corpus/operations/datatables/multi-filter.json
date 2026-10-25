@@ -1,0 +1,93 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "datatables",
+  "page": "multi-filter",
+  "dossierSha256": "84cfab7b8fb42a8e47702a8bae26d06ad6a38256b23c69aea6a651a178a797e0",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "DataTables public documentation (datatables.net examples)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Search for one employee",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search:",
+          "value": "Airi"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 1 to 1 of 1 entries"
+        }
+      ]
+    },
+    {
+      "name": "Show 25 entries",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Show entries",
+          "value": "25"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 1 to 25 of 57 entries"
+        }
+      ]
+    },
+    {
+      "name": "Go to next page",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Next"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 11 to 20 of 57 entries"
+        },
+        {
+          "kind": "absent",
+          "contains": "Airi Satou"
+        }
+      ]
+    },
+    {
+      "name": "Filter by office column",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search Office",
+          "value": "Tokyo"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Airi Satou"
+        },
+        {
+          "kind": "absent",
+          "contains": "Bruno Nash"
+        }
+      ]
+    }
+  ]
+}

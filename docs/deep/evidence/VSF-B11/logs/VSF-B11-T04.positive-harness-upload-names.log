@@ -1,0 +1,12 @@
+$ node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/files.test.ts
+✔ a file with an awkward name reaches the page with its exact name, size and bytes (3623.576127ms)
+✔ two file inputs under the browser's own name are ambiguous and nothing is sent to either (2106.261455ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6478.755692
+[exit 0]

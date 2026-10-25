@@ -1,0 +1,491 @@
+# W3C ARIA Authoring Practices Guide examples - data-grids
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Data Grid Examples
+State: as loaded
+What people do here (from the manifest):
+- browse and sort a data grid of records
+- select rows with checkboxes
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/133
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../grid-pattern.html
+- main:
+  - heading "Data Grid Examples" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: Following are three example implementations of the
+    - link "Grid Pattern":
+      - /url: ../grid-pattern.html
+    - text: that demonstrate the keyboard interactions and ARIA features that enable accessible, interactive presentation of tabular information. Each of the following three grids presents a set of financial transactions. The first is a simple grid with minimum ARIA markup and keyboard support. The second and third implementations add advanced features, such as content editing, sort, scroll, and show/hide.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Layout Grid Examples":
+        - /url: layout-grids.html
+      - text: ": Three example implementations of grids that are used to lay out widgets, including a collection of navigation links, a message recipients list, and a set of search results."
+    - listitem:
+      - link "Advanced Data Grid Example":
+        - /url: advanced-data-grid.html
+      - text: ": Example of a grid with behaviors and features similar to a typical spreadsheet, including cell and row selection."
+  - heading "Examples" [level=2]
+  - 'heading "Example 1: Minimal Data Grid" [level=3]'
+  - button "Open In CodePen"
+  - 'separator "Start of Example 1: Minimal Data Grid"'
+  - heading "Transactions January 1 through January 6" [level=4]
+  - grid "Transactions January 1 through January 6":
+    - rowgroup:
+      - row "Date Type Description Amount Balance":
+        - gridcell "Date"
+        - gridcell "Type"
+        - gridcell "Description"
+        - gridcell "Amount"
+        - gridcell "Balance"
+      - row "01-Jan-16 Deposit Cash Deposit $1,000,000.00 $1,000,000.00":
+        - gridcell "01-Jan-16"
+        - gridcell "Deposit"
+        - gridcell "Cash Deposit":
+          - link "Cash Deposit":
+            - /url: "#"
+        - gridcell "$1,000,000.00"
+        - gridcell "$1,000,000.00"
+      - row "02-Jan-16 Debit Down Town Grocery $250.00 $999,750.00":
+        - gridcell "02-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Down Town Grocery":
+          - link "Down Town Grocery":
+            - /url: "#"
+        - gridcell "$250.00"
+        - gridcell "$999,750.00"
+      - row "03-Jan-16 Debit Hot Coffee $9.00 $999,741.00":
+        - gridcell "03-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Hot Coffee":
+          - link "Hot Coffee":
+            - /url: "#"
+        - gridcell "$9.00"
+        - gridcell "$999,741.00"
+      - row "04-Jan-16 Debit The Filling Station $88.00 $999,653.00":
+        - gridcell "04-Jan-16"
+        - gridcell "Debit"
+        - gridcell "The Filling Station":
+          - link "The Filling Station":
+            - /url: "#"
+        - gridcell "$88.00"
+        - gridcell "$999,653.00"
+      - row "05-Jan-16 Debit Tinker's Hardware $3,421.00 $996,232.00":
+        - gridcell "05-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Tinker's Hardware":
+          - link "Tinker's Hardware":
+            - /url: "#"
+        - gridcell "$3,421.00"
+        - gridcell "$996,232.00"
+      - row "06-Jan-16 Debit Cutey's Salon $700.00 $995,532.00":
+        - gridcell "06-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Cutey's Salon":
+          - link "Cutey's Salon":
+            - /url: "#"
+        - gridcell "$700.00"
+        - gridcell "$995,532.00"
+  - 'separator "End of Example 1: Minimal Data Grid"'
+  - heading "Notes" [level=4]
+  - list:
+    - listitem: Data cells can be focused using standard navigation keys, including directional arrows, Home , End , Control + Home , and Control + End .
+    - listitem: The Page Down and Page Up keys are not supported since such scroll-like functions are not useful with so few rows.
+    - listitem: The links can be activated with the keyboard when focused.
+    - listitem: Since the header cells do not provide any functionality, they are not focusable. Screen reader users are still aware of their presence because row and column headers are announced by screen readers during navigation. And, they are also navigable when using a screen reader's reading or browsing mode.
+  - 'heading "Example 2: Sortable Data Grid With Editable Cells" [level=3]'
+  - button "Open In CodePen"
+  - 'separator "Start of Example 2: Sortable Data Grid With Editable Cells"'
+  - heading "Transactions January 1 through January 7" [level=4]
+  - grid "Transactions January 1 through January 7":
+    - rowgroup:
+      - row "Date Type Description Category Amount Balance":
+        - gridcell "Date":
+          - button "Date"
+        - gridcell "Type"
+        - gridcell "Description"
+        - gridcell "Category"
+        - gridcell "Amount":
+          - button "Amount"
+        - gridcell "Balance"
+      - row "01-Jan-16 Deposit Cash Deposit Income $1,000,000.00 $1,000,000.00":
+        - gridcell "01-Jan-16"
+        - gridcell "Deposit"
+        - gridcell "Cash Deposit":
+          - button "Cash Deposit"
+        - gridcell "Income":
+          - button "Income"
+        - gridcell "$1,000,000.00"
+        - gridcell "$1,000,000.00"
+      - row "02-Jan-16 Debit Down Town Grocery Groceries $250.00 $999,750.00":
+        - gridcell "02-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Down Town Grocery":
+          - button "Down Town Grocery"
+        - gridcell "Groceries":
+          - button "Groceries"
+        - gridcell "$250.00"
+        - gridcell "$999,750.00"
+      - row "03-Jan-16 Debit Hot Coffee Dining Out $9.00 $999,741.00":
+        - gridcell "03-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Hot Coffee":
+          - button "Hot Coffee"
+        - gridcell "Dining Out":
+          - button "Dining Out"
+        - gridcell "$9.00"
+        - gridcell "$999,741.00"
+      - row "04-Jan-16 Debit The Filling Station Auto $88.00 $999,653.00":
+        - gridcell "04-Jan-16"
+        - gridcell "Debit"
+        - gridcell "The Filling Station":
+          - button "The Filling Station"
+        - gridcell "Auto":
+          - button "Auto"
+        - gridcell "$88.00"
+        - gridcell "$999,653.00"
+      - row "05-Jan-16 Debit Tinker's Hardware Household $3,421.00 $996,232.00":
+        - gridcell "05-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Tinker's Hardware":
+          - button "Tinker's Hardware"
+        - gridcell "Household":
+          - button "Household"
+        - gridcell "$3,421.00"
+        - gridcell "$996,232.00"
+      - row "06-Jan-16 Debit Cutey's Salon Beauty $700.00 $995,532.00":
+        - gridcell "06-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Cutey's Salon":
+          - button "Cutey's Salon"
+        - gridcell "Beauty":
+          - button "Beauty"
+        - gridcell "$700.00"
+        - gridcell "$995,532.00"
+      - row "07-Jan-16 Debit My Chocolate Shop Dining Out $41.00 $995,491.00":
+        - gridcell "07-Jan-16"
+        - gridcell "Debit"
+        - gridcell "My Chocolate Shop":
+          - button "My Chocolate Shop"
+        - gridcell "Dining Out":
+          - button "Dining Out"
+        - gridcell "$41.00"
+        - gridcell "$995,491.00"
+  - 'separator "End of Example 2: Sortable Data Grid With Editable Cells"'
+  - heading "Notes" [level=4]
+  - list:
+    - listitem: The navigation keys and functions are the same as example 1 except that the column headers are focusable because the date and amount columns provide sort functionality.
+    - listitem: A description may be edited by activating the cell.
+    - listitem: A category may be changed by using the category popup menu.
+  - 'heading "Example 3: Scrollable Data Grid With Column Hiding" [level=3]'
+  - button "Open In CodePen"
+  - 'separator "Start of Example 3: Scrollable Data Grid With Column Hiding"'
+  - heading "Transactions for January 1 through January 15" [level=4]
+  - button "Hide Type and Category"
+  - grid "Transactions for January 1 through January 15":
+    - rowgroup:
+      - row "Date Type Description Category Amount Balance":
+        - gridcell "Date"
+        - gridcell "Type"
+        - gridcell "Description"
+        - gridcell "Category"
+        - gridcell "Amount"
+        - gridcell "Balance"
+      - row "01-Jan-16 Deposit Cash Deposit Income $1,000,000.00 $1,000,000.00":
+        - gridcell "01-Jan-16"
+        - gridcell "Deposit"
+        - gridcell "Cash Deposit":
+          - link "Cash Deposit":
+            - /url: "#"
+        - gridcell "Income"
+        - gridcell "$1,000,000.00"
+        - gridcell "$1,000,000.00"
+      - row "02-Jan-16 Debit Down Town Grocery Groceries $250.00 $999,750.00":
+        - gridcell "02-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Down Town Grocery":
+          - link "Down Town Grocery":
+            - /url: "#"
+        - gridcell "Groceries"
+        - gridcell "$250.00"
+        - gridcell "$999,750.00"
+      - row "03-Jan-16 Debit Hot Coffee Dining Out $9.00 $999,741.00":
+        - gridcell "03-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Hot Coffee":
+          - link "Hot Coffee":
+            - /url: "#"
+        - gridcell "Dining Out"
+        - gridcell "$9.00"
+        - gridcell "$999,741.00"
+      - row "04-Jan-16 Debit The Filling Station Auto $88.00 $999,653.00":
+        - gridcell "04-Jan-16"
+        - gridcell "Debit"
+        - gridcell "The Filling Station":
+          - link "The Filling Station":
+            - /url: "#"
+        - gridcell "Auto"
+        - gridcell "$88.00"
+        - gridcell "$999,653.00"
+      - row "05-Jan-16 Debit Tinker's Hardware Household $3,421.00 $996,232.00":
+        - gridcell "05-Jan-16"
+        - gridcell "Debit"
+        - gridcell "Tinker's Hardware":
+          - link "Tinker's Hardware":
+            - /url: "#"
+        - gridcell "Household"
+        - gridcell "$3,421.00"
+        - gridcell "$996,232.00"
+  - 'separator "End of Example 3: Scrollable Data Grid With Column Hiding"'
+  - heading "Notes" [level=4]
+  - list:
+    - listitem: In addition to the navigation keys supported in examples 1 and 2, Page Down and Page Up scroll the grid.
+    - listitem:
+      - text: As navigating up or down scrolls the visible set of rows, the
+      - code: aria-rowindex
+      - text: value of the row containing the focus informs the screen reader of the number of that row within the total set of rows.
+    - listitem: Activating the "Hide Type and Category" button hides the type and category columns.
+    - listitem:
+      - text: The
+      - code: aria-colindex
+      - text: value on a cell informs screen readers of the position of that cell within the row. When one or more columns are hidden, screen reader users can be aware of the hidden columns because those column numbers are not present as users navigate across a row.
+  - heading "Keyboard Support" [level=2]
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "key Function":
+        - cell "key"
+        - cell "Function"
+      - row "Right Arrow Moves focus one cell to the right. If focus is on the right-most cell in the row, focus does not move.":
+        - rowheader "Right Arrow"
+        - cell "Moves focus one cell to the right. If focus is on the right-most cell in the row, focus does not move.":
+          - list:
+            - listitem: Moves focus one cell to the right.
+            - listitem: If focus is on the right-most cell in the row, focus does not move.
+      - row "Left Arrow Moves focus one cell to the left. If focus is on the left-most cell in the row, focus does not move.":
+        - rowheader "Left Arrow"
+        - cell "Moves focus one cell to the left. If focus is on the left-most cell in the row, focus does not move.":
+          - list:
+            - listitem: Moves focus one cell to the left.
+            - listitem: If focus is on the left-most cell in the row, focus does not move.
+      - row "Down Arrow Moves focus one cell down. If focus is on the bottom cell in the column, focus does not move.":
+        - rowheader "Down Arrow"
+        - cell "Moves focus one cell down. If focus is on the bottom cell in the column, focus does not move.":
+          - list:
+            - listitem: Moves focus one cell down.
+            - listitem: If focus is on the bottom cell in the column, focus does not move.
+      - row "Up Arrow Moves focus one cell Up. If focus is on the top cell in the column, focus does not move.":
+        - rowheader "Up Arrow"
+        - cell "Moves focus one cell Up. If focus is on the top cell in the column, focus does not move.":
+          - list:
+            - listitem: Moves focus one cell Up.
+            - listitem: If focus is on the top cell in the column, focus does not move.
+      - row "Page Down In example 3, moves focus down five rows, scrolling so the bottom row in the currently visible set of rows becomes the first visible row. If focus is in the last row, focus does not move.":
+        - rowheader "Page Down"
+        - cell "In example 3, moves focus down five rows, scrolling so the bottom row in the currently visible set of rows becomes the first visible row. If focus is in the last row, focus does not move.":
+          - list:
+            - listitem: In example 3, moves focus down five rows, scrolling so the bottom row in the currently visible set of rows becomes the first visible row.
+            - listitem: If focus is in the last row, focus does not move.
+      - row "Page Up In example 3, moves focus up 5 rows, scrolling so the top row in the currently visible set of rows becomes the last visible row. If focus is in the first row of the grid, focus does not move.":
+        - rowheader "Page Up"
+        - cell "In example 3, moves focus up 5 rows, scrolling so the top row in the currently visible set of rows becomes the last visible row. If focus is in the first row of the grid, focus does not move.":
+          - list:
+            - listitem: In example 3, moves focus up 5 rows, scrolling so the top row in the currently visible set of rows becomes the last visible row.
+            - listitem: If focus is in the first row of the grid, focus does not move.
+      - row "Home moves focus to the first cell in the row that contains focus.":
+        - rowheader "Home"
+        - cell "moves focus to the first cell in the row that contains focus."
+      - row "End moves focus to the last cell in the row that contains focus.":
+        - rowheader "End"
+        - cell "moves focus to the last cell in the row that contains focus."
+      - row "Control + Home moves focus to the first cell in the first row.":
+        - rowheader "Control + Home"
+        - cell "moves focus to the first cell in the first row."
+      - row "Control + End moves focus to the last cell in the last row.":
+        - rowheader "Control + End"
+        - cell "moves focus to the last cell in the last row."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "grid table Identifies the element that serves as the grid widget container. The grid element is not focusable because it implements the practice described in the section on Managing Focus Within Components Using a Roving tabindex. Since the grid role is applied to a table element, the row , rowheader, colheader, and gridcell roles do not need to be specified because they are implied by tr, th, and td tags.":
+        - rowheader "grid":
+          - code: grid
+        - cell
+        - cell "table":
+          - code: table
+        - cell "Identifies the element that serves as the grid widget container. The grid element is not focusable because it implements the practice described in the section on Managing Focus Within Components Using a Roving tabindex. Since the grid role is applied to a table element, the row , rowheader, colheader, and gridcell roles do not need to be specified because they are implied by tr, th, and td tags.":
+          - list:
+            - listitem: Identifies the element that serves as the grid widget container.
+            - listitem:
+              - text: The grid element is not focusable because it implements the practice described in the section on
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+            - listitem:
+              - text: Since the
+              - code: grid
+              - text: role is applied to a
+              - code: table
+              - text: element, the
+              - code: row
+              - text: ","
+              - code: rowheader
+              - text: ","
+              - code: colheader
+              - text: ", and"
+              - code: gridcell
+              - text: roles do not need to be specified because they are implied by
+              - code: tr
+              - text: ","
+              - code: th
+              - text: ", and"
+              - code: td
+              - text: tags.
+      - row "aria-labelledby=\"ID_REF\" table Refers to the heading element that labels the grid.":
+        - cell
+        - rowheader "aria-labelledby=\"ID_REF\"":
+          - code: aria-labelledby="ID_REF"
+        - cell "table":
+          - code: table
+        - cell "Refers to the heading element that labels the grid."
+      - row "aria-rowcount=\"16\" table In example 3, specified because a total of 16 rows are available, but fewer than 16 rows are visible. In this case, to demonstrate this feature, some rows are hidden using display:none, which excludes them from the browser's accessibility tree. a more common scenario for using aria-rowcount is when not all data is loaded into the DOM at one time.":
+        - cell
+        - rowheader "aria-rowcount=\"16\"":
+          - code: aria-rowcount="16"
+        - cell "table":
+          - code: table
+        - cell "In example 3, specified because a total of 16 rows are available, but fewer than 16 rows are visible. In this case, to demonstrate this feature, some rows are hidden using display:none, which excludes them from the browser's accessibility tree. a more common scenario for using aria-rowcount is when not all data is loaded into the DOM at one time.":
+          - list:
+            - listitem: In example 3, specified because a total of 16 rows are available, but fewer than 16 rows are visible.
+            - listitem:
+              - text: In this case, to demonstrate this feature, some rows are hidden using
+              - code: display:none
+              - text: ", which excludes them from the browser's accessibility tree."
+            - listitem:
+              - text: a more common scenario for using
+              - code: aria-rowcount
+              - text: is when not all data is loaded into the DOM at one time.
+      - row "aria-colcount=\"6\" table In example 3, specified because a total of 6 columns are available, but when columns are hidden, fewer than 6 columns are visible. Similar to how aria-rowcount overrides the browser calculation of the total number of rows, the browser uses this value for the total number of columns so it can report the correct number when columns are hidden.":
+        - cell
+        - rowheader "aria-colcount=\"6\"":
+          - code: aria-colcount="6"
+        - cell "table":
+          - code: table
+        - cell "In example 3, specified because a total of 6 columns are available, but when columns are hidden, fewer than 6 columns are visible. Similar to how aria-rowcount overrides the browser calculation of the total number of rows, the browser uses this value for the total number of columns so it can report the correct number when columns are hidden.":
+          - list:
+            - listitem: In example 3, specified because a total of 6 columns are available, but when columns are hidden, fewer than 6 columns are visible.
+            - listitem:
+              - text: Similar to how
+              - code: aria-rowcount
+              - text: overrides the browser calculation of the total number of rows, the browser uses this value for the total number of columns so it can report the correct number when columns are hidden.
+      - row "aria-rowindex=\"INDEX_VALUE\" tr Used in example 3 because not all rows are present in the accessibility tree. Overrides the browser calculation of the row number. Has a value from 1 to 16. Note that it is 1-based, not 0-based.":
+        - cell
+        - rowheader "aria-rowindex=\"INDEX_VALUE\"":
+          - code: aria-rowindex="INDEX_VALUE"
+        - cell "tr":
+          - code: tr
+        - cell "Used in example 3 because not all rows are present in the accessibility tree. Overrides the browser calculation of the row number. Has a value from 1 to 16. Note that it is 1-based, not 0-based.":
+          - list:
+            - listitem: Used in example 3 because not all rows are present in the accessibility tree.
+            - listitem: Overrides the browser calculation of the row number.
+            - listitem: Has a value from 1 to 16.
+            - listitem: Note that it is 1-based, not 0-based.
+      - row "aria-sort=\"ascending\" th In example 2, applied when a column is sorted in ascending order.":
+        - cell
+        - rowheader "aria-sort=\"ascending\"":
+          - code: aria-sort="ascending"
+        - cell "th":
+          - code: th
+        - cell "In example 2, applied when a column is sorted in ascending order."
+      - row "aria-sort=\"descending\" th In example 2, applied when a column is sorted in descending order.":
+        - cell
+        - rowheader "aria-sort=\"descending\"":
+          - code: aria-sort="descending"
+        - cell "th":
+          - code: th
+        - cell "In example 2, applied when a column is sorted in descending order."
+      - row "aria-sort=\"none\" th In example 2, applied when a column is sortable but not sorted.":
+        - cell
+        - rowheader "aria-sort=\"none\"":
+          - code: aria-sort="none"
+        - cell "th":
+          - code: th
+        - cell "In example 2, applied when a column is sortable but not sorted."
+      - row "aria-colindex=\"INDEX_VALUE\" th and td Used in example 3 because when the column hiding feature is used, not all columns are present in the accessibility tree. Overrides the browser calculation of the column number. Has a value from 1 to 6. Note that it is 1-based, not 0-based.":
+        - cell
+        - rowheader "aria-colindex=\"INDEX_VALUE\"":
+          - code: aria-colindex="INDEX_VALUE"
+        - cell "th and td":
+          - code: th
+          - text: and
+          - code: td
+        - cell "Used in example 3 because when the column hiding feature is used, not all columns are present in the accessibility tree. Overrides the browser calculation of the column number. Has a value from 1 to 6. Note that it is 1-based, not 0-based.":
+          - list:
+            - listitem: Used in example 3 because when the column hiding feature is used, not all columns are present in the accessibility tree.
+            - listitem: Overrides the browser calculation of the column number.
+            - listitem: Has a value from 1 to 6.
+            - listitem: Note that it is 1-based, not 0-based.
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - list:
+        - listitem:
+          - link "dataGrids.css":
+            - /url: css/dataGrids.css
+        - listitem:
+          - link "menuButton.css":
+            - /url: css/menuButton.css
+    - listitem:
+      - text: "JavaScript:"
+      - list:
+        - listitem:
+          - link "dataGrid.js":
+            - /url: js/dataGrid.js
+        - listitem:
+          - link "dataGrids.js":
+            - /url: js/dataGrids.js
+        - listitem:
+          - link "menuButton.js":
+            - /url: js/menuButton.js
+        - listitem:
+          - link "utils.js":
+            - /url: ../../../shared/js/utils.js
+  - heading "HTML Source Code" [level=2]
+  - 'heading "Example 1: Minimal Data Grid" [level=3]'
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - 'separator "Start of HTML for Example 1: Minimal Data Grid"'
+  - code: <h4 id="grid1Label"> Transactions January 1 through January 6 </h4> <table id="ex1-grid" role="grid" aria-labelledby="grid1Label" class="data"> <tbody> <tr> <th> Date </th> <th> Type </th> <th> Description </th> <th> Amount </th> <th> Balance </th> </tr> <tr> <td tabindex="-1"> 01-Jan-16 </td> <td tabindex="-1"> Deposit </td> <td> <a tabindex="-1" href="#"> Cash Deposit </a> </td> <td tabindex="-1"> $1,000,000.00 </td> <td tabindex="-1"> $1,000,000.00 </td> </tr> <tr> <td tabindex="-1"> 02-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Down Town Grocery </a> </td> <td tabindex="-1"> $250.00 </td> <td tabindex="-1"> $999,750.00 </td> </tr> <tr> <td tabindex="-1"> 03-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Hot Coffee </a> </td> <td tabindex="-1"> $9.00 </td> <td tabindex="-1"> $999,741.00 </td> </tr> <tr> <td tabindex="-1"> 04-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> The Filling Station </a> </td> <td tabindex="-1"> $88.00 </td> <td tabindex="-1"> $999,653.00 </td> </tr> <tr> <td tabindex="-1"> 05-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Tinker's Hardware </a> </td> <td tabindex="-1"> $3,421.00 </td> <td tabindex="-1"> $996,232.00 </td> </tr> <tr> <td tabindex="-1"> 06-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Cutey's Salon </a> </td> <td tabindex="-1"> $700.00 </td> <td tabindex="-1"> $995,532.00 </td> </tr> </tbody> </table>
+  - 'separator "End of HTML for Example 1: Minimal Data Grid"'
+  - 'heading "Example 2: Sortable Data Grid With Editable Cells" [level=3]'
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - 'separator "Start of HTML for Example 2: Sortable Data Grid With Editable Cells"'
+  - code: <h4 id="grid2Label"> Transactions January 1 through January 7 </h4> <table id="ex2-grid" role="grid" aria-labelledby="grid2Label" class="data"> <tbody> <tr> <th aria-sort="ascending"> <span tabindex="-1" role="button"> Date </span> </th> <th tabindex="-1"> Type </th> <th tabindex="-1"> Description </th> <th tabindex="-1"> Category </th> <th aria-sort="none"> <span tabindex="-1" role="button"> Amount </span> </th> <th tabindex="-1"> Balance </th> </tr> <tr> <td tabindex="-1"> 01-Jan-16 </td> <td tabindex="-1"> Deposit </td> <td> <div class="editable-text"> <span class="edit-text-button" tabindex="-1" role="button"> Cash Deposit </span> <input class="edit-text-input hidden" tabindex="-1" value=""> </div> </td> <td class="menu-wrapper"> <button type="button" tabindex="-1" aria-haspopup="true" aria-controls="menu1"> Income </button> <ul role="menu" id="menu1"> <li role="menuitem"> Income </li> <li role="menuitem"> Groceries </li> <li role="menuitem"> Dining Out </li> <li role="menuitem"> Auto </li> <li role="menuitem"> Household </li> <li role="menuitem"> Beauty </li> </ul> </td> <td tabindex="-1"> $1,000,000.00 </td> <td tabindex="-1"> $1,000,000.00 </td> </tr> <tr> <td tabindex="-1"> 02-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <div class="editable-text"> <span class="edit-text-button" tabindex="-1" role="button"> Down Town Grocery </span> <input class="edit-text-input hidden" tabindex="-1" value=""> </div> </td> <td class="menu-wrapper"> <button type="button" tabindex="-1" aria-haspopup="true" aria-controls="menu2"> Groceries </button> <ul role="menu" id="menu2"> <li role="menuitem"> Income </li> <li role="menuitem"> Groceries </li> <li role="menuitem"> Dining Out </li> <li role="menuitem"> Auto </li> <li role="menuitem"> Household </li> <li role="menuitem"> Beauty </li> </ul> </td> <td tabindex="-1"> $250.00 </td> <td tabindex="-1"> $999,750.00 </td> </tr> <tr> <td tabindex="-1"> 03-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <div class="editable-text"> <span class="edit-text-button" tabindex="-1" role="button"> Hot Coffee </span> <input class="edit-text-input hidden" tabindex="-1" value=""> </div> </td> <td class="menu-wrapper"> <button type="button" tabindex="-1" aria-haspopup="true" aria-controls="menu3"> Dining Out </button> <ul role="menu" id="menu3"> <li role="menuitem"> Income </li> <li role="menuitem"> Groceries </li> <li role="menuitem"> Dining Out </li> <li role="menuitem"> Auto </li> <li role="menuitem"> Household </li> <li role="menuitem"> Beauty </li> </ul> </td> <td tabindex="-1"> $9.00 </td> <td tabindex="-1"> $999,741.00 </td> </tr> <tr> <td tabindex="-1"> 04-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <div class="editable-text"> <span class="edit-text-button" tabindex="-1" role="button"> The Filling Station </span> <input class="edit-text-input hidden" tabindex="-1" value=""> </div> </td> <td class="menu-wrapper"> <button type="button" tabindex="-1" aria-haspopup="true" aria-controls="menu4"> Auto </button> <ul role="menu" id="menu4"> <li role="menuitem"> Income </li> <li role="menuitem"> Groceries </li> <li role="menuitem"> Dining Out </li> <li role="menuitem"> Auto </li> <li role="menuitem"> Household </li> <li role="menuitem"> Beauty </li> </ul> </td> <td tabindex="-1"> $88.00 </td> <td tabindex="-1"> $999,653.00 </td> </tr> <tr> <td tabindex="-1"> 05-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <div class="editable-text"> <span class="edit-text-button" tabindex="-1" role="button"> Tinker's Hardware </span> <input class="edit-text-input hidden" tabindex="-1" value=""> </div> </td> <td class="menu-wrapper"> <button type="button" tabindex="-1" aria-haspopup="true" aria-controls="menu5"> Household </button> <ul role="menu" id="menu5"> <li role="menuitem"> Income </li> <li role="menuitem"> Groceries </li> <li role="menuitem"> Dining Out </li> <li role="menuitem"> Auto </li> <li role="menuitem"> Household </li> <li role="menuitem"> Beauty </li> </ul> </td> <td tabindex="-1"> $3,421.00 </td> <td tabindex="-1"> $996,232.00 </td> </tr> <tr> <td tabindex="-1"> 06-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <div class="editable-text"> <span class="edit-text-button" tabindex="-1" role="button"> Cutey's Salon </span> <input class="edit-text-input hidden" tabindex="-1" value=""> </div> </td> <td class="menu-wrapper"> <button type="button" tabindex="-1" aria-haspopup="true" aria-controls="menu6"> Beauty </button> <ul role="menu" id="menu6"> <li role="menuitem"> Income </li> <li role="menuitem"> Groceries </li> <li role="menuitem"> Dining Out </li> <li role="menuitem"> Auto </li> <li role="menuitem"> Household </li> <li role="menuitem"> Beauty </li> </ul> </td> <td tabindex="-1"> $700.00 </td> <td tabindex="-1"> $995,532.00 </td> </tr> <tr> <td tabindex="-1"> 07-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <div class="editable-text"> <span class="edit-text-button" tabindex="-1" role="button"> My Chocolate Shop </span> <input class="edit-text-input hidden" tabindex="-1" value=""> </div> </td> <td class="menu-wrapper"> <button type="button" tabindex="-1" aria-haspopup="true" aria-controls="menu7"> Dining Out </button> <ul role="menu" id="menu7"> <li role="menuitem"> Income </li> <li role="menuitem"> Groceries </li> <li role="menuitem"> Dining Out </li> <li role="menuitem"> Auto </li> <li role="menuitem"> Household </li> <li role="menuitem"> Beauty </li> </ul> </td> <td tabindex="-1"> $41.00 </td> <td tabindex="-1"> $995,491.00 </td> </tr> </tbody> </table>
+  - 'separator "End of HTML for Example 2: Sortable Data Grid With Editable Cells"'
+  - 'heading "Example 3: Scrollable Data Grid With Column Hiding" [level=3]'
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - 'separator "Start of HTML for Example 3: Scrollable Data Grid With Column Hiding"'
+  - code: <h4 id="grid3Label"> Transactions for January 1 through January 15 </h4> <button type="button" id="toggle_column_btn" name="toggle_columns"> Hide Type and Category </button> <table id="ex3-grid" role="grid" aria-labelledby="grid3Label" aria-rowcount="16" aria-colcount="6" data-per-page="5" class="data"> <tbody> <tr data-fixed="true"> <th> Date </th> <th> Type </th> <th> Description </th> <th> Category </th> <th> Amount </th> <th> Balance </th> </tr> <tr> <td tabindex="-1"> 01-Jan-16 </td> <td tabindex="-1"> Deposit </td> <td> <a tabindex="-1" href="#"> Cash Deposit </a> </td> <td tabindex="-1"> Income </td> <td tabindex="-1"> $1,000,000.00 </td> <td tabindex="-1"> $1,000,000.00 </td> </tr> <tr> <td tabindex="-1"> 02-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Down Town Grocery </a> </td> <td tabindex="-1"> Groceries </td> <td tabindex="-1"> $250.00 </td> <td tabindex="-1"> $999,750.00 </td> </tr> <tr> <td tabindex="-1"> 03-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Hot Coffee </a> </td> <td tabindex="-1"> Dining Out </td> <td tabindex="-1"> $9.00 </td> <td tabindex="-1"> $999,741.00 </td> </tr> <tr> <td tabindex="-1"> 04-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> The Filling Station </a> </td> <td tabindex="-1"> Auto </td> <td tabindex="-1"> $88.00 </td> <td tabindex="-1"> $999,653.00 </td> </tr> <tr> <td tabindex="-1"> 05-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Tinker's Hardware </a> </td> <td tabindex="-1"> Household </td> <td tabindex="-1"> $3,421.00 </td> <td tabindex="-1"> $996,232.00 </td> </tr> <tr> <td tabindex="-1"> 06-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Cutey's Salon </a> </td> <td tabindex="-1"> Beauty </td> <td tabindex="-1"> $700.00 </td> <td tabindex="-1"> $995,532.00 </td> </tr> <tr> <td tabindex="-1"> 07-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> My Chocolate Shop </a> </td> <td tabindex="-1"> Dining Out </td> <td tabindex="-1"> $41.00 </td> <td tabindex="-1"> $995,491.00 </td> </tr> <tr> <td tabindex="-1"> 08-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Who's Cook'n </a> </td> <td tabindex="-1"> Dining Out </td> <td tabindex="-1"> $150.00 </td> <td tabindex="-1"> $995,341.00 </td> </tr> <tr> <td tabindex="-1"> 09-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Dmuddy Paws </a> </td> <td tabindex="-1"> Pet </td> <td tabindex="-1"> $100.00 </td> <td tabindex="-1"> $995,241.00 </td> </tr> <tr> <td tabindex="-1"> 10-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> West End Bikes </a> </td> <td tabindex="-1"> Recreation </td> <td tabindex="-1"> $6,420.00 </td> <td tabindex="-1"> $988,821.00 </td> </tr> <tr> <td tabindex="-1"> 11-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Pay More Cars </a> </td> <td tabindex="-1"> Auto </td> <td tabindex="-1"> $431,323.00 </td> <td tabindex="-1"> $557,498.00 </td> </tr> <tr> <td tabindex="-1"> 12-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> The Interior Shop </a> </td> <td tabindex="-1"> Household </td> <td tabindex="-1"> $142,334.00 </td> <td tabindex="-1"> $415,164.00 </td> </tr> <tr> <td tabindex="-1"> 13-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Adventure Guys </a> </td> <td tabindex="-1"> Recreation </td> <td tabindex="-1"> $88,424.00 </td> <td tabindex="-1"> $326,740.00 </td> </tr> <tr> <td tabindex="-1"> 14-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Hungry Folks Place </a> </td> <td tabindex="-1"> Dining Out </td> <td tabindex="-1"> $313.00 </td> <td tabindex="-1"> $326,427.00 </td> </tr> <tr> <td tabindex="-1"> 15-Jan-16 </td> <td tabindex="-1"> Debit </td> <td> <a tabindex="-1" href="#"> Horse Play </a> </td> <td tabindex="-1"> Recreation </td> <td tabindex="-1"> $2,421.00 </td> <td tabindex="-1"> $324,006.00 </td> </tr> </tbody> </table>
+  - 'separator "End of HTML for Example 3: Scrollable Data Grid With Column Hiding"'
+```

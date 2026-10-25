@@ -1,0 +1,35 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "listbox-scrollable",
+  "dossierSha256": "0ddeeac26ea8d0d6f7671deab01c392a9c751d534ac6f5a0a94462560560ba7c",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape only)",
+      "dossier accessibility tree and description"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Transuranium elements:",
+      "kind": "choice"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Choose a transuranic element",
+      "needs": [
+        "Transuranium elements:"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

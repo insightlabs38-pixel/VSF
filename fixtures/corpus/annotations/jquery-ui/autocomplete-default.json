@@ -1,0 +1,40 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "autocomplete-default",
+  "dossierSha256": "a96bcc25517641be82a7b293c4824e3464ae533617d380855ffb7537d7aad5cb",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/autocomplete-default.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Tags:",
+      "kind": "text"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "combobox_popup",
+      "name": "Tags:"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Type to get suggestions and pick a tag",
+      "needs": [
+        "Tags:"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

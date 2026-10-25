@@ -1,0 +1,15 @@
+$ node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/operations.test.ts
+✔ the reference driver confirms real operations and drops vacuous and unconfirmable ones (7972.673767ms)
+✔ an operation done only through recognized units is verified, and a missing control falls back untouched (3746.344159ms)
+✔ a step resolves only to one usable unit of a suitable kind, never a guess (0.830832ms)
+✔ a recognizer that does nothing scores no verified operation and no false claim (0.492915ms)
+✔ operations the reference cannot confirm stay in the denominator and never count as verified (1.222759ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12444.499307
+[exit 0]

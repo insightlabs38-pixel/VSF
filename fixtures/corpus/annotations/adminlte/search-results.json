@@ -1,0 +1,157 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "search-results",
+  "dossierSha256": "5d23829aecc8c7c2d10ffd284583e134d709bab019ed93ce3e59a658f0d45e84",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/search-results.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search",
+      "kind": "text"
+    },
+    {
+      "name": "Date range",
+      "kind": "choice"
+    },
+    {
+      "name": "Owner",
+      "kind": "choice"
+    },
+    {
+      "name": "Archived items",
+      "kind": "toggle"
+    },
+    {
+      "name": "Trashed items",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Search",
+      "effect": "read"
+    },
+    {
+      "name": "Apply",
+      "effect": "read"
+    },
+    {
+      "name": "Reset",
+      "effect": "destructive"
+    },
+    {
+      "name": "Clear filters",
+      "effect": "destructive"
+    },
+    {
+      "name": "Previous",
+      "effect": "navigation"
+    },
+    {
+      "name": "1",
+      "effect": "navigation"
+    },
+    {
+      "name": "2",
+      "effect": "navigation"
+    },
+    {
+      "name": "3",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next",
+      "effect": "navigation"
+    },
+    {
+      "name": "invoice template",
+      "effect": "read"
+    },
+    {
+      "name": "overdue invoices",
+      "effect": "read"
+    },
+    {
+      "name": "invoice pdf export",
+      "effect": "read"
+    },
+    {
+      "name": "tax rate",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Search results",
+      "columns": [],
+      "rows": 5
+    }
+  ],
+  "composites": [
+    {
+      "kind": "tabs",
+      "name": "All, Pages, Users, Files, Projects"
+    },
+    {
+      "kind": "pagination",
+      "name": "Search results pages"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Refine"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Search for content",
+      "needs": [
+        "Search",
+        "Search",
+        "Search results"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Refine results",
+      "needs": [
+        "Date range",
+        "Owner",
+        "Archived items",
+        "Trashed items",
+        "Apply",
+        "Reset",
+        "Refine"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Page through results",
+      "needs": [
+        "Search results pages",
+        "Previous",
+        "Next"
+      ],
+      "effect": "navigation"
+    },
+    {
+      "name": "Run a related search",
+      "needs": [
+        "invoice template",
+        "overdue invoices",
+        "invoice pdf export",
+        "tax rate"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

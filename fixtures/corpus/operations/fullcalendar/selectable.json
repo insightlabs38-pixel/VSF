@@ -1,0 +1,65 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "fullcalendar",
+ "page": "selectable",
+ "dossierSha256": "8c2749df9117a52cdce7b6eab477f8c87090b5855d48d4779d6870a57967504a",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-misc",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "dossier accessibility tree",
+   "FullCalendar public documentation (toolbar, navLinks, views)"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Go to next month",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Next Month"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "February 2023"
+    }
+   ]
+  },
+  {
+   "name": "Go to previous month",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Previous Month"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "December 2022"
+    }
+   ]
+  },
+  {
+   "name": "Open a day from the grid",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Go to January 12, 2023"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "text",
+     "contains": "January 12, 2023"
+    }
+   ]
+  }
+ ]
+}

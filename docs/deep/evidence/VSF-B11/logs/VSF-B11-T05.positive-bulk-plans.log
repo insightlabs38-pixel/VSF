@@ -1,0 +1,3 @@
+$ go -C backend test -race -count=1 ./execution/ -run SelectedIds|VisiblePage|AllMatching|RecordsAdded|PlansAreBounded|Throttled|UnknownOutcome|Partial|WhenNothing|RetriesStop|LargeRuns
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	1.118s
+[exit 0]

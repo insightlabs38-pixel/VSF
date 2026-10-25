@@ -1,0 +1,56 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "datatables",
+  "page": "scroll-y",
+  "dossierSha256": "a5e2cbe8d50e52d1716160e9da4a08b312869ddd614c2bc11f3d011634d48d03",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "DataTables public documentation (datatables.net examples)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Search for one employee",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search:",
+          "value": "Airi"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Showing 1 to 1 of 1 entries"
+        },
+        {
+          "kind": "absent",
+          "contains": "Bruno Nash"
+        }
+      ]
+    },
+    {
+      "name": "Search with no matches",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search:",
+          "value": "zzzzqq"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "No matching records found"
+        }
+      ]
+    }
+  ]
+}

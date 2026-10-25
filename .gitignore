@@ -9,3 +9,4 @@ dist/
 .DS_Store
 compiler/target-abi-inject/
 /frontend/packages/*/src/**/*.js
+/.corpus-cache/

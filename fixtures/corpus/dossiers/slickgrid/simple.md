@@ -1,0 +1,322 @@
+# SlickGrid examples - simple
+Upstream: https://github.com/6pac/SlickGrid
+Framework: vanilla-js
+Ground truth basis: SlickGrid documentation and example descriptions; Chromium accessibility tree
+Page title: SlickGrid example 1: Basic grid
+State: as loaded
+What people do here (from the manifest):
+- read a grid of records
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- heading "Example 1 Simple Grid - ESM" [level=2]
+- table:
+  - rowgroup:
+    - 'row "⌂ Demonstrates: basic grid with minimal configuration View Source: View the source for this example on Github"':
+      - cell:
+        - grid:
+          - row "Title Duration % Complete Start Finish Effort Driven":
+            - columnheader "Title":
+              - text: Title
+              - separator
+            - columnheader "Duration":
+              - text: Duration
+              - separator
+            - columnheader "% Complete":
+              - text: "% Complete"
+              - separator
+            - columnheader "Start":
+              - text: Start
+              - separator
+            - columnheader "Finish":
+              - text: Finish
+              - separator
+            - columnheader "Effort Driven":
+              - text: Effort Driven
+              - separator
+          - row "Task 0 5 days 36 01/01/2009 01/05/2009 true":
+            - gridcell "Task 0"
+            - gridcell "5 days"
+            - gridcell "36"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 1 5 days 11 01/01/2009 01/05/2009 false":
+            - gridcell "Task 1"
+            - gridcell "5 days"
+            - gridcell "11"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 2 5 days 68 01/01/2009 01/05/2009 false":
+            - gridcell "Task 2"
+            - gridcell "5 days"
+            - gridcell "68"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 3 5 days 92 01/01/2009 01/05/2009 false":
+            - gridcell "Task 3"
+            - gridcell "5 days"
+            - gridcell "92"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 4 5 days 10 01/01/2009 01/05/2009 false":
+            - gridcell "Task 4"
+            - gridcell "5 days"
+            - gridcell "10"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 5 5 days 30 01/01/2009 01/05/2009 true":
+            - gridcell "Task 5"
+            - gridcell "5 days"
+            - gridcell "30"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 6 5 days 2 01/01/2009 01/05/2009 false":
+            - gridcell "Task 6"
+            - gridcell "5 days"
+            - gridcell "2"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 7 5 days 47 01/01/2009 01/05/2009 false":
+            - gridcell "Task 7"
+            - gridcell "5 days"
+            - gridcell "47"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 8 5 days 43 01/01/2009 01/05/2009 false":
+            - gridcell "Task 8"
+            - gridcell "5 days"
+            - gridcell "43"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 9 5 days 55 01/01/2009 01/05/2009 false":
+            - gridcell "Task 9"
+            - gridcell "5 days"
+            - gridcell "55"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 10 5 days 51 01/01/2009 01/05/2009 true":
+            - gridcell "Task 10"
+            - gridcell "5 days"
+            - gridcell "51"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 11 5 days 31 01/01/2009 01/05/2009 false":
+            - gridcell "Task 11"
+            - gridcell "5 days"
+            - gridcell "31"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 12 5 days 90 01/01/2009 01/05/2009 false":
+            - gridcell "Task 12"
+            - gridcell "5 days"
+            - gridcell "90"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 13 5 days 34 01/01/2009 01/05/2009 false":
+            - gridcell "Task 13"
+            - gridcell "5 days"
+            - gridcell "34"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 14 5 days 10 01/01/2009 01/05/2009 false":
+            - gridcell "Task 14"
+            - gridcell "5 days"
+            - gridcell "10"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 15 5 days 25 01/01/2009 01/05/2009 true":
+            - gridcell "Task 15"
+            - gridcell "5 days"
+            - gridcell "25"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 16 5 days 26 01/01/2009 01/05/2009 false":
+            - gridcell "Task 16"
+            - gridcell "5 days"
+            - gridcell "26"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 17 5 days 85 01/01/2009 01/05/2009 false":
+            - gridcell "Task 17"
+            - gridcell "5 days"
+            - gridcell "85"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 18 5 days 19 01/01/2009 01/05/2009 false":
+            - gridcell "Task 18"
+            - gridcell "5 days"
+            - gridcell "19"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 19 5 days 66 01/01/2009 01/05/2009 false":
+            - gridcell "Task 19"
+            - gridcell "5 days"
+            - gridcell "66"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 20 5 days 96 01/01/2009 01/05/2009 true":
+            - gridcell "Task 20"
+            - gridcell "5 days"
+            - gridcell "96"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 21 5 days 76 01/01/2009 01/05/2009 false":
+            - gridcell "Task 21"
+            - gridcell "5 days"
+            - gridcell "76"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 22 5 days 81 01/01/2009 01/05/2009 false":
+            - gridcell "Task 22"
+            - gridcell "5 days"
+            - gridcell "81"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 23 5 days 90 01/01/2009 01/05/2009 false":
+            - gridcell "Task 23"
+            - gridcell "5 days"
+            - gridcell "90"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 24 5 days 89 01/01/2009 01/05/2009 false":
+            - gridcell "Task 24"
+            - gridcell "5 days"
+            - gridcell "89"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 25 5 days 53 01/01/2009 01/05/2009 true":
+            - gridcell "Task 25"
+            - gridcell "5 days"
+            - gridcell "53"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 26 5 days 25 01/01/2009 01/05/2009 false":
+            - gridcell "Task 26"
+            - gridcell "5 days"
+            - gridcell "25"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 27 5 days 32 01/01/2009 01/05/2009 false":
+            - gridcell "Task 27"
+            - gridcell "5 days"
+            - gridcell "32"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 28 5 days 98 01/01/2009 01/05/2009 false":
+            - gridcell "Task 28"
+            - gridcell "5 days"
+            - gridcell "98"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 29 5 days 65 01/01/2009 01/05/2009 false":
+            - gridcell "Task 29"
+            - gridcell "5 days"
+            - gridcell "65"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 30 5 days 85 01/01/2009 01/05/2009 true":
+            - gridcell "Task 30"
+            - gridcell "5 days"
+            - gridcell "85"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 31 5 days 75 01/01/2009 01/05/2009 false":
+            - gridcell "Task 31"
+            - gridcell "5 days"
+            - gridcell "75"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 32 5 days 49 01/01/2009 01/05/2009 false":
+            - gridcell "Task 32"
+            - gridcell "5 days"
+            - gridcell "49"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 33 5 days 15 01/01/2009 01/05/2009 false":
+            - gridcell "Task 33"
+            - gridcell "5 days"
+            - gridcell "15"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 34 5 days 74 01/01/2009 01/05/2009 false":
+            - gridcell "Task 34"
+            - gridcell "5 days"
+            - gridcell "74"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 35 5 days 5 01/01/2009 01/05/2009 true":
+            - gridcell "Task 35"
+            - gridcell "5 days"
+            - gridcell "5"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "true"
+          - row "Task 36 5 days 35 01/01/2009 01/05/2009 false":
+            - gridcell "Task 36"
+            - gridcell "5 days"
+            - gridcell "35"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 37 5 days 82 01/01/2009 01/05/2009 false":
+            - gridcell "Task 37"
+            - gridcell "5 days"
+            - gridcell "82"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+          - row "Task 38 5 days 98 01/01/2009 01/05/2009 false":
+            - gridcell "Task 38"
+            - gridcell "5 days"
+            - gridcell "98"
+            - gridcell "01/01/2009"
+            - gridcell "01/05/2009"
+            - gridcell "false"
+      - 'cell "⌂ Demonstrates: basic grid with minimal configuration View Source: View the source for this example on Github"':
+        - heading "⌂ Demonstrates:" [level=2]:
+          - link "⌂":
+            - /url: /examples/index.html
+          - text: "Demonstrates:"
+        - list:
+          - listitem: basic grid with minimal configuration
+        - heading "View Source:" [level=2]
+        - list:
+          - listitem:
+            - link "View the source for this example on Github":
+              - /url: https://github.com/6pac/SlickGrid/blob/master/examples/example1-simple.html
+```

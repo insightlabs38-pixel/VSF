@@ -1,0 +1,36 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "adminlte",
+  "page": "file-manager",
+  "dossierSha256": "faab9b6669a0dc6915e36fcd37289a16d3d5eda755e64fc2b715b780b91e1564",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier adminlte/file-manager.md",
+      "page annotation item names",
+      "AdminLTE 4 public documentation and standard HTML form behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Search files",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search files",
+          "value": "roadmap"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Search files",
+          "value": "roadmap"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,682 @@
+{
+ "schema": "vsf-corpus-result-v1",
+ "partitions": [
+  "heldout"
+ ],
+ "pages": 23,
+ "missing": [],
+ "summary": {
+  "pages": 23,
+  "structural": {
+   "fields": {
+    "annotated": 72,
+    "found": 57,
+    "recall": 0.792,
+    "semanticExact": 0.965,
+    "semanticExactOrCoarser": 0.965
+   },
+   "actions": {
+    "annotated": 155,
+    "found": 153,
+    "recall": 0.987,
+    "semanticExact": 0.268,
+    "semanticExactOrCoarser": 0.268
+   },
+   "collections": {
+    "annotated": 17,
+    "found": 2,
+    "recall": 0.118,
+    "semanticExact": 1,
+    "semanticExactOrCoarser": 1
+   }
+  },
+  "falseClaims": 10,
+  "contradictions": {
+   "fields": 2,
+   "actions": 8,
+   "collections": 0
+  },
+  "composites": {
+   "annotated": 32,
+   "recognized": 0,
+   "recall": 0,
+   "byKind": {
+    "tabs": 4,
+    "filter_bar": 10,
+    "pagination": 2,
+    "drag_drop": 1,
+    "bulk_selection": 8,
+    "sortable_columns": 4,
+    "dialog": 2,
+    "file_input": 1
+   }
+  },
+  "workflows": {
+   "annotated": 61,
+   "supported": 22,
+   "coverage": 0.361
+  },
+  "unannotatedRecognized": {
+   "fields": 56,
+   "actions": 1072,
+   "collections": 0
+  },
+  "recognizedOnPage": {
+   "fields": 116,
+   "actions": 1225,
+   "collections": 2
+  },
+  "declaredUnsupported": 1,
+  "executableOperationCorrectness": {
+   "measured": false,
+   "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+  },
+  "latency": {
+   "recognizeMsP50": 24.5,
+   "recognizeMsMax": 32.7,
+   "nodesMax": 866,
+   "rssKbMax": 11088
+  }
+ },
+ "clusters": [
+  {
+   "key": "collection-missing",
+   "instances": 15,
+   "sources": 6,
+   "families": 3,
+   "pages": 12,
+   "workflowsBlocked": 15,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:read",
+   "instances": 49,
+   "sources": 6,
+   "families": 3,
+   "pages": 11,
+   "workflowsBlocked": 8,
+   "examples": []
+  },
+  {
+   "key": "field-missing:toggle",
+   "instances": 15,
+   "sources": 6,
+   "families": 3,
+   "pages": 7,
+   "workflowsBlocked": 6,
+   "examples": []
+  },
+  {
+   "key": "composite:filter_bar",
+   "instances": 10,
+   "sources": 6,
+   "families": 3,
+   "pages": 10,
+   "workflowsBlocked": 5,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:state_change",
+   "instances": 18,
+   "sources": 2,
+   "families": 2,
+   "pages": 9,
+   "workflowsBlocked": 11,
+   "examples": []
+  },
+  {
+   "key": "composite:tabs",
+   "instances": 4,
+   "sources": 2,
+   "families": 2,
+   "pages": 4,
+   "workflowsBlocked": 3,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:navigation",
+   "instances": 36,
+   "sources": 2,
+   "families": 2,
+   "pages": 10,
+   "workflowsBlocked": 2,
+   "examples": []
+  },
+  {
+   "key": "composite:bulk_selection",
+   "instances": 8,
+   "sources": 5,
+   "families": 2,
+   "pages": 8,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:dialog",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": []
+  },
+  {
+   "key": "composite:pagination",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": []
+  },
+  {
+   "key": "action-missing:state_change",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "field-kind:range-as-text",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:read-as-commit",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:read-as-navigate",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:state_change-as-navigate",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "composite:drag_drop",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-destroy",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:sortable_columns",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:unknown",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-create",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:file_input",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  }
+ ],
+ "perSource": {
+  "adminlte": {
+   "pages": 9,
+   "structural": {
+    "fields": {
+     "annotated": 20,
+     "found": 18,
+     "recall": 0.9,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 54,
+     "found": 54,
+     "recall": 1,
+     "semanticExact": 0.352,
+     "semanticExactOrCoarser": 0.352
+    },
+    "collections": {
+     "annotated": 9,
+     "found": 2,
+     "recall": 0.222,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    }
+   },
+   "falseClaims": 4,
+   "contradictions": {
+    "fields": 0,
+    "actions": 4,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 8,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "tabs": 3,
+     "filter_bar": 2,
+     "pagination": 2,
+     "drag_drop": 1
+    }
+   },
+   "workflows": {
+    "annotated": 27,
+    "supported": 8,
+    "coverage": 0.296
+   },
+   "unannotatedRecognized": {
+    "fields": 29,
+    "actions": 963,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 47,
+    "actions": 1017,
+    "collections": 2
+   },
+   "declaredUnsupported": 1,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 26.6,
+    "recognizeMsMax": 32.7,
+    "nodesMax": 866,
+    "rssKbMax": 11084
+   }
+  },
+  "todomvc-react": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 4,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 7,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 23.8,
+    "recognizeMsMax": 23.8,
+    "nodesMax": 42,
+    "rssKbMax": 11076
+   }
+  },
+  "todomvc-lit": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 3,
+    "actions": 7,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 6,
+    "actions": 10,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 23.6,
+    "recognizeMsMax": 23.6,
+    "nodesMax": 55,
+    "rssKbMax": 11088
+   }
+  },
+  "todomvc-jquery": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 7,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 10,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 23.8,
+    "recognizeMsMax": 23.8,
+    "nodesMax": 48,
+    "rssKbMax": 11080
+   }
+  },
+  "todomvc-svelte": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    }
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 4,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 7,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 24.5,
+    "recognizeMsMax": 24.5,
+    "nodesMax": 43,
+    "rssKbMax": 11080
+   }
+  },
+  "filebrowser": {
+   "pages": 6,
+   "structural": {
+    "fields": {
+     "annotated": 28,
+     "found": 27,
+     "recall": 0.964,
+     "semanticExact": 0.926,
+     "semanticExactOrCoarser": 0.926
+    },
+    "actions": {
+     "annotated": 89,
+     "found": 87,
+     "recall": 0.978,
+     "semanticExact": 0.253,
+     "semanticExactOrCoarser": 0.253
+    },
+    "collections": {
+     "annotated": 4,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 6,
+   "contradictions": {
+    "fields": 2,
+    "actions": 4,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 16,
+    "recognized": 0,
+    "recall": 0,
+    "byKind": {
+     "filter_bar": 4,
+     "sortable_columns": 4,
+     "bulk_selection": 4,
+     "dialog": 2,
+     "file_input": 1,
+     "tabs": 1
+    }
+   },
+   "workflows": {
+    "annotated": 14,
+    "supported": 2,
+    "coverage": 0.143
+   },
+   "unannotatedRecognized": {
+    "fields": 9,
+    "actions": 72,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 39,
+    "actions": 159,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 24.9,
+    "recognizeMsMax": 26.2,
+    "nodesMax": 206,
+    "rssKbMax": 11088
+   }
+  }
+ }
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "fullcalendar",
+  "page": "month-view",
+  "dossierSha256": "a37c7b8aaf5eccb260dc7794cdce130b51030067e67536dad600860f6ab8200f",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-fullcalendar",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier month-view.md (accessibility tree and description)",
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      "FullCalendar public documentation knowledge (toolbar, views, navLinks, selectable, events)"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "This Month",
+      "effect": "navigation"
+    },
+    {
+      "name": "Previous Month",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next Month",
+      "effect": "navigation"
+    },
+    {
+      "name": "+3 more",
+      "effect": "navigation"
+    },
+    {
+      "name": "Click for Google",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "January 2023",
+      "columns": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "rows": 6
+    }
+  ],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Browse a month of events",
+      "needs": [
+        "January 2023",
+        "+3 more"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Move between months",
+      "needs": [
+        "Previous Month",
+        "Next Month",
+        "This Month"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

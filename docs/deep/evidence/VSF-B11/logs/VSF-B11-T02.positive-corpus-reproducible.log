@@ -1,0 +1,44 @@
+$ node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation --verify
+apg/combobox-autocomplete-list nodes=1126 ms=938 blocked=1 mirrored=0 sha=30812fee0ede
+apg/combobox-select-only nodes=536 ms=741 blocked=1 mirrored=0 sha=3be9c9f92e75
+apg/combobox-datepicker nodes=1375 ms=909 blocked=2 mirrored=0 sha=89c2b3c98ab5
+apg/dialog-modal nodes=883 ms=1087 blocked=2 mirrored=0 sha=829ab8b1ae01
+apg/menu-button-links nodes=569 ms=1019 blocked=2 mirrored=0 sha=6f814c6bd1e5
+apg/data-grids nodes=2716 ms=1174 blocked=1 mirrored=0 sha=8cab3951c426
+apg/sortable-table nodes=493 ms=773 blocked=1 mirrored=0 sha=75d81f4ef194
+apg/treegrid nodes=879 ms=776 blocked=1 mirrored=0 sha=05e7c7ede2f1
+apg/listbox-scrollable nodes=846 ms=749 blocked=1 mirrored=0 sha=b61fe1347edf
+apg/tabs-manual nodes=593 ms=765 blocked=2 mirrored=0 sha=1018e4e68111
+apg/checkbox-mixed nodes=427 ms=735 blocked=1 mirrored=0 sha=a1c40b59f56d
+apg/radio nodes=488 ms=726 blocked=2 mirrored=0 sha=edbfa9faa62a
+apg/disclosure-faq nodes=417 ms=731 blocked=2 mirrored=0 sha=f1f5a73ae1fa
+apg/toolbar nodes=1401 ms=884 blocked=2 mirrored=0 sha=49e7739b154a
+jquery-ui/autocomplete-combobox nodes=44 ms=698 blocked=0 mirrored=0 sha=6e9eee76f267
+jquery-ui/autocomplete-default nodes=11 ms=692 blocked=0 mirrored=0 sha=22c48d18fd57
+jquery-ui/datepicker-default nodes=105 ms=962 blocked=0 mirrored=0 sha=0348f67fdf2e
+jquery-ui/dialog-modal-form nodes=51 ms=1011 blocked=0 mirrored=0 sha=66bedbc5d223
+jquery-ui/dialog-modal-confirmation nodes=23 ms=735 blocked=0 mirrored=0 sha=2b44adbe5253
+jquery-ui/selectmenu-default nodes=73 ms=719 blocked=0 mirrored=0 sha=3bffd891131a
+jquery-ui/spinner-default nodes=21 ms=711 blocked=0 mirrored=0 sha=3041b752f358
+jquery-ui/tabs-default nodes=20 ms=673 blocked=0 mirrored=0 sha=dd81f484d635
+jquery-ui/accordion-default nodes=28 ms=693 blocked=0 mirrored=0 sha=49f3ae2976b3
+jquery-ui/checkboxradio-default nodes=60 ms=682 blocked=0 mirrored=0 sha=cbb63b82c0a2
+jquery-ui/menu-default nodes=50 ms=697 blocked=0 mirrored=0 sha=a650405e90a6
+choices/demo nodes=640 ms=808 blocked=6 mirrored=0 sha=96e9102d1998
+datatables/zero-configuration nodes=418 ms=778 blocked=1 mirrored=1 sha=a721e23a85b3
+datatables/scroll-y nodes=796 ms=825 blocked=1 mirrored=1 sha=805c68a46e7d
+datatables/multi-col-sort nodes=457 ms=784 blocked=1 mirrored=1 sha=c1c6987cf3df
+datatables/select-row nodes=470 ms=768 blocked=1 mirrored=1 sha=cc3ec8eb563f
+datatables/multi-filter nodes=582 ms=814 blocked=1 mirrored=1 sha=9093b0654e09
+datatables/ajax-source nodes=2572 ms=919 blocked=1 mirrored=1 sha=284e145776cc
+jquery-file-upload/empty nodes=70 ms=696 blocked=3 mirrored=7 sha=303e40684198
+jquery-file-upload/files-queued nodes=104 ms=1534 blocked=3 mirrored=7 sha=1770ae79a472
+tabulator/basic-table nodes=127 ms=634 blocked=0 mirrored=1 sha=997e3c703b49
+tabulator/sorting-filtering nodes=137 ms=628 blocked=0 mirrored=1 sha=6a1bd0c49afd
+tabulator/editing nodes=168 ms=651 blocked=0 mirrored=1 sha=59df1a876187
+tabulator/pagination nodes=206 ms=631 blocked=0 mirrored=1 sha=6fdf62c1083e
+tabulator/selection nodes=110 ms=633 blocked=0 mirrored=1 sha=a46277fd34a9
+tabulator/tree-data nodes=73 ms=640 blocked=0 mirrored=1 sha=d503a5835678
+tabulator/full-demo nodes=309 ms=659 blocked=0 mirrored=1 sha=e4e9fdb22350
+verified 41/41 captures reproduce their recorded digest
+[exit 0]

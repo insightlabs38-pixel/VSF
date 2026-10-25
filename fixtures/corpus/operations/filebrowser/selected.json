@@ -1,0 +1,66 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "filebrowser",
+  "page": "selected",
+  "dossierSha256": "2dfaa72bd308c569214dd81a6daf69c29e5c6113a97bb70c21ccad22ed20040e",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "File Browser public documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Open rename prompt",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Rename"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Rename"
+        }
+      ]
+    },
+    {
+      "name": "Show info",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Info"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Display Name"
+        }
+      ]
+    },
+    {
+      "name": "Clear selection",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Clear"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Copy file"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+$ pnpm --filter @vsf/corpus-tests run test
+
+> @vsf/corpus-tests@0.0.0 test /home/user/VSF/tests/corpus
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ the shipped manifest satisfies every independence rule (3.01721ms)
+✔ a manifest that is unpinned, unlicensed, contaminated or unannotated is refused (7.200147ms)
+✔ only pinned-version npm CDN addresses are mirrored (0.696283ms)
+✔ the static server stays inside its root (47.757292ms)
+✔ names normalize the way people read them (2.301187ms)
+✔ agreement distinguishes exact, coarser, unclassified and contradiction (0.504469ms)
+✔ matching counts found, missing, wrong and unannotated units and never invents a success (2.876309ms)
+✔ a recognized unit that contradicts the annotation is a false claim (0.558561ms)
+✔ annotations must declare independence and use the closed vocabularies (2.130224ms)
+✔ clusters rank by independent families first, then blocked workflows, and hide examples when asked (2.094472ms)
+✔ aliases and mounts only reach pinned packages and the served tree (30.676769ms)
+✔ host disk usage shown by a page does not change its structure digest, other text does (1.764495ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 373.560081
+[exit 0]

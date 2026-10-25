@@ -1,0 +1,35 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "accordion-default",
+  "dossierSha256": "45daf13d3c0820983fac21639c4030cb0580cb6eb2f2d8dde02e514fe36c5e42",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/accordion-default.md"
+    ]
+  },
+  "fields": [],
+  "actions": [],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "other",
+      "name": "Accordion"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Open one section of the accordion",
+      "needs": [
+        "Accordion"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

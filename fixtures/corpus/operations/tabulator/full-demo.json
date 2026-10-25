@@ -1,0 +1,60 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "tabulator",
+  "page": "full-demo",
+  "dossierSha256": "192ebbbee22d930fe001019ddd3a989a8e8b79df18a661389a80d998d95b511a",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "Tabulator public documentation (tabulator.info)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Filter by name",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name",
+          "value": "Oli"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Oli Bob"
+        },
+        {
+          "kind": "absent",
+          "contains": "Brendon P."
+        }
+      ]
+    },
+    {
+      "name": "Filter by department",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Department",
+          "value": "Mark"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Brendon P."
+        },
+        {
+          "kind": "absent",
+          "contains": "Oli Bob"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+# FullCalendar vanilla examples - daygrid-views
+Upstream: https://github.com/fullcalendar/fullcalendar
+Framework: vanilla-js
+Ground truth basis: FullCalendar documentation and example descriptions; Chromium accessibility tree
+Page title: 
+State: as loaded
+What people do here (from the manifest):
+- switch between day grid views
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Previous Year"
+- button "Previous Month"
+- button "Next Month"
+- button "Next Year"
+- button "This Month": Today
+- heading "January 2023" [level=2]
+- tablist "Change view":
+  - tab "Month view" [selected]: Month
+  - tab "Week view": Week
+  - tab "Day view": Day
+- table "January 2023":
+  - rowgroup:
+    - row "Sunday Monday Tuesday Wednesday Thursday Friday Saturday":
+      - columnheader "Sunday"
+      - columnheader "Monday"
+      - columnheader "Tuesday"
+      - columnheader "Wednesday"
+      - columnheader "Thursday"
+      - columnheader "Friday"
+      - columnheader "Saturday"
+  - rowgroup:
+    - row "Week 1":
+      - cell "Go to January 1, 2023 All Day Event":
+        - link "Go to January 1, 2023": "1"
+        - list:
+          - listitem: All Day Event
+      - cell "Go to January 2, 2023":
+        - link "Go to January 2, 2023": "2"
+      - cell "Go to January 3, 2023":
+        - link "Go to January 3, 2023": "3"
+      - cell "Go to January 4, 2023":
+        - link "Go to January 4, 2023": "4"
+      - cell "Go to January 5, 2023":
+        - link "Go to January 5, 2023": "5"
+      - cell "Go to January 6, 2023":
+        - link "Go to January 6, 2023": "6"
+      - cell "Go to January 7, 2023 Long Event":
+        - link "Go to January 7, 2023": "7"
+        - list:
+          - listitem: Long Event
+    - row "Week 2":
+      - cell "Go to January 8, 2023 Long Event":
+        - link "Go to January 8, 2023": "8"
+        - list:
+          - listitem: Long Event
+      - cell "Go to January 9, 2023 4p Repeating Event":
+        - link "Go to January 9, 2023": "9"
+        - list:
+          - listitem: 4p Repeating Event
+      - cell "Go to January 10, 2023":
+        - link "Go to January 10, 2023": "10"
+      - cell "Go to January 11, 2023 Conference":
+        - link "Go to January 11, 2023": "11"
+        - list:
+          - listitem: Conference
+      - cell "Go to January 12, 2023 10:30a Meeting 12p Lunch +3 more":
+        - link "Go to January 12, 2023": "12"
+        - list:
+          - listitem: 10:30a Meeting
+          - listitem: 12p Lunch
+        - button "+3 more"
+      - cell "Go to January 13, 2023 7a Birthday Party":
+        - link "Go to January 13, 2023": "13"
+        - list:
+          - listitem: 7a Birthday Party
+      - cell "Go to January 14, 2023":
+        - link "Go to January 14, 2023": "14"
+    - row "Week 3":
+      - cell "Go to January 15, 2023":
+        - link "Go to January 15, 2023": "15"
+      - cell "Go to January 16, 2023 4p Repeating Event":
+        - link "Go to January 16, 2023": "16"
+        - list:
+          - listitem: 4p Repeating Event
+      - cell "Go to January 17, 2023":
+        - link "Go to January 17, 2023": "17"
+      - cell "Go to January 18, 2023":
+        - link "Go to January 18, 2023": "18"
+      - cell "Go to January 19, 2023":
+        - link "Go to January 19, 2023": "19"
+      - cell "Go to January 20, 2023":
+        - link "Go to January 20, 2023": "20"
+      - cell "Go to January 21, 2023":
+        - link "Go to January 21, 2023": "21"
+    - row "Week 4":
+      - cell "Go to January 22, 2023":
+        - link "Go to January 22, 2023": "22"
+      - cell "Go to January 23, 2023":
+        - link "Go to January 23, 2023": "23"
+      - cell "Go to January 24, 2023":
+        - link "Go to January 24, 2023": "24"
+      - cell "Go to January 25, 2023":
+        - link "Go to January 25, 2023": "25"
+      - cell "Go to January 26, 2023":
+        - link "Go to January 26, 2023": "26"
+      - cell "Go to January 27, 2023":
+        - link "Go to January 27, 2023": "27"
+      - cell "Go to January 28, 2023 Click for Google":
+        - link "Go to January 28, 2023": "28"
+        - list:
+          - listitem:
+            - link "Click for Google":
+              - /url: http://google.com/
+    - row "Week 5":
+      - cell "Go to January 29, 2023":
+        - link "Go to January 29, 2023": "29"
+      - cell "Go to January 30, 2023":
+        - link "Go to January 30, 2023": "30"
+      - cell "Go to January 31, 2023":
+        - link "Go to January 31, 2023": "31"
+      - cell "Go to February 1, 2023":
+        - link "Go to February 1, 2023": "1"
+      - cell "Go to February 2, 2023":
+        - link "Go to February 2, 2023": "2"
+      - cell "Go to February 3, 2023":
+        - link "Go to February 3, 2023": "3"
+      - cell "Go to February 4, 2023":
+        - link "Go to February 4, 2023": "4"
+    - row "Week 6":
+      - cell "Go to February 5, 2023":
+        - link "Go to February 5, 2023": "5"
+      - cell "Go to February 6, 2023":
+        - link "Go to February 6, 2023": "6"
+      - cell "Go to February 7, 2023":
+        - link "Go to February 7, 2023": "7"
+      - cell "Go to February 8, 2023":
+        - link "Go to February 8, 2023": "8"
+      - cell "Go to February 9, 2023":
+        - link "Go to February 9, 2023": "9"
+      - cell "Go to February 10, 2023":
+        - link "Go to February 10, 2023": "10"
+      - cell "Go to February 11, 2023":
+        - link "Go to February 11, 2023": "11"
+```

@@ -1,0 +1,55 @@
+{
+  "task_id": "VSF-B11-T01",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "851e31de7bb2156017ef47c1e60b6c522bfc922e",
+  "commit": "1eb0a1d770d824695fbd6ab886341d63521a7db4",
+  "paths": [
+    "tests/corpus/src/match.ts",
+    "tests/corpus/src/evaluate.ts",
+    "tests/corpus/test/corpus.test.ts",
+    "docs/deep/evidence/VSF-B11/failure-clusters.md"
+  ],
+  "acceptance": "Rank failures by independent held-out frequency and functional impact; document why chosen primitive beats vendor-specific patch.",
+  "positive": {
+    "fixture": "ranking of 25 clusters over 32 development and validation page states from 4 template families, by families, blocked workflows and instances",
+    "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "ranking order unit test; held-out stored as aggregate only with no per-page rows or examples",
+    "command": "python3 -I -c import json;d=json.load(open('docs/deep/evidence/VSF-B11/corpus-baseline-heldout.json'));assert 'rows' not in d and all(not c['examples'] for c in d['clusters']);print('held-out stored as aggregate only')",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/queue/src/cli.ts validate --no-git",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "result schema vsf-corpus-result-v1 gains items and clusters",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "The ranking marks a wrong executable claim (collection row counts) ahead of equal-reach gaps; the held-out partition was not read for decisions.",
+  "performance_memory_storage": "Evaluation of 32 pages takes seconds; no recognizer change.",
+  "known_limitations": [
+    "Four development and validation families rank only what they show; ranks below 11 are single-family",
+    "Held-out frequency is used only as an aggregate before and after the changes, so 'held-out frequency' in the plan text is read as frequency across independent unseen applications",
+    "No virtualization, upload or pagination evidence exists in development data; T08 added"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/failure-clusters.md",
+    "docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json",
+    "docs/deep/evidence/VSF-B11/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

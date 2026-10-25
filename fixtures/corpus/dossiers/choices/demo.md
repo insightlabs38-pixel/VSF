@@ -1,0 +1,348 @@
+# Choices.js demo page - demo
+Upstream: https://github.com/Choices-js/Choices
+Framework: vanilla-js
+Ground truth basis: Choices.js README and demo descriptions; Chromium accessibility tree
+Page title: Choices
+State: as loaded
+What people do here (from the manifest):
+- choose values in custom single, multiple, searchable and grouped select controls
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Choices.js logo":
+  - /url: https://github.com/Choices-js/Choices
+  - img "Choices.js logo"
+- paragraph: Choices.js is a lightweight, configurable select box/text input plugin. Similar to Select2 and Selectize but without the jQuery dependency.
+- paragraph:
+  - text: For all config options, visit the
+  - link "GitHub repo":
+    - /url: https://github.com/Choices-js/Choices
+  - text: .
+- separator
+- paragraph:
+  - strong:
+    - text: Interested in writing your own ES6 JavaScript plugins? Check out
+    - link "ES6.io":
+      - /url: https://ES6.io/friend/JOHNSON
+    - text: for great tutorials! 💪🏼
+- paragraph:
+  - strong: "Sponsored by:"
+  - link "Wanderer Maps logo":
+    - /url: https://wanderermaps.com/
+    - img "Wanderer Maps logo"
+- separator
+- heading "Text inputs" [level=2]
+- text: Limited to 5 values with remove button
+- textbox "Limited to 5 values with remove button":
+  - /placeholder: Enter something
+  - text: preset-1,preset-2
+- text: preset-1
+- 'button "Remove item: preset-1"': Remove item
+- text: preset-2
+- 'button "Remove item: preset-2"': Remove item
+- searchbox "Limited to 5 values with remove button"
+- text: Unique values only, no pasting
+- textbox "Unique values only, no pasting":
+  - /placeholder: This is a placeholder
+  - text: preset-1, preset-2
+- text: preset-1 preset-2
+- searchbox "Unique values only, no pasting"
+- text: Email addresses only
+- textbox "Email addresses only":
+  - /placeholder: This is a placeholder
+  - text: joe@bloggs.com
+- text: joe@bloggs.com
+- searchbox "Email addresses only"
+- text: Disabled
+- textbox "Disabled" [disabled]:
+  - /placeholder: This is a placeholder
+  - text: josh@joshuajohnson.co.uk, joe@bloggs.co.uk
+- text: josh@joshuajohnson.co.uk joe@bloggs.co.uk
+- searchbox "Disabled" [disabled]
+- text: Prepends and appends a value to each items return value
+- textbox "Prepends and appends a value to each items return value":
+  - /placeholder: This is a placeholder
+- searchbox "Prepends and appends a value to each items return value"
+- text: Preset values passed through options
+- textbox "Preset values passed through options":
+  - /placeholder: This is a placeholder
+  - text: Josh Johnson,joe@bloggs.co.uk,Michael Smith
+- text: Josh Johnson Joe Bloggs Michael Smith
+- searchbox "Preset values passed through options"
+- text: I18N labels
+- textbox "I18N labels"
+- searchbox "I18N labels"
+- text: Right-to-left
+- textbox "Right-to-left": Value 1, Value 2
+- text: Value 1 Value 2
+- searchbox "This is a placeholder set in the config"
+- separator
+- heading "Multiple select input" [level=2]
+- text: Default
+- combobox:
+  - listbox "Default":
+    - option "Choice 1" [selected]
+    - option "Choice 2"
+    - option "Choice 3"
+    - option "Choice 4" [disabled]
+  - listbox:
+    - option "Choice 1" [selected]
+  - searchbox "This is a placeholder set in the config"
+- text: With remove button
+- combobox:
+  - listbox "With remove button":
+    - option "Choice 1" [selected]
+    - option "Choice 2"
+    - option "Choice 3"
+    - option "Choice 4"
+  - listbox:
+    - 'option "Choice 1 Remove item: Choice 1" [selected]':
+      - text: Choice 1
+      - 'button "Remove item: Choice 1"': Remove item
+  - searchbox "With remove button"
+- text: Option groups
+- combobox:
+  - listbox "Option groups":
+    - option "Choose a city"
+    - group:
+      - option "London"
+      - option "Manchester"
+      - option "Liverpool"
+    - group:
+      - option "Paris"
+      - option "Lyon"
+      - option "Marseille"
+    - group [disabled]:
+      - option "Hamburg" [disabled]
+      - option "Munich" [disabled]
+      - option "Berlin" [disabled]
+    - group:
+      - option "New York"
+      - option "Washington" [disabled]
+      - option "Michigan"
+    - group:
+      - option "Madrid"
+      - option "Barcelona"
+      - option "Malaga"
+    - group:
+      - option "Montreal"
+      - option "Toronto"
+      - option "Vancouver"
+  - listbox
+  - searchbox "Choose a city"
+- paragraph: If the following example do not load, the Discogs rate limit has probably been reached. Try again later!
+- text: Options from remote source (Fetch API) & limited to 5
+- combobox:
+  - listbox "Options from remote source (Fetch API) & limited to 5"
+  - listbox
+  - searchbox "Pick an Strokes record"
+- text: Right-to-left
+- combobox:
+  - listbox "Right-to-left":
+    - option "Choice 1" [selected]
+    - option "Choice 2"
+    - option "Choice 3"
+    - option "Choice 4" [disabled]
+  - listbox:
+    - option "Choice 1" [selected]
+  - searchbox "This is a placeholder set in the config"
+- text: Use label in event (add/remove)
+- paragraph
+- combobox:
+  - listbox "Use label in event (add/remove)":
+    - option "Label One"
+    - option "Label Two" [disabled]
+    - option "Label Three"
+    - option "Label Four" [disabled]
+    - option "Label Five"
+    - option "Label Six" [selected]
+  - listbox:
+    - 'option "Label Six Remove item: Label Six" [selected]':
+      - text: Label Six
+      - 'button "Remove item: Label Six"': Remove item
+  - searchbox "Use label in event (add/remove)"
+- separator
+- heading "Single select input" [level=2]
+- text: Default
+- combobox:
+  - combobox "Default":
+    - option "This is a placeholder" [selected]
+    - option "Choice 1"
+    - option "Choice 2"
+    - option "Choice 3"
+  - listbox:
+    - option "This is a placeholder set in the config" [selected]
+- paragraph: If the following two examples do not load, the Discogs rate limit has probably been reached. Try again later!
+- text: Options from remote source (Fetch API)
+- combobox:
+  - combobox "Options from remote source (Fetch API)":
+    - option "Pick an Arctic Monkeys' record" [selected]
+  - listbox:
+    - option "Pick an Arctic Monkeys' record" [selected]
+- text: Options from remote source (Fetch API) & remove button
+- combobox:
+  - combobox "Options from remote source (Fetch API) & remove button":
+    - option "Pick a Smiths' record" [selected]
+  - listbox:
+    - option "Pick a Smiths' record" [selected]
+- text: Option groups
+- combobox:
+  - combobox "Option groups":
+    - option "Choose a city" [selected]
+  - listbox:
+    - option "This is a placeholder set in the config" [selected]
+- text: Right-to-left
+- combobox:
+  - combobox "Right-to-left":
+    - option "Choice 1" [selected]
+    - option "Choice 2"
+    - option "Choice 3"
+  - listbox:
+    - option "This is a placeholder set in the config" [selected]
+- text: Options added via config with no search
+- listbox "Options added via config with no search":
+  - combobox "Options added via config with no search":
+    - option "Zero"
+    - option "Label One"
+    - option "Label Two" [disabled]
+    - option "Label Three"
+    - option "Label Four" [disabled]
+    - option "Label Five"
+    - option "Label Six" [selected]
+  - 'option "Label Six Remove item: Label Six" [selected]':
+    - text: Label Six
+    - 'button "Remove item: Label Six"': Remove item
+- text: Option and option groups added via config
+- combobox:
+  - combobox "Option and option groups added via config":
+    - option "Child One" [selected]
+    - option "Child Two" [disabled]
+    - option "Child Three"
+    - option "Child Four" [disabled]
+    - option "Child Five"
+    - option "Child Six"
+  - listbox:
+    - option "Child One" [selected]
+- text: Option selected via config with custom properties
+- paragraph: Try searching for 'fantastic', "Label 3" should display
+- combobox:
+  - combobox "Option selected via config with custom properties":
+    - option "Label One" [selected]
+    - option "Label Two" [disabled]
+    - option "Label Three"
+  - listbox:
+    - option "Label One" [selected]
+- text: Option searchable by custom properties via
+- code: data-custom-properties
+- text: attribute
+- paragraph: Try searching for 'fantastic', "Label 3" should display
+- combobox:
+  - combobox "Option searchable by custom properties via data-custom-properties attribute":
+    - option "Label One"
+    - option "Label Two" [disabled] [selected]
+    - option "Label Three"
+    - option "Label Four"
+  - listbox:
+    - option "Label Two" [disabled] [selected]
+- text: Options without sorting
+- combobox "Options without sorting":
+  - combobox "Options without sorting":
+    - option "Madrid" [selected]
+    - option "Toronto"
+    - option "Vancouver"
+    - option "London"
+    - option "Manchester"
+    - option "Liverpool"
+    - option "Paris"
+    - option "Malaga"
+    - option "Washington" [disabled]
+    - option "Lyon"
+    - option "Marseille"
+    - option "Hamburg"
+    - option "Munich"
+    - option "Barcelona"
+    - option "Berlin"
+    - option "Montreal"
+    - option "New York"
+    - option "Michigan"
+  - listbox:
+    - option "Madrid" [selected]
+- text: Custom templates
+- combobox:
+  - combobox "Custom templates":
+    - option "React" [selected]
+    - option "Angular"
+    - option "Ember"
+    - option "Vue"
+  - listbox:
+    - option "🎉 React" [selected]
+- paragraph: Below is an example of how you could have two select inputs depend on eachother. 'Tube stations' will only be enabled if the value of 'Cities' is 'London'
+- text: Cities
+- combobox:
+  - combobox "Cities":
+    - option "Choose a city" [selected]
+    - option "Leeds"
+    - option "Manchester"
+    - option "London"
+    - option "Sheffield"
+    - option "Newcastle"
+  - listbox:
+    - option "Choose a city" [selected]
+- text: Tube stations
+- combobox [disabled]:
+  - combobox "Tube stations" [disabled]:
+    - option "Choose a tube station" [disabled] [selected]
+    - option "Moorgate" [disabled]
+    - option "St Pauls" [disabled]
+    - option "Old Street" [disabled]
+    - option "Liverpool Street" [disabled]
+    - option "Kings Cross St. Pancras" [disabled]
+  - listbox [disabled]:
+    - option "Choose a tube station" [disabled] [selected]
+- separator
+- heading "Form interaction" [level=2]
+- paragraph: Change the values and press reset to restore to initial state.
+- text: Change me!
+- combobox:
+  - combobox "Change me!":
+    - option "Option 1"
+    - option "Option 2" [selected]
+    - option "Option 3"
+    - option "Option 4"
+    - option "Option 5"
+  - listbox:
+    - option "Option 2" [selected]
+- text: And me!
+- combobox:
+  - listbox "And me!":
+    - option "Choice 1" [selected]
+    - option "Choice 2"
+    - option "Choice 3"
+    - option "Choice 4" [disabled]
+  - listbox:
+    - 'option "Choice 1 Remove item: Choice 1" [selected]':
+      - text: Choice 1
+      - 'button "Remove item: Choice 1"': Remove item
+  - searchbox "And me!"
+- button "Reset"
+- separator
+- heading "Form validation" [level=2]
+- paragraph: Try submitting the form first.
+- paragraph: Then try setting the values as they are required!
+- text: Change me!
+- combobox:
+  - combobox "Change me!":
+    - option "-" [selected]
+    - option "Option 1"
+    - option "Option 2"
+    - option "Option 3"
+    - option "Option 4"
+    - option "Option 5"
+  - listbox:
+    - option "-" [selected]
+- text: And me!
+- textbox "And me!":
+  - /placeholder: Enter something
+- searchbox "And me!"
+- button "Submit"
+```

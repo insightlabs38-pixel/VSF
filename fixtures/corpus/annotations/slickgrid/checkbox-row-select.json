@@ -1,0 +1,34 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "slickgrid",
+  "page": "checkbox-row-select",
+  "dossierSha256": "fc9bdee816368f1758adbcfbc57d59d4ec269e7d03e7eb806c70402be7bc9034",
+  "annotator": {"kind": "separate-agent", "id": "annotator-slickgrid", "sawRecognizerOutput": false, "basis": ["dossier accessibility tree","SlickGrid public documentation and example descriptions (github.com/6pac/SlickGrid)"]},
+  "fields": [
+    {"name": "Select/Deselect All", "kind": "toggle"}
+  ],
+  "actions": [
+    {"name": "Grid Menu", "effect": "navigation"},
+    {"name": "Toggle show/hide \"Select All\" checkbox", "effect": "navigation"},
+    {"name": "Unselect row 5", "effect": "state_change"},
+    {"name": "Select row 5", "effect": "state_change"},
+    {"name": "Unselect all rows", "effect": "state_change"}
+  ],
+  "collections": [
+    {"name": "Without Font Styling", "columns": ["A", "B", "C", "D", "E"], "rows": null, "virtualized": true},
+    {"name": "With Font Styling", "columns": ["A", "B", "C", "D", "E"], "rows": null, "virtualized": true}
+  ],
+  "composites": [
+    {"kind": "virtual_list", "name": "Without Font Styling"},
+    {"kind": "virtual_list", "name": "With Font Styling"},
+    {"kind": "bulk_selection", "name": "Row selection checkboxes"}
+  ],
+  "workflows": [
+    {"name": "Select all rows with the header checkbox", "needs": ["Select/Deselect All", "Row selection checkboxes", "Without Font Styling"], "effect": "state_change"},
+    {"name": "Select or unselect specific rows", "needs": ["Select row 5", "Unselect row 5", "Unselect all rows", "Without Font Styling"], "effect": "state_change"}
+  ],
+  "unsupported": [
+    {"what": "Row checkboxes and header checkbox of the second grid (With Font Styling)", "reason": "Rendered as font icons with empty accessible names; no checkbox role in the tree"},
+    {"what": "Per-row checkboxes of the first grid", "reason": "Checkboxes have no accessible name"}
+  ]
+}

@@ -1,0 +1,54 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "apg",
+ "page": "radio",
+ "dossierSha256": "96d0c09d7409ee1c1e570e2bf4b5cde3067db7071644e3110d2191b7fd653b34",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-apg",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "page dossier",
+   "page annotation",
+   "W3C ARIA Authoring Practices pattern documentation"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Choose deep dish",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "toggle",
+     "target": "Deep dish",
+     "checked": true
+    }
+   ],
+   "expect": [
+    {
+     "kind": "checked",
+     "target": "Deep dish",
+     "checked": true
+    }
+   ]
+  },
+  {
+   "name": "Choose home delivery",
+   "effect": "state_change",
+   "steps": [
+    {
+     "do": "toggle",
+     "target": "Home Delivery",
+     "checked": true
+    }
+   ],
+   "expect": [
+    {
+     "kind": "checked",
+     "target": "Home Delivery",
+     "checked": true
+    }
+   ]
+  }
+ ]
+}

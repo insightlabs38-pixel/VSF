@@ -1,0 +1,72 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "adminlte",
+  "page": "register",
+  "dossierSha256": "cce325eba3e73c8fbe7fa1faf18336088597436aa25bb1f9575265ec71c8f9e9",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier adminlte/register.md",
+      "page annotation item names",
+      "AdminLTE 4 public documentation and standard HTML form behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Enter full name",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Full Name",
+          "value": "Jane Doe"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Full Name",
+          "value": "Jane Doe"
+        }
+      ]
+    },
+    {
+      "name": "Enter email",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Email",
+          "value": "jane@example.com"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Email",
+          "value": "jane@example.com"
+        }
+      ]
+    },
+    {
+      "name": "Agree to terms",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "I agree to the terms",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "I agree to the terms",
+          "checked": true
+        }
+      ]
+    }
+  ]
+}

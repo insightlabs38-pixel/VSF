@@ -205,8 +205,10 @@ fn from_ledger(ledger: &Ledger, node: u32) -> Option<Availability> {
 
 fn hint(v: Verb) -> EffectClass {
     match v {
-        Verb::Query | Verb::Export | Verb::Navigate | Verb::Dismiss => EffectClass::ReadOnly,
-        Verb::Create | Verb::Commit => EffectClass::NonIdempotentWrite,
+        Verb::Query | Verb::Export | Verb::Navigate | Verb::Dismiss | Verb::Reveal => {
+            EffectClass::ReadOnly
+        }
+        Verb::Create | Verb::Commit | Verb::Toggle => EffectClass::NonIdempotentWrite,
         Verb::Destroy => EffectClass::Destructive,
     }
 }

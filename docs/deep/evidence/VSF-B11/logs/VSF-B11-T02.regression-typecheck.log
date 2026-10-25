@@ -1,0 +1,43 @@
+$ pnpm -r --if-present run typecheck
+Scope: 20 of 21 workspace projects
+frontend/packages/design-system typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/schema typecheck$ tsc -p tsconfig.json --noEmit
+tests/adversarial typecheck$ tsc -p tsconfig.json --noEmit
+tools/redact typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/design-system typecheck: Done
+tools/redact typecheck: Done
+tests/adversarial typecheck: Done
+frontend/packages/schema typecheck: Done
+frontend/packages/ir typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/observer typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/renderer typecheck$ tsc -p tsconfig.json --noEmit
+tests/e2e typecheck$ tsc -p tsconfig.json --noEmit
+tests/e2e typecheck: Done
+tools/checks typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/ir typecheck: Done
+tools/idlgen typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/observer typecheck: Done
+frontend/packages/renderer typecheck: Done
+tools/checks typecheck: Done
+tools/idlgen typecheck: Done
+apps/gallery typecheck$ tsc -p tsconfig.json --noEmit
+tests/corpus typecheck$ tsc -p tsconfig.json --noEmit
+tests/observation typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/wasm-host typecheck$ tsc -p tsconfig.json --noEmit
+apps/gallery typecheck: Done
+tools/queue typecheck$ tsc -p tsconfig.json --noEmit
+frontend/packages/wasm-host typecheck: Done
+tests/corpus typecheck: Done
+tests/observation typecheck: Done
+tools/queue typecheck: Done
+apps/extension typecheck$ tsc -p tsconfig.json --noEmit
+tests/ui typecheck$ tsc -p tsconfig.json --noEmit
+fixtures/source-apps typecheck$ tsc -p tsconfig.json --noEmit
+fixtures/source-apps typecheck: Done
+tests/ui typecheck: Done
+apps/extension typecheck: Done
+tests/browser typecheck$ tsc -p tsconfig.json --noEmit
+tests/cross-language typecheck$ tsc -p tsconfig.json --noEmit
+tests/cross-language typecheck: Done
+tests/browser typecheck: Done
+[exit 0]

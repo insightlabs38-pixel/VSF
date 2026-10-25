@@ -1,0 +1,55 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "tabulator",
+  "page": "tree-data",
+  "dossierSha256": "264a88b44121945424d3501fa5a73a4a5b29e20399274b7b4690083c2aa9d70b",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-grids",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "Tabulator public documentation (tabulator.info)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Expand all rows",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Expand all"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "src"
+        }
+      ]
+    },
+    {
+      "name": "Collapse all rows",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Expand all"
+        },
+        {
+          "do": "click",
+          "target": "Collapse all"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "rows",
+          "target": "Nested Tree Data",
+          "count": 3
+        }
+      ]
+    }
+  ]
+}

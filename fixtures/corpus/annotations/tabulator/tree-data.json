@@ -1,0 +1,57 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "tabulator",
+  "page": "tree-data",
+  "dossierSha256": "264a88b44121945424d3501fa5a73a4a5b29e20399274b7b4690083c2aa9d70b",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-tabulator",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/tabulator/tree-data.md"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Expand all",
+      "effect": "navigation"
+    },
+    {
+      "name": "Collapse all",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Nested Tree Data",
+      "columns": [
+        "Name",
+        "Type",
+        "Size (KB)"
+      ],
+      "rows": 3
+    }
+  ],
+  "composites": [
+    {
+      "kind": "tree",
+      "name": "Nested rows"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Expand and collapse nested rows",
+      "needs": [
+        "Expand all",
+        "Collapse all",
+        "Nested rows",
+        "Nested Tree Data"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

@@ -1,0 +1,14 @@
+{
+  "rules": "2",
+  "schema": "vsf-recognition-v1",
+  "units": [
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"First name"},"kind":"text","node":8,"scope":"Customer profile","type":"field","usable":true},
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Last name"},"kind":"text","node":10,"scope":"Customer profile","type":"field","usable":true},
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Email"},"kind":"text","node":12,"scope":"Customer profile","type":"field","usable":true},
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Country"},"kind":"choice","node":15,"scope":"Customer profile","type":"field","usable":true},
+    {"binding":{"source":"label_relation","state":"bound","strength":"explicit","text":"Weekly digest"},"kind":"toggle","node":21,"scope":"Customer profile","type":"field","usable":true},
+    {"binding":{"source":"self_name","state":"bound","strength":"explicit","text":"Notes"},"kind":"text","node":22,"scope":"Customer profile","type":"field","usable":true},
+    {"name":"Save changes","node":23,"roles":["button"],"type":"action","usable":true,"verbs":["commit"]},
+    {"name":"Cancel","node":24,"roles":["button"],"type":"action","usable":true,"verbs":["dismiss"]}
+  ]
+}

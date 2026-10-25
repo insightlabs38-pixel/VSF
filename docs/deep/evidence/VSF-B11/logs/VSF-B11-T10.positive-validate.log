@@ -1,0 +1,4 @@
+$ node --conditions=source tests/corpus/src/cli.ts validate
+corpus: ok (15 sources, 81 pages)
+operations filebrowser/files: operation Open a folder: unknown target docs (annotation defect, scored as such)
+[exit 0]

@@ -1,0 +1,18 @@
+$ env VSF_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome go -C backend test -tags integration -race -count=1 ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...
+ok  	github.com/insightlabs38-pixel/vsf/backend/execution	13.983s
+ok  	github.com/insightlabs38-pixel/vsf/backend/versions	2.735s
+ok  	github.com/insightlabs38-pixel/vsf/backend/bridge	21.641s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api	10.408s
+ok  	github.com/insightlabs38-pixel/vsf/backend/api/jsonschema	1.051s
+ok  	github.com/insightlabs38-pixel/vsf/backend/cli	1.083s
+ok  	github.com/insightlabs38-pixel/vsf/backend/interfaces	20.052s
+ok  	github.com/insightlabs38-pixel/vsf/backend/mcp	5.310s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/artifact	2.690s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bench	11.964s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/blob	7.279s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/bundle	20.608s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/gc	15.556s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/meta	20.802s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/secret	20.803s
+ok  	github.com/insightlabs38-pixel/vsf/backend/storage/tcache	1.098s
+[exit 0]

@@ -1,0 +1,416 @@
+# SlickGrid examples - checkbox-row-select
+Upstream: https://github.com/6pac/SlickGrid
+Framework: vanilla-js
+Ground truth basis: SlickGrid documentation and example descriptions; Chromium accessibility tree
+Page title: 
+State: as loaded
+What people do here (from the manifest):
+- select rows with checkboxes
+- select all rows
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- heading "Example - Checkbox Row Selections" [level=2]
+- paragraph: Without Font Styling
+- grid:
+  - button "Grid Menu"
+  - row "A B C D E":
+    - columnheader "Select/Deselect All":
+      - checkbox
+    - columnheader "A":
+      - text: A
+      - separator
+    - columnheader "B":
+      - text: B
+      - separator
+    - columnheader "C":
+      - text: C
+      - separator
+    - columnheader "D":
+      - text: D
+      - separator
+    - columnheader "E":
+      - text: E
+      - separator
+  - row "Row 0":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 0"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 1":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 1"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 2":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 2"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 3":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 3"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 4":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 4"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 5":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 5"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 6":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 6"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 7":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 7"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 8":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 8"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 9":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 9"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 10":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 10"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 11":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 11"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 12":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 12"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 13":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 13"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 14":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 14"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 15":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 15"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 16":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 16"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 17":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 17"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 18":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 18"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 19":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 19"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 20":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 20"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 21":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 21"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row "Row 22":
+    - gridcell:
+      - checkbox
+    - gridcell "Row 22"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+- paragraph: With Font Styling
+- grid:
+  - row " A B C D E":
+    - columnheader ""
+    - columnheader "A":
+      - text: A
+      - separator
+    - columnheader "B":
+      - text: B
+      - separator
+    - columnheader "C":
+      - text: C
+      - separator
+    - columnheader "D":
+      - text: D
+      - separator
+    - columnheader "E":
+      - text: E
+      - separator
+  - row " Row 0":
+    - gridcell ""
+    - gridcell "Row 0"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 1":
+    - gridcell ""
+    - gridcell "Row 1"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 2":
+    - gridcell ""
+    - gridcell "Row 2"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 3":
+    - gridcell ""
+    - gridcell "Row 3"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 4":
+    - gridcell ""
+    - gridcell "Row 4"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 5":
+    - gridcell ""
+    - gridcell "Row 5"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 6":
+    - gridcell ""
+    - gridcell "Row 6"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 7":
+    - gridcell ""
+    - gridcell "Row 7"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 8":
+    - gridcell ""
+    - gridcell "Row 8"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 9":
+    - gridcell ""
+    - gridcell "Row 9"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 10":
+    - gridcell ""
+    - gridcell "Row 10"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 11":
+    - gridcell ""
+    - gridcell "Row 11"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 12":
+    - gridcell ""
+    - gridcell "Row 12"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 13":
+    - gridcell ""
+    - gridcell "Row 13"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 14":
+    - gridcell ""
+    - gridcell "Row 14"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 15":
+    - gridcell ""
+    - gridcell "Row 15"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 16":
+    - gridcell ""
+    - gridcell "Row 16"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 17":
+    - gridcell ""
+    - gridcell "Row 17"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 18":
+    - gridcell ""
+    - gridcell "Row 18"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 19":
+    - gridcell ""
+    - gridcell "Row 19"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 20":
+    - gridcell ""
+    - gridcell "Row 20"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 21":
+    - gridcell ""
+    - gridcell "Row 21"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+  - row " Row 22":
+    - gridcell ""
+    - gridcell "Row 22"
+    - gridcell
+    - gridcell
+    - gridcell
+    - gridcell
+- heading "⌂ Demonstrates:" [level=2]:
+  - link "⌂":
+    - /url: /examples/index.html
+  - text: "Demonstrates:"
+- list:
+  - listitem: Checkbox row select column
+  - paragraph:
+    - button "Toggle show/hide \"Select All\" checkbox"
+  - paragraph:
+    - button "Unselect row 5"
+    - button "Select row 5"
+    - button "Unselect all rows"
+- heading "View Source:" [level=2]
+- list:
+  - listitem:
+    - link "View the source for this example on Github":
+      - /url: https://github.com/6pac/SlickGrid/blob/master/examples/example-checkbox-row-select.html
+```

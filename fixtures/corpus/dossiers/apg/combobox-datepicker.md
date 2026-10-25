@@ -1,0 +1,524 @@
+# W3C ARIA Authoring Practices Guide examples - combobox-datepicker
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Date Picker Combobox Example
+State: as loaded
+What people do here (from the manifest):
+- enter or pick a travel date through a date picker dialog
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/118
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../combobox-pattern.html
+- main:
+  - heading "Date Picker Combobox Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The below date picker demonstrates an implementation of the
+    - link "Combobox Pattern":
+      - /url: ../combobox-pattern.html
+    - text: that opens a dialog. The date picker dialog is opened by activating the choose date button or by moving keyboard focus to the combobox and pressing Down Arrow or Alt + Down Arrow . The dialog contains an implementation of the
+    - link "grid pattern":
+      - /url: ../../grid/grid-pattern.html
+    - text: for displaying a calendar and enabling selection of a date. Additional buttons in the dialog are available for changing the month and year shown in the grid.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Date Picker Dialog example":
+        - /url: ../../dialog-modal/examples/datepicker-dialog.html
+      - text: ": Demonstrates a dialog containing a calendar grid for choosing a date."
+    - listitem:
+      - link "Select-Only Combobox":
+        - /url: combobox-select-only.html
+      - text: ": A single-select combobox with no text input that is functionally similar to an HTML"
+      - code: select
+      - text: element.
+    - listitem:
+      - link "Editable Combobox with Both List and Inline Autocomplete":
+        - /url: combobox-autocomplete-both.html
+      - text: ": An editable combobox that demonstrates the autocomplete behavior known as \"list with inline autocomplete\"."
+    - listitem:
+      - link "Editable Combobox with List Autocomplete":
+        - /url: combobox-autocomplete-list.html
+      - text: ": An editable combobox that demonstrates the autocomplete behavior known as \"list with manual selection\"."
+    - listitem:
+      - link "Editable Combobox Without Autocomplete":
+        - /url: combobox-autocomplete-none.html
+      - text: ": An editable combobox that demonstrates the behavior associated with"
+      - code: aria-autocomplete=none
+      - text: .
+    - listitem:
+      - link "Editable Combobox with Grid Popup":
+        - /url: grid-combo.html
+      - text: ": An editable combobox that presents suggestions in a grid, enabling users to navigate descriptive information about each suggestion."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - text: Date
+  - combobox "Date"
+  - text: "(date format: mm/dd/yyyy)"
+  - button "Choose Date"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem:
+      - text: The description of the date format is associated with the combobox via
+      - code: aria-describedby
+      - text: ", making it available to assistive technologies as an accessible description."
+    - listitem:
+      - text: While the down arrow icon is excluded from the Tab sequence as specified in the
+      - code: combobox
+      - text: design pattern, it is made accessible to assistive technologies as the Choose Date button. This enables assistive technology users who might not have a keyboard, e.g., someone using a touch-based screen reader, to open the date picker dialog.
+    - listitem: In the dialog, shortcut keys are assigned to the additional buttons for changing the month and year displayed in the calendar.
+    - listitem: Keyboard help is displayed at the bottom of the dialog. A live region is used to announce it to screen reader users when focus moves into the grid.
+    - listitem: The calendar heading displaying the month and year is marked up as a live region so screen reader users get feedback from the buttons and keyboard commands that change the month and year.
+    - listitem:
+      - text: To facilitate compact visual design in the calendar, the day names in the column headers are abbreviated to two characters. However, this makes it more difficult for screen reader users to understand the day names. So, full day names are provided to assistive technologies in the HTML
+      - code: abbr
+      - text: attribute on the column headers, enabling screen readers to announce the full names when users navigate the grid.
+    - listitem:
+      - text: "Focus and hover styling of the controls support operating system high contrast settings via the CSS border property:"
+      - list:
+        - listitem: When a button or date cell receives focus a border is added.
+        - listitem: When hovering over a button or date cell with a pointing device a border is added.
+        - listitem: By default, buttons and date cells do not have a border; padding provides a placeholder space for focus and hover styling.
+  - heading "Keyboard Support" [level=2]
+  - heading "Combobox" [level=3]
+  - table "Combobox Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Down Arrow, ALT + Down Arrow Open the date picker dialog. If the combobox contains a valid date, moves focus to that date in the calendar grid. Otherwise, moves focus to current date, i.e., today's date.":
+        - cell "Down Arrow, ALT + Down Arrow"
+        - cell "Open the date picker dialog. If the combobox contains a valid date, moves focus to that date in the calendar grid. Otherwise, moves focus to current date, i.e., today's date.":
+          - list:
+            - listitem: Open the date picker dialog.
+            - listitem: If the combobox contains a valid date, moves focus to that date in the calendar grid. Otherwise, moves focus to current date, i.e., today's date.
+  - heading "Date Picker Dialog" [level=3]
+  - table "Date Picker Dialog Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "ESC Closes the dialog and moves focus to the combobox.":
+        - cell "ESC"
+        - cell "Closes the dialog and moves focus to the combobox."
+      - row "TAB Moves focus to next element in the dialog Tab sequence. Note that, as specified in the Grid Pattern, only one element in the calendar grid is in the Tab sequence. If focus is on the last button (i.e., \"OK\"), moves focus to the first button (i.e. \"Previous Year\").":
+        - cell "TAB"
+        - cell "Moves focus to next element in the dialog Tab sequence. Note that, as specified in the Grid Pattern, only one element in the calendar grid is in the Tab sequence. If focus is on the last button (i.e., \"OK\"), moves focus to the first button (i.e. \"Previous Year\").":
+          - list:
+            - listitem: Moves focus to next element in the dialog Tab sequence.
+            - listitem:
+              - text: Note that, as specified in the
+              - link "Grid Pattern":
+                - /url: ../../grid/grid-pattern.html
+              - text: ", only one element in the calendar grid is in the Tab sequence."
+            - listitem: If focus is on the last button (i.e., "OK"), moves focus to the first button (i.e. "Previous Year").
+      - row "Shift + TAB Moves focus to previous element in the dialog Tab sequence. Note that, as specified in the Grid Pattern, only one element in the calendar grid is in the Tab sequence. If focus is on the first button (i.e., \"Previous Year\"), moves focus to the last button (i.e. \"OK\").":
+        - cell "Shift + TAB"
+        - cell "Moves focus to previous element in the dialog Tab sequence. Note that, as specified in the Grid Pattern, only one element in the calendar grid is in the Tab sequence. If focus is on the first button (i.e., \"Previous Year\"), moves focus to the last button (i.e. \"OK\").":
+          - list:
+            - listitem: Moves focus to previous element in the dialog Tab sequence.
+            - listitem:
+              - text: Note that, as specified in the
+              - link "Grid Pattern":
+                - /url: ../../grid/grid-pattern.html
+              - text: ", only one element in the calendar grid is in the Tab sequence."
+            - listitem: If focus is on the first button (i.e., "Previous Year"), moves focus to the last button (i.e. "OK").
+  - 'heading "Date Picker Dialog: Calendar Buttons" [level=3]'
+  - 'table "Date Picker Dialog: Calendar Buttons Keyboard Support"':
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Space, Enter Change the month and/or year displayed in the calendar grid.":
+        - cell "Space, Enter"
+        - cell "Change the month and/or year displayed in the calendar grid."
+  - 'heading "Date Picker Dialog: Date Grid" [level=3]'
+  - 'table "Date Picker Dialog: Date Grid Keyboard Support"':
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Space Selects the date. Updates the value of the combobox with the selected date.":
+        - cell "Space"
+        - cell "Selects the date. Updates the value of the combobox with the selected date.":
+          - list:
+            - listitem: Selects the date.
+            - listitem:
+              - text: Updates the value of the
+              - code: combobox
+              - text: with the selected date.
+      - row "Enter Selects the date. Updates the value of the combobox with the selected date. Closes the dialog and moves focus to the combobox.":
+        - cell "Enter"
+        - cell "Selects the date. Updates the value of the combobox with the selected date. Closes the dialog and moves focus to the combobox.":
+          - list:
+            - listitem: Selects the date.
+            - listitem:
+              - text: Updates the value of the
+              - code: combobox
+              - text: with the selected date.
+            - listitem:
+              - text: Closes the dialog and moves focus to the
+              - code: combobox
+              - text: .
+      - row "Up Arrow Moves focus to the same day of the previous week.":
+        - cell "Up Arrow"
+        - cell "Moves focus to the same day of the previous week."
+      - row "Down Arrow Moves focus to the same day of the next week.":
+        - cell "Down Arrow"
+        - cell "Moves focus to the same day of the next week."
+      - row "Right Arrow Moves focus to the next day.":
+        - cell "Right Arrow"
+        - cell "Moves focus to the next day."
+      - row "Left Arrow Moves focus to the previous day.":
+        - cell "Left Arrow"
+        - cell "Moves focus to the previous day."
+      - row "Home Moves focus to the first day (e.g. Sunday) of the current week.":
+        - cell "Home"
+        - cell "Moves focus to the first day (e.g. Sunday) of the current week."
+      - row "End Moves focus to the last day (e.g. Saturday) of the current week.":
+        - cell "End"
+        - cell "Moves focus to the last day (e.g. Saturday) of the current week."
+      - row "PageUp Changes the grid of dates to the previous month. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+        - cell "PageUp"
+        - cell "Changes the grid of dates to the previous month. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+          - list:
+            - listitem: Changes the grid of dates to the previous month.
+            - listitem: Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.
+      - row "Shift+ PageUp Changes the grid of dates to the same month in the previous year. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+        - cell "Shift+ PageUp"
+        - cell "Changes the grid of dates to the same month in the previous year. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+          - list:
+            - listitem: Changes the grid of dates to the same month in the previous year.
+            - listitem: Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.
+      - row "PageDown Changes the grid of dates to the next month. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+        - cell "PageDown"
+        - cell "Changes the grid of dates to the next month. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+          - list:
+            - listitem: Changes the grid of dates to the next month.
+            - listitem: Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.
+      - row "Shift+ PageDown Changes the grid of dates to the same month in the next year. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+        - cell "Shift+ PageDown"
+        - cell "Changes the grid of dates to the same month in the next year. Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.":
+          - list:
+            - listitem: Changes the grid of dates to the same month in the next year.
+            - listitem: Moves focus to the day of the month that has the same number. If that day does not exist, moves focus to the last day of the month.
+  - 'heading "Date Picker Dialog: OK and Cancel Buttons" [level=3]'
+  - 'table "Date Picker Dialog: OK and Cancel Buttons Keyboard Support"':
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - 'row "Space, Enter Activates the button: \"Cancel\": Closes the dialog, moves focus to combobox, does not update combobox value. \"OK\": Closes the dialog, moves focus to combobox, updates date in combobox."':
+        - cell "Space, Enter"
+        - 'cell "Activates the button: \"Cancel\": Closes the dialog, moves focus to combobox, does not update combobox value. \"OK\": Closes the dialog, moves focus to combobox, updates date in combobox."':
+          - text: "Activates the button:"
+          - list:
+            - listitem: "\"Cancel\": Closes the dialog, moves focus to combobox, does not update combobox value."
+            - listitem: "\"OK\": Closes the dialog, moves focus to combobox, updates date in combobox."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - heading "Combobox" [level=3]
+  - table "Combobox Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "combobox input Identifies the input element as a combobox.":
+        - rowheader "combobox":
+          - code: combobox
+        - cell
+        - cell "input":
+          - code: input
+        - cell "Identifies the input element as a combobox.":
+          - text: Identifies the
+          - code: input
+          - text: element as a combobox.
+      - row "aria-haspopup=\"dialog\" input Indicates that the combobox opens a dialog.":
+        - cell
+        - rowheader "aria-haspopup=\"dialog\"":
+          - code: aria-haspopup="dialog"
+        - cell "input":
+          - code: input
+        - cell "Indicates that the combobox opens a dialog."
+      - row "aria-expanded=\"false\" input Indicates that the combobox is collapsed, i.e., the \"Choose Date\" dialog is not displayed.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "input":
+          - code: input
+        - cell "Indicates that the combobox is collapsed, i.e., the \"Choose Date\" dialog is not displayed."
+      - row "aria-expanded=\"true\" input Indicates that the combobox is expanded, i.e., the \"Choose Date\" dialog is open.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "input":
+          - code: input
+        - cell "Indicates that the combobox is expanded, i.e., the \"Choose Date\" dialog is open."
+      - row "aria-autocomplete=\"none\" input Indicates the combobox does not support autocomplete.":
+        - cell
+        - rowheader "aria-autocomplete=\"none\"":
+          - code: aria-autocomplete="none"
+        - cell "input":
+          - code: input
+        - cell "Indicates the combobox does not support autocomplete."
+      - row "aria-controls=\"IDREF\" input Identifies the element controlled by the combobox.":
+        - cell
+        - rowheader "aria-controls=\"IDREF\"":
+          - code: aria-controls="IDREF"
+        - cell "input":
+          - code: input
+        - cell "Identifies the element controlled by the combobox."
+      - row "aria-describedby=\"IDREF\" input Identifies the element that provides an accessible description for the combobox, enabling assistive technologies to associate the date format description with the input.":
+        - cell
+        - rowheader "aria-describedby=\"IDREF\"":
+          - code: aria-describedby="IDREF"
+        - cell "input":
+          - code: input
+        - cell "Identifies the element that provides an accessible description for the combobox, enabling assistive technologies to associate the date format description with the input."
+  - heading "Choose Date Button" [level=3]
+  - table "Choose Date Button Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "tabindex=\"-1\" button Excludes the button (i.e., the down arrow icon) from the Tab sequence as specified by the combobox design pattern.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "button":
+          - code: button
+        - cell "Excludes the button (i.e., the down arrow icon) from the Tab sequence as specified by the combobox design pattern."
+      - row "aria-label=\"string\" button Defines the accessible name as \"Choose Date\", which matches the title of the dialog opened by activating the button.":
+        - cell
+        - rowheader "aria-label=\"string\"":
+          - code: aria-label="string"
+        - cell "button":
+          - code: button
+        - cell "Defines the accessible name as \"Choose Date\", which matches the title of the dialog opened by activating the button."
+  - heading "Date Picker Dialog" [level=3]
+  - table "Date Picker Dialog Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "dialog div Identifies the element as a dialog.":
+        - rowheader "dialog":
+          - code: dialog
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the element as a dialog."
+      - row "aria-modal=\"true\" div Indicates the dialog is modal.":
+        - cell
+        - rowheader "aria-modal=\"true\"":
+          - code: aria-modal="true"
+        - cell "div":
+          - code: div
+        - cell "Indicates the dialog is modal."
+      - row "aria-label=\"Choose Date\" div Defines the accessible name for the dialog.":
+        - cell
+        - rowheader "aria-label=\"Choose Date\"":
+          - code: aria-label="Choose Date"
+        - cell "div":
+          - code: div
+        - cell "Defines the accessible name for the dialog."
+      - row "aria-live=\"polite\" h2 Indicates that screen readers should automatically announce the element containing the currently displayed month and year when they change. The polite value indicates that other announcements should not be interrupted.":
+        - cell
+        - rowheader "aria-live=\"polite\"":
+          - code: aria-live="polite"
+        - cell "h2":
+          - code: h2
+        - cell "Indicates that screen readers should automatically announce the element containing the currently displayed month and year when they change. The polite value indicates that other announcements should not be interrupted.":
+          - list:
+            - listitem: Indicates that screen readers should automatically announce the element containing the currently displayed month and year when they change.
+            - listitem:
+              - text: The
+              - code: polite
+              - text: value indicates that other announcements should not be interrupted.
+      - row "aria-live=\"polite\" div Indicates the element that displays information about keyboard commands for navigating the grid should be automatically announced by screen readers. The script slightly delays display of the information, so screen readers are more likely to announce it after announcing focus change events. The polite value indicates that other announcements should not be interrupted.":
+        - cell
+        - rowheader "aria-live=\"polite\"":
+          - code: aria-live="polite"
+        - cell "div":
+          - code: div
+        - cell "Indicates the element that displays information about keyboard commands for navigating the grid should be automatically announced by screen readers. The script slightly delays display of the information, so screen readers are more likely to announce it after announcing focus change events. The polite value indicates that other announcements should not be interrupted.":
+          - list:
+            - listitem: Indicates the element that displays information about keyboard commands for navigating the grid should be automatically announced by screen readers.
+            - listitem: The script slightly delays display of the information, so screen readers are more likely to announce it after announcing focus change events.
+            - listitem:
+              - text: The
+              - code: polite
+              - text: value indicates that other announcements should not be interrupted.
+  - 'heading "Date Picker Dialog: Calendar Navigation Buttons" [level=3]'
+  - 'table "Date Picker Dialog: Calendar Navigation Buttons Role, Property, State, and Tabindex Attributes"':
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "aria-label=\"String\" button Defines the accessible name of the button (e.g. \"Next Year\").":
+        - cell
+        - rowheader "aria-label=\"String\"":
+          - code:
+            - text: aria-label="
+            - emphasis: String
+            - text: "\""
+        - cell "button":
+          - code: button
+        - cell "Defines the accessible name of the button (e.g. \"Next Year\")."
+  - 'heading "Date Picker Dialog: Date Grid" [level=3]'
+  - 'table "Date Picker Dialog: Date Grid Role, Property, State, and Tabindex Attributes"':
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "grid table Identifies the table element as a grid widget. Since the grid role is applied to a table element, the row, columnheader, and gridcell roles do not need to be specified because they are implied by tr, th, and td tags.":
+        - rowheader "grid":
+          - code: grid
+        - cell
+        - cell "table":
+          - code: table
+        - cell "Identifies the table element as a grid widget. Since the grid role is applied to a table element, the row, columnheader, and gridcell roles do not need to be specified because they are implied by tr, th, and td tags.":
+          - list:
+            - listitem:
+              - text: Identifies the
+              - code: table
+              - text: element as a
+              - code: grid
+              - text: widget.
+            - listitem:
+              - text: Since the
+              - code: grid
+              - text: role is applied to a
+              - code: table
+              - text: element, the
+              - code: row
+              - text: ","
+              - code: columnheader
+              - text: ", and"
+              - code: gridcell
+              - text: roles do not need to be specified because they are implied by
+              - code: tr
+              - text: ","
+              - code: th
+              - text: ", and"
+              - code: td
+              - text: tags.
+      - row "aria-labelledby=\"IDREF\" table Identifies the element that provides the accessible name for the grid, which is the h2 that shows the month and year of the dates displayed in the grid.":
+        - cell
+        - rowheader "aria-labelledby=\"IDREF\"":
+          - code: aria-labelledby="IDREF"
+        - cell "table":
+          - code: table
+        - cell "Identifies the element that provides the accessible name for the grid, which is the h2 that shows the month and year of the dates displayed in the grid.":
+          - text: Identifies the element that provides the accessible name for the
+          - code: grid
+          - text: ", which is the"
+          - code: h2
+          - text: that shows the month and year of the dates displayed in the grid.
+      - row "tabindex=\"0\" td Makes the gridcell focusable and includes it in the dialog Tab sequence. Set dynamically by the JavaScript when the element is to be included in the dialog Tab sequence. At any given time, only one gridcell within the grid is in the dialog Tab sequence. This approach to managing focus is described in the section on Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"0\"":
+          - code: tabindex="0"
+        - cell "td":
+          - code: td
+        - cell "Makes the gridcell focusable and includes it in the dialog Tab sequence. Set dynamically by the JavaScript when the element is to be included in the dialog Tab sequence. At any given time, only one gridcell within the grid is in the dialog Tab sequence. This approach to managing focus is described in the section on Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Makes the gridcell focusable and includes it in the dialog Tab sequence.
+            - listitem: Set dynamically by the JavaScript when the element is to be included in the dialog Tab sequence.
+            - listitem: At any given time, only one gridcell within the grid is in the dialog Tab sequence.
+            - listitem:
+              - text: This approach to managing focus is described in the section on
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "tabindex=\"-1\" td Makes the gridcell focusable and excludes it from the dialog Tab sequence. Changed dynamically to 0 by the JavaScript when the gridcell is to be included in the dialog Tab sequence. At any given time, only one gridcell within the grid is in the dialog Tab sequence. This approach to managing focus is described in the section on Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "td":
+          - code: td
+        - cell "Makes the gridcell focusable and excludes it from the dialog Tab sequence. Changed dynamically to 0 by the JavaScript when the gridcell is to be included in the dialog Tab sequence. At any given time, only one gridcell within the grid is in the dialog Tab sequence. This approach to managing focus is described in the section on Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Makes the gridcell focusable and excludes it from the dialog Tab sequence.
+            - listitem:
+              - text: Changed dynamically to
+              - code: "0"
+              - text: by the JavaScript when the gridcell is to be included in the dialog Tab sequence.
+            - listitem: At any given time, only one gridcell within the grid is in the dialog Tab sequence.
+            - listitem:
+              - text: This approach to managing focus is described in the section on
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "aria-selected=\"true\" td Indicates the cell is selected. Set on the gridcell representing the current value of the combobox; no other gridcells have aria-selected specified.":
+        - cell
+        - rowheader "aria-selected=\"true\"":
+          - code: aria-selected="true"
+        - cell "td":
+          - code: td
+        - cell "Indicates the cell is selected. Set on the gridcell representing the current value of the combobox; no other gridcells have aria-selected specified.":
+          - list:
+            - listitem: Indicates the cell is selected.
+            - listitem:
+              - text: Set on the gridcell representing the current value of the combobox; no other gridcells have
+              - code: aria-selected
+              - text: specified.
+  - paragraph:
+    - strong: "Note:"
+    - text: Since the names of the days of the week in the column headers are abbreviated to two characters, they may be difficult to understand when announced by a screen reader. An alternative column header name can be provided to screen readers by applying the
+    - code: abbr
+    - text: attribute to the
+    - code: th
+    - text: elements. So, each
+    - code: th
+    - text: element includes an
+    - code: abbr
+    - text: attribute containing the full spelling of the name of the day for that column.
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "combobox-datepicker.css":
+        - /url: css/combobox-datepicker.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "combobox-datepicker.js":
+        - /url: js/combobox-datepicker.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: "<div id=\"myDatepicker\" class=\"combobox-datepicker\"> <div class=\"label\"> <label id=\"id-label-1\" for=\"cb-textbox-1\"> Date </label> </div> <div class=\"group\"> <input type=\"text\" id=\"cb-textbox-1\" aria-autocomplete=\"none\" role=\"combobox\" aria-expanded=\"false\" aria-haspopup=\"dialog\" aria-controls=\"cb-dialog-1\" aria-describedby=\"cb-description-1\"> <span class=\"desc\" id=\"cb-description-1\"> (date format: mm/dd/yyyy) </span> <button type=\"button\" class=\"arrow\" tabindex=\"-1\" aria-label=\"Choose Date\"> <span> <svg width=\"18\" height=\"16\" aria-hidden=\"true\" focusable=\"false\"> <polygon points=\"2,4 16,4 9,14\"></polygon> </svg> </span> </button> </div> <div id=\"cb-dialog-1\" class=\"dialog\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Choose Date\"> <div class=\"header\"> <button type=\"button\" class=\"prev-year\" aria-label=\"previous year\"> <span class=\"fas fa-angle-double-left fa-lg\"></span> </button> <button type=\"button\" class=\"prev-month\" aria-label=\"previous month\"> <span class=\"fas fa-angle-left fa-lg\"></span> </button> <h2 id=\"cb-grid-label\" class=\"month-year\" aria-live=\"polite\"> December 2020 </h2> <button type=\"button\" class=\"next-month\" aria-label=\"next month\"> <span class=\"fas fa-angle-right fa-lg\"></span> </button> <button type=\"button\" class=\"next-year\" aria-label=\"next year\"> <span class=\"fas fa-angle-double-right fa-lg\"></span> </button> </div> <table class=\"dates\" role=\"grid\" aria-labelledby=\"cb-grid-label\"> <thead> <tr> <th scope=\"col\" abbr=\"Sunday\"> Su </th> <th scope=\"col\" abbr=\"Monday\"> Mo </th> <th scope=\"col\" abbr=\"Tuesday\"> Tu </th> <th scope=\"col\" abbr=\"Wednesday\"> We </th> <th scope=\"col\" abbr=\"Thursday\"> Th </th> <th scope=\"col\" abbr=\"Friday\"> Fr </th> <th scope=\"col\" abbr=\"Saturday\"> Sa </th> </tr> </thead> <tbody> <tr> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td tabindex=\"-1\" data-date=\"2020-02-01\"> 1 </td> </tr> <tr> <td tabindex=\"-1\" data-date=\"2020-02-02\"> 2 </td> <td tabindex=\"-1\" data-date=\"2020-02-03\"> 3 </td> <td tabindex=\"-1\" data-date=\"2020-02-04\"> 4 </td> <td tabindex=\"-1\" data-date=\"2020-02-05\"> 5 </td> <td tabindex=\"-1\" data-date=\"2020-02-06\"> 6 </td> <td tabindex=\"-1\" data-date=\"2020-02-07\"> 7 </td> <td tabindex=\"-1\" data-date=\"2020-02-08\"> 8 </td> </tr> <tr> <td tabindex=\"-1\" data-date=\"2020-02-09\"> 9 </td> <td tabindex=\"-1\" data-date=\"2020-02-10\"> 10 </td> <td tabindex=\"-1\" data-date=\"2020-02-11\"> 11 </td> <td tabindex=\"-1\" data-date=\"2020-02-12\"> 12 </td> <td tabindex=\"-1\" data-date=\"2020-02-13\"> 13 </td> <td role=\"gridcell\" aria-selected=\"true\" data-date=\"2020-02-14\"> 14 </td> <td tabindex=\"-1\" data-date=\"2020-02-15\"> 15 </td> </tr> <tr> <td tabindex=\"-1\" data-date=\"2020-02-16\"> 16 </td> <td tabindex=\"-1\" data-date=\"2020-02-17\"> 17 </td> <td tabindex=\"-1\" data-date=\"2020-02-18\"> 18 </td> <td tabindex=\"-1\" data-date=\"2020-02-19\"> 19 </td> <td tabindex=\"-1\" data-date=\"2020-02-20\"> 20 </td> <td tabindex=\"-1\" data-date=\"2020-02-21\"> 21 </td> <td tabindex=\"-1\" data-date=\"2020-02-22\"> 22 </td> </tr> <tr> <td tabindex=\"-1\" data-date=\"2020-02-23\"> 23 </td> <td tabindex=\"-1\" data-date=\"2020-02-24\"> 24 </td> <td tabindex=\"-1\" data-date=\"2020-02-25\"> 25 </td> <td tabindex=\"-1\" data-date=\"2020-02-26\"> 26 </td> <td tabindex=\"-1\" data-date=\"2020-02-27\"> 27 </td> <td tabindex=\"-1\" data-date=\"2020-02-28\"> 28 </td> <td tabindex=\"-1\" data-date=\"2020-02-29\"> 29 </td> </tr> <tr> <td tabindex=\"-1\" data-date=\"2020-02-30\"> 30 </td> <td tabindex=\"-1\" data-date=\"2020-02-31\"> 31 </td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> <td class=\"disabled\" tabindex=\"-1\"></td> </tr> </tbody> </table> <div class=\"dialog-ok-cancel-group\"> <button class=\"dialog-button\" value=\"cancel\"> Cancel </button> <button class=\"dialog-button\" value=\"ok\"> OK </button> </div> <div class=\"dialog-message\" aria-live=\"polite\"></div> </div> </div>"
+  - separator "End of HTML Source Code"
+```

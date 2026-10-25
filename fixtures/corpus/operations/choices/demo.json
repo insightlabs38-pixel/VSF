@@ -1,0 +1,128 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "choices",
+  "page": "demo",
+  "dossierSha256": "64f340885f62b4ae18c20987681941d8308ed93b26d168bbcebf9fe19b6716c8",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of Choices.js"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Choose a city",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Cities",
+          "value": "London"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Cities",
+          "value": "London"
+        }
+      ]
+    },
+    {
+      "name": "Choose a custom template option",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Custom templates",
+          "value": "Vue"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Custom templates",
+          "value": "Vue"
+        }
+      ]
+    },
+    {
+      "name": "Fill the limited tag input",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Limited to 5 values with remove button",
+          "value": "abc"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Limited to 5 values with remove button",
+          "value": "abc"
+        }
+      ]
+    },
+    {
+      "name": "Submit the empty form changes nothing",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Submit"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Thank you"
+        }
+      ],
+      "negative": true
+    },
+    {
+      "name": "Add a tag",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Email addresses only",
+          "value": "ann@example.com"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "ann@example.com"
+        }
+      ]
+    },
+    {
+      "name": "Submit empty form",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Submit"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Thank you"
+        }
+      ],
+      "negative": true
+    }
+  ]
+}

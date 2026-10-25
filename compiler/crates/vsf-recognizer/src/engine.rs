@@ -1,5 +1,6 @@
 //! Whole-observation recognition: index-driven discovery of unit roots, then one logged computation per unit.
 
+use crate::composites::{Composite, recognize_composites};
 use crate::index::{FeatureIndex, Query};
 use crate::obs::Observation;
 use crate::semantics::{
@@ -84,8 +85,8 @@ pub fn compute_unit(obs: &Observation, kind: UnitKind, i: usize, rules: Rules) -
     let r = Reader::new(obs);
     let output = match kind {
         UnitKind::Field => recognize_field(&r, i, rules).map(Output::Field),
-        UnitKind::Action => recognize_action(&r, i).map(Output::Action),
-        UnitKind::Collection => recognize_collection(&r, i).map(Output::Collection),
+        UnitKind::Action => recognize_action(&r, i, rules).map(Output::Action),
+        UnitKind::Collection => recognize_collection(&r, i, rules).map(Output::Collection),
     }?;
     Some(Unit {
         key: (kind, obs.nodes[i].id),
@@ -106,6 +107,7 @@ pub struct Recognition {
     pub rules: Rules,
     pub digest: String,
     pub units: BTreeMap<UnitKey, Unit>,
+    pub composites: Vec<Composite>,
     pub stats: RunStats,
 }
 
@@ -126,10 +128,34 @@ pub fn recognize(obs: &Observation, rules: Rules) -> Recognition {
             }
         }
     }
+    if rules.scoped {
+        for i in 0..obs.len() {
+            let n = &obs.nodes[i];
+            let key = (UnitKind::Collection, n.id);
+            if !units.contains_key(&key)
+                && (matches!(
+                    n.tag.as_str(),
+                    "ul" | "ol" | "div" | "section" | "article" | "main"
+                ) || matches!(
+                    n.role.as_deref(),
+                    Some("list" | "feed" | "region" | "group")
+                ))
+                && let Some(u) = compute_unit(obs, UnitKind::Collection, i, rules)
+            {
+                stats.units_computed += 1;
+                units.insert(u.key, u);
+            }
+        }
+    }
     Recognition {
         rules,
         digest: obs.digest.clone(),
         units,
+        composites: if rules.scoped {
+            recognize_composites(obs)
+        } else {
+            Vec::new()
+        },
         stats,
     }
 }

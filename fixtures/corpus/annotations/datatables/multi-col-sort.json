@@ -1,0 +1,91 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "datatables",
+  "page": "multi-col-sort",
+  "dossierSha256": "0614914c506b391c1597b0a770a7e1fc4011462e298969f510de98c45476c99a",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-datatables-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      "dossier datatables/multi-col-sort.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Show entries",
+      "kind": "choice"
+    },
+    {
+      "name": "Search:",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Previous",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Employees",
+      "columns": [
+        "First name",
+        "Last name",
+        "Position",
+        "Office",
+        "Salary"
+      ],
+      "rows": 10
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "pagination",
+      "name": "Pagination"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Column sorting"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Sort employees by several columns",
+      "needs": [
+        "Column sorting",
+        "Employees"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Search employees",
+      "needs": [
+        "Search:",
+        "Employees"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Page through employees",
+      "needs": [
+        "Show entries",
+        "Pagination",
+        "Employees"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

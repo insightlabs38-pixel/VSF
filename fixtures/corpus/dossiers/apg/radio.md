@@ -1,0 +1,316 @@
+# W3C ARIA Authoring Practices Guide examples - radio
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Radio Group Example Using Roving tabindex
+State: as loaded
+What people do here (from the manifest):
+- choose a pizza crust with radio buttons
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/139
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../radio-group-pattern.html
+- main:
+  - heading "Radio Group Example Using Roving tabindex" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: This example implements the features of the
+    - link "Radio Group Pattern":
+      - /url: ../radio-group-pattern.html
+    - text: for two radio groups -- one for choosing a pizza crust and another for choosing a delivery method. This implementation uses a roving tabindex for managing focus within the radio group.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Radio Group Example Using aria-activedescendant":
+        - /url: radio-activedescendant.html
+      - text: ": Radio button group that uses"
+      - code: aria-activedescendant
+      - text: for managing keyboard focus.
+    - listitem:
+      - link "Rating Radio Group Example":
+        - /url: radio-rating.html
+      - text: ": Radio group that provides input for a five-star rating scale."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - radiogroup "Pizza Crust":
+    - heading "Pizza Crust" [level=3]
+    - radio "Regular crust"
+    - radio "Deep dish"
+    - radio "Thin crust"
+  - radiogroup "Pizza Delivery":
+    - heading "Pizza Delivery" [level=3]
+    - radio "Pickup"
+    - radio "Home Delivery"
+    - radio "Dine in"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem:
+      - text: Uses CSS attribute selectors for synchronizing
+      - code: aria-checked
+      - text: state with the visual state indicator.
+    - listitem:
+      - text: Uses CSS
+      - code: :hover
+      - text: and
+      - code: :focus
+      - text: pseudo-classes for styling visual keyboard focus and hover.
+      - list:
+        - listitem: The focus indicator encompasses both the radio button and label, making it easier to perceive which option is being chosen.
+        - listitem: Hover changes background of both the radio button and label, making it easier to perceive that clicking either the label or button will activate the radio button.
+        - listitem: The cursor is changed to a pointer when hovering over the radio button to help people with visual impairments identify it as an interactive element.
+    - listitem: Because transparent borders are visible on some systems with high contrast enabled, only the focused element has a visible border. When focusable elements are not focused, they have a 0-width border and additional padding equal in width to the border that is used to indicate focus.
+    - listitem:
+      - text: To ensure the inline SVG radio button graphics in the CSS file have sufficient contrast with the background when high contrast settings change the color of text content, CSS
+      - code: forced-color-adjust
+      - text: is set to
+      - code: auto
+      - text: on the
+      - code: svg
+      - text: graphics. This causes the colors of the
+      - code: stroke
+      - text: and
+      - code: fill
+      - text: of the circle elements to be overridden by the high contrast color setting. To make the background of the
+      - code: circle
+      - text: elements match the high contrast background color, the
+      - code: fill-opacity
+      - text: attribute of the outer
+      - code: circle
+      - text: is set to zero and the
+      - code: stroke-opacity
+      - text: attribute of the inner
+      - code: circle
+      - text: is set to zero. If
+      - code: forced-color-adjust
+      - text: were not used to override the colors specified for the
+      - code: stroke
+      - text: and
+      - code: fill
+      - text: "properties, those colors would remain the same in high contrast mode, which could lead to insufficient contrast between the radio circle elements and the background or even make them invisible if their color matched the high contrast mode background. Note: The explicit setting of"
+      - code: forced-color-adjust
+      - text: is necessary because some browsers do not use
+      - code: auto
+      - text: as the default value for SVG graphics.
+  - heading "Keyboard Support" [level=2]
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Tab Moves focus to the checked radio button in the radiogroup. If a radio button is not checked, focus moves to the first radio button in the group.":
+        - cell "Tab"
+        - cell "Moves focus to the checked radio button in the radiogroup. If a radio button is not checked, focus moves to the first radio button in the group.":
+          - list:
+            - listitem:
+              - text: Moves focus to the checked
+              - code: radio
+              - text: button in the
+              - code: radiogroup
+              - text: .
+            - listitem:
+              - text: If a
+              - code: radio
+              - text: button is not checked, focus moves to the first
+              - code: radio
+              - text: button in the group.
+      - 'row "Space If the radio button with focus is not checked, changes the state to checked. Otherwise, does nothing. Note: The state where a radio is not checked only occurs on page load."':
+        - cell "Space"
+        - 'cell "If the radio button with focus is not checked, changes the state to checked. Otherwise, does nothing. Note: The state where a radio is not checked only occurs on page load."':
+          - list:
+            - listitem:
+              - text: If the
+              - code: radio
+              - text: button with focus is not checked, changes the state to
+              - code: checked
+              - text: .
+            - listitem: Otherwise, does nothing.
+            - listitem: "Note: The state where a radio is not checked only occurs on page load."
+      - row "Down arrow Right arrow Moves focus to and checks the next radio button in the group. If focus is on the last radio button, moves focus to the first radio button. The state of the previously checked radio button is changed to unchecked.":
+        - cell "Down arrow Right arrow"
+        - cell "Moves focus to and checks the next radio button in the group. If focus is on the last radio button, moves focus to the first radio button. The state of the previously checked radio button is changed to unchecked.":
+          - list:
+            - listitem:
+              - text: Moves focus to and checks the next
+              - code: radio
+              - text: button in the group.
+            - listitem:
+              - text: If focus is on the last
+              - code: radio
+              - text: button, moves focus to the first
+              - code: radio
+              - text: button.
+            - listitem: The state of the previously checked radio button is changed to unchecked.
+      - row "Up arrow Left arrow Moves focus to and checks the previous radio button in the group. If focus is on the first radio button, moves focus to and checks the last radio button. The state of the previously checked radio button is changed to unchecked.":
+        - cell "Up arrow Left arrow"
+        - cell "Moves focus to and checks the previous radio button in the group. If focus is on the first radio button, moves focus to and checks the last radio button. The state of the previously checked radio button is changed to unchecked.":
+          - list:
+            - listitem:
+              - text: Moves focus to and checks the previous
+              - code: radio
+              - text: button in the group.
+            - listitem:
+              - text: If focus is on the first
+              - code: radio
+              - text: button, moves focus to and checks the last
+              - code: radio
+              - text: button.
+            - listitem: The state of the previously checked radio button is changed to unchecked.
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attributes Element Usage":
+        - columnheader "Role"
+        - columnheader "Attributes"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "radiogroup div Identifies the div element as a container for a group of radio buttons. Is not focusable because focus is managed using a roving tabindex strategy as described below.":
+        - rowheader "radiogroup":
+          - code: radiogroup
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the div element as a container for a group of radio buttons. Is not focusable because focus is managed using a roving tabindex strategy as described below.":
+          - list:
+            - listitem:
+              - text: Identifies the
+              - code: div
+              - text: element as a container for a group of
+              - code: radio
+              - text: buttons.
+            - listitem: Is not focusable because focus is managed using a roving tabindex strategy as described below.
+      - row "aria-labelledby=\"[IDREF]\" div Refers to the element that contains the label of the radio group.":
+        - cell
+        - rowheader "aria-labelledby=\"[IDREF]\"":
+          - code: aria-labelledby="[IDREF]"
+        - cell "div":
+          - code: div
+        - cell "Refers to the element that contains the label of the radio group."
+      - row "radio div Identifies the div element as an ARIA radio button. The accessible name is computed from the child text content of the div element.":
+        - rowheader "radio":
+          - code: radio
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the div element as an ARIA radio button. The accessible name is computed from the child text content of the div element.":
+          - list:
+            - listitem:
+              - text: Identifies the
+              - code: div
+              - text: element as an ARIA
+              - code: radio
+              - text: button.
+            - listitem:
+              - text: The accessible name is computed from the child text content of the
+              - code: div
+              - text: element.
+      - row "tabindex=\"-1\" div Makes the element focusable but not part of the page Tab sequence. Applied to all radio buttons contained in the radio group except for one that is included in the page Tab sequence. This approach to managing focus is described in the practice for Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"-1\"":
+          - code: tabindex="-1"
+        - cell "div":
+          - code: div
+        - cell "Makes the element focusable but not part of the page Tab sequence. Applied to all radio buttons contained in the radio group except for one that is included in the page Tab sequence. This approach to managing focus is described in the practice for Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Makes the element focusable but not part of the page Tab sequence.
+            - listitem: Applied to all radio buttons contained in the radio group except for one that is included in the page Tab sequence.
+            - listitem:
+              - text: This approach to managing focus is described in the practice for
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "tabindex=\"0\" div Makes the radio button focusable and includes it in the page Tab sequence. Set on only one radio in the radio group. On page load, is set on the first radio button in the radio group. Moves with focus inside the radio group so the most recently focused radio button is included in the page Tab sequence. This approach to managing focus is described in the practice for Managing Focus Within Components Using a Roving tabindex.":
+        - cell
+        - rowheader "tabindex=\"0\"":
+          - code: tabindex="0"
+        - cell "div":
+          - code: div
+        - cell "Makes the radio button focusable and includes it in the page Tab sequence. Set on only one radio in the radio group. On page load, is set on the first radio button in the radio group. Moves with focus inside the radio group so the most recently focused radio button is included in the page Tab sequence. This approach to managing focus is described in the practice for Managing Focus Within Components Using a Roving tabindex.":
+          - list:
+            - listitem: Makes the radio button focusable and includes it in the page Tab sequence.
+            - listitem: Set on only one radio in the radio group.
+            - listitem: On page load, is set on the first radio button in the radio group.
+            - listitem: Moves with focus inside the radio group so the most recently focused radio button is included in the page Tab sequence.
+            - listitem:
+              - text: This approach to managing focus is described in the practice for
+              - link "Managing Focus Within Components Using a Roving tabindex":
+                - /url: ../../../practices/keyboard-interface/keyboard-interface-practice.html#kbd_roving_tabindex
+              - text: .
+      - row "aria-checked=\"false\" div Identifies radio buttons which are not checked. CSS attribute selectors (e.g. [aria-checked=\"false\"]) are used to synchronize the visual states with the value of the aria-checked attribute. The CSS ::before pseudo-element is used to indicate visual state of unchecked radio buttons to support high contrast settings in operating systems and browsers.":
+        - cell
+        - rowheader "aria-checked=\"false\"":
+          - code: aria-checked="false"
+        - cell "div":
+          - code: div
+        - cell "Identifies radio buttons which are not checked. CSS attribute selectors (e.g. [aria-checked=\"false\"]) are used to synchronize the visual states with the value of the aria-checked attribute. The CSS ::before pseudo-element is used to indicate visual state of unchecked radio buttons to support high contrast settings in operating systems and browsers.":
+          - list:
+            - listitem:
+              - text: Identifies
+              - code: radio
+              - text: buttons which are not checked.
+            - listitem:
+              - text: CSS attribute selectors (e.g.
+              - code: "[aria-checked=\"false\"]"
+              - text: ) are used to synchronize the visual states with the value of the
+              - code: aria-checked
+              - text: attribute.
+            - listitem:
+              - text: The CSS
+              - code: ::before
+              - text: pseudo-element is used to indicate visual state of unchecked radio buttons to support high contrast settings in operating systems and browsers.
+      - row "aria-checked=\"true\" div Identifies the radio button which is checked. CSS attribute selectors (e.g. [aria-checked=\"true\"]) are used to synchronize the visual states with the value of the aria-checked attribute. The CSS ::before pseudo-element is used to indicate visual state of checked radio buttons to support high contrast settings in operating systems and browsers.":
+        - cell
+        - rowheader "aria-checked=\"true\"":
+          - code: aria-checked="true"
+        - cell "div":
+          - code: div
+        - cell "Identifies the radio button which is checked. CSS attribute selectors (e.g. [aria-checked=\"true\"]) are used to synchronize the visual states with the value of the aria-checked attribute. The CSS ::before pseudo-element is used to indicate visual state of checked radio buttons to support high contrast settings in operating systems and browsers.":
+          - list:
+            - listitem:
+              - text: Identifies the
+              - code: radio
+              - text: button which is checked.
+            - listitem:
+              - text: CSS attribute selectors (e.g.
+              - code: "[aria-checked=\"true\"]"
+              - text: ) are used to synchronize the visual states with the value of the
+              - code: aria-checked
+              - text: attribute.
+            - listitem:
+              - text: The CSS
+              - code: ::before
+              - text: pseudo-element is used to indicate visual state of checked radio buttons to support high contrast settings in operating systems and browsers.
+  - heading "Assistive Technology Support" [level=2]
+  - paragraph:
+    - link "Learn how to interpret and use assistive technology support data":
+      - /url: ../../../about/at-support-tables/at-support-tables.html
+  - iframe
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "radio.css":
+        - /url: css/radio.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "radio.js":
+        - /url: js/radio.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: <div role="radiogroup" aria-labelledby="group_label_1" id="rg1"> <h3 id="group_label_1"> Pizza Crust </h3> <div role="radio" aria-checked="false" tabindex="0"> Regular crust </div> <div role="radio" aria-checked="false" tabindex="-1"> Deep dish </div> <div role="radio" aria-checked="false" tabindex="-1"> Thin crust </div> </div> <div role="radiogroup" aria-labelledby="group_label_2" id="rg2"> <h3 id="group_label_2"> Pizza Delivery </h3> <div role="radio" aria-checked="false" tabindex="0"> Pickup </div> <div role="radio" aria-checked="false" tabindex="-1"> Home Delivery </div> <div role="radio" aria-checked="false" tabindex="-1"> Dine in </div> </div>
+  - separator "End of HTML Source Code"
+```

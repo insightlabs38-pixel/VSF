@@ -1,0 +1,302 @@
+# AdminLTE 4 admin dashboard template - profile
+Upstream: https://github.com/ColorlibHQ/AdminLTE
+Framework: bootstrap-5
+Ground truth basis: AdminLTE page descriptions; Chromium accessibility tree
+Page title: AdminLTE 4 | User Profile
+State: as loaded
+What people do here (from the manifest):
+- view and edit a user profile
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Skip to main content":
+  - /url: "#main"
+- link "Skip to navigation":
+  - /url: "#navigation"
+- navigation:
+  - list:
+    - listitem:
+      - button "Toggle sidebar": 
+    - listitem:
+      - link "Live preview":
+        - /url: ../index.html
+    - listitem:
+      - link "Documentation":
+        - /url: ../docs/introduction.html
+  - search:
+    - text: Search
+    - searchbox "Search"
+    - button "Submit search"
+  - list:
+    - listitem:
+      - 'link "Messages: 3 unread"':
+        - /url: "#"
+        - text:  3
+    - listitem:
+      - 'link "Notifications: 15 unread"':
+        - /url: "#"
+        - text:  15
+    - listitem:
+      - link "Change language, current language English":
+        - /url: "#"
+    - listitem:
+      - link "Toggle fullscreen":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Toggle color scheme":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Alexander Pierce Alexander Pierce":
+        - /url: "#"
+        - img "Alexander Pierce"
+        - text: Alexander Pierce
+- complementary:
+  - link "AdminLTE Logo AdminLTE 4":
+    - /url: ../index.html
+    - img "AdminLTE Logo"
+    - text: AdminLTE 4
+  - search:
+    - text: Filter menu
+    - searchbox "Filter menu"
+  - navigation "Main navigation":
+    - list:
+      - listitem:
+        - link " Dashboard ":
+          - /url: "#"
+          - text: 
+          - paragraph: Dashboard 
+      - listitem:
+        - link " Starter Page":
+          - /url: ../starter.html
+          - text: 
+          - paragraph: Starter Page
+      - listitem:
+        - link " Theme Generate":
+          - /url: ../generate/theme.html
+          - text: 
+          - paragraph: Theme Generate
+      - listitem:
+        - link " Widgets ":
+          - /url: "#"
+          - text: 
+          - paragraph: Widgets 
+      - listitem:
+        - link " Layout Options 12 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Layout Options 12 
+      - listitem:
+        - link " UI Elements ":
+          - /url: "#"
+          - text: 
+          - paragraph: UI Elements 
+      - listitem:
+        - link " Mailbox ":
+          - /url: "#"
+          - text: 
+          - paragraph: Mailbox 
+      - listitem:
+        - link " Forms ":
+          - /url: "#"
+          - text: 
+          - paragraph: Forms 
+      - listitem:
+        - link " Tables ":
+          - /url: "#"
+          - text: 
+          - paragraph: Tables 
+      - listitem:
+        - link " Charts ":
+          - /url: "#"
+          - text: 
+          - paragraph: Charts 
+      - listitem: PAGES
+      - listitem:
+        - link " Pages " [expanded]:
+          - /url: "#"
+          - text: 
+          - paragraph: Pages 
+        - list:
+          - listitem:
+            - link " Profile":
+              - /url: ../pages/profile.html
+              - text: 
+              - paragraph: Profile
+          - listitem:
+            - link " Settings":
+              - /url: ../pages/settings.html
+              - text: 
+              - paragraph: Settings
+          - listitem:
+            - link " Invoice":
+              - /url: ../pages/invoice.html
+              - text: 
+              - paragraph: Invoice
+          - listitem:
+            - link " Calendar":
+              - /url: ../pages/calendar.html
+              - text: 
+              - paragraph: Calendar
+          - listitem:
+            - link " Kanban":
+              - /url: ../pages/kanban.html
+              - text: 
+              - paragraph: Kanban
+          - listitem:
+            - link " Chat":
+              - /url: ../pages/chat.html
+              - text: 
+              - paragraph: Chat
+          - listitem:
+            - link " File Manager":
+              - /url: ../pages/file-manager.html
+              - text: 
+              - paragraph: File Manager
+          - listitem:
+            - link " Projects":
+              - /url: ../pages/projects.html
+              - text: 
+              - paragraph: Projects
+          - listitem:
+            - link " Gallery":
+              - /url: ../pages/gallery.html
+              - text: 
+              - paragraph: Gallery
+          - listitem:
+            - link " Search Results":
+              - /url: ../pages/search-results.html
+              - text: 
+              - paragraph: Search Results
+          - listitem:
+            - link " Pricing":
+              - /url: ../pages/pricing.html
+              - text: 
+              - paragraph: Pricing
+          - listitem:
+            - link " FAQ":
+              - /url: ../pages/faq.html
+              - text: 
+              - paragraph: FAQ
+          - listitem:
+            - link " Error ":
+              - /url: "#"
+              - text: 
+              - paragraph: Error 
+      - listitem:
+        - link " Users":
+          - /url: ../users.html
+          - text: 
+          - paragraph: Users
+      - listitem: EXAMPLES
+      - listitem:
+        - link " Auth ":
+          - /url: "#"
+          - text: 
+          - paragraph: Auth 
+      - listitem: MULTI LEVEL EXAMPLE
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem:
+        - link " Level 1 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1 
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem: LABELS
+      - listitem:
+        - link " Important":
+          - /url: "#"
+          - text: 
+          - paragraph: Important
+      - listitem:
+        - link " Warning":
+          - /url: "#"
+          - text: 
+          - paragraph: Warning
+      - listitem:
+        - link " Informational":
+          - /url: "#"
+          - text: 
+          - paragraph: Informational
+    - link "View documentation":
+      - /url: ../docs/introduction.html
+- main:
+  - heading "User Profile" [level=1]
+  - navigation "breadcrumb":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: "#"
+      - listitem:
+        - text: /
+        - link "User":
+          - /url: "#"
+      - listitem: / Profile
+  - heading "Jane Doe" [level=3]
+  - paragraph: Product Designer
+  - list:
+    - listitem: Followers 1,322
+    - listitem: Following 543
+    - listitem: Friends 13,287
+  - link "Follow":
+    - /url: "#"
+  - heading "About" [level=3]
+  - paragraph: Education
+  - paragraph: BS in Computer Science from the University of Tennessee at Knoxville
+  - paragraph: Location
+  - paragraph: Malibu, California
+  - paragraph: Skills
+  - paragraph: UI/UX Figma Design Systems Research
+  - paragraph: Notes
+  - paragraph: Lorem ipsum represents a long-held tradition for designers, typographers and the like.
+  - tablist:
+    - tab "Activity" [selected]
+    - tab "Timeline"
+    - tab "Settings"
+  - tabpanel "Activity":
+    - article:
+      - heading "Jane Doe" [level=4]
+      - text: 2 hours ago
+      - paragraph:
+        - text: Shipped
+        - link "design-system v2.4":
+          - /url: "#"
+        - text: with a refreshed color palette and new motion primitives.
+      - link "Like":
+        - /url: "#"
+      - link "Comment":
+        - /url: "#"
+    - article:
+      - heading "Jane Doe" [level=4]
+      - text: Yesterday
+      - paragraph:
+        - text: Posted a question in
+        - link "#design-help":
+          - /url: "#"
+        - text: ": how should we handle focus rings on dark-themed CTA buttons?"
+    - article:
+      - heading "Jane Doe" [level=4]
+      - text: 3 days ago
+      - paragraph:
+        - text: Updated her bio and added
+        - emphasis: Research
+        - text: to her skills.
+- contentinfo:
+  - text: Anything you want
+  - strong:
+    - text: Copyright © 2014-2026
+    - link "AdminLTE.io":
+      - /url: https://adminlte.io
+    - text: .
+  - text: All rights reserved.
+- status
+```

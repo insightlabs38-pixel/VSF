@@ -1,0 +1,75 @@
+{
+  "task_id": "VSF-B11-T06",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "71e7b7c4a3ba86ba541fa466c1b181ac2170bd0d",
+  "commit": "148498a33ec9ab907001a7973682198d6e33b221",
+  "paths": [
+    "docs/deep/evidence/VSF-B11/g11/",
+    "docs/deep/evidence/VSF-B11/failure-clusters-t06.md",
+    "docs/deep/adr/ADR-040-independent-corpus.md",
+    "docs/deep/adr/ADR-041-composites-files-bulk.md"
+  ],
+  "acceptance": "Independent held-out corpus shows measured improvement and no significant regression; report coverage denominator.",
+  "positive": {
+    "fixture": "all 81 captures reproduce their digest; pre-B11, T02 and current builds measured on the frozen denominator; held-out AdminLTE and TodoMVC verified/intended 34/42 to 38/42, File Browser 8/15 unchanged",
+    "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "frozen rules 1 and 2 goldens stay byte-identical; write-seen-as-read-only counts do not rise; wrong effect and misbound stay 0",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test regression",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts comments",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts secrets",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm build:ts",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/schema --filter @vsf/observer --filter @vsf/ir --filter @vsf/fixture-apps --filter @vsf/extension run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/observation-tests run test:unit",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/observation-tests run check:fixtures",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "none",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Sealed File Browser was reported as aggregate only until the authorized unseal; one late page-level look is disclosed and nothing was changed after it.",
+  "performance_memory_storage": "Recognizer latency and memory unchanged between T02 and current.",
+  "known_limitations": [
+    "Held-out improvement is concentrated in the diagnosed applications; File Browser is unchanged in operations, collections and workflows",
+    "Held-out hint false claims rose (4 to 17 on AdminLTE and TodoMVC), mostly read versus navigation on the same side of the write line",
+    "Held-out independence is consumed by this unseal; later claims need a new held-out set"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/manifest.json",
+    "docs/deep/evidence/VSF-B11/g11/ops-tables.md",
+    "docs/deep/evidence/VSF-B11/g11/structural-tables.md"
+  ],
+  "review_result": "ACCEPTED"
+}

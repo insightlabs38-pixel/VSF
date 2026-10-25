@@ -1,0 +1,100 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "filebrowser",
+  "page": "files",
+  "dossierSha256": "0318259e19616845e3cb508d9547f7bd20bc02909f458f9ccae8c0a0ebb33d1b",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "File Browser public documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Search for a file",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search...",
+          "value": "readme"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Search...",
+          "value": "readme"
+        }
+      ]
+    },
+    {
+      "name": "Sort by name descending",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Sort by name"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "arrow_downward"
+        }
+      ]
+    },
+    {
+      "name": "Open the new folder prompt",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "New folder"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Name your new directory"
+        }
+      ]
+    },
+    {
+      "name": "Switch to list view",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Switch view"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "view_list"
+        }
+      ]
+    },
+    {
+      "name": "Open a folder",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "docs"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "docs"
+        }
+      ]
+    }
+  ]
+}

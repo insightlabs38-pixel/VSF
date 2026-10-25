@@ -1,0 +1,166 @@
+# File Browser - settings
+Upstream: https://github.com/filebrowser/filebrowser
+Framework: vue
+Ground truth basis: File Browser documentation (users, sharing, uploads, downloads, commands); Chromium accessibility tree
+Page title: Global Settings - File Browser
+State: settings opened
+What people do here (from the manifest):
+- change profile settings and preferences
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- heading "File Browser" [level=1]
+- navigation:
+  - button "person admin"
+  - button "My files": folder My files
+  - button "New folder": create_new_folder New folder
+  - button "New file": note_add New file
+  - button "Settings": settings_applications Settings
+  - button "Logout": exit_to_app Logout
+  - paragraph:
+    - link "File Browser":
+      - /url: https://github.com/filebrowser/filebrowser
+    - text: 2.63.23 Help
+- main:
+  - img "File Browser"
+  - list:
+    - link "Profile Settings":
+      - /url: /settings/profile
+      - listitem: Profile Settings
+    - link "Share Management":
+      - /url: /settings/shares
+      - listitem: Share Management
+    - link "Global Settings":
+      - /url: /settings/global
+      - listitem: Global Settings
+    - link "User Management":
+      - /url: /settings/users
+      - listitem: User Management
+  - heading "File Browser is being archived" [level=2]
+  - paragraph: This project is being wound down. It is archived on 2026-09-01, after which there will be no further releases, bug fixes, or security fixes. Existing releases and Docker images stay online. Do not expose this instance directly to the internet without authentication in front of it.
+  - paragraph:
+    - link "Read the project status, known unfixed security issues, and hardening guidance":
+      - /url: https://github.com/filebrowser/filebrowser#security
+  - heading "Global Settings" [level=2]
+  - paragraph:
+    - checkbox
+    - text: Allow users to signup
+  - paragraph:
+    - checkbox
+    - text: Auto create user home dir while adding new user
+  - paragraph:
+    - checkbox
+    - text: Hide the login button from public pages
+  - paragraph:
+    - text: Base path for user home directories
+    - textbox: /users
+  - paragraph:
+    - text: Minimum password length
+    - button
+    - spinbutton: "12"
+    - button
+  - heading "Rules" [level=3]
+  - paragraph: This is a global set of allow and disallow rules. They apply to every user. You can define specific rules on each user's settings to override these ones.
+  - button "New"
+  - heading "Branding" [level=3]
+  - paragraph:
+    - text: You can customize how your File Browser instance looks and feels by changing its name, replacing the logo, adding custom styles and even disable external links to GitHub. For more information about custom branding, please check out the
+    - link "documentation":
+      - /url: https://github.com/filebrowser/filebrowser/blob/master/docs/customization.md#custom-branding
+    - text: .
+  - paragraph:
+    - checkbox
+    - text: Disable external links (except documentation)
+  - paragraph:
+    - checkbox
+    - text: Disable used disk percentage graph
+  - paragraph:
+    - text: Theme
+    - combobox "Theme":
+      - option "System default" [selected]
+      - option "Light"
+      - option "Dark"
+  - paragraph:
+    - text: Instance name
+    - textbox "Instance name"
+  - paragraph:
+    - text: Branding directory path
+    - textbox "Branding directory path"
+  - heading "Chunked Uploads" [level=3]
+  - paragraph: File Browser supports chunked file uploads, allowing for the creation of efficient, reliable, resumable and chunked file uploads even on unreliable networks.
+  - paragraph:
+    - text: Indicates to maximum size of a request (direct uploads will be used for smaller uploads). You may input a plain integer denoting byte size input or a string like 10MB, 1GB etc.
+    - textbox "Indicates to maximum size of a request (direct uploads will be used for smaller uploads). You may input a plain integer denoting byte size input or a string like 10MB, 1GB etc.": 10MB
+  - paragraph:
+    - text: Number of retries to perform if a chunk fails to upload.
+    - button
+    - spinbutton: "5"
+    - button
+  - button "Update"
+  - heading "User default settings" [level=2]
+  - paragraph: These are the default settings for new users.
+  - paragraph:
+    - text: Scope
+    - textbox "Scope":
+      - /placeholder: ""
+      - text: .
+  - paragraph:
+    - text: Language
+    - combobox "Language":
+      - option "العربية"
+      - option "български език"
+      - option "Català"
+      - option "Čeština"
+      - option "Deutsch"
+      - option "Ελληνικά"
+      - option "English" [selected]
+      - option "Español"
+      - option "Français"
+      - option "עברית"
+      - option "Hrvatski"
+      - option "Magyar"
+      - option "Icelandic"
+      - option "Italiano"
+      - option "日本語"
+      - option "한국어"
+      - option "Norsk"
+      - option "Nederlands (Nederland)"
+      - option "Nederlands (België)"
+      - option "Latviešu"
+      - option "Polski"
+      - option "Português (Brasil)"
+      - option "Português (Portugal)"
+      - option "Romanian"
+      - option "Русский"
+      - option "Slovenčina"
+      - option "Swedish (Sweden)"
+      - option "Türkçe"
+      - option "Українська"
+      - option "Tiếng Việt"
+      - option "中文 (简体)"
+      - option "中文 (繁體)"
+  - heading "Permissions" [level=3]
+  - paragraph: You can set the user to be an administrator or choose the permissions individually. If you select "Administrator", all of the other options will be automatically checked. The management of users remains a privilege of an administrator.
+  - paragraph:
+    - checkbox
+    - text: Administrator
+  - paragraph:
+    - checkbox [checked]
+    - text: Create files and directories
+  - paragraph:
+    - checkbox [checked]
+    - text: Delete files and directories
+  - paragraph:
+    - checkbox [checked] [disabled]
+    - text: Download
+  - paragraph:
+    - checkbox [checked]
+    - text: Edit files
+  - paragraph:
+    - checkbox [checked]
+    - text: Rename or move files and directories
+  - paragraph:
+    - checkbox [checked]
+    - text: Share files (require download permission)
+  - button "Update"
+```

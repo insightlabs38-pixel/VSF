@@ -1,0 +1,73 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "selectmenu-default",
+  "dossierSha256": "a51bb3582575a6a67d5232213bb19c8238719fb69fd2d5dff85221feabfa67e5",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Choose a speed",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Select a speed",
+          "value": "Fast"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Select a speed",
+          "value": "Fast"
+        }
+      ]
+    },
+    {
+      "name": "Choose a number",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Select a number",
+          "value": "7"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Select a number",
+          "value": "7"
+        }
+      ]
+    },
+    {
+      "name": "Choose a file",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Select a file",
+          "value": "ui.jQuery.js"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Select a file",
+          "value": "ui.jQuery.js"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "dialog-modal-form",
+  "dossierSha256": "05cd1e9b63bc222772aad1a6fa60e3ccc1efd190ada20c688a428e8b8d0ec608",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Create a new user",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name",
+          "value": "Alice Wong"
+        },
+        {
+          "do": "fill",
+          "target": "Email",
+          "value": "alice@example.com"
+        },
+        {
+          "do": "fill",
+          "target": "Password",
+          "value": "secret99"
+        },
+        {
+          "do": "click",
+          "target": "Create an account"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "alice@example.com"
+        }
+      ]
+    },
+    {
+      "name": "Reject a short name",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Name",
+          "value": "Al"
+        },
+        {
+          "do": "fill",
+          "target": "Email",
+          "value": "al@example.com"
+        },
+        {
+          "do": "fill",
+          "target": "Password",
+          "value": "secret99"
+        },
+        {
+          "do": "click",
+          "target": "Create an account"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Length of username must be between 3 and 16."
+        }
+      ],
+      "negative": true
+    },
+    {
+      "name": "Cancel the form",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Cancel"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "All form fields are required."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "apg",
+  "page": "disclosure-faq",
+  "dossierSha256": "3cf1162db62e4289439cdb325ed32ae5f8226c07386c0baaf5332181aa6005f8",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-apg",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "W3C ARIA Authoring Practices pattern documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Expand permit loss answer",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "What do I do if I lose my permit or if my permit is stolen?"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "You should come to the Parking office and report the loss"
+        }
+      ]
+    },
+    {
+      "name": "Expand holiday parking answer",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Is there free parking on holidays?"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "No exceptions are made for any holiday"
+        }
+      ]
+    }
+  ]
+}

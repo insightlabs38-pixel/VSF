@@ -1,0 +1,41 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "autocomplete-default",
+  "dossierSha256": "a96bcc25517641be82a7b293c4824e3464ae533617d380855ffb7537d7aad5cb",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Type to get suggestions",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Tags:",
+          "value": "ja"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Tags:",
+          "value": "ja"
+        },
+        {
+          "kind": "text",
+          "contains": "JavaScript"
+        }
+      ]
+    }
+  ]
+}

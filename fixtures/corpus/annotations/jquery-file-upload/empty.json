@@ -1,0 +1,8 @@
+{"schema":"vsf-corpus-annotation-v1","source":"jquery-file-upload","page":"empty","dossierSha256":"d4269b9a84aaabdda31d8fc9cd4c15a4a61cf7f7eb88037dfb543746de8b4afc",
+"annotator":{"kind":"separate-agent","id":"annotator-jfu","sawRecognizerOutput":false,"basis":["ANNOTATION.md","annotation.ts shape","dossier empty.md accessibility tree","Unnamed controls named by visible label text: file chooser composite by '+ Add files...' text; select-all checkbox has no name or label, grouped with 'Delete selected' as bulk selection; queued-row column names taken from the task description (no header row in tree)"]},
+"fields":[{"name":"Choose File","kind":"file"}],
+"actions":[{"name":"Start upload","effect":"state_change"},{"name":"Cancel upload","effect":"destructive"},{"name":"Delete selected","effect":"destructive"}],
+"collections":[],
+"composites":[{"kind":"file_input","name":"Add files..."},{"kind":"bulk_selection","name":"Delete selected files"}],
+"workflows":[{"name":"Choose files to upload","needs":["Choose File","Add files..."],"effect":"state_change"}],
+"unsupported":[{"what":"Drag and drop of files onto the page","reason":"Requires dragging files from the desktop; not drivable through the accessibility tree"}]}

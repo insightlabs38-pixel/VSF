@@ -1,0 +1,90 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "dialog-modal",
+  "dossierSha256": "26f26635c2f705da6bade4ac3bfd9946e2cd72ec3741ec51084920f5828cd49a",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "src/annotation.ts (shape)",
+      "dossier accessibility tree"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Street:",
+      "kind": "text"
+    },
+    {
+      "name": "City:",
+      "kind": "text"
+    },
+    {
+      "name": "State:",
+      "kind": "text"
+    },
+    {
+      "name": "Zip:",
+      "kind": "text"
+    },
+    {
+      "name": "Special instructions:",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Add Delivery Address",
+      "effect": "navigation"
+    },
+    {
+      "name": "Verify Address",
+      "effect": "read"
+    },
+    {
+      "name": "Add",
+      "effect": "state_change"
+    },
+    {
+      "name": "Cancel",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "dialog",
+      "name": "Add Delivery Address"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Add a delivery address",
+      "needs": [
+        "Add Delivery Address",
+        "Street:",
+        "City:",
+        "State:",
+        "Zip:",
+        "Special instructions:",
+        "Add"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Verify an entered address",
+      "needs": [
+        "Street:",
+        "City:",
+        "State:",
+        "Zip:",
+        "Verify Address"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

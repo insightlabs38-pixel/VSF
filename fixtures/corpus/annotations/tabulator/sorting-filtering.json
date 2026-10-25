@@ -1,0 +1,106 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "tabulator",
+  "page": "sorting-filtering",
+  "dossierSha256": "d7576a47ac6c7729742d04dc8400823fba9eb2b1c41e29a4252e37805b214a2d",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-tabulator",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/tabulator/sorting-filtering.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Name",
+      "kind": "text"
+    },
+    {
+      "name": "Age",
+      "kind": "text"
+    },
+    {
+      "name": "Department",
+      "kind": "text"
+    },
+    {
+      "name": "Active",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Only active",
+      "effect": "read"
+    },
+    {
+      "name": "Age < 30",
+      "effect": "read"
+    },
+    {
+      "name": "Dept = Engineering",
+      "effect": "read"
+    },
+    {
+      "name": "Clear filters",
+      "effect": "read"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Sorting & Filtering",
+      "columns": [
+        "Name",
+        "Age",
+        "Department",
+        "Active"
+      ],
+      "rows": 8
+    }
+  ],
+  "composites": [
+    {
+      "kind": "sortable_columns",
+      "name": "Sortable columns"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Header filters"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Filter rows with header filters",
+      "needs": [
+        "Name",
+        "Department",
+        "Header filters",
+        "Sorting & Filtering"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Apply a preset filter",
+      "needs": [
+        "Only active",
+        "Age < 30",
+        "Dept = Engineering",
+        "Clear filters",
+        "Sorting & Filtering"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Sort by one or more columns",
+      "needs": [
+        "Sortable columns",
+        "Sorting & Filtering"
+      ],
+      "effect": "read"
+    }
+  ],
+  "unsupported": []
+}

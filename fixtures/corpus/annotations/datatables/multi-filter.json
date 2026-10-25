@@ -1,0 +1,122 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "datatables",
+  "page": "multi-filter",
+  "dossierSha256": "84cfab7b8fb42a8e47702a8bae26d06ad6a38256b23c69aea6a651a178a797e0",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-datatables-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      "dossier datatables/multi-filter.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Show entries",
+      "kind": "choice"
+    },
+    {
+      "name": "Search:",
+      "kind": "text"
+    },
+    {
+      "name": "Search Name",
+      "kind": "text"
+    },
+    {
+      "name": "Search Position",
+      "kind": "text"
+    },
+    {
+      "name": "Search Office",
+      "kind": "text"
+    },
+    {
+      "name": "Search Age",
+      "kind": "text"
+    },
+    {
+      "name": "Search Start date",
+      "kind": "text"
+    },
+    {
+      "name": "Search Salary",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Previous",
+      "effect": "navigation"
+    },
+    {
+      "name": "Next",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Employees",
+      "columns": [
+        "Name",
+        "Position",
+        "Office",
+        "Age",
+        "Start date",
+        "Salary"
+      ],
+      "rows": 10
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "filter_bar",
+      "name": "Column search"
+    },
+    {
+      "kind": "pagination",
+      "name": "Pagination"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Column sorting"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Filter employees by column",
+      "needs": [
+        "Column search",
+        "Search Name",
+        "Search Office",
+        "Employees"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Search employees",
+      "needs": [
+        "Search:",
+        "Employees"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Page through employees",
+      "needs": [
+        "Show entries",
+        "Pagination",
+        "Employees"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

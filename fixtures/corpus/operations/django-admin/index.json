@@ -1,0 +1,51 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "django-admin",
+  "page": "index",
+  "dossierSha256": "ba892c5f893422e7c3db429e2528e2e0b2fcd25c87d270a4b5a073d987d774df",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-django",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "fixtures/corpus ANNOTATION-OPERATIONS.md guide",
+      "dossier fixtures/corpus/dossiers/django-admin/index.md (accessibility tree and state)",
+      "annotation fixtures/corpus/annotations/django-admin/index.json (item names)",
+      "general knowledge of the public Django administration documentation (changelist search, filters, pagination, actions, change forms, inlines)"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Open the products list",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Products"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Select product to change"
+        }
+      ]
+    },
+    {
+      "name": "Open the users list",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Users"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Select user to change"
+        }
+      ]
+    }
+  ]
+}

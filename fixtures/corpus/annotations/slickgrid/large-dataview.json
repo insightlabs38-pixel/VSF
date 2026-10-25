@@ -1,0 +1,32 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "slickgrid",
+  "page": "large-dataview",
+  "dossierSha256": "7ec0bd9f993eb38bf453f7f1c80517e3a5d9a70a49a1996a1759d40fdfbd7028",
+  "annotator": {"kind": "separate-agent", "id": "annotator-slickgrid", "sawRecognizerOutput": false, "basis": ["dossier accessibility tree","SlickGrid public documentation and example descriptions (github.com/6pac/SlickGrid)"]},
+  "fields": [
+    {"name": "Show tasks with % at least:", "kind": "range"}
+  ],
+  "actions": [
+    {"name": "First Page", "effect": "navigation"},
+    {"name": "Previous Page", "effect": "navigation"},
+    {"name": "Next Page", "effect": "navigation"},
+    {"name": "Last Page", "effect": "navigation"},
+    {"name": "Show Pagination Options", "effect": "navigation"}
+  ],
+  "collections": [
+    {"name": "Example - Optimizing DataView", "columns": ["#", "Title", "Duration", "% Complete", "Start", "Finish", "Effort Driven"], "rows": null, "virtualized": true}
+  ],
+  "composites": [
+    {"kind": "virtual_list", "name": "Example - Optimizing DataView"},
+    {"kind": "sortable_columns", "name": "Column headers"},
+    {"kind": "filter_bar", "name": "Show tasks with % at least:"},
+    {"kind": "pagination", "name": "Pagination"}
+  ],
+  "workflows": [
+    {"name": "Filter the 500000 tasks by minimum percent complete", "needs": ["Show tasks with % at least:", "Example - Optimizing DataView", "Show tasks with % at least:"], "effect": "read"},
+    {"name": "Page through the data view", "needs": ["Pagination", "First Page", "Previous Page", "Next Page", "Last Page"], "effect": "navigation"},
+    {"name": "Sort the grid by a column", "needs": ["Column headers", "Example - Optimizing DataView"], "effect": "read"}
+  ],
+  "unsupported": []
+}

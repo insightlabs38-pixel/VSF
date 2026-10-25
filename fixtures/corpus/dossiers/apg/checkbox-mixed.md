@@ -1,0 +1,244 @@
+# W3C ARIA Authoring Practices Guide examples - checkbox-mixed
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Checkbox Example (Mixed-State)
+State: as loaded
+What people do here (from the manifest):
+- choose condiments with a select-all tri-state checkbox
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/128
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../checkbox-pattern.html
+- main:
+  - heading "Checkbox Example (Mixed-State)" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: This example demonstrates using the
+    - link "Checkbox Pattern":
+      - /url: ../checkbox-pattern.html
+    - text: to create a tri-state, or mixed-state, checkbox. In this implementation, the mixed-state checkbox represents the state of a set of standard HTML checkboxes. If none of the checkboxes in the set are checked, the mixed state checkbox is not checked, and if all members of the set are checked, the mixed state checkbox is checked. If the set contains both some checked and unchecked checkboxes, the mixed state checkbox is partially checked. Activating the tri-state checkbox changes the states of the checkboxes in the set.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Checkbox (Two State)":
+        - /url: checkbox.html
+      - text: ": Simple two state checkbox."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - group "Sandwich Condiments":
+    - text: Sandwich Condiments
+    - checkbox "All condiments" [checked=mixed]
+    - list:
+      - listitem:
+        - checkbox "Lettuce"
+        - text: Lettuce
+      - listitem:
+        - checkbox "Tomato" [checked]
+        - text: Tomato
+      - listitem:
+        - checkbox "Mustard"
+        - text: Mustard
+      - listitem:
+        - checkbox "Sprouts"
+        - text: Sprouts
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem:
+      - text: To help assistive technology users understand that the checkboxes are all part of a group of related checkboxes named Sandwich Condiments, the checkboxes are wrapped in a
+      - code: fieldset
+      - text: element which is labeled by a
+      - code: legend
+      - text: element.
+    - listitem: To make it easier to perceive that clicking either the label or checkbox will activate the checkbox, when a pointer hovers over either the checkbox or label, the background color changes, a border appears, and the cursor changes to a pointer.
+    - listitem: Because transparent borders are visible on some systems when operating system high contrast settings are enabled, transparency cannot be used to create a visual difference between the element that is focused and other elements. Instead of using transparency, the focused element has a thicker border and less padding. When an element receives focus, its border changes from 0 to 2 pixels and padding is reduced by 2 pixels. When an element loses focus, its border changes from 2 pixels to 0 and padding is increased by 2 pixels.
+    - listitem:
+      - text: To ensure the borders of the inline SVG checkbox graphics in the CSS have sufficient contrast with the background when high contrast settings invert colors, the color of the borders are synchronized with the color of the text content. For example, the color of the checkbox borders is set to match the foreground color of high contrast mode text by specifying the CSS
+      - code: currentcolor
+      - text: value for the
+      - code: stroke
+      - text: property of the
+      - code: rect
+      - text: and
+      - code: polyline
+      - text: elements used to draw the checkbox. To make the background of the checkbox graphics match the high contrast background color, the
+      - code: fill-opacity
+      - text: attribute of the
+      - code: rect
+      - text: element is set to zero. If specific colors were instead used to specify the
+      - code: stroke
+      - text: and
+      - code: fill
+      - text: "properties, those colors would remain the same in high contrast mode, which could lead to insufficient contrast between the checkbox and the background or even make the checkbox invisible if the color matched the high contrast mode background. Note: The SVG element needs to have the CSS"
+      - code: forced-color-adjust
+      - text: property set to
+      - code: auto
+      - text: for the
+      - code: currentcolor
+      - text: value to be updated in high contrast mode. Some browsers do not use
+      - code: auto
+      - text: for the default value.
+  - heading "Keyboard Support" [level=2]
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Tab Moves keyboard focus among the checkboxes.":
+        - cell "Tab"
+        - cell "Moves keyboard focus among the checkboxes."
+      - row "Space Cycles the tri-state checkbox among unchecked, mixed, and checked states. When the tri-state checkbox is unchecked, all the controlled checkboxes are unchecked. When the tri-state checkbox is mixed, the controlled checkboxes return to the last combination of states they had when the tri-state checkbox was last mixed or to the default combination of states they had when the page loaded. When the tri-state checkbox is checked, all the controlled checkboxes are checked.":
+        - cell "Space"
+        - cell "Cycles the tri-state checkbox among unchecked, mixed, and checked states. When the tri-state checkbox is unchecked, all the controlled checkboxes are unchecked. When the tri-state checkbox is mixed, the controlled checkboxes return to the last combination of states they had when the tri-state checkbox was last mixed or to the default combination of states they had when the page loaded. When the tri-state checkbox is checked, all the controlled checkboxes are checked.":
+          - list:
+            - listitem: Cycles the tri-state checkbox among unchecked, mixed, and checked states.
+            - listitem: When the tri-state checkbox is unchecked, all the controlled checkboxes are unchecked.
+            - listitem: When the tri-state checkbox is mixed, the controlled checkboxes return to the last combination of states they had when the tri-state checkbox was last mixed or to the default combination of states they had when the page loaded.
+            - listitem: When the tri-state checkbox is checked, all the controlled checkboxes are checked.
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "checkbox div Identifies the div element as a checkbox. The child text content of this div provides the accessible name of the checkbox.":
+        - rowheader "checkbox":
+          - code: checkbox
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the div element as a checkbox. The child text content of this div provides the accessible name of the checkbox.":
+          - list:
+            - listitem:
+              - text: Identifies the
+              - code: div
+              - text: element as a
+              - code: checkbox
+              - text: .
+            - listitem:
+              - text: The child text content of this
+              - code: div
+              - text: provides the accessible name of the checkbox.
+      - row "tabindex=\"0\" div Includes the checkbox in the page tab sequence.":
+        - cell
+        - rowheader "tabindex=\"0\"":
+          - code: tabindex="0"
+        - cell "div":
+          - code: div
+        - cell "Includes the checkbox in the page tab sequence."
+      - row "aria-controls=\"[IDREFS]\" div identifies the set of checkboxes controlled by the mixed checkbox.":
+        - cell
+        - rowheader "aria-controls=\"[IDREFS]\"":
+          - code: aria-controls="[IDREFS]"
+        - cell "div":
+          - code: div
+        - cell "identifies the set of checkboxes controlled by the mixed checkbox."
+      - row "aria-checked=\"false\" div Indicates the tri-state checkbox is not checked. In this state, all controlled checkboxes are unchecked. CSS attribute selectors (e.g. [aria-checked=\"false\"]) are used to synchronize the visual states with the value of the aria-checked attribute. To support operating system and browser high contrast settings, the CSS ::before pseudo element and content property are used to generate the visual indicators of the checkbox state.":
+        - cell
+        - rowheader "aria-checked=\"false\"":
+          - code: aria-checked="false"
+        - cell "div":
+          - code: div
+        - cell "Indicates the tri-state checkbox is not checked. In this state, all controlled checkboxes are unchecked. CSS attribute selectors (e.g. [aria-checked=\"false\"]) are used to synchronize the visual states with the value of the aria-checked attribute. To support operating system and browser high contrast settings, the CSS ::before pseudo element and content property are used to generate the visual indicators of the checkbox state.":
+          - list:
+            - listitem:
+              - text: Indicates the tri-state
+              - code: checkbox
+              - text: is
+              - strong: not
+              - text: checked.
+            - listitem: In this state, all controlled checkboxes are unchecked.
+            - listitem:
+              - text: CSS attribute selectors (e.g.
+              - code: "[aria-checked=\"false\"]"
+              - text: ) are used to synchronize the visual states with the value of the
+              - code: aria-checked
+              - text: attribute.
+            - listitem:
+              - text: To support operating system and browser high contrast settings, the CSS
+              - code: ::before
+              - text: pseudo element and
+              - code: content
+              - text: property are used to generate the visual indicators of the checkbox state.
+      - row "aria-checked=\"true\" div Indicates the tri-state checkbox is checked. In this state, all controlled checkboxes are checked. CSS attribute selectors (e.g. [aria-checked=\"true\"]) are used to synchronize the visual states with the value of the aria-checked attribute. To support operating system and browser high contrast settings, the CSS ::before pseudo element and content property are used to generate the visual indicators of the checkbox state.":
+        - cell
+        - rowheader "aria-checked=\"true\"":
+          - code: aria-checked="true"
+        - cell "div":
+          - code: div
+        - cell "Indicates the tri-state checkbox is checked. In this state, all controlled checkboxes are checked. CSS attribute selectors (e.g. [aria-checked=\"true\"]) are used to synchronize the visual states with the value of the aria-checked attribute. To support operating system and browser high contrast settings, the CSS ::before pseudo element and content property are used to generate the visual indicators of the checkbox state.":
+          - list:
+            - listitem:
+              - text: Indicates the tri-state
+              - code: checkbox
+              - text: is checked.
+            - listitem: In this state, all controlled checkboxes are checked.
+            - listitem:
+              - text: CSS attribute selectors (e.g.
+              - code: "[aria-checked=\"true\"]"
+              - text: ) are used to synchronize the visual states with the value of the
+              - code: aria-checked
+              - text: attribute.
+            - listitem:
+              - text: To support operating system and browser high contrast settings, the CSS
+              - code: ::before
+              - text: pseudo element and
+              - code: content
+              - text: property are used to generate the visual indicators of the checkbox state.
+      - row "aria-checked=\"mixed\" div Indicates the tri-state checkbox is mixed. In this state, some controlled checkboxes are unchecked and some are checked. CSS attribute selectors (e.g. [aria-checked=\"mixed\"]) are used to synchronize the visual states with the value of the aria-checked attribute. To support operating system and browser high contrast settings, the CSS ::before pseudo element and content property are used to generate the visual indicators of the checkbox state.":
+        - cell
+        - rowheader "aria-checked=\"mixed\"":
+          - code: aria-checked="mixed"
+        - cell "div":
+          - code: div
+        - cell "Indicates the tri-state checkbox is mixed. In this state, some controlled checkboxes are unchecked and some are checked. CSS attribute selectors (e.g. [aria-checked=\"mixed\"]) are used to synchronize the visual states with the value of the aria-checked attribute. To support operating system and browser high contrast settings, the CSS ::before pseudo element and content property are used to generate the visual indicators of the checkbox state.":
+          - list:
+            - listitem:
+              - text: Indicates the tri-state
+              - code: checkbox
+              - text: is mixed.
+            - listitem: In this state, some controlled checkboxes are unchecked and some are checked.
+            - listitem:
+              - text: CSS attribute selectors (e.g.
+              - code: "[aria-checked=\"mixed\"]"
+              - text: ) are used to synchronize the visual states with the value of the
+              - code: aria-checked
+              - text: attribute.
+            - listitem:
+              - text: To support operating system and browser high contrast settings, the CSS
+              - code: ::before
+              - text: pseudo element and
+              - code: content
+              - text: property are used to generate the visual indicators of the checkbox state.
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "checkbox-mixed.css":
+        - /url: css/checkbox-mixed.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "checkbox-mixed.js":
+        - /url: js/checkbox-mixed.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: <fieldset class="checkbox-mixed"> <legend> Sandwich Condiments </legend> <div role="checkbox" class="group_checkbox" aria-checked="mixed" aria-controls="cond1 cond2 cond3 cond4" tabindex="0"> All condiments </div> <ul class="checkboxes"> <li> <label> <input type="checkbox" id="cond1"> Lettuce </label> </li> <li> <label> <input type="checkbox" id="cond2" checked=""> Tomato </label> </li> <li> <label> <input type="checkbox" id="cond3"> Mustard </label> </li> <li> <label> <input type="checkbox" id="cond4"> Sprouts </label> </li> </ul> </fieldset>
+  - separator "End of HTML Source Code"
+```

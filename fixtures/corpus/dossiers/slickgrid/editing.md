@@ -1,0 +1,343 @@
+# SlickGrid examples - editing
+Upstream: https://github.com/6pac/SlickGrid
+Framework: vanilla-js
+Ground truth basis: SlickGrid documentation and example descriptions; Chromium accessibility tree
+Page title: SlickGrid example 3: Editing
+State: as loaded
+What people do here (from the manifest):
+- edit cells in place
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- heading "Example - Editing" [level=2]
+- grid:
+  - row "Title Description Duration % Complete Start Finish Effort Driven":
+    - columnheader "Title":
+      - text: Title
+      - separator
+    - columnheader "Description":
+      - text: Description
+      - separator
+    - columnheader "Duration":
+      - text: Duration
+      - separator
+    - columnheader "% Complete":
+      - text: "% Complete"
+      - separator
+    - columnheader "Start":
+      - text: Start
+      - separator
+    - columnheader "Finish":
+      - text: Finish
+      - separator
+    - columnheader "Effort Driven":
+      - text: Effort Driven
+      - separator
+  - row "Task 0 This is a sample task description. It can be multiline 5 days 36% 01/01/2009 01/05/2009":
+    - gridcell "Task 0"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "36%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 1 This is a sample task description. It can be multiline 5 days 11% 01/01/2009 01/05/2009":
+    - gridcell "Task 1"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "11%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 2 This is a sample task description. It can be multiline 5 days 68% 01/01/2009 01/05/2009":
+    - gridcell "Task 2"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "68%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 3 This is a sample task description. It can be multiline 5 days 92% 01/01/2009 01/05/2009":
+    - gridcell "Task 3"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "92%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 4 This is a sample task description. It can be multiline 5 days 10% 01/01/2009 01/05/2009":
+    - gridcell "Task 4"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "10%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 5 This is a sample task description. It can be multiline 5 days 30% 01/01/2009 01/05/2009":
+    - gridcell "Task 5"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "30%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 6 This is a sample task description. It can be multiline 5 days 2% 01/01/2009 01/05/2009":
+    - gridcell "Task 6"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "2%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 7 This is a sample task description. It can be multiline 5 days 47% 01/01/2009 01/05/2009":
+    - gridcell "Task 7"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "47%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 8 This is a sample task description. It can be multiline 5 days 43% 01/01/2009 01/05/2009":
+    - gridcell "Task 8"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "43%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 9 This is a sample task description. It can be multiline 5 days 55% 01/01/2009 01/05/2009":
+    - gridcell "Task 9"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "55%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 10 This is a sample task description. It can be multiline 5 days 51% 01/01/2009 01/05/2009":
+    - gridcell "Task 10"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "51%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 11 This is a sample task description. It can be multiline 5 days 31% 01/01/2009 01/05/2009":
+    - gridcell "Task 11"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "31%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 12 This is a sample task description. It can be multiline 5 days 90% 01/01/2009 01/05/2009":
+    - gridcell "Task 12"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "90%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 13 This is a sample task description. It can be multiline 5 days 34% 01/01/2009 01/05/2009":
+    - gridcell "Task 13"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "34%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 14 This is a sample task description. It can be multiline 5 days 10% 01/01/2009 01/05/2009":
+    - gridcell "Task 14"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "10%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 15 This is a sample task description. It can be multiline 5 days 25% 01/01/2009 01/05/2009":
+    - gridcell "Task 15"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "25%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 16 This is a sample task description. It can be multiline 5 days 26% 01/01/2009 01/05/2009":
+    - gridcell "Task 16"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "26%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 17 This is a sample task description. It can be multiline 5 days 85% 01/01/2009 01/05/2009":
+    - gridcell "Task 17"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "85%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 18 This is a sample task description. It can be multiline 5 days 19% 01/01/2009 01/05/2009":
+    - gridcell "Task 18"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "19%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 19 This is a sample task description. It can be multiline 5 days 66% 01/01/2009 01/05/2009":
+    - gridcell "Task 19"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "66%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 20 This is a sample task description. It can be multiline 5 days 96% 01/01/2009 01/05/2009":
+    - gridcell "Task 20"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "96%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 21 This is a sample task description. It can be multiline 5 days 76% 01/01/2009 01/05/2009":
+    - gridcell "Task 21"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "76%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 22 This is a sample task description. It can be multiline 5 days 81% 01/01/2009 01/05/2009":
+    - gridcell "Task 22"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "81%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 23 This is a sample task description. It can be multiline 5 days 90% 01/01/2009 01/05/2009":
+    - gridcell "Task 23"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "90%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 24 This is a sample task description. It can be multiline 5 days 89% 01/01/2009 01/05/2009":
+    - gridcell "Task 24"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "89%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 25 This is a sample task description. It can be multiline 5 days 53% 01/01/2009 01/05/2009":
+    - gridcell "Task 25"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "53%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 26 This is a sample task description. It can be multiline 5 days 25% 01/01/2009 01/05/2009":
+    - gridcell "Task 26"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "25%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 27 This is a sample task description. It can be multiline 5 days 32% 01/01/2009 01/05/2009":
+    - gridcell "Task 27"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "32%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 28 This is a sample task description. It can be multiline 5 days 98% 01/01/2009 01/05/2009":
+    - gridcell "Task 28"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "98%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 29 This is a sample task description. It can be multiline 5 days 65% 01/01/2009 01/05/2009":
+    - gridcell "Task 29"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "65%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 30 This is a sample task description. It can be multiline 5 days 85% 01/01/2009 01/05/2009":
+    - gridcell "Task 30"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "85%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 31 This is a sample task description. It can be multiline 5 days 75% 01/01/2009 01/05/2009":
+    - gridcell "Task 31"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "75%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 32 This is a sample task description. It can be multiline 5 days 49% 01/01/2009 01/05/2009":
+    - gridcell "Task 32"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "49%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 33 This is a sample task description. It can be multiline 5 days 15% 01/01/2009 01/05/2009":
+    - gridcell "Task 33"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "15%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+  - row "Task 34 This is a sample task description. It can be multiline 5 days 74% 01/01/2009 01/05/2009":
+    - gridcell "Task 34"
+    - gridcell "This is a sample task description. It can be multiline"
+    - gridcell "5 days"
+    - gridcell "74%"
+    - gridcell "01/01/2009"
+    - gridcell "01/05/2009"
+    - gridcell
+- heading "⌂ Demonstrates:" [level=2]:
+  - link "⌂":
+    - /url: /examples/index.html
+  - text: "Demonstrates:"
+- list:
+  - listitem: adding basic keyboard navigation and editing
+  - listitem: custom editors and validators
+  - listitem: auto-edit settings
+- heading "Options:" [level=2]
+- paragraph:
+  - code: autoEdit
+  - text: to start editing by a single cell click
+  - button "Auto-edit ON"
+  - button "Auto-edit OFF"
+- paragraph:
+  - code: autoEditByKeypress
+  - text: to start editing by typing a character on an active cell
+  - button "Auto-edit by keyboard ON"
+  - button "Auto-edit by keyboard OFF"
+- paragraph:
+  - button "AutoCommitEdit ON"
+  - button "AutoCommitEdit OFF"
+- heading "View Source:" [level=2]
+- list:
+  - listitem:
+    - link "View the source for this example on Github":
+      - /url: https://github.com/6pac/SlickGrid/blob/master/examples/example3-editing.html
+```

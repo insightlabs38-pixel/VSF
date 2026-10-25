@@ -1,0 +1,307 @@
+# AdminLTE 4 admin dashboard template - invoice
+Upstream: https://github.com/ColorlibHQ/AdminLTE
+Framework: bootstrap-5
+Ground truth basis: AdminLTE page descriptions; Chromium accessibility tree
+Page title: AdminLTE 4 | Invoice
+State: as loaded
+What people do here (from the manifest):
+- view an invoice and print it
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Skip to main content":
+  - /url: "#main"
+- link "Skip to navigation":
+  - /url: "#navigation"
+- navigation:
+  - list:
+    - listitem:
+      - button "Toggle sidebar": 
+    - listitem:
+      - link "Live preview":
+        - /url: ../index.html
+    - listitem:
+      - link "Documentation":
+        - /url: ../docs/introduction.html
+  - search:
+    - text: Search
+    - searchbox "Search"
+    - button "Submit search"
+  - list:
+    - listitem:
+      - 'link "Messages: 3 unread"':
+        - /url: "#"
+        - text:  3
+    - listitem:
+      - 'link "Notifications: 15 unread"':
+        - /url: "#"
+        - text:  15
+    - listitem:
+      - link "Change language, current language English":
+        - /url: "#"
+    - listitem:
+      - link "Toggle fullscreen":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Toggle color scheme":
+        - /url: "#"
+        - text: 
+    - listitem:
+      - link "Alexander Pierce Alexander Pierce":
+        - /url: "#"
+        - img "Alexander Pierce"
+        - text: Alexander Pierce
+- complementary:
+  - link "AdminLTE Logo AdminLTE 4":
+    - /url: ../index.html
+    - img "AdminLTE Logo"
+    - text: AdminLTE 4
+  - search:
+    - text: Filter menu
+    - searchbox "Filter menu"
+  - navigation "Main navigation":
+    - list:
+      - listitem:
+        - link " Dashboard ":
+          - /url: "#"
+          - text: 
+          - paragraph: Dashboard 
+      - listitem:
+        - link " Starter Page":
+          - /url: ../starter.html
+          - text: 
+          - paragraph: Starter Page
+      - listitem:
+        - link " Theme Generate":
+          - /url: ../generate/theme.html
+          - text: 
+          - paragraph: Theme Generate
+      - listitem:
+        - link " Widgets ":
+          - /url: "#"
+          - text: 
+          - paragraph: Widgets 
+      - listitem:
+        - link " Layout Options 12 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Layout Options 12 
+      - listitem:
+        - link " UI Elements ":
+          - /url: "#"
+          - text: 
+          - paragraph: UI Elements 
+      - listitem:
+        - link " Mailbox ":
+          - /url: "#"
+          - text: 
+          - paragraph: Mailbox 
+      - listitem:
+        - link " Forms ":
+          - /url: "#"
+          - text: 
+          - paragraph: Forms 
+      - listitem:
+        - link " Tables ":
+          - /url: "#"
+          - text: 
+          - paragraph: Tables 
+      - listitem:
+        - link " Charts ":
+          - /url: "#"
+          - text: 
+          - paragraph: Charts 
+      - listitem: PAGES
+      - listitem:
+        - link " Pages " [expanded]:
+          - /url: "#"
+          - text: 
+          - paragraph: Pages 
+        - list:
+          - listitem:
+            - link " Profile":
+              - /url: ../pages/profile.html
+              - text: 
+              - paragraph: Profile
+          - listitem:
+            - link " Settings":
+              - /url: ../pages/settings.html
+              - text: 
+              - paragraph: Settings
+          - listitem:
+            - link " Invoice":
+              - /url: ../pages/invoice.html
+              - text: 
+              - paragraph: Invoice
+          - listitem:
+            - link " Calendar":
+              - /url: ../pages/calendar.html
+              - text: 
+              - paragraph: Calendar
+          - listitem:
+            - link " Kanban":
+              - /url: ../pages/kanban.html
+              - text: 
+              - paragraph: Kanban
+          - listitem:
+            - link " Chat":
+              - /url: ../pages/chat.html
+              - text: 
+              - paragraph: Chat
+          - listitem:
+            - link " File Manager":
+              - /url: ../pages/file-manager.html
+              - text: 
+              - paragraph: File Manager
+          - listitem:
+            - link " Projects":
+              - /url: ../pages/projects.html
+              - text: 
+              - paragraph: Projects
+          - listitem:
+            - link " Gallery":
+              - /url: ../pages/gallery.html
+              - text: 
+              - paragraph: Gallery
+          - listitem:
+            - link " Search Results":
+              - /url: ../pages/search-results.html
+              - text: 
+              - paragraph: Search Results
+          - listitem:
+            - link " Pricing":
+              - /url: ../pages/pricing.html
+              - text: 
+              - paragraph: Pricing
+          - listitem:
+            - link " FAQ":
+              - /url: ../pages/faq.html
+              - text: 
+              - paragraph: FAQ
+          - listitem:
+            - link " Error ":
+              - /url: "#"
+              - text: 
+              - paragraph: Error 
+      - listitem:
+        - link " Users":
+          - /url: ../users.html
+          - text: 
+          - paragraph: Users
+      - listitem: EXAMPLES
+      - listitem:
+        - link " Auth ":
+          - /url: "#"
+          - text: 
+          - paragraph: Auth 
+      - listitem: MULTI LEVEL EXAMPLE
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem:
+        - link " Level 1 ":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1 
+      - listitem:
+        - link " Level 1":
+          - /url: "#"
+          - text: 
+          - paragraph: Level 1
+      - listitem: LABELS
+      - listitem:
+        - link " Important":
+          - /url: "#"
+          - text: 
+          - paragraph: Important
+      - listitem:
+        - link " Warning":
+          - /url: "#"
+          - text: 
+          - paragraph: Warning
+      - listitem:
+        - link " Informational":
+          - /url: "#"
+          - text: 
+          - paragraph: Informational
+    - link "View documentation":
+      - /url: ../docs/introduction.html
+- main:
+  - heading "Invoice" [level=1]
+  - navigation "breadcrumb":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: "#"
+      - listitem: / Invoice
+  - button "Print"
+  - link "PDF":
+    - /url: "#"
+  - link "Send invoice":
+    - /url: "#"
+  - heading "AdminLTE, Inc." [level=2]
+  - paragraph: 795 Folsom Ave, Suite 600 San Francisco, CA 94107 billing@example.com
+  - heading "Invoice" [level=1]
+  - paragraph: "#INV-2026-00428"
+  - text: Paid
+  - paragraph: Billed to
+  - paragraph: Acme Corporation
+  - paragraph: "Attn: Jane Doe 1234 Market Street San Francisco, CA 94103"
+  - paragraph: Issue date
+  - paragraph: May 18, 2026
+  - paragraph: Due date
+  - paragraph: June 1, 2026
+  - table:
+    - rowgroup:
+      - row "Description Qty Unit price Amount":
+        - columnheader "Description"
+        - columnheader "Qty"
+        - columnheader "Unit price"
+        - columnheader "Amount"
+    - rowgroup:
+      - row "Pro plan subscription May 18 - Jun 18, 2026 1 $29.00 $29.00":
+        - cell "Pro plan subscription May 18 - Jun 18, 2026":
+          - paragraph: Pro plan subscription
+          - text: May 18 - Jun 18, 2026
+        - cell "1"
+        - cell "$29.00"
+        - cell "$29.00"
+      - row "Additional seats Pro-rated for current period 3 $12.50 $37.50":
+        - cell "Additional seats Pro-rated for current period":
+          - paragraph: Additional seats
+          - text: Pro-rated for current period
+        - cell "3"
+        - cell "$12.50"
+        - cell "$37.50"
+      - row "SMS notifications add-on 1,000 messages 1 $5.00 $5.00":
+        - cell "SMS notifications add-on 1,000 messages":
+          - paragraph: SMS notifications add-on
+          - text: 1,000 messages
+        - cell "1"
+        - cell "$5.00"
+        - cell "$5.00"
+  - term: Subtotal
+  - definition: $71.50
+  - term: Tax (8.25%)
+  - definition: $5.90
+  - term: Total due
+  - definition: $77.40 USD
+  - separator
+  - paragraph:
+    - text: Thanks for your business. Payment is due within 14 days. If you have any questions about this invoice, please contact
+    - link "billing@example.com":
+      - /url: mailto:billing@example.com
+    - text: .
+- contentinfo:
+  - text: Anything you want
+  - strong:
+    - text: Copyright © 2014-2026
+    - link "AdminLTE.io":
+      - /url: https://adminlte.io
+    - text: .
+  - text: All rights reserved.
+- status
+```

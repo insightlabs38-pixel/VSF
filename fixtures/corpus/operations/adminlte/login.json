@@ -1,0 +1,72 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "adminlte",
+  "page": "login",
+  "dossierSha256": "88f64d7c246fae281bfcbc66dee753200f14ad6c1b35d5f0a0dd062bb8bfe2d8",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier adminlte/login.md",
+      "page annotation item names",
+      "AdminLTE 4 public documentation and standard HTML form behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Enter email",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Email",
+          "value": "jane@example.com"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Email",
+          "value": "jane@example.com"
+        }
+      ]
+    },
+    {
+      "name": "Enter password",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Password",
+          "value": "s3cret-pass"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Password",
+          "value": "s3cret-pass"
+        }
+      ]
+    },
+    {
+      "name": "Tick remember me",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Remember Me",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Remember Me",
+          "checked": true
+        }
+      ]
+    }
+  ]
+}

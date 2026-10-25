@@ -62,8 +62,10 @@ fn ident(raw: &str) -> Result<Ident, Fail> {
 
 fn hint(v: Verb) -> EffectClass {
     match v {
-        Verb::Query | Verb::Export | Verb::Navigate | Verb::Dismiss => EffectClass::ReadOnly,
-        Verb::Create | Verb::Commit => EffectClass::NonIdempotentWrite,
+        Verb::Query | Verb::Export | Verb::Navigate | Verb::Dismiss | Verb::Reveal => {
+            EffectClass::ReadOnly
+        }
+        Verb::Create | Verb::Commit | Verb::Toggle => EffectClass::NonIdempotentWrite,
         Verb::Destroy => EffectClass::Destructive,
     }
 }
@@ -74,6 +76,8 @@ fn value_type(kind: FieldKind) -> ValueType {
         FieldKind::Choice => ValueType::Choice,
         FieldKind::Toggle => ValueType::Boolean,
         FieldKind::Range => ValueType::Decimal,
+        FieldKind::File => ValueType::Binary,
+        FieldKind::Date => ValueType::Date,
     }
 }
 

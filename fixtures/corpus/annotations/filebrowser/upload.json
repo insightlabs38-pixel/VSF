@@ -1,0 +1,150 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "upload",
+  "dossierSha256": "80e6cad97ea316af1ebf4ebff6c50a69d3599adb69c5e8ac4b83c17c037074dc",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape)",
+      "dossier accessibility tree",
+      "'File' and 'Folder' options in the Upload dialog are not exposed as buttons in the tree; named by their visible labels"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search...",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "My files",
+      "effect": "navigation"
+    },
+    {
+      "name": "New folder",
+      "effect": "state_change"
+    },
+    {
+      "name": "New file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "Logout",
+      "effect": "navigation"
+    },
+    {
+      "name": "Images",
+      "effect": "read"
+    },
+    {
+      "name": "Music",
+      "effect": "read"
+    },
+    {
+      "name": "Video",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Switch view",
+      "effect": "navigation"
+    },
+    {
+      "name": "Download",
+      "effect": "read"
+    },
+    {
+      "name": "Upload",
+      "effect": "state_change"
+    },
+    {
+      "name": "Info",
+      "effect": "read"
+    },
+    {
+      "name": "Select multiple",
+      "effect": "navigation"
+    },
+    {
+      "name": "Sort by name",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by size",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by last modified",
+      "effect": "read"
+    },
+    {
+      "name": "Clear",
+      "effect": "navigation"
+    },
+    {
+      "name": "File",
+      "effect": "state_change"
+    },
+    {
+      "name": "Folder",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [
+        "Name",
+        "Size",
+        "Last modified"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sort by name, size, last modified"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Select multiple"
+    },
+    {
+      "kind": "dialog",
+      "name": "Upload"
+    },
+    {
+      "kind": "file_input",
+      "name": "Upload"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Upload a file or folder",
+      "needs": [
+        "Upload",
+        "File",
+        "Folder"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

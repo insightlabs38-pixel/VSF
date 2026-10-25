@@ -1,0 +1,60 @@
+{
+  "task_id": "VSF-B11-T08",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "bcf6e4aaed60458dc8877817f25481cc799b1168",
+  "commit": "87b1463717088c5dc03dc3421dbc8dbdf35d1c19",
+  "paths": [
+    "tests/corpus/",
+    "fixtures/corpus/",
+    "docs/deep/evidence/VSF-B11/failure-clusters-t08.md",
+    "docs/deep/adr/ADR-040-independent-corpus.md"
+  ],
+  "acceptance": "Development or validation partitions gain independently developed applications whose page states exercise file inputs, virtualized or windowed lists, pagination and bulk selection, pinned, licensed, annotated by a separate session and measured on the unmodified recognizer, so T04 and T05 are ranked and tested on evidence; held-out stays untouched.",
+  "positive": {
+    "fixture": "jQuery File Upload (2 states) and Tabulator (7 states) captured reproducibly (64/64 digests), annotated, measured; baseline on 41 development and validation states",
+    "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "manifest family and pin rules, alias and mount path safety, annotation validation and cluster ranking unit tests",
+    "command": "pnpm --filter @vsf/corpus-tests run test",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "pnpm --filter @vsf/queue run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "node tools/checks/src/cli.ts secrets",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "manifest gains aliases and mounts; seal gains revisions",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "Public permissively licensed sources only; no upload server runs, so no file leaves the machine; dossiers withhold password-like values; held-out annotations were not consulted for any decision and four of them were redone from frozen dossiers with the change recorded in the seal.",
+  "performance_memory_storage": "Capture 0.6 to 3.5 s per state; fixtures/corpus/dossiers adds about 0.7 MB of text.",
+  "known_limitations": [
+    "Virtualized or windowed lists still have no independent evidence: no captured state is annotated virtual_list, and G11 must report that as not demonstrated",
+    "The validation partition has one family and none for the new areas",
+    "w2ui was dropped (empty cells in the accessibility tree)",
+    "Annotators are model sessions"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/failure-clusters-t08.md",
+    "docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation-t08.json",
+    "docs/deep/evidence/VSF-B11/manifest.json"
+  ],
+  "review_result": "ACCEPTED"
+}

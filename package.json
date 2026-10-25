@@ -26,5 +26,10 @@
     "typescript": "5.9.3",
     "esbuild": "0.28.2",
     "@types/chrome": "0.3.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-uri": "3.1.9"
+    }
   }
 }

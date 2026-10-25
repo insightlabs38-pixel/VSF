@@ -1,0 +1,63 @@
+{
+  "task_id": "VSF-B11-T10",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "71e7b7c4a3ba86ba541fa466c1b181ac2170bd0d",
+  "commit": "2b568c5374fc32642e06aa89bc560905e33b3ce9",
+  "paths": [
+    "tests/corpus/",
+    "fixtures/corpus/operations.frozen.json",
+    "fixtures/corpus/operations.triage.json",
+    "fixtures/corpus/operations/"
+  ],
+  "acceptance": "Operations written by a separate annotation session are proven by an independent reference driver, then run through recognized units only; results separate verified, fallback, wrong effect and misbound; the pre-B11, T02 and current recognizers are measured on the frozen denominator; held-out stays aggregate-only.",
+  "positive": {
+    "fixture": "199 frozen operations (142 development and validation, 42 + 15 held-out); reference-confirmed 175; pre-B11, T02 and current builds measured with identical harness",
+    "command": "pnpm --filter @vsf/corpus-tests run test:harness",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "planted wrong-effect and misbound targets are classified, unconfirmed operations are never counted as verified, dropped operations are refused",
+    "command": "node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/operations.test.ts",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec biome check .",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "operations.frozen.json and operations.triage.json added; result gains diagnostic classes",
+    "primitive": "none"
+  },
+  "security_and_source_permissions": "The reference driver and the executor run on loopback copies of the sources with disposable state; credential fields are withheld and counted information_limit.",
+  "performance_memory_storage": "Operation runs execute in parallel workers; fixtures grow by the frozen list and the triage file.",
+  "known_limitations": [
+    "Operations come from model annotation sessions; 15 development and validation operations are annotation defects and 4 are information limits",
+    "Reference limits (4 development, 1 open, 3 sealed) cannot be confirmed by the reference driver and are never counted as verified",
+    "Held-out independence is consumed for AdminLTE and TodoMVC (diagnosed) and for File Browser (one late look)"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/manifest.json",
+    "docs/deep/evidence/VSF-B11/g11/ops-tables.md",
+    "docs/deep/evidence/VSF-B11/g11/structural-tables.md"
+  ],
+  "review_result": "ACCEPTED"
+}

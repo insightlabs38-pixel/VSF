@@ -1,0 +1,45 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "treegrid",
+  "dossierSha256": "f897f4e6b448db6139f3b537226bac5c842166b29972ae04240a99815655078c",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-b",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape only)",
+      "dossier accessibility tree and description"
+    ]
+  },
+  "fields": [],
+  "actions": [],
+  "collections": [
+    {
+      "name": "Inbox",
+      "columns": [
+        "Subject",
+        "Summary",
+        "Email"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "tree",
+      "name": "Inbox"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Expand and collapse conversation rows",
+      "needs": [
+        "Inbox"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

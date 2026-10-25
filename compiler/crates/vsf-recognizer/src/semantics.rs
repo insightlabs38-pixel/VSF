@@ -5,18 +5,33 @@ use crate::obs::{F_DISABLED, F_INTERACTIVE, F_OPAQUE, Node, Observation, RelKind
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 
-/// Which recognition rules are in force. The baseline binds only direct evidence; v2 adds delegated labels.
+/// Which rules are in force: v1 binds direct evidence, v2 adds delegated labels, v3 adds composites and structural effects.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Rules {
     pub delegation: bool,
+    pub scoped: bool,
 }
 
 impl Rules {
-    pub const V1: Rules = Rules { delegation: false };
-    pub const V2: Rules = Rules { delegation: true };
+    pub const V1: Rules = Rules {
+        delegation: false,
+        scoped: false,
+    };
+    pub const V2: Rules = Rules {
+        delegation: true,
+        scoped: false,
+    };
+    pub const V3: Rules = Rules {
+        delegation: true,
+        scoped: true,
+    };
 
     pub fn version(self) -> &'static str {
-        if self.delegation { "2" } else { "1" }
+        match (self.delegation, self.scoped) {
+            (_, true) => "3",
+            (true, false) => "2",
+            (false, false) => "1",
+        }
     }
 }
 
@@ -92,6 +107,7 @@ impl Strength {
 pub enum LabelSource {
     Relation(RelKind),
     SelfName,
+    Content,
     Proximity,
     WrapperSibling,
     EnclosingText,
@@ -104,7 +120,9 @@ impl LabelSource {
             LabelSource::Relation(RelKind::Label) => "label_relation",
             LabelSource::Relation(RelKind::LabelledBy) => "labelledby_relation",
             LabelSource::Relation(RelKind::DescribedBy) => "describedby_relation",
+            LabelSource::Relation(RelKind::Controls) => "controls_relation",
             LabelSource::SelfName => "self_name",
+            LabelSource::Content => "content",
             LabelSource::Proximity => "proximity",
             LabelSource::WrapperSibling => "wrapper_sibling",
             LabelSource::EnclosingText => "enclosing_text",
@@ -114,7 +132,9 @@ impl LabelSource {
 
     pub fn strength(&self) -> Strength {
         match self {
-            LabelSource::Relation(_) | LabelSource::SelfName => Strength::Explicit,
+            LabelSource::Relation(_) | LabelSource::SelfName | LabelSource::Content => {
+                Strength::Explicit
+            }
             LabelSource::Proximity => Strength::Structural,
             _ => Strength::Delegated,
         }
@@ -142,6 +162,8 @@ pub enum FieldKind {
     Choice,
     Toggle,
     Range,
+    File,
+    Date,
 }
 
 impl FieldKind {
@@ -151,6 +173,8 @@ impl FieldKind {
             FieldKind::Choice => "choice",
             FieldKind::Toggle => "toggle",
             FieldKind::Range => "range",
+            FieldKind::File => "file",
+            FieldKind::Date => "date",
         }
     }
 }
@@ -164,6 +188,8 @@ pub struct Field {
     pub scope: Option<String>,
     /// Roles the same element also satisfies as an action; non-empty means the kind is contested.
     pub action_roles: Vec<String>,
+    /// The element itself takes typed text, which a combobox's choice list does not exclude.
+    pub editable: bool,
     pub usable: bool,
     pub why_unusable: Option<&'static str>,
 }
@@ -177,6 +203,8 @@ pub enum Verb {
     Query,
     Export,
     Dismiss,
+    Toggle,
+    Reveal,
 }
 
 impl Verb {
@@ -189,15 +217,17 @@ impl Verb {
             Verb::Query => "query",
             Verb::Export => "export",
             Verb::Dismiss => "dismiss",
+            Verb::Toggle => "toggle",
+            Verb::Reveal => "reveal",
         }
     }
 
     /// A hint only: the effect class stays undemonstrated until a witness exists.
     pub fn effect_hint(self) -> &'static str {
         match self {
-            Verb::Commit | Verb::Create => "state_change_candidate",
+            Verb::Commit | Verb::Create | Verb::Toggle => "state_change_candidate",
             Verb::Destroy => "destructive_candidate",
-            Verb::Navigate | Verb::Dismiss => "navigation_candidate",
+            Verb::Navigate | Verb::Dismiss | Verb::Reveal => "navigation_candidate",
             Verb::Query | Verb::Export => "read_candidate",
         }
     }
@@ -229,6 +259,55 @@ const LEXICON: [(Verb, &[&str]); 7] = [
     (Verb::Dismiss, &["cancel", "close", "dismiss"]),
 ];
 
+/// Wording rules v3 adds for actions that write but say it with a verb the base lexicon lacks; still hints only.
+const EXTENDED: [(Verb, &[&str]); 2] = [
+    (
+        Verb::Commit,
+        &[
+            "follow",
+            "unfollow",
+            "like",
+            "unlike",
+            "subscribe",
+            "unsubscribe",
+            "share",
+            "star",
+            "pin",
+            "bookmark",
+            "archive",
+            "restore",
+            "approve",
+            "reject",
+            "rename",
+            "duplicate",
+            "copy",
+            "cut",
+            "paste",
+            "move",
+            "reply",
+            "post",
+            "comment",
+            "invite",
+            "assign",
+            "block",
+            "mute",
+            "vote",
+        ],
+    ),
+    (Verb::Create, &["upload", "attach", "import", "compose"]),
+];
+
+fn extended_verbs_of(name: &str) -> Vec<Verb> {
+    let toks: Vec<String> = tokens(name).collect();
+    let mut out: Vec<Verb> = EXTENDED
+        .iter()
+        .filter(|(_, words)| toks.iter().any(|t| words.contains(&t.as_str())))
+        .map(|(v, _)| *v)
+        .collect();
+    out.sort();
+    out
+}
+
 pub fn verbs_of(name: &str) -> Vec<Verb> {
     let toks: Vec<String> = tokens(name).collect();
     let mut out: Vec<Verb> = LEXICON
@@ -240,10 +319,54 @@ pub fn verbs_of(name: &str) -> Vec<Verb> {
     out
 }
 
+/// Rules v3: what an element is settles its effect class before its wording does, but never downgrades a write word.
+fn structural_verbs(n: &Node, lexical: Vec<Verb>) -> Vec<Verb> {
+    let opens = matches!(n.state("haspopup"), Some(v) if v != "false");
+    if opens {
+        return vec![Verb::Reveal];
+    }
+    let link = n.role.as_deref() == Some("link") || (n.tag == "a" && n.role.is_none());
+    if link {
+        // A link whose handler is a script, or whose name says it writes, is not downgraded to navigation.
+        let writes = lexical
+            .iter()
+            .any(|v| matches!(v, Verb::Destroy | Verb::Commit | Verb::Create));
+        if n.state("href") == Some("script") || writes {
+            return if lexical.is_empty() {
+                verbs_from_states(n)
+            } else {
+                lexical
+            };
+        }
+        return if lexical.contains(&Verb::Export) {
+            vec![Verb::Export]
+        } else {
+            vec![Verb::Navigate]
+        };
+    }
+    if lexical.is_empty() {
+        return verbs_from_states(n);
+    }
+    lexical
+}
+
+/// What the element's own attributes say it does when its name says nothing: a hint, like the lexicon.
+fn verbs_from_states(n: &Node) -> Vec<Verb> {
+    if n.state("pressed").is_some() {
+        vec![Verb::Toggle]
+    } else if n.state("expanded").is_some() || n.state("haspopup").is_some() {
+        vec![Verb::Reveal]
+    } else {
+        Vec::new()
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Action {
     pub node: u32,
     pub name: Option<String>,
+    /// The words the control shows, when its accessible name is different.
+    pub shown: Option<String>,
     /// Every role the element can be read as; more than one means the candidates stay separate.
     pub roles: Vec<String>,
     pub verbs: Vec<Verb>,
@@ -280,6 +403,11 @@ pub fn text_of(r: &Reader, i: usize) -> Option<String> {
             return Some(clip(t));
         }
     }
+    below_text(r, i)
+}
+
+/// The visible text beneath a node, ignoring its own name.
+fn below_text(r: &Reader, i: usize) -> Option<String> {
     let mut parts = Vec::new();
     let mut stack: Vec<usize> = r.children(i).iter().rev().copied().collect();
     while let Some(c) = stack.pop() {
@@ -326,7 +454,13 @@ pub fn field_kind(n: &Node) -> Option<FieldKind> {
         ("checkbox" | "radio" | "switch", _) => FieldKind::Toggle,
         ("combobox" | "listbox", _) | (_, "select") => FieldKind::Choice,
         ("slider" | "spinbutton", _) => FieldKind::Range,
-        _ => FieldKind::Text,
+        _ => match n.state("type") {
+            Some("file") => FieldKind::File,
+            Some("date" | "datetime-local" | "month" | "week" | "time") => FieldKind::Date,
+            Some("range") => FieldKind::Range,
+            Some("checkbox" | "radio") => FieldKind::Toggle,
+            _ => FieldKind::Text,
+        },
     })
 }
 
@@ -430,7 +564,7 @@ fn preceding_label(r: &Reader, i: usize, budget: usize) -> Option<(usize, String
 }
 
 /// Labels next to a control, and whether picking one is unsafe (shared by several controls or competing).
-fn proximity(r: &Reader, i: usize) -> Option<(Vec<LabelCandidate>, bool)> {
+fn proximity(r: &Reader, i: usize, scoped: bool) -> Option<(Vec<LabelCandidate>, bool)> {
     let p = r.parent(i)?;
     let sibs = r.children(p);
     let pos = sibs.iter().position(|&s| s == i)?;
@@ -446,9 +580,11 @@ fn proximity(r: &Reader, i: usize) -> Option<(Vec<LabelCandidate>, bool)> {
             source: LabelSource::Proximity,
             from: vec![r.obs.nodes[s].id],
         }];
+        // A label on the far side of another visible control belongs to that control, so it does not compete.
         let competing = sibs[..k]
             .iter()
             .rev()
+            .take_while(|&&q| !(scoped && r.node(q).visible() && is_control(r.node(q))))
             .find(|&&q| r.node(q).visible() && !is_control(r.node(q)));
         if let Some(&q) = competing
             && !matches!(role_of(r.node(q)), "heading")
@@ -488,14 +624,14 @@ fn column_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
         .take(4)
         .find(|&a| matches!(role_of(r.node(a)), "gridcell" | "cell") || r.node(a).tag == "td")?;
     let row = r.parent(cell)?;
-    let col = r.children(row).iter().position(|&c| c == cell)?;
+    let col = cells_of(r, row).iter().position(|&c| c == cell)?;
     let table = r.obs.ancestors(row).find(|&a| {
         matches!(role_of(r.node(a)), "grid" | "table" | "treegrid") || r.node(a).tag == "table"
     })?;
     let mut stack = vec![table];
     while let Some(n) = stack.pop() {
         if n != row && (role_of(r.node(n)) == "row" || r.node(n).tag == "tr") {
-            let cells = r.children(n);
+            let cells = cells_of(r, n);
             let headerish = !cells.is_empty()
                 && cells.iter().all(|&c| {
                     matches!(role_of(r.node(c)), "columnheader") || r.node(c).tag == "th"
@@ -514,8 +650,50 @@ fn column_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
     None
 }
 
-fn delegated(r: &Reader, i: usize) -> Option<LabelCandidate> {
+/// A checkbox or radio is conventionally followed by its own text, unless a control comes first.
+fn following_label(r: &Reader, i: usize) -> Option<LabelCandidate> {
+    let p = r.parent(i)?;
+    let sibs = r.children(p);
+    let pos = sibs.iter().position(|&s| s == i)?;
+    let next = *sibs[pos + 1..].iter().find(|&&s| r.node(s).visible())?;
+    let nn = r.node(next);
+    if is_control(nn) || is_action(nn) {
+        return None;
+    }
+    let t = label_like(r, next)?;
+    Some(LabelCandidate {
+        text: t,
+        source: LabelSource::Proximity,
+        from: vec![r.obs.nodes[next].id],
+    })
+}
+
+/// A control inside a column header is named by that header.
+fn own_header(r: &Reader, i: usize) -> Option<LabelCandidate> {
+    let h = r
+        .obs
+        .ancestors(i)
+        .take(3)
+        .find(|&a| role_of(r.node(a)) == "columnheader")?;
+    let t = r
+        .node(h)
+        .name
+        .as_deref()
+        .map(collapse)
+        .filter(|s| !s.is_empty())
+        .or_else(|| text_of(r, h))?;
+    Some(LabelCandidate {
+        text: clip(t),
+        source: LabelSource::ColumnHeader,
+        from: vec![r.obs.nodes[h].id],
+    })
+}
+
+fn delegated(r: &Reader, i: usize, scoped: bool) -> Option<LabelCandidate> {
     if let Some(c) = column_header(r, i) {
+        return Some(c);
+    }
+    if scoped && let Some(c) = own_header(r, i) {
         return Some(c);
     }
     let mut cur = i;
@@ -559,6 +737,14 @@ fn delegated(r: &Reader, i: usize) -> Option<LabelCandidate> {
     None
 }
 
+/// ARIA roles whose accessible name is their own content when no label is given.
+fn names_from_content(n: &Node) -> bool {
+    matches!(
+        role_of(n),
+        "radio" | "checkbox" | "switch" | "tab" | "menuitem" | "option" | "button" | "link"
+    )
+}
+
 pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
     let n = r.node(i);
     let explicit = explicit_candidates(r, i);
@@ -579,7 +765,22 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
             from: vec![n.id],
         });
     }
-    if let Some((mut cands, unsafe_pick)) = proximity(r, i) {
+    if names_from_content(n)
+        && let Some(t) = text_of(r, i)
+    {
+        return Binding::Bound(LabelCandidate {
+            text: t,
+            source: LabelSource::Content,
+            from: vec![n.id],
+        });
+    }
+    if rules.scoped
+        && matches!(field_kind(n), Some(FieldKind::Toggle))
+        && let Some(c) = following_label(r, i)
+    {
+        return Binding::Bound(c);
+    }
+    if let Some((mut cands, unsafe_pick)) = proximity(r, i, rules.scoped) {
         return if unsafe_pick {
             Binding::Ambiguous(cands)
         } else {
@@ -587,7 +788,7 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
         };
     }
     if rules.delegation
-        && let Some(c) = delegated(r, i)
+        && let Some(c) = delegated(r, i, rules.scoped)
     {
         return Binding::Bound(c);
     }
@@ -597,6 +798,14 @@ pub fn bind_label(r: &Reader, i: usize, rules: Rules) -> Binding {
 pub fn recognize_field(r: &Reader, i: usize, rules: Rules) -> Option<Field> {
     let n = r.node(i);
     let kind = field_kind(n)?;
+    if rules.scoped
+        && matches!(
+            n.state("type"),
+            Some("submit" | "button" | "reset" | "image")
+        )
+    {
+        return None;
+    }
     let (usable, why) = if n.has(crate::obs::F_CREDENTIAL) {
         (false, Some("credential_field"))
     } else if !n.visible() {
@@ -616,6 +825,7 @@ pub fn recognize_field(r: &Reader, i: usize, rules: Rules) -> Option<Field> {
         } else {
             Vec::new()
         },
+        editable: n.has(crate::obs::F_EDITABLE),
         usable,
         why_unusable: why,
     })
@@ -639,7 +849,7 @@ fn action_roles(n: &Node) -> Vec<String> {
     roles
 }
 
-pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
+pub fn recognize_action(r: &Reader, i: usize, rules: Rules) -> Option<Action> {
     let n = r.node(i);
     if !is_action(n) {
         return None;
@@ -651,7 +861,15 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
         .or(n.text.as_deref())
         .map(collapse)
         .filter(|s| !s.is_empty());
-    let verbs = name.as_deref().map(verbs_of).unwrap_or_default();
+    let mut verbs = name.as_deref().map(verbs_of).unwrap_or_default();
+    if rules.scoped {
+        if verbs.is_empty() {
+            verbs = name.as_deref().map(extended_verbs_of).unwrap_or_default();
+        }
+        verbs = structural_verbs(n, verbs);
+    } else if verbs.is_empty() {
+        verbs = verbs_from_states(n);
+    }
     let (usable, why) = if !n.visible() {
         (false, Some("not_visible"))
     } else if n.has(F_DISABLED) {
@@ -661,9 +879,17 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
     } else {
         (true, None)
     };
+    let shown = n
+        .text
+        .as_deref()
+        .map(collapse)
+        .filter(|t| !t.is_empty())
+        .or_else(|| below_text(r, i))
+        .filter(|t| Some(t) != name.as_ref());
     Some(Action {
         node: n.id,
         name,
+        shown,
         roles,
         verbs,
         usable,
@@ -671,22 +897,58 @@ pub fn recognize_action(r: &Reader, i: usize) -> Option<Action> {
     })
 }
 
-/// The header row and the body rows of a table-like node, in document order.
+fn is_cell(n: &Node) -> bool {
+    matches!(
+        role_of(n),
+        "cell" | "gridcell" | "columnheader" | "rowheader"
+    ) || matches!(n.tag.as_str(), "td" | "th")
+}
+
+/// The cells of a row; plain separators and hidden filler between them do not count as columns.
+pub fn cells_of(r: &Reader, row: usize) -> Vec<usize> {
+    let all = r.children(row);
+    let cells: Vec<usize> = all
+        .iter()
+        .copied()
+        .filter(|&c| is_cell(r.node(c)))
+        .collect();
+    if cells.is_empty() {
+        all.to_vec()
+    } else {
+        cells
+    }
+}
+
+fn generic_wrapper(n: &Node) -> bool {
+    matches!(n.tag.as_str(), "div" | "span")
+        && matches!(role_of(n), "" | "none" | "presentation" | "generic")
+}
+
+/// Header row and body rows of a table-like node; footer and hidden rows are not data.
 pub fn table_rows(r: &Reader, i: usize) -> (Option<usize>, Vec<usize>) {
     let mut rows: Vec<usize> = Vec::new();
-    let mut stack: Vec<usize> = r.children(i).iter().rev().copied().collect();
-    while let Some(c) = stack.pop() {
+    let mut footer: Vec<usize> = Vec::new();
+    let mut stack: Vec<(usize, usize, bool)> =
+        r.children(i).iter().rev().map(|&c| (c, 1, false)).collect();
+    while let Some((c, depth, in_footer)) = stack.pop() {
         let cn = r.node(c);
         if cn.tag == "tr" || role_of(cn) == "row" {
-            rows.push(c);
-        } else if matches!(cn.tag.as_str(), "thead" | "tbody" | "tfoot")
-            || matches!(role_of(cn), "rowgroup")
+            if in_footer {
+                footer.push(c);
+            } else {
+                rows.push(c);
+            }
+        } else if depth < 6
+            && (matches!(cn.tag.as_str(), "thead" | "tbody" | "tfoot")
+                || matches!(role_of(cn), "rowgroup")
+                || generic_wrapper(cn))
         {
-            stack.extend(r.children(c).iter().rev().copied());
+            let f = in_footer || cn.tag == "tfoot";
+            stack.extend(r.children(c).iter().rev().map(|&k| (k, depth + 1, f)));
         }
     }
     let is_header = |row: usize| {
-        let cells = r.children(row);
+        let cells = cells_of(r, row);
         !cells.is_empty()
             && cells
                 .iter()
@@ -696,12 +958,196 @@ pub fn table_rows(r: &Reader, i: usize) -> (Option<usize>, Vec<usize>) {
     let body = rows
         .iter()
         .copied()
-        .filter(|&row| Some(row) != header && !r.children(row).is_empty())
+        .filter(|&row| Some(row) != header && r.node(row).visible() && !r.children(row).is_empty())
         .collect();
     (header, body)
 }
 
-pub fn recognize_collection(r: &Reader, i: usize) -> Option<Collection> {
+fn is_list_root(n: &Node) -> bool {
+    matches!(n.tag.as_str(), "ul" | "ol") || matches!(role_of(n), "list" | "feed")
+}
+
+/// A list of records: items that each hold controls or text; menus, tab strips and link-only lists are navigation.
+fn recognize_list(r: &Reader, i: usize) -> Option<Collection> {
+    let n = r.node(i);
+    if !is_list_root(n) || !n.visible() {
+        return None;
+    }
+    let chrome = |a: usize| {
+        let an = r.node(a);
+        matches!(
+            role_of(an),
+            "navigation"
+                | "menu"
+                | "menubar"
+                | "tablist"
+                | "toolbar"
+                | "tree"
+                | "banner"
+                | "radiogroup"
+        ) || matches!(an.tag.as_str(), "nav" | "header" | "menu")
+    };
+    if r.obs.ancestors(i).take(8).any(chrome) {
+        return None;
+    }
+    let items: Vec<usize> = r
+        .children(i)
+        .iter()
+        .copied()
+        .filter(|&c| {
+            let cn = r.node(c);
+            cn.visible() && (cn.tag == "li" || matches!(role_of(cn), "listitem" | "option"))
+        })
+        .collect();
+    if items.len() < 2 {
+        return None;
+    }
+    let only_a_link = |item: usize| {
+        let below: Vec<usize> = r.obs.descendants(item);
+        let acts = below.iter().filter(|&&d| is_action(r.node(d))).count();
+        let ctrls = below.iter().filter(|&&d| is_control(r.node(d))).count();
+        acts == 1
+            && ctrls == 0
+            && r.node(
+                below
+                    .iter()
+                    .copied()
+                    .find(|&d| is_action(r.node(d)))
+                    .unwrap_or(item),
+            )
+            .tag == "a"
+    };
+    if items.iter().all(|&it| only_a_link(it)) {
+        return None;
+    }
+    let mut row_actions = Vec::new();
+    for (k, &item) in items.iter().enumerate() {
+        for d in r.obs.descendants(item) {
+            if is_action(r.node(d)) {
+                row_actions.push((k, r.node(d).id));
+            }
+        }
+    }
+    let label = n.name.as_deref().map(collapse).filter(|s| !s.is_empty());
+    Some(Collection {
+        node: n.id,
+        label,
+        columns: Vec::new(),
+        rows: items.len(),
+        row_actions,
+    })
+}
+
+/// Records laid out as identical sibling blocks that each hold controls or text; navigation chrome is excluded.
+fn recognize_repeated(r: &Reader, i: usize) -> Option<Collection> {
+    let n = r.node(i);
+    if !n.visible()
+        || !matches!(n.tag.as_str(), "div" | "section" | "article" | "main")
+        || !(generic_wrapper(n) || matches!(role_of(n), "region" | "group" | "feed" | "main"))
+    {
+        return None;
+    }
+    let chrome = |a: usize| {
+        let an = r.node(a);
+        matches!(
+            role_of(an),
+            "navigation"
+                | "menu"
+                | "menubar"
+                | "tablist"
+                | "toolbar"
+                | "banner"
+                | "contentinfo"
+                | "complementary"
+                | "dialog"
+                | "form"
+                | "search"
+        ) || matches!(
+            an.tag.as_str(),
+            "nav" | "header" | "footer" | "aside" | "form" | "menu"
+        )
+    };
+    if chrome(i) || r.obs.ancestors(i).take(10).any(chrome) {
+        return None;
+    }
+    let kids: Vec<usize> = r
+        .children(i)
+        .iter()
+        .copied()
+        .filter(|&c| r.node(c).visible())
+        .collect();
+    if kids.len() < 2 {
+        return None;
+    }
+    let shape = |c: usize| {
+        let cn = r.node(c);
+        let below = r.obs.descendants(c);
+        let acts = below.iter().filter(|&&d| is_action(r.node(d))).count();
+        let ctrls = below.iter().filter(|&&d| is_control(r.node(d))).count();
+        let texts = below
+            .iter()
+            .filter(|&&d| {
+                r.node(d).visible()
+                    && r.node(d)
+                        .text
+                        .as_deref()
+                        .is_some_and(|t| !t.trim().is_empty())
+            })
+            .count();
+        (
+            cn.tag.clone(),
+            role_of(cn).to_string(),
+            acts > 0,
+            ctrls > 0,
+            texts >= 2 || acts + ctrls >= 2,
+        )
+    };
+    let first = shape(kids[0]);
+    if !first.4 || !kids.iter().all(|&c| shape(c) == first) {
+        return None;
+    }
+    // Blocks that hold only a single link each are menus of links, not records.
+    if !first.3
+        && kids.iter().all(|&c| {
+            r.obs
+                .descendants(c)
+                .iter()
+                .filter(|&&d| is_action(r.node(d)))
+                .count()
+                <= 1
+                && r.obs
+                    .descendants(c)
+                    .iter()
+                    .all(|&d| r.node(d).tag != "button")
+        })
+        && first.2
+    {
+        return None;
+    }
+    let mut row_actions = Vec::new();
+    for (k, &item) in kids.iter().enumerate() {
+        for d in r.obs.descendants(item) {
+            if is_action(r.node(d)) {
+                row_actions.push((k, r.node(d).id));
+            }
+        }
+    }
+    let label = n.name.as_deref().map(collapse).filter(|s| !s.is_empty());
+    Some(Collection {
+        node: n.id,
+        label,
+        columns: Vec::new(),
+        rows: kids.len(),
+        row_actions,
+    })
+}
+
+pub fn recognize_collection(r: &Reader, i: usize, rules: Rules) -> Option<Collection> {
+    if rules.scoped
+        && let Some(list) = recognize_list(r, i).or_else(|| recognize_repeated(r, i))
+    {
+        return Some(list);
+    }
     let n = r.node(i);
     let is_table = n.tag == "table" || matches!(role_of(n), "table" | "grid" | "treegrid");
     if !is_table || !n.visible() {
@@ -709,7 +1155,7 @@ pub fn recognize_collection(r: &Reader, i: usize) -> Option<Collection> {
     }
     let (header, body) = table_rows(r, i);
     let columns: Vec<Option<String>> = header
-        .map(|h| r.children(h).iter().map(|&c| text_of(r, c)).collect())
+        .map(|h| cells_of(r, h).iter().map(|&c| text_of(r, c)).collect())
         .unwrap_or_default();
     if columns.is_empty() && body.is_empty() {
         return None;

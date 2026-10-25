@@ -1,0 +1,61 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "checkbox-mixed",
+  "dossierSha256": "92c5d7d648d4e3b2f585ef25f3bfec6e6792e02804a3b6e84ede57af36f3c980",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-c",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/apg/checkbox-mixed.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "All condiments",
+      "kind": "toggle"
+    },
+    {
+      "name": "Lettuce",
+      "kind": "toggle"
+    },
+    {
+      "name": "Tomato",
+      "kind": "toggle"
+    },
+    {
+      "name": "Mustard",
+      "kind": "toggle"
+    },
+    {
+      "name": "Sprouts",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "bulk_selection",
+      "name": "Sandwich Condiments"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Choose sandwich condiments",
+      "needs": [
+        "All condiments",
+        "Lettuce",
+        "Tomato",
+        "Mustard",
+        "Sprouts",
+        "Sandwich Condiments"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

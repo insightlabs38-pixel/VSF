@@ -1,0 +1,47 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "dialog-modal-form",
+  "dossierSha256": "05cd1e9b63bc222772aad1a6fa60e3ccc1efd190ada20c688a428e8b8d0ec608",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md (Scope and guide)",
+      "tests/corpus/src/annotation.ts (type shape)",
+      "fixtures/corpus/dossiers/jquery-ui/dialog-modal-form.md"
+    ]
+  },
+  "fields": [
+    { "name": "Name", "kind": "text", "required": true },
+    { "name": "Email", "kind": "text", "required": true },
+    { "name": "Password", "kind": "text", "required": true }
+  ],
+  "actions": [
+    { "name": "Create new user", "effect": "navigation" },
+    { "name": "Close", "effect": "navigation" },
+    { "name": "Submit", "effect": "state_change" },
+    { "name": "Create an account", "effect": "state_change" },
+    { "name": "Cancel", "effect": "navigation" }
+  ],
+  "collections": [
+    { "name": "Existing Users", "columns": ["Name", "Email", "Password"], "rows": 1 }
+  ],
+  "composites": [
+    { "kind": "dialog", "name": "Create new user" }
+  ],
+  "workflows": [
+    {
+      "name": "Create a new user through the modal form",
+      "needs": ["Create new user", "Name", "Email", "Password", "Create an account", "Existing Users"],
+      "effect": "state_change"
+    },
+    {
+      "name": "Dismiss the new user form without saving",
+      "needs": ["Create new user", "Cancel"],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

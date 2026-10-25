@@ -1,0 +1,121 @@
+{
+ "schema": "vsf-corpus-seal-v1",
+ "rule": "held-out annotations are committed once, before any recognition change, and are not read for development; the aggregate baseline is measured before any B11 change",
+ "commitments": [
+  {
+   "source": "adminlte",
+   "page": "settings",
+   "annotationSha256": "64608063c2ac0bde5fabfd125dd7b842fb4c86467d69a7e7736c474ebe855e36"
+  },
+  {
+   "source": "adminlte",
+   "page": "profile",
+   "annotationSha256": "2960a9b375aa213a0dc0f3f526086c87b11172daf6669543b630b34acfb1d6ad"
+  },
+  {
+   "source": "adminlte",
+   "page": "projects",
+   "annotationSha256": "06f54ac47d75014ffd7d67b1add932c3bde42159798ecad46265ab2d16c5868b"
+  },
+  {
+   "source": "adminlte",
+   "page": "file-manager",
+   "annotationSha256": "87e11a91f3fcdcb2079859f95dde5a68adb8319697c342ccd78a8901057737aa"
+  },
+  {
+   "source": "adminlte",
+   "page": "kanban",
+   "annotationSha256": "984551ed442cf930ed0f0f79794a794d2c859ec4375ecd29bc54c0740e8a0525"
+  },
+  {
+   "source": "adminlte",
+   "page": "search-results",
+   "annotationSha256": "5735089388f34dfe9853788fc9f453428cda45d075331b551571be6e8c2a75c7"
+  },
+  {
+   "source": "adminlte",
+   "page": "invoice",
+   "annotationSha256": "2a3ef194a5a3e42e3fdfb0d72aac401b4896f1f1f7b0d2a6bb64485a7e7eb66f"
+  },
+  {
+   "source": "adminlte",
+   "page": "login",
+   "annotationSha256": "c646c050bb5b76c29591ccbf3d3434b7d631418541dfaf587bab9417635fc9cf"
+  },
+  {
+   "source": "adminlte",
+   "page": "register",
+   "annotationSha256": "438b895e7a75417be60aac68cf4baf20ff6bb914c2212d4b90505ac55ce62924"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "empty",
+   "annotationSha256": "9a42d2650feee3c4d03edcf7eb2157d84fb1494d7048967e6a31ab88f2a994e4"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "with-items",
+   "annotationSha256": "bbec345087943c6622648c66121c92815509ec663c0f509726811a75cbac454c"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "empty",
+   "annotationSha256": "9315ac033b777dfe05c722f7f886ef8ff940ae48b32928cced91f2cab03eb274"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "with-items",
+   "annotationSha256": "0a1229c720383039c1eb3698ac3c327b49bba7de2860f4a9c724dee9e737dc73"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "empty",
+   "annotationSha256": "5472899e6b32e9241114de62da3f635b688fad603e63388a5cb1cee55a2d26da"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "with-items",
+   "annotationSha256": "1292115c49b4f796f76030dbf7df504f0114aebe1bfaf8b61ba57c2f5e3d7da5"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "empty",
+   "annotationSha256": "fbf2b405446fb3d715f2f47b603267c0cc3c729a4af3e8c8f88ef2b73e66cfc1"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "with-items",
+   "annotationSha256": "0192a171521f21ed682143c2a9cac845ca1b50ab631f763afd05b88cfd514ae7"
+  },
+  {
+   "source": "filebrowser",
+   "page": "login",
+   "annotationSha256": "4a192e42280b7300207d576099fb9b151e5900b0806cc6fa515b129e05e7f856"
+  },
+  {
+   "source": "filebrowser",
+   "page": "files",
+   "annotationSha256": "583a3155b31d5c79ceec4d513dc661e05938f34d65418cca3824576b8419c61e"
+  },
+  {
+   "source": "filebrowser",
+   "page": "new-folder",
+   "annotationSha256": "9c0a774e21257a03b3369f373ad2133670b6805c38a5086923e866a4a17ae701"
+  },
+  {
+   "source": "filebrowser",
+   "page": "upload",
+   "annotationSha256": "914a126f9e17407860f2a6c7a6e45cf81fa948d42b0049830f1ab220bc4ffe88"
+  },
+  {
+   "source": "filebrowser",
+   "page": "selected",
+   "annotationSha256": "d547880f0a6f824bc1140d1318267b2eb695e8974c1d29239a4b1f9f68c2340e"
+  },
+  {
+   "source": "filebrowser",
+   "page": "settings",
+   "annotationSha256": "87f9b056c037d677e448c3e9777a7ce9d814c689d1938e25d38700b13fd50578"
+  }
+ ]
+}

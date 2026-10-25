@@ -1,0 +1,68 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "invoice",
+  "dossierSha256": "4b42a4674aa8fb00d8f6afaa334c425d5142a9a1b3377b8f39255a09f9ade51b",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/invoice.md"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Print",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Send invoice",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Invoice line items",
+      "columns": [
+        "Description",
+        "Qty",
+        "Unit price",
+        "Amount"
+      ],
+      "rows": 3
+    }
+  ],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Print invoice",
+      "needs": [
+        "Print"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Download invoice as PDF",
+      "needs": [
+        "PDF"
+      ],
+      "effect": "read"
+    },
+    {
+      "name": "Send invoice",
+      "needs": [
+        "Send invoice"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "login",
+  "dossierSha256": "88f64d7c246fae281bfcbc66dee753200f14ad6c1b35d5f0a0dd062bb8bfe2d8",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/login.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Email",
+      "kind": "text"
+    },
+    {
+      "name": "Password",
+      "kind": "text"
+    },
+    {
+      "name": "Remember Me",
+      "kind": "toggle"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Sign In",
+      "effect": "state_change"
+    },
+    {
+      "name": "Sign in using Facebook",
+      "effect": "state_change"
+    },
+    {
+      "name": "Sign in using Google",
+      "effect": "state_change"
+    },
+    {
+      "name": "I forgot my password",
+      "effect": "navigation"
+    },
+    {
+      "name": "Register a new membership",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [],
+  "workflows": [
+    {
+      "name": "Sign in with email and password",
+      "needs": [
+        "Email",
+        "Password",
+        "Remember Me",
+        "Sign In"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Sign in with a social account",
+      "needs": [
+        "Sign in using Facebook",
+        "Sign in using Google"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

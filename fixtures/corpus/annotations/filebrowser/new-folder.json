@@ -1,0 +1,159 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "filebrowser",
+  "page": "new-folder",
+  "dossierSha256": "3c9b4d2cac248a5b0b3e3d5bda95744471f820714996e2f6f7efdd56228679a4",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-filebrowser-2",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "ANNOTATION.md",
+      "annotation.ts (shape)",
+      "dossier accessibility tree",
+      "textbox in the New directory dialog has no accessible name; named by its visible prompt text 'Name your new directory.'"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Search...",
+      "kind": "text"
+    },
+    {
+      "name": "Name your new directory",
+      "kind": "text"
+    }
+  ],
+  "actions": [
+    {
+      "name": "My files",
+      "effect": "navigation"
+    },
+    {
+      "name": "New folder",
+      "effect": "state_change"
+    },
+    {
+      "name": "New file",
+      "effect": "state_change"
+    },
+    {
+      "name": "Settings",
+      "effect": "navigation"
+    },
+    {
+      "name": "Logout",
+      "effect": "navigation"
+    },
+    {
+      "name": "Images",
+      "effect": "read"
+    },
+    {
+      "name": "Music",
+      "effect": "read"
+    },
+    {
+      "name": "Video",
+      "effect": "read"
+    },
+    {
+      "name": "PDF",
+      "effect": "read"
+    },
+    {
+      "name": "Switch view",
+      "effect": "navigation"
+    },
+    {
+      "name": "Download",
+      "effect": "read"
+    },
+    {
+      "name": "Upload",
+      "effect": "state_change"
+    },
+    {
+      "name": "Info",
+      "effect": "read"
+    },
+    {
+      "name": "Select multiple",
+      "effect": "navigation"
+    },
+    {
+      "name": "Sort by name",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by size",
+      "effect": "read"
+    },
+    {
+      "name": "Sort by last modified",
+      "effect": "read"
+    },
+    {
+      "name": "Clear",
+      "effect": "navigation"
+    },
+    {
+      "name": "Cancel",
+      "effect": "navigation"
+    },
+    {
+      "name": "Create",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [
+    {
+      "name": "Files and folders",
+      "columns": [
+        "Name",
+        "Size",
+        "Last modified"
+      ],
+      "rows": 4
+    }
+  ],
+  "composites": [
+    {
+      "kind": "filter_bar",
+      "name": "Search"
+    },
+    {
+      "kind": "sortable_columns",
+      "name": "Sort by name, size, last modified"
+    },
+    {
+      "kind": "bulk_selection",
+      "name": "Select multiple"
+    },
+    {
+      "kind": "dialog",
+      "name": "New directory"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Create a folder",
+      "needs": [
+        "New folder",
+        "New directory",
+        "Name your new directory",
+        "Create"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Cancel folder creation",
+      "needs": [
+        "New directory",
+        "Cancel"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

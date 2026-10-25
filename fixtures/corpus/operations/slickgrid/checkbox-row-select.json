@@ -1,0 +1,57 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "slickgrid",
+  "page": "checkbox-row-select",
+  "dossierSha256": "fc9bdee816368f1758adbcfbc57d59d4ec269e7d03e7eb806c70402be7bc9034",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-misc",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier accessibility tree",
+      "SlickGrid public documentation and examples"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Select all rows with the header checkbox",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Select/Deselect All",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Select/Deselect All",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "name": "Select all then unselect all rows",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Select/Deselect All",
+          "checked": true
+        },
+        {
+          "do": "click",
+          "target": "Unselect all rows"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Select/Deselect All",
+          "checked": false
+        }
+      ]
+    }
+  ]
+}

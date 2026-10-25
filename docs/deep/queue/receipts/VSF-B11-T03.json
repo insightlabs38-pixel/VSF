@@ -1,0 +1,64 @@
+{
+  "task_id": "VSF-B11-T03",
+  "status": "DONE",
+  "branch": "vsf/b11-independent-corpus",
+  "base_commit": "71e7b7c4a3ba86ba541fa466c1b181ac2170bd0d",
+  "commit": "2b568c5374fc32642e06aa89bc560905e33b3ce9",
+  "paths": [
+    "compiler/crates/vsf-recognizer/",
+    "frontend/packages/observer/",
+    "tests/corpus/",
+    "tests/observation/",
+    "docs/deep/adr/ADR-041-composites-files-bulk.md"
+  ],
+  "acceptance": "Nested custom combo, grid virtualization and modal-form samples work without source-specific CSS selectors; composites are derived structures that raise no effect claim.",
+  "positive": {
+    "fixture": "composite recognition for tabs, disclosure, menu, dialog, combobox popup, tree, pagination, bulk selection, sortable columns, filter bar, file input, date picker, editable cell and scroll-probe virtual list; choose through a custom popup in a real browser",
+    "command": "node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/composites.test.ts",
+    "result": "PASS"
+  },
+  "negative": {
+    "fixture": "navigation chrome, mixed blocks and link menus are not collections; a link that says it deletes is never downgraded; script links stay unknown; ambiguous members fall back",
+    "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test composites --test rules_v3",
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test regression",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "result": "PASS"
+    },
+    {
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm --filter @vsf/observation-tests run test:browser",
+      "result": "PASS"
+    }
+  ],
+  "versions": {
+    "schema": "recognition document gains composites, editable, shown, structural only under --rules 3; observer states gain href kind",
+    "primitive": "none; rules 1 and 2 outputs byte-identical"
+  },
+  "security_and_source_permissions": "Hints stay candidates; no write is promoted to an executable contract; the scroll probe reads and restores scroll position only.",
+  "performance_memory_storage": "Recognizer p50 about 45 ms, max about 80 ms and about 11 MB RSS on 58 pages, unchanged from T02.",
+  "known_limitations": [
+    "98 composites on development and validation pages are unannotated (mostly hidden dialogs and menus of site chrome)",
+    "Popups built on demand from unlabeled elements, drag and drop and Choices.js duplicated inputs stay unrecognized",
+    "Names agree for fewer than half of recognized composites"
+  ],
+  "evidence_paths": [
+    "docs/deep/evidence/VSF-B11/manifest.json",
+    "docs/deep/evidence/VSF-B11/g11/ops-tables.md",
+    "docs/deep/evidence/VSF-B11/g11/structural-tables.md"
+  ],
+  "review_result": "ACCEPTED"
+}

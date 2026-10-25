@@ -1,0 +1,65 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "todomvc-svelte",
+  "page": "empty",
+  "dossierSha256": "a16eac8767e0a36916ced75dc75d51822940e5a63d1a787946f87d36b0cb959e",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-heldout-a",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier todomvc-svelte/empty.md",
+      "page annotation item names",
+      "TodoMVC specification behaviour"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Add a todo",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "What needs to be done?",
+          "value": "Buy milk"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Buy milk"
+        },
+        {
+          "kind": "text",
+          "contains": "1 item left"
+        }
+      ]
+    },
+    {
+      "name": "Add a todo with empty text",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "What needs to be done?",
+          "value": ""
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "item left"
+        }
+      ],
+      "negative": true
+    }
+  ]
+}

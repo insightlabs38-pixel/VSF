@@ -1,0 +1,65 @@
+{
+ "schema": "vsf-corpus-operations-v1",
+ "source": "fullcalendar",
+ "page": "list-views",
+ "dossierSha256": "80b7932fbcd8067aac24d1725230d55a7657d55bb4e6204bc50e3e27e0cd1bab",
+ "annotator": {
+  "kind": "separate-agent",
+  "id": "ops-annotator-misc",
+  "sawRecognizerOutput": false,
+  "basis": [
+   "dossier accessibility tree",
+   "FullCalendar public documentation (toolbar, navLinks, views)"
+  ]
+ },
+ "operations": [
+  {
+   "name": "Go to next week",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Next Week"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "absent",
+     "contains": "Birthday Party"
+    }
+   ]
+  },
+  {
+   "name": "Go to previous week",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Previous Week"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "absent",
+     "contains": "Conference"
+    }
+   ]
+  },
+  {
+   "name": "Open a day from the list",
+   "effect": "navigation",
+   "steps": [
+    {
+     "do": "click",
+     "target": "Go to January 12, 2023"
+    }
+   ],
+   "expect": [
+    {
+     "kind": "absent",
+     "contains": "Birthday Party"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,294 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "choices",
+  "page": "demo",
+  "dossierSha256": "64f340885f62b4ae18c20987681941d8308ed93b26d168bbcebf9fe19b6716c8",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-c",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/choices/demo.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Limited to 5 values with remove button",
+      "kind": "text"
+    },
+    {
+      "name": "Unique values only, no pasting",
+      "kind": "text"
+    },
+    {
+      "name": "Email addresses only",
+      "kind": "text"
+    },
+    {
+      "name": "Disabled",
+      "kind": "text"
+    },
+    {
+      "name": "Prepends and appends a value to each items return value",
+      "kind": "text"
+    },
+    {
+      "name": "Preset values passed through options",
+      "kind": "text"
+    },
+    {
+      "name": "I18N labels",
+      "kind": "text"
+    },
+    {
+      "name": "Right-to-left",
+      "kind": "text"
+    },
+    {
+      "name": "Default",
+      "kind": "choice"
+    },
+    {
+      "name": "With remove button",
+      "kind": "choice"
+    },
+    {
+      "name": "Option groups",
+      "kind": "choice"
+    },
+    {
+      "name": "Options from remote source (Fetch API) & limited to 5",
+      "kind": "choice"
+    },
+    {
+      "name": "Right-to-left",
+      "kind": "choice"
+    },
+    {
+      "name": "Use label in event (add/remove)",
+      "kind": "choice"
+    },
+    {
+      "name": "Default",
+      "kind": "choice"
+    },
+    {
+      "name": "Options from remote source (Fetch API)",
+      "kind": "choice"
+    },
+    {
+      "name": "Options from remote source (Fetch API) & remove button",
+      "kind": "choice"
+    },
+    {
+      "name": "Option groups",
+      "kind": "choice"
+    },
+    {
+      "name": "Right-to-left",
+      "kind": "choice"
+    },
+    {
+      "name": "Options added via config with no search",
+      "kind": "choice"
+    },
+    {
+      "name": "Option and option groups added via config",
+      "kind": "choice"
+    },
+    {
+      "name": "Option selected via config with custom properties",
+      "kind": "choice"
+    },
+    {
+      "name": "Option searchable by custom properties via data-custom-properties attribute",
+      "kind": "choice"
+    },
+    {
+      "name": "Options without sorting",
+      "kind": "choice"
+    },
+    {
+      "name": "Custom templates",
+      "kind": "choice"
+    },
+    {
+      "name": "Cities",
+      "kind": "choice"
+    },
+    {
+      "name": "Tube stations",
+      "kind": "choice"
+    },
+    {
+      "name": "Change me!",
+      "kind": "choice"
+    },
+    {
+      "name": "And me!",
+      "kind": "choice"
+    },
+    {
+      "name": "Change me!",
+      "kind": "choice"
+    },
+    {
+      "name": "And me!",
+      "kind": "text",
+      "required": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "Remove item: preset-1",
+      "effect": "destructive"
+    },
+    {
+      "name": "Remove item: preset-2",
+      "effect": "destructive"
+    },
+    {
+      "name": "Remove item: Choice 1",
+      "effect": "destructive"
+    },
+    {
+      "name": "Remove item: Label Six",
+      "effect": "destructive"
+    },
+    {
+      "name": "Reset",
+      "effect": "destructive"
+    },
+    {
+      "name": "Submit",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "combobox_popup",
+      "name": "Default"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "With remove button"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Option groups"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Options from remote source (Fetch API) & limited to 5"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Right-to-left"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Use label in event (add/remove)"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Default"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Options from remote source (Fetch API)"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Options from remote source (Fetch API) & remove button"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Option groups"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Right-to-left"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Option and option groups added via config"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Option selected via config with custom properties"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Option searchable by custom properties via data-custom-properties attribute"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Options without sorting"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Custom templates"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Cities"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Tube stations"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "Change me!"
+    },
+    {
+      "kind": "combobox_popup",
+      "name": "And me!"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Choose values in custom select controls",
+      "needs": [
+        "Default",
+        "With remove button",
+        "Option groups",
+        "Cities",
+        "Tube stations",
+        "Custom templates"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Manage preset tag values",
+      "needs": [
+        "Limited to 5 values with remove button",
+        "Remove item: preset-1",
+        "Remove item: preset-2"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Reset form interaction selects",
+      "needs": [
+        "Change me!",
+        "And me!",
+        "Reset"
+      ],
+      "effect": "destructive"
+    },
+    {
+      "name": "Submit validated form",
+      "needs": [
+        "Change me!",
+        "And me!",
+        "Submit"
+      ],
+      "effect": "state_change"
+    }
+  ],
+  "unsupported": []
+}

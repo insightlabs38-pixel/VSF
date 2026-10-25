@@ -1,0 +1,61 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "jquery-ui",
+  "page": "menu-default",
+  "dossierSha256": "225730bb1b43c6f18e93c04faa27a2daaea8fc91f44559c3a6262e237aad3653",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-jqui",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape)",
+      ".corpus-cache/dossiers/jquery-ui/menu-default.md"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "Books",
+      "effect": "unknown"
+    },
+    {
+      "name": "Clothing",
+      "effect": "unknown"
+    },
+    {
+      "name": "Electronics",
+      "effect": "unknown"
+    },
+    {
+      "name": "Movies",
+      "effect": "unknown"
+    },
+    {
+      "name": "Music",
+      "effect": "unknown"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "menu",
+      "name": "Menu"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Pick an item from the menu",
+      "needs": [
+        "Menu",
+        "Books",
+        "Clothing",
+        "Electronics",
+        "Movies",
+        "Music"
+      ],
+      "effect": "unknown"
+    }
+  ],
+  "unsupported": []
+}

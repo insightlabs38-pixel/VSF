@@ -1,0 +1,68 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "adminlte",
+  "page": "settings",
+  "dossierSha256": "acaca1d3de7af945eb360cb9722131be97cb103911ab70e2f5e37180b83ebae0",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-adminlte",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts",
+      ".corpus-cache/dossiers/adminlte/settings.md"
+    ]
+  },
+  "fields": [
+    {
+      "name": "Full name",
+      "kind": "text"
+    },
+    {
+      "name": "Email",
+      "kind": "text"
+    },
+    {
+      "name": "Time zone",
+      "kind": "choice"
+    },
+    {
+      "name": "Language",
+      "kind": "choice"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Save changes",
+      "effect": "state_change"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "tabs",
+      "name": "Navigation 19"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Edit account settings",
+      "needs": [
+        "Full name",
+        "Email",
+        "Time zone",
+        "Language",
+        "Save changes"
+      ],
+      "effect": "state_change"
+    },
+    {
+      "name": "Switch settings section",
+      "needs": [
+        "Navigation 19"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

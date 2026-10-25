@@ -1,0 +1,56 @@
+{
+  "schema": "vsf-corpus-annotation-v1",
+  "source": "apg",
+  "page": "disclosure-faq",
+  "dossierSha256": "3cf1162db62e4289439cdb325ed32ae5f8226c07386c0baaf5332181aa6005f8",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "annotator-apg-c",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION.md",
+      "tests/corpus/src/annotation.ts (shape only)",
+      ".corpus-cache/dossiers/apg/disclosure-faq.md"
+    ]
+  },
+  "fields": [],
+  "actions": [
+    {
+      "name": "What do I do if I have a permit for an assigned lot, but can't find a space there?",
+      "effect": "navigation"
+    },
+    {
+      "name": "What do I do if I lose my permit or if my permit is stolen?",
+      "effect": "navigation"
+    },
+    {
+      "name": "Is there free parking on holidays?",
+      "effect": "navigation"
+    },
+    {
+      "name": "Do all parking facilities have the same enforcement rules?",
+      "effect": "navigation"
+    }
+  ],
+  "collections": [],
+  "composites": [
+    {
+      "kind": "other",
+      "name": "Parking FAQs"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Show or hide a parking FAQ answer",
+      "needs": [
+        "What do I do if I have a permit for an assigned lot, but can't find a space there?",
+        "What do I do if I lose my permit or if my permit is stolen?",
+        "Is there free parking on holidays?",
+        "Do all parking facilities have the same enforcement rules?",
+        "Parking FAQs"
+      ],
+      "effect": "navigation"
+    }
+  ],
+  "unsupported": []
+}

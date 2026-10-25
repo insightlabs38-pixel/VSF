@@ -107,6 +107,10 @@ const RELEVANT_ATTRS = new Set([
   "aria-describedby",
   "aria-disabled",
   "disabled",
+  "required",
+  "readonly",
+  "aria-controls",
+  "aria-owns",
   "type",
   "title",
   "alt",
@@ -135,7 +139,15 @@ function sameRels(a: NodeFacts["rels"], b: NodeFacts["rels"]): boolean {
 }
 
 function sameFacts(a: NodeFacts, b: NodeFacts): boolean {
-  return a.role === b.role && a.name === b.name && a.text === b.text && a.flags === b.flags && sameRels(a.rels, b.rels);
+  return (
+    a.role === b.role &&
+    a.name === b.name &&
+    a.text === b.text &&
+    a.flags === b.flags &&
+    sameRels(a.rels, b.rels) &&
+    a.states.length === b.states.length &&
+    a.states.every((x, i) => x === b.states[i])
+  );
 }
 
 /** Indices (into `seq`) of one longest strictly increasing subsequence. */
@@ -232,6 +244,36 @@ export class Session {
     return this.epochNo;
   }
 
+  /** The live element behind an observed node id, for an executor that must act on exactly what was observed. */
+  elementOf(id: number): Element | null {
+    const n = this.live.get(id)?.node ?? null;
+    return n !== null && n.nodeType === 1 ? (n as Element) : null;
+  }
+
+  /** Scrolls the nearest scrollable region by one viewport so a second observation shows whether rows are replaced. */
+  scrollProbe(id: number): { moved: boolean; restore: () => void } | null {
+    const root = this.elementOf(id);
+    if (root === null) return null;
+    const scrollable = (e: Element): boolean => {
+      const css = getComputedStyle(e);
+      return (css.overflowY === "auto" || css.overflowY === "scroll") && e.scrollHeight > e.clientHeight + 1;
+    };
+    let region: Element | null = null;
+    for (const e of [root, ...root.querySelectorAll("*")])
+      if (scrollable(e) && (region === null || e.scrollHeight > region.scrollHeight)) region = e;
+    for (let a = root.parentElement; region === null && a !== null; a = a.parentElement) if (scrollable(a)) region = a;
+    if (region === null) return { moved: false, restore: () => undefined };
+    const target = region;
+    const before = target.scrollTop;
+    target.scrollTop = before + Math.max(1, target.clientHeight - 1);
+    return {
+      moved: target.scrollTop !== before,
+      restore: () => {
+        target.scrollTop = before;
+      },
+    };
+  }
+
   get seq(): number {
     return this.seqNo;
   }
@@ -285,7 +327,7 @@ export class Session {
   }
 
   private scopeFacts(tag: string, flags = 0): NodeFacts {
-    return { tag, role: null, name: null, text: null, flags, rels: [] };
+    return { tag, role: null, name: null, text: null, flags, rels: [], states: [] };
   }
 
   private setDeps(live: Live, deps: Element[]): void {
@@ -372,11 +414,28 @@ export class Session {
       return false;
     }
     this.sum = sumSub(this.sum, live.hash);
-    live.rec = { ...live.rec, role: f.role, name: f.name, text: f.text, flags: f.flags, rels: f.rels };
+    live.rec = {
+      ...live.rec,
+      role: f.role,
+      name: f.name,
+      text: f.text,
+      flags: f.flags,
+      rels: f.rels,
+      states: f.states,
+    };
     live.hash = nodeHash(live.rec);
     this.sum = sumAdd(this.sum, live.hash);
     this.setDeps(live, d.deps);
-    ops.push({ op: "set", id: live.id, role: f.role, name: f.name, text: f.text, flags: f.flags, rels: f.rels });
+    ops.push({
+      op: "set",
+      id: live.id,
+      role: f.role,
+      name: f.name,
+      text: f.text,
+      flags: f.flags,
+      rels: f.rels,
+      states: f.states,
+    });
     return true;
   }
 

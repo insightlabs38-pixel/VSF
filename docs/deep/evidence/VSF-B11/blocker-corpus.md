@@ -22,3 +22,6 @@ Recommended: option 1 with option 3 meanwhile. Work continues on B13 under optio
 
 ## State left behind
 B11-T01 is BLOCKED on this branch; nothing else of B11 is started; no registry maturity changed.
+
+## Resolution (VSF-B11-T07)
+Option 1 was met without owner input: ten public applications in seven template families were pinned, captured and annotated by separate sessions (ADR-040). The held-out partition is sealed in fixtures/corpus/heldout.seal.json and the unmodified recognizer was measured: docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json and corpus-baseline-heldout.json. B11-T01 returns to READY on that evidence.

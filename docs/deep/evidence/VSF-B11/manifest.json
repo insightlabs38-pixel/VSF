@@ -1,0 +1,745 @@
+{
+  "schema": "vsf-evidence-v1",
+  "batch": "B11",
+  "gate": "G11",
+  "runs": [
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-unit",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-unit.log",
+      "sha256": "9f12a6befc7c1f0c7ccf7020d848916592cc43929794689dc3d87725f906f55e"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-validate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-validate.log",
+      "sha256": "4128357b2ba1e36384a30837582f153cd0c02503c932d35ddde1f8d94431f933"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-reproducible-capture",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-reproducible-capture.log",
+      "sha256": "914288b3a588d89097d34562d00b1009a964236a8eaaa722f9d1411012c5d0c9"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-baseline-dev-validation",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-baseline-dev-validation.log",
+      "sha256": "dd587afcbb5a1851209bbc075196db25433e4458fd90a2d71a204111a04b42b7"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "positive-baseline-heldout-aggregate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition heldout --aggregate-only --out docs/deep/evidence/VSF-B11/corpus-baseline-heldout.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.positive-baseline-heldout-aggregate.log",
+      "sha256": "5f012c1a514300886a68b47ebc92715e02a15a7b4355b286f2345d8e72326d48"
+    },
+    {
+      "task_id": "VSF-B11-T07",
+      "name": "negative-independence-rules",
+      "command": "node --conditions=source --test --test-name-pattern=refused|only pinned|stays inside|must declare|false claim tests/corpus/test/corpus.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T07.negative-independence-rules.log",
+      "sha256": "e3f54b9a868ebce28eed3480bd5cf3973fa54cc1dda0873f93e1b1cc5fb1f98a"
+    },
+    {
+      "task_id": "GATE",
+      "name": "typecheck",
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.typecheck.log",
+      "sha256": "8a04b30c50502780fb29f8b249fca16f9c5736fc447846e1bebb7e306ca07c20"
+    },
+    {
+      "task_id": "GATE",
+      "name": "queue-tests",
+      "command": "pnpm --filter @vsf/queue run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.queue-tests.log",
+      "sha256": "c4cc31696d136fdb08814c3b377309e19a10707ee57df196d218128a1a25211b"
+    },
+    {
+      "task_id": "GATE",
+      "name": "biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.biome.log",
+      "sha256": "3199580a1c0022fe7d7b493a408c35218a3404291f238b3d7b2030d198b03a53"
+    },
+    {
+      "task_id": "GATE",
+      "name": "comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "secrets",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.secrets.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "VSF-B11-T01",
+      "name": "positive-ranking",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T01.positive-ranking.log",
+      "sha256": "dd587afcbb5a1851209bbc075196db25433e4458fd90a2d71a204111a04b42b7"
+    },
+    {
+      "task_id": "VSF-B11-T01",
+      "name": "negative-ranking-order",
+      "command": "node --conditions=source --test --test-name-pattern=clusters rank tests/corpus/test/corpus.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T01.negative-ranking-order.log",
+      "sha256": "58e39008afd1f40faa0d537c84bb648b37ea3eaf62a4a690795553e74f5ad27e"
+    },
+    {
+      "task_id": "VSF-B11-T01",
+      "name": "negative-heldout-sealed",
+      "command": "python3 -I -c import json;d=json.load(open('docs/deep/evidence/VSF-B11/corpus-baseline-heldout.json'));assert 'rows' not in d and all(not c['examples'] for c in d['clusters']);print('held-out stored as aggregate only')",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T01.negative-heldout-sealed.log",
+      "sha256": "508f5df6dfa982232a134c0df484a22a5a0d4ff70a7cf7ba52779744046cf140"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t01-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t01-biome.log",
+      "sha256": "d4def1cc71f1c35abe0d1db7639d7a52dc0b85ae96f68bd09eb8bb254c325d4e"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t01-corpus-tests",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t01-corpus-tests.log",
+      "sha256": "8cd8d31c34d6d0d2ea3e7b342c7fd05d511b33a940ad4ca5f2438ca7cbb71cc3"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t01-queue-validate",
+      "command": "node tools/queue/src/cli.ts validate --no-git",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t01-queue-validate.log",
+      "sha256": "420ad8101efaa3e769e2c68cc57e32717fdd8648a7d1dbc99d1745f5ab08af48"
+    },
+    {
+      "task_id": "VSF-B11-T08",
+      "name": "positive-reproducible-capture",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T08.positive-reproducible-capture.log",
+      "sha256": "3fd79a700e2442b903b4a908a3cb152dc8146c6dc559a54b1597b745ac4243ea"
+    },
+    {
+      "task_id": "VSF-B11-T08",
+      "name": "positive-validate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T08.positive-validate.log",
+      "sha256": "385ed6dd64ee7ebb38bc20006664bab21ebe24c6d8613b648ab8f49b0c42a248"
+    },
+    {
+      "task_id": "VSF-B11-T08",
+      "name": "positive-baseline-dev-validation",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-baseline-dev-validation-t08.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T08.positive-baseline-dev-validation.log",
+      "sha256": "033c2da321897b6f4e33d18c41b984cfbdb016bdba692cc154b062b073848ae3"
+    },
+    {
+      "task_id": "VSF-B11-T08",
+      "name": "positive-baseline-heldout-aggregate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition heldout --aggregate-only --out docs/deep/evidence/VSF-B11/corpus-baseline-heldout.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T08.positive-baseline-heldout-aggregate.log",
+      "sha256": "5f012c1a514300886a68b47ebc92715e02a15a7b4355b286f2345d8e72326d48"
+    },
+    {
+      "task_id": "VSF-B11-T08",
+      "name": "negative-rules",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T08.negative-rules.log",
+      "sha256": "483d63abfc88f39fda1d389a19174ec9a0f4d2abcf26dc54b61e6e4776b2ed44"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t08-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t08-biome.log",
+      "sha256": "dc71ae42a789bb5b2c7dcd31fb47d377a3b333686bd1022c91d516e08e4f9572"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t08-typecheck",
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t08-typecheck.log",
+      "sha256": "8a04b30c50502780fb29f8b249fca16f9c5736fc447846e1bebb7e306ca07c20"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t08-comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t08-comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t08-secrets",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t08-secrets.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "GATE",
+      "name": "t08-queue-tests",
+      "command": "pnpm --filter @vsf/queue run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/GATE.t08-queue-tests.log",
+      "sha256": "a62e101e5cd3de3ec8cd863749c9c3acb06f1e9ff702d184a4ca35c0c18775a6"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-recognizer",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer --test semantics",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-recognizer.log",
+      "sha256": "ea61189776df2efe17880950a9c8332db1f945b84045d78d5c76fe18d0d672d3"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "negative-recognizer-all",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer -p vsf-assemble -p vsf-registry",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.negative-recognizer-all.log",
+      "sha256": "d48a14a76a8223870c25b56f05a3b1e576e404f67727765c9199e1de07012a96"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-observer-states",
+      "command": "pnpm --filter @vsf/observation-tests run test:unit",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-observer-states.log",
+      "sha256": "9bcc1846770cb56e7124d3d06cf5fd588f804a2ce94d8cd8a0ccb0ce2ca95a4e"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-observer-browser",
+      "command": "sh -c cd tests/observation && npx playwright test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-observer-browser.log",
+      "sha256": "4dbba264602e3ce9eb3dc2632b126288f24904f0397e0e620112b12bf538d7f2"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-corpus-reproducible",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-corpus-reproducible.log",
+      "sha256": "05364ff08c3c8c2601cda474629ad368e34fa7b690caa5dc298247930374a1aa"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-corpus-t02",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out /home/user/VSF/docs/deep/evidence/VSF-B11/corpus-t02-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-corpus-t02.log",
+      "sha256": "f28264fa7be9890690de87476936c1db3cfeb2576377be019241eab3a8b22f71"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-clippy.log",
+      "sha256": "92a6cc83d529696b6e34efae2e9b8619080e1508e4f1e39745a99af47d7867c5"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-corpus-tests",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-corpus-tests.log",
+      "sha256": "9c22a14bc678878dbf9024c440eb32c5c0ec6735ad6c57fba08ac488c12e48ea"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-biome.log",
+      "sha256": "bddd21f5178807cdfde23050560e2d236e44076c2840732e716225bebbb2d101"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-secrets",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-secrets.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-typecheck",
+      "command": "pnpm -r --if-present run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-typecheck.log",
+      "sha256": "d03369f62007c94550ecd724cf2d4a27deccb933c6a0f2dcb93af932894c2f6b"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-snapshots-current",
+      "command": "pnpm --filter @vsf/observation-tests run check:fixtures",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-snapshots-current.log",
+      "sha256": "954fa7f6343b497c3bc4001a1ecad3af0546dabdc38abce1996daaea25a23a64"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "negative-frozen-rules-output",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer --test regression",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.negative-frozen-rules-output.log",
+      "sha256": "26baeee2151dc914d0ae7820c6976b2957e482b661f135bd450a9c62678665ed"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-recognizer-tests",
+      "command": "cargo test --manifest-path compiler/Cargo.toml -p vsf-recognizer",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-recognizer-tests.log",
+      "sha256": "1cc83715af8f24a119f0843f30b7fa9f8b41c79042e536a9d62eb5af230a0a6e"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "regression-comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.regression-comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "VSF-B11-T02",
+      "name": "positive-corpus-reproducible-all",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T02.positive-corpus-reproducible-all.log",
+      "sha256": "7106722ee094ea7f3da6c8066f993bf8b96a5d73885ee320345f448cdcb80915"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-reproducible-capture-all",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-reproducible-capture-all.log",
+      "sha256": "f2a16e6e3c6ebdfa7b9b7c0fac3f2e6e9b6ae4fd5b60137ed1111f9b1c125308"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-validate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-validate.log",
+      "sha256": "fdb7ed80d9feea80499c6f89af1d4f07d2600967457ed9a3a4d33ce39a69fe2a"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-baseline-pre-b11",
+      "command": "sh -c VSF_LEGACY_WIRE=1 VSF_RECOGNIZER=/root/vsf-baseline/vsf-recognizer-pre-b11 node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-t09-pre-b11-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-baseline-pre-b11.log",
+      "sha256": "fb727d50d4b755342ac41bcf91014f5913f3f7a67ce80ddd4553d9d9849e717f"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "positive-baseline-t02",
+      "command": "node --conditions=source tests/corpus/src/cli.ts evaluate --partition dev,validation --out docs/deep/evidence/VSF-B11/corpus-t09-t02-dev-validation.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.positive-baseline-t02.log",
+      "sha256": "d32ba609ee439ee2ba97a8b89b56e196a8b8839c0e0e423800f126d02daba74d"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "negative-manifest-rules",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.negative-manifest-rules.log",
+      "sha256": "de2d3b928f7efb123cc14ef94701d7da0f888f401156cfe3fe090ae27a29130c"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "regression-typecheck",
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.regression-typecheck.log",
+      "sha256": "8a04b30c50502780fb29f8b249fca16f9c5736fc447846e1bebb7e306ca07c20"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "regression-observer-element-map",
+      "command": "sh -c cd tests/observation && npx playwright test specs/element.spec.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.regression-observer-element-map.log",
+      "sha256": "b2082df69982540e1aa6d255026df5e7cd3695d65fbc4c5186b49612db0f9040"
+    },
+    {
+      "task_id": "VSF-B11-T09",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T09.regression-biome.log",
+      "sha256": "b09362b278cffd59409fbf77654754650a0d31191ad19d989359a52c6d526223"
+    },
+    {
+      "task_id": "VSF-B11-T10",
+      "name": "positive-validate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T10.positive-validate.log",
+      "sha256": "fbe29a412311fba1bf553cb5428f507350126073c99eed8b854ca635c957135c"
+    },
+    {
+      "task_id": "VSF-B11-T10",
+      "name": "positive-harness",
+      "command": "pnpm --filter @vsf/corpus-tests run test:harness",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T10.positive-harness.log",
+      "sha256": "9a684617c5d36c59b179568e105eff6f69a83875ecaf252b30199fd3cda85304"
+    },
+    {
+      "task_id": "VSF-B11-T10",
+      "name": "negative-planted-and-unconfirmed",
+      "command": "node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/operations.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T10.negative-planted-and-unconfirmed.log",
+      "sha256": "cb2c18cccf774e45cbf129bd4e008d7ead4f9f4b2017c5136b225058e47b8dee"
+    },
+    {
+      "task_id": "VSF-B11-T10",
+      "name": "regression-unit",
+      "command": "pnpm --filter @vsf/corpus-tests run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T10.regression-unit.log",
+      "sha256": "0fffd2f67cec3cb07d9d448d68794006dd4577db6eec3a034f04c89826779fe9"
+    },
+    {
+      "task_id": "VSF-B11-T10",
+      "name": "regression-typecheck",
+      "command": "pnpm --filter @vsf/corpus-tests run typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T10.regression-typecheck.log",
+      "sha256": "8a04b30c50502780fb29f8b249fca16f9c5736fc447846e1bebb7e306ca07c20"
+    },
+    {
+      "task_id": "VSF-B11-T10",
+      "name": "reproducible-capture",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T10.reproducible-capture.log",
+      "sha256": "fae00ef76dcfbe9e944faf23938a6c46056c3e62c628fb03f4deac806fa3bab9"
+    },
+    {
+      "task_id": "VSF-B11-T10",
+      "name": "regression-biome",
+      "command": "pnpm exec biome check .",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T10.regression-biome.log",
+      "sha256": "2b025b45299622552cc17be41300039c43761e7893cf73f1ac597ca6c94bb993"
+    },
+    {
+      "task_id": "VSF-B11-T03",
+      "name": "positive-recognizer-tests",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T03.positive-recognizer-tests.log",
+      "sha256": "643666b8bbd85c808e4796e78eff6e62f777ddb4f4372df4d85244054cf19e3f"
+    },
+    {
+      "task_id": "VSF-B11-T03",
+      "name": "negative-composites-and-rules3",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test composites --test rules_v3",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T03.negative-composites-and-rules3.log",
+      "sha256": "d0799ddb43f21de717e7818f02974ac86f130bbfe192401f2ca608affc383ca9"
+    },
+    {
+      "task_id": "VSF-B11-T03",
+      "name": "positive-execution-through-composites",
+      "command": "node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/composites.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T03.positive-execution-through-composites.log",
+      "sha256": "aae62931b846ee1365b7e960100b53e859d6764aece89b14ada030a3f99ff706"
+    },
+    {
+      "task_id": "VSF-B11-T03",
+      "name": "regression-frozen-rules-1-2",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test regression",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T03.regression-frozen-rules-1-2.log",
+      "sha256": "2d1dd8d8c5532b313e9efd5ba1788369067abb2da69b2081a119fad1cffd644b"
+    },
+    {
+      "task_id": "VSF-B11-T03",
+      "name": "regression-workspace-clippy",
+      "command": "cargo clippy --manifest-path compiler/Cargo.toml --locked --workspace --all-targets -- -D warnings",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T03.regression-workspace-clippy.log",
+      "sha256": "1f739b19690e1875c462b3d74de62f4fc56adc4ef388ed6d414ecc2430df910d"
+    },
+    {
+      "task_id": "VSF-B11-T03",
+      "name": "regression-workspace-fmt",
+      "command": "cargo fmt --manifest-path compiler/Cargo.toml --all -- --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T03.regression-workspace-fmt.log",
+      "sha256": "c4e39a37190232bfa5639c36f34c68e12e10e629056589120a38922c90608dee"
+    },
+    {
+      "task_id": "VSF-B11-T03",
+      "name": "regression-observation",
+      "command": "pnpm --filter @vsf/observation-tests run test:browser",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T03.regression-observation.log",
+      "sha256": "8652c7c09c4fabd75191929b3f95d2af0510c98bdfe3535caf92eda87eb305a6"
+    },
+    {
+      "task_id": "VSF-B11-T04",
+      "name": "positive-file-policy-sandbox-transfer",
+      "command": "go -C backend test -race -count=1 ./execution/ -run SafeFileName|Disposition|Policy|Sandbox|Upload|Download|Acknowledged|ConnectionLost|DeclaredName|Throttled",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T04.positive-file-policy-sandbox-transfer.log",
+      "sha256": "50ffbd6c519bc9865ec28a998b2d303e55629035a1d125e5a9aa59f4a161eae1"
+    },
+    {
+      "task_id": "VSF-B11-T04",
+      "name": "positive-real-browser-upload-download",
+      "command": "env VSF_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome go -C backend test -tags integration -race -count=1 ./execution/ -run RealBrowser|OutsideTheSandbox|ADownload",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T04.positive-real-browser-upload-download.log",
+      "sha256": "b527341791e9e2605fc15dcf1251c68cb3c87f8c479338316a45bee6b1771044"
+    },
+    {
+      "task_id": "VSF-B11-T04",
+      "name": "positive-harness-upload-names",
+      "command": "node --conditions=source --test --test-reporter=spec tests/corpus/test/browser/files.test.ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T04.positive-harness-upload-names.log",
+      "sha256": "27fd308043f7c5ccbbaea5f0f7746e85f3bb5387ec16565d9c84e590f8230fe3"
+    },
+    {
+      "task_id": "VSF-B11-T05",
+      "name": "positive-bulk-plans",
+      "command": "go -C backend test -race -count=1 ./execution/ -run SelectedIds|VisiblePage|AllMatching|RecordsAdded|PlansAreBounded|Throttled|UnknownOutcome|Partial|WhenNothing|RetriesStop|LargeRuns",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T05.positive-bulk-plans.log",
+      "sha256": "bb104d4c6b0479c3f019dbdda2c0f8e7c1d2919bc943b039d22f91695ce86f42"
+    },
+    {
+      "task_id": "VSF-B11-T05",
+      "name": "regression-go-backend",
+      "command": "go -C backend test -race -count=1 ./...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T05.regression-go-backend.log",
+      "sha256": "e414086bb2bdcb2217fe8821a8719b086f6ff6fe0c87856d196dc0097ccd327a"
+    },
+    {
+      "task_id": "VSF-B11-T05",
+      "name": "regression-go-vet",
+      "command": "go -C backend vet -tags integration ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T05.regression-go-vet.log",
+      "sha256": "aba4eba9667601c736a4f6d552549ad37c6c4af7a79d881d682b1f637fec7107"
+    },
+    {
+      "task_id": "VSF-B11-T05",
+      "name": "regression-execution-integration",
+      "command": "env VSF_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome go -C backend test -tags integration -race -count=1 ./execution/... ./versions/... ./bridge/... ./api/... ./cli/... ./interfaces/... ./mcp/... ./storage/...",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T05.regression-execution-integration.log",
+      "sha256": "29842792a879113e7054c8612d1e0381834793d4ddd6a1facf76630c9259f8e0"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-comments",
+      "command": "node tools/checks/src/cli.ts comments",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-comments.log",
+      "sha256": "14a71f73648ad756b477cf4921ae08ac820b834ba55d01430c50318cd1b395a2"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-secret-scan",
+      "command": "node tools/checks/src/cli.ts secrets",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-secret-scan.log",
+      "sha256": "143b4f07e7b5fcf99317708aa947326d21fe08fceacf72695d22f87aa0fd70f1"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-typecheck-all",
+      "command": "pnpm typecheck",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-typecheck-all.log",
+      "sha256": "24ce23eaf3b3e2e1e82f16262c8b3712dfe1f95f5b341a4eb6b669cf98a3adbd"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-build-ts",
+      "command": "pnpm build:ts",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-build-ts.log",
+      "sha256": "fb02374fca3381140d0a43b05418d845bff937b947c01ac05f39b040cb2b5422"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-ts-unit",
+      "command": "pnpm --filter @vsf/schema --filter @vsf/observer --filter @vsf/ir --filter @vsf/fixture-apps --filter @vsf/extension run test",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-ts-unit.log",
+      "sha256": "b91eb7319284d516a1d1c9385c8cfa1ca4f29414a752577d671e13cc006c10c6"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-observation-unit",
+      "command": "pnpm --filter @vsf/observation-tests run test:unit",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-observation-unit.log",
+      "sha256": "dc3213fee31cb001b59243850b0c3b426a28b9ad2594b2431327da7632faf818"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "positive-corpus-validate",
+      "command": "node --conditions=source tests/corpus/src/cli.ts validate",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.positive-corpus-validate.log",
+      "sha256": "fbe29a412311fba1bf553cb5428f507350126073c99eed8b854ca635c957135c"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "positive-capture-reproduces",
+      "command": "node --conditions=source tests/corpus/src/cli.ts capture --partition dev,validation,heldout --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.positive-capture-reproduces.log",
+      "sha256": "5d225b1af4070f9fe2ab6267cfada4bd0daf7c3318a516b4081e212bbddd0fd9"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-observation-fixtures",
+      "command": "pnpm --filter @vsf/observation-tests run check:fixtures",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-observation-fixtures.log",
+      "sha256": "954fa7f6343b497c3bc4001a1ecad3af0546dabdc38abce1996daaea25a23a64"
+    },
+    {
+      "task_id": "VSF-B11-T06",
+      "name": "regression-frozen-goldens-after-fixture",
+      "command": "cargo test --manifest-path compiler/Cargo.toml --locked -p vsf-recognizer --test regression",
+      "exit_code": 0,
+      "result": "PASS",
+      "log": "logs/VSF-B11-T06.regression-frozen-goldens-after-fixture.log",
+      "sha256": "4780e5cc21ef651d1be32dd01c0cabbf01cd2d9352a8d677f8d6d918802249ec"
+    }
+  ]
+}

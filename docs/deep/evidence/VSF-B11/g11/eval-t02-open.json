@@ -1,0 +1,3202 @@
+{
+ "schema": "vsf-corpus-result-v1",
+ "partitions": [
+  "heldout"
+ ],
+ "pages": 17,
+ "missing": [],
+ "summary": {
+  "pages": 17,
+  "structural": {
+   "fields": {
+    "annotated": 44,
+    "found": 30,
+    "recall": 0.682,
+    "semanticExact": 1,
+    "semanticExactOrCoarser": 1
+   },
+   "actions": {
+    "annotated": 66,
+    "found": 66,
+    "recall": 1,
+    "semanticExact": 0.288,
+    "semanticExactOrCoarser": 0.288
+   },
+   "collections": {
+    "annotated": 13,
+    "found": 2,
+    "recall": 0.154,
+    "semanticExact": 1,
+    "semanticExactOrCoarser": 1
+   }
+  },
+  "falseClaims": 4,
+  "falseClaimsExcludingEffectHints": 0,
+  "wrongEffectHints": 4,
+  "softEffectHints": 1,
+  "writeLine": {
+   "comparable": 21,
+   "sameSide": 18,
+   "writeSeenAsReadOnly": 1,
+   "readSeenAsWrite": 2
+  },
+  "contradictions": {
+   "fields": 0,
+   "actions": 4,
+   "collections": 0
+  },
+  "composites": {
+   "annotated": 16,
+   "recognized": 0,
+   "recall": 0,
+   "named": 0,
+   "surplus": 0,
+   "byKind": {
+    "tabs": 3,
+    "filter_bar": 6,
+    "pagination": 2,
+    "drag_drop": 1,
+    "bulk_selection": 4
+   },
+   "recognizedByKind": {},
+   "surplusByKind": {}
+  },
+  "workflows": {
+   "annotated": 47,
+   "supported": 20,
+   "coverage": 0.426
+  },
+  "unannotatedRecognized": {
+   "fields": 47,
+   "actions": 1000,
+   "collections": 0
+  },
+  "recognizedOnPage": {
+   "fields": 77,
+   "actions": 1066,
+   "collections": 2
+  },
+  "declaredUnsupported": 1,
+  "executableOperationCorrectness": {
+   "measured": false,
+   "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+  },
+  "latency": {
+   "recognizeMsP50": 56,
+   "recognizeMsMax": 65,
+   "nodesMax": 866,
+   "rssKbMax": 11248
+  }
+ },
+ "clusters": [
+  {
+   "key": "collection-missing",
+   "instances": 11,
+   "sources": 5,
+   "families": 2,
+   "pages": 8,
+   "workflowsBlocked": 9,
+   "examples": [
+    "adminlte/profile: Activity (wanted 0 columns, 3 rows)",
+    "adminlte/file-manager: Files and folders (wanted 0 columns, 9 rows)",
+    "adminlte/kanban: Backlog (wanted 0 columns, 3 rows)",
+    "adminlte/kanban: To do (wanted 0 columns, 2 rows)"
+   ]
+  },
+  {
+   "key": "action-effect-unknown:read",
+   "instances": 17,
+   "sources": 5,
+   "families": 2,
+   "pages": 7,
+   "workflowsBlocked": 7,
+   "examples": [
+    "adminlte/kanban: Sort (wanted read, got none)",
+    "adminlte/search-results: invoice template (wanted read, got none)",
+    "adminlte/search-results: overdue invoices (wanted read, got none)",
+    "adminlte/search-results: tax rate (wanted read, got none)"
+   ]
+  },
+  {
+   "key": "field-missing:toggle",
+   "instances": 14,
+   "sources": 5,
+   "families": 2,
+   "pages": 6,
+   "workflowsBlocked": 6,
+   "examples": [
+    "adminlte/file-manager: View (wanted toggle)",
+    "adminlte/register: I agree to the terms (wanted toggle)",
+    "todomvc-react/with-items: Buy milk (wanted toggle)",
+    "todomvc-react/with-items: Walk the dog (wanted toggle)"
+   ]
+  },
+  {
+   "key": "composite:filter_bar",
+   "instances": 6,
+   "sources": 5,
+   "families": 2,
+   "pages": 6,
+   "workflowsBlocked": 5,
+   "examples": [
+    "adminlte/projects: Search projects and Filter by status (wanted filter_bar)",
+    "adminlte/search-results: Refine (wanted filter_bar)",
+    "todomvc-react/with-items: Filters (wanted filter_bar)",
+    "todomvc-lit/with-items: Filters (wanted filter_bar)"
+   ]
+  },
+  {
+   "key": "action-effect-unknown:state_change",
+   "instances": 9,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 7,
+   "examples": [
+    "adminlte/profile: Follow (wanted state_change, got none)",
+    "adminlte/profile: Like (wanted state_change, got none)",
+    "adminlte/file-manager: Upload files (wanted state_change, got none)",
+    "adminlte/login: Sign In (wanted state_change, got none)"
+   ]
+  },
+  {
+   "key": "composite:tabs",
+   "instances": 3,
+   "sources": 1,
+   "families": 1,
+   "pages": 3,
+   "workflowsBlocked": 2,
+   "examples": [
+    "adminlte/settings: Navigation 19 (wanted tabs)",
+    "adminlte/profile: Activity, Timeline, Settings (wanted tabs)",
+    "adminlte/search-results: All, Pages, Users, Files, Projects (wanted tabs)"
+   ]
+  },
+  {
+   "key": "composite:pagination",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": [
+    "adminlte/projects: Pagination (wanted pagination)",
+    "adminlte/search-results: Search results pages (wanted pagination)"
+   ]
+  },
+  {
+   "key": "action-effect-unknown:navigation",
+   "instances": 16,
+   "sources": 1,
+   "families": 1,
+   "pages": 5,
+   "workflowsBlocked": 1,
+   "examples": [
+    "adminlte/projects: 1 (wanted navigation, got none)",
+    "adminlte/file-manager: My Drive 24 (wanted navigation, got none)",
+    "adminlte/file-manager: Documents 12 (wanted navigation, got none)",
+    "adminlte/file-manager: Design 8 (wanted navigation, got none)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:read-as-commit",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "adminlte/search-results: Apply (wanted read, got commit)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:read-as-navigate",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "adminlte/projects: View (wanted read, got navigate)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:state_change-as-navigate",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "adminlte/projects: Edit (wanted state_change, got navigate)"
+   ]
+  },
+  {
+   "key": "composite:drag_drop",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": [
+    "adminlte/kanban: Kanban board (wanted drag_drop)"
+   ]
+  },
+  {
+   "key": "composite:bulk_selection",
+   "instances": 4,
+   "sources": 4,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": [
+    "todomvc-react/with-items: ❯ Toggle All Input (wanted bulk_selection)",
+    "todomvc-lit/with-items: ❯ Mark all as complete (wanted bulk_selection)",
+    "todomvc-jquery/with-items: ❯ Mark all as complete (wanted bulk_selection)",
+    "todomvc-svelte/with-items: ❯ Mark all as complete (wanted bulk_selection)"
+   ]
+  },
+  {
+   "key": "action-effect-unknown:unknown",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "adminlte/projects: More (wanted unknown, got navigate)"
+   ]
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-create",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": [
+    "adminlte/login: Register a new membership (wanted navigation, got create)"
+   ]
+  }
+ ],
+ "perSource": {
+  "adminlte": {
+   "pages": 9,
+   "structural": {
+    "fields": {
+     "annotated": 20,
+     "found": 18,
+     "recall": 0.9,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 54,
+     "found": 54,
+     "recall": 1,
+     "semanticExact": 0.352,
+     "semanticExactOrCoarser": 0.352
+    },
+    "collections": {
+     "annotated": 9,
+     "found": 2,
+     "recall": 0.222,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    }
+   },
+   "falseClaims": 4,
+   "falseClaimsExcludingEffectHints": 0,
+   "wrongEffectHints": 4,
+   "softEffectHints": 1,
+   "writeLine": {
+    "comparable": 21,
+    "sameSide": 18,
+    "writeSeenAsReadOnly": 1,
+    "readSeenAsWrite": 2
+   },
+   "contradictions": {
+    "fields": 0,
+    "actions": 4,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 8,
+    "recognized": 0,
+    "recall": 0,
+    "named": 0,
+    "surplus": 0,
+    "byKind": {
+     "tabs": 3,
+     "filter_bar": 2,
+     "pagination": 2,
+     "drag_drop": 1
+    },
+    "recognizedByKind": {},
+    "surplusByKind": {}
+   },
+   "workflows": {
+    "annotated": 27,
+    "supported": 8,
+    "coverage": 0.296
+   },
+   "unannotatedRecognized": {
+    "fields": 29,
+    "actions": 963,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 47,
+    "actions": 1017,
+    "collections": 2
+   },
+   "declaredUnsupported": 1,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 56,
+    "recognizeMsMax": 58.8,
+    "nodesMax": 866,
+    "rssKbMax": 11248
+   }
+  },
+  "todomvc-react": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "falseClaimsExcludingEffectHints": 0,
+   "wrongEffectHints": 0,
+   "softEffectHints": 0,
+   "writeLine": {
+    "comparable": 0,
+    "sameSide": 0,
+    "writeSeenAsReadOnly": 0,
+    "readSeenAsWrite": 0
+   },
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "named": 0,
+    "surplus": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    },
+    "recognizedByKind": {},
+    "surplusByKind": {}
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 4,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 7,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 62.2,
+    "recognizeMsMax": 62.2,
+    "nodesMax": 42,
+    "rssKbMax": 11248
+   }
+  },
+  "todomvc-lit": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "falseClaimsExcludingEffectHints": 0,
+   "wrongEffectHints": 0,
+   "softEffectHints": 0,
+   "writeLine": {
+    "comparable": 0,
+    "sameSide": 0,
+    "writeSeenAsReadOnly": 0,
+    "readSeenAsWrite": 0
+   },
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "named": 0,
+    "surplus": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    },
+    "recognizedByKind": {},
+    "surplusByKind": {}
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 3,
+    "actions": 7,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 6,
+    "actions": 10,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 65,
+    "recognizeMsMax": 65,
+    "nodesMax": 55,
+    "rssKbMax": 11136
+   }
+  },
+  "todomvc-jquery": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "falseClaimsExcludingEffectHints": 0,
+   "wrongEffectHints": 0,
+   "softEffectHints": 0,
+   "writeLine": {
+    "comparable": 0,
+    "sameSide": 0,
+    "writeSeenAsReadOnly": 0,
+    "readSeenAsWrite": 0
+   },
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "named": 0,
+    "surplus": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    },
+    "recognizedByKind": {},
+    "surplusByKind": {}
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 7,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 10,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 53.6,
+    "recognizeMsMax": 53.6,
+    "nodesMax": 48,
+    "rssKbMax": 11220
+   }
+  },
+  "todomvc-svelte": {
+   "pages": 2,
+   "structural": {
+    "fields": {
+     "annotated": 6,
+     "found": 3,
+     "recall": 0.5,
+     "semanticExact": 1,
+     "semanticExactOrCoarser": 1
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "recall": 1,
+     "semanticExact": 0,
+     "semanticExactOrCoarser": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 0,
+   "falseClaimsExcludingEffectHints": 0,
+   "wrongEffectHints": 0,
+   "softEffectHints": 0,
+   "writeLine": {
+    "comparable": 0,
+    "sameSide": 0,
+    "writeSeenAsReadOnly": 0,
+    "readSeenAsWrite": 0
+   },
+   "contradictions": {
+    "fields": 0,
+    "actions": 0,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 2,
+    "recognized": 0,
+    "recall": 0,
+    "named": 0,
+    "surplus": 0,
+    "byKind": {
+     "bulk_selection": 1,
+     "filter_bar": 1
+    },
+    "recognizedByKind": {},
+    "surplusByKind": {}
+   },
+   "workflows": {
+    "annotated": 5,
+    "supported": 3,
+    "coverage": 0.6
+   },
+   "unannotatedRecognized": {
+    "fields": 4,
+    "actions": 10,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 7,
+    "actions": 13,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 57.9,
+    "recognizeMsMax": 57.9,
+    "nodesMax": 43,
+    "rssKbMax": 11096
+   }
+  }
+ },
+ "rows": [
+  {
+   "source": "adminlte",
+   "page": "settings",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Full name",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Email",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Time zone",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Language",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Save changes",
+      "want": "state_change",
+      "got": "commit",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Navigation 19",
+      "want": "tabs",
+      "outcome": "missing",
+      "cluster": "composite:tabs"
+     }
+    ],
+    "source": "adminlte",
+    "page": "settings",
+    "fields": {
+     "annotated": 4,
+     "found": 4,
+     "exact": 4,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "tabs": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 1,
+     "sameSide": 1,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 1,
+     "unsupported": [
+      "Switch settings section"
+     ],
+     "blockedBy": {
+      "composite:tabs": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 13,
+     "actions": 136,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 9,
+     "actions": 135,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 705,
+   "recognizeMs": 54.6,
+   "rssKb": 11084,
+   "captureMs": 1031,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "adminlte",
+   "page": "profile",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "Follow",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Like",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Comment",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Activity",
+      "want": "0 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Activity, Timeline, Settings",
+      "want": "tabs",
+      "outcome": "missing",
+      "cluster": "composite:tabs"
+     }
+    ],
+    "source": "adminlte",
+    "page": "profile",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 2,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "tabs": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 0,
+     "unsupported": [
+      "Follow user",
+      "Browse profile sections",
+      "React to activity"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:state_change": 2,
+      "composite:tabs": 1,
+      "collection-missing": 2
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 7,
+     "actions": 134,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 7,
+     "actions": 131,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 692,
+   "recognizeMs": 58,
+   "rssKb": 11136,
+   "captureMs": 1003,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "adminlte",
+   "page": "projects",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Search projects",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Filter by status",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "New project",
+      "want": "state_change",
+      "got": "create",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "View",
+      "want": "read",
+      "got": "navigate",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:read-as-navigate"
+     },
+     {
+      "k": "action",
+      "name": "Edit",
+      "want": "state_change",
+      "got": "navigate",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:state_change-as-navigate"
+     },
+     {
+      "k": "action",
+      "name": "More",
+      "want": "unknown",
+      "got": "navigate",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:unknown"
+     },
+     {
+      "k": "action",
+      "name": "Previous",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "1",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Next",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "All projects",
+      "want": "8 columns, 6 rows",
+      "got": "8 columns, 6 rows",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "composite",
+      "name": "Search projects and Filter by status",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     },
+     {
+      "k": "composite",
+      "name": "Pagination",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     }
+    ],
+    "source": "adminlte",
+    "page": "projects",
+    "fields": {
+     "annotated": 2,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 7,
+     "found": 7,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 2,
+     "contradict": 2
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "filter_bar": 1,
+      "pagination": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 5,
+     "sameSide": 4,
+     "writeSeenAsReadOnly": 1,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 2,
+     "unsupported": [
+      "Open or edit a project",
+      "Page through projects"
+     ],
+     "blockedBy": {
+      "action-effect-wrong:read-as-navigate": 1,
+      "action-effect-wrong:state_change-as-navigate": 1,
+      "composite:pagination": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 151,
+     "collections": 1
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 144,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 2,
+    "wrongEffectHints": 2
+   },
+   "nodes": 794,
+   "recognizeMs": 56,
+   "rssKb": 11100,
+   "captureMs": 1033,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "adminlte",
+   "page": "file-manager",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Search files",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "View",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "action",
+      "name": "Upload files",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "New folder",
+      "want": "state_change",
+      "got": "create",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "My Drive 24",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Documents 12",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Design 8",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "v2.4 candidates 4",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Archive 28",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Invoices 41",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Shared with me 9",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Starred 6",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Recent",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Trash 3",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "collection",
+      "name": "Files and folders",
+      "want": "0 columns, 9 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     }
+    ],
+    "source": "adminlte",
+    "page": "file-manager",
+    "fields": {
+     "annotated": 2,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 12,
+     "found": 12,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 11,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 1,
+     "sameSide": 1,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 1,
+     "unsupported": [
+      "Upload files",
+      "Browse folders and files"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:state_change": 1,
+      "action-effect-unknown:navigation": 1,
+      "collection-missing": 1,
+      "field-missing:toggle": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 5,
+     "actions": 173,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 4,
+     "actions": 161,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 866,
+   "recognizeMs": 51.2,
+   "rssKb": 11124,
+   "captureMs": 1061,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "adminlte",
+   "page": "kanban",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "Filter",
+      "want": "read",
+      "got": "query",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Sort",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Add lane",
+      "want": "state_change",
+      "got": "create",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Lane actions",
+      "want": "unknown",
+      "got": "none",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Add card",
+      "want": "state_change",
+      "got": "create",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Backlog",
+      "want": "0 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "collection",
+      "name": "To do",
+      "want": "0 columns, 2 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "collection",
+      "name": "In progress",
+      "want": "0 columns, 2 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "collection",
+      "name": "Done",
+      "want": "0 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "Kanban board",
+      "want": "drag_drop",
+      "outcome": "missing",
+      "cluster": "composite:drag_drop"
+     }
+    ],
+    "source": "adminlte",
+    "page": "kanban",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 4,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 4,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 1,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "drag_drop": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 3,
+     "sameSide": 3,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 2,
+     "unsupported": [
+      "Move a card between lanes",
+      "Filter and sort cards"
+     ],
+     "blockedBy": {
+      "composite:drag_drop": 1,
+      "collection-missing": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 134,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 129,
+     "collections": 0
+    },
+    "unsupportedDeclared": 1,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 689,
+   "recognizeMs": 56.6,
+   "rssKb": 11136,
+   "captureMs": 876,
+   "blocked": 0,
+   "mirrored": 9
+  },
+  {
+   "source": "adminlte",
+   "page": "search-results",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Search",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Date range",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Owner",
+      "want": "choice",
+      "got": "choice",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Archived items",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Trashed items",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Search",
+      "want": "read",
+      "got": "query",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Apply",
+      "want": "read",
+      "got": "commit",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:read-as-commit"
+     },
+     {
+      "k": "action",
+      "name": "Reset",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Clear filters",
+      "want": "destructive",
+      "got": "destroy",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Previous",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "1",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "2",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "3",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Next",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "invoice template",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "overdue invoices",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "invoice pdf export",
+      "want": "read",
+      "got": "export",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "tax rate",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "collection",
+      "name": "Search results",
+      "want": "0 columns, 5 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "All, Pages, Users, Files, Projects",
+      "want": "tabs",
+      "outcome": "missing",
+      "cluster": "composite:tabs"
+     },
+     {
+      "k": "composite",
+      "name": "Search results pages",
+      "want": "pagination",
+      "outcome": "missing",
+      "cluster": "composite:pagination"
+     },
+     {
+      "k": "composite",
+      "name": "Refine",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     }
+    ],
+    "source": "adminlte",
+    "page": "search-results",
+    "fields": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 5,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 13,
+     "found": 13,
+     "exact": 6,
+     "coarser": 0,
+     "unclassified": 6,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 3,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "tabs": 1,
+      "pagination": 1,
+      "filter_bar": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 7,
+     "sameSide": 6,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 1
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 0,
+     "unsupported": [
+      "Search for content",
+      "Refine results",
+      "Page through results",
+      "Run a related search"
+     ],
+     "blockedBy": {
+      "collection-missing": 1,
+      "action-effect-wrong:read-as-commit": 1,
+      "composite:filter_bar": 1,
+      "composite:pagination": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 7,
+     "actions": 146,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 133,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1,
+    "wrongEffectHints": 1
+   },
+   "nodes": 715,
+   "recognizeMs": 46,
+   "rssKb": 11084,
+   "captureMs": 1026,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "adminlte",
+   "page": "invoice",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "action",
+      "name": "Print",
+      "want": "read",
+      "got": "export",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "PDF",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Send invoice",
+      "want": "state_change",
+      "got": "commit",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "collection",
+      "name": "Invoice line items",
+      "want": "4 columns, 3 rows",
+      "got": "4 columns, 3 rows",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "adminlte",
+    "page": "invoice",
+    "fields": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 1,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 1,
+     "rowsExact": 1,
+     "rowsChecked": 1
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 2,
+     "sameSide": 2,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 3,
+     "supported": 2,
+     "unsupported": [
+      "Download invoice as PDF"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 127,
+     "collections": 1
+    },
+    "unannotated": {
+     "fields": 2,
+     "actions": 124,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 644,
+   "recognizeMs": 46.3,
+   "rssKb": 11248,
+   "captureMs": 1043,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "adminlte",
+   "page": "login",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Email",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Password",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Remember Me",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "Sign In",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Sign in using Facebook",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Sign in using Google",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "I forgot my password",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     },
+     {
+      "k": "action",
+      "name": "Register a new membership",
+      "want": "navigation",
+      "got": "create",
+      "outcome": "contradict",
+      "cluster": "action-effect-wrong:navigation-as-create"
+     }
+    ],
+    "source": "adminlte",
+    "page": "login",
+    "fields": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 4,
+     "contradict": 1
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 1,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 1
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Sign in with email and password",
+      "Sign in with a social account"
+     ],
+     "blockedBy": {
+      "action-effect-unknown:state_change": 2
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 3,
+     "actions": 8,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 3,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 1,
+    "wrongEffectHints": 1
+   },
+   "nodes": 43,
+   "recognizeMs": 58.8,
+   "rssKb": 11248,
+   "captureMs": 772,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "adminlte",
+   "page": "register",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "Full Name",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Email",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Password",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "I agree to the terms",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "action",
+      "name": "Register",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Sign up using Facebook",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "Sign up using Google",
+      "want": "state_change",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:state_change"
+     },
+     {
+      "k": "action",
+      "name": "terms",
+      "want": "navigation",
+      "got": "navigate",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "action",
+      "name": "I already have a membership",
+      "want": "navigation",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:navigation"
+     }
+    ],
+    "source": "adminlte",
+    "page": "register",
+    "fields": {
+     "annotated": 4,
+     "found": 3,
+     "exact": 3,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 5,
+     "found": 5,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 4,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 1,
+     "sameSide": 1,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 2,
+     "supported": 0,
+     "unsupported": [
+      "Register a new account",
+      "Sign up with a social account"
+     ],
+     "blockedBy": {
+      "field-missing:toggle": 1,
+      "action-effect-unknown:state_change": 2
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 4,
+     "actions": 8,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 3,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 47,
+   "recognizeMs": 56.4,
+   "rssKb": 11136,
+   "captureMs": 742,
+   "blocked": 0,
+   "mirrored": 8
+  },
+  {
+   "source": "todomvc-react",
+   "page": "empty",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "New Todo Input",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "todomvc-react",
+    "page": "empty",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 5,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 5,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 27,
+   "recognizeMs": 62.2,
+   "rssKb": 11248,
+   "captureMs": 720,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "todomvc-react",
+   "page": "with-items",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "New Todo Input",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "❯ Toggle All Input",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Buy milk",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Walk the dog",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Read a book",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "action",
+      "name": "All",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Active",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Completed",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "collection",
+      "name": "Todo list",
+      "want": "0 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "❯ Toggle All Input",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     },
+     {
+      "k": "composite",
+      "name": "Filters",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     }
+    ],
+    "source": "todomvc-react",
+    "page": "with-items",
+    "fields": {
+     "annotated": 5,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "bulk_selection": 1,
+      "filter_bar": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 2,
+     "unsupported": [
+      "Complete a todo",
+      "Filter todos by status"
+     ],
+     "blockedBy": {
+      "collection-missing": 1,
+      "field-missing:toggle": 1,
+      "composite:filter_bar": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 5,
+     "actions": 8,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 5,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 42,
+   "recognizeMs": 52,
+   "rssKb": 11104,
+   "captureMs": 2373,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "empty",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "What needs to be done?",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "todomvc-lit",
+    "page": "empty",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 1,
+     "actions": 2,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 0,
+     "actions": 2,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 23,
+   "recognizeMs": 60.3,
+   "rssKb": 11088,
+   "captureMs": 719,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "with-items",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "What needs to be done?",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "❯ Mark all as complete",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Buy milk",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Walk the dog",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Read a book",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "action",
+      "name": "All",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Active",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Completed",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "collection",
+      "name": "Todo list",
+      "want": "0 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "❯ Mark all as complete",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     },
+     {
+      "k": "composite",
+      "name": "Filters",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     }
+    ],
+    "source": "todomvc-lit",
+    "page": "with-items",
+    "fields": {
+     "annotated": 5,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "bulk_selection": 1,
+      "filter_bar": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 2,
+     "unsupported": [
+      "Complete a todo",
+      "Filter todos by status"
+     ],
+     "blockedBy": {
+      "collection-missing": 1,
+      "field-missing:toggle": 1,
+      "composite:filter_bar": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 5,
+     "actions": 8,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 5,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 55,
+   "recognizeMs": 65,
+   "rssKb": 11136,
+   "captureMs": 2322,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "empty",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "What needs to be done?",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "todomvc-jquery",
+    "page": "empty",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 5,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 5,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 30,
+   "recognizeMs": 43.1,
+   "rssKb": 11112,
+   "captureMs": 748,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "with-items",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "What needs to be done?",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "❯ Mark all as complete",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Buy milk",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Walk the dog",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Read a book",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "action",
+      "name": "All",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Active",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Completed",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "collection",
+      "name": "Todo list",
+      "want": "0 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "❯ Mark all as complete",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     },
+     {
+      "k": "composite",
+      "name": "Filters",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     }
+    ],
+    "source": "todomvc-jquery",
+    "page": "with-items",
+    "fields": {
+     "annotated": 5,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "bulk_selection": 1,
+      "filter_bar": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 2,
+     "unsupported": [
+      "Complete a todo",
+      "Filter todos by status"
+     ],
+     "blockedBy": {
+      "collection-missing": 1,
+      "field-missing:toggle": 1,
+      "composite:filter_bar": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 8,
+     "actions": 8,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 6,
+     "actions": 5,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 48,
+   "recognizeMs": 53.6,
+   "rssKb": 11220,
+   "captureMs": 2303,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "empty",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "What needs to be done?",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     }
+    ],
+    "source": "todomvc-svelte",
+    "page": "empty",
+    "fields": {
+     "annotated": 1,
+     "found": 1,
+     "exact": 1,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 0,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 0,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {},
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 1,
+     "supported": 1,
+     "unsupported": [],
+     "blockedBy": {}
+    },
+    "recognizedOnPage": {
+     "fields": 2,
+     "actions": 5,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 1,
+     "actions": 5,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 28,
+   "recognizeMs": 57.9,
+   "rssKb": 11096,
+   "captureMs": 763,
+   "blocked": 0,
+   "mirrored": 0
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "with-items",
+   "partition": "heldout",
+   "result": {
+    "items": [
+     {
+      "k": "field",
+      "name": "What needs to be done?",
+      "want": "text",
+      "got": "text",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "❯ Mark all as complete",
+      "want": "toggle",
+      "got": "toggle",
+      "outcome": "exact",
+      "cluster": null
+     },
+     {
+      "k": "field",
+      "name": "Buy milk",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Walk the dog",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "field",
+      "name": "Read a book",
+      "want": "toggle",
+      "outcome": "missing",
+      "cluster": "field-missing:toggle"
+     },
+     {
+      "k": "action",
+      "name": "All",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Active",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "action",
+      "name": "Completed",
+      "want": "read",
+      "got": "none",
+      "outcome": "unclassified",
+      "cluster": "action-effect-unknown:read"
+     },
+     {
+      "k": "collection",
+      "name": "Todo list",
+      "want": "0 columns, 3 rows",
+      "outcome": "missing",
+      "cluster": "collection-missing"
+     },
+     {
+      "k": "composite",
+      "name": "❯ Mark all as complete",
+      "want": "bulk_selection",
+      "outcome": "missing",
+      "cluster": "composite:bulk_selection"
+     },
+     {
+      "k": "composite",
+      "name": "Filters",
+      "want": "filter_bar",
+      "outcome": "missing",
+      "cluster": "composite:filter_bar"
+     }
+    ],
+    "source": "todomvc-svelte",
+    "page": "with-items",
+    "fields": {
+     "annotated": 5,
+     "found": 2,
+     "exact": 2,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0
+    },
+    "actions": {
+     "annotated": 3,
+     "found": 3,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 3,
+     "contradict": 0
+    },
+    "collections": {
+     "annotated": 1,
+     "found": 0,
+     "exact": 0,
+     "coarser": 0,
+     "unclassified": 0,
+     "contradict": 0,
+     "columnsExact": 0,
+     "rowsExact": 0,
+     "rowsChecked": 0
+    },
+    "composites": {
+     "annotated": 2,
+     "recognized": 0,
+     "named": 0,
+     "surplus": 0,
+     "byKind": {
+      "bulk_selection": 1,
+      "filter_bar": 1
+     },
+     "recognizedByKind": {},
+     "surplusByKind": {}
+    },
+    "writeLine": {
+     "comparable": 0,
+     "sameSide": 0,
+     "writeSeenAsReadOnly": 0,
+     "readSeenAsWrite": 0
+    },
+    "workflows": {
+     "annotated": 4,
+     "supported": 2,
+     "unsupported": [
+      "Complete a todo",
+      "Filter todos by status"
+     ],
+     "blockedBy": {
+      "collection-missing": 1,
+      "field-missing:toggle": 1,
+      "composite:filter_bar": 1,
+      "action-effect-unknown:read": 1
+     }
+    },
+    "recognizedOnPage": {
+     "fields": 5,
+     "actions": 8,
+     "collections": 0
+    },
+    "unannotated": {
+     "fields": 3,
+     "actions": 5,
+     "collections": 0
+    },
+    "unsupportedDeclared": 0,
+    "falseClaims": 0,
+    "wrongEffectHints": 0
+   },
+   "nodes": 43,
+   "recognizeMs": 39.7,
+   "rssKb": 11088,
+   "captureMs": 2305,
+   "blocked": 0,
+   "mirrored": 0
+  }
+ ]
+}

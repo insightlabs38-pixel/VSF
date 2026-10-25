@@ -1,0 +1,494 @@
+# DataTables examples - multi-col-sort
+Upstream: https://github.com/DataTables/DataTables
+Framework: jquery
+Ground truth basis: DataTables example descriptions and reference documentation; Chromium accessibility tree
+Page title: DataTables example - Multi-column ordering
+State: as loaded
+What people do here (from the manifest):
+- sort a table by several columns
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- heading "DataTables example Multi-column ordering" [level=1]
+- paragraph: "DataTables allows ordering by multiple columns at the same time, which can be activated in a number of different ways:"
+- list:
+  - listitem: User shift click on a column (added the clicked column as a secondary, tertiary etc ordering column).
+  - listitem:
+    - text: On a per-column basis (i.e. order by a specific column and then a secondary column if the data in the first column is identical), through the
+    - link "columns.orderData Option":
+      - /url: //datatables.net/reference/option/columns.orderData
+      - code: columns.orderData Option
+    - text: option.
+  - listitem:
+    - text: Using the
+    - link "columns.orderData Option":
+      - /url: //datatables.net/reference/option/columns.orderData
+      - code: columns.orderData Option
+    - text: option to specify a multiple column order by default (for example
+    - code: "[ 0, 1 ]"
+    - text: ).
+  - listitem:
+    - text: Through the
+    - link "order() API":
+      - /url: //datatables.net/reference/api/order()
+      - code: order() API
+    - text: API method.
+- paragraph:
+  - text: Note that, the ability for the user to shift click to order multiple columns can be disabled through the
+  - link "orderMulti Option":
+    - /url: //datatables.net/reference/option/orderMulti
+    - code: orderMulti Option
+  - text: option.
+- paragraph: The example below shows the first column having a secondary order applied to the second column in the table, vice-versa for the second column being tied directly to the first and the salary column to the first name column.
+- text: Show
+- combobox "Show entries":
+  - option "10" [selected]
+  - option "25"
+  - option "50"
+  - option "100"
+- text: "entries Search:"
+- searchbox "Search:"
+- grid:
+  - rowgroup:
+    - 'row "First name: activate to sort column descending Last name: activate to sort column ascending Position: activate to sort column ascending Office: activate to sort column ascending Salary: activate to sort column ascending"':
+      - 'gridcell "First name: activate to sort column descending"': First name
+      - 'gridcell "Last name: activate to sort column ascending"': Last name
+      - 'gridcell "Position: activate to sort column ascending"': Position
+      - 'gridcell "Office: activate to sort column ascending"': Office
+      - 'gridcell "Salary: activate to sort column ascending"': Salary
+  - rowgroup:
+    - row "Airi Satou Accountant Tokyo $162,700":
+      - gridcell "Airi"
+      - gridcell "Satou"
+      - gridcell "Accountant"
+      - gridcell "Tokyo"
+      - gridcell "$162,700"
+    - row "Angelica Ramos Chief Executive Officer (CEO) London $1,200,000":
+      - gridcell "Angelica"
+      - gridcell "Ramos"
+      - gridcell "Chief Executive Officer (CEO)"
+      - gridcell "London"
+      - gridcell "$1,200,000"
+    - row "Ashton Cox Junior Technical Author San Francisco $86,000":
+      - gridcell "Ashton"
+      - gridcell "Cox"
+      - gridcell "Junior Technical Author"
+      - gridcell "San Francisco"
+      - gridcell "$86,000"
+    - row "Bradley Greer Software Engineer London $132,000":
+      - gridcell "Bradley"
+      - gridcell "Greer"
+      - gridcell "Software Engineer"
+      - gridcell "London"
+      - gridcell "$132,000"
+    - row "Brenden Wagner Software Engineer San Francisco $206,850":
+      - gridcell "Brenden"
+      - gridcell "Wagner"
+      - gridcell "Software Engineer"
+      - gridcell "San Francisco"
+      - gridcell "$206,850"
+    - row "Brielle Williamson Integration Specialist New York $372,000":
+      - gridcell "Brielle"
+      - gridcell "Williamson"
+      - gridcell "Integration Specialist"
+      - gridcell "New York"
+      - gridcell "$372,000"
+    - row "Bruno Nash Software Engineer London $163,500":
+      - gridcell "Bruno"
+      - gridcell "Nash"
+      - gridcell "Software Engineer"
+      - gridcell "London"
+      - gridcell "$163,500"
+    - row "Caesar Vance Pre-Sales Support New York $106,450":
+      - gridcell "Caesar"
+      - gridcell "Vance"
+      - gridcell "Pre-Sales Support"
+      - gridcell "New York"
+      - gridcell "$106,450"
+    - row "Cara Stevens Sales Assistant New York $145,600":
+      - gridcell "Cara"
+      - gridcell "Stevens"
+      - gridcell "Sales Assistant"
+      - gridcell "New York"
+      - gridcell "$145,600"
+    - row "Cedric Kelly Senior Javascript Developer Edinburgh $433,060":
+      - gridcell "Cedric"
+      - gridcell "Kelly"
+      - gridcell "Senior Javascript Developer"
+      - gridcell "Edinburgh"
+      - gridcell "$433,060"
+- status: Showing 1 to 10 of 57 entries
+- text: Previous 1 2 3 4 5 6 Next
+- list:
+  - listitem: Javascript
+  - listitem: HTML
+  - listitem: CSS
+- paragraph: "The Javascript shown below is used to initialise the table shown in this example:"
+- link "Javascript":
+  - /url: "#"
+- table:
+  - rowgroup:
+    - 'row "1 2 3 4 5 6 7 8 9 10 11 12 13 14 $(document).ready(function() { $(''#example'').DataTable( { columnDefs: [ { targets: [ 0 ], orderData: [ 0, 1 ] }, { targets: [ 1 ], orderData: [ 1, 0 ] }, { targets: [ 4 ], orderData: [ 4, 0 ] } ] } ); } );"':
+      - cell "1 2 3 4 5 6 7 8 9 10 11 12 13 14"
+      - 'cell "$(document).ready(function() { $(''#example'').DataTable( { columnDefs: [ { targets: [ 0 ], orderData: [ 0, 1 ] }, { targets: [ 1 ], orderData: [ 1, 0 ] }, { targets: [ 4 ], orderData: [ 4, 0 ] } ] } ); } );"':
+        - code: $(document).ready(
+        - code: function
+        - code: "() {"
+        - code
+        - code: $(
+        - code: "'#example'"
+        - code: ").DataTable( {"
+        - code
+        - code: "columnDefs: [ {"
+        - code
+        - code: "targets: [ 0 ],"
+        - code
+        - code: "orderData: [ 0, 1 ]"
+        - code
+        - code: "}, {"
+        - code
+        - code: "targets: [ 1 ],"
+        - code
+        - code: "orderData: [ 1, 0 ]"
+        - code
+        - code: "}, {"
+        - code
+        - code: "targets: [ 4 ],"
+        - code
+        - code: "orderData: [ 4, 0 ]"
+        - code
+        - code: "} ]"
+        - code
+        - code: "} );"
+        - code: "} );"
+- paragraph: "In addition to the above code, the following Javascript library files are loaded for use in this example:"
+- list:
+  - listitem:
+    - link "https://code.jquery.com/jquery-3.5.1.js":
+      - /url: https://code.jquery.com/jquery-3.5.1.js
+  - listitem:
+    - link "../../media/js/jquery.dataTables.js":
+      - /url: ../../media/js/jquery.dataTables.js
+- heading "Other examples" [level=2]
+- heading "Basic initialisation" [level=3]:
+  - link "Basic initialisation":
+    - /url: ./index.html
+- list:
+  - listitem:
+    - link "Zero configuration":
+      - /url: ./zero_configuration.html
+  - listitem:
+    - link "Feature enable / disable":
+      - /url: ./filter_only.html
+  - listitem:
+    - link "Default ordering (sorting)":
+      - /url: ./table_sorting.html
+  - listitem:
+    - link "Multi-column ordering":
+      - /url: ./multi_col_sort.html
+  - listitem:
+    - link "Multiple tables":
+      - /url: ./multiple_tables.html
+  - listitem:
+    - link "Hidden columns":
+      - /url: ./hidden_columns.html
+  - listitem:
+    - link "Complex headers (rowspan and colspan)":
+      - /url: ./complex_header.html
+  - listitem:
+    - link "DOM positioning":
+      - /url: ./dom.html
+  - listitem:
+    - link "Flexible table width":
+      - /url: ./flexible_width.html
+  - listitem:
+    - link "State saving":
+      - /url: ./state_save.html
+  - listitem:
+    - link "Data rendering":
+      - /url: ./data_rendering.html
+  - listitem:
+    - link "Alternative pagination":
+      - /url: ./alt_pagination.html
+  - listitem:
+    - link "Scroll - vertical":
+      - /url: ./scroll_y.html
+  - listitem:
+    - link "Scroll - vertical, dynamic height":
+      - /url: ./scroll_y_dynamic.html
+  - listitem:
+    - link "Scroll - horizontal":
+      - /url: ./scroll_x.html
+  - listitem:
+    - link "Scroll - horizontal and vertical":
+      - /url: ./scroll_xy.html
+  - listitem:
+    - link "Language - Comma decimal place":
+      - /url: ./comma-decimal.html
+  - listitem:
+    - link "Language options":
+      - /url: ./language.html
+- heading "Advanced initialisation" [level=3]:
+  - link "Advanced initialisation":
+    - /url: ../advanced_init/index.html
+- list:
+  - listitem:
+    - link "DOM / jQuery events":
+      - /url: ../advanced_init/events_live.html
+  - listitem:
+    - link "DataTables events":
+      - /url: ../advanced_init/dt_events.html
+  - listitem:
+    - link "Column rendering":
+      - /url: ../advanced_init/column_render.html
+  - listitem:
+    - link "Page length options":
+      - /url: ../advanced_init/length_menu.html
+  - listitem:
+    - link "Multiple table control elements":
+      - /url: ../advanced_init/dom_multiple_elements.html
+  - listitem:
+    - link "Complex headers with column visibility":
+      - /url: ../advanced_init/complex_header.html
+  - listitem:
+    - link "Read HTML to data objects":
+      - /url: ../advanced_init/object_dom_read.html
+  - listitem:
+    - link "HTML5 data-* attributes - cell data":
+      - /url: ../advanced_init/html5-data-attributes.html
+  - listitem:
+    - link "HTML5 data-* attributes - table options":
+      - /url: ../advanced_init/html5-data-options.html
+  - listitem:
+    - link "Language file":
+      - /url: ../advanced_init/language_file.html
+  - listitem:
+    - link "Setting defaults":
+      - /url: ../advanced_init/defaults.html
+  - listitem:
+    - link "Row created callback":
+      - /url: ../advanced_init/row_callback.html
+  - listitem:
+    - link "Row grouping":
+      - /url: ../advanced_init/row_grouping.html
+  - listitem:
+    - link "Footer callback":
+      - /url: ../advanced_init/footer_callback.html
+  - listitem:
+    - link "Custom toolbar elements":
+      - /url: ../advanced_init/dom_toolbar.html
+  - listitem:
+    - link "Order direction sequence control":
+      - /url: ../advanced_init/sort_direction_control.html
+- heading "Styling" [level=3]:
+  - link "Styling":
+    - /url: ../styling/index.html
+- list:
+  - listitem:
+    - link "Base style":
+      - /url: ../styling/display.html
+  - listitem:
+    - link "Base style - no styling classes":
+      - /url: ../styling/no-classes.html
+  - listitem:
+    - link "Base style - cell borders":
+      - /url: ../styling/cell-border.html
+  - listitem:
+    - link "Base style - compact":
+      - /url: ../styling/compact.html
+  - listitem:
+    - link "Base style - hover":
+      - /url: ../styling/hover.html
+  - listitem:
+    - link "Base style - order-column":
+      - /url: ../styling/order-column.html
+  - listitem:
+    - link "Base style - row borders":
+      - /url: ../styling/row-border.html
+  - listitem:
+    - link "Base style - stripe":
+      - /url: ../styling/stripe.html
+  - listitem:
+    - link "Bootstrap 3":
+      - /url: ../styling/bootstrap.html
+  - listitem:
+    - link "Bootstrap 4":
+      - /url: ../styling/bootstrap4.html
+  - listitem:
+    - link "Foundation":
+      - /url: ../styling/foundation.html
+  - listitem:
+    - link "Semantic UI":
+      - /url: ../styling/semanticui.html
+  - listitem:
+    - link "jQuery UI ThemeRoller":
+      - /url: ../styling/jqueryUI.html
+  - listitem:
+    - link "Material Design (Tech. preview)":
+      - /url: ../styling/material.html
+  - listitem:
+    - link "UIKit 3 (Tech. preview)":
+      - /url: ../styling/uikit.html
+- heading "Data sources" [level=3]:
+  - link "Data sources":
+    - /url: ../data_sources/index.html
+- list:
+  - listitem:
+    - link "HTML (DOM) sourced data":
+      - /url: ../data_sources/dom.html
+  - listitem:
+    - link "Ajax sourced data":
+      - /url: ../data_sources/ajax.html
+  - listitem:
+    - link "Javascript sourced data":
+      - /url: ../data_sources/js_array.html
+  - listitem:
+    - link "Server-side processing":
+      - /url: ../data_sources/server_side.html
+- heading "API" [level=3]:
+  - link "API":
+    - /url: ../api/index.html
+- list:
+  - listitem:
+    - link "Add rows":
+      - /url: ../api/add_row.html
+  - listitem:
+    - link "Individual column searching (text inputs)":
+      - /url: ../api/multi_filter.html
+  - listitem:
+    - link "Individual column searching (select inputs)":
+      - /url: ../api/multi_filter_select.html
+  - listitem:
+    - link "Highlighting rows and columns":
+      - /url: ../api/highlight.html
+  - listitem:
+    - link "Child rows (show extra / detailed information)":
+      - /url: ../api/row_details.html
+  - listitem:
+    - link "Row selection (multiple rows)":
+      - /url: ../api/select_row.html
+  - listitem:
+    - link "Row selection and deletion (single row)":
+      - /url: ../api/select_single_row.html
+  - listitem:
+    - link "Form inputs":
+      - /url: ../api/form.html
+  - listitem:
+    - link "Index column":
+      - /url: ../api/counter_columns.html
+  - listitem:
+    - link "Show / hide columns dynamically":
+      - /url: ../api/show_hide.html
+  - listitem:
+    - link "Using API in callbacks":
+      - /url: ../api/api_in_init.html
+  - listitem:
+    - link "Scrolling and Bootstrap tabs":
+      - /url: ../api/tabs_and_scrolling.html
+  - listitem:
+    - link "Search API (regular expressions)":
+      - /url: ../api/regex.html
+- heading "Ajax" [level=3]:
+  - link "Ajax":
+    - /url: ../ajax/index.html
+- list:
+  - listitem:
+    - link "Ajax data source (arrays)":
+      - /url: ../ajax/simple.html
+  - listitem:
+    - link "Ajax data source (objects)":
+      - /url: ../ajax/objects.html
+  - listitem:
+    - link "Nested object data (objects)":
+      - /url: ../ajax/deep.html
+  - listitem:
+    - link "Nested object data (arrays)":
+      - /url: ../ajax/objects_subarrays.html
+  - listitem:
+    - link "Orthogonal data":
+      - /url: ../ajax/orthogonal-data.html
+  - listitem:
+    - link "Generated content for a column":
+      - /url: ../ajax/null_data_source.html
+  - listitem:
+    - link "Custom data source property":
+      - /url: ../ajax/custom_data_property.html
+  - listitem:
+    - link "Flat array data source":
+      - /url: ../ajax/custom_data_flat.html
+  - listitem:
+    - link "Deferred rendering for speed":
+      - /url: ../ajax/defer_render.html
+- heading "Server-side" [level=3]:
+  - link "Server-side":
+    - /url: ../server_side/index.html
+- list:
+  - listitem:
+    - link "Server-side processing":
+      - /url: ../server_side/simple.html
+  - listitem:
+    - link "Custom HTTP variables":
+      - /url: ../server_side/custom_vars.html
+  - listitem:
+    - link "POST data":
+      - /url: ../server_side/post.html
+  - listitem:
+    - link "Automatic addition of row ID attributes":
+      - /url: ../server_side/ids.html
+  - listitem:
+    - link "Object data source":
+      - /url: ../server_side/object_data.html
+  - listitem:
+    - link "Row details":
+      - /url: ../server_side/row_details.html
+  - listitem:
+    - link "Row selection":
+      - /url: ../server_side/select_rows.html
+  - listitem:
+    - link "JSONP data source for remote domains":
+      - /url: ../server_side/jsonp.html
+  - listitem:
+    - link "Deferred loading of data":
+      - /url: ../server_side/defer_loading.html
+  - listitem:
+    - link "Pipelining data to reduce Ajax calls for paging":
+      - /url: ../server_side/pipeline.html
+- heading "Plug-ins" [level=3]:
+  - link "Plug-ins":
+    - /url: ../plug-ins/index.html
+- list:
+  - listitem:
+    - link "API plug-in methods":
+      - /url: ../plug-ins/api.html
+  - listitem:
+    - link "Ordering plug-ins (with type detection)":
+      - /url: ../plug-ins/sorting_auto.html
+  - listitem:
+    - link "Ordering plug-ins (no type detection)":
+      - /url: ../plug-ins/sorting_manual.html
+  - listitem:
+    - link "Custom filtering - range search":
+      - /url: ../plug-ins/range_filtering.html
+  - listitem:
+    - link "Live DOM ordering":
+      - /url: ../plug-ins/dom_sort.html
+- paragraph:
+  - text: Please refer to the
+  - link "DataTables documentation":
+    - /url: http://www.datatables.net
+  - text: for full information about its API properties and methods. Additionally, there are a wide range of
+  - link "extensions":
+    - /url: http://www.datatables.net/extensions
+  - text: and
+  - link "plug-ins":
+    - /url: http://www.datatables.net/plug-ins
+  - text: which extend the capabilities of DataTables.
+- paragraph:
+  - text: DataTables designed and created by
+  - link "SpryMedia Ltd":
+    - /url: http://www.sprymedia.co.uk
+  - text: © 2007-2020 DataTables is licensed under the
+  - link "MIT license":
+    - /url: http://www.datatables.net/mit
+  - text: .
+```

@@ -1,0 +1,306 @@
+{
+ "schema": "vsf-corpus-result-v1",
+ "partitions": [
+  "heldout"
+ ],
+ "pages": 6,
+ "missing": [],
+ "summary": {
+  "pages": 6,
+  "structural": {
+   "fields": {
+    "annotated": 28,
+    "found": 27,
+    "recall": 0.964,
+    "semanticExact": 0.926,
+    "semanticExactOrCoarser": 0.926
+   },
+   "actions": {
+    "annotated": 89,
+    "found": 87,
+    "recall": 0.978,
+    "semanticExact": 0.253,
+    "semanticExactOrCoarser": 0.253
+   },
+   "collections": {
+    "annotated": 4,
+    "found": 0,
+    "recall": 0,
+    "semanticExact": null,
+    "semanticExactOrCoarser": null
+   }
+  },
+  "falseClaims": 6,
+  "falseClaimsExcludingEffectHints": 2,
+  "wrongEffectHints": 4,
+  "softEffectHints": 0,
+  "writeLine": {
+   "comparable": 26,
+   "sameSide": 22,
+   "writeSeenAsReadOnly": 0,
+   "readSeenAsWrite": 4
+  },
+  "contradictions": {
+   "fields": 2,
+   "actions": 4,
+   "collections": 0
+  },
+  "composites": {
+   "annotated": 16,
+   "recognized": 0,
+   "recall": 0,
+   "named": 0,
+   "surplus": 0,
+   "byKind": {
+    "filter_bar": 4,
+    "sortable_columns": 4,
+    "bulk_selection": 4,
+    "dialog": 2,
+    "file_input": 1,
+    "tabs": 1
+   },
+   "recognizedByKind": {},
+   "surplusByKind": {}
+  },
+  "workflows": {
+   "annotated": 14,
+   "supported": 2,
+   "coverage": 0.143
+  },
+  "unannotatedRecognized": {
+   "fields": 9,
+   "actions": 72,
+   "collections": 0
+  },
+  "recognizedOnPage": {
+   "fields": 39,
+   "actions": 159,
+   "collections": 0
+  },
+  "declaredUnsupported": 0,
+  "executableOperationCorrectness": {
+   "measured": false,
+   "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+  },
+  "latency": {
+   "recognizeMsP50": 41.8,
+   "recognizeMsMax": 46.4,
+   "nodesMax": 206,
+   "rssKbMax": 11216
+  }
+ },
+ "clusters": [
+  {
+   "key": "collection-missing",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 6,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:state_change",
+   "instances": 9,
+   "sources": 1,
+   "families": 1,
+   "pages": 5,
+   "workflowsBlocked": 4,
+   "examples": []
+  },
+  {
+   "key": "composite:dialog",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 2,
+   "workflowsBlocked": 2,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:read",
+   "instances": 32,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-unknown:navigation",
+   "instances": 20,
+   "sources": 1,
+   "families": 1,
+   "pages": 5,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-missing:state_change",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "field-kind:range-as-text",
+   "instances": 2,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "composite:tabs",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 1,
+   "examples": []
+  },
+  {
+   "key": "action-effect-wrong:navigation-as-destroy",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:bulk_selection",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:filter_bar",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:sortable_columns",
+   "instances": 4,
+   "sources": 1,
+   "families": 1,
+   "pages": 4,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "composite:file_input",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  },
+  {
+   "key": "field-missing:toggle",
+   "instances": 1,
+   "sources": 1,
+   "families": 1,
+   "pages": 1,
+   "workflowsBlocked": 0,
+   "examples": []
+  }
+ ],
+ "perSource": {
+  "filebrowser": {
+   "pages": 6,
+   "structural": {
+    "fields": {
+     "annotated": 28,
+     "found": 27,
+     "recall": 0.964,
+     "semanticExact": 0.926,
+     "semanticExactOrCoarser": 0.926
+    },
+    "actions": {
+     "annotated": 89,
+     "found": 87,
+     "recall": 0.978,
+     "semanticExact": 0.253,
+     "semanticExactOrCoarser": 0.253
+    },
+    "collections": {
+     "annotated": 4,
+     "found": 0,
+     "recall": 0,
+     "semanticExact": null,
+     "semanticExactOrCoarser": null
+    }
+   },
+   "falseClaims": 6,
+   "falseClaimsExcludingEffectHints": 2,
+   "wrongEffectHints": 4,
+   "softEffectHints": 0,
+   "writeLine": {
+    "comparable": 26,
+    "sameSide": 22,
+    "writeSeenAsReadOnly": 0,
+    "readSeenAsWrite": 4
+   },
+   "contradictions": {
+    "fields": 2,
+    "actions": 4,
+    "collections": 0
+   },
+   "composites": {
+    "annotated": 16,
+    "recognized": 0,
+    "recall": 0,
+    "named": 0,
+    "surplus": 0,
+    "byKind": {
+     "filter_bar": 4,
+     "sortable_columns": 4,
+     "bulk_selection": 4,
+     "dialog": 2,
+     "file_input": 1,
+     "tabs": 1
+    },
+    "recognizedByKind": {},
+    "surplusByKind": {}
+   },
+   "workflows": {
+    "annotated": 14,
+    "supported": 2,
+    "coverage": 0.143
+   },
+   "unannotatedRecognized": {
+    "fields": 9,
+    "actions": 72,
+    "collections": 0
+   },
+   "recognizedOnPage": {
+    "fields": 39,
+    "actions": 159,
+    "collections": 0
+   },
+   "declaredUnsupported": 0,
+   "executableOperationCorrectness": {
+    "measured": false,
+    "reason": "needs derived contracts executed against disposable source state; measured in B11-T05/T06 for supported workflows"
+   },
+   "latency": {
+    "recognizeMsP50": 41.8,
+    "recognizeMsMax": 46.4,
+    "nodesMax": 206,
+    "rssKbMax": 11216
+   }
+  }
+ }
+}

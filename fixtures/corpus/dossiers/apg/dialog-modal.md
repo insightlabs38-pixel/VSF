@@ -1,0 +1,229 @@
+# W3C ARIA Authoring Practices Guide examples - dialog-modal
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Modal Dialog Example
+State: modal dialog opened
+What people do here (from the manifest):
+- open a modal dialog to add a delivery address
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/126
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../dialog-modal-pattern.html
+- main:
+  - heading "Modal Dialog Example" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: Following is an example implementation of the
+    - link "Dialog (Modal) Pattern":
+      - /url: ../dialog-modal-pattern.html
+    - text: . The below Add Delivery Address button opens a modal dialog that contains two buttons that open other dialogs. The accessibility features section explains the rationale for initial focus placement and use of
+    - code: aria-describedby
+    - text: in each dialog.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Alert Dialog Example":
+        - /url: ../../alertdialog/examples/alertdialog.html
+      - text: ": A confirmation prompt that demonstrates an alert dialog."
+    - listitem:
+      - link "Date Picker Dialog example":
+        - /url: datepicker-dialog.html
+      - text: ": Demonstrates a dialog containing a calendar grid for choosing a date."
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - button "Add Delivery Address"
+  - dialog "Add Delivery Address":
+    - heading "Add Delivery Address" [level=1]
+    - text: "Street:"
+    - textbox "Street:"
+    - text: "City:"
+    - textbox "City:"
+    - text: "State:"
+    - textbox "State:"
+    - text: "Zip:"
+    - textbox "Zip:"
+    - text: "Special instructions:"
+    - textbox "Special instructions:"
+    - text: For example, gate code or other information to help the driver find you
+    - button "Verify Address"
+    - button "Add"
+    - button "Cancel"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem: To make the content easier to read when displayed on small screens, the dialog fills 100% of the screen. Completely covering the background window also hides background movement that occurs on some mobile devices when scrolling content inside the dialog.
+    - listitem:
+      - text: Focus and accessible descriptions are set based on the content of each dialog.
+      - list:
+        - listitem:
+          - text: "Add Delivery Address dialog (id=dialog1):"
+          - list:
+            - listitem: Initial focus is set on the first input, which is the first focusable element.
+            - listitem:
+              - text: The dialog does not need
+              - code: aria-describedby
+              - text: since there is no static text that describes it.
+            - listitem: When the dialog closes as a result of the Cancel action, the user's point of regard is maintained by returning focus to the Add Delivery Address button.
+            - listitem: When the dialog closes as a result of the Add action and the Address Added dialog replaces the Add Delivery Address dialog, the Add Delivery Address dialog passes a reference to the Add Delivery Address button to the Address Added dialog so that it can maintain the user's point of regard when it closes.
+        - listitem:
+          - text: "Verification Result dialog (id=dialog2):"
+          - list:
+            - listitem: Initial focus is set on the first paragraph because the first interactive element is at the bottom, which is out of view due to the length of the text.
+            - listitem:
+              - text: To support screen reader user awareness of the dialog text, the dialog text is wrapped in a
+              - code: div
+              - text: that is referenced by
+              - code: aria-describedby
+              - text: .
+            - listitem: When the dialog closes, to maintain the user's point of regard, focus returns to the Verify Address button.
+            - listitem: The text of this dialog describes design considerations for initial focus and accessible descriptions in dialogs with large amounts of text.
+        - listitem:
+          - text: "Address Added dialog (id=dialog3):"
+          - list:
+            - listitem: Initial focus is set on the OK button, which is the last focusable element. This is for efficiency since most users will simply dismiss the dialog as soon as they have read the message. Users can press Tab to focus on the My Profile link.
+            - listitem:
+              - text: The element containing the dialog message is referenced by
+              - code: aria-describedby
+              - text: to hint to screen readers that it should be announced when the dialog opens.
+            - listitem: When the dialog closes, the user's point of regard is maintained by setting focus on the Add Delivery Address button.
+        - listitem:
+          - text: "End of the Road! dialog (id=dialog4):"
+          - list:
+            - listitem: This dialog has only one focusable element, which receives focus when the dialog opens.
+            - listitem:
+              - text: Like dialog3,
+              - code: aria-describedby
+              - text: is used to facilitate message announcement for screen reader users.
+            - listitem: Like all other dialogs in this example except for the Address Added confirmation dialog, when it closes, the user's point of regard is maintained by returning focus to the element that triggered display of the dialog.
+  - heading "Keyboard Support" [level=2]
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Tab Moves focus to next focusable element inside the dialog. When focus is on the last focusable element in the dialog, moves focus to the first focusable element in the dialog.":
+        - cell "Tab"
+        - cell "Moves focus to next focusable element inside the dialog. When focus is on the last focusable element in the dialog, moves focus to the first focusable element in the dialog.":
+          - list:
+            - listitem: Moves focus to next focusable element inside the dialog.
+            - listitem: When focus is on the last focusable element in the dialog, moves focus to the first focusable element in the dialog.
+      - row "Shift + Tab Moves focus to previous focusable element inside the dialog. When focus is on the first focusable element in the dialog, moves focus to the last focusable element in the dialog.":
+        - cell "Shift + Tab"
+        - cell "Moves focus to previous focusable element inside the dialog. When focus is on the first focusable element in the dialog, moves focus to the last focusable element in the dialog.":
+          - list:
+            - listitem: Moves focus to previous focusable element inside the dialog.
+            - listitem: When focus is on the first focusable element in the dialog, moves focus to the last focusable element in the dialog.
+      - row "Escape Closes the dialog.":
+        - cell "Escape"
+        - cell "Closes the dialog."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "dialog div Identifies the element that serves as the dialog container.":
+        - rowheader "dialog":
+          - code: dialog
+        - cell
+        - cell "div":
+          - code: div
+        - cell "Identifies the element that serves as the dialog container."
+      - row "aria-labelledby=IDREF div Gives the dialog an accessible name by referring to the element that provides the dialog title.":
+        - cell
+        - rowheader "aria-labelledby=IDREF":
+          - code: aria-labelledby=IDREF
+        - cell "div":
+          - code: div
+        - cell "Gives the dialog an accessible name by referring to the element that provides the dialog title."
+      - row "aria-describedby=IDREF div Gives the dialog an accessible description by referring to the dialog content that describes the primary message or purpose of the dialog. Used in three of the four dialogs included in the example. See the above accessibility features section for an explanation.":
+        - cell
+        - rowheader "aria-describedby=IDREF":
+          - code: aria-describedby=IDREF
+        - cell "div":
+          - code: div
+        - cell "Gives the dialog an accessible description by referring to the dialog content that describes the primary message or purpose of the dialog. Used in three of the four dialogs included in the example. See the above accessibility features section for an explanation.":
+          - list:
+            - listitem: Gives the dialog an accessible description by referring to the dialog content that describes the primary message or purpose of the dialog.
+            - listitem: Used in three of the four dialogs included in the example. See the above accessibility features section for an explanation.
+      - row "aria-modal=true div Tells assistive technologies that the windows underneath the current dialog are not available for interaction (inert).":
+        - cell
+        - rowheader "aria-modal=true":
+          - code: aria-modal=true
+        - cell "div":
+          - code: div
+        - cell "Tells assistive technologies that the windows underneath the current dialog are not available for interaction (inert)."
+  - heading "Notes on aria-modal and aria-hidden" [level=3]:
+    - text: Notes on
+    - code: aria-modal
+    - text: and
+    - code: aria-hidden
+  - list:
+    - listitem:
+      - text: The
+      - code: aria-modal
+      - text: property was introduced in ARIA 1.1. As a new property, screen reader users may experience varying degrees of support for it.
+    - listitem:
+      - text: Applying the
+      - code: aria-modal
+      - text: property to the
+      - code: dialog
+      - text: element replaces the technique of using
+      - code: aria-hidden
+      - text: on the background for informing assistive technologies that content outside a dialog is inert.
+    - listitem:
+      - text: In legacy dialog implementations where
+      - code: aria-hidden
+      - text: "is used to make content outside a dialog inert for assistive technology users, it is important that:"
+      - list:
+        - listitem:
+          - code: aria-hidden
+          - text: is set to
+          - code: "true"
+          - text: on each element containing a portion of the inert layer.
+        - listitem:
+          - text: The dialog element is not a descendant of any element that has
+          - code: aria-hidden
+          - text: set to
+          - code: "true"
+          - text: .
+  - heading "Assistive Technology Support" [level=2]
+  - paragraph:
+    - link "Learn how to interpret and use assistive technology support data":
+      - /url: ../../../about/at-support-tables/at-support-tables.html
+  - iframe
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "dialog.css":
+        - /url: css/dialog.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "dialog.js":
+        - /url: js/dialog.js
+      - text: ","
+      - link "utils.js":
+        - /url: ../../../shared/js/utils.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: "<button type=\"button\" onclick=\"openDialog('dialog1', this)\"> Add Delivery Address </button> <div id=\"dialog_layer\" class=\"dialogs\"> <div role=\"dialog\" id=\"dialog1\" aria-labelledby=\"dialog1_label\" aria-modal=\"true\" class=\"hidden\"> <h1 id=\"dialog1_label\" class=\"dialog_label\"> Add Delivery Address </h1> <div class=\"dialog_form\"> <div class=\"dialog_form_item\"> <label> <span class=\"label_text\"> Street: </span> <input type=\"text\" class=\"wide_input\"> </label> </div> <div class=\"dialog_form_item\"> <label> <span class=\"label_text\"> City: </span> <input type=\"text\" class=\"city_input\"> </label> </div> <div class=\"dialog_form_item\"> <label> <span class=\"label_text\"> State: </span> <input type=\"text\" class=\"state_input\"> </label> </div> <div class=\"dialog_form_item\"> <label> <span class=\"label_text\"> Zip: </span> <input type=\"text\" class=\"zip_input\"> </label> </div> <div class=\"dialog_form_item\"> <label for=\"special_instructions\"> <span class=\"label_text\"> Special instructions: </span> </label> <input id=\"special_instructions\" type=\"text\" aria-describedby=\"special_instructions_desc\" class=\"wide_input\"> <div class=\"label_info\" id=\"special_instructions_desc\"> For example, gate code or other information to help the driver find you </div> </div> </div> <div class=\"dialog_form_actions\"> <button type=\"button\" onclick=\"openDialog('dialog2', this, 'dialog2_para1')\"> Verify Address </button> <button type=\"button\" onclick=\"replaceDialog('dialog3', undefined, 'dialog3_close_btn')\"> Add </button> <button type=\"button\" onclick=\"closeDialog(this)\"> Cancel </button> </div> </div> <!-- Second modal to open on top of the first modal --> <div id=\"dialog2\" role=\"dialog\" aria-labelledby=\"dialog2_label\" aria-describedby=\"dialog2_desc\" aria-modal=\"true\" class=\"hidden\"> <h1 id=\"dialog2_label\" class=\"dialog_label\"> Verification Result </h1> <div id=\"dialog2_desc\" class=\"dialog_desc\"> <p tabindex=\"-1\" id=\"dialog2_para1\"> This is just a demonstration. If it were a real application, it would provide a message telling whether the entered address is valid. </p> <p> For demonstration purposes, this dialog has a lot of text. It demonstrates a scenario where: </p> <ul> <li> The first interactive element, the help link, is at the bottom of the dialog. </li> <li> If focus is placed on the first interactive element when the dialog opens, the validation message may not be visible. </li> <li> If the validation message is visible and the focus is on the help link, then the focus may not be visible. </li> <li> When the dialog opens, it is important that both: <ul> <li> The beginning of the text is visible so users do not have to scroll back to start reading. </li> <li> The keyboard focus always remains visible. </li> </ul> </li> </ul> <p> There are several ways to resolve this issue: </p> <ul> <li> Place an interactive element at the top of the dialog, e.g., a button or link. </li> <li> Make a static element focusable, e.g., the dialog title or the first block of text. </li> </ul> <p> Please <em> DO NOT </em> make the element with role dialog focusable! </p> <ul> <li> The larger a focusable element is, the more difficult it is to visually identify the location of focus, especially for users with a narrow field of view. </li> <li> The dialog has a visual border, so creating a clear visual indicator of focus when the entire dialog has focus is not very feasible. </li> <li> Screen readers read the label and content of focusable elements. The dialog contains its label and a lot of content! If a dialog like this one has focus, the actual focus is difficult to comprehend. </li> </ul> <p> In this dialog, the first paragraph has <code> tabindex= <q> -1 </q> </code> . The first paragraph is also contained inside the element that provides the dialog description, i.e., the element that is referenced by <code> aria-describedby </code> . With some screen readers, this may have one negative but relatively insignificant side effect when the dialog opens -- the first paragraph may be announced twice. Nonetheless, making the first paragraph focusable and setting the initial focus on it is the most broadly accessible option. </p> </div> <div class=\"dialog_form_actions\"> <a href=\"#\" onclick=\"openDialog('dialog4', this)\"> link to help </a> <button type=\"button\" onclick=\"openDialog('dialog4', this)\"> accepting an alternative form </button> <button type=\"button\" onclick=\"closeDialog(this)\"> Close </button> </div> </div> <!-- Dialog that replaces dialog 1. --> <div id=\"dialog3\" role=\"dialog\" aria-labelledby=\"dialog3_label\" aria-describedby=\"dialog3_desc\" aria-modal=\"true\" class=\"hidden\"> <h1 id=\"dialog3_label\" class=\"dialog_label\"> Address Added </h1> <p id=\"dialog3_desc\" class=\"dialog_desc\"> The address you provided has been added to your list of delivery addresses. It is ready for immediate use. If you wish to remove it, you can do so from <a href=\"#\" onclick=\"openDialog('dialog4', this)\"> your profile. </a> </p> <div class=\"dialog_form_actions\"> <button type=\"button\" id=\"dialog3_close_btn\" onclick=\"closeDialog(this)\"> OK </button> </div> </div> <div id=\"dialog4\" role=\"dialog\" aria-labelledby=\"dialog4_label\" aria-describedby=\"dialog4_desc\" class=\"hidden\" aria-modal=\"true\"> <h1 id=\"dialog4_label\" class=\"dialog_label\"> End of the Road! </h1> <p id=\"dialog4_desc\" class=\"dialog_desc\"> You activated a fake link or button that goes nowhere! The link or button is present for demonstration purposes only. </p> <div class=\"dialog_form_actions\"> <button type=\"button\" id=\"dialog4_close_btn\" onclick=\"closeDialog(this)\"> Close </button> </div> </div> </div>"
+  - separator "End of HTML Source Code"
+```

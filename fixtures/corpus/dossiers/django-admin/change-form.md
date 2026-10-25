@@ -1,0 +1,159 @@
+# Django administration - change-form
+Upstream: https://github.com/django/django
+Framework: django-templates
+Ground truth basis: Django administration documentation (ModelAdmin options, actions, filters, pagination, change forms); Chromium accessibility tree
+Page title: Product 01 | Change product | Django site admin
+State: signed in, product change form
+What people do here (from the manifest):
+- edit a product and its variants
+- attach a manual file
+- pick a release date
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- link "Skip to main content":
+  - /url: "#content-start"
+- banner:
+  - link "Django administration":
+    - /url: /admin/
+  - text: Welcome,
+  - strong: admin
+  - text: .
+  - link "View site":
+    - /url: /
+  - text: /
+  - link "Change password":
+    - /url: /admin/password_change/
+  - text: /
+  - button "Log out"
+  - 'button "Toggle theme (current theme: auto)"'
+- navigation "Breadcrumbs":
+  - link "Home":
+    - /url: /admin/
+  - text: ›
+  - link "Shop":
+    - /url: /admin/shop/
+  - text: ›
+  - link "Products":
+    - /url: /admin/shop/product/
+  - text: › Product 01
+- button "Toggle navigation": «
+- navigation "Sidebar":
+  - searchbox "Filter navigation items"
+  - table "Authentication and Authorization":
+    - caption:
+      - link "Authentication and Authorization":
+        - /url: /admin/auth/
+    - rowgroup:
+      - row "Model name Add link Change or view list link":
+        - columnheader "Model name"
+        - columnheader "Add link"
+        - columnheader "Change or view list link"
+    - rowgroup:
+      - row "Groups Add":
+        - rowheader "Groups":
+          - link "Groups":
+            - /url: /admin/auth/group/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/auth/group/add/
+      - row "Users Add":
+        - rowheader "Users":
+          - link "Users":
+            - /url: /admin/auth/user/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/auth/user/add/
+  - table "Shop":
+    - caption:
+      - link "Shop":
+        - /url: /admin/shop/
+    - rowgroup:
+      - row "Model name Add link Change or view list link":
+        - columnheader "Model name"
+        - columnheader "Add link"
+        - columnheader "Change or view list link"
+    - rowgroup:
+      - row "Categories Add":
+        - rowheader "Categories":
+          - link "Categories":
+            - /url: /admin/shop/category/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/shop/category/add/
+      - row "Products Add":
+        - rowheader "Products":
+          - link "Products":
+            - /url: /admin/shop/product/
+        - cell "Add":
+          - link "Add":
+            - /url: /admin/shop/product/add/
+- main:
+  - heading "Change product" [level=1]
+  - heading "Product 01" [level=2]
+  - list:
+    - listitem:
+      - link "History":
+        - /url: /admin/shop/product/1/history/
+  - group:
+    - text: "Name:"
+    - textbox "Name:": Product 01
+    - text: "Sku:"
+    - textbox "Sku:": SKU-0001
+    - text: "Category:"
+    - combobox "Cables":
+      - textbox "Cables"
+    - link "Change selected category":
+      - /url: /admin/shop/category/2/change/?_to_field=id&_popup=1
+    - link "Add another category":
+      - /url: /admin/shop/category/add/?_to_field=id&_popup=1
+    - link "Delete selected category":
+      - /url: /admin/shop/category/2/delete/?_to_field=id&_popup=1
+    - link "View selected category":
+      - /url: /admin/shop/category/2/change/?_to_field=id
+    - text: "Price:"
+    - spinbutton "Price:": "12.75"
+    - checkbox "In stock" [checked]
+    - text: "In stock Status:"
+    - combobox "Status:":
+      - option "Draft"
+      - option "Live" [selected]
+      - option "Retired"
+    - text: "Released:"
+    - paragraph:
+      - textbox "Released:": 2024-01-10
+      - link "Today":
+        - /url: "#"
+      - text: "|"
+      - link "Choose a Date":
+        - /url: "#"
+    - text: "Manual:"
+    - button "Manual:"
+  - group "Variants":
+    - heading "Variants" [level=2]
+    - table:
+      - rowgroup:
+        - row "Label Extra price Delete?":
+          - cell
+          - cell "Label"
+          - cell "Extra price"
+          - cell "Delete?"
+      - rowgroup:
+        - row "0 Remove":
+          - cell
+          - cell:
+            - textbox
+          - cell "0":
+            - spinbutton: "0"
+          - cell "Remove":
+            - button "Remove"
+        - row "Add another Variant":
+          - cell "Add another Variant":
+            - button "Add another Variant"
+  - button "Save"
+  - button "Save and add another"
+  - button "Save and continue editing"
+  - link "Delete":
+    - /url: /admin/shop/product/1/delete/
+- contentinfo
+```

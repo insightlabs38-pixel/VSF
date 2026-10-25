@@ -1,0 +1,54 @@
+$ pnpm --filter @vsf/observation-tests run test:unit
+
+> @vsf/observation-tests@0.0.0 test:unit /home/user/VSF/tests/observation
+> node --conditions=source --test --test-reporter=spec test/*.test.ts
+
+✔ declared locales are normalised and anything the IR would reject stays unknown (3.053315ms)
+✔ viewport buckets change exactly at the stated widths (1.154593ms)
+✔ the overlay uses only what is required and marks unknowns with a symbol no value can take (0.60673ms)
+✔ flag order and awkward values cannot alias two different environments (0.303257ms)
+✔ variant inputs never invent a locale or a flag value (0.686726ms)
+✔ epochs rise strictly even when the clock stands still or runs backwards (1.231092ms)
+✔ lost storage restarts from the clock, so a reload never reuses an old epoch (0.217902ms)
+✔ unusable storage still yields increasing epochs from memory (0.78099ms)
+✔ epochs stay inside the IR ObservationEpoch range (4.396899ms)
+✔ a page that writes a huge or malformed epoch cannot push the counter out of range or stall it (0.445709ms)
+✔ a stored value a little ahead of the clock is honoured, one far ahead is ignored (0.18609ms)
+✔ every valid fixture passes the schema and the promotion rules (6.58992ms)
+✔ every invalid fixture is rejected with exactly the expected reason (2.543851ms)
+✔ the schema file and the hand-written structural checks agree on every fixture (2.160702ms)
+✔ undocumented traffic is never supported by default, whatever else is claimed (0.798999ms)
+✔ the factory refuses a request that carries credentials or crosses origins (0.378018ms)
+✔ path templating replaces identifiers and nothing else (0.298968ms)
+✔ anything that is not an evidence object is invalid, never silently accepted (0.241455ms)
+✔ recognition protocol fixtures are valid protocol evidence (8.722722ms)
+✔ a secret that straddles the clip point leaves no head behind (9.26582ms)
+✔ ordinary text is clipped on a character boundary and kept (0.636847ms)
+✔ a full batch builds the tree and the order of siblings follows the after pointers (2.53556ms)
+✔ a skipped sequence number is a gap, changes nothing and a later replay repairs it (0.717194ms)
+✔ a batch that fails midway is rolled back completely (0.494234ms)
+✔ a digest mismatch is divergence even when every op applied cleanly (0.242699ms)
+✔ deltas need their own epoch and a newer full batch replaces everything (0.353895ms)
+✔ removing a subtree drops every descendant and set rewrites only mutable fields (0.428795ms)
+✔ canonical form is independent of node ids and relations point at positions (0.629808ms)
+✔ the pack snapshot keeps structure, drops relations and masks to the pack flag bits (0.427594ms)
+✔ an accessible document whose origin is not granted becomes a policy placeholder (2.676833ms)
+✔ about:blank and srcdoc documents inherit the parent origin (0.302673ms)
+✔ a frame with no readable document is classified by what the markup says (0.672705ms)
+✔ an unreadable origin is never guessed (0.26523ms)
+✔ capability ids are valid IR capability ids and limits are stated, not implied (0.884111ms)
+✔ a complete policy for this origin and principal validates (1.337316ms)
+✔ forged, foreign, expired and malformed policies are refused with a reason (0.4752ms)
+✔ a policy can never name a data-bearing or unknown role (0.194048ms)
+✔ scope ranking: the stricter wins and public never lowers anything (0.171435ms)
+✔ credential words are matched as words, not substrings (0.571423ms)
+✔ account words mark personal data, ordinary labels stay public (1.205661ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1009.355195
+[exit 0]

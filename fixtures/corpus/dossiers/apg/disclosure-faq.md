@@ -1,0 +1,196 @@
+# W3C ARIA Authoring Practices Guide examples - disclosure-faq
+Upstream: https://github.com/w3c/aria-practices
+Framework: vanilla-js
+Ground truth basis: APG pattern documentation: roles, states, properties and keyboard interaction tables; Chromium accessibility tree
+Page title: Example Disclosure (Show/Hide) for Answers to Frequently Asked Questions
+State: as loaded
+What people do here (from the manifest):
+- expand and collapse FAQ answers
+
+## Accessibility tree (Chromium, full page)
+```yaml
+- button "Skip To Content, shortcut Alt + 0": Skip To Content(Alt+0)
+- navigation "Related Links":
+  - list:
+    - listitem:
+      - link "Related Issues":
+        - /url: https://github.com/orgs/w3c/projects/132
+    - listitem:
+      - link "Design Pattern":
+        - /url: ../disclosure-pattern.html
+- main:
+  - heading "Example Disclosure (Show/Hide) for Answers to Frequently Asked Questions" [level=1]
+  - group: The code in this example is not intended for production environments. Before using it for any purpose, read this to understand why.
+  - heading "About This Example" [level=2]
+  - paragraph:
+    - text: The following example demonstrates using the
+    - link "Disclosure Pattern":
+      - /url: ../disclosure-pattern.html
+    - text: to create a set of frequently asked questions where the answers may be independently shown or hidden.
+  - paragraph: "Similar examples include:"
+  - list:
+    - listitem:
+      - link "Example Disclosure (Show/Hide) for an Image Description":
+        - /url: disclosure-image-description.html
+    - listitem:
+      - link "Example Disclosure Navigation Menu":
+        - /url: disclosure-navigation.html
+    - listitem:
+      - link "Example Disclosure Navigation Menu with Top-Level Links":
+        - /url: disclosure-navigation-hybrid.html
+    - listitem:
+      - link "Disclosure (Show/Hide) Card":
+        - /url: disclosure-card.html
+  - heading "Example" [level=2]
+  - button "Open In CodePen"
+  - separator "Start of Example"
+  - heading "Parking FAQs" [level=3]
+  - list:
+    - listitem:
+      - button "What do I do if I have a permit for an assigned lot, but can't find a space there?"
+    - listitem:
+      - button "What do I do if I lose my permit or if my permit is stolen?"
+    - listitem:
+      - button "Is there free parking on holidays?"
+    - listitem:
+      - button "Do all parking facilities have the same enforcement rules?"
+  - separator "End of Example"
+  - heading "Accessibility Features" [level=2]
+  - list:
+    - listitem:
+      - text: The semantic structure of the FAQ list is conveyed with native
+      - code: ul
+      - text: and
+      - code: li
+      - text: elements. To ensure the list structure is communicated to assistive technologies, a
+      - code: button
+      - text: element containing the question and a
+      - code: div
+      - text: element containing answer are children of an
+      - code: li
+      - text: "element. NOTE: The"
+      - code: button
+      - text: actions are used to hide and show the
+      - code: div
+      - text: element with the answer.
+    - listitem: To help people with visual impairments identify the disclosure as interactive and make it easier to perceive that clicking either the disclosure button or its label changes the expanded state, when a pointer hovers over the button or its label, the background color changes, a border appears, and the cursor changes to a pointer.
+    - listitem: Because transparent borders are visible on some systems with operating system high contrast settings enabled, transparency cannot be used to create a visual difference between the element that is focused and other elements. Instead of using transparency, the focused element has a thicker border and less padding. When an element receives focus, its border changes from 0 to 2 pixels and padding is reduced by 2 pixels. When an element loses focus, its border changes from 2 pixels to 0 and padding is increased by 2 pixels.
+    - listitem:
+      - text: To ensure the inline SVG arrow graphics in the CSS have sufficient contrast with the background when high contrast settings invert colors, the color of the arrows are synchronized with the color of the text content. For example, the color of the arrow is set to match the foreground color of high contrast mode text by specifying the CSS
+      - code: currentcolor
+      - text: value for the
+      - code: stroke
+      - text: and
+      - code: fill
+      - text: properties of the
+      - code: polygon
+      - text: elements used to draw the arrows. If specific colors were instead used to specify the
+      - code: polygon
+      - text: "properties, those colors would remain the same in high contrast mode, which could lead to insufficient contrast between the arrows and the background or even make the arrows invisible if the color matched the high contrast mode background. Note: The SVG element needs to have the CSS"
+      - code: forced-color-adjust
+      - text: property set to
+      - code: auto
+      - text: for the
+      - code: currentcolor
+      - text: value to be updated in high contrast mode. Some browsers do not use
+      - code: auto
+      - text: for the default value.
+  - heading "Keyboard Support" [level=2]
+  - table "Keyboard Support":
+    - rowgroup:
+      - row "Key Function":
+        - cell "Key"
+        - cell "Function"
+    - rowgroup:
+      - row "Tab Moves keyboard focus to the disclosure button.":
+        - cell "Tab"
+        - cell "Moves keyboard focus to the disclosure button."
+      - row "Space or Enter Activates the disclosure button, which toggles the visibility of the answer to the question.":
+        - cell "Space or Enter"
+        - cell "Activates the disclosure button, which toggles the visibility of the answer to the question."
+  - heading "Role, Property, State, and Tabindex Attributes" [level=2]
+  - table "Role, Property, State, and Tabindex Attributes":
+    - rowgroup:
+      - row "Role Attribute Element Usage":
+        - columnheader "Role"
+        - columnheader "Attribute"
+        - columnheader "Element"
+        - columnheader "Usage"
+    - rowgroup:
+      - row "aria-controls=\"ID_REFERENCE\" button Identifies the element controlled by the disclosure button.":
+        - cell
+        - rowheader "aria-controls=\"ID_REFERENCE\"":
+          - code: aria-controls="ID_REFERENCE"
+        - cell "button":
+          - code: button
+        - cell "Identifies the element controlled by the disclosure button."
+      - row "aria-expanded=\"false\" button Indicates that the container controlled by the disclosure button is hidden. CSS attribute selectors (e.g. [aria-expanded=\"false\"]) are used to synchronize the visual states with the value of the aria-expanded attribute. The visual indicator of the show/hide state is created using CSS :before pseudo element and content property so the image is reliably rendered in high contrast mode of operating systems and browsers.":
+        - cell
+        - rowheader "aria-expanded=\"false\"":
+          - code: aria-expanded="false"
+        - cell "button":
+          - code: button
+        - cell "Indicates that the container controlled by the disclosure button is hidden. CSS attribute selectors (e.g. [aria-expanded=\"false\"]) are used to synchronize the visual states with the value of the aria-expanded attribute. The visual indicator of the show/hide state is created using CSS :before pseudo element and content property so the image is reliably rendered in high contrast mode of operating systems and browsers.":
+          - list:
+            - listitem:
+              - text: Indicates that the container controlled by the disclosure button is
+              - emphasis: hidden
+              - text: .
+            - listitem:
+              - text: CSS attribute selectors (e.g.
+              - code: "[aria-expanded=\"false\"]"
+              - text: ) are used to synchronize the visual states with the value of the
+              - code: aria-expanded
+              - text: attribute.
+            - listitem:
+              - text: The visual indicator of the show/hide state is created using CSS
+              - code: :before
+              - text: pseudo element and
+              - code: content
+              - text: property so the image is reliably rendered in high contrast mode of operating systems and browsers.
+      - row "aria-expanded=\"true\" button Indicates that the container controlled by the disclosure button is visible. CSS attribute selectors (e.g. [aria-expanded=\"true\"]) are used to synchronize the visual states with the value of the aria-expanded attribute. The visual indicator of the show/hide state is created using CSS :before pseudo element and content property so the image is reliably rendered in high contrast mode of operating systems and browsers.":
+        - cell
+        - rowheader "aria-expanded=\"true\"":
+          - code: aria-expanded="true"
+        - cell "button":
+          - code: button
+        - cell "Indicates that the container controlled by the disclosure button is visible. CSS attribute selectors (e.g. [aria-expanded=\"true\"]) are used to synchronize the visual states with the value of the aria-expanded attribute. The visual indicator of the show/hide state is created using CSS :before pseudo element and content property so the image is reliably rendered in high contrast mode of operating systems and browsers.":
+          - list:
+            - listitem:
+              - text: Indicates that the container controlled by the disclosure button is
+              - emphasis: visible
+              - text: .
+            - listitem:
+              - text: CSS attribute selectors (e.g.
+              - code: "[aria-expanded=\"true\"]"
+              - text: ) are used to synchronize the visual states with the value of the
+              - code: aria-expanded
+              - text: attribute.
+            - listitem:
+              - text: The visual indicator of the show/hide state is created using CSS
+              - code: :before
+              - text: pseudo element and
+              - code: content
+              - text: property so the image is reliably rendered in high contrast mode of operating systems and browsers.
+  - heading "Assistive Technology Support" [level=2]
+  - paragraph:
+    - link "Learn how to interpret and use assistive technology support data":
+      - /url: ../../../about/at-support-tables/at-support-tables.html
+  - iframe
+  - heading "JavaScript and CSS Source Code" [level=2]
+  - list:
+    - listitem:
+      - text: "CSS:"
+      - link "disclosure-faq.css":
+        - /url: css/disclosure-faq.css
+    - listitem:
+      - text: "JavaScript:"
+      - link "disclosureButton.js":
+        - /url: js/disclosure-button.js
+  - heading "HTML Source Code" [level=2]
+  - paragraph: To copy the following HTML code, please open it in CodePen.
+  - button "Open In CodePen"
+  - separator "Start of HTML Source Code"
+  - code: "<h3> Parking <abbr title=\"Frequently Asked Questions\"> FAQ </abbr> s </h3> <ul class=\"faq\"> <li> <button type=\"button\" aria-expanded=\"false\" aria-controls=\"faq1_desc\"> What do I do if I have a permit for an assigned lot, but can't find a space there? </button> <div id=\"faq1_desc\" class=\"desc\"> Park at the nearest available parking meter without paying the meter and call 999-999-9999 to report the problem. We will note and approve your alternate location and will investigate the cause of the shortage in your assigned facility. </div> </li> <li> <button type=\"button\" aria-expanded=\"false\" aria-controls=\"faq2_desc\"> What do I do if I lose my permit or if my permit is stolen? </button> <div id=\"faq2_desc\" class=\"desc\"> You should come to the Parking office and report the loss. There is a fee to replace your lost permit. However, if your permit was stolen, a copy of a police report needs to be submitted along with a stolen parking permit form for a fee replacement exemption. </div> </li> <li> <button type=\"button\" aria-expanded=\"false\" aria-controls=\"faq3_desc\"> Is there free parking on holidays? </button> <div id=\"faq3_desc\" class=\"desc\"> All facilities are restricted from 2:00 am - 6:00 am on all days. No exceptions are made for any holiday or recess except those officially listed as a <q> Holidays </q> in the calendar. Please note: 24-hour rental spaces, 24-hour rental lots, and disabled parking is enforced at all times. </div> </li> <li> <button type=\"button\" aria-expanded=\"false\" aria-controls=\"faq4_desc\"> Do all parking facilities have the same enforcement rules? </button> <div id=\"faq4_desc\" class=\"desc\"> Some parking facility restrictions differ from others. Be sure to take note of the signs at each lot entrance. </div> </li> </ul>"
+  - separator "End of HTML Source Code"
+```

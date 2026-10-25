@@ -1,0 +1,3 @@
+$ pnpm exec biome check .
+Checked 413 files in 412ms. No fixes applied.
+[exit 0]
