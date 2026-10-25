@@ -85,6 +85,44 @@
         }
       ],
       "negative": true
+    },
+    {
+      "name": "Add a tag",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Email addresses only",
+          "value": "ann@example.com"
+        },
+        {
+          "do": "press",
+          "key": "Enter"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "ann@example.com"
+        }
+      ]
+    },
+    {
+      "name": "Submit empty form",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Submit"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Thank you"
+        }
+      ],
+      "negative": true
     }
   ]
 }

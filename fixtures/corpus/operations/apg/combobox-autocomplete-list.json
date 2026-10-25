@@ -1,57 +1,73 @@
 {
- "schema": "vsf-corpus-operations-v1",
- "source": "apg",
- "page": "combobox-autocomplete-list",
- "dossierSha256": "ac7f7a599a0ef695e181c944b6c35e1f750646ac42f6612e748d50cbf7f84e49",
- "annotator": {
-  "kind": "separate-agent",
-  "id": "ops-annotator-apg",
-  "sawRecognizerOutput": false,
-  "basis": [
-   "page dossier",
-   "page annotation",
-   "W3C ARIA Authoring Practices pattern documentation"
-  ]
- },
- "operations": [
-  {
-   "name": "Type to filter states",
-   "effect": "state_change",
-   "steps": [
+  "schema": "vsf-corpus-operations-v1",
+  "source": "apg",
+  "page": "combobox-autocomplete-list",
+  "dossierSha256": "ac7f7a599a0ef695e181c944b6c35e1f750646ac42f6612e748d50cbf7f84e49",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-apg",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "W3C ARIA Authoring Practices pattern documentation"
+    ]
+  },
+  "operations": [
     {
-     "do": "fill",
-     "target": "State",
-     "value": "Ala"
-    }
-   ],
-   "expect": [
-    {
-     "kind": "text",
-     "contains": "Alabama"
+      "name": "Type to filter states",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "State",
+          "value": "Ala"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Alabama"
+        },
+        {
+          "kind": "text",
+          "contains": "Alaska"
+        }
+      ]
     },
     {
-     "kind": "text",
-     "contains": "Alaska"
-    }
-   ]
-  },
-  {
-   "name": "Choose a state",
-   "effect": "state_change",
-   "steps": [
+      "name": "Choose a state",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "State",
+          "value": "Alabama"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "State",
+          "value": "Alabama"
+        }
+      ]
+    },
     {
-     "do": "choose",
-     "target": "State",
-     "value": "Alabama"
+      "name": "Open state list with button",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "States"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Wyoming"
+        }
+      ]
     }
-   ],
-   "expect": [
-    {
-     "kind": "value",
-     "target": "State",
-     "value": "Alabama"
-    }
-   ]
-  }
- ]
+  ]
 }

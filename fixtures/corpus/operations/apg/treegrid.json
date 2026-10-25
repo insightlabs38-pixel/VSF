@@ -1,0 +1,38 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "apg",
+  "page": "treegrid",
+  "dossierSha256": "f897f4e6b448db6139f3b537226bac5c842166b29972ae04240a99815655078c",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-apg",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "W3C ARIA Authoring Practices pattern documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Collapse thread",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Inbox"
+        },
+        {
+          "do": "press",
+          "key": "ArrowLeft"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "I agree with you, they are the shizzle"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "apg",
+  "page": "menu-button-links",
+  "dossierSha256": "63f87fffc44110acaec2f857d128f93fb9448edd8e6e7132fc19c89b96e795b4",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-apg",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "W3C ARIA Authoring Practices pattern documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Open quick links menu",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "click",
+          "target": "WAI-ARIA Quick Links"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "W3C Home Page"
+        }
+      ]
+    }
+  ]
+}

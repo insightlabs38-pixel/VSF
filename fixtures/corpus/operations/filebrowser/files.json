@@ -63,6 +63,38 @@
           "contains": "Name your new directory"
         }
       ]
+    },
+    {
+      "name": "Switch to list view",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Switch view"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "view_list"
+        }
+      ]
+    },
+    {
+      "name": "Open a folder",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "docs"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "fragment",
+          "contains": "docs"
+        }
+      ]
     }
   ]
 }

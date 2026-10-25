@@ -4,7 +4,14 @@ import { tmpdir } from "node:os";
 import { test } from "node:test";
 import { chromium } from "@playwright/test";
 import type { Annotation } from "../../src/annotation.ts";
-import { type OperationResult, recognizedRun, referenceRun, resolve, summarizeOperations } from "../../src/execute.ts";
+import {
+  diagnosticOf,
+  type OperationResult,
+  recognizedRun,
+  referenceRun,
+  resolve,
+  summarizeOperations,
+} from "../../src/execute.ts";
 import type { Page, Source } from "../../src/manifest.ts";
 import type { RecUnit } from "../../src/match.ts";
 import type { Operation } from "../../src/operations.ts";
@@ -141,6 +148,8 @@ test("a recognizer that does nothing scores no verified operation and no false c
     operation,
     negative: false,
     reference: "confirmed",
+    origin: "frozen",
+    diagnostic: "recognition_limit",
     outcome: "fallback",
   }));
   const s = summarizeOperations(rows);
@@ -148,4 +157,26 @@ test("a recognizer that does nothing scores no verified operation and no false c
   assert.equal(s.falseExecutableClaims, 0);
   assert.equal(s.fallback, 3);
   assert.equal(summarizeOperations([{ ...rows[0], outcome: "misbound" } as OperationResult]).falseExecutableClaims, 1);
+});
+
+test("operations the reference cannot confirm stay in the denominator and never count as verified", () => {
+  const base = { source: "toy", page: "p", partition: "dev", negative: false, origin: "frozen" } as const;
+  const rows: OperationResult[] = [
+    { ...base, operation: "a", reference: "confirmed", outcome: "verified", diagnostic: "verified" },
+    { ...base, operation: "b", reference: "unconfirmed", probe: "verified", diagnostic: "reference_limit" },
+    { ...base, operation: "c", reference: "vacuous", diagnostic: "annotation_defect" },
+    { ...base, operation: "d", reference: "confirmed", outcome: "wrong_effect", diagnostic: "incorrect_effect" },
+    { ...base, operation: "e", reference: "confirmed", outcome: "fallback", diagnostic: "recognition_limit" },
+    { ...base, origin: "added", operation: "f", reference: "confirmed", outcome: "verified", diagnostic: "verified" },
+  ];
+  const s = summarizeOperations(rows);
+  assert.equal(s.intended, 5);
+  assert.equal(s.addedAfterFreeze, 1);
+  assert.equal(s.verified, 1);
+  assert.equal(s.verifiedOfIntended, 0.2);
+  assert.equal(s.verifiedOfReferenceConfirmed, 0.333);
+  assert.deepEqual(s.unconfirmedProbes, { run: 1, expectationsHeld: 1 });
+  assert.equal(s.diagnostics.annotation_defect, 1);
+  assert.equal(diagnosticOf("confirmed", "misbound"), "incorrect_effect");
+  assert.equal(diagnosticOf("unconfirmed", undefined), "reference_limit");
 });

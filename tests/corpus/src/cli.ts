@@ -57,8 +57,9 @@ async function main(): Promise<number> {
           if (existsSync(d) && sha(readFileSync(d)) !== ops.dossierSha256)
             errs.push("dossierSha256 does not match the current dossier");
           for (const e of errs) {
-            console.error(`operations ${s.id}/${p.id}: ${e}`);
-            probs.push({ id: "operations", message: e });
+            const defect = e.includes(": unknown target ");
+            console.error(`operations ${s.id}/${p.id}: ${e}${defect ? " (annotation defect, scored as such)" : ""}`);
+            if (!defect) probs.push({ id: "operations", message: e });
           }
         }
       if (probs.length === 0)
@@ -159,7 +160,12 @@ async function main(): Promise<number> {
     case "reference":
     case "operations": {
       if (cmd === "operations") guardHeldout();
-      const rows = await runOperations({ sources: pick(), only, recognized: cmd === "operations" });
+      const rows = await runOperations({
+        sources: pick(),
+        only,
+        recognized: cmd === "operations",
+        jobs: Number(flag("jobs") ?? 1),
+      });
       const aggregateOnly = args.includes("--aggregate-only");
       const out = {
         schema: "vsf-corpus-operations-result-v1",

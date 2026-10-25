@@ -1,0 +1,36 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "apg",
+  "page": "listbox-scrollable",
+  "dossierSha256": "0ddeeac26ea8d0d6f7671deab01c392a9c751d534ac6f5a0a94462560560ba7c",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-apg",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "W3C ARIA Authoring Practices pattern documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Choose plutonium",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "choose",
+          "target": "Transuranium elements:",
+          "value": "Plutonium"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Transuranium elements:",
+          "value": "Plutonium"
+        }
+      ]
+    }
+  ]
+}

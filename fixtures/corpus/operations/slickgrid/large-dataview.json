@@ -1,33 +1,66 @@
 {
- "schema": "vsf-corpus-operations-v1",
- "source": "slickgrid",
- "page": "large-dataview",
- "dossierSha256": "7ec0bd9f993eb38bf453f7f1c80517e3a5d9a70a49a1996a1759d40fdfbd7028",
- "annotator": {
-  "kind": "separate-agent",
-  "id": "ops-annotator-misc",
-  "sawRecognizerOutput": false,
-  "basis": [
-   "dossier accessibility tree",
-   "SlickGrid public documentation and examples"
+  "schema": "vsf-corpus-operations-v1",
+  "source": "slickgrid",
+  "page": "large-dataview",
+  "dossierSha256": "7ec0bd9f993eb38bf453f7f1c80517e3a5d9a70a49a1996a1759d40fdfbd7028",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-misc",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "dossier accessibility tree",
+      "SlickGrid public documentation and examples"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Open pagination options",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Show Pagination Options"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Show:"
+        }
+      ]
+    },
+    {
+      "name": "Filter by minimum percent complete",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Show tasks with % at least:",
+          "value": "50"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Showing all 500000 rows"
+        }
+      ]
+    },
+    {
+      "name": "Go to next page",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Next Page"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Showing all 500000 rows"
+        }
+      ]
+    }
   ]
- },
- "operations": [
-  {
-   "name": "Open pagination options",
-   "effect": "navigation",
-   "steps": [
-    {
-     "do": "click",
-     "target": "Show Pagination Options"
-    }
-   ],
-   "expect": [
-    {
-     "kind": "text",
-     "contains": "Show:"
-    }
-   ]
-  }
- ]
 }

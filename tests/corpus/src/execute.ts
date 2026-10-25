@@ -6,12 +6,29 @@ import { openState } from "./capture.ts";
 import { recognizeSnapshot } from "./evaluate.ts";
 import type { Page, Partition, Source } from "./manifest.ts";
 import { norm, type RecUnit } from "./match.ts";
-import type { Operation, Operations, Step } from "./operations.ts";
+import {
+  annotatedNames,
+  loadFrozen,
+  loadTriage,
+  type Operation,
+  type Operations,
+  type Step,
+  type Triage,
+  targetsOf,
+} from "./operations.ts";
 import { allHold, locateAll, referenceStep } from "./reader.ts";
 import { annotationPath, operationsPath, readIf, start } from "./run.ts";
 
-export type Reference = "confirmed" | "vacuous" | "unconfirmed";
+export type Reference = "confirmed" | "vacuous" | "unconfirmed" | "invalid";
 export type Outcome = "verified" | "fallback" | "abandoned" | "wrong_effect" | "misbound";
+/** Why an intended workflow is or is not a verified complete success; separate from the executable outcome. */
+export type Diagnostic =
+  | "verified"
+  | "recognition_limit"
+  | "incorrect_effect"
+  | "reference_limit"
+  | "annotation_defect"
+  | "information_limit";
 
 export interface OperationResult {
   source: string;
@@ -21,7 +38,15 @@ export interface OperationResult {
   negative: boolean;
   reference: Reference;
   referenceDetail?: string;
+  /** Written in the first annotation round; the denominator of every coverage figure. */
+  origin: "frozen" | "added";
+  diagnostic: Diagnostic;
+  /** Triage reason for a limitation that is not the recognizer's. */
+  triage?: string;
   outcome?: Outcome;
+  /** What the recognized path did on an operation the reference could not confirm; never counted as verified. */
+  probe?: Outcome;
+  probeDetail?: string;
   detail?: string;
   stepsDone?: number;
 }
@@ -36,6 +61,7 @@ export async function referenceRun(
   op: Operation,
 ): Promise<{ status: Reference; detail?: string }> {
   const before = await openState(browser, origin, s, p, false);
+  before.page.setDefaultTimeout(5000);
   try {
     if (!op.negative && (await allHold(before.page, a, op.expect.slice(0, 1))) && op.expect.length === 1)
       return { status: "vacuous", detail: "the expectation already holds before any step" };
@@ -130,6 +156,7 @@ export async function recognizedRun(
 ): Promise<{ outcome: Outcome; detail?: string; stepsDone: number }> {
   const opened = await openState(browser, origin, s, p, true);
   const { page, h } = opened;
+  page.setDefaultTimeout(5000);
   let done = 0;
   try {
     for (const [i, step] of op.steps.entries()) {
@@ -189,61 +216,113 @@ export interface Plan {
   only?: string[] | undefined;
   /** Run the recognized-unit path as well as the reference gate. */
   recognized: boolean;
+  /** Sources measured at the same time, each in its own server and browser contexts. */
+  jobs?: number;
 }
 
-export async function runOperations(plan: Plan): Promise<OperationResult[]> {
+export const diagnosticOf = (ref: Reference, outcome: Outcome | undefined): Diagnostic => {
+  if (ref === "vacuous" || ref === "invalid") return "annotation_defect";
+  if (ref === "unconfirmed") return "reference_limit";
+  if (outcome === "verified") return "verified";
+  if (outcome === "wrong_effect" || outcome === "misbound") return "incorrect_effect";
+  return "recognition_limit";
+};
+
+async function runSource(
+  browser: Browser,
+  s: Source,
+  plan: Plan,
+  tmp: string,
+  frozen: Set<string>,
+  triage: Triage,
+): Promise<OperationResult[]> {
   const out: OperationResult[] = [];
-  const browser = await chromium.launch({ channel: "chromium" });
-  const tmp = mkdtempSync(`${tmpdir()}/corpus-ops-`);
+  const files = s.pages.filter((p) => !plan.only || plan.only.some((o) => o === s.id || o === `${s.id}/${p.id}`));
+  const todo = files
+    .map((p) => ({
+      p,
+      ops: readIf<Operations>(operationsPath(s.id, p.id)),
+      a: readIf<Annotation>(annotationPath(s.id, p.id)),
+    }))
+    .filter((x) => x.ops && x.a);
+  if (todo.length === 0) return out;
+  const running = await start(s);
   try {
-    for (const s of plan.sources) {
-      const files = s.pages.filter((p) => !plan.only || plan.only.some((o) => o === s.id || o === `${s.id}/${p.id}`));
-      const todo = files
-        .map((p) => ({
-          p,
-          ops: readIf<Operations>(operationsPath(s.id, p.id)),
-          a: readIf<Annotation>(annotationPath(s.id, p.id)),
-        }))
-        .filter((x) => x.ops && x.a);
-      if (todo.length === 0) continue;
-      const running = await start(s);
-      try {
-        for (const { p, ops, a } of todo) {
-          for (const op of (ops as Operations).operations) {
-            const ref = await referenceRun(browser, running.origin, s, p, a as Annotation, op);
-            const row: OperationResult = {
-              source: s.id,
-              page: p.id,
-              partition: s.partition,
-              operation: op.name,
-              negative: op.negative === true,
-              reference: ref.status,
-              ...(ref.detail ? { referenceDetail: ref.detail } : {}),
-            };
-            if (plan.recognized && ref.status === "confirmed") {
-              const r = await recognizedRun(browser, running.origin, s, p, a as Annotation, op, tmp);
-              row.outcome = r.outcome;
-              row.stepsDone = r.stepsDone;
-              if (r.detail) row.detail = r.detail;
-            }
-            out.push(row);
+    for (const { p, ops, a } of todo) {
+      const names = annotatedNames(a as Annotation);
+      for (const op of (ops as Operations).operations) {
+        const key = `${s.id}/${p.id}/${op.name}`;
+        const unknown = targetsOf(op).filter((t) => !names.has(norm(t)));
+        const ref =
+          unknown.length > 0
+            ? { status: "invalid" as Reference, detail: `unknown target ${unknown[0]}` }
+            : await referenceRun(browser, running.origin, s, p, a as Annotation, op);
+        const row: OperationResult = {
+          source: s.id,
+          page: p.id,
+          partition: s.partition,
+          operation: op.name,
+          negative: op.negative === true,
+          reference: ref.status,
+          origin: frozen.has(key) ? "frozen" : "added",
+          diagnostic: "reference_limit",
+          ...(ref.detail ? { referenceDetail: ref.detail } : {}),
+        };
+        if (plan.recognized && (ref.status === "confirmed" || ref.status === "unconfirmed")) {
+          const r = await recognizedRun(browser, running.origin, s, p, a as Annotation, op, tmp);
+          if (ref.status === "confirmed") {
+            row.outcome = r.outcome;
+            row.stepsDone = r.stepsDone;
+            if (r.detail) row.detail = r.detail;
+          } else {
+            row.probe = r.outcome;
+            if (r.detail) row.probeDetail = r.detail;
           }
         }
-      } finally {
-        await running.stop();
+        row.diagnostic = diagnosticOf(ref.status, row.outcome);
+        const t = triage[key];
+        if (t && row.diagnostic !== "verified" && row.diagnostic !== "incorrect_effect") {
+          row.diagnostic = t.class;
+          row.triage = t.reason;
+        }
+        out.push(row);
+        if (process.env.VSF_CORPUS_PROGRESS)
+          console.error(`${key}: ${row.reference} ${row.outcome ?? row.probe ?? ""}`);
       }
     }
   } finally {
-    await browser.close();
+    await running.stop();
   }
   return out;
 }
 
+export async function runOperations(plan: Plan): Promise<OperationResult[]> {
+  const browser = await chromium.launch({ channel: "chromium" });
+  const tmp = mkdtempSync(`${tmpdir()}/corpus-ops-`);
+  const frozen = loadFrozen();
+  const triage = loadTriage();
+  const queue = [...plan.sources];
+  const results = new Map<string, OperationResult[]>();
+  try {
+    await Promise.all(
+      Array.from({ length: Math.max(1, Math.min(plan.jobs ?? 1, queue.length)) }, async () => {
+        for (let s = queue.shift(); s; s = queue.shift())
+          results.set(s.id, await runSource(browser, s, plan, tmp, frozen, triage));
+      }),
+    );
+  } finally {
+    await browser.close();
+  }
+  return plan.sources.flatMap((s) => results.get(s.id) ?? []);
+}
+
 export interface OperationSummary {
-  annotated: number;
+  /** Frozen intended workflows: the denominator of every coverage figure. */
+  intended: number;
+  addedAfterFreeze: number;
   referenceConfirmed: number;
-  droppedVacuous: number;
-  droppedUnconfirmed: number;
+  referenceUnconfirmed: number;
+  annotationDefects: number;
   executed: number;
   verified: number;
   fallback: number;
@@ -251,20 +330,38 @@ export interface OperationSummary {
   wrongEffect: number;
   misbound: number;
   falseExecutableClaims: number;
-  verifiedShare: number | null;
+  /** verified / intended: the figure that stands for workflow coverage. */
+  verifiedOfIntended: number | null;
+  /** verified / reference-confirmed: a rate on the subset the reference driver could demonstrate; not coverage. */
+  verifiedOfReferenceConfirmed: number | null;
+  diagnostics: Record<Diagnostic, number>;
+  /** Unconfirmed operations the recognized path happened to perform with the expectations holding; not counted anywhere above. */
+  unconfirmedProbes: { run: number; expectationsHeld: number };
 }
 
 export function summarizeOperations(rows: OperationResult[]): OperationSummary {
-  const n = (f: (r: OperationResult) => boolean): number => rows.filter(f).length;
+  const frozen = rows.filter((r) => r.origin === "frozen");
+  const n = (f: (r: OperationResult) => boolean, set = frozen): number => set.filter(f).length;
   const confirmed = n((r) => r.reference === "confirmed");
   const verified = n((r) => r.outcome === "verified");
   const wrong = n((r) => r.outcome === "wrong_effect");
   const mis = n((r) => r.outcome === "misbound");
+  const diagnostics: Record<Diagnostic, number> = {
+    verified: 0,
+    recognition_limit: 0,
+    incorrect_effect: 0,
+    reference_limit: 0,
+    annotation_defect: 0,
+    information_limit: 0,
+  };
+  for (const r of frozen) diagnostics[r.diagnostic]++;
+  const ratio = (a: number, b: number): number | null => (b === 0 ? null : Math.round((a / b) * 1000) / 1000);
   return {
-    annotated: rows.length,
+    intended: frozen.length,
+    addedAfterFreeze: rows.length - frozen.length,
     referenceConfirmed: confirmed,
-    droppedVacuous: n((r) => r.reference === "vacuous"),
-    droppedUnconfirmed: n((r) => r.reference === "unconfirmed"),
+    referenceUnconfirmed: n((r) => r.reference === "unconfirmed"),
+    annotationDefects: n((r) => r.reference === "vacuous" || r.reference === "invalid"),
     executed: n((r) => r.outcome !== undefined),
     verified,
     fallback: n((r) => r.outcome === "fallback"),
@@ -272,6 +369,9 @@ export function summarizeOperations(rows: OperationResult[]): OperationSummary {
     wrongEffect: wrong,
     misbound: mis,
     falseExecutableClaims: wrong + mis,
-    verifiedShare: confirmed === 0 ? null : Math.round((verified / confirmed) * 1000) / 1000,
+    verifiedOfIntended: ratio(verified, frozen.length),
+    verifiedOfReferenceConfirmed: ratio(verified, confirmed),
+    diagnostics,
+    unconfirmedProbes: { run: n((r) => r.probe !== undefined), expectationsHeld: n((r) => r.probe === "verified") },
   };
 }

@@ -49,6 +49,24 @@
           "value": "Completed"
         }
       ]
+    },
+    {
+      "name": "Search with no match",
+      "effect": "read",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Search projects",
+          "value": "zzzz-nothing"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "rows",
+          "target": "All projects",
+          "count": 0
+        }
+      ]
     }
   ]
 }

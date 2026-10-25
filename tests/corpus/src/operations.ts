@@ -1,11 +1,13 @@
+import { existsSync, readFileSync } from "node:fs";
 import type { Annotation, Effect } from "./annotation.ts";
+import { ROOT } from "./manifest.ts";
 import { norm } from "./match.ts";
 
 export type Step =
   | { do: "fill"; target: string; value: string }
   | { do: "choose"; target: string; value: string }
   | { do: "toggle"; target: string; checked: boolean }
-  | { do: "click"; target: string }
+  | { do: "click"; target: string; item?: string }
   | { do: "upload"; target: string; value: string; text: string }
   | { do: "press"; key: string };
 
@@ -68,3 +70,23 @@ export function validateOperations(o: unknown, a?: Annotation): string[] {
   }
   return out;
 }
+
+const FROZEN = `${ROOT}fixtures/corpus/operations.frozen.json`;
+const TRIAGE = `${ROOT}fixtures/corpus/operations.triage.json`;
+
+export type Triage = Record<
+  string,
+  { class: "reference_limit" | "information_limit" | "annotation_defect"; reason: string }
+>;
+
+/** Keys `source/page/operation` of every operation written in the first annotation round. */
+export const loadFrozen = (): Set<string> =>
+  new Set(
+    (
+      JSON.parse(readFileSync(FROZEN, "utf8")) as { operations: { source: string; page: string; operation: string }[] }
+    ).operations.map((o) => `${o.source}/${o.page}/${o.operation}`),
+  );
+
+/** Reviewed explanations for operations that are not the recognizer's failure; the counts are never reduced by them. */
+export const loadTriage = (): Triage =>
+  existsSync(TRIAGE) ? (JSON.parse(readFileSync(TRIAGE, "utf8")) as { entries: Triage }).entries : {};

@@ -46,6 +46,22 @@
           "contains": "Rock"
         }
       ]
+    },
+    {
+      "name": "Open Clothing submenu",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Clothing"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Accessories"
+        }
+      ]
     }
   ]
 }

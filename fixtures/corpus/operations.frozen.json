@@ -1,0 +1,1002 @@
+{
+ "schema": "vsf-corpus-operations-frozen-v1",
+ "commit": "c95c49f",
+ "rule": "the intended-workflow denominator: every operation the annotators first wrote; operations are classified, never removed",
+ "operations": [
+  {
+   "source": "adminlte",
+   "page": "file-manager",
+   "operation": "Search files"
+  },
+  {
+   "source": "adminlte",
+   "page": "login",
+   "operation": "Enter email"
+  },
+  {
+   "source": "adminlte",
+   "page": "login",
+   "operation": "Enter password"
+  },
+  {
+   "source": "adminlte",
+   "page": "login",
+   "operation": "Tick remember me"
+  },
+  {
+   "source": "adminlte",
+   "page": "projects",
+   "operation": "Search projects"
+  },
+  {
+   "source": "adminlte",
+   "page": "projects",
+   "operation": "Filter by completed"
+  },
+  {
+   "source": "adminlte",
+   "page": "projects",
+   "operation": "Search with no match"
+  },
+  {
+   "source": "adminlte",
+   "page": "register",
+   "operation": "Enter full name"
+  },
+  {
+   "source": "adminlte",
+   "page": "register",
+   "operation": "Enter email"
+  },
+  {
+   "source": "adminlte",
+   "page": "register",
+   "operation": "Agree to terms"
+  },
+  {
+   "source": "adminlte",
+   "page": "search-results",
+   "operation": "Change search term"
+  },
+  {
+   "source": "adminlte",
+   "page": "search-results",
+   "operation": "Choose date range"
+  },
+  {
+   "source": "adminlte",
+   "page": "search-results",
+   "operation": "Choose owner"
+  },
+  {
+   "source": "adminlte",
+   "page": "search-results",
+   "operation": "Include archived items"
+  },
+  {
+   "source": "adminlte",
+   "page": "settings",
+   "operation": "Change full name"
+  },
+  {
+   "source": "adminlte",
+   "page": "settings",
+   "operation": "Change email"
+  },
+  {
+   "source": "adminlte",
+   "page": "settings",
+   "operation": "Choose time zone"
+  },
+  {
+   "source": "adminlte",
+   "page": "settings",
+   "operation": "Choose language"
+  },
+  {
+   "source": "apg",
+   "page": "checkbox-mixed",
+   "operation": "Check all condiments"
+  },
+  {
+   "source": "apg",
+   "page": "checkbox-mixed",
+   "operation": "Check every condiment individually"
+  },
+  {
+   "source": "apg",
+   "page": "checkbox-mixed",
+   "operation": "Uncheck tomato"
+  },
+  {
+   "source": "apg",
+   "page": "combobox-autocomplete-list",
+   "operation": "Type to filter states"
+  },
+  {
+   "source": "apg",
+   "page": "combobox-autocomplete-list",
+   "operation": "Choose a state"
+  },
+  {
+   "source": "apg",
+   "page": "combobox-autocomplete-list",
+   "operation": "Open state list with button"
+  },
+  {
+   "source": "apg",
+   "page": "combobox-datepicker",
+   "operation": "Type a date"
+  },
+  {
+   "source": "apg",
+   "page": "combobox-datepicker",
+   "operation": "Open date picker"
+  },
+  {
+   "source": "apg",
+   "page": "combobox-select-only",
+   "operation": "Choose banana"
+  },
+  {
+   "source": "apg",
+   "page": "combobox-select-only",
+   "operation": "Choose cherry"
+  },
+  {
+   "source": "apg",
+   "page": "data-grids",
+   "operation": "Hide type and category columns"
+  },
+  {
+   "source": "apg",
+   "page": "data-grids",
+   "operation": "Sort by amount"
+  },
+  {
+   "source": "apg",
+   "page": "dialog-modal",
+   "operation": "Open dialog"
+  },
+  {
+   "source": "apg",
+   "page": "dialog-modal",
+   "operation": "Fill street in dialog"
+  },
+  {
+   "source": "apg",
+   "page": "dialog-modal",
+   "operation": "Cancel dialog"
+  },
+  {
+   "source": "apg",
+   "page": "dialog-modal",
+   "operation": "Verify address"
+  },
+  {
+   "source": "apg",
+   "page": "disclosure-faq",
+   "operation": "Expand permit loss answer"
+  },
+  {
+   "source": "apg",
+   "page": "disclosure-faq",
+   "operation": "Expand holiday parking answer"
+  },
+  {
+   "source": "apg",
+   "page": "listbox-scrollable",
+   "operation": "Choose plutonium"
+  },
+  {
+   "source": "apg",
+   "page": "menu-button-links",
+   "operation": "Open quick links menu"
+  },
+  {
+   "source": "apg",
+   "page": "radio",
+   "operation": "Choose deep dish"
+  },
+  {
+   "source": "apg",
+   "page": "radio",
+   "operation": "Choose home delivery"
+  },
+  {
+   "source": "apg",
+   "page": "sortable-table",
+   "operation": "Show sort icons"
+  },
+  {
+   "source": "apg",
+   "page": "sortable-table",
+   "operation": "Sort by last name"
+  },
+  {
+   "source": "apg",
+   "page": "tabs-manual",
+   "operation": "Show second tab"
+  },
+  {
+   "source": "apg",
+   "page": "toolbar",
+   "operation": "Center align"
+  },
+  {
+   "source": "apg",
+   "page": "toolbar",
+   "operation": "Night mode"
+  },
+  {
+   "source": "apg",
+   "page": "toolbar",
+   "operation": "Edit sample text"
+  },
+  {
+   "source": "apg",
+   "page": "treegrid",
+   "operation": "Collapse thread"
+  },
+  {
+   "source": "choices",
+   "page": "demo",
+   "operation": "Choose a city"
+  },
+  {
+   "source": "choices",
+   "page": "demo",
+   "operation": "Choose a custom template option"
+  },
+  {
+   "source": "choices",
+   "page": "demo",
+   "operation": "Add a tag"
+  },
+  {
+   "source": "choices",
+   "page": "demo",
+   "operation": "Submit empty form"
+  },
+  {
+   "source": "datatables",
+   "page": "ajax-source",
+   "operation": "Search for one employee"
+  },
+  {
+   "source": "datatables",
+   "page": "ajax-source",
+   "operation": "Show 25 entries"
+  },
+  {
+   "source": "datatables",
+   "page": "ajax-source",
+   "operation": "Go to next page"
+  },
+  {
+   "source": "datatables",
+   "page": "ajax-source",
+   "operation": "Search with no matches"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-col-sort",
+   "operation": "Search for one employee"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-col-sort",
+   "operation": "Show 25 entries"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-col-sort",
+   "operation": "Go to next page"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-col-sort",
+   "operation": "Search with no matches"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-filter",
+   "operation": "Search for one employee"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-filter",
+   "operation": "Show 25 entries"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-filter",
+   "operation": "Go to next page"
+  },
+  {
+   "source": "datatables",
+   "page": "multi-filter",
+   "operation": "Filter by office column"
+  },
+  {
+   "source": "datatables",
+   "page": "scroll-y",
+   "operation": "Search for one employee"
+  },
+  {
+   "source": "datatables",
+   "page": "scroll-y",
+   "operation": "Search with no matches"
+  },
+  {
+   "source": "datatables",
+   "page": "select-row",
+   "operation": "Search for one employee"
+  },
+  {
+   "source": "datatables",
+   "page": "select-row",
+   "operation": "Show 25 entries"
+  },
+  {
+   "source": "datatables",
+   "page": "select-row",
+   "operation": "Go to next page"
+  },
+  {
+   "source": "datatables",
+   "page": "select-row",
+   "operation": "Search with no matches"
+  },
+  {
+   "source": "datatables",
+   "page": "zero-configuration",
+   "operation": "Search for one employee"
+  },
+  {
+   "source": "datatables",
+   "page": "zero-configuration",
+   "operation": "Show 25 entries"
+  },
+  {
+   "source": "datatables",
+   "page": "zero-configuration",
+   "operation": "Go to next page"
+  },
+  {
+   "source": "datatables",
+   "page": "zero-configuration",
+   "operation": "Search with no matches"
+  },
+  {
+   "source": "django-admin",
+   "page": "add-form",
+   "operation": "Fill in name and SKU"
+  },
+  {
+   "source": "django-admin",
+   "page": "add-form",
+   "operation": "Clear the In stock checkbox"
+  },
+  {
+   "source": "django-admin",
+   "page": "add-form",
+   "operation": "Choose the Live status"
+  },
+  {
+   "source": "django-admin",
+   "page": "add-form",
+   "operation": "Add another variant row"
+  },
+  {
+   "source": "django-admin",
+   "page": "change-form",
+   "operation": "Rename the product"
+  },
+  {
+   "source": "django-admin",
+   "page": "change-form",
+   "operation": "Clear the In stock checkbox"
+  },
+  {
+   "source": "django-admin",
+   "page": "change-form",
+   "operation": "Change the status to Retired"
+  },
+  {
+   "source": "django-admin",
+   "page": "change-form",
+   "operation": "Add another variant row"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-filtered",
+   "operation": "Switch the status filter to Retired"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-filtered",
+   "operation": "Go to page 2 of the filtered results"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-filtered",
+   "operation": "Search for something that matches nothing"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-filtered",
+   "operation": "Clear the search and filters via 47 total"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-page2",
+   "operation": "Go to page 3"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-page2",
+   "operation": "Show all products on one page"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-page2",
+   "operation": "Select all rows on the page"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-page2",
+   "operation": "Filter by Draft status"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-selected",
+   "operation": "Deselect one of the selected rows"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-selected",
+   "operation": "Select a third row"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-selected",
+   "operation": "Run no action on the selection"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist-selected",
+   "operation": "Start the delete action up to its confirmation"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist",
+   "operation": "Search products by name"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist",
+   "operation": "Select all rows on the page"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist",
+   "operation": "Filter by Live status"
+  },
+  {
+   "source": "django-admin",
+   "page": "changelist",
+   "operation": "Go to page 2"
+  },
+  {
+   "source": "django-admin",
+   "page": "delete-confirmation",
+   "operation": "Cancel and return to the product"
+  },
+  {
+   "source": "django-admin",
+   "page": "delete-confirmation",
+   "operation": "Filter the sidebar navigation"
+  },
+  {
+   "source": "django-admin",
+   "page": "index",
+   "operation": "Open the products list"
+  },
+  {
+   "source": "django-admin",
+   "page": "index",
+   "operation": "Open the users list"
+  },
+  {
+   "source": "django-admin",
+   "page": "login",
+   "operation": "Fill in sign-in credentials without submitting"
+  },
+  {
+   "source": "django-admin",
+   "page": "login",
+   "operation": "Sign in with wrong credentials is rejected"
+  },
+  {
+   "source": "filebrowser",
+   "page": "files",
+   "operation": "Search for a file"
+  },
+  {
+   "source": "filebrowser",
+   "page": "files",
+   "operation": "Switch to list view"
+  },
+  {
+   "source": "filebrowser",
+   "page": "files",
+   "operation": "Open a folder"
+  },
+  {
+   "source": "filebrowser",
+   "page": "files",
+   "operation": "Open the new folder prompt"
+  },
+  {
+   "source": "filebrowser",
+   "page": "login",
+   "operation": "Fill in a username"
+  },
+  {
+   "source": "filebrowser",
+   "page": "login",
+   "operation": "Sign in with wrong credentials"
+  },
+  {
+   "source": "filebrowser",
+   "page": "new-folder",
+   "operation": "Create a folder"
+  },
+  {
+   "source": "filebrowser",
+   "page": "new-folder",
+   "operation": "Cancel folder creation"
+  },
+  {
+   "source": "filebrowser",
+   "page": "selected",
+   "operation": "Open rename prompt"
+  },
+  {
+   "source": "filebrowser",
+   "page": "selected",
+   "operation": "Clear selection"
+  },
+  {
+   "source": "filebrowser",
+   "page": "settings",
+   "operation": "Set instance name"
+  },
+  {
+   "source": "filebrowser",
+   "page": "settings",
+   "operation": "Enable signup toggle"
+  },
+  {
+   "source": "filebrowser",
+   "page": "settings",
+   "operation": "Choose dark theme"
+  },
+  {
+   "source": "filebrowser",
+   "page": "settings",
+   "operation": "Change base path"
+  },
+  {
+   "source": "filebrowser",
+   "page": "upload",
+   "operation": "Upload a file"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "daygrid-views",
+   "operation": "Go to next month"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "daygrid-views",
+   "operation": "Go to previous month"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "daygrid-views",
+   "operation": "Go to next year"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "daygrid-views",
+   "operation": "Open a day from the grid"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "list-views",
+   "operation": "Go to next week"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "list-views",
+   "operation": "Go to previous week"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "list-views",
+   "operation": "Open a day from the list"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "month-view",
+   "operation": "Go to next month"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "month-view",
+   "operation": "Go to previous month"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "month-view",
+   "operation": "Reveal hidden events of a crowded day"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "selectable",
+   "operation": "Go to next month"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "selectable",
+   "operation": "Go to previous month"
+  },
+  {
+   "source": "fullcalendar",
+   "page": "selectable",
+   "operation": "Open a day from the grid"
+  },
+  {
+   "source": "jquery-file-upload",
+   "page": "empty",
+   "operation": "Queue a file"
+  },
+  {
+   "source": "jquery-file-upload",
+   "page": "files-queued",
+   "operation": "Queue another file"
+  },
+  {
+   "source": "jquery-file-upload",
+   "page": "files-queued",
+   "operation": "Cancel one queued file"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "accordion-default",
+   "operation": "Open section 2"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "autocomplete-combobox",
+   "operation": "Choose a language"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "autocomplete-combobox",
+   "operation": "Show all items"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "autocomplete-default",
+   "operation": "Type to get suggestions"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "checkboxradio-default",
+   "operation": "Pick a location"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "checkboxradio-default",
+   "operation": "Pick hotel ratings"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "checkboxradio-default",
+   "operation": "Pick a bed type"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "datepicker-default",
+   "operation": "Type a date"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "datepicker-default",
+   "operation": "Type a date in another month"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-confirmation",
+   "operation": "Cancel the confirmation"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-confirmation",
+   "operation": "Close the confirmation"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-form",
+   "operation": "Create a new user"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-form",
+   "operation": "Reject a short name"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "dialog-modal-form",
+   "operation": "Cancel the form"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "menu-default",
+   "operation": "Open Clothing submenu"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "menu-default",
+   "operation": "Open Music submenu"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "selectmenu-default",
+   "operation": "Choose a speed"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "selectmenu-default",
+   "operation": "Choose a number"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "selectmenu-default",
+   "operation": "Choose a file"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "spinner-default",
+   "operation": "Type a value"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "spinner-default",
+   "operation": "Set value to 5"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "spinner-default",
+   "operation": "Step up"
+  },
+  {
+   "source": "jquery-ui",
+   "page": "tabs-default",
+   "operation": "Switch to second tab"
+  },
+  {
+   "source": "slickgrid",
+   "page": "checkbox-row-select",
+   "operation": "Select all rows with the header checkbox"
+  },
+  {
+   "source": "slickgrid",
+   "page": "checkbox-row-select",
+   "operation": "Select all then unselect all rows"
+  },
+  {
+   "source": "slickgrid",
+   "page": "large-dataview",
+   "operation": "Filter by minimum percent complete"
+  },
+  {
+   "source": "slickgrid",
+   "page": "large-dataview",
+   "operation": "Go to next page"
+  },
+  {
+   "source": "tabulator",
+   "page": "full-demo",
+   "operation": "Filter by name"
+  },
+  {
+   "source": "tabulator",
+   "page": "full-demo",
+   "operation": "Filter by department"
+  },
+  {
+   "source": "tabulator",
+   "page": "pagination",
+   "operation": "Show 25 rows per page"
+  },
+  {
+   "source": "tabulator",
+   "page": "pagination",
+   "operation": "Go to next page"
+  },
+  {
+   "source": "tabulator",
+   "page": "pagination",
+   "operation": "Go to page 3"
+  },
+  {
+   "source": "tabulator",
+   "page": "pagination",
+   "operation": "Go to last page"
+  },
+  {
+   "source": "tabulator",
+   "page": "selection",
+   "operation": "Select all rows"
+  },
+  {
+   "source": "tabulator",
+   "page": "selection",
+   "operation": "Select all then deselect all"
+  },
+  {
+   "source": "tabulator",
+   "page": "sorting-filtering",
+   "operation": "Filter by engineering department"
+  },
+  {
+   "source": "tabulator",
+   "page": "sorting-filtering",
+   "operation": "Filter under age 30"
+  },
+  {
+   "source": "tabulator",
+   "page": "sorting-filtering",
+   "operation": "Type a name filter"
+  },
+  {
+   "source": "tabulator",
+   "page": "sorting-filtering",
+   "operation": "Clear filters after filtering"
+  },
+  {
+   "source": "tabulator",
+   "page": "tree-data",
+   "operation": "Expand all rows"
+  },
+  {
+   "source": "tabulator",
+   "page": "tree-data",
+   "operation": "Collapse all rows"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "empty",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "empty",
+   "operation": "Add a todo with empty text"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "with-items",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "with-items",
+   "operation": "Complete a todo"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "with-items",
+   "operation": "Complete all todos"
+  },
+  {
+   "source": "todomvc-jquery",
+   "page": "with-items",
+   "operation": "Show only active todos"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "empty",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "empty",
+   "operation": "Add a todo with empty text"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "with-items",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "with-items",
+   "operation": "Complete a todo"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "with-items",
+   "operation": "Complete all todos"
+  },
+  {
+   "source": "todomvc-lit",
+   "page": "with-items",
+   "operation": "Show only active todos"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "empty",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "empty",
+   "operation": "Add a todo with empty text"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "with-items",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "with-items",
+   "operation": "Complete a todo"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "with-items",
+   "operation": "Complete all todos"
+  },
+  {
+   "source": "todomvc-react",
+   "page": "with-items",
+   "operation": "Show only active todos"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "empty",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "empty",
+   "operation": "Add a todo with empty text"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "with-items",
+   "operation": "Add a todo"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "with-items",
+   "operation": "Complete a todo"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "with-items",
+   "operation": "Complete all todos"
+  },
+  {
+   "source": "todomvc-svelte",
+   "page": "with-items",
+   "operation": "Show only active todos"
+  }
+ ]
+}

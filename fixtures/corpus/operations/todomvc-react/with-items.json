@@ -45,14 +45,14 @@
       "steps": [
         {
           "do": "toggle",
-          "target": "❯ Toggle All Input",
+          "target": "\u276f Toggle All Input",
           "checked": true
         }
       ],
       "expect": [
         {
           "kind": "checked",
-          "target": "❯ Toggle All Input",
+          "target": "\u276f Toggle All Input",
           "checked": true
         },
         {
@@ -87,7 +87,7 @@
       "steps": [
         {
           "do": "toggle",
-          "target": "❯ Toggle All Input",
+          "target": "\u276f Toggle All Input",
           "checked": true
         },
         {
@@ -103,6 +103,28 @@
         {
           "kind": "text",
           "contains": "Buy milk"
+        }
+      ]
+    },
+    {
+      "name": "Complete a todo",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Buy milk",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Buy milk",
+          "checked": true
+        },
+        {
+          "kind": "text",
+          "contains": "2 items left"
         }
       ]
     }

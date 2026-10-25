@@ -1,34 +1,51 @@
 {
- "schema": "vsf-corpus-operations-v1",
- "source": "apg",
- "page": "data-grids",
- "dossierSha256": "376b7c6a226d972cf8a9adf00c75753d7fbabc44e0e27eed28cd36590eb94d55",
- "annotator": {
-  "kind": "separate-agent",
-  "id": "ops-annotator-apg",
-  "sawRecognizerOutput": false,
-  "basis": [
-   "page dossier",
-   "page annotation",
-   "W3C ARIA Authoring Practices pattern documentation"
+  "schema": "vsf-corpus-operations-v1",
+  "source": "apg",
+  "page": "data-grids",
+  "dossierSha256": "376b7c6a226d972cf8a9adf00c75753d7fbabc44e0e27eed28cd36590eb94d55",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-apg",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "page dossier",
+      "page annotation",
+      "W3C ARIA Authoring Practices pattern documentation"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Hide type and category columns",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Hide Type and Category"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Show Type and Category"
+        }
+      ]
+    },
+    {
+      "name": "Sort by amount",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Amount"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "rows",
+          "target": "Transactions January 1 through January 7",
+          "count": 8
+        }
+      ]
+    }
   ]
- },
- "operations": [
-  {
-   "name": "Hide type and category columns",
-   "effect": "state_change",
-   "steps": [
-    {
-     "do": "click",
-     "target": "Hide Type and Category"
-    }
-   ],
-   "expect": [
-    {
-     "kind": "text",
-     "contains": "Show Type and Category"
-    }
-   ]
-  }
- ]
 }

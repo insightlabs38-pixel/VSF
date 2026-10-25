@@ -85,6 +85,42 @@
           "value": "/branding"
         }
       ]
+    },
+    {
+      "name": "Enable signup toggle",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "toggle",
+          "target": "Allow users to signup",
+          "checked": true
+        }
+      ],
+      "expect": [
+        {
+          "kind": "checked",
+          "target": "Allow users to signup",
+          "checked": true
+        }
+      ]
+    },
+    {
+      "name": "Change base path",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "fill",
+          "target": "Base path for user home directories",
+          "value": "/homes"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "value",
+          "target": "Base path for user home directories",
+          "value": "/homes"
+        }
+      ]
     }
   ]
 }

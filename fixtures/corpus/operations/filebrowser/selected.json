@@ -45,6 +45,22 @@
           "contains": "Display Name"
         }
       ]
+    },
+    {
+      "name": "Clear selection",
+      "effect": "navigation",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Clear"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "absent",
+          "contains": "Copy file"
+        }
+      ]
     }
   ]
 }

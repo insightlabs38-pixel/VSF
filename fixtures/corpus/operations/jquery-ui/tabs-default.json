@@ -1,0 +1,36 @@
+{
+  "schema": "vsf-corpus-operations-v1",
+  "source": "jquery-ui",
+  "page": "tabs-default",
+  "dossierSha256": "019691d2691556e93e66c877e759e9152f86347ffebc964462a59faa9778d0c7",
+  "annotator": {
+    "kind": "separate-agent",
+    "id": "ops-annotator-jqui-choices",
+    "sawRecognizerOutput": false,
+    "basis": [
+      "tests/corpus/ANNOTATION-OPERATIONS.md",
+      "dossier",
+      "page annotation",
+      "public documentation and demo behaviour of jQuery UI"
+    ]
+  },
+  "operations": [
+    {
+      "name": "Switch to second tab",
+      "effect": "state_change",
+      "steps": [
+        {
+          "do": "click",
+          "target": "Tabs",
+          "item": "Proin dolor"
+        }
+      ],
+      "expect": [
+        {
+          "kind": "text",
+          "contains": "Morbi tincidunt"
+        }
+      ]
+    }
+  ]
+}
